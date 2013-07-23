@@ -1,0 +1,7 @@
+/.idea
+/target
+*~
+*.iml
+*.orig
+docs/_build
+docs/com
