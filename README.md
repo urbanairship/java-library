@@ -2,7 +2,7 @@
 Urban Airship Java Client Library
 =================================
 
-This is the official supported java library for the Urban Airship API.
+This is the official supported Java library for the Urban Airship API.
 
 Using the library is straightforward. Create a client, setup a request payload,
 handle the results.
@@ -34,7 +34,7 @@ handle the results.
     catch (APIRequestException ex){
         logger.error("Non 200 request, checking error details and taking action");
     }
-    // An underlying error occured, most likely outside of the scope of the
+    // An underlying error occurred, most likely outside of the scope of the
     // UA library, do some HTTP debugging
     catch (IOException e){
         logger.error("Broken pipe what?");
@@ -45,3 +45,26 @@ Documentation
 =============
 
 General documentation can be found here: http://docs.urbanairship.com/
+Jave client library documentation can be found here:
+  http://docs.urbanairship.com/reference/libraries/java/index.html
+
+Installation
+====================
+
+Clone the repository, and use
+```
+    mvn package
+```
+
+to build the jar. If you would like a copy of the javadocs, use
+```
+    mvn javadoc:javadoc
+```
+
+More detailed documentation is available at the site listed above.
+
+Notes on Maven Central
+----------------------
+
+We will be deploying the library to Maven Central soon. We will update this
+README when that is complete.
