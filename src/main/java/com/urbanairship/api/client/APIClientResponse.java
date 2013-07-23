@@ -1,4 +1,8 @@
 
+/*
+ * Copyright 2013 Urban Airship and Contributors
+ */
+
 package com.urbanairship.api.client;
 
 import org.apache.http.HttpResponse;

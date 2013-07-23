@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 #
+# Copyright 2013 Urban Airship
 # Urban Airship Java Client documentation build configuration file, created by
 # sphinx-quickstart on Tue Jul 16 12:21:44 2013.
 #

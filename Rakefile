@@ -1,6 +1,5 @@
 
-# require "byebug"
-
+# Copyright 2013 Urban Airship
 
 desc "Build the docs for the API Client using javasphinx. This produces rst for sphinx"
 task :build_javadocs do

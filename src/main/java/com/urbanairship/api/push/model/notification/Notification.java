@@ -1,3 +1,7 @@
+/*
+ * Copyright 2013 Urban Airship and Contributors
+ */
+
 package com.urbanairship.api.push.model.notification;
 
 import com.urbanairship.api.push.model.PushModelObject;
@@ -9,7 +13,6 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 
 import java.util.Map;
-import java.util.Set;
 
 public final class Notification extends PushModelObject {
 
