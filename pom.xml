@@ -1,10 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
-  <groupId>com.urbanairship.push</groupId>
+  <groupId>com.urbanairship</groupId>
   <artifactId>java-client</artifactId>
-  <version>0.1</version>
+  <version>0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <description>The Urban Airship Java client library</description>
+  <url>https://github.com/urbanairship/java-library</url>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  <scm>
+    <connection>scm:git:https://github.com/urbanairship/java-library.git-</connection>
+    <developerConnection>scm:git:https://github.com/urbanairship/java-library.git</developerConnection>
+    <url>git@github.com:urbanairship/java-library.git</url>
+  </scm>
+  <developers>
+    <developer>
+      <email>support@urbanairship.com</email>
+    </developer>
+  </developers>
+
+  <name>Java Client</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -12,18 +32,32 @@
     <jackson.version>1.9.8</jackson.version>
   </properties>
 
-  <name>java-client</name>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>        
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.4.1</version>
+      </plugin>       
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.9.1</version>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
 
+    </plugins>
+  </build>
+
+<!-- Third party dependencies -->
   <dependencies>
-
-    <!-- 3rd Party Dependencies ==================== -->
-
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.17</version>
-    </dependency>
-
     <dependency>
       <groupId>org.codehaus.jackson</groupId>
       <artifactId>jackson-mapper-asl</artifactId>
@@ -60,16 +94,7 @@
         <version>1.7.5</version>
     </dependency>
 
-   <!-- TODO Bindings for logging, need to make this optional -->
-    <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-log4j12</artifactId>
-        <version>1.7.5</version>
-    </dependency>
-
-
-    <!-- Test Dependencies ==================== -->
-
+    <!-- Test Dependencies -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -81,14 +106,14 @@
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <version>1.9.0</version>
-        <scope>test</scope>
+      <scope>test</scope>
     </dependency>
 
-      <dependency>
-          <groupId>com.github.tomakehurst</groupId>
-          <artifactId>wiremock</artifactId>
-          <version>1.33</version>
-      </dependency>
+    <dependency>
+      <groupId>com.github.tomakehurst</groupId>
+      <artifactId>wiremock</artifactId>
+      <version>1.33</version>
+    </dependency>
   </dependencies>
 
 </project>
