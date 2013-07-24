@@ -106,8 +106,7 @@ public class PushObjectMapper {
 
             /* Schedules */
             .addSerializer(SchedulePayload.class, ScheduledPayloadSerializer.INSTANCE)
-            .addSerializer(Schedule.class, ScheduleSerializer.INSTANCE)
-            .addSerializer(ScheduleDetails.class, ScheduleDetailsSerializer.INSTANCE);
+            .addSerializer(Schedule.class, ScheduleSerializer.INSTANCE);
 
 
         MAPPER.registerModule(MODULE);
