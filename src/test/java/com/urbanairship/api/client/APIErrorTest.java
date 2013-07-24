@@ -92,11 +92,11 @@ public class APIErrorTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testThrowsOnNullString(){
-        APIError error = APIError.newBuilder().build();
+        @SuppressWarnings("UnusedAssignment") APIError error = APIError.newBuilder().build();
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testThrowsOnEmptyError(){
-        APIError error = APIError.newBuilder().setError("").build();
+        @SuppressWarnings("UnusedAssignment") APIError error = APIError.newBuilder().setError("").build();
     }
 }

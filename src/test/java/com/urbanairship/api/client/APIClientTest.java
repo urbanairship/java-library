@@ -48,13 +48,13 @@ public class APIClientTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testAPIClientThrowsForNoAppKey(){
-        APIClient apiClient = APIClient.newBuilder().setKey("foo")
+        @SuppressWarnings("UnusedAssignment") APIClient apiClient = APIClient.newBuilder().setKey("foo")
                 .build();
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testAPIClientThrowsForNoAppSecret(){
-        APIClient apiClient = APIClient.newBuilder().setSecret("foo")
+        @SuppressWarnings("UnusedAssignment") APIClient apiClient = APIClient.newBuilder().setSecret("foo")
                                        .build();
     }
 
