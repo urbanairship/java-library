@@ -5,3 +5,5 @@
 *.orig
 docs/_build
 docs/com
+\#*#
+
