@@ -7,7 +7,7 @@ This is the official supported Java library for the Urban Airship API.
 Using the library is straightforward. Create a client, setup a request payload,
 handle the results.
 
-```
+```java
     String appKey = "appKey";
     String appSecret = "appSecret";
 
@@ -51,20 +51,41 @@ Jave client library documentation can be found here:
 Installation
 ====================
 
+Manual installation
+-------------------
+
 Clone the repository, and use
 ```
     mvn package
 ```
 
-to build the jar. If you would like a copy of the javadocs, use
+to build the jar. Add the jar, located at a path similar to:
+```
+    target/java-client-<version>.jar
+```
+If you would like a copy of the javadocs, use
 ```
     mvn javadoc:javadoc
 ```
 
-More detailed documentation is available at the site listed above.
+Maven Installation
+------------------
 
-Notes on Maven Central
-----------------------
+Add the following to your pom.xml
+```xml
+    <!-- Urban Airship Library Dependency-->
+    <dependency>
+        <groupId>com.urbanairship</groupId>
+        <artifactId>java-client</artifactId>
+        <version>0.1.2</version>
+    </dependency>
+```
 
-We will be deploying the library to Maven Central soon. We will update this
-README when that is complete.
+Examples
+========
+
+There is an example project in the examples directory with code
+to send a push, a scheduled push, logging, and Maven integration.
+
+Full documentation:
+http://docs.urbanairship.com/reference/libraries/java/index.html
