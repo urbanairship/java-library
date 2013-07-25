@@ -39,15 +39,6 @@
     <jackson.version>1.9.8</jackson.version>
   </properties>
 
-  <profiles>
-   <profile>
-    <id>release</id>
-    <activation>
-     <property>
-      <name>performRelease</name>
-    </property>
-  </activation>
-
   <build>
    <plugins>
 
@@ -91,8 +82,6 @@
 
    </plugins>
  </build>
-</profile>
-</profiles>
 
 <!-- Third party dependencies -->
 <dependencies>
