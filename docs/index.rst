@@ -12,15 +12,18 @@ This is a Java library for using the `Urban Airship
 Installation
 ============
 
-Add the dependency to your pom.xml
+Add the dependency to your pom.xml.
 
 .. code-block:: xml
 
-    <dependency>
-      <groupId>com.urbanairship</groupId>
-      <artifactId>apiclient</artifactId>
-      <version>0.1</version>
-    </dependency>
+        <dependency>
+            <groupId>com.urbanairship</groupId>
+            <artifactId>java-client</artifactId>
+            <version>0.1.2</version>
+        </dependency>
+
+Alternatively, you can build a jar with  ``mvn package``  and add the
+jar to your classpath.
 
 Logging
 =======

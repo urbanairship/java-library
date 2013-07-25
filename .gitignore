@@ -6,4 +6,5 @@
 docs/_build
 docs/com
 \#*#
+/example/target
 
