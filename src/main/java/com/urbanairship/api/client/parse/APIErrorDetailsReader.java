@@ -7,8 +7,7 @@ package com.urbanairship.api.client.parse;
 import com.urbanairship.api.client.APIErrorDetails;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import org.codehaus.jackson.JsonParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 import java.io.IOException;
 

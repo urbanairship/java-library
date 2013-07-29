@@ -5,14 +5,16 @@
 package com.urbanairship.api.common.parse;
 
 import com.google.common.base.Optional;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+
 import org.codehaus.jackson.JsonLocation;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class APIParsingException extends RuntimeException {
 
-    private static final Logger log = LogManager.getLogger("com.urbanairship.api");
+    private static final Logger log = LoggerFactory.getLogger("com.urbanairship.api");
 
     private final Optional<String> path;
     private final Optional<JsonLocation> location;
