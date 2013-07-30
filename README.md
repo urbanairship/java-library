@@ -77,7 +77,8 @@ Add the following to your pom.xml
     <dependency>
         <groupId>com.urbanairship</groupId>
         <artifactId>java-client</artifactId>
-        <version>0.1.2</version>
+        <version>0.1.VERSION</version> 
+        <!-- Replace VERSION with the version you want to use -->
     </dependency>
 ```
 
