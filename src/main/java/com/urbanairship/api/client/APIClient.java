@@ -38,7 +38,7 @@ public class APIClient {
 
     /* URI Paths */
     private final static String API_PUSH_PATH = "/api/push/";
-    private final static String API_VALIDATE_PATH = "/api/validate/";
+    private final static String API_VALIDATE_PATH = "/api/push/validate/";
     private final static String API_SCHEDULE_PATH = "/api/schedules/";
 
     /* User auth */
