@@ -245,7 +245,7 @@ public class APIClientTest {
             APIClientResponse<APIPushResponse> response = client.validate(payload);
 
             // Verify components of the underlying HttpRequest
-            verify(postRequestedFor(urlEqualTo("/api/validate/"))
+            verify(postRequestedFor(urlEqualTo("/api/push/validate/"))
                            .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
             assertNotNull(response);
         }
