@@ -6,11 +6,8 @@ import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.push.model.Platform;
 import com.urbanairship.api.push.model.PlatformData;
 import com.urbanairship.api.push.model.PushPayload;
-import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.Selectors;
-import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.notification.Notifications;
-
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
@@ -19,8 +16,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -236,7 +231,7 @@ public class APIClientTest {
 
         // Setup a stubbed response for the server
         String pushJSON = "{\"ok\" : true,\"operation_id\" : \"df6a6b50\", \"push_ids\":[\"PushID\"]}";
-        stubFor(post(urlEqualTo("/api/validate/"))
+        stubFor(post(urlEqualTo("/api/push/validate/"))
                         .willReturn(aResponse()
                                             .withHeader(CONTENT_TYPE_KEY, "application/json")
                                             .withBody(pushJSON)
@@ -245,7 +240,7 @@ public class APIClientTest {
             APIClientResponse<APIPushResponse> response = client.validate(payload);
 
             // Verify components of the underlying HttpRequest
-            verify(postRequestedFor(urlEqualTo("/api/validate/"))
+            verify(postRequestedFor(urlEqualTo("/api/push/validate/"))
                            .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
             assertNotNull(response);
         }
