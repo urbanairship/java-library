@@ -5,10 +5,9 @@
 package com.urbanairship.api.push.model.notification.ios;
 
 import com.urbanairship.api.push.model.PushModelObject;
-import com.urbanairship.api.push.model.Platform;
+import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 
@@ -44,12 +43,12 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
     }
 
     /**
-     * Get the platform.
-     * @return platform
+     * Get the deviceType.
+     * @return deviceType
      */
     @Override
-    public Platform getPlatform() {
-        return Platform.IOS;
+    public DeviceType getDeviceType() {
+        return DeviceType.IOS;
     }
 
     /**

@@ -3,12 +3,10 @@ package com.urbanairship.api.client;
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
 import com.urbanairship.api.common.parse.DateFormats;
-import com.urbanairship.api.push.model.Platform;
-import com.urbanairship.api.push.model.PlatformData;
+import com.urbanairship.api.push.model.DeviceType;
+import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushPayload;
-import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.Selectors;
-import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.notification.Notifications;
 
 import com.urbanairship.api.push.parse.PushObjectMapper;
@@ -19,8 +17,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -94,7 +90,7 @@ public class APIClientTest {
 
         PushPayload payload = PushPayload.newBuilder()
                 .setAudience(Selectors.all())
-                .setPlatforms(PlatformData.of(Platform.IOS))
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
                 .setNotification(Notifications.alert("Foo"))
                 .build();
 
@@ -128,10 +124,10 @@ public class APIClientTest {
             String audience = (String)result.get("audience");
             assertTrue(audience.equals("ALL"));
 
-            // Platform
-            List<String> platformData = (List<String>)result.get("device_types");
-            assertTrue(platformData.get(0).equals("ios"));
-            assertEquals(Platform.find(platformData.get(0)).get(), Platform.IOS);
+            // DeviceType
+            List<String> deviceTypeData = (List<String>)result.get("device_types");
+            assertTrue(deviceTypeData.get(0).equals("ios"));
+            assertEquals(DeviceType.find(deviceTypeData.get(0)).get(), DeviceType.IOS);
 
             // Notification
             Map<String, String> notification =
@@ -159,7 +155,7 @@ public class APIClientTest {
 
         PushPayload pushPayload = PushPayload.newBuilder()
                                          .setAudience(Selectors.all())
-                                         .setPlatforms(PlatformData.of(Platform.IOS))
+                                         .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
                                          .setNotification(Notifications.alert("Foo"))
                                          .build();
 
@@ -230,7 +226,7 @@ public class APIClientTest {
 
         PushPayload payload = PushPayload.newBuilder()
                                          .setAudience(Selectors.all())
-                                         .setPlatforms(PlatformData.of(Platform.IOS))
+                                         .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
                                          .setNotification(Notifications.alert("Foo"))
                                          .build();
 

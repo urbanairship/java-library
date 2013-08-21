@@ -1,7 +1,7 @@
 package com.urbanairship.api.schedule.parse;
 
-import com.urbanairship.api.push.model.Platform;
-import com.urbanairship.api.push.model.PlatformData;
+import com.urbanairship.api.push.model.DeviceType;
+import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
@@ -16,7 +16,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-@Ignore("Ignore until refactored")
+//@Ignore("Ignore until refactored")
 public class SchedulePayloadSerializerTest {
 
     private static final ObjectMapper MAPPER = PushObjectMapper.getInstance();
@@ -26,7 +26,7 @@ public class SchedulePayloadSerializerTest {
 
         PushPayload pushPayload = PushPayload.newBuilder()
                 .setAudience(Selectors.tag(RandomStringUtils.randomAlphabetic(5)))
-                .setPlatforms(PlatformData.newBuilder().addPlatform(Platform.IOS).build())
+                .setDeviceTypes(DeviceTypeData.newBuilder().addDeviceType(DeviceType.IOS).build())
                 .setNotification(Notification.newBuilder().setAlert(RandomStringUtils.randomAlphabetic(10)).build())
                 .build();
         SchedulePayload schedulePayload = SchedulePayload.newBuilder()

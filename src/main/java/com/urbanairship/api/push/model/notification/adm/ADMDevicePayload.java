@@ -6,8 +6,8 @@ package com.urbanairship.api.push.model.notification.adm;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
+import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushModelObject;
-import com.urbanairship.api.push.model.Platform;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import java.util.Map;
 
@@ -32,8 +32,8 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
     }
 
     @Override
-    public Platform getPlatform() {
-        return Platform.ADM;
+    public DeviceType getDeviceType() {
+        return DeviceType.ADM;
     }
 
     @Override

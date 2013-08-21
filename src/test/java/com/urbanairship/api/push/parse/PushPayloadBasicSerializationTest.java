@@ -1,7 +1,7 @@
 package com.urbanairship.api.push.parse;
 
-import com.urbanairship.api.push.model.Platform;
-import com.urbanairship.api.push.model.PlatformData;
+import com.urbanairship.api.push.model.DeviceType;
+import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-@Ignore("Ignore until refactored")
+//@Ignore("Ignore until refactored")
 public class PushPayloadBasicSerializationTest {
 
     private static final ObjectMapper mapper = PushObjectMapper.getInstance();
@@ -128,7 +128,7 @@ public class PushPayloadBasicSerializationTest {
     }
 
     @Test
-    public void testPlatformOverrides() throws Exception {
+    public void testDeviceTypeOverrides() throws Exception {
         String json
             = "{"
             + "  \"audience\" : \"all\","
@@ -165,8 +165,8 @@ public class PushPayloadBasicSerializationTest {
 //            .setNotification(Notification.newBuilder()
 //                             .setAlert("WAT")
 //                             .build())
-//            .setPlatforms(PlatformData.newBuilder()
-//                          .addPlatform(Platform.WNS)
+//            .setDeviceTypes(DeviceTypeData.newBuilder()
+//                          .addDeviceType(DeviceType.WNS)
 //                          .build())
 //            .build();
 //    }
@@ -178,8 +178,8 @@ public class PushPayloadBasicSerializationTest {
             .setNotification(Notification.newBuilder()
                              .setAlert("WAT")
                              .build())
-            .setPlatforms(PlatformData.newBuilder()
-                          .addPlatform(Platform.WNS)
+            .setDeviceTypes(DeviceTypeData.newBuilder()
+                          .addDeviceType(DeviceType.WNS)
                           .build())
             .build();
     }

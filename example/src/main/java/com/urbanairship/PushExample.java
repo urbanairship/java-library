@@ -1,8 +1,8 @@
 package com.urbanairship;
 
 import com.urbanairship.api.client.*;
-import com.urbanairship.api.push.model.Platform;
-import com.urbanairship.api.push.model.PlatformData;
+import com.urbanairship.api.push.model.DeviceType;
+import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notifications;
@@ -46,7 +46,7 @@ public class PushExample {
         PushPayload payload = PushPayload.newBuilder()
                                          .setAudience(Selectors.deviceToken(deviceToken))
                                          .setNotification(Notifications.notification("Urban Airship Push"))
-                                         .setPlatforms(PlatformData.of(Platform.IOS))
+                                         .setPlatforms(DeviceTypeData.of(DeviceType.IOS))
                                          .build();
 
         try {
@@ -84,7 +84,7 @@ public class PushExample {
         PushPayload payload = PushPayload.newBuilder()
                                          .setAudience(Selectors.all())
                                          .setNotification(Notifications.alert("Scheduled API v3"))
-                                         .setPlatforms(PlatformData.of(Platform.IOS))
+                                         .setPlatforms(DeviceTypeData.of(DeviceType.IOS))
                                          .build();
 
         DateTime dt = DateTime.now().plusSeconds(60);

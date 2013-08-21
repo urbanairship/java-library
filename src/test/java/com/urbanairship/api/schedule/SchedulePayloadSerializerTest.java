@@ -1,14 +1,13 @@
 package com.urbanairship.api.schedule;
 
-import com.urbanairship.api.push.model.Platform;
-import com.urbanairship.api.push.model.PlatformData;
+import com.urbanairship.api.push.model.DeviceType;
+import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
-import org.apache.commons.lang.RandomStringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -25,7 +24,7 @@ public class SchedulePayloadSerializerTest {
 
         PushPayload pushPayload = PushPayload.newBuilder()
                 .setAudience(Selectors.tag("tag"))
-                .setPlatforms(PlatformData.newBuilder().addPlatform(Platform.IOS).build())
+                .setDeviceTypes(DeviceTypeData.newBuilder().addDeviceType(DeviceType.IOS).build())
                 .setNotification(Notification.newBuilder().setAlert("alert").build())
                 .build();
         SchedulePayload schedulePayload = SchedulePayload.newBuilder()
