@@ -62,10 +62,14 @@ task :clean_docs do
   puts "Cleaning docs"
   if File.directory? "./docs/com"
     FileUtils.remove_entry_secure("./docs/com/")
-    puts "Docs cleaned"
+    puts "docs/com cleaned"
   else
     puts "No 'docs/com/' directory, cleaning skipped"
   end
+  Dir.chdir("./docs") do
+    sh "make clean"
+  end
+  puts "Ran 'make clean'"
 end
 
 # TODO The dependencies for all the tasks need to be setup more cleanly
