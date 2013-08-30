@@ -13,8 +13,7 @@ public enum DeviceType {
     WNS("wns"),
     MPNS("mpns"),
     ANDROID("android"),
-    BLACKBERRY("blackberry"),
-    ADM("adm");
+    BLACKBERRY("blackberry");
 
     private final String identifier;
 

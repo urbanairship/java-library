@@ -396,34 +396,6 @@ public class Selectors {
         return compound(SelectorType.OR, SelectorType.MPNS, ids);
     }
 
-    /* ADM APIDs */
-
-    /**
-     * Selector with ADM (Amazon Device Messaging) id.
-     * @param adm Id
-     * @return Selector
-     */
-    public static final Selector adm(String adm) {
-        return value(SelectorType.ADM, adm);
-    }
-    /**
-     * Selector with ADM (Amazon Device Messaging) ids.
-     * @param ids Ids
-     * @return Selector
-     */
-    public static final Selector admDevices(String ... ids) {
-        return compound(SelectorType.OR, SelectorType.ADM, ids);
-    }
-
-    /**
-     * Selector with ADM (Amazon Device Messaging) ids.
-     * @param ids Ids from Collection
-     * @return Selector
-     */
-    public static final Selector admDevices(Collection<String> ids) {
-        return compound(SelectorType.OR, SelectorType.ADM, ids);
-    }
-
     /* Logical operators */
 
     /**

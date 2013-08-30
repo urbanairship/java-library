@@ -29,8 +29,6 @@ import com.urbanairship.api.push.model.notification.mpns.MPNSDevicePayload;
 import com.urbanairship.api.push.model.notification.mpns.MPNSPush;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
 import com.urbanairship.api.push.parse.notification.android.AndroidDevicePayloadSerializer;
-import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
-import com.urbanairship.api.push.parse.notification.adm.ADMDevicePayloadSerializer;
 import com.urbanairship.api.push.model.notification.blackberry.BlackberryDevicePayload;
 import com.urbanairship.api.push.parse.notification.blackberry.BlackberryDevicePayloadSerializer;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
@@ -97,9 +95,6 @@ public class PushObjectMapper {
 
             /* Blackberry */
             .addSerializer(BlackberryDevicePayload.class, new BlackberryDevicePayloadSerializer())
-
-            /* ADM */
-            .addSerializer(ADMDevicePayload.class, new ADMDevicePayloadSerializer())
 
             /* Rich Push */
             .addSerializer(RichPushMessage.class, new RichPushMessageSerializer())

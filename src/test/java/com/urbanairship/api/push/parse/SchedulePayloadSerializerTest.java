@@ -36,9 +36,9 @@ public class SchedulePayloadSerializerTest {
 
         String json = MAPPER.writeValueAsString(schedulePayload);
 
-        //SchedulePayload parsed = MAPPER.readValue(json, SchedulePayload.class);
+        SchedulePayload parsed = MAPPER.readValue(json, SchedulePayload.class);
 
-        //assertEquals(schedulePayload, parsed);
+        assertEquals(schedulePayload, parsed);
     }
 
 }

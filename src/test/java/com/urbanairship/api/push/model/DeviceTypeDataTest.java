@@ -8,13 +8,12 @@ public class DeviceTypeDataTest {
 
     @Test
     public void testDeviceTypeDataOf() {
-        DeviceTypeData data = DeviceTypeData.of(DeviceType.IOS, DeviceType.ANDROID, DeviceType.ADM);
+        DeviceTypeData data = DeviceTypeData.of(DeviceType.IOS, DeviceType.ANDROID);
         assertTrue(data.getDeviceTypes().isPresent());
         assertFalse(data.isAll());
-        assertEquals(3, data.getDeviceTypes().get().size());
+        assertEquals(2, data.getDeviceTypes().get().size());
         assertTrue(data.getDeviceTypes().get().contains(DeviceType.IOS));
         assertTrue(data.getDeviceTypes().get().contains(DeviceType.ANDROID));
-        assertTrue(data.getDeviceTypes().get().contains(DeviceType.ADM));
         assertFalse(data.getDeviceTypes().get().contains(DeviceType.WNS));
         assertFalse(data.getDeviceTypes().get().contains(DeviceType.MPNS));
         assertFalse(data.getDeviceTypes().get().contains(DeviceType.BLACKBERRY));
@@ -39,19 +38,17 @@ public class DeviceTypeDataTest {
         assertNotSame(d, d2);
         assertEquals(DeviceTypeData.of(DeviceType.IOS, DeviceType.ANDROID),
                      DeviceTypeData.of(DeviceType.IOS, DeviceType.ANDROID));
-        assertTrue(! DeviceTypeData.all().equals(DeviceTypeData.of(DeviceType.ADM)));
+        assertTrue(! DeviceTypeData.all().equals(DeviceTypeData.of(DeviceType.IOS)));
     }
 
     @Test
     public void testBuilder() {
         assertEquals(DeviceTypeData.newBuilder()
                      .addDeviceType(DeviceType.IOS)
-                     .addDeviceType(DeviceType.ADM)
                      .addDeviceType(DeviceType.WNS)
                      .build(),
                      DeviceTypeData.newBuilder()
                      .addAllDeviceTypes(ImmutableSet.of(DeviceType.IOS,
-                                                      DeviceType.ADM,
                                                       DeviceType.WNS))
                      .build());
     }

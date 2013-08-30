@@ -44,9 +44,9 @@ public class PushExample {
         logger.debug("Send the message");
 
         PushPayload payload = PushPayload.newBuilder()
-                                         .setAudience(Selectors.deviceToken(deviceToken))
+                                         .setAudience(Selectors.all())
                                          .setNotification(Notifications.notification("Urban Airship Push"))
-                                         .setPlatforms(DeviceTypeData.of(DeviceType.IOS))
+                                         .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
                                          .build();
 
         try {
@@ -85,7 +85,7 @@ public class PushExample {
         PushPayload payload = PushPayload.newBuilder()
                                          .setAudience(Selectors.all())
                                          .setNotification(Notifications.alert("Scheduled API v3"))
-                                         .setPlatforms(DeviceTypeData.of(DeviceType.IOS))
+                                         .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
                                          .build();
 
         DateTime dt = DateTime.now().plusSeconds(60);
