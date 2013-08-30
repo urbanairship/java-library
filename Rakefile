@@ -60,8 +60,12 @@ end
 desc "Clean the docs/com directory, this is not cleaned by javasphinx"
 task :clean_docs do
   puts "Cleaning docs"
-  FileUtils.remove_entry_secure("./docs/com/")
-  puts "Docs cleaned"
+  if File.directory? "./docs/com"
+    FileUtils.remove_entry_secure("./docs/com/")
+    puts "Docs cleaned"
+  else
+    puts "No 'docs/com/' directory, cleaning skipped"
+  end
 end
 
 # TODO The dependencies for all the tasks need to be setup more cleanly
