@@ -59,10 +59,11 @@ public class PushExample {
             logger.error("EXCEPTION " + ex.toString());
 
             APIError apiError = ex.getError().get();
-            APIErrorDetails apiErrorDetails = apiError.getDetails().get();
             logger.error("Error " + apiError.getError());
-            logger.error("Error details " + apiErrorDetails.getError());
-
+            if (apiError.getDetails().isPresent())     {
+                APIErrorDetails apiErrorDetails = apiError.getDetails().get();
+                logger.error("Error details " + apiErrorDetails.getError());
+            }
         }
         catch (IOException e){
             logger.error("IOException in API request " + e.getMessage());
