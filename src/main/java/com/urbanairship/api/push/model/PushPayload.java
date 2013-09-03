@@ -20,7 +20,7 @@ public final class PushPayload extends PushModelObject {
     private final Selector audience;
     private final Optional<Notification> notification;
     private final Optional<RichPushMessage> message;
-    private final PlatformData platforms;
+    private final DeviceTypeData deviceTypes;
 
     /**
      * PushPayload builder
@@ -33,11 +33,11 @@ public final class PushPayload extends PushModelObject {
     private PushPayload(Selector audience,
                         Optional<Notification> notification,
                         Optional<RichPushMessage> message,
-                        PlatformData platforms) {
+                        DeviceTypeData deviceTypes) {
         this.audience = audience;
         this.notification = notification;
         this.message = message;
-        this.platforms = platforms;
+        this.deviceTypes = deviceTypes;
     }
 
     /**
@@ -65,11 +65,11 @@ public final class PushPayload extends PushModelObject {
     }
 
     /**
-     * Get the platforms
-     * @return PlatformData
+     * Get the deviceTypes
+     * @return DeviceTypeData
      */
-    public PlatformData getPlatforms() {
-        return platforms;
+    public DeviceTypeData getDeviceTypes() {
+        return deviceTypes;
     }
 
     /**
@@ -100,7 +100,7 @@ public final class PushPayload extends PushModelObject {
         if (message != null ? !message.equals(that.message) : that.message != null) {
             return false;
         }
-        if (platforms != null ? !platforms.equals(that.platforms) : that.platforms != null) {
+        if (deviceTypes != null ? !deviceTypes.equals(that.deviceTypes) : that.deviceTypes != null) {
             return false;
         }
 
@@ -112,7 +112,7 @@ public final class PushPayload extends PushModelObject {
         int result = (audience != null ? audience.hashCode() : 0);
         result = 31 * result + (notification != null ? notification.hashCode() : 0);
         result = 31 * result + (message != null ? message.hashCode() : 0);
-        result = 31 * result + (platforms != null ? platforms.hashCode() : 0);
+        result = 31 * result + (deviceTypes != null ? deviceTypes.hashCode() : 0);
         return result;
     }
 
@@ -122,12 +122,12 @@ public final class PushPayload extends PushModelObject {
             "audience=" + audience +
             ", notification=" + notification +
             ", message=" + message +
-            ", platforms=" + platforms +
+            ", deviceTypes=" + deviceTypes +
             '}';
     }
 
     public static class Builder {
-        private PlatformData platforms = null;
+        private DeviceTypeData deviceTypes = null;
         private Selector audience = null;
         private Notification notification = null;
         private RichPushMessage message = null;
@@ -165,12 +165,12 @@ public final class PushPayload extends PushModelObject {
         }
 
         /**
-         * Set the platform data
-         * @param platforms PlatformData
+         * Set the Device Type data
+         * @param deviceTypes DeviceTypeData
          * @return Builder
          */
-        public Builder setPlatforms(PlatformData platforms) {
-            this.platforms = platforms;
+        public Builder setDeviceTypes(DeviceTypeData deviceTypes) {
+            this.deviceTypes = deviceTypes;
             return this;
         }
 
@@ -180,7 +180,7 @@ public final class PushPayload extends PushModelObject {
          * <pre>
          * 1. At least one of notification or message must be set.
          * 2. Audience must be set.
-         * 3. Platforms (device types) must be set.
+         * 3. DeviceTypes (device types) must be set.
          * </pre>
          *
          * @throws IllegalArgumentException
@@ -191,12 +191,12 @@ public final class PushPayload extends PushModelObject {
             Preconditions.checkArgument(!(notification == null && message == null),
                                         "At least one of 'notification' or 'message' must be set.");
             Preconditions.checkNotNull(audience, "'audience' must be set");
-            Preconditions.checkNotNull(platforms, "'device_types' must be set");
+            Preconditions.checkNotNull(deviceTypes, "'device_types' must be set");
 
             return new PushPayload(audience,
                                    Optional.fromNullable(notification),
                                    Optional.fromNullable(message),
-                                   platforms);
+                                   deviceTypes);
         }
     }
 }

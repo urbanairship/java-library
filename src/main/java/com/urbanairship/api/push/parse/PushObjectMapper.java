@@ -5,14 +5,14 @@
 package com.urbanairship.api.push.parse;
 
 import com.urbanairship.api.common.parse.CommonObjectMapper;
+import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.location.LocationSelector;
 import com.urbanairship.api.push.model.audience.location.AbsoluteDateRange;
 import com.urbanairship.api.push.model.audience.location.RecentDateRange;
-import com.urbanairship.api.push.model.Platform;
+import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushPayload;
-import com.urbanairship.api.push.model.PlatformData;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 import com.urbanairship.api.push.model.notification.ios.IOSBadgeData;
 import com.urbanairship.api.push.model.notification.ios.IOSAlertData;
@@ -29,8 +29,6 @@ import com.urbanairship.api.push.model.notification.mpns.MPNSDevicePayload;
 import com.urbanairship.api.push.model.notification.mpns.MPNSPush;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
 import com.urbanairship.api.push.parse.notification.android.AndroidDevicePayloadSerializer;
-import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
-import com.urbanairship.api.push.parse.notification.adm.ADMDevicePayloadSerializer;
 import com.urbanairship.api.push.model.notification.blackberry.BlackberryDevicePayload;
 import com.urbanairship.api.push.parse.notification.blackberry.BlackberryDevicePayloadSerializer;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
@@ -58,12 +56,12 @@ public class PushObjectMapper {
         MODULE
             .addSerializer(PushPayload.class, new PushPayloadSerializer())
             .addSerializer(Notification.class, new NotificationSerializer())
-            .addSerializer(Platform.class, new PlatformSerializer())
+            .addSerializer(DeviceType.class, new DeviceTypeSerializer())
             .addSerializer(Selector.class, new SelectorSerializer())
             .addSerializer(LocationSelector.class, new LocationSelectorSerializer())
             .addSerializer(AbsoluteDateRange.class, new AbsoluteDateRangeSerializer())
             .addSerializer(RecentDateRange.class, new RecentDateRangeSerializer())
-            .addSerializer(PlatformData.class, new PlatformDataSerializer())
+            .addSerializer(DeviceTypeData.class, new DeviceTypeDataSerializer())
 
             /* IOS */
             .addSerializer(IOSDevicePayload.class, new IOSDevicePayloadSerializer())
@@ -97,9 +95,6 @@ public class PushObjectMapper {
 
             /* Blackberry */
             .addSerializer(BlackberryDevicePayload.class, new BlackberryDevicePayloadSerializer())
-
-            /* ADM */
-            .addSerializer(ADMDevicePayload.class, new ADMDevicePayloadSerializer())
 
             /* Rich Push */
             .addSerializer(RichPushMessage.class, new RichPushMessageSerializer())

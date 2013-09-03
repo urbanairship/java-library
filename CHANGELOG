@@ -1,0 +1,10 @@
+-------------------------
+0.2 30AUG13
+-------------------------
+
+- Breaking Change -
+- Platforms had been changed to device types in the API interface to
+  other libraries
+
+- Updates -
+- example code logging fix

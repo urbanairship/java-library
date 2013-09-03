@@ -42,7 +42,7 @@ APIErrorDetails
 The APIErrorDetails object contains information on errors for requests
 that are syntactically valid but are otherwise malformed. For example,
 setting the platform value for a PushPayload to include both
-Platform.IOS and Platform.ANDROID but only providing a single
+DeviceType.IOS and DeviceType.ANDROID but only providing a single
 IOSDevicePayloadf for the notification would be an error.
 
 
@@ -98,10 +98,10 @@ will produce
  Details:
  APIErrorDetails:
  Path:Optional.absent()
- Error:Platform 'android' was referenced by 'device_types', but no payload was provided.
+ Error:DeviceType 'android' was referenced by 'device_types', but no payload was provided.
  Optional Location:Optional.absent()
  1722 [main] ERROR com.urbanairship.api  - Error Could not parse request body.
- 1722 [main] ERROR com.urbanairship.api  - Error details Platform
+ 1722 [main] ERROR com.urbanairship.api  - Error details DeviceType
  'android' was referenced by 'device_types', but no payload was
  provided.
 

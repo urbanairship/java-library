@@ -16,8 +16,8 @@ audience for an application.
 
     // Import some things
     import com.urbanairship.api.client.*;
-    import com.urbanairship.api.push.model.Platform;
-    import com.urbanairship.api.push.model.PlatformData;
+    import com.urbanairship.api.push.model.DeviceType;
+    import com.urbanairship.api.push.model.DeviceTypeData;
     import com.urbanairship.api.push.model.PushPayload;
     import com.urbanairship.api.push.model.audience.Selectors;
     import com.urbanairship.api.push.model.notification.Notifications;
@@ -37,7 +37,7 @@ audience for an application.
         PushPayload payload = PushPayload.newBuilder()
                                          .setAudience(Selectors.all())
                                          .setNotification(Notifications.alert("API v3"))
-                                         .setPlatforms(PlatformData.of(Platform.IOS))
+                                         .setDeviceType(DeviceTypeData.of(DeviceType.IOS))
                                          .build();
         // Try/Catch for any issues, any non 200 response, or non library
         // related exceptions
@@ -77,7 +77,7 @@ The PushPayload is comprised of three pieces:
 
   - Audience and Selectors
   - Notifications
-  - Platforms
+  - DeviceTypes
 
 The first is the Audience. The audience
 is composed of Selectors, which can be compound or atomic (not compound). Selectors
@@ -86,7 +86,7 @@ provide logicial combinations of AND, OR, and NOT.
 Audience and Selectors
 ----------------------
 
-The Selectors and Platforms classes provide factory methods that can be used together
+The Selectors and DeviceType classes provide factory methods that can be used together
 to create an Audience Selector. To send to all users with the tag
 "kittens".
 
@@ -174,7 +174,7 @@ value pairs.
     PushPayload payload = PushPayload.newBuilder()
                                      .setAudience(Selectors.deviceToken(deviceToken))
                                      .setNotification(notification)      
-                                     .setPlatforms(PlatformData.of(Platform.IOS))
+                                     .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
                                      .build();
 
 This will generate and send a payload similar to the following
@@ -197,20 +197,20 @@ This will generate and send a payload similar to the following
       }
   }
 
-Platforms
----------
+DeviceTypes
+-----------
 
-The final part of the PushPayload is the Platfrom. 
-Messages can be segregated by platform. You can set the platforms you
-want to send to using a PlatformData object. Here's an example of
+The final part of the PushPayload is the DeviceTypes. 
+Messages can be segregated by device types. You can set the device types you
+want to send to using a DeviceTypeData object. Here's an example of
 sending a message to iOS and Android.
 
 .. code-block:: java
 
-   PlatformData platformData = PlatformData.of(Platform.IOS, Platform.ANDROID);
+   DeviceTypeData deviceTypeData  = DeviceTypeData.of(DeviceType.IOS, DeviceType.ANDROID);
    
-The PlatformData class has several convenience methods for working with
-platforms. 
+The DeviceTypeData class has several convenience methods for working with
+DeviceTypes. 
 
 SchedulePayload
 ===============

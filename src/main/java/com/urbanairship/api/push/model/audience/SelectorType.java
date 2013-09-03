@@ -15,7 +15,6 @@ public enum SelectorType {
     APID("apid", SelectorCategory.VALUE, true),
     WNS("wns", SelectorCategory.VALUE, true),
     MPNS("mpns", SelectorCategory.VALUE, true),
-    ADM("adm", SelectorCategory.VALUE, true),
 
     AND("and", SelectorCategory.COMPOUND),
     OR("or", SelectorCategory.COMPOUND),
