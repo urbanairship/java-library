@@ -3,7 +3,6 @@ Urban Airship Java Client Library
 
 This is the official supported Java library for the Urban Airship API.
 
-Modified to correct the validate API path.
 
 Using the library is straightforward. Create a client, setup a request payload,
 handle the results.

@@ -32,11 +32,11 @@ public class APIPushResponseTest {
         try {
             APIPushResponse response = mapper.readValue(pushJSON, APIPushResponse.class);
             assertTrue("Error in response operationId",
-                       response.getOperationId().equals("df6a6b50"));
+                       response.getOperationId().get().equals("df6a6b50"));
             assertTrue("Error in response pushIds",
-                       response.getPushIds().get(0).equals("id1"));
+                       response.getPushIds().get().get(0).equals("id1"));
             assertTrue("Error in response pushIds",
-                       response.getPushIds().get(1).equals("id2"));
+                       response.getPushIds().get().get(1).equals("id2"));
         }
         catch (IOException ex){
             fail("Exception in APIPushResponseTest Message: " + ex.getMessage());
