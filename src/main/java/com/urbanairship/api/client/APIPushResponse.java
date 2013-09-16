@@ -5,6 +5,7 @@
 package com.urbanairship.api.client;
 
 
+import com.google.common.base.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,12 +16,12 @@ import java.util.List;
  */
 public class APIPushResponse {
 
-    private final String operationId;
-    private final List<String> pushIds;
+    private final Optional<String> operationId;
+    private final Optional<List<String>> pushIds;
 
     public APIPushResponse (String operationId, List<String> pushIds) {
-        this.operationId = operationId;
-        this.pushIds = pushIds;
+        this.operationId = Optional.fromNullable(operationId);
+        this.pushIds = Optional.fromNullable(pushIds);
     }
 
     /**
@@ -29,7 +30,7 @@ public class APIPushResponse {
      * is needed.
      * @return Operation id for this API request
      */
-    public String getOperationId() {
+    public Optional<String> getOperationId() {
         return operationId;
     }
 
@@ -39,7 +40,7 @@ public class APIPushResponse {
      * an operation, and can be used when support is needed.
      * @return List of push ids.
      */
-    public List<String> getPushIds() {
+    public Optional<List<String>> getPushIds() {
         return pushIds;
     }
 
@@ -47,10 +48,14 @@ public class APIPushResponse {
     public String toString(){
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("\nAPIPushResponse\n");
-        stringBuilder.append("OperationId:");
-        stringBuilder.append(operationId);
-        stringBuilder.append("\nPushIds:");
-        stringBuilder.append(pushIds.toString());
+        if (operationId.isPresent()){
+            stringBuilder.append("OperationId:");
+            stringBuilder.append(operationId);
+        }
+        if (getPushIds().isPresent()){
+            stringBuilder.append("\nPushIds:");
+            stringBuilder.append(pushIds.toString());
+        }
         return stringBuilder.toString();
     }
 

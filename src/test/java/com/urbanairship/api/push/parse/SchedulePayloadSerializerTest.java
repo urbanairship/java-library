@@ -1,11 +1,10 @@
-package com.urbanairship.api.schedule.parse;
+package com.urbanairship.api.push.parse;
 
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
-import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import org.apache.commons.lang.RandomStringUtils;

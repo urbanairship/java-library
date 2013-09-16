@@ -1,8 +1,8 @@
-
 Urban Airship Java Client Library
 =================================
 
 This is the official supported Java library for the Urban Airship API.
+
 
 Using the library is straightforward. Create a client, setup a request payload,
 handle the results.
