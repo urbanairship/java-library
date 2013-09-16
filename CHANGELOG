@@ -1,3 +1,12 @@
+
+-------------------------
+0.2.1 16SEP13
+-------------------------
+- fixed issue with validate URL
+- update APIResponse to handle validate responses as well as
+  push responses. This will require changes only if the APIResponse
+  object is being used outside of the UA code
+
 -------------------------
 0.2 30AUG13
 -------------------------
