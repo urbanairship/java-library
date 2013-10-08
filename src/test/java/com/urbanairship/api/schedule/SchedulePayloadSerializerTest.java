@@ -10,9 +10,9 @@ import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class SchedulePayloadSerializerTest {
@@ -28,14 +28,15 @@ public class SchedulePayloadSerializerTest {
                 .setNotification(Notification.newBuilder().setAlert("alert").build())
                 .build();
         SchedulePayload schedulePayload = SchedulePayload.newBuilder()
-                .setSchedule(Schedule.newBuilder().setScheduledTimestamp(
-                        new DateTime("2013-05-05T00:00:01")).build())
+                .setSchedule(Schedule.newBuilder()
+                                     .setScheduledTimestamp(new DateTime("2013-05-05T00:00:01", DateTimeZone.UTC))
+                                     .build())
                 .setPushPayload(pushPayload)
                 .build();
 
         String json = MAPPER.writeValueAsString(schedulePayload);
 
-        String properJson = "{\"schedule\":{\"scheduled_time\":\"2013-05-05T07:00:01\"},\"push\":{\"audience\":{\"tag\":\"tag\"},\"device_types\":[\"ios\"],\"notification\":{\"alert\":\"alert\"}}}";
+        String properJson = "{\"schedule\":{\"scheduled_time\":\"2013-05-05T00:00:01\"},\"push\":{\"audience\":{\"tag\":\"tag\"},\"device_types\":[\"ios\"],\"notification\":{\"alert\":\"alert\"}}}";
 
         assertTrue(json.equals(properJson));
     }
