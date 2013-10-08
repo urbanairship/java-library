@@ -10,6 +10,7 @@ import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -27,8 +28,9 @@ public class SchedulePayloadSerializerTest {
                 .setNotification(Notification.newBuilder().setAlert("alert").build())
                 .build();
         SchedulePayload schedulePayload = SchedulePayload.newBuilder()
-                .setSchedule(Schedule.newBuilder().setScheduledTimestamp(
-                        new DateTime("2013-05-05T00:00:01Z")).build())
+                .setSchedule(Schedule.newBuilder()
+                                     .setScheduledTimestamp(new DateTime("2013-05-05T00:00:01", DateTimeZone.UTC))
+                                     .build())
                 .setPushPayload(pushPayload)
                 .build();
 
