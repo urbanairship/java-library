@@ -10,11 +10,11 @@
 
     <groupId>com.urbanairship</groupId>
     <artifactId>java-client</artifactId>
-    <version>0.2.3-XOOM-SNAPSHOT</version>
+    <version>0.2.3.XOOM</version>
     <packaging>jar</packaging>
 
     <name>UrbanAirship Java Client (modified by Xoom)</name>
-    <description>The Urban Airship Java client library, as modified by Xoom</description>
+    <description>The Urban Airship Java client library, as modified by Xoom off of 0.2.3-SNAPSHOT on Oct 9, 2013</description>
     <url>https://github.com/xoom/java-library</url>
     <licenses>
         <license>
