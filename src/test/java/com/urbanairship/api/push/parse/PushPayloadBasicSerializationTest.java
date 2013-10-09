@@ -2,11 +2,14 @@ package com.urbanairship.api.push.parse;
 
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
+import com.urbanairship.api.push.model.Options;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -64,15 +67,30 @@ public class PushPayloadBasicSerializationTest {
 
     @Test
     public void testOptions() throws Exception {
+        // TODO: Fix documentation. As of Oct 9, 2013 the documentation for expiry at http://docs.urbanairship.com/reference/api/v3/push.html#expiry is incorrect. The options in the documentation are within the notification, which does not work. The options should be at the same level as notification, audience, device_types, etc.
         String json
             = "{"
             + "  \"audience\" : \"all\","
             + "  \"device_types\" : [ \"ios\" ],"
             + "  \"notification\" : { \"alert\" : \"wat\" },"
-            + "  \"options\" : {"
-            + "  }"
+            + "  \"options\" : { \"expiry\" : \"2015-04-01T12:00:00\" }"
             + "}";
 
+        // TODO: what is the test supposed to be?
+    }
+
+    @Test
+    public void testOptionsExpiryInSeconds() throws Exception {
+        // TODO: Fix documentation. As of Oct 9, 2013 the documentation for expiry at http://docs.urbanairship.com/reference/api/v3/push.html#expiry is incorrect. The options in the documentation are within the notification, which does not work. The options should be at the same level as notification, audience, device_types, etc.
+        String json
+            = "{"
+            + "  \"audience\" : \"all\","
+            + "  \"device_types\" : [ \"ios\" ],"
+            + "  \"notification\" : { \"alert\" : \"wat\" },"
+            + "  \"options\" : { \"expiry\" : 3600 }"
+            + "}";
+
+        // TODO: what is the test supposed to be?
     }
 
     @Test
@@ -182,6 +200,54 @@ public class PushPayloadBasicSerializationTest {
                           .addDeviceType(DeviceType.WNS)
                           .build())
             .build();
+    }
+
+    @Test
+    public void testSerialization() throws Exception {
+
+        PushPayload pushPayload = PushPayload.newBuilder()
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.newBuilder().addDeviceType(DeviceType.IOS).build())
+                .setNotification(Notification.newBuilder().setAlert("alert").build())
+                .setOptions(Options.newBuilder().setExpiry(new DateTime("2015-04-01T12:00:00", DateTimeZone.UTC)).build())
+                .build();
+
+        String json = mapper.writeValueAsString(pushPayload);
+
+        // TODO: Fix documentation. As of Oct 9, 2013 the documentation for expiry at http://docs.urbanairship.com/reference/api/v3/push.html#expiry is incorrect. The options in the documentation are within the notification, which does not work. The options should be at the same level as notification, audience, device_types, etc.
+        String properJson
+                = "{"
+                + "\"audience\":\"ALL\","
+                + "\"device_types\":[\"ios\"],"
+                + "\"notification\":{\"alert\":\"alert\"},"
+                + "\"options\":{\"expiry\":\"2015-04-01T12:00:00\"}"
+                + "}";
+
+        assertEquals(properJson, json);
+    }
+
+    @Test
+    public void testSerializationExpirySeconds() throws Exception {
+
+        PushPayload pushPayload = PushPayload.newBuilder()
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.newBuilder().addDeviceType(DeviceType.IOS).build())
+                .setNotification(Notification.newBuilder().setAlert("alert").build())
+                .setOptions(Options.newBuilder().setExpirySeconds(3600).build())
+                .build();
+
+        String json = mapper.writeValueAsString(pushPayload);
+
+        // TODO: Fix documentation. As of Oct 9, 2013 the documentation for expiry at http://docs.urbanairship.com/reference/api/v3/push.html#expiry is incorrect. The options in the documentation are within the notification, which does not work. The options should be at the same level as notification, audience, device_types, etc.
+        String properJson
+                = "{"
+                + "\"audience\":\"ALL\","
+                + "\"device_types\":[\"ios\"],"
+                + "\"notification\":{\"alert\":\"alert\"},"
+                + "\"options\":{\"expiry\":3600}"
+                + "}";
+
+        assertEquals(properJson, json);
     }
 
 }

@@ -21,6 +21,7 @@ public final class PushPayload extends PushModelObject {
     private final Optional<Notification> notification;
     private final Optional<RichPushMessage> message;
     private final DeviceTypeData deviceTypes;
+    private final Optional<Options> options;
 
     /**
      * PushPayload builder
@@ -33,11 +34,13 @@ public final class PushPayload extends PushModelObject {
     private PushPayload(Selector audience,
                         Optional<Notification> notification,
                         Optional<RichPushMessage> message,
-                        DeviceTypeData deviceTypes) {
+                        DeviceTypeData deviceTypes,
+                        Optional<Options> options) {
         this.audience = audience;
         this.notification = notification;
         this.message = message;
         this.deviceTypes = deviceTypes;
+        this.options = options;
     }
 
     /**
@@ -73,6 +76,14 @@ public final class PushPayload extends PushModelObject {
     }
 
     /**
+     * Get the Options. This is optional.
+     * @return Optional<<T>Options</T>>
+     */
+    public Optional<Options> getOptions() {
+        return options;
+    }
+
+    /**
      * Boolean indicating whether audience is SelectorType.ALL
      * @return audience is all
      */
@@ -103,6 +114,9 @@ public final class PushPayload extends PushModelObject {
         if (deviceTypes != null ? !deviceTypes.equals(that.deviceTypes) : that.deviceTypes != null) {
             return false;
         }
+        if (options != null ? !options.equals(that.options) : that.options != null) {
+            return false;
+        }
 
         return true;
     }
@@ -113,6 +127,7 @@ public final class PushPayload extends PushModelObject {
         result = 31 * result + (notification != null ? notification.hashCode() : 0);
         result = 31 * result + (message != null ? message.hashCode() : 0);
         result = 31 * result + (deviceTypes != null ? deviceTypes.hashCode() : 0);
+        result = 31 * result + (options != null ? options.hashCode() : 0);
         return result;
     }
 
@@ -123,6 +138,7 @@ public final class PushPayload extends PushModelObject {
             ", notification=" + notification +
             ", message=" + message +
             ", deviceTypes=" + deviceTypes +
+            ", options=" + options +
             '}';
     }
 
@@ -131,6 +147,7 @@ public final class PushPayload extends PushModelObject {
         private Selector audience = null;
         private Notification notification = null;
         private RichPushMessage message = null;
+        private Options options = null;
 
         private Builder() { }
 
@@ -175,6 +192,16 @@ public final class PushPayload extends PushModelObject {
         }
 
         /**
+         * Set the Options
+         * @param options Options
+         * @return Builder
+         */
+        public Builder setOptions(Options options) {
+            this.options = options;
+            return this;
+        }
+
+        /**
          * Build a PushPayload object. Will fail if any of the following
          * preconditions are not met.
          * <pre>
@@ -196,7 +223,8 @@ public final class PushPayload extends PushModelObject {
             return new PushPayload(audience,
                                    Optional.fromNullable(notification),
                                    Optional.fromNullable(message),
-                                   deviceTypes);
+                                   deviceTypes,
+                                   Optional.fromNullable(options));
         }
     }
 }
