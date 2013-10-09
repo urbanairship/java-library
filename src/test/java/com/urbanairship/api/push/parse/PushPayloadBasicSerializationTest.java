@@ -233,7 +233,7 @@ public class PushPayloadBasicSerializationTest {
                 .setAudience(Selectors.all())
                 .setDeviceTypes(DeviceTypeData.newBuilder().addDeviceType(DeviceType.IOS).build())
                 .setNotification(Notification.newBuilder().setAlert("alert").build())
-                .setOptions(Options.newBuilder().setExpirySeconds(3600).build())
+                .setOptions(Options.newBuilder().setExpirySeconds(3600L).build())
                 .build();
 
         String json = mapper.writeValueAsString(pushPayload);

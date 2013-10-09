@@ -21,9 +21,9 @@ public class OptionsReader implements JsonObjectReader<Options> {
     }
 
     public void readExpiry(JsonParser jsonParser) throws IOException {
-        // TODO: not sure this is the best way to read expiry, but expiry can be specified as seconds (integer) or a datetime
+        // TODO: not sure this is the best way to read expiry, but expiry can be specified as seconds (long) or a datetime
         try {
-            builder.setExpirySeconds(jsonParser.readValueAs(Integer.class));
+            builder.setExpirySeconds(jsonParser.readValueAs(Long.class));
         } catch (IOException e) {
             builder.setExpiry(jsonParser.readValueAs(DateTime.class));
         }

@@ -10,7 +10,7 @@ import org.joda.time.DateTime;
 public class Options extends PushModelObject {
 
     private final DateTime expiry;
-    private final Integer expirySeconds;
+    private final Long expirySeconds;
 
     // TODO local, global, etc
 
@@ -19,7 +19,7 @@ public class Options extends PushModelObject {
         this.expirySeconds = null;
     }
 
-    private Options(Integer expirySeconds) {
+    private Options(Long expirySeconds) {
         this.expiry = null;
         this.expirySeconds = expirySeconds;
     }
@@ -34,9 +34,9 @@ public class Options extends PushModelObject {
 
     /**
      * Get the expiry seconds.
-     * @return Integer
+     * @return Long
      */
-    public Integer getExpirySeconds() {
+    public Long getExpirySeconds() {
         return expirySeconds;
     }
 
@@ -100,7 +100,7 @@ public class Options extends PushModelObject {
      */
     public static class Builder {
         private DateTime expiry = null;
-        private Integer expirySeconds = null;
+        private Long expirySeconds = null;
 
         private Builder() { }
 
@@ -119,7 +119,7 @@ public class Options extends PushModelObject {
          * @param expirySeconds Delivery expiration in seconds from now. Must be zero or more.
          * @return Builder
          */
-        public Builder setExpirySeconds(int expirySeconds) {
+        public Builder setExpirySeconds(Long expirySeconds) {
             this.expirySeconds = expirySeconds;
             return this;
         }
