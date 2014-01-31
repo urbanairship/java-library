@@ -18,8 +18,6 @@ public class IOSDevicePayloadSerializer extends JsonSerializer<IOSDevicePayload>
 
         if (payload.getAlertData().isPresent()) {
             jgen.writeObjectField("alert", payload.getAlertData().get());
-        } else if (payload.getAlert().isPresent()) {
-            jgen.writeStringField("alert", payload.getAlert().get());
         }
 
         if (payload.getSound().isPresent()) {
