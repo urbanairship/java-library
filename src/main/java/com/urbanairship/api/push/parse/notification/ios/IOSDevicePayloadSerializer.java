@@ -8,7 +8,7 @@ import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
-import java.util.Map;
+
 import java.io.IOException;
 
 public class IOSDevicePayloadSerializer extends JsonSerializer<IOSDevicePayload> {
@@ -16,7 +16,9 @@ public class IOSDevicePayloadSerializer extends JsonSerializer<IOSDevicePayload>
     public void serialize(IOSDevicePayload payload, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         jgen.writeStartObject();
 
-        if (payload.getAlert().isPresent()) {
+        if (payload.getAlertData().isPresent()) {
+            jgen.writeObjectField("alert", payload.getAlertData().get());
+        } else if (payload.getAlert().isPresent()) {
             jgen.writeStringField("alert", payload.getAlert().get());
         }
 
