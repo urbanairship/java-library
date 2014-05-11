@@ -6,6 +6,7 @@ package com.urbanairship.api.push.parse;
 
 import com.urbanairship.api.common.parse.CommonObjectMapper;
 import com.urbanairship.api.push.model.DeviceTypeData;
+import com.urbanairship.api.push.model.Options;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.location.LocationSelector;
@@ -62,6 +63,7 @@ public class PushObjectMapper {
             .addSerializer(AbsoluteDateRange.class, new AbsoluteDateRangeSerializer())
             .addSerializer(RecentDateRange.class, new RecentDateRangeSerializer())
             .addSerializer(DeviceTypeData.class, new DeviceTypeDataSerializer())
+            .addSerializer(Options.class, OptionsSerializer.INSTANCE)
 
             /* IOS */
             .addSerializer(IOSDevicePayload.class, new IOSDevicePayloadSerializer())

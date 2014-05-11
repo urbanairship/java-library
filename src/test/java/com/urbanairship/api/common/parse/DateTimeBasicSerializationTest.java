@@ -1,6 +1,5 @@
 package com.urbanairship.api.common.parse;
 
-import com.urbanairship.api.common.parse.*;
 import com.google.common.collect.Sets;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
