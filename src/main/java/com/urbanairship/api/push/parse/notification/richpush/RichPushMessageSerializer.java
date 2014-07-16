@@ -19,7 +19,9 @@ public class RichPushMessageSerializer extends JsonSerializer<RichPushMessage> {
         jgen.writeStringField("body", message.getBody());
         jgen.writeStringField("content_type", message.getContentType());
         jgen.writeStringField("content_encoding", message.getContentEncoding());
+        if (message.getExpiry().isPresent()) {
         jgen.writeObjectField("expiry", message.getExpiry().get());
+        }
         if (message.getExtra().isPresent()) {
             jgen.writeObjectField("extra", message.getExtra().get());
         }
