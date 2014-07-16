@@ -6,6 +6,7 @@ package com.urbanairship.api.push.model.notification.android;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
+import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
@@ -16,13 +17,13 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
 
     private final Optional<String> alert;
     private final Optional<String> collapseKey;
-    private final Optional<Integer> timeToLive;
+    private final Optional<PushExpiry> timeToLive;
     private final Optional<Boolean> delayWhileIdle;
     private final Optional<ImmutableMap<String, String>> extra;
 
     private AndroidDevicePayload(Optional<String> alert,
                                  Optional<String> collapseKey,
-                                 Optional<Integer> timeToLive,
+                                 Optional<PushExpiry> timeToLive,
                                  Optional<Boolean> delayWhileIdle,
                                  Optional<ImmutableMap<String, String>> extra) {
         this.alert = alert;
@@ -51,7 +52,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         return collapseKey;
     }
 
-    public Optional<Integer> getTimeToLive() {
+    public Optional<PushExpiry> getTimeToLive() {
         return timeToLive;
     }
 
@@ -104,7 +105,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
     public static class Builder {
         private String alert = null;
         private String collapseKey = null;
-        private Integer timeToLive = null;
+        private PushExpiry timeToLive = null;
         private Boolean delayWhileIdle = null;
         private ImmutableMap.Builder<String, String> extra = null;
 
@@ -120,7 +121,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
             return this;
         }
 
-        public Builder setTimeToLive(int value) {
+        public Builder setTimeToLive(PushExpiry value) {
             this.timeToLive = value;
             return this;
         }

@@ -25,7 +25,7 @@ public class AndroidDevicePayloadSerializer extends JsonSerializer<AndroidDevice
         }
 
         if (payload.getTimeToLive().isPresent()) {
-            jgen.writeNumberField("time_to_live", payload.getTimeToLive().get());
+            jgen.writeObjectField("time_to_live", payload.getTimeToLive().get());
         }
 
         if (payload.getDelayWhileIdle().isPresent()) {

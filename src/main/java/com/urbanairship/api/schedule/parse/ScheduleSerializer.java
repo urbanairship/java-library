@@ -9,6 +9,7 @@ import com.urbanairship.api.schedule.model.Schedule;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
+import org.joda.time.DateTime;
 
 import java.io.IOException;
 
@@ -22,7 +23,12 @@ public class ScheduleSerializer extends JsonSerializer<Schedule> {
     public void serialize(Schedule value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         jgen.writeStartObject();
 
-        jgen.writeStringField("scheduled_time", DateFormats.DATE_FORMATTER.print(value.getScheduledTimestamp()));
+        if (value.getScheduledTimestamp().isPresent()) {
+            jgen.writeStringField("scheduled_time", DateFormats.DATE_FORMATTER.print(value.getScheduledTimestamp().get()));
+        }
+        if (value.getLocalScheduledTimestamp().isPresent()) {
+            jgen.writeStringField("local_scheduled_time", DateFormats.DATE_FORMATTER.print(value.getLocalScheduledTimestamp().get()));
+        }
 
         jgen.writeEndObject();
     }

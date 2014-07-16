@@ -4,26 +4,40 @@
 
 package com.urbanairship.api.schedule.model;
 
+import com.google.common.base.Optional;
 import com.urbanairship.api.push.model.PushModelObject;
 import com.google.common.base.Preconditions;
 import org.joda.time.DateTime;
 
+import javax.swing.text.html.Option;
+
 public class Schedule extends PushModelObject {
 
-    private final DateTime scheduledTimestamp;
+    private final Optional<DateTime> scheduledTimestamp;
+    private final Optional<DateTime> localScheduledTimestamp;
 
     // TODO local, global, etc
 
-    private Schedule(DateTime scheduledTimestamp) {
+    private Schedule(Optional<DateTime> scheduledTimestamp,
+                     Optional<DateTime> localScheduledTimestamp) {
         this.scheduledTimestamp = scheduledTimestamp;
+        this.localScheduledTimestamp = localScheduledTimestamp;
     }
 
     /**
      * Get the DateTime for this schedule
      * @return DateTime
      */
-    public DateTime getScheduledTimestamp () {
+    public Optional<DateTime> getScheduledTimestamp () {
         return scheduledTimestamp;
+    }
+
+    /**
+     * Get the DateTime for the local schedule
+     * @return DateTime
+     */
+    public Optional<DateTime> getLocalScheduledTimestamp () {
+        return localScheduledTimestamp;
     }
 
     @Override
@@ -37,16 +51,19 @@ public class Schedule extends PushModelObject {
 
         Schedule that = (Schedule) o;
 
-        return (scheduledTimestamp != null ?
-                !scheduledTimestamp.isEqual(that.scheduledTimestamp) :
-                that.scheduledTimestamp != null);
-
+        if (scheduledTimestamp != null ? !scheduledTimestamp.equals(that.scheduledTimestamp) :that.scheduledTimestamp != null) {
+            return false;
+        }
+        if (localScheduledTimestamp != null ? ! localScheduledTimestamp.equals(that.localScheduledTimestamp) :that.localScheduledTimestamp != null) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public int hashCode() {
         int result = scheduledTimestamp != null ? scheduledTimestamp.hashCode() : 0;
-        result = 31 * result + (scheduledTimestamp != null ? scheduledTimestamp.hashCode() : 0);
+        result = 31 * result + (localScheduledTimestamp != null ? localScheduledTimestamp.hashCode() : 0);
         return result;
     }
 
@@ -54,6 +71,7 @@ public class Schedule extends PushModelObject {
     public String toString() {
         return "Schedule{" +
                 "scheduledTimestamp=" + scheduledTimestamp +
+                "localScheduledTimestamp=" + localScheduledTimestamp +
                 '}';
     }
 
@@ -71,6 +89,7 @@ public class Schedule extends PushModelObject {
      */
     public static class Builder {
         private DateTime scheduledTimestamp = null;
+        private DateTime localScheduledTimestamp = null;
 
         private Builder() { }
 
@@ -86,13 +105,25 @@ public class Schedule extends PushModelObject {
         }
 
         /**
+         * Set the DateTime for local scheduled delivery. This will be converted to
+         * UTC by the server.
+         * @param localScheduledTimestamp Delivery time.
+         * @return Builder
+         */
+        public Builder setLocalScheduledTimestamp(DateTime localScheduledTimestamp) {
+            this.localScheduledTimestamp = localScheduledTimestamp;
+            return this;
+        }
+
+        /**
          * Build the Schedule object.
          * @return Schedule
          */
         public Schedule build() {
-            Preconditions.checkNotNull(scheduledTimestamp, "'schedule_time' must be set");
-
-            return new Schedule(scheduledTimestamp);
+            Preconditions.checkArgument(scheduledTimestamp == null ^ localScheduledTimestamp == null,"" +
+                    "Either scheduled_time or local_scheduled_time must be set.");
+            return new Schedule(Optional.fromNullable(scheduledTimestamp),
+                                Optional.fromNullable(localScheduledTimestamp));
         }
     }
 }
