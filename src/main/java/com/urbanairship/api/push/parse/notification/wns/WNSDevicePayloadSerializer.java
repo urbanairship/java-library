@@ -17,8 +17,6 @@ public class WNSDevicePayloadSerializer extends JsonSerializer<WNSDevicePayload>
     @Override
     public void serialize(WNSDevicePayload payload, JsonGenerator jgen, SerializerProvider provider) throws IOException {
 
-        // WNSPush body = payload.getBody().get();
-
 
         jgen.writeStartObject();
 
