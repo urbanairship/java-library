@@ -9,12 +9,11 @@ import com.urbanairship.api.push.model.PushModelObject;
 import com.google.common.base.Preconditions;
 import org.joda.time.DateTime;
 
-import javax.swing.text.html.Option;
-
 public class Schedule extends PushModelObject {
 
     private final Optional<DateTime> scheduledTimestamp;
     private final Optional<DateTime> localScheduledTimestamp;
+    private final boolean localTimePresent;
 
     // TODO local, global, etc
 
@@ -22,6 +21,7 @@ public class Schedule extends PushModelObject {
                      Optional<DateTime> localScheduledTimestamp) {
         this.scheduledTimestamp = scheduledTimestamp;
         this.localScheduledTimestamp = localScheduledTimestamp;
+        localTimePresent = localScheduledTimestamp.isPresent() ? true : false;
     }
 
     /**
@@ -38,6 +38,14 @@ public class Schedule extends PushModelObject {
      */
     public Optional<DateTime> getLocalScheduledTimestamp () {
         return localScheduledTimestamp;
+    }
+
+    /**
+     * Get the boolean indicating if the scheduled time is local
+     * @return boolean
+     */
+    public boolean getLocalTimePresent() {
+        return localTimePresent;
     }
 
     @Override
@@ -120,8 +128,12 @@ public class Schedule extends PushModelObject {
          * @return Schedule
          */
         public Schedule build() {
-            Preconditions.checkArgument(scheduledTimestamp == null ^ localScheduledTimestamp == null,"" +
-                    "Either scheduled_time or local_scheduled_time must be set.");
+           Preconditions.checkArgument((scheduledTimestamp == null || localScheduledTimestamp == null) && scheduledTimestamp != localScheduledTimestamp,"" +
+                "Either scheduled_time or local_scheduled_time must be set.");
+
+// Preconditions.checkArgument(scheduledTimestamp == null ^ localScheduledTimestamp == null,"" +
+          //  "Either scheduled_time or local_scheduled_time must be set.");
+
             return new Schedule(Optional.fromNullable(scheduledTimestamp),
                                 Optional.fromNullable(localScheduledTimestamp));
         }

@@ -23,13 +23,11 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Ignore;
 import org.junit.Test;
-import sun.jvm.hotspot.utilities.Assert;
 
 import java.util.List;
 
 import static org.junit.Assert.*;
 
-//@Ignore("Ignore until refactored")
 public class PushPayloadBasicSerializationTest {
 
     private static final ObjectMapper mapper = PushObjectMapper.getInstance();
@@ -88,11 +86,11 @@ public class PushPayloadBasicSerializationTest {
     public void testOptions() throws Exception {
         String json
             = "{"
-            + "  \"audience\" : \"all\","
-            + "  \"device_types\" : [ \"ios\" ],"
-            + "  \"notification\" : { \"alert\" : \"wat\" },"
-            + "  \"options\" : {"
-            + "  }"
+            + "\"audience\":\"ALL\","
+            + "\"device_types\":[\"ios\"],"
+            + "\"notification\":{\"alert\":\"wat\"},"
+            + "\"options\":{"
+            + "\"present\":true}"
             + "}";
 
         PushPayload push = PushPayload.newBuilder()
@@ -103,6 +101,8 @@ public class PushPayloadBasicSerializationTest {
                 .build();
 
         assertTrue(push.getPushOptions().isPresent());
+        String pushJson = mapper.writeValueAsString(push);
+        assertEquals(pushJson, json);
 
     }
 
@@ -157,16 +157,16 @@ public class PushPayloadBasicSerializationTest {
 //            + "  \"notification\" : { \"alert\" : \"wat\" }"
 //            + "}";
 //    }
-
-    @Test
-    public void testRichPush1() throws Exception {
-        String json
-            = "{"
-            + "  \"audience\" : \"all\","
-            + "  \"device_types\" : [\"ios\"],"
-            + "  \"message\" : { \"title\" : \"T\", \"body\" : \"B\" }"
-            + "}";
-    }
+//
+//   @Test
+//    public void testRichPush1() throws Exception {
+//        String json
+//            = "{"
+//            + "  \"audience\" : \"all\","
+//            + "  \"device_types\" : [\"ios\"],"
+//            + "  \"message\" : { \"title\" : \"T\", \"body\" : \"B\" }"
+//            + "}";
+//    }
 
     @Test
     public void testDeviceTypeOverrides() throws Exception {
@@ -278,8 +278,16 @@ public class PushPayloadBasicSerializationTest {
                           .addDeviceType(DeviceType.WNS)
                           .build())
             .build();
+        String payloadJson = mapper.writeValueAsString(payload);
 
+        String json
+                = "{"
+                + "\"audience\":{\"apid\":\"6de14dab-a4e0-fe5b-06f7-f03b090e4a25\"},"
+                + "\"device_types\":[\"wns\"],"
+                + "\"notification\":{\"alert\":\"WAT\"}"
+                + "}";
 
+        assertEquals(payloadJson, json);
     }
 
 }
