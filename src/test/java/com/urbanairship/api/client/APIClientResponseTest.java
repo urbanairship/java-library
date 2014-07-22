@@ -1,5 +1,6 @@
 package com.urbanairship.api.client;
 
+import com.urbanairship.api.schedule.model.ScheduleResponseObject;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.message.BasicHttpResponse;
@@ -8,7 +9,9 @@ import org.apache.http.message.BasicStatusLine;
 import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 public class APIClientResponseTest {
@@ -32,6 +35,33 @@ public class APIClientResponseTest {
 
         assertTrue("APIResponse not set properly",
                    testResponse.getApiResponse().equals(scheduleResponse));
+    }
+
+    @Test
+    public void testAPIListScheduleResponse(){
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP",1,1), 200, "OK"));
+
+        ScheduleResponseObject sample = new ScheduleResponseObject();
+        sample.setUrl("http://sample.com/");
+        List<ScheduleResponseObject> samplelist = new ArrayList<ScheduleResponseObject>();
+        samplelist.add(sample);
+
+        APIListScheduleResponse listScheduleResponse = APIListScheduleResponse.newBuilder()
+                .setCount(5)
+                .setTotalCount(6)
+                .setSchedule(samplelist)
+                .build();
+        APIClientResponse.Builder<APIListScheduleResponse> builder =
+                APIClientResponse.newListScheduleResponseBuilder()
+                        .setApiResponse(listScheduleResponse)
+                        .setHttpResponse(httpResponse);
+        APIClientResponse<APIListScheduleResponse> testResponse = builder.build();
+        assertTrue("HTTP response not set properly",
+                testResponse.getHttpResponse().equals(httpResponse));
+
+        assertTrue("APIResponse not set properly",
+                testResponse.getApiResponse().equals(listScheduleResponse));
     }
 
     @Test

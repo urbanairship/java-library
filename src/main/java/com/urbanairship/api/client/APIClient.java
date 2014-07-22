@@ -214,6 +214,18 @@ public class APIClient {
         return executor.execute(request).handleResponse(new ScheduleAPIResponseHandler());
     }
 
+    /*
+    Execute the list schedule request and log errors.
+     */
+    private APIClientResponse<APIListScheduleResponse> executeListScheduleRequest(Request request)
+            throws IOException{
+        Executor executor = Executor.newInstance()
+                                    .auth(uaHost, appKey, appSecret)
+                                    .authPreemptive(uaHost);
+        logger.debug(String.format("Executing list schedule request %s", request));
+        return executor.execute(request).handleResponse(new ListScheduleAPIResponseHandler());
+    }
+
     /**
      * Send a scheduled push request to the Urban Airship API to be delivered
      * according to the parameters setup in the schedule payload.
@@ -226,6 +238,17 @@ public class APIClient {
             throws IOException {
         Request request = scheduleRequest(payload, API_SCHEDULE_PATH, "POST");
         return executeScheduleRequest(request);
+    }
+
+    /**
+     * Send a list schedule request to the Urban Airship API.
+     *
+     * @return APIClientResponse <<T>APIListScheduleResponse</T>>
+     * @throws IOException
+     */
+    public APIClientResponse<APIListScheduleResponse> listschedules() throws IOException {
+        Request request = scheduleRequest(null, API_SCHEDULE_PATH, "GET");
+        return executeListScheduleRequest(request);
     }
 
     /*

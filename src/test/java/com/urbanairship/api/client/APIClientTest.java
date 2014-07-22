@@ -142,6 +142,56 @@ public class APIClientTest {
     }
 
     @Test
+    public void testListSchedules() {
+        // Setup a client and a schedule payload
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        // Setup a stubbed response for the server
+        String listscheduleresponse = "{\"ok\":true,\"count\":5,\"total_count\":6,\"schedules\":" +
+                "[{\"url\":\"https://go.urbanairship.com/api/schedules/5a60e0a6-9aa7-449f-a038-6806e572baf3\",\"" +
+                "schedule\":{\"scheduled_time\":\"2015-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device" +
+                "_types\":[\"android\",\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2015!\",\"android\"" +
+                ":{},\"ios\":{}}},\"push_ids\":[\"8430f2e0-ec07-4c1e-adc4-0c7c7978e648\"]},{\"url\":\"https://go" +
+                ".urbanairship.com/api/schedules/f53aa2bd-018a-4482-8d7d-691d13407973\",\"schedule\":{\"schedule" +
+                "d_time\":\"2016-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device_types\":[\"android\"," +
+                "\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2016!\",\"android\":{},\"ios\":{}}},\"pus" +
+                "h_ids\":[\"b217a321-922f-4aee-b239-ca1b58c6b652\"]}]}";
+
+        stubFor(get(urlEqualTo("/api/schedules/"))
+                        .willReturn(aResponse()
+                                            .withHeader(CONTENT_TYPE_KEY, "application/json")
+                                            .withBody(listscheduleresponse)
+                                            .withStatus(201)));
+
+        try {
+            APIClientResponse<APIListScheduleResponse> response = client.listschedules();
+
+            // Verify components of the underlying HttpRequest
+            verify(getRequestedFor(urlEqualTo("/api/schedules/"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+            List<LoggedRequest> requests = findAll(getRequestedFor(
+                    urlEqualTo("/api/schedules/")));
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+            assertNotNull(response.getApiResponse());
+            assertNotNull(response.getHttpResponse());
+            assertNotNull(response.getApiResponse().getCount());
+            assertNotNull(response.getApiResponse().getTotal_Count());
+            assertNotNull(response.getApiResponse().getSchedules());
+        }
+        catch (Exception ex){
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
     @SuppressWarnings("unchecked")
     public void testSchedule(){
 
