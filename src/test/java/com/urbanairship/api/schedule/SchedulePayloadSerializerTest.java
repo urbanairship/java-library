@@ -42,10 +42,10 @@ public class SchedulePayloadSerializerTest {
 
         String properJson = "{\"schedule\":{\"scheduled_time\":\"2013-05-05T00:00:01\"},\"push\":{\"audience\":{\"tag\":\"tag\"},\"device_types\":[\"ios\"],\"notification\":{\"alert\":\"alert\"},\"options\":{\"present\":true}}}";
 
-        assertTrue(json.equals(properJson));
+        assertEquals(json, properJson);
     }
 
-    @Test (expected = Exception.class)
+   @Test (expected = Exception.class)
     public void testNoSchedule() throws Exception {
 
         PushPayload pushPayload = PushPayload.newBuilder()
@@ -64,24 +64,6 @@ public class SchedulePayloadSerializerTest {
 
         assertEquals(json, properJson);
 
-    }
-
-    @Test (expected = Exception.class)
-    public void testBothSchedule() throws Exception {
-
-        PushPayload pushPayload = PushPayload.newBuilder()
-                .setAudience(Selectors.tag("tag"))
-                .setDeviceTypes(DeviceTypeData.newBuilder().addDeviceType(DeviceType.IOS).build())
-                .setNotification(Notification.newBuilder().setAlert("alert").build())
-                .setPushOptions(PushOptions.newBuilder().build())
-                .build();
-        SchedulePayload schedulePayload = SchedulePayload.newBuilder()
-                .setSchedule(Schedule.newBuilder()
-                        .setScheduledTimestamp(new DateTime("2013-05-05T00:00:01", DateTimeZone.UTC))
-                        .setLocalScheduledTimestamp(new DateTime("2013-05-05T00:00:01", DateTimeZone.UTC))
-                        .build())
-                .setPushPayload(pushPayload)
-                .build();
     }
 
    @Test

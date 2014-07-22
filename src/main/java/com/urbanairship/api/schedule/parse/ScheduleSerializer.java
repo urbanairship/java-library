@@ -23,11 +23,11 @@ public class ScheduleSerializer extends JsonSerializer<Schedule> {
     public void serialize(Schedule value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         jgen.writeStartObject();
 
-        if (value.getScheduledTimestamp().isPresent()) {
-            jgen.writeStringField("scheduled_time", DateFormats.DATE_FORMATTER.print(value.getScheduledTimestamp().get()));
+        if (!value.getLocalTimePresent()) {
+            jgen.writeStringField("scheduled_time", DateFormats.DATE_FORMATTER.print(value.getScheduledTimestamp()));
         }
-        if (value.getLocalScheduledTimestamp().isPresent()) {
-            jgen.writeStringField("local_scheduled_time", DateFormats.DATE_FORMATTER.print(value.getLocalScheduledTimestamp().get()));
+        if (value.getLocalTimePresent()) {
+            jgen.writeStringField("local_scheduled_time", DateFormats.DATE_FORMATTER.print(value.getScheduledTimestamp()));
         }
 
         jgen.writeEndObject();
