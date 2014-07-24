@@ -8,6 +8,7 @@ package com.urbanairship.api.client.parse;
 import com.urbanairship.api.client.APIError;
 import com.urbanairship.api.client.APIErrorDetails;
 import com.urbanairship.api.common.parse.JsonObjectReader;
+import com.urbanairship.api.common.parse.APIParsingException;
 import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;

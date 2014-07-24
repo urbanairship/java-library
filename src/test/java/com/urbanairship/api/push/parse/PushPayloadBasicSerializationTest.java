@@ -1,12 +1,26 @@
 package com.urbanairship.api.push.parse;
 
+import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
+import com.urbanairship.api.push.model.PushOptions;
 import com.urbanairship.api.push.model.PushPayload;
+import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.Selectors;
+import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.urbanairship.api.push.model.notification.Notification;
+import com.urbanairship.api.push.model.notification.Notifications;
+import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
+import com.urbanairship.api.push.model.notification.blackberry.BlackberryDevicePayload;
+import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
+import com.urbanairship.api.push.model.notification.mpns.MPNSDevicePayload;
+import com.urbanairship.api.push.model.notification.wns.WNSDevicePayload;
+import com.urbanairship.api.push.model.notification.wns.WNSPush;
+import com.urbanairship.api.push.model.notification.wns.WNSTileData;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -14,7 +28,6 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-@Ignore("Ignore until refactored")
 public class PushPayloadBasicSerializationTest {
 
     private static final ObjectMapper mapper = PushObjectMapper.getInstance();
@@ -59,6 +72,13 @@ public class PushPayloadBasicSerializationTest {
             + "  \"device_types\" : [ \"ios\" ],"
             + "  \"notification\" : { \"alert\" : \"wat\" }"
             + "}";
+        PushPayload push = PushPayload.newBuilder()
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.newBuilder().addDeviceType(DeviceType.IOS).build())
+                .setNotification(Notification.newBuilder().setAlert("wat").build())
+                .build();
+
+        assertFalse(push.getPushOptions().isPresent());
 
     }
 
@@ -66,12 +86,23 @@ public class PushPayloadBasicSerializationTest {
     public void testOptions() throws Exception {
         String json
             = "{"
-            + "  \"audience\" : \"all\","
-            + "  \"device_types\" : [ \"ios\" ],"
-            + "  \"notification\" : { \"alert\" : \"wat\" },"
-            + "  \"options\" : {"
-            + "  }"
+            + "\"audience\":\"ALL\","
+            + "\"device_types\":[\"ios\"],"
+            + "\"notification\":{\"alert\":\"wat\"},"
+            + "\"options\":{"
+            + "\"present\":true}"
             + "}";
+
+        PushPayload push = PushPayload.newBuilder()
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.newBuilder().addDeviceType(DeviceType.IOS).build())
+                .setNotification(Notification.newBuilder().setAlert("wat").build())
+                .setPushOptions(PushOptions.newBuilder().build())
+                .build();
+
+        assertTrue(push.getPushOptions().isPresent());
+        String pushJson = mapper.writeValueAsString(push);
+        assertEquals(pushJson, json);
 
     }
 
@@ -90,10 +121,20 @@ public class PushPayloadBasicSerializationTest {
     public void testDeviceTypesList() throws Exception {
         String json
             = "{"
-            + "  \"audience\" : \"all\","
-            + "  \"device_types\" : [\"ios\", \"android\", \"wns\", \"adm\"],"
-            + "  \"notification\" : { \"alert\" : \"wat\" }"
+            + "\"audience\":\"ALL\","
+            + "\"device_types\":[\"ios\",\"android\",\"wns\"],"
+            + "\"notification\":{\"alert\":\"wat\"}"
             + "}";
+
+        PushPayload push = PushPayload.newBuilder()
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.newBuilder().addAllDeviceTypes(ImmutableSet.of(DeviceType.IOS,
+                        DeviceType.ANDROID, DeviceType.WNS)).build())
+                .setNotification(Notification.newBuilder().setAlert("wat").build())
+                .build();
+        String pushJson = mapper.writeValueAsString(push);
+
+        assertEquals(json, pushJson);
 
     }
 
@@ -116,47 +157,102 @@ public class PushPayloadBasicSerializationTest {
 //            + "  \"notification\" : { \"alert\" : \"wat\" }"
 //            + "}";
 //    }
-
-    @Test
-    public void testRichPush1() throws Exception {
-        String json
-            = "{"
-            + "  \"audience\" : \"all\","
-            + "  \"device_types\" : [\"ios\"],"
-            + "  \"message\" : { \"title\" : \"T\", \"body\" : \"B\" }"
-            + "}";
-    }
+//
+//   @Test
+//    public void testRichPush1() throws Exception {
+//        String json
+//            = "{"
+//            + "  \"audience\" : \"all\","
+//            + "  \"device_types\" : [\"ios\"],"
+//            + "  \"message\" : { \"title\" : \"T\", \"body\" : \"B\" }"
+//            + "}";
+//    }
 
     @Test
     public void testDeviceTypeOverrides() throws Exception {
-        String json
+
+       String json
             = "{"
-            + "  \"audience\" : \"all\","
-            + "  \"device_types\" : [ \"ios\", \"wns\", \"mpns\", \"android\" ],"
-            + "  \"notification\" : { "
-            + "    \"alert\" : \"wat\","
-            + "    \"ios\" : {"
-            + "      \"alert\" : \"ios\""
-            + "    },"
-            + "    \"wns\" : {"
-            + "      \"alert\" : \"wns\""
-            + "    },"
-            + "    \"mpns\" : {"
-            + "      \"alert\" : \"mpns\""
-            + "    },"
-            + "    \"android\" : {"
-            + "      \"alert\" : \"droid\""
-            + "    },"
-            + "    \"blackberry\" : {"
-            + "      \"alert\" : \"doomed\""
-            + "    },"
-            + "    \"adm\" : {"
-            + "      \"alert\" : \"phoenix\""
-            + "    }"
-            + "  }"
+            + "\"audience\":\"ALL\","
+            + "\"device_types\":[\"ios\",\"wns\",\"mpns\",\"android\"],"
+            + "\"notification\":{"
+             + "\"alert\":\"wat\","
+            + "\"mpns\":{"
+            + "\"alert\":\"mpns\""
+            + "},"
+            + "\"blackberry\":{"
+            + "\"alert\":\"doomed\""
+            + "},"
+            + "\"android\":{"
+            + "\"alert\":\"droid\""
+            + "},"
+            + "\"wns\":{"
+            + "\"alert\":\"wns\""
+            + "},"
+            + "\"ios\":{"
+            + "\"alert\":\"ios\""
+            + "}"
+            + "}"
             + "}";
 
+
+        PushPojo push = mapper.readValue(json, PushPojo.class);
+
+
+        assertEquals(push.audience, "ALL");
+
+        assertEquals(push.device_types.size(), 4);
+        assertEquals(push.device_types.get(0), "ios");
+        assertEquals(push.device_types.get(1), "wns");
+        assertEquals(push.device_types.get(2), "mpns");
+        assertEquals(push.device_types.get(3), "android");
+
+        assertEquals(push.notification.android.alert, "droid");
+        assertEquals(push.notification.ios.alert, "ios");
+        assertEquals(push.notification.blackberry.alert, "doomed");
+        assertEquals(push.notification.wns.alert, "wns");
+        assertEquals(push.notification.mpns.alert, "mpns");
     }
+
+
+    public static class DeviceOverride {
+        public String alert;
+    }
+
+    public static class DeviceNotifications {
+        public String alert;
+        public DeviceOverride ios;
+        public DeviceOverride wns;
+        public DeviceOverride android;
+        public DeviceOverride mpns;
+        public DeviceOverride blackberry;
+    }
+
+    public static class PushPojo {
+        public String audience;
+        public List<String> device_types;
+        public DeviceNotifications notification;
+    }
+
+
+    @Test
+    public void testWNSAlert() throws Exception {
+
+        String json
+                = "{"
+                + "\"alert\":\"wns\""
+                +"}";
+
+
+        WNSDevicePayload push = WNSDevicePayload.newBuilder()
+                .setAlert("wns").build();
+
+        String pushJson = mapper.writeValueAsString(push);
+        assertEquals(json, pushJson);
+    }
+
+
+
 
 //    @Test(expected = APIParsingException.class)
 //    public void testInvalidDeviceIdentifiers() throws Exception {
@@ -182,6 +278,16 @@ public class PushPayloadBasicSerializationTest {
                           .addDeviceType(DeviceType.WNS)
                           .build())
             .build();
+        String payloadJson = mapper.writeValueAsString(payload);
+
+        String json
+                = "{"
+                + "\"audience\":{\"apid\":\"6de14dab-a4e0-fe5b-06f7-f03b090e4a25\"},"
+                + "\"device_types\":[\"wns\"],"
+                + "\"notification\":{\"alert\":\"WAT\"}"
+                + "}";
+
+        assertEquals(payloadJson, json);
     }
 
 }

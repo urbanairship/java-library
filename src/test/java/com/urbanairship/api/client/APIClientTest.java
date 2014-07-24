@@ -3,9 +3,7 @@ package com.urbanairship.api.client;
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
 import com.urbanairship.api.common.parse.DateFormats;
-import com.urbanairship.api.push.model.DeviceType;
-import com.urbanairship.api.push.model.DeviceTypeData;
-import com.urbanairship.api.push.model.PushPayload;
+import com.urbanairship.api.push.model.*;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.push.parse.PushObjectMapper;
@@ -160,6 +158,8 @@ public class APIClientTest {
 
         DateTime dateTime = DateTime.now(DateTimeZone.UTC).plusSeconds(60);
         Schedule schedule = Schedule.newBuilder()
+                //To test local schedule time instead build
+                //                  .setLocalScheduledTimestamp(dateTime)
                                     .setScheduledTimestamp(dateTime)
                                     .build();
 
@@ -196,6 +196,8 @@ public class APIClientTest {
             assertTrue(name.equals("Test"));
             Map<String, String> scheduleMap =
                     (Map<String,String>)result.get("schedule");
+            //When testing local schedule test instead use
+            //String dateTimeString = scheduleMap.get("local_scheduled_time");
             String dateTimeString = scheduleMap.get("scheduled_time");
 
             // Test DateTime
