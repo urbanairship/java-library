@@ -31,8 +31,8 @@ public class APIListScheduleResponseTest {
 
         try{
             APIListScheduleResponse response = mapper.readValue(listscheduleresponse, APIListScheduleResponse.class);
-            assertTrue(response.getCount().equals(5));
-            assertTrue(response.getTotal_Count().equals(6));
+            assertTrue(response.getCount() == 5);
+            assertTrue(response.getTotal_Count() == 6);
 
             List<ScheduleResponseObject> list = response.getSchedules();
 

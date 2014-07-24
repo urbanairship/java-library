@@ -21,8 +21,8 @@ public class APIListScheduleResponse {
         this.scheduleresponse = response;
     }
 
-    public Number getCount() { return count; }
-    public Number getTotal_Count() { return total_count; }
+    public int getCount() { return count; }
+    public int getTotal_Count() { return total_count; }
     public List<ScheduleResponseObject> getSchedules() { return scheduleresponse; }
 
     @Override
