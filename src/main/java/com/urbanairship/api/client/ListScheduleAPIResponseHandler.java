@@ -2,7 +2,6 @@ package com.urbanairship.api.client;
 
 import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -12,7 +11,6 @@ import java.io.IOException;
 // No Unit Tests for this Class
 public class ListScheduleAPIResponseHandler implements
         ResponseHandler<APIClientResponse<APIListScheduleResponse>> {
-
 
     /**
      * Handle HttpResponse. Returns an APIClientResponse on success, or
@@ -28,18 +26,6 @@ public class ListScheduleAPIResponseHandler implements
         // HTTP response code
         int statusCode = response.getStatusLine().getStatusCode();
 
-        // Documented cases
-        switch (statusCode){
-            case HttpStatus.SC_CREATED:
-                return handleSuccessfulSchedule(response);
-
-            case HttpStatus.SC_BAD_REQUEST:
-            case HttpStatus.SC_UNAUTHORIZED:
-            case HttpStatus.SC_FORBIDDEN:
-                throw APIRequestException.exceptionForResponse(response);
-
-        }
-
         // Uncommon, or unknown
         if (statusCode >= 200 && statusCode < 300){
             return handleSuccessfulSchedule(response);
@@ -51,11 +37,11 @@ public class ListScheduleAPIResponseHandler implements
     }
 
     /*
-     * Create an APIResponse for the successful schedule request.
+     * Create an APIResponse for the successful list schedule request.
      * Any exceptions thrown by HttpResponse object that are related to
      * closing the response body are ignored.
      * @param response
-     * @return APIClientResponse<APIScheduleResponse>
+     * @return APIClientResponse<APIListScheduleResponse>
      * @throws IOException
      */
     private APIClientResponse<APIListScheduleResponse> handleSuccessfulSchedule(HttpResponse response)
