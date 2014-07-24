@@ -14,6 +14,9 @@ public class ScheduleResponseObject {
     @JsonProperty("schedule")
     private Map<String, Object> schedule;
 
+    @JsonProperty("name")
+    private String name;
+
     @JsonProperty("push")
     private Map<String, Object> push;
 
@@ -22,11 +25,13 @@ public class ScheduleResponseObject {
 
     public String getUrl() { return url; }
     public Map<String, Object> getSchedule() { return schedule; }
+    public String getName() { return name; }
     public Map<String, Object> getPushPayload() { return push; }
     public List<String> getPushIds() { return push_ids; }
 
     public void setUrl(String inurl) { url = inurl; }
     public void setSchedule(Map<String, Object> sch) { schedule = sch; }
+    public void setName(String inname) { name = inname; }
     public void setPush(Map<String, Object> inpush) { push = inpush; }
     public void setPushIds(List<String> pushids) { push_ids = pushids; }
 
@@ -35,6 +40,7 @@ public class ScheduleResponseObject {
         return "ScheduleResponseObject{" +
                 "url='" + url + '\'' +
                 ", schedule=" + schedule +
+                ", name='" + name + '\'' +
                 ", push=" + push +
                 ", push_ids=" + push_ids +
                 '}';
