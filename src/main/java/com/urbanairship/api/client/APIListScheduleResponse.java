@@ -26,13 +26,12 @@ public class APIListScheduleResponse {
     public List<ScheduleResponseObject> getSchedules() { return scheduleresponse; }
 
     @Override
-    public String toString(){
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("APIListScheduleResponse:");
-        stringBuilder.append(String.format("\nCount: %d", count.intValue()));
-        stringBuilder.append(String.format("\nTotal Count: %d", total_count.intValue()));
-        stringBuilder.append(String.format("\nSchedule String: %s", scheduleresponse.toString()));
-        return stringBuilder.toString();
+    public String toString() {
+        return "APIListScheduleResponse{" +
+                "count=" + count +
+                ", total_count=" + total_count +
+                ", scheduleresponse=" + scheduleresponse +
+                '}';
     }
 
     /**

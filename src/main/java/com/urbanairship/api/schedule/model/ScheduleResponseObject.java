@@ -32,7 +32,11 @@ public class ScheduleResponseObject {
 
     @Override
     public String toString() {
-        return "User [url=" + url  + ", schedule=" + schedule.toString() + ", " +
-                "push=" + push.toString() + ", " + "push_ids=" + push_ids.toString() +"]";
+        return "ScheduleResponseObject{" +
+                "url='" + url + '\'' +
+                ", schedule=" + schedule +
+                ", push=" + push +
+                ", push_ids=" + push_ids +
+                '}';
     }
 }
