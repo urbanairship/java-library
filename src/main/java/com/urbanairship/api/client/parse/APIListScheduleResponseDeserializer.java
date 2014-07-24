@@ -35,6 +35,14 @@ public class APIListScheduleResponseDeserializer extends JsonDeserializer<APILis
                                     reader.readTotalCount(jsonParser);
                                 }
                             })
+                            .put("next_page", new FieldParser<APIListScheduleResponseReader>() {
+                                @Override
+                                public void parse(APIListScheduleResponseReader reader,
+                                                  JsonParser jsonParser,
+                                                  DeserializationContext deserializationContext) throws IOException {
+                                    reader.readNextPage(jsonParser);
+                                }
+                            })
                             .put("schedules", new FieldParser<APIListScheduleResponseReader>() {
                                 @Override
                                 public void parse(APIListScheduleResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {

@@ -20,6 +20,7 @@ public class APIListScheduleResponseReader implements JsonObjectReader<APIListSc
 
     public void readCount(JsonParser jsonParser) throws IOException { builder.setCount(jsonParser.readValueAs(Number.class).intValue()); }
     public void readTotalCount(JsonParser jsonParser) throws IOException { builder.setTotalCount(jsonParser.readValueAs(Number.class).intValue()); }
+    public void readNextPage(JsonParser jsonParser) throws IOException { builder.setNextPage(jsonParser.readValueAs(String.class)); }
     public void readListScheduleResponse(JsonParser jsonParser) throws IOException { builder.setSchedule((List<ScheduleResponseObject>) jsonParser.readValueAs(new TypeReference<List<ScheduleResponseObject>>() {})); }
 
     @Override
