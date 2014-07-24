@@ -7,15 +7,15 @@ import java.util.List;
 
 public class APIListScheduleResponse {
 
-    private final Number count;
-    private final Number total_count;
+    private final int count;
+    private final int total_count;
     private final List<ScheduleResponseObject> scheduleresponse;
 
     public static Builder newBuilder(){
         return new Builder();
     }
 
-    private APIListScheduleResponse(Number count, Number total_count, List<ScheduleResponseObject> response){
+    private APIListScheduleResponse(int count, int total_count, List<ScheduleResponseObject> response){
         this.count = count;
         this.total_count = total_count;
         this.scheduleresponse = response;
@@ -39,18 +39,18 @@ public class APIListScheduleResponse {
      */
     public static class Builder {
 
-        private Number count;
-        private Number total_count;
+        private int count;
+        private int total_count;
         private List<ScheduleResponseObject> scheduleresponse;
 
         private Builder() { }
 
-        public Builder setCount(Number count){
+        public Builder setCount(int count){
             this.count = count;
             return this;
         }
 
-        public Builder setTotalCount(Number total_count){
+        public Builder setTotalCount(int total_count){
             this.total_count = total_count;
             return this;
         }
