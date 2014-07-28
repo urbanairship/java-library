@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 /**
  * APIClient handles HTTP requests to the Urban Airship API
@@ -248,6 +249,18 @@ public class APIClient {
      */
     public APIClientResponse<APIListScheduleResponse> listschedules() throws IOException {
         Request request = scheduleRequest(null, API_SCHEDULE_PATH, "GET");
+        return executeListScheduleRequest(request);
+    }
+
+    public APIClientResponse<APIListScheduleResponse> listschedules(String start, int limit, String order) throws IOException {
+        String path = "/api/schedules" + "?" + "start=" + start + "&limit=" + limit +"&order=" + order;
+        Request request = scheduleRequest(null, path, "GET");
+        return executeListScheduleRequest(request);
+    }
+
+    public APIClientResponse<APIListScheduleResponse> listschedules(String next_page) throws IOException, URISyntaxException {
+        URI np = new URI(next_page);
+        Request request = scheduleRequest(null, np.getPath() + "?" + np.getQuery(), "GET");
         return executeListScheduleRequest(request);
     }
 
