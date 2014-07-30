@@ -65,6 +65,30 @@ public class APIClientResponseTest {
     }
 
     @Test
+    public void testAPIListTagsResponse(){
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP",1,1), 200, "OK"));
+
+        List<String> listOTags = new ArrayList<String>();
+        listOTags.add("Puppies");
+        listOTags.add("Kitties");
+
+        APIListTagsResponse listTagsResponse = APIListTagsResponse.newBuilder()
+                .setTags(listOTags)
+                .build();
+        APIClientResponse.Builder<APIListTagsResponse> builder =
+                APIClientResponse.newListTagsResponseBuilder()
+                        .setApiResponse(listTagsResponse)
+                        .setHttpResponse(httpResponse);
+        APIClientResponse<APIListTagsResponse> testResponse = builder.build();
+        assertTrue("HTTP response not set properly",
+                testResponse.getHttpResponse().equals(httpResponse));
+
+        assertTrue("APIResponse not set properly",
+                testResponse.getApiResponse().equals(listTagsResponse));
+    }
+
+    @Test
     public void testAPIPushResponse(){
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP",1,1), 200, "OK"));

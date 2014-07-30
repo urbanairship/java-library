@@ -4,11 +4,7 @@
 
 package com.urbanairship.api.client.parse;
 
-import com.urbanairship.api.client.APIError;
-import com.urbanairship.api.client.APIErrorDetails;
-import com.urbanairship.api.client.APIPushResponse;
-import com.urbanairship.api.client.APIScheduleResponse;
-import com.urbanairship.api.client.APIListScheduleResponse;
+import com.urbanairship.api.client.*;
 import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.module.SimpleModule;
@@ -29,6 +25,7 @@ public class APIResponseObjectMapper {
         MODULE.addDeserializer(APIError.class, new APIErrorDeserializer());
         MODULE.addDeserializer(APIScheduleResponse.class, new APIScheduleResponseDeserializer());
         MODULE.addDeserializer(APIListScheduleResponse.class, new APIListScheduleResponseDeserializer());
+        MODULE.addDeserializer(APIListTagsResponse.class, new APIListTagsResponseDeserializer());
         MAPPER.registerModule(MODULE);
     }
 

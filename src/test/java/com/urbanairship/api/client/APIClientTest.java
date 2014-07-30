@@ -11,6 +11,7 @@ import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
+import org.apache.http.HttpResponse;
 import org.apache.log4j.BasicConfigurator;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -399,5 +400,109 @@ public class APIClientTest {
         }
 
     }
-//
+
+    @Test
+    public void testListTags(){
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        // Setup a stubbed response for the server
+        String listtagresponse = "{\"tags\":[\"Puppies\",\"Kitties\",\"GrumpyCat\"]}";
+
+        stubFor(get(urlEqualTo("/api/tags/"))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withBody(listtagresponse)
+                        .withStatus(200)));
+
+        try {
+            APIClientResponse<APIListTagsResponse> response = client.listTags();
+
+            // Verify components of the underlying HttpRequest
+            verify(getRequestedFor(urlEqualTo("/api/tags/"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+            List<LoggedRequest> requests = findAll(getRequestedFor(
+                    urlEqualTo("/api/tags/")));
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+            assertNotNull(response.getApiResponse());
+            assertNotNull(response.getHttpResponse());
+        }
+        catch (Exception ex){
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testCreateTag(){
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        stubFor(put(urlEqualTo("/api/tags/puppies"))
+                .willReturn(aResponse()
+                        .withStatus(201)));
+
+        try {
+            HttpResponse response = client.createTag("puppies");
+
+            // Verify components of the underlying HttpRequest
+            verify(putRequestedFor(urlEqualTo("/api/tags/puppies"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+            List<LoggedRequest> requests = findAll(putRequestedFor(
+                    urlEqualTo("/api/tags/puppies")));
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+            assertEquals(201, response.getStatusLine().getStatusCode());
+        }
+        catch (Exception ex){
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testDeleteTag(){
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        stubFor(delete(urlEqualTo("/api/tags/puppies"))
+                .willReturn(aResponse()
+                        .withStatus(204)));
+
+        try {
+            HttpResponse response = client.deleteTag("puppies");
+
+            // Verify components of the underlying HttpRequest
+            verify(deleteRequestedFor(urlEqualTo("/api/tags/puppies"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+            List<LoggedRequest> requests = findAll(deleteRequestedFor(
+                    urlEqualTo("/api/tags/puppies")));
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+            assertEquals(204, response.getStatusLine().getStatusCode());
+        }
+        catch (Exception ex){
+            fail("Exception thrown " + ex);
+        }
+    }
 }

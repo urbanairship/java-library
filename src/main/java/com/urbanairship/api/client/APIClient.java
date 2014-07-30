@@ -12,6 +12,7 @@ import com.urbanairship.api.schedule.model.SchedulePayload;
 import org.apache.commons.lang.StringUtils;
 
 import org.apache.http.HttpHost;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
@@ -41,6 +42,7 @@ public class APIClient {
     private final static String API_PUSH_PATH = "/api/push/";
     private final static String API_VALIDATE_PATH = "/api/push/validate/";
     private final static String API_SCHEDULE_PATH = "/api/schedules/";
+    private final static String API_TAGS_PATH = "/api/tags/";
 
     /* User auth */
     private final String appKey;
@@ -152,6 +154,39 @@ public class APIClient {
                 .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
     }
 
+    /*
+    Base request for all API tag operations
+    Suppressing warnings until more of schedule API is implemented
+     */
+    private Request tagRequest(SchedulePayload payload, @SuppressWarnings("SameParameterValue") String path,
+                                    @SuppressWarnings("SameParameterValue") String httpMethod){
+        URI uri = baseURI.resolve(path);
+        Request request;
+
+        if (httpMethod.equals("POST")){
+            request = Request.Post(uri);
+            request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
+
+        } else if (httpMethod.equals("GET")){
+            request = Request.Get(uri);
+        }
+        else if (httpMethod.equals("PUT")){
+            request = Request.Put(uri);
+        }
+        else if (httpMethod.equals("DELETE")){
+            request = Request.Delete(uri);
+        }
+        else {
+            throw new
+                    IllegalArgumentException(
+                    String.format("tag requests support POST/GET/DELETE/PUT " +
+                            "HTTP %s Method passed", httpMethod));
+        }
+        return request.config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
+                .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
+                .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
+    }
+
 //    /*
 //    Append the id to the path, pass to base schedule method
 //     */
@@ -162,6 +197,18 @@ public class APIClient {
 //        throw new NotImplementedException("Schedule API not implemented yet");
 //        return scheduleRequest(payload, builder.toString(), httpMethod);
 //    }
+
+    /*
+    Execute a standard request for which the expected response is HttpResponse
+     */
+    private HttpResponse executeStandardRequest(Request request)
+            throws IOException{
+        Executor executor = Executor.newInstance()
+                .auth(uaHost, appKey, appSecret)
+                .authPreemptive(uaHost);
+        logger.debug(String.format("Executing standard request %s", request));
+        return executor.execute(request).returnResponse();
+    }
 
     /*
     Execute the push request and log errors.
@@ -227,6 +274,18 @@ public class APIClient {
         return executor.execute(request).handleResponse(new ListScheduleAPIResponseHandler());
     }
 
+    /*
+    Execute the list tags request and log errors.
+     */
+    private APIClientResponse<APIListTagsResponse> executeListTagsRequest(Request request)
+            throws IOException{
+        Executor executor = Executor.newInstance()
+                .auth(uaHost, appKey, appSecret)
+                .authPreemptive(uaHost);
+        logger.debug(String.format("Executing list tags request %s", request));
+        return executor.execute(request).handleResponse(new ListTagsAPIResponseHandler());
+    }
+
     /**
      * Send a scheduled push request to the Urban Airship API to be delivered
      * according to the parameters setup in the schedule payload.
@@ -262,6 +321,27 @@ public class APIClient {
         URI np = new URI(next_page);
         Request request = scheduleRequest(null, np.getPath() + "?" + np.getQuery(), "GET");
         return executeListScheduleRequest(request);
+    }
+
+    /**
+     * Sends a list tag request to the Urban Airship API.
+     *
+     * @return APIClientResponse <<T>APIListTagResponse</T>>
+     * @throws IOException
+     */
+    public APIClientResponse<APIListTagsResponse> listTags() throws IOException {
+        Request request = tagRequest(null, API_TAGS_PATH, "GET");
+        return executeListTagsRequest(request);
+    }
+
+    public HttpResponse createTag(String tag) throws IOException {
+        Request request = tagRequest(null, API_TAGS_PATH + tag, "PUT");
+        return executeStandardRequest(request);
+    }
+
+    public HttpResponse deleteTag(String tag) throws IOException {
+        Request request = tagRequest(null, API_TAGS_PATH + tag, "DELETE");
+        return executeStandardRequest(request);
     }
 
     /*
