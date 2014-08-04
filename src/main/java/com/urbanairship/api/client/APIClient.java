@@ -9,7 +9,7 @@ import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 
-import com.urbanairship.api.tag.model.ChangeTagPayload;
+import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
 import org.apache.commons.lang.StringUtils;
 
 import org.apache.http.HttpHost;
@@ -159,7 +159,7 @@ public class APIClient {
     Base request for all API tag operations
     Suppressing warnings until more of schedule API is implemented
      */
-    private Request tagRequest(ChangeTagPayload payload, @SuppressWarnings("SameParameterValue") String path,
+    private Request tagRequest(AddRemoveDeviceFromTagPayload payload, @SuppressWarnings("SameParameterValue") String path,
                                     @SuppressWarnings("SameParameterValue") String httpMethod){
         URI uri = baseURI.resolve(path);
         Request request;
@@ -347,7 +347,7 @@ public class APIClient {
         return executeStandardRequest(request);
     }
 
-    public HttpResponse addRemoveDevicesFromTag(String tag, ChangeTagPayload payload) throws IOException {
+    public HttpResponse addRemoveDevicesFromTag(String tag, AddRemoveDeviceFromTagPayload payload) throws IOException {
         Request request = tagRequest(payload, API_TAGS_PATH + tag, "PUT");
         return executeStandardRequest(request);
     }

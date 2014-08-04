@@ -1,16 +1,16 @@
 package com.urbanairship.api.tag.parse;
 
-import com.urbanairship.api.tag.model.ChangeTagPayload;
+import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
 
 import java.io.IOException;
 
-public class ChangeTagPayloadSerializer extends JsonSerializer<ChangeTagPayload> {
+public class AddRemoveDeviceFromTagPayloadSerializer extends JsonSerializer<AddRemoveDeviceFromTagPayload> {
 
     @Override
-    public void serialize(ChangeTagPayload payload, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+    public void serialize(AddRemoveDeviceFromTagPayload payload, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         jgen.writeStartObject();
 
         if (payload.getIOSChannels().isPresent()) {

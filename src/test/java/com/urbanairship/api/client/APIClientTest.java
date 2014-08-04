@@ -11,8 +11,8 @@ import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
+import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
 import com.urbanairship.api.tag.model.AddRemoveSet;
-import com.urbanairship.api.tag.model.ChangeTagPayload;
 import org.apache.http.HttpResponse;
 import org.apache.log4j.BasicConfigurator;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -522,7 +522,7 @@ public class APIClientTest {
                         .withStatus(200)));
 
         try {
-            HttpResponse response = client.addRemoveDevicesFromTag("puppies", ChangeTagPayload.newBuilder()
+            HttpResponse response = client.addRemoveDevicesFromTag("puppies", AddRemoveDeviceFromTagPayload.newBuilder()
                     .setApids(AddRemoveSet.newBuilder().add("device1").build())
                     .build());
 

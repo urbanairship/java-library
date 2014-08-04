@@ -4,7 +4,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.PushModelObject;
 
-public class ChangeTagPayload extends PushModelObject {
+public class AddRemoveDeviceFromTagPayload extends PushModelObject {
 
     private final Optional<AddRemoveSet> ios_channels;
     private final Optional<AddRemoveSet> device_tokens;
@@ -15,10 +15,10 @@ public class ChangeTagPayload extends PushModelObject {
         return new Builder();
     }
 
-    private ChangeTagPayload(Optional<AddRemoveSet> ios_channels,
-                             Optional<AddRemoveSet> device_tokens,
-                             Optional<AddRemoveSet> device_pins,
-                             Optional<AddRemoveSet> apids) {
+    private AddRemoveDeviceFromTagPayload(Optional<AddRemoveSet> ios_channels,
+                                          Optional<AddRemoveSet> device_tokens,
+                                          Optional<AddRemoveSet> device_pins,
+                                          Optional<AddRemoveSet> apids) {
         this.ios_channels = ios_channels;
         this.device_tokens = device_tokens;
         this.device_pins = device_pins;
@@ -69,10 +69,10 @@ public class ChangeTagPayload extends PushModelObject {
             return this;
         }
 
-        public ChangeTagPayload build() {
+        public AddRemoveDeviceFromTagPayload build() {
             Preconditions.checkArgument(!(ios_channels == null && device_tokens == null && device_pins == null && apids == null), "At least one of ios_channels, device_tokens, device_pins, or apids must be set");
 
-            return new ChangeTagPayload(Optional.fromNullable(ios_channels), Optional.fromNullable(device_tokens), Optional.fromNullable(device_pins), Optional.fromNullable(apids));
+            return new AddRemoveDeviceFromTagPayload(Optional.fromNullable(ios_channels), Optional.fromNullable(device_tokens), Optional.fromNullable(device_pins), Optional.fromNullable(apids));
         }
     }
 }
