@@ -9,6 +9,7 @@ import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 
+import com.urbanairship.api.tag.model.ChangeTagPayload;
 import org.apache.commons.lang.StringUtils;
 
 import org.apache.http.HttpHost;
@@ -155,10 +156,10 @@ public class APIClient {
     }
 
     /*
-    Base request for all API tag operations
+    Base request for all API model operations
     Suppressing warnings until more of schedule API is implemented
      */
-    private Request tagRequest(SchedulePayload payload, @SuppressWarnings("SameParameterValue") String path,
+    private Request tagRequest(ChangeTagPayload payload, @SuppressWarnings("SameParameterValue") String path,
                                     @SuppressWarnings("SameParameterValue") String httpMethod){
         URI uri = baseURI.resolve(path);
         Request request;
@@ -172,6 +173,8 @@ public class APIClient {
         }
         else if (httpMethod.equals("PUT")){
             request = Request.Put(uri);
+            if (payload != null)
+                request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
         }
         else if (httpMethod.equals("DELETE")){
             request = Request.Delete(uri);
@@ -179,7 +182,7 @@ public class APIClient {
         else {
             throw new
                     IllegalArgumentException(
-                    String.format("tag requests support POST/GET/DELETE/PUT " +
+                    String.format("model requests support POST/GET/DELETE/PUT " +
                             "HTTP %s Method passed", httpMethod));
         }
         return request.config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
@@ -341,6 +344,11 @@ public class APIClient {
 
     public HttpResponse deleteTag(String tag) throws IOException {
         Request request = tagRequest(null, API_TAGS_PATH + tag, "DELETE");
+        return executeStandardRequest(request);
+    }
+
+    public HttpResponse addRemoveDevicesFromTag(String tag, ChangeTagPayload payload) throws IOException {
+        Request request = tagRequest(payload, API_TAGS_PATH + tag, "PUT");
         return executeStandardRequest(request);
     }
 

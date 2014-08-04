@@ -11,6 +11,8 @@ import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
+import com.urbanairship.api.tag.model.AddRemoveSet;
+import com.urbanairship.api.tag.model.ChangeTagPayload;
 import org.apache.http.HttpResponse;
 import org.apache.log4j.BasicConfigurator;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -500,6 +502,41 @@ public class APIClientTest {
             // The response is tested elsewhere, just check that it exists
             assertNotNull(response);
             assertEquals(204, response.getStatusLine().getStatusCode());
+        }
+        catch (Exception ex){
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testAddRemoveDevicesFromTag(){
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        stubFor(put(urlEqualTo("/api/tags/puppies"))
+                .willReturn(aResponse()
+                        .withStatus(200)));
+
+        try {
+            HttpResponse response = client.addRemoveDevicesFromTag("puppies", ChangeTagPayload.newBuilder()
+                    .setApids(AddRemoveSet.newBuilder().add("device1").build())
+                    .build());
+
+            // Verify components of the underlying HttpRequest
+            verify(putRequestedFor(urlEqualTo("/api/tags/puppies"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+            List<LoggedRequest> requests = findAll(putRequestedFor(
+                    urlEqualTo("/api/tags/puppies")));
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+            assertEquals(200, response.getStatusLine().getStatusCode());
         }
         catch (Exception ex){
             fail("Exception thrown " + ex);
