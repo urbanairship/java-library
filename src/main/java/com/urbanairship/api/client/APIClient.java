@@ -156,7 +156,7 @@ public class APIClient {
     }
 
     /*
-    Base request for all API model operations
+    Base request for all API tag operations
     Suppressing warnings until more of schedule API is implemented
      */
     private Request tagRequest(ChangeTagPayload payload, @SuppressWarnings("SameParameterValue") String path,
@@ -182,7 +182,7 @@ public class APIClient {
         else {
             throw new
                     IllegalArgumentException(
-                    String.format("model requests support POST/GET/DELETE/PUT " +
+                    String.format("tag requests support POST/GET/DELETE/PUT " +
                             "HTTP %s Method passed", httpMethod));
         }
         return request.config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
