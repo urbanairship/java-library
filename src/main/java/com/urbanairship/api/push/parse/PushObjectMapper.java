@@ -42,7 +42,9 @@ import com.urbanairship.api.push.parse.audience.location.*;
 import com.urbanairship.api.schedule.model.*;
 import com.urbanairship.api.schedule.parse.*;
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
+import com.urbanairship.api.tag.model.BatchModificationPayload;
 import com.urbanairship.api.tag.parse.AddRemoveDeviceFromTagPayloadSerializer;
+import com.urbanairship.api.tag.parse.BatchModificationPayloadSerializer;
 import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.DeserializationConfig;
@@ -106,7 +108,8 @@ public class PushObjectMapper {
             .addSerializer(Schedule.class, ScheduleSerializer.INSTANCE)
 
             /* Tags */
-            .addSerializer(AddRemoveDeviceFromTagPayload.class, new AddRemoveDeviceFromTagPayloadSerializer());
+            .addSerializer(AddRemoveDeviceFromTagPayload.class, new AddRemoveDeviceFromTagPayloadSerializer())
+            .addSerializer(BatchModificationPayload.class, new BatchModificationPayloadSerializer());
 
 
         MAPPER.registerModule(MODULE);

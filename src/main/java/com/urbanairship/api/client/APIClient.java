@@ -10,6 +10,7 @@ import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
+import com.urbanairship.api.tag.model.BatchModificationPayload;
 import org.apache.commons.lang.StringUtils;
 
 import org.apache.http.HttpHost;
@@ -44,6 +45,7 @@ public class APIClient {
     private final static String API_VALIDATE_PATH = "/api/push/validate/";
     private final static String API_SCHEDULE_PATH = "/api/schedules/";
     private final static String API_TAGS_PATH = "/api/tags/";
+    private final static String API_TAGS_BATCH_PATH = "/api/tags/batch/";
 
     /* User auth */
     private final String appKey;
@@ -159,22 +161,16 @@ public class APIClient {
     Base request for all API tag operations
     Suppressing warnings until more of schedule API is implemented
      */
-    private Request tagRequest(AddRemoveDeviceFromTagPayload payload, @SuppressWarnings("SameParameterValue") String path,
-                                    @SuppressWarnings("SameParameterValue") String httpMethod){
+    private Request tagRequest(@SuppressWarnings("SameParameterValue") String path,
+                               @SuppressWarnings("SameParameterValue") String httpMethod){
         URI uri = baseURI.resolve(path);
         Request request;
 
-        if (httpMethod.equals("POST")){
-            request = Request.Post(uri);
-            request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
-
-        } else if (httpMethod.equals("GET")){
+        if (httpMethod.equals("GET")){
             request = Request.Get(uri);
         }
         else if (httpMethod.equals("PUT")){
             request = Request.Put(uri);
-            if (payload != null)
-                request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
         }
         else if (httpMethod.equals("DELETE")){
             request = Request.Delete(uri);
@@ -182,11 +178,34 @@ public class APIClient {
         else {
             throw new
                     IllegalArgumentException(
-                    String.format("tag requests support POST/GET/DELETE/PUT " +
+                    String.format("tag requests support GET/PUT/DELETE " +
                             "HTTP %s Method passed", httpMethod));
         }
         return request.config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
                 .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
+                .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
+    }
+
+    private Request tagAddRemoveDeviceRequest(AddRemoveDeviceFromTagPayload payload, @SuppressWarnings("SameParameterValue") String path){
+        URI uri = baseURI.resolve(path);
+        Request request;
+
+        request = Request.Post(uri);
+        if (payload != null)
+            request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
+
+        return request.config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
+                .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
+    }
+
+    private Request tagBatchRequest(BatchModificationPayload payload, @SuppressWarnings("SameParameterValue") String path){
+        URI uri = baseURI.resolve(path);
+        Request request;
+
+        request = Request.Post(uri);
+        request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
+
+        return request.config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
                 .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
     }
 
@@ -327,28 +346,33 @@ public class APIClient {
     }
 
     /**
-     * Sends a list tag request to the Urban Airship API.
+     * Sends a tag request to the Urban Airship API.
      *
      * @return APIClientResponse <<T>APIListTagResponse</T>>
      * @throws IOException
      */
     public APIClientResponse<APIListTagsResponse> listTags() throws IOException {
-        Request request = tagRequest(null, API_TAGS_PATH, "GET");
+        Request request = tagRequest(API_TAGS_PATH, "GET");
         return executeListTagsRequest(request);
     }
 
     public HttpResponse createTag(String tag) throws IOException {
-        Request request = tagRequest(null, API_TAGS_PATH + tag, "PUT");
+        Request request = tagRequest(API_TAGS_PATH + tag, "PUT");
         return executeStandardRequest(request);
     }
 
     public HttpResponse deleteTag(String tag) throws IOException {
-        Request request = tagRequest(null, API_TAGS_PATH + tag, "DELETE");
+        Request request = tagRequest(API_TAGS_PATH + tag, "DELETE");
         return executeStandardRequest(request);
     }
 
     public HttpResponse addRemoveDevicesFromTag(String tag, AddRemoveDeviceFromTagPayload payload) throws IOException {
-        Request request = tagRequest(payload, API_TAGS_PATH + tag, "PUT");
+        Request request = tagAddRemoveDeviceRequest(payload, API_TAGS_PATH + tag);
+        return executeStandardRequest(request);
+    }
+
+    public HttpResponse batchModificationofTags(BatchModificationPayload payload) throws IOException {
+        Request request = tagBatchRequest(payload, API_TAGS_BATCH_PATH);
         return executeStandardRequest(request);
     }
 
