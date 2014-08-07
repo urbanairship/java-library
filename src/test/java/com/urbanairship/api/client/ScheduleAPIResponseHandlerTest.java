@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 
-public class ScheduleAPIResponseTest {
+public class ScheduleAPIResponseHandlerTest {
 
     /* Header keys, values */
     public final static String CONTENT_TYPE_KEY = "Content-type";
