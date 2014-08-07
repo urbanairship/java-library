@@ -1,7 +1,7 @@
 package com.urbanairship.api.client;
 
 
-import com.urbanairship.api.schedule.model.ScheduleResponseObject;
+import com.urbanairship.api.schedule.model.SchedulePayload;
 
 import java.util.List;
 
@@ -10,23 +10,23 @@ public final class APIListScheduleResponse {
     private final int count;
     private final int total_count;
     private final String next_page;
-    private final List<ScheduleResponseObject> scheduleresponse;
+    private final List<SchedulePayload> scheduleobjects;
 
     public static Builder newBuilder(){
         return new Builder();
     }
 
-    private APIListScheduleResponse(int count, int total_count, String next_page, List<ScheduleResponseObject> response){
+    private APIListScheduleResponse(int count, int total_count, String next_page, List<SchedulePayload> response){
         this.count = count;
         this.total_count = total_count;
         this.next_page = next_page;
-        this.scheduleresponse = response;
+        this.scheduleobjects = response;
     }
 
     public int getCount() { return count; }
     public int getTotal_Count() { return total_count; }
     public String getNext_Page() { return next_page; }
-    public List<ScheduleResponseObject> getSchedules() { return scheduleresponse; }
+    public List<SchedulePayload> getSchedules() { return scheduleobjects; }
 
     @Override
     public String toString() {
@@ -34,7 +34,7 @@ public final class APIListScheduleResponse {
                 "count=" + count +
                 ", total_count=" + total_count +
                 ", next_page=" + next_page +
-                ", scheduleresponse=" + scheduleresponse +
+                ", scheduleobjects=" + scheduleobjects +
                 '}';
     }
 
@@ -46,7 +46,7 @@ public final class APIListScheduleResponse {
         private int count;
         private int total_count;
         private String next_page;
-        private List<ScheduleResponseObject> scheduleresponse;
+        private List<SchedulePayload> scheduleresponse;
 
         private Builder() { }
 
@@ -65,7 +65,7 @@ public final class APIListScheduleResponse {
             return this;
         }
 
-        public Builder setSchedule(List<ScheduleResponseObject> schedules){
+        public Builder setSchedule(List<SchedulePayload> schedules){
             this.scheduleresponse = schedules;
             return this;
         }

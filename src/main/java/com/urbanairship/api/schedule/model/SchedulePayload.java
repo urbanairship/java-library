@@ -4,6 +4,7 @@
 
 package com.urbanairship.api.schedule.model;
 
+import com.google.common.base.Objects;
 import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.PushPayload;
 import com.google.common.base.Optional;
@@ -16,14 +17,24 @@ import org.apache.commons.lang.StringUtils;
  */
 public class SchedulePayload extends PushModelObject {
 
+    private final Optional<String> url;
     private final Schedule schedule;
     private final Optional<String> name;
     private final PushPayload pushPayload;
 
-    private SchedulePayload(Schedule schedule, String name, PushPayload pushPayload) {
+    private SchedulePayload(String url, Schedule schedule, String name, PushPayload pushPayload) {
+        this.url = Optional.fromNullable(url);
         this.schedule = schedule;
         this.name = Optional.fromNullable(name);
         this.pushPayload = pushPayload;
+    }
+
+    /**
+     * Get the url
+     * @return url
+     */
+    public Optional<String> getUrl() {
+        return url;
     }
 
     /**
@@ -50,48 +61,6 @@ public class SchedulePayload extends PushModelObject {
         return pushPayload;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        SchedulePayload schedulePayload = (SchedulePayload) o;
-
-
-        if (schedule != null ? !schedule.equals(schedulePayload.schedule) : schedulePayload.schedule != null) {
-            return false;
-        }
-        if (name != null ? !name.equals(schedulePayload.name) : schedulePayload.name != null) {
-            return false;
-        }
-
-        if (pushPayload != null ? !pushPayload.equals(schedulePayload.pushPayload) : schedulePayload.pushPayload != null) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = schedule != null ? schedule.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (pushPayload != null ? pushPayload.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "SchedulePayload{" +
-                "schedule='" + schedule + '\'' +
-                ", name='" + name + '\'' +
-                ", pushPayload='" + pushPayload + '\'' +
-                '}';
-    }
 
     /**
      * SchedulePayload Builder
@@ -101,15 +70,53 @@ public class SchedulePayload extends PushModelObject {
         return new Builder();
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(url, schedule, name, pushPayload);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final SchedulePayload other = (SchedulePayload) obj;
+        return Objects.equal(this.url, other.url) && Objects.equal(this.schedule, other.schedule) && Objects.equal(this.name, other.name) && Objects.equal(this.pushPayload, other.pushPayload);
+    }
+
+    @Override
+    public String toString() {
+        return "SchedulePayload{" +
+                "url=" + url +
+                ", schedule=" + schedule +
+                ", name=" + name +
+                ", pushPayload=" + pushPayload +
+                '}';
+    }
+
     /**
      * SchedulePayload Builder
      */
     public static class Builder {
+        private String url = null;
         private Schedule schedule = null;
         private String name = null;
         private PushPayload pushPayload = null;
 
         private Builder() { }
+
+        /**
+         * Set the schedule for this payload.
+         * @param url String
+         * @return Builder
+         */
+        public Builder setUrl(String url) {
+            this.url = url;
+            return this;
+        }
 
         /**
          * Set the schedule for this payload.
@@ -152,7 +159,7 @@ public class SchedulePayload extends PushModelObject {
                 Preconditions.checkArgument(StringUtils.isNotBlank(name), "'name' must be a non-blank string");
             }
 
-            return new SchedulePayload(schedule, name, pushPayload);
+            return new SchedulePayload(url, schedule, name, pushPayload);
         }
     }
 }
