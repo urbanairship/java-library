@@ -17,7 +17,7 @@ import java.io.IOException;
 /**
  * Handle server responses for Scheduling.
  */
-public class ScheduleAPIResponseHandler implements
+public final class ScheduleAPIResponseHandler implements
         ResponseHandler<APIClientResponse<APIScheduleResponse>> {
 
     /**

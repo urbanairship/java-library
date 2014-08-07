@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Represents a response from the Urban Airship API for Scheduled Notifications.
  */
-public class APIScheduleResponse {
+public final class APIScheduleResponse {
 
     private final String operationId;
     private final List<String> scheduleUrls;

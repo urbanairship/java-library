@@ -20,7 +20,7 @@ import java.io.IOException;
 /**
 Handles the server response when working with Push API endpoints.
  */
-public class PushAPIResponseHandler implements
+public final class PushAPIResponseHandler implements
         ResponseHandler<APIClientResponse<APIPushResponse>> {
 
     private final Logger logger;

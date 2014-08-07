@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Represents a response from the Urban Airship API for Push Notifications.
  */
-public class APIPushResponse {
+public final class APIPushResponse {
 
     private final Optional<String> operationId;
     private final Optional<List<String>> pushIds;

@@ -8,7 +8,7 @@ import org.codehaus.jackson.map.SerializerProvider;
 
 import java.io.IOException;
 
-public class BatchModificationPayloadSerializer extends JsonSerializer<BatchModificationPayload> {
+public final class BatchModificationPayloadSerializer extends JsonSerializer<BatchModificationPayload> {
 
     @Override
     public void serialize(BatchModificationPayload payload, JsonGenerator jgen, SerializerProvider provider) throws IOException {

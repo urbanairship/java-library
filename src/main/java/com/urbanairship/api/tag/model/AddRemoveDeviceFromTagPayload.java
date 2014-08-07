@@ -4,7 +4,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.PushModelObject;
 
-public class AddRemoveDeviceFromTagPayload extends PushModelObject {
+public final class AddRemoveDeviceFromTagPayload extends PushModelObject {
 
     private final Optional<AddRemoveSet> ios_channels;
     private final Optional<AddRemoveSet> device_tokens;

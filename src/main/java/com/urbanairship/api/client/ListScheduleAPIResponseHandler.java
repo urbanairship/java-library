@@ -9,7 +9,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import java.io.IOException;
 
 // No Unit Tests for this Class
-public class ListScheduleAPIResponseHandler implements
+public final class ListScheduleAPIResponseHandler implements
         ResponseHandler<APIClientResponse<APIListScheduleResponse>> {
 
     /**

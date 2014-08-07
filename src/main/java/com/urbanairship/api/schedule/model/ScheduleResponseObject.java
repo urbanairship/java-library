@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 // No Unit Tests for this Class
-public class ScheduleResponseObject {
+public final class ScheduleResponseObject {
 
     @JsonProperty("url")
     private String url;

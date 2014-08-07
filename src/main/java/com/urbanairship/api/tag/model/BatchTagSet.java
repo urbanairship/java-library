@@ -4,7 +4,7 @@ package com.urbanairship.api.tag.model;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 
-public class BatchTagSet {
+public final class BatchTagSet {
 
     public enum DEVICEIDTYPES { IOS_CHANNEL, DEVICE_TOKEN, APID }
 

@@ -7,7 +7,7 @@ import org.codehaus.jackson.map.SerializerProvider;
 
 import java.io.IOException;
 
-public class AddRemoveDeviceFromTagPayloadSerializer extends JsonSerializer<AddRemoveDeviceFromTagPayload> {
+public final class AddRemoveDeviceFromTagPayloadSerializer extends JsonSerializer<AddRemoveDeviceFromTagPayload> {
 
     @Override
     public void serialize(AddRemoveDeviceFromTagPayload payload, JsonGenerator jgen, SerializerProvider provider) throws IOException {

@@ -4,7 +4,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 
-public class AddRemoveSet {
+public final class AddRemoveSet {
 
     private final Optional<ImmutableSet<String>> add;
     private final Optional<ImmutableSet<String>> remove;

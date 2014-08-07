@@ -2,7 +2,7 @@ package com.urbanairship.api.client;
 
 import java.util.List;
 
-public class APIListTagsResponse {
+public final class APIListTagsResponse {
 
     private final List<String> tags;
 

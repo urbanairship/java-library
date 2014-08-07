@@ -5,7 +5,7 @@ import com.urbanairship.api.schedule.model.ScheduleResponseObject;
 
 import java.util.List;
 
-public class APIListScheduleResponse {
+public final class APIListScheduleResponse {
 
     private final int count;
     private final int total_count;
