@@ -58,6 +58,10 @@ public class APIClient {
     /* HTTP */
     private final HttpHost uaHost;
     private final static String UA_HOSTNAME = "go.urbanairship.com";
+    private final static String GET = "GET";
+    private final static String POST = "POST";
+    private final static String PUT = "PUT";
+    private final static String DELETE = "DELETE";
 
     private final static Logger logger =
             LoggerFactory.getLogger("com.urbanairship.api");
@@ -132,18 +136,18 @@ public class APIClient {
         URI uri = baseURI.resolve(path);
         Request request;
 
-        if (httpMethod.equals("POST")){
+        if (httpMethod.equals(POST)){
             request = Request.Post(uri);
             request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
 
-        } else if (httpMethod.equals("GET")){
+        } else if (httpMethod.equals(GET)){
             request = Request.Get(uri);
         }
-        else if (httpMethod.equals("PUT")){
+        else if (httpMethod.equals(PUT)){
             request = Request.Put(uri);
             request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
         }
-        else if (httpMethod.equals("DELETE")){
+        else if (httpMethod.equals(DELETE)){
             request = Request.Delete(uri);
         }
         else {
@@ -166,13 +170,13 @@ public class APIClient {
         URI uri = baseURI.resolve(path);
         Request request;
 
-        if (httpMethod.equals("GET")){
+        if (httpMethod.equals(GET)){
             request = Request.Get(uri);
         }
-        else if (httpMethod.equals("PUT")){
+        else if (httpMethod.equals(PUT)){
             request = Request.Put(uri);
         }
-        else if (httpMethod.equals("DELETE")){
+        else if (httpMethod.equals(DELETE)){
             request = Request.Delete(uri);
         }
         else {
@@ -318,7 +322,7 @@ public class APIClient {
      */
     public APIClientResponse<APIScheduleResponse> schedule(SchedulePayload payload)
             throws IOException {
-        Request request = scheduleRequest(payload, API_SCHEDULE_PATH, "POST");
+        Request request = scheduleRequest(payload, API_SCHEDULE_PATH, POST);
         return executeScheduleRequest(request);
     }
 
@@ -329,19 +333,19 @@ public class APIClient {
      * @throws IOException
      */
     public APIClientResponse<APIListScheduleResponse> listSchedules() throws IOException {
-        Request request = scheduleRequest(null, API_SCHEDULE_PATH, "GET");
+        Request request = scheduleRequest(null, API_SCHEDULE_PATH, GET);
         return executeListScheduleRequest(request);
     }
 
     public APIClientResponse<APIListScheduleResponse> listSchedules(String start, int limit, String order) throws IOException {
         String path = "/api/schedules" + "?" + "start=" + start + "&limit=" + limit +"&order=" + order;
-        Request request = scheduleRequest(null, path, "GET");
+        Request request = scheduleRequest(null, path, GET);
         return executeListScheduleRequest(request);
     }
 
     public APIClientResponse<APIListScheduleResponse> listSchedules(String next_page) throws IOException, URISyntaxException {
         URI np = new URI(next_page);
-        Request request = scheduleRequest(null, np.getPath() + "?" + np.getQuery(), "GET");
+        Request request = scheduleRequest(null, np.getPath() + "?" + np.getQuery(), GET);
         return executeListScheduleRequest(request);
     }
 
@@ -352,17 +356,17 @@ public class APIClient {
      * @throws IOException
      */
     public APIClientResponse<APIListTagsResponse> listTags() throws IOException {
-        Request request = tagRequest(API_TAGS_PATH, "GET");
+        Request request = tagRequest(API_TAGS_PATH, GET);
         return executeListTagsRequest(request);
     }
 
     public HttpResponse createTag(String tag) throws IOException {
-        Request request = tagRequest(API_TAGS_PATH + tag, "PUT");
+        Request request = tagRequest(API_TAGS_PATH + tag, PUT);
         return executeStandardRequest(request);
     }
 
     public HttpResponse deleteTag(String tag) throws IOException {
-        Request request = tagRequest(API_TAGS_PATH + tag, "DELETE");
+        Request request = tagRequest(API_TAGS_PATH + tag, DELETE);
         return executeStandardRequest(request);
     }
 
