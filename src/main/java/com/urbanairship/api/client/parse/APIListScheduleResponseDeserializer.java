@@ -54,7 +54,6 @@ public class APIListScheduleResponseDeserializer extends JsonDeserializer<APILis
 
     private final StandardObjectDeserializer<APIListScheduleResponse, ?> deserializer;
 
-    // See Google Guava for Supplier details
     public APIListScheduleResponseDeserializer(){
         this.deserializer = new StandardObjectDeserializer<APIListScheduleResponse, APIListScheduleResponseReader>(
                 FIELD_PARSER,
