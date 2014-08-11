@@ -8,7 +8,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
 
-// No Unit Tests for this Class
 public final class ListTagsAPIResponseHandler implements
         ResponseHandler<APIClientResponse<APIListTagsResponse>> {
 
