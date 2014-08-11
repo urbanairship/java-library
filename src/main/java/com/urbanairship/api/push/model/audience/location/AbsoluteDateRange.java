@@ -1,7 +1,3 @@
-/*
- * Copyright 2013 Urban Airship and Contributors
- */
-
 package com.urbanairship.api.push.model.audience.location;
 
 import com.urbanairship.api.push.model.PushModelObject;
@@ -13,9 +9,9 @@ public class AbsoluteDateRange extends PushModelObject implements DateRange {
     private final DateTime start;
     private final DateTime end;
     private final DateRangeUnit resolution;
-    private final PresenceTimeFrame timeframe;
+    private final PresenceTimeframe timeframe;
 
-    private AbsoluteDateRange(DateTime start, DateTime end, DateRangeUnit resolution, PresenceTimeFrame timeframe) {
+    private AbsoluteDateRange(DateTime start, DateTime end, DateRangeUnit resolution, PresenceTimeframe timeframe) {
         this.start = start;
         this.end = end;
         this.resolution = resolution;
@@ -42,7 +38,7 @@ public class AbsoluteDateRange extends PushModelObject implements DateRange {
     }
 
     @Override
-    public PresenceTimeFrame getTimeframe() {
+    public PresenceTimeframe getTimeframe() {
         return timeframe;
     }
 
@@ -88,7 +84,7 @@ public class AbsoluteDateRange extends PushModelObject implements DateRange {
             "start='" + start + '\'' +
             ", end='" + end + '\'' +
             ", resolution='" + resolution + '\'' +
-            ", timeFrame='" + timeframe + '\'' +
+            ", timeframe='" + timeframe + '\'' +
             '}';
     }
 
@@ -96,7 +92,7 @@ public class AbsoluteDateRange extends PushModelObject implements DateRange {
         private DateTime start;
         private DateTime end;
         private DateRangeUnit resolution;
-        private PresenceTimeFrame timeFrame;
+        private PresenceTimeframe timeframe;
 
         private Builder() { }
 
@@ -115,8 +111,8 @@ public class AbsoluteDateRange extends PushModelObject implements DateRange {
             return this;
         }
 
-        public Builder setTimeFrame(PresenceTimeFrame value) {
-            timeFrame = value;
+        public Builder setTimeframe(PresenceTimeframe value) {
+            timeframe = value;
             return this;
         }
 
@@ -124,7 +120,7 @@ public class AbsoluteDateRange extends PushModelObject implements DateRange {
             Preconditions.checkNotNull(start, "Missing value for 'start'");
             Preconditions.checkNotNull(end, "Missing value for 'end'");
             Preconditions.checkNotNull(end, "Missing date range resolution");
-            return new AbsoluteDateRange(start, end, resolution, timeFrame);
+            return new AbsoluteDateRange(start, end, resolution, timeframe);
         }
     }
 }

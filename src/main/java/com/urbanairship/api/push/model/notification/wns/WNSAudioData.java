@@ -1,7 +1,3 @@
-/*
- * Copyright 2013 Urban Airship and Contributors
- */
-
 package com.urbanairship.api.push.model.notification.wns;
 
 import com.google.common.base.Optional;
@@ -20,7 +16,7 @@ public class WNSAudioData {
         LOOPING_CALL,
         LOOPING_CALL2;
 
-        private final String id;
+        private String id;
 
         Sound() {
             id = name().toLowerCase().replace('_', '-');
@@ -40,8 +36,8 @@ public class WNSAudioData {
         }
     }
 
-    private final Sound sound;
-    private final Optional<Boolean> loop;
+    private Sound sound;
+    private Optional<Boolean> loop;
 
     private WNSAudioData(Sound sound,
                          Optional<Boolean> loop)
@@ -100,8 +96,8 @@ public class WNSAudioData {
             return this;
         }
 
-        public Builder setLoop(Boolean value) {
-            this.loop = value;
+        public Builder setLoop(boolean value) {
+            this.loop = new Boolean(value);
             return this;
         }
 

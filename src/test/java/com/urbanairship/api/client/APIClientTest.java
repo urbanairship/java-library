@@ -3,9 +3,7 @@ package com.urbanairship.api.client;
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
 import com.urbanairship.api.common.parse.DateFormats;
-import com.urbanairship.api.push.model.DeviceType;
-import com.urbanairship.api.push.model.DeviceTypeData;
-import com.urbanairship.api.push.model.PushPayload;
+import com.urbanairship.api.push.model.*;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.push.parse.PushObjectMapper;
@@ -94,7 +92,7 @@ public class APIClientTest {
 
         PushPayload payload = PushPayload.newBuilder()
                 .setAudience(Selectors.all())
-                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setPlatforms(PlatformData.of(Platform.IOS))
                 .setNotification(Notifications.alert("Foo"))
                 .build();
 
@@ -131,7 +129,7 @@ public class APIClientTest {
             // DeviceType
             List<String> deviceTypeData = (List<String>)result.get("device_types");
             assertTrue(deviceTypeData.get(0).equals("ios"));
-            assertEquals(DeviceType.find(deviceTypeData.get(0)).get(), DeviceType.IOS);
+            assertEquals(Platform.find(deviceTypeData.get(0)).get(), Platform.IOS);
 
             // Notification
             Map<String, String> notification =
@@ -309,7 +307,7 @@ public class APIClientTest {
 
         PushPayload pushPayload = PushPayload.newBuilder()
                                          .setAudience(Selectors.all())
-                                         .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                                         .setPlatforms(PlatformData.of(Platform.IOS))
                                          .setNotification(Notifications.alert("Foo"))
                                          .build();
 
@@ -380,7 +378,7 @@ public class APIClientTest {
 
         PushPayload payload = PushPayload.newBuilder()
                                          .setAudience(Selectors.all())
-                                         .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                                         .setPlatforms(PlatformData.of(Platform.IOS))
                                          .setNotification(Notifications.alert("Foo"))
                                          .build();
 

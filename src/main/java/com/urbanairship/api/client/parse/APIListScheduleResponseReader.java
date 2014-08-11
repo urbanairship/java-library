@@ -4,7 +4,7 @@ package com.urbanairship.api.client.parse;
 import com.urbanairship.api.client.APIListScheduleResponse;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
-import com.urbanairship.api.schedule.model.ScheduleResponseObject;
+import com.urbanairship.api.schedule.model.SchedulePayload;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.type.TypeReference;
 
@@ -21,7 +21,7 @@ public class APIListScheduleResponseReader implements JsonObjectReader<APIListSc
     public void readCount(JsonParser jsonParser) throws IOException { builder.setCount(jsonParser.readValueAs(Number.class).intValue()); }
     public void readTotalCount(JsonParser jsonParser) throws IOException { builder.setTotalCount(jsonParser.readValueAs(Number.class).intValue()); }
     public void readNextPage(JsonParser jsonParser) throws IOException { builder.setNextPage(jsonParser.readValueAs(String.class)); }
-    public void readListScheduleResponse(JsonParser jsonParser) throws IOException { builder.setSchedule((List<ScheduleResponseObject>) jsonParser.readValueAs(new TypeReference<List<ScheduleResponseObject>>() {})); }
+    public void readListScheduleResponse(JsonParser jsonParser) throws IOException { builder.setSchedule((List<SchedulePayload>) jsonParser.readValueAs(new TypeReference<List<SchedulePayload>>() {})); }
 
     @Override
     public APIListScheduleResponse validateAndBuild() throws IOException {

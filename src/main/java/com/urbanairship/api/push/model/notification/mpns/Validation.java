@@ -1,7 +1,3 @@
-/*
- * Copyright 2013 Urban Airship and Contributors
- */
-
 package com.urbanairship.api.push.model.notification.mpns;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -14,7 +10,7 @@ public class Validation
     public static final int MAX_HOST_LENGTH = 256;
     public static final String COLOR_PREFIX = "#FF";
     public static final String PATH_PREFIX = "/";
-    public static final String HTTP_PREFIX = "client://";
+    public static final String HTTP_PREFIX = "http://";
 
 
     public static void validateStringValue(String value, String fieldname) {

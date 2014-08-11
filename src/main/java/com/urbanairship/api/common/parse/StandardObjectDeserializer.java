@@ -1,7 +1,3 @@
-/*
- * Copyright 2013 Urban Airship and Contributors
- */
-
 package com.urbanairship.api.common.parse;
 
 import com.google.common.base.Optional;
@@ -9,14 +5,14 @@ import com.google.common.base.Supplier;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.DeserializationContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 
 public class StandardObjectDeserializer<T, R extends JsonObjectReader<T>> {
 
-    private static final Logger log = LoggerFactory.getLogger("com.urbanairship.api");
+    private static final Logger log = LogManager.getLogger(StandardObjectDeserializer.class);
     private final FieldParserRegistry<T, R> registry;
     private final Supplier<R> readerSupplier;
 
@@ -34,7 +30,7 @@ public class StandardObjectDeserializer<T, R extends JsonObjectReader<T>> {
         R reader = readerSupplier.get();
         while (token != null && token != JsonToken.END_OBJECT) {
             if (token != JsonToken.FIELD_NAME) {
-               throw new APIParsingException(String.format("Parsing of json failed. Expected to be at field name token but was %s", token.name()));
+                APIParsingException.raise("Parsing of json failed.  Expected to be at field name token but was " + token.name(), jp);
             }
 
             String name = jp.getCurrentName();

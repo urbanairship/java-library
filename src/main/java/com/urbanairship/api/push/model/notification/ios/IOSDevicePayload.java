@@ -1,26 +1,20 @@
-/*
- * Copyright 2013 Urban Airship and Contributors
- */
-
 package com.urbanairship.api.push.model.notification.ios;
 
 import com.urbanairship.api.push.model.PushModelObject;
-import com.urbanairship.api.push.model.DeviceType;
+import com.urbanairship.api.push.model.Platform;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 
-/**
- * IOSDevicePayload for iOS specific push messages.
- */
 public final class IOSDevicePayload extends PushModelObject implements DevicePayloadOverride {
 
-    private final Optional<IOSAlertData> alert;
-    private final Optional<ImmutableMap<String, String>> extra;
-    private final Optional<String> sound;
-    private final Optional<IOSBadgeData> badge;
-    private final Optional<Boolean> contentAvailable;
+    private Optional<IOSAlertData> alert;
+    private Optional<ImmutableMap<String, String>> extra;
+    private Optional<String> sound;
+    private Optional<IOSBadgeData> badge;
+    private Optional<Boolean> contentAvailable;
 
     private IOSDevicePayload(Optional<IOSAlertData> alert,
                              Optional<String> sound,
@@ -34,68 +28,36 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         this.extra = extra;
     }
 
-    /**
-     * Get an IOSPayloadBuilder
-     * @return IOSPayloadBuilder
-     */
     public static Builder newBuilder() {
         return new Builder();
     }
 
-    /**
-     * Get the deviceType.
-     * @return deviceType
-     */
     @Override
-    public DeviceType getDeviceType() {
-        return DeviceType.IOS;
+    public Platform getPlatform() {
+        return Platform.IOS;
     }
 
-    /**
-     * Get the alert if present.
-     * @return alert
-     */
     @Override
     public Optional<String> getAlert() {
         return alert.isPresent() ? alert.get().getBody() : Optional.<String>absent();
     }
 
-    /**
-     * Get the IOSAlertData
-     * @return IOSAlertData
-     */
     public Optional<IOSAlertData> getAlertData() {
         return alert;
     }
 
-    /**
-     * Get the sound file name
-     * @return sound file name
-     */
     public Optional<String> getSound() {
         return sound;
     }
 
-    /**
-     * Get IOSBadgeData
-     * @return IOSBadgeData
-     */
     public Optional<IOSBadgeData> getBadge() {
         return badge;
     }
 
-    /**
-     * Get the content available boolean value
-     * @return content available
-     */
     public Optional<Boolean> getContentAvailable() {
         return contentAvailable;
     }
 
-    /**
-     * Get a Map of the extra key value pairs
-     * @return key value pairs
-     */
     public Optional<ImmutableMap<String, String>> getExtra() {
         return extra;
     }
@@ -158,14 +120,6 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
         private Builder() { }
 
-        /**
-         * Create an IOSAlertData object with the given alert string. This is a
-         * shortcut for setting an alert data object when no additional iOS
-         * APNS payload options are needed.
-         *
-         * @param alert String alert
-         * @return Builder
-         */
         public Builder setAlert(String alert) {
             this.alert = IOSAlertData.newBuilder()
                 .setBody(alert)
@@ -173,54 +127,26 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
             return this;
         }
 
-        /**
-         * Set the IOSAlertData object.
-         * @param alert IOSAlertData
-         * @return Builder
-         */
         public Builder setAlert(IOSAlertData alert) {
             this.alert = alert;
             return this;
         }
 
-        /**
-         * Set the filename for the sound. A matching sound file that meets
-         * Apple requirements needs to reside on the device.
-         * @param sound Sound file name
-         * @return Builder
-         */
         public Builder setSound(String sound) {
             this.sound = sound;
             return this;
         }
 
-        /**
-         * Set the badge data.
-         * @param badge IOSBadgeData
-         * @return Builder
-         */
         public Builder setBadge(IOSBadgeData badge) {
             this.badge = badge;
             return this;
         }
 
-        /**
-         * Set the flag indicating content availability.
-         * @param value Boolean for content availability.
-         * @return Builder
-         */
         public Builder setContentAvailable(boolean value) {
             this.contentAvailable = value;
             return this;
         }
 
-        /**
-         * Add an extra key value pair to the notification payload. Maximum
-         * payload is 256 bytes.
-         * @param key String key
-         * @param value String value
-         * @return Builder
-         */
         public Builder addExtraEntry(String key, String value) {
             if (extra == null) {
                 extra = ImmutableMap.builder();
@@ -229,11 +155,6 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
             return this;
         }
 
-        /**
-         * Add key value pairs to payload. Maximum payload is 256 bytes.
-         * @param entries Map of key value pairs
-         * @return Builder.
-         */
         public Builder addAllExtraEntries(Map<String, String> entries) {
             if (extra == null) {
                 extra = ImmutableMap.builder();
@@ -242,10 +163,6 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
             return this;
         }
 
-        /**
-         * Build IOSDevicePayload
-         * @return IOSDevicePayload
-         */
         public IOSDevicePayload build() {
             // Yes, empty payloads are valid (for Passes)
             return new IOSDevicePayload(Optional.fromNullable(alert),

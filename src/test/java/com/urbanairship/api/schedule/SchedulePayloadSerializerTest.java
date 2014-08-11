@@ -1,8 +1,6 @@
 package com.urbanairship.api.schedule;
 
-import com.urbanairship.api.push.model.DeviceType;
-import com.urbanairship.api.push.model.DeviceTypeData;
-import com.urbanairship.api.push.model.PushPayload;
+import com.urbanairship.api.push.model.*;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.parse.PushObjectMapper;
@@ -24,7 +22,7 @@ public class SchedulePayloadSerializerTest {
 
         PushPayload pushPayload = PushPayload.newBuilder()
                 .setAudience(Selectors.tag("tag"))
-                .setDeviceTypes(DeviceTypeData.newBuilder().addDeviceType(DeviceType.IOS).build())
+                .setPlatforms(PlatformData.of(Platform.IOS))
                 .setNotification(Notification.newBuilder().setAlert("alert").build())
                 .build();
         SchedulePayload schedulePayload = SchedulePayload.newBuilder()

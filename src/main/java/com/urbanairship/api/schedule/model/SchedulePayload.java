@@ -1,157 +1,141 @@
-/*
- * Copyright 2013 Urban Airship and Contributors
- */
-
 package com.urbanairship.api.schedule.model;
 
-import com.google.common.base.Objects;
-import com.urbanairship.api.push.model.PushModelObject;
-import com.urbanairship.api.push.model.PushPayload;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Sets;
+import com.urbanairship.api.push.model.PushModelObject;
+import com.urbanairship.api.push.model.PushPayload;
 import org.apache.commons.lang.StringUtils;
 
-/**
- * Class representing a schedule payload. When the schedule fires, the
- * PushPayload will be sent.
- */
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 public class SchedulePayload extends PushModelObject {
 
-    private final Optional<String> url;
     private final Schedule schedule;
+    private final Optional<String> url;
     private final Optional<String> name;
     private final PushPayload pushPayload;
+    private Set<String> pushIds;
 
-    private SchedulePayload(String url, Schedule schedule, String name, PushPayload pushPayload) {
-        this.url = Optional.fromNullable(url);
+    private SchedulePayload(Schedule schedule, String url, String name, PushPayload pushPayload, Set<String> pushIds) {
         this.schedule = schedule;
+        this.url = Optional.fromNullable(url);
         this.name = Optional.fromNullable(name);
         this.pushPayload = pushPayload;
+        this.pushIds = pushIds;
     }
 
-    /**
-     * Get the url
-     * @return url
-     */
-    public Optional<String> getUrl() {
-        return url;
-    }
-
-    /**
-     * Get the schedule
-     * @return Schedule
-     */
     public Schedule getSchedule() {
         return schedule;
     }
 
-    /**
-     * Get the schedule name. This is optional.
-     * @return Optional<<T>String</T>>
-     */
+    public Optional<String> getUrl () {
+        return url;
+    }
+
     public Optional<String> getName () {
         return name;
     }
 
-    /**
-     * Get the push payload
-     * @return PushPayload
-     */
     public PushPayload getPushPayload() {
         return pushPayload;
     }
 
+    public Set<String> getPushIds() {
+        return pushIds;
+    }
 
-    /**
-     * SchedulePayload Builder
-     * @return Builder
-     */
-    public static Builder newBuilder() {
-        return new Builder();
+    // yes, we want this to be mutable. push ids are set on the model object after the request payload is deserialized
+    public void addPushId(String pushId) {
+        pushIds.add(pushId);
+    }
+
+    public void addAllPushIds(Collection<String> pushIds) {
+        this.pushIds.addAll(pushIds);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SchedulePayload that = (SchedulePayload) o;
+
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (pushIds != null ? !pushIds.equals(that.pushIds) : that.pushIds != null) return false;
+        if (!pushPayload.equals(that.pushPayload)) return false;
+        if (!schedule.equals(that.schedule)) return false;
+        if (url != null ? !url.equals(that.url) : that.url != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(url, schedule, name, pushPayload);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        final SchedulePayload other = (SchedulePayload) obj;
-        return Objects.equal(this.url, other.url) && Objects.equal(this.schedule, other.schedule) && Objects.equal(this.name, other.name) && Objects.equal(this.pushPayload, other.pushPayload);
+        int result = schedule.hashCode();
+        result = 31 * result + (url != null ? url.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + pushPayload.hashCode();
+        result = 31 * result + (pushIds != null ? pushIds.hashCode() : 0);
+        return result;
     }
 
     @Override
     public String toString() {
         return "SchedulePayload{" +
-                "url=" + url +
-                ", schedule=" + schedule +
+                "schedule=" + schedule +
+                ", url=" + url +
                 ", name=" + name +
                 ", pushPayload=" + pushPayload +
+                ", pushIds=" + pushIds +
                 '}';
     }
 
-    /**
-     * SchedulePayload Builder
-     */
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
     public static class Builder {
-        private String url = null;
         private Schedule schedule = null;
+        private String url = null;
         private String name = null;
         private PushPayload pushPayload = null;
+        private HashSet<String > pushIds = Sets.newHashSet();
 
         private Builder() { }
 
-        /**
-         * Set the schedule for this payload.
-         * @param url String
-         * @return Builder
-         */
-        public Builder setUrl(String url) {
-            this.url = url;
-            return this;
-        }
-
-        /**
-         * Set the schedule for this payload.
-         * @param schedule Schedule
-         * @return Builder
-         */
         public Builder setSchedule(Schedule schedule) {
             this.schedule = schedule;
             return this;
         }
 
-        /**
-         * Set the schedule name.
-         * @param name name of schedule
-         * @return Builder
-         */
+        public Builder setUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
         public Builder setName(String name) {
             this.name = name;
             return this;
         }
 
-        /**
-         * Set the push payload that will be delivered when the schedule fires.
-         * @param pushPayload Payload to send
-         * @return Builder
-         */
         public Builder setPushPayload(PushPayload pushPayload) {
             this.pushPayload = pushPayload;
             return this;
         }
 
-        /**
-         * Build a SchedulePayload
-         * @return SchedulePayload
-         */
+        public Builder addPushId(String pushId) {
+            this.pushIds.add(pushId);
+            return this;
+        }
+
+        public Builder addAllPushIds(Collection<String> pushIds) {
+            this.pushIds.addAll(pushIds);
+            return this;
+        }
+
         public SchedulePayload build() {
             Preconditions.checkNotNull(schedule, "'schedule' must be set");
             Preconditions.checkNotNull(pushPayload, "'audience' must be set");
@@ -159,7 +143,7 @@ public class SchedulePayload extends PushModelObject {
                 Preconditions.checkArgument(StringUtils.isNotBlank(name), "'name' must be a non-blank string");
             }
 
-            return new SchedulePayload(url, schedule, name, pushPayload);
+            return new SchedulePayload(schedule, url, name, pushPayload, pushIds);
         }
     }
 }

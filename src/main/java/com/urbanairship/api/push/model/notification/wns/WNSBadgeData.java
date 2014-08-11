@@ -1,7 +1,3 @@
-/*
- * Copyright 2013 Urban Airship and Contributors
- */
-
 package com.urbanairship.api.push.model.notification.wns;
 
 import com.google.common.base.Optional;
@@ -22,7 +18,7 @@ public class WNSBadgeData {
         ERROR,
         ATTENTION;
 
-        private final String id;
+        private String id;
 
         Glyph() {
             id = name().toLowerCase().replace('_', '-');

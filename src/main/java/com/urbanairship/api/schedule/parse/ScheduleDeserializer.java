@@ -1,7 +1,3 @@
-/*
- * Copyright 2013 Urban Airship and Contributors
- */
-
 package com.urbanairship.api.schedule.parse;
 
 import com.google.common.base.Supplier;
@@ -20,14 +16,14 @@ import java.io.IOException;
 public class ScheduleDeserializer extends JsonDeserializer<Schedule> {
 
     private static final FieldParserRegistry<Schedule, ScheduleReader> FIELD_PARSERS = new MapFieldParserRegistry<Schedule, ScheduleReader>(
-        ImmutableMap.<String, FieldParser<ScheduleReader>>builder()
-            .put("scheduled_time", new FieldParser<ScheduleReader>() {
-                @Override
-                public void parse(ScheduleReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readScheduledTime(jsonParser);
-                }
-            })
-            .build()
+            ImmutableMap.<String, FieldParser<ScheduleReader>>builder()
+                    .put("scheduled_time", new FieldParser<ScheduleReader>() {
+                        @Override
+                        public void parse(ScheduleReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readScheduledTime(jsonParser);
+                        }
+                    })
+                    .build()
     );
 
     public static final ScheduleDeserializer INSTANCE = new ScheduleDeserializer();
@@ -36,13 +32,13 @@ public class ScheduleDeserializer extends JsonDeserializer<Schedule> {
 
     public ScheduleDeserializer() {
         deserializer = new StandardObjectDeserializer<Schedule, ScheduleReader>(
-            FIELD_PARSERS,
-            new Supplier<ScheduleReader>() {
-                @Override
-                public ScheduleReader get() {
-                    return new ScheduleReader();
+                FIELD_PARSERS,
+                new Supplier<ScheduleReader>() {
+                    @Override
+                    public ScheduleReader get() {
+                        return new ScheduleReader();
+                    }
                 }
-            }
         );
     }
 

@@ -1,11 +1,7 @@
-/*
- * Copyright 2013 Urban Airship and Contributors
- */
-
 package com.urbanairship.api.push.model.notification;
 
 import com.urbanairship.api.push.model.PushModelObject;
-import com.urbanairship.api.push.model.DeviceType;
+import com.urbanairship.api.push.model.Platform;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
@@ -13,72 +9,49 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 
 import java.util.Map;
+import java.util.Set;
 
 public final class Notification extends PushModelObject {
 
     private final Optional<String> alert;
-    private final ImmutableMap<NotificationPayloadOverrideKey, ? extends DevicePayloadOverride> deviceTypePayloadOverrides;
+    private final ImmutableMap<NotificationPayloadOverrideKey, ? extends DevicePayloadOverride> platformPayloadOverrides;
 
-    /**
-     * New Notification Builder
-     * @return Builder
-     */
     public static Builder newBuilder() {
         return new Builder();
     }
 
-    private Notification(Optional<String> alert,
-                        ImmutableMap<NotificationPayloadOverrideKey, ? extends DevicePayloadOverride> deviceTypePayloadOverrides) {
+    public Notification(Optional<String> alert,
+                        ImmutableMap<NotificationPayloadOverrideKey, ? extends DevicePayloadOverride> platformPayloadOverrides) {
         this.alert = alert;
-        this.deviceTypePayloadOverrides = deviceTypePayloadOverrides;
+        this.platformPayloadOverrides = platformPayloadOverrides;
     }
 
-    /**
-     * Get the alert for this notification. This is optional if there are
-     * deviceType overrides
-     * @return alert
-     */
     public Optional<String> getAlert() {
         return alert;
     }
 
-    /**
-     * Get the deviceType overrides for this notification. These are optional
-     * @return deviceType overrides
-     */
-    public Optional<ImmutableSet<DeviceType>> getOverrideDeviceTypes() {
-        if (deviceTypePayloadOverrides == null || deviceTypePayloadOverrides.size() == 0 ) {
-            return Optional.<ImmutableSet<DeviceType>>absent();
+    public Optional<ImmutableSet<Platform>> getOverridePlatforms() {
+        if (platformPayloadOverrides == null || platformPayloadOverrides.size() == 0 ) {
+            return Optional.<ImmutableSet<Platform>>absent();
         } else {
-            ImmutableSet.Builder<DeviceType> builder = ImmutableSet.<DeviceType>builder();
-            for (NotificationPayloadOverrideKey key : deviceTypePayloadOverrides.keySet()) {
-                builder.add(key.getDeviceType());
+            ImmutableSet.Builder<Platform> builder = ImmutableSet.<Platform>builder();
+            for (NotificationPayloadOverrideKey key : platformPayloadOverrides.keySet()) {
+                builder.add(key.getPlatform());
             }
             return Optional.of(builder.build());
         }
     }
 
-    /**
-     * Return the DeviceType override for this Notification for the given key if
-     * set.
-     * @param deviceType DeviceType of the override
-     * @param overrideType Class of the override
-     * @return override or Optional.absent()
-     */
     @SuppressWarnings("unchecked")
-    public <O extends DevicePayloadOverride> Optional<O> getDeviceTypeOverride(DeviceType deviceType, Class<O> overrideType) {
+    public <O extends DevicePayloadOverride> Optional<O> getPlatformOverride(Platform platform, Class<O> overrideType) {
         // Safe because the builder enforces the tie between the Class key and the value in the map
-        return Optional.fromNullable((O) deviceTypePayloadOverrides.get(new NotificationPayloadOverrideKey(deviceType, overrideType)));
+        return Optional.fromNullable((O) platformPayloadOverrides.get(new NotificationPayloadOverrideKey(platform, overrideType)));
     }
 
-    /**
-     * Returna a map of all the deviceType overrides for the Notification.
-     * @return overrides
-     */
-    public Map<DeviceType, DevicePayloadOverride> getDeviceTypePayloadOverrides() {
-        Map<DeviceType, DevicePayloadOverride> overrides = Maps.newHashMap();
-        for (Map.Entry<NotificationPayloadOverrideKey, ? extends DevicePayloadOverride> entry : deviceTypePayloadOverrides.entrySet()) {
-            overrides.put(entry.getKey().getDeviceType(), entry.getValue());
+    public Map<Platform, DevicePayloadOverride> getPlatformPayloadOverrides() {
+        Map<Platform, DevicePayloadOverride> overrides = Maps.newHashMap();
+        for (Map.Entry<NotificationPayloadOverrideKey, ? extends DevicePayloadOverride> entry : platformPayloadOverrides.entrySet()) {
+            overrides.put(entry.getKey().getPlatform(), entry.getValue());
         }
 
         return overrides;
@@ -98,8 +71,8 @@ public final class Notification extends PushModelObject {
         if (alert != null ? !alert.equals(that.alert) : that.alert != null) {
             return false;
         }
-        if (deviceTypePayloadOverrides != null ? !deviceTypePayloadOverrides.equals(that.deviceTypePayloadOverrides)
-                : that.deviceTypePayloadOverrides != null) {
+        if (platformPayloadOverrides != null ? !platformPayloadOverrides.equals(that.platformPayloadOverrides)
+                : that.platformPayloadOverrides != null) {
             return false;
         }
 
@@ -109,7 +82,7 @@ public final class Notification extends PushModelObject {
     @Override
     public int hashCode() {
         int result = alert != null ? alert.hashCode() : 0;
-        result = 31 * result + (deviceTypePayloadOverrides != null ? deviceTypePayloadOverrides.hashCode() : 0);
+        result = 31 * result + (platformPayloadOverrides != null ? platformPayloadOverrides.hashCode() : 0);
         return result;
     }
 
@@ -117,49 +90,32 @@ public final class Notification extends PushModelObject {
     public String toString() {
         return "Notification{" +
                 "alert=" + alert +
-                ", deviceTypePayloadOverrides=" + deviceTypePayloadOverrides +
+                ", platformPayloadOverrides=" + platformPayloadOverrides +
                 '}';
     }
 
     public static class Builder {
 
-        private final ImmutableMap.Builder<NotificationPayloadOverrideKey, DevicePayloadOverride> deviceTypePayloadOverridesBuilder = ImmutableMap.builder();
+        private final ImmutableMap.Builder<NotificationPayloadOverrideKey, DevicePayloadOverride> platformPayloadOverridesBuilder = ImmutableMap.builder();
 
         private String alert = null;
 
         private Builder() { }
 
-        /**
-         * Set an alert for this Notification. If a DeviceType override is included,
-         * this alert is optional.
-         * @param alert The alert
-         * @return Builder
-         */
         public Builder setAlert(String alert) {
             this.alert = alert;
             return this;
         }
 
-        /**
-         * Add a deviceType override. There is a deviceType override for each supported
-         * deviceType that provide options specific to that deviceType.
-         * @param deviceType Specific deviceType
-         * @param payload Payload for the deviceType
-         * @return Builder
-         */
-        public <P extends DevicePayloadOverride> Builder addDeviceTypeOverride(DeviceType deviceType, P payload) {
-            this.deviceTypePayloadOverridesBuilder.put(new NotificationPayloadOverrideKey(deviceType, payload.getClass()), payload);
+        public <P extends DevicePayloadOverride> Builder addPlatformOverride(Platform platform, P payload) {
+            this.platformPayloadOverridesBuilder.put(new NotificationPayloadOverrideKey(platform, payload.getClass()), payload);
             return this;
         }
 
-        /**
-         * Build a Notification
-         * @return Notification
-         */
         public Notification build() {
-            ImmutableMap<NotificationPayloadOverrideKey, DevicePayloadOverride> overrides = deviceTypePayloadOverridesBuilder.build();
+            ImmutableMap<NotificationPayloadOverrideKey, DevicePayloadOverride> overrides = platformPayloadOverridesBuilder.build();
             Preconditions.checkArgument(alert != null || !overrides.isEmpty(),
-                    "Must either specify default notification keys or at least a single deviceType override");
+                    "Must either specify default notification keys or at least a single platform override");
 
             return new Notification(
                 Optional.fromNullable(alert),

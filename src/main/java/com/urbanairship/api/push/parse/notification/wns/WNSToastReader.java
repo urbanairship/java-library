@@ -1,0 +1,48 @@
+package com.urbanairship.api.push.parse.notification.wns;
+
+import com.urbanairship.api.push.model.notification.wns.WNSToastData;
+import com.urbanairship.api.push.model.notification.Notification;
+import com.urbanairship.api.push.model.Platform;
+import com.urbanairship.api.push.parse.*;
+import com.urbanairship.api.common.parse.*;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.type.TypeReference;
+import org.codehaus.jackson.map.DeserializationContext;
+import org.joda.time.DateTime;
+
+import java.io.IOException;
+import java.util.Set;
+
+public class WNSToastReader implements JsonObjectReader<WNSToastData> {
+
+    private final WNSToastData.Builder builder;
+    private final WNSBindingDeserializer bindingDS;
+    private final WNSAudioDeserializer audioDS;
+
+    public WNSToastReader(WNSBindingDeserializer bindingDS, WNSAudioDeserializer audioDS) {
+        this.builder = WNSToastData.newBuilder();
+        this.bindingDS = bindingDS;
+        this.audioDS = audioDS;
+    }
+
+    public void readBinding(JsonParser parser, DeserializationContext context) throws IOException {
+        builder.setBinding(bindingDS.deserialize(parser, context));
+    }
+
+    public void readDuration(JsonParser parser, DeserializationContext context) throws IOException {
+        builder.setDuration(WNSDurationDeserializer.INSTANCE.deserialize(parser, context));
+    }
+
+    public void readAudio(JsonParser parser, DeserializationContext context) throws IOException {
+        builder.setAudio(audioDS.deserialize(parser, context));
+    }
+
+    @Override
+    public WNSToastData validateAndBuild() throws IOException {
+        try {
+            return builder.build();
+        } catch (Exception e) {
+            throw new APIParsingException("Toast must contain a valid binding.");
+        }
+    }
+}

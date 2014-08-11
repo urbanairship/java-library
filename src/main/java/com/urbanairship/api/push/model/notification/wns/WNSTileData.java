@@ -1,7 +1,3 @@
-/*
- * Copyright 2013 Urban Airship and Contributors
- */
-
 package com.urbanairship.api.push.model.notification.wns;
 
 import com.google.common.collect.ImmutableList;
@@ -49,12 +45,13 @@ public class WNSTileData {
 
     @Override
     public int hashCode() {
-        return (bindings != null ? bindings.hashCode() : 0);
+        int result = (bindings != null ? bindings.hashCode() : 0);
+        return result;
     }
 
     public static class Builder {
 
-        private final ImmutableList.Builder<WNSBinding> bindingsBuilder = ImmutableList.builder();
+        private ImmutableList.Builder<WNSBinding> bindingsBuilder = ImmutableList.builder();
 
         private Builder() { }
 

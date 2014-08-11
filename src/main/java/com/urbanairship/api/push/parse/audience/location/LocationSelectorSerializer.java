@@ -1,7 +1,3 @@
-/*
- * Copyright 2013 Urban Airship and Contributors
- */
-
 package com.urbanairship.api.push.parse.audience.location;
 
 import com.urbanairship.api.push.model.audience.location.LocationSelector;

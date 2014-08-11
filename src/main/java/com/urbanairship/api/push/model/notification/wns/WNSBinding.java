@@ -1,7 +1,3 @@
-/*
- * Copyright 2013 Urban Airship and Contributors
- */
-
 package com.urbanairship.api.push.model.notification.wns;
 
 import com.google.common.base.Optional;
@@ -9,14 +5,14 @@ import com.google.common.collect.ImmutableList;
 import static com.google.common.base.Preconditions.checkArgument;
 
 public class WNSBinding {
-    private final String template;
-    private final Optional<Integer> version;
-    private final Optional<String> fallback;
-    private final Optional<String> lang;
-    private final Optional<String> baseUri;
-    private final Optional<Boolean> addImageQuery;
-    private final Optional<ImmutableList<String>> images;
-    private final Optional<ImmutableList<String>> text;
+    private String template;
+    private Optional<Integer> version;
+    private Optional<String> fallback;
+    private Optional<String> lang;
+    private Optional<String> baseUri;
+    private Optional<Boolean> addImageQuery;
+    private Optional<ImmutableList<String>> images;
+    private Optional<ImmutableList<String>> text;
 
     private WNSBinding(String template,
                        Optional<Integer> version,
@@ -158,8 +154,8 @@ public class WNSBinding {
             return this;
         }
 
-        public Builder setVersion(Integer value) {
-            this.version = value;
+        public Builder setVersion(int value) {
+            this.version = new Integer(value);
             return this;
         }
 
@@ -179,7 +175,7 @@ public class WNSBinding {
         }
 
         public Builder setAddImageQuery(boolean value) {
-            this.addImageQuery = value;
+            this.addImageQuery = new Boolean(value);
             return this;
         }
 

@@ -1,7 +1,3 @@
-/*
- * Copyright 2013 Urban Airship and Contributors
- */
-
 package com.urbanairship.api.push.model.audience.location;
 
 import com.urbanairship.api.push.model.PushModelObject;
@@ -23,34 +19,18 @@ public final class LocationIdentifier extends PushModelObject {
         this.alias = alias;
     }
 
-    /**
-     * New LocationIdentifier Builder
-     * @return Builder
-     */
     public static Builder newBuilder() {
         return new Builder();
     }
 
-    /**
-     * Returns true if this LocationIdentifier is an alias
-     * @return true if alias, false if id
-     */
     public boolean isAlias() {
         return alias != null && alias.isPresent();
     }
 
-    /**
-     * Get the LocationAlias. This is optional
-     * @return Optional<<T>LocationAlias</T>>
-     */
     public Optional<LocationAlias> getAlias() {
         return alias;
     }
 
-    /**
-     * Get the id. This is optional.
-     * @return Optional<<T>String</T>> id
-     */
     public Optional<String> getId() {
         return id;
     }
@@ -66,15 +46,18 @@ public final class LocationIdentifier extends PushModelObject {
 
         LocationIdentifier that = (LocationIdentifier) o;
 
-        if (alias.isPresent() && that.getAlias().isPresent()){
-            return (alias.hashCode() == that.getAlias().hashCode());
+        if (alias != that.alias) {
+            return false;
         }
-        else if (id.isPresent() && that.getId().isPresent()){
-            return (id.hashCode() == that.getId().hashCode());
+        if (id != null ? !id.equals(that.id) : that.id != null) {
+            return false;
         }
-        else return false;
-    }
+        if (alias != null ? !alias.equals(that.alias) : that.alias != null) {
+            return false;
+        }
 
+        return true;
+    }
 
     @Override
     public int hashCode() {
@@ -91,39 +74,22 @@ public final class LocationIdentifier extends PushModelObject {
                 '}';
     }
 
-    /**
-     * LocationIdentifier Builder
-     */
     public static class Builder {
         private String id;
         private LocationAlias alias;
 
         private Builder() { }
 
-        /**
-         * Set the id
-         * @param value id value
-         * @return Builder
-         */
         public Builder setId(String value) {
             id = value;
             return this;
         }
 
-        /**
-         * Set the location alias.
-         * @param value LocationAlias
-         * @return Builder
-         */
         public Builder setAlias(LocationAlias value) {
             alias = value;
             return this;
         }
 
-        /**
-         * Build a new LocationIdentifier
-         * @return LocationIdentifier
-         */
         public LocationIdentifier build() {
             Preconditions.checkArgument(id != null || alias != null, "Must have only one of 'id' or an alias");
             return new LocationIdentifier(Optional.fromNullable(id),

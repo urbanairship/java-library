@@ -1,7 +1,3 @@
-/*
- * Copyright 2013 Urban Airship and Contributors
- */
-
 package com.urbanairship.api.push.model.notification.richpush;
 
 import com.google.common.base.Optional;
@@ -14,11 +10,11 @@ public final class RichPushMessage {
     public static final String CONTENT_TYPE_DEFAULT = "text/html";
     public static final String CONTENT_ENCODING_DEFAULT = "utf8";
 
-    private final String title;
-    private final String body;
-    private final String contentType;
-    private final String contentEncoding;
-    private final Optional<ImmutableMap<String, String>> extra;
+    private String title;
+    private String body;
+    private String contentType;
+    private String contentEncoding;
+    private Optional<ImmutableMap<String, String>> extra;
 
     private RichPushMessage(String title,
                             String body,

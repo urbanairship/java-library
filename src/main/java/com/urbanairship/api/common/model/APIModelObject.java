@@ -1,7 +1,3 @@
-/*
- * Copyright 2013 Urban Airship and Contributors
- */
-
 package com.urbanairship.api.common.model;
 
 import com.urbanairship.api.common.parse.CommonObjectMapper;
@@ -17,12 +13,13 @@ public abstract class APIModelObject {
     }
 
     protected static String toJSON(Exception e) {
-        StringBuilder sb =  new StringBuilder()
+        return new StringBuffer()
             .append("{ \"exception\" : \"")
             .append(e.getClass().getName())
             .append("\", \"message\" : \"")
             .append(e.getMessage())
-            .append("\" }");
-        return sb.toString();
+            .append("\" }")
+            .toString();
+
     }
 }

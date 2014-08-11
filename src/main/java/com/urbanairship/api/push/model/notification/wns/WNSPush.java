@@ -1,7 +1,3 @@
-/*
- * Copyright 2013 Urban Airship and Contributors
- */
-
 package com.urbanairship.api.push.model.notification.wns;
 
 import com.google.common.base.Optional;
@@ -33,7 +29,7 @@ public class WNSPush
         CACHE,
         NO_CACHE;
 
-        private final String id;
+        private String id;
 
         CachePolicy() {
             id = name().toLowerCase().replace('_', '-');
@@ -54,12 +50,12 @@ public class WNSPush
     }
 
     private final Type type;
-    private final Optional<WNSToastData> toast;
-    private final Optional<WNSTileData> tile;
-    private final Optional<WNSBadgeData> badge;
-    private final Optional<String> tag;
-    private final Optional<Integer> ttl;
-    private final Optional<CachePolicy> cachePolicy;
+    private Optional<WNSToastData> toast;
+    private Optional<WNSTileData> tile;
+    private Optional<WNSBadgeData> badge;
+    private Optional<String> tag;
+    private Optional<Integer> ttl;
+    private Optional<CachePolicy> cachePolicy;
 
     private WNSPush(Type type,
                     Optional<WNSToastData> toast,
@@ -193,8 +189,8 @@ public class WNSPush
             return this;
         }
 
-        public Builder setTtl(Integer value) {
-            this.ttl = value;
+        public Builder setTtl(int value) {
+            this.ttl = new Integer(ttl);
             return this;
         }
 
@@ -212,7 +208,7 @@ public class WNSPush
             } else if (type == Type.BADGE) {
                 checkArgument(badge != null, "Must supply a value for 'badge'");
             }
-            if (ttl != null && ttl < 1) {
+            if (ttl != null && ttl.intValue() < 1) {
                 throw new IllegalArgumentException(String.format("TTL value must be a positive integer, not %d", ttl.intValue()));
             }
             return new WNSPush(type,

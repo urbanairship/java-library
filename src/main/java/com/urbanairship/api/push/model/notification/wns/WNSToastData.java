@@ -1,7 +1,3 @@
-/*
- * Copyright 2013 Urban Airship and Contributors
- */
-
 package com.urbanairship.api.push.model.notification.wns;
 
 import com.google.common.base.Optional;
@@ -26,9 +22,9 @@ public class WNSToastData {
         }
     }
 
-    private final WNSBinding binding;
-    private final Optional<Duration> duration;
-    private final Optional<WNSAudioData> audio;
+    private WNSBinding binding;
+    private Optional<Duration> duration;
+    private Optional<WNSAudioData> audio;
 
     private WNSToastData(WNSBinding binding,
                          Optional<Duration> duration,

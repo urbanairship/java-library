@@ -1,11 +1,18 @@
 package com.urbanairship.api.client;
 
-import com.urbanairship.api.schedule.model.ScheduleResponseObject;
+import com.urbanairship.api.push.model.Platform;
+import com.urbanairship.api.push.model.PlatformData;
+import com.urbanairship.api.push.model.PushPayload;
+import com.urbanairship.api.push.model.audience.Selectors;
+import com.urbanairship.api.push.model.notification.Notification;
+import com.urbanairship.api.schedule.model.Schedule;
+import com.urbanairship.api.schedule.model.SchedulePayload;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
 
+import org.joda.time.DateTime;
 import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
@@ -42,9 +49,22 @@ public class APIClientResponseTest {
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP",1,1), 200, "OK"));
 
-        ScheduleResponseObject sample = new ScheduleResponseObject();
-        sample.setUrl("http://sample.com/");
-        List<ScheduleResponseObject> samplelist = new ArrayList<ScheduleResponseObject>();
+
+        SchedulePayload sample = SchedulePayload.newBuilder()
+                                        .setSchedule(Schedule.newBuilder()
+                                                .setScheduledTimestamp(DateTime.now())
+                                                .build())
+                                        .setPushPayload(PushPayload.newBuilder()
+                                                .setAudience(Selectors.all())
+                                                .setNotification(Notification.newBuilder()
+                                                        .setAlert("Derp")
+                                                        .build())
+                                                .setPlatforms(PlatformData.of(Platform.IOS))
+                                                .build())
+                                        .setUrl("http://sample.com/")
+                                        .build();
+
+        List<SchedulePayload> samplelist = new ArrayList<SchedulePayload>();
         samplelist.add(sample);
 
         APIListScheduleResponse listScheduleResponse = APIListScheduleResponse.newBuilder()
@@ -62,6 +82,7 @@ public class APIClientResponseTest {
 
         assertTrue("APIResponse not set properly",
                 testResponse.getApiResponse().equals(listScheduleResponse));
+
     }
 
     @Test

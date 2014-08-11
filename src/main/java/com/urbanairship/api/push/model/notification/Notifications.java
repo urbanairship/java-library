@@ -1,16 +1,13 @@
-/*
- * Copyright 2013 Urban Airship and Contributors
- */
-
 package com.urbanairship.api.push.model.notification;
 
-import com.urbanairship.api.push.model.DeviceType;
-import com.urbanairship.api.push.model.DeviceTypeData;
+import com.urbanairship.api.push.model.Platform;
+import com.urbanairship.api.push.model.PlatformData;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
 import com.urbanairship.api.push.model.notification.blackberry.BlackberryDevicePayload;
 import com.urbanairship.api.push.model.notification.wns.WNSDevicePayload;
 import com.urbanairship.api.push.model.notification.mpns.MPNSDevicePayload;
+import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import com.google.common.base.Optional;
 
@@ -26,7 +23,7 @@ public class Notifications {
         Notification.Builder builder = Notification.newBuilder()
             .setAlert(text);
         for (DevicePayloadOverride override : overrides) {
-            builder.addDeviceTypeOverride(override.getDeviceType(), override);
+            builder.addPlatformOverride(override.getPlatform(), override);
         }
         return builder.build();
     }
@@ -34,15 +31,15 @@ public class Notifications {
     public static Notification notification(DevicePayloadOverride ... overrides) {
         Notification.Builder builder = Notification.newBuilder();
         for (DevicePayloadOverride override : overrides) {
-            builder.addDeviceTypeOverride(override.getDeviceType(), override);
+            builder.addPlatformOverride(override.getPlatform(), override);
         }
         return builder.build();
     }
 
-    /* Simple alert deviceType overrides */
+    /* Simple alert platform overrides */
 
-    public static DevicePayloadOverride alert(DeviceType deviceType, String text) {
-        switch (deviceType) {
+    public static DevicePayloadOverride alert(Platform platform, String text) {
+        switch (platform) {
         case IOS:
             return iosAlert(text);
         case ANDROID:
@@ -53,8 +50,10 @@ public class Notifications {
             return wnsAlert(text);
         case MPNS:
             return mpnsAlert(text);
+        case ADM:
+            return admAlert(text);
         default:
-            throw unknownDeviceType(deviceType.getIdentifier());
+            throw unknownPlatform(platform.getIdentifier());
         }
     }
 
@@ -88,21 +87,27 @@ public class Notifications {
             .build();
     }
 
-    /* DeviceType selector (device_types) */
+    public static ADMDevicePayload admAlert(String text) {
+        return ADMDevicePayload.newBuilder()
+            .setAlert(text)
+            .build();
+    }
 
-    public static DeviceTypeData deviceTypes(String ... names) {
-        DeviceTypeData.Builder deviceTypes = DeviceTypeData.newBuilder();
+    /* Platform selector (device_types) */
+
+    public static PlatformData platforms(String ... names) {
+        PlatformData.Builder platforms = PlatformData.newBuilder();
         for (String name : names) {
             if (name.equalsIgnoreCase("all")) {
-                return DeviceTypeData.all();
+                return PlatformData.all();
             }
-            Optional<DeviceType> deviceType = DeviceType.find(name);
-            if (! deviceType.isPresent()) {
-                throw unknownDeviceType(name);
+            Optional<Platform> platform = Platform.find(name);
+            if (! platform.isPresent()) {
+                throw unknownPlatform(name);
             }
-            deviceTypes.addDeviceType(deviceType.get());
+            platforms.addPlatform(platform.get());
         }
-        return deviceTypes.build();
+        return platforms.build();
     }
 
     /* Rich Push */
@@ -124,7 +129,7 @@ public class Notifications {
 
     /* Exceptions */
 
-    public static IllegalArgumentException unknownDeviceType(String name) {
-        throw new IllegalArgumentException(String.format("Unknown deviceType '%s'", name));
+    public static IllegalArgumentException unknownPlatform(String name) {
+        throw new IllegalArgumentException(String.format("Unknown platform '%s'", name));
     }
 }

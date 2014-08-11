@@ -1,7 +1,3 @@
-/*
- * Copyright 2013 Urban Airship and Contributors
- */
-
 package com.urbanairship.api.push.model.audience;
 
 import com.urbanairship.api.push.model.PushModelObject;
@@ -48,7 +44,8 @@ public class BasicSelector extends PushModelObject implements Selector  {
 
     @Override
     public int hashCode() {
-        return  (type != null ? type.hashCode() : 0);
+        int result = (type != null ? type.hashCode() : 0);
+        return result;
     }
 
     @Override

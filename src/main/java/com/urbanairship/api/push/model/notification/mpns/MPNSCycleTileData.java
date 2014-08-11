@@ -1,7 +1,3 @@
-/*
- * Copyright 2013 Urban Airship and Contributors
- */
-
 package com.urbanairship.api.push.model.notification.mpns;
 
 import com.google.common.base.Optional;
@@ -11,7 +7,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 public class MPNSCycleTileData extends MPNSTileData
 {
     private final Optional<String> smallBackgroundImage;
-    private final Optional<ImmutableList<String>> images;
+    private Optional<ImmutableList<String>> images;
 
     private MPNSCycleTileData(Optional<String> id,
                               Optional<String> title,
