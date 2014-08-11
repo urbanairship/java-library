@@ -41,6 +41,41 @@ public final class AddRemoveDeviceFromTagPayload extends PushModelObject {
         return apids;
     }
 
+    @Override
+    public String toString() {
+        return "AddRemoveDeviceFromTagPayload{" +
+                "ios_channels=" + ios_channels +
+                ", device_tokens=" + device_tokens +
+                ", device_pins=" + device_pins +
+                ", apids=" + apids +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AddRemoveDeviceFromTagPayload that = (AddRemoveDeviceFromTagPayload) o;
+
+        if (apids != null ? !apids.equals(that.apids) : that.apids != null) return false;
+        if (device_pins != null ? !device_pins.equals(that.device_pins) : that.device_pins != null) return false;
+        if (device_tokens != null ? !device_tokens.equals(that.device_tokens) : that.device_tokens != null)
+            return false;
+        if (ios_channels != null ? !ios_channels.equals(that.ios_channels) : that.ios_channels != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = ios_channels != null ? ios_channels.hashCode() : 0;
+        result = 31 * result + (device_tokens != null ? device_tokens.hashCode() : 0);
+        result = 31 * result + (device_pins != null ? device_pins.hashCode() : 0);
+        result = 31 * result + (apids != null ? apids.hashCode() : 0);
+        return result;
+    }
+
     public static class Builder {
         private AddRemoveSet ios_channels = null;
         private AddRemoveSet device_tokens = null;

@@ -28,6 +28,23 @@ public final class BatchModificationPayload extends PushModelObject {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BatchModificationPayload that = (BatchModificationPayload) o;
+
+        if (batch_object != null ? !batch_object.equals(that.batch_object) : that.batch_object != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return batch_object != null ? batch_object.hashCode() : 0;
+    }
+
     public static class Builder {
         private ImmutableSet.Builder<BatchTagSet> batch_object = null;
 

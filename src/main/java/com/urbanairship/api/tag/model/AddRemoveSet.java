@@ -35,6 +35,26 @@ public final class AddRemoveSet {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AddRemoveSet that = (AddRemoveSet) o;
+
+        if (add != null ? !add.equals(that.add) : that.add != null) return false;
+        if (remove != null ? !remove.equals(that.remove) : that.remove != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = add != null ? add.hashCode() : 0;
+        result = 31 * result + (remove != null ? remove.hashCode() : 0);
+        return result;
+    }
+
 
     public static class Builder {
         private ImmutableSet.Builder<String> add = null;
