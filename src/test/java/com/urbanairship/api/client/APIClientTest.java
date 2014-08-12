@@ -47,25 +47,72 @@ public class APIClientTest {
 
 
     @Test(expected = IllegalArgumentException.class)
-    public void testAPIClientThrowsForNoAppKey(){
+    public void testAPIClientThrowsForNoAppKey() {
         @SuppressWarnings("UnusedAssignment") APIClient apiClient = APIClient.newBuilder().setKey("foo")
                 .build();
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testAPIClientThrowsForNoAppSecret(){
+    public void testAPIClientThrowsForNoAppSecret() {
         @SuppressWarnings("UnusedAssignment") APIClient apiClient = APIClient.newBuilder().setSecret("foo")
-                                       .build();
+                .build();
     }
 
     @Test
-    public void testAPIClientBuilder(){
+    public void testAPIClientBuilder() {
         APIClient client = APIClient.newBuilder()
                 .setKey("key")
                 .setSecret("secret")
                 .build();
         assertEquals("App key incorrect", "key", client.getAppKey());
         assertEquals("App secret incorrect", "secret", client.getAppSecret());
+        assertEquals("Default base URI incorrect", "https://go.urbanairship.com", client.getBaseURI().toString());
+        assertEquals("Default version incorrect", 3, client.getVersion());
+        assertEquals("Default connect timeout incorrect", 10000, client.getConnectTimeout());
+        assertEquals("Default socket timeout incorrect", 10000, client.getSocketTimeout());
+        assertEquals("Default stale connection check incorrect", true, client.isStaleConnectionCheck());
+
+        final String expectedToString = "APIClient" +
+                "\nAppKey:key" +
+                "\nAppSecret:secret" +
+                "\nBase URI:https://go.urbanairship.com" +
+                "\nVersion:3" +
+                "\nConnectTimeout:10000" +
+                "\nSocketTimeout:10000" +
+                "\nStaleConnectionCheck:true";
+
+        assertEquals("toString incorrect", expectedToString, client.toString());
+    }
+
+    @Test
+    public void testAPIClientBuilder_Customized() {
+        APIClient client = APIClient.newBuilder()
+                .setKey("myKey")
+                .setSecret("mySecret")
+                .setBaseURI("baseUri")
+                .setVersion(22)
+                .setConnectTimeout(30000)
+                .setSocketTimeout(35000)
+                .setStaleConnectionCheck(false)
+                .build();
+        assertEquals("App key incorrect", "myKey", client.getAppKey());
+        assertEquals("App secret incorrect", "mySecret", client.getAppSecret());
+        assertEquals("Base URI incorrect", "baseUri", client.getBaseURI().toString());
+        assertEquals("Version incorrect", 22, client.getVersion());
+        assertEquals("Connect timeout incorrect", 30000, client.getConnectTimeout());
+        assertEquals("Socket timeout incorrect", 35000, client.getSocketTimeout());
+        assertEquals("Stale connection check incorrect", false, client.isStaleConnectionCheck());
+
+        final String expectedToString = "APIClient" +
+                "\nAppKey:myKey" +
+                "\nAppSecret:mySecret" +
+                "\nBase URI:baseUri" +
+                "\nVersion:22" +
+                "\nConnectTimeout:30000" +
+                "\nSocketTimeout:35000" +
+                "\nStaleConnectionCheck:false";
+
+        assertEquals("toString incorrect", expectedToString, client.toString());
     }
 
     /* Test the following attributes of the push method on the APIClient object
@@ -78,7 +125,7 @@ public class APIClientTest {
      */
     @Test
     @SuppressWarnings("unchecked")
-    public void testPush(){
+    public void testPush() {
 
         // Setup a client and a push payload
         APIClient client = APIClient.newBuilder()
@@ -96,10 +143,10 @@ public class APIClientTest {
         // Setup a stubbed response for the server
         String pushJSON = "{\"ok\" : true,\"operation_id\" : \"df6a6b50\", \"push_ids\":[\"PushID\"]}";
         stubFor(post(urlEqualTo("/api/push/"))
-                        .willReturn(aResponse()
-                                            .withHeader(CONTENT_TYPE_KEY, "application/json")
-                                            .withBody(pushJSON)
-                                            .withStatus(201)));
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withBody(pushJSON)
+                        .withStatus(201)));
 
 
         try {
@@ -107,7 +154,7 @@ public class APIClientTest {
 
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/push/"))
-                           .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
             List<LoggedRequest> requests = findAll(postRequestedFor(
                     urlEqualTo("/api/push/")));
             // There should only be one request
@@ -118,84 +165,84 @@ public class APIClientTest {
             ObjectMapper mapper = PushObjectMapper.getInstance();
             Map<String, Object> result =
                     mapper.readValue(requestPayload,
-                                     new TypeReference<Map<String,Object>>(){});
+                            new TypeReference<Map<String, Object>>() {
+                            });
             // Audience
-            String audience = (String)result.get("audience");
+            String audience = (String) result.get("audience");
             assertTrue(audience.equals("ALL"));
 
             // DeviceType
-            List<String> deviceTypeData = (List<String>)result.get("device_types");
+            List<String> deviceTypeData = (List<String>) result.get("device_types");
             assertTrue(deviceTypeData.get(0).equals("ios"));
             assertEquals(DeviceType.find(deviceTypeData.get(0)).get(), DeviceType.IOS);
 
             // Notification
             Map<String, String> notification =
-                    (Map<String,String>)result.get("notification");
+                    (Map<String, String>) result.get("notification");
             assertTrue(notification.get("alert").equals("Foo"));
 
             // The response is tested elsewhere, just check that it exists
             assertNotNull(response);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testSchedule(){
+    public void testSchedule() {
 
         // Setup a client and a schedule payload
         APIClient client = APIClient.newBuilder()
-                                    .setBaseURI("http://localhost:8080")
-                                    .setKey("key")
-                                    .setSecret("secret")
-                                    .build();
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
 
         PushPayload pushPayload = PushPayload.newBuilder()
-                                         .setAudience(Selectors.all())
-                                         .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-                                         .setNotification(Notifications.alert("Foo"))
-                                         .build();
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setNotification(Notifications.alert("Foo"))
+                .build();
 
         DateTime dateTime = DateTime.now(DateTimeZone.UTC).plusSeconds(60);
         Schedule schedule = Schedule.newBuilder()
-                                    .setScheduledTimestamp(dateTime)
-                                    .build();
+                .setScheduledTimestamp(dateTime)
+                .build();
 
         SchedulePayload schedulePayload = SchedulePayload.newBuilder()
-                                                         .setName("Test")
-                                                         .setPushPayload(pushPayload)
-                                                         .setSchedule(schedule)
-                                                         .build();
+                .setName("Test")
+                .setPushPayload(pushPayload)
+                .setSchedule(schedule)
+                .build();
 
         // Stub out endpoint
         // Setup a stubbed response for the server
         String pushJSON = "{\"ok\" : true,\"operation_id\" : \"OpID\", \"schedule_urls\":[\"ScheduleURL\"]}";
         stubFor(post(urlEqualTo("/api/schedules/"))
-                        .willReturn(aResponse()
-                                            .withHeader(CONTENT_TYPE_KEY, APP_JSON)
-                                            .withBody(pushJSON)
-                                            .withStatus(201)));
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, APP_JSON)
+                        .withBody(pushJSON)
+                        .withStatus(201)));
 
         try {
             APIClientResponse<APIScheduleResponse> response = client.schedule(schedulePayload);
 
             // Verify components of the underlying request
             verify(postRequestedFor(urlEqualTo("/api/schedules/"))
-                           .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
             List<LoggedRequest> requests = findAll(postRequestedFor(urlEqualTo("/api/schedules/")));
             assertEquals(requests.size(), 1);
             String receivedBody = requests.get(0).getBodyAsString();
             ObjectMapper mapper = PushObjectMapper.getInstance();
             Map<String, Object> result =
                     mapper.readValue(receivedBody,
-                                     new TypeReference<Map<String, Object>>() {
-                                     });
-            String name = (String)result.get("name");
+                            new TypeReference<Map<String, Object>>() {
+                            });
+            String name = (String) result.get("name");
             assertTrue(name.equals("Test"));
             Map<String, String> scheduleMap =
-                    (Map<String,String>)result.get("schedule");
+                    (Map<String, String>) result.get("schedule");
             String dateTimeString = scheduleMap.get("scheduled_time");
 
             // Test DateTime
@@ -203,48 +250,47 @@ public class APIClientTest {
             // Server truncates milliseconds off request
             assertEquals(receivedDateTime.getMillis(), dateTime.getMillis(), 1000);
 
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception " + ex);
         }
     }
-//
+
+    //
 //    /*
 //    Validate is the exact workflow as push, with the exception of the URL,
 //    so focus test on that.
 //     */
     @Test
-    public void testValidate(){
+    public void testValidate() {
 
         // Setup a client and a push payload
         APIClient client = APIClient.newBuilder()
-                                    .setBaseURI("http://localhost:8080")
-                                    .setKey("key")
-                                    .setSecret("secret")
-                                    .build();
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
 
         PushPayload payload = PushPayload.newBuilder()
-                                         .setAudience(Selectors.all())
-                                         .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-                                         .setNotification(Notifications.alert("Foo"))
-                                         .build();
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setNotification(Notifications.alert("Foo"))
+                .build();
 
         // Setup a stubbed response for the server
         String pushJSON = "{\"ok\" : true,\"operation_id\" : \"df6a6b50\", \"push_ids\":[\"PushID\"]}";
         stubFor(post(urlEqualTo("/api/push/validate/"))
-                        .willReturn(aResponse()
-                                            .withHeader(CONTENT_TYPE_KEY, "application/json")
-                                            .withBody(pushJSON)
-                                            .withStatus(201)));
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withBody(pushJSON)
+                        .withStatus(201)));
         try {
             APIClientResponse<APIPushResponse> response = client.validate(payload);
 
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/push/validate/"))
-                           .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
             assertNotNull(response);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
 

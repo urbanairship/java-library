@@ -5,23 +5,19 @@
 package com.urbanairship.api.client;
 
 import com.google.common.base.Preconditions;
-
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.schedule.model.SchedulePayload;
-
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.http.HttpHost;
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.apache.http.params.CoreProtocolPNames;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.URI;
 import java.io.IOException;
+import java.net.URI;
 
 /**
  * APIClient handles HTTP requests to the Urban Airship API
@@ -51,6 +47,9 @@ public class APIClient {
 
     /* HTTP */
     private final HttpHost uaHost;
+    private final int connectTimeout;
+    private final int socketTimeout;
+    private final boolean staleConnectionCheck;
     private final static String UA_HOSTNAME = "go.urbanairship.com";
 
     private final static Logger logger =
@@ -58,31 +57,39 @@ public class APIClient {
 
     /**
      * APIClient Builder
+     *
      * @return Builder
      */
-    public static Builder newBuilder(){
+    public static Builder newBuilder() {
         return new Builder();
     }
 
     private APIClient(String appKey,
                       String appSecret,
                       String baseURI,
-                      Number version){
+                      Number version,
+                      int connectTimeout,
+                      int socketTimeout,
+                      boolean staleConnectionCheck) {
         Preconditions.checkArgument(StringUtils.isNotBlank(appKey),
-                                    "App key must be provided.");
+                "App key must be provided.");
         Preconditions.checkArgument(StringUtils.isNotBlank(appSecret),
-                                    "App secret must be provided");
+                "App secret must be provided");
         this.appKey = appKey;
         this.appSecret = appSecret;
         this.baseURI = URI.create(baseURI);
         this.version = version;
         this.uaHost = new HttpHost(UA_HOSTNAME, 443, "https");
+        this.connectTimeout = connectTimeout;
+        this.socketTimeout = socketTimeout;
+        this.staleConnectionCheck = staleConnectionCheck;
 
     }
 
     /**
      * The application master secret associated with the application on Urban
      * Airship.
+     *
      * @return Application secret for this client.
      */
     public String getAppSecret() {
@@ -91,30 +98,79 @@ public class APIClient {
 
     /**
      * The application key associated with the application on Urban Airship.
+     *
      * @return Application key for this client.
      */
     public String getAppKey() {
         return appKey;
     }
 
-    /*
-    Add the version number to the default version header.
+    /**
+     * The base URI used by this client.
+     *
+     * @return base URI
      */
-    private String versionedAcceptHeader(Number version){
-        return String.format("%s version=%s", UA_APPLICATION_JSON,
-                             version.toString());
+    public URI getBaseURI() {
+        return baseURI;
+    }
+
+    /**
+     * The version used by this client.
+     *
+     * @return version
+     */
+    public Number getVersion() {
+        return version;
+    }
+
+    /**
+     * The connect timeout used by this client.
+     *
+     * @return connect timeout in milliseconds
+     */
+    public int getConnectTimeout() {
+        return connectTimeout;
+    }
+
+    /**
+     * The socket timeout used by this client.
+     *
+     * @return socket timeout in milliseconds
+     */
+    public int getSocketTimeout() {
+        return socketTimeout;
+    }
+
+    /**
+     * Whether or not the stale connection check is enabled for this client.
+     *
+     * @return true if enabled, otherwise false
+     */
+    public boolean isStaleConnectionCheck() {
+        return staleConnectionCheck;
     }
 
     /*
-    Base request common for all API push operations
+     Add the version number to the default version header.
      */
-    private Request pushRequest(PushPayload payload, String path){
+    private String versionedAcceptHeader(Number version) {
+        return String.format("%s version=%s", UA_APPLICATION_JSON,
+                version.toString());
+    }
+
+    /*
+     Base request common for all API push operations
+     */
+    private Request pushRequest(PushPayload payload, String path) {
         URI uri = baseURI.resolve(path);
         return Request.Post(uri)
-                      .config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
-                      .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
-                      .addHeader(ACCEPT_KEY, versionedAcceptHeader(version))
-                      .bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
+                .connectTimeout(connectTimeout)
+                .socketTimeout(socketTimeout)
+                .staleConnectionCheck(staleConnectionCheck)
+                .config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
+                .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
+                .addHeader(ACCEPT_KEY, versionedAcceptHeader(version))
+                .bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
     }
 
     /*
@@ -122,31 +178,32 @@ public class APIClient {
     Suppressing warnings until more of schedule API is implemented
      */
     private Request scheduleRequest(SchedulePayload payload, @SuppressWarnings("SameParameterValue") String path,
-                                    @SuppressWarnings("SameParameterValue") String httpMethod){
+                                    @SuppressWarnings("SameParameterValue") String httpMethod) {
         URI uri = baseURI.resolve(path);
         Request request;
 
-        if (httpMethod.equals("POST")){
+        if (httpMethod.equals("POST")) {
             request = Request.Post(uri);
             request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
 
-        } else if (httpMethod.equals("GET")){
+        } else if (httpMethod.equals("GET")) {
             request = Request.Get(uri);
-        }
-        else if (httpMethod.equals("PUT")){
+        } else if (httpMethod.equals("PUT")) {
             request = Request.Put(uri);
             request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
-        }
-        else if (httpMethod.equals("DELETE")){
+        } else if (httpMethod.equals("DELETE")) {
             request = Request.Delete(uri);
-        }
-        else {
+        } else {
             throw new
                     IllegalArgumentException(
                     String.format("Schedule requests support POST/GET/DELETE/PUT " +
-                                          "HTTP %s Method passed", httpMethod));
+                            "HTTP %s Method passed", httpMethod));
         }
-        return request.config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
+        return request
+                .connectTimeout(connectTimeout)
+                .socketTimeout(socketTimeout)
+                .staleConnectionCheck(staleConnectionCheck)
+                .config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
                 .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
                 .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
     }
@@ -166,10 +223,10 @@ public class APIClient {
     Execute the push request and log errors.
      */
     private APIClientResponse<APIPushResponse> executePushRequest(Request request)
-            throws IOException{
+            throws IOException {
         Executor executor = Executor.newInstance()
-                                    .auth(uaHost, appKey, appSecret)
-                                    .authPreemptive(uaHost);
+                .auth(uaHost, appKey, appSecret)
+                .authPreemptive(uaHost);
         logger.debug(String.format("Executing push request %s", request));
         return executor.execute(request).handleResponse(new PushAPIResponseHandler());
     }
@@ -206,10 +263,10 @@ public class APIClient {
     Execute the push request and log errors.
      */
     private APIClientResponse<APIScheduleResponse> executeScheduleRequest(Request request)
-        throws IOException{
+            throws IOException {
         Executor executor = Executor.newInstance()
-                                    .auth(uaHost, appKey, appSecret)
-                                    .authPreemptive(uaHost);
+                .auth(uaHost, appKey, appSecret)
+                .authPreemptive(uaHost);
         logger.debug(String.format("Executing schedule request %s", request));
         return executor.execute(request).handleResponse(new ScheduleAPIResponseHandler());
     }
@@ -231,13 +288,23 @@ public class APIClient {
     /*
     Object methods
      */
-    public String toString(){
+    public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("APIClient");
         stringBuilder.append("\nAppKey:");
         stringBuilder.append(appKey);
         stringBuilder.append("\nAppSecret:");
         stringBuilder.append(appSecret);
+        stringBuilder.append("\nBase URI:");
+        stringBuilder.append(baseURI);
+        stringBuilder.append("\nVersion:");
+        stringBuilder.append(version);
+        stringBuilder.append("\nConnectTimeout:");
+        stringBuilder.append(connectTimeout);
+        stringBuilder.append("\nSocketTimeout:");
+        stringBuilder.append(socketTimeout);
+        stringBuilder.append("\nStaleConnectionCheck:");
+        stringBuilder.append(staleConnectionCheck);
         return stringBuilder.toString();
     }
 
@@ -250,15 +317,22 @@ public class APIClient {
         private String secret;
         private String baseURI;
         private Number version;
+        private int connectTimeout;
+        private int socketTimeout;
+        private boolean staleConnectionCheck;
 
-        private Builder(){
+        private Builder() {
             baseURI = "https://go.urbanairship.com";
             version = 3;
+            connectTimeout = 10000;
+            socketTimeout = 10000;
+            staleConnectionCheck = true;
         }
 
         /**
          * The application key that corresponds with an application on
          * Urban Airship
+         *
          * @param key String Application key.
          * @return This builder.
          */
@@ -270,6 +344,7 @@ public class APIClient {
         /**
          * The application master secret that matches the application key and
          * corresponds with the application on Urban Airship
+         *
          * @param appSecret String Application master secret
          * @return This builder.
          */
@@ -280,30 +355,79 @@ public class APIClient {
 
         /**
          * Base URI for the APIClient.
+         *
          * @param URI String Base URI
          * @return This builder.
          */
-        public Builder setBaseURI(String URI){
+        public Builder setBaseURI(String URI) {
             this.baseURI = URI;
             return this;
         }
 
         /**
          * API version to work with.
+         *
          * @param version Number Version
          * @return This builder.
          */
-        public Builder setVersion(Number version){
+        public Builder setVersion(Number version) {
             this.version = version;
             return this;
         }
 
         /**
-         * Build the APIClient using the given key, secret, baseURI and version.
+         * Determines the timeout in milliseconds until a connection is established.
+         * A timeout value of zero is interpreted as an infinite timeout.
+         * <p/>
+         * Defaults to 10,000 ms.
+         *
+         * @param connectTimeout int Connect Timeout
+         * @return This builder.
+         */
+        public Builder setConnectTimeout(int connectTimeout) {
+            this.connectTimeout = connectTimeout;
+            return this;
+        }
+
+        /**
+         * Defines the socket timeout (<code>SO_TIMEOUT</code>) in milliseconds,
+         * which is the timeout for waiting for data or, put differently,
+         * a maximum period inactivity between two consecutive data packets.
+         * A timeout value of zero is interpreted as an infinite timeout.
+         * <p/>
+         * Defaults to 10,000 ms.
+         *
+         * @param socketTimeout int Socket Timeout
+         * @return This builder.
+         */
+        public Builder setSocketTimeout(int socketTimeout) {
+            this.socketTimeout = socketTimeout;
+            return this;
+        }
+
+        /**
+         * Determines whether stale connection check is to be used. The stale
+         * connection check can cause up to 30 millisecond overhead per request and
+         * should be used only when appropriate. For performance critical
+         * operations this check should be disabled.
+         * <p/>
+         * Defaults to true.
+         *
+         * @param staleConnectionCheck boolean Stale Connection Check
+         * @return This builder.
+         */
+        public Builder setStaleConnectionCheck(boolean staleConnectionCheck) {
+            this.staleConnectionCheck = staleConnectionCheck;
+            return this;
+        }
+
+        /**
+         * Build the APIClient using the given key, secret, baseURI, version, connect timeout, socket timeout, and stale connection check.
+         *
          * @return APIClient
          */
         public APIClient build() {
-            return new APIClient(key, secret, baseURI, version);
+            return new APIClient(key, secret, baseURI, version, connectTimeout, socketTimeout, staleConnectionCheck);
         }
 
     }
