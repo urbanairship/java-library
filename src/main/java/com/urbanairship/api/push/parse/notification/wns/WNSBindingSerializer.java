@@ -19,7 +19,7 @@ public class WNSBindingSerializer extends JsonSerializer<WNSBinding> {
         }
 
         if (binding.getFallback().isPresent()) {
-            jgen.writeStringField("version", binding.getFallback().get());
+            jgen.writeStringField("fallback", binding.getFallback().get());
         }
 
         if (binding.getLang().isPresent()) {

@@ -1,0 +1,37 @@
+package com.urbanairship.api.push.parse.richpush;
+
+import com.urbanairship.api.push.model.PushExpiry;
+import com.urbanairship.api.push.model.PushOptions;
+import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
+import com.urbanairship.api.push.parse.PushObjectMapper;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
+public class RichPushDevicePayloadSerializerTest {
+    private static final ObjectMapper mapper = PushObjectMapper.getInstance();
+
+    @Test
+    public void testOptions() throws Exception {
+        RichPushMessage message = RichPushMessage.newBuilder()
+                .setTitle("T")
+                .setBody("B")
+                .setExpiry(PushExpiry.newBuilder().setExpirySeconds(3600L).build())
+                .build();
+
+        assertTrue(message.getExpiry().isPresent());
+
+        String pushJson = mapper.writeValueAsString(message);
+        String json
+                = "{"
+                + "\"title\":\"T\","
+                + "\"body\":\"B\","
+                + "\"content_type\":\"text/html\","
+                +"\"content_encoding\":\"utf8\","
+                + "\"expiry\":{\"expirySeconds\":3600}"
+                + "}";
+        assertEquals(json, pushJson);
+    }
+}

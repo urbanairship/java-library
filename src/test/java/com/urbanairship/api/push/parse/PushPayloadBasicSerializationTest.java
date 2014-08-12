@@ -33,17 +33,17 @@ public class PushPayloadBasicSerializationTest {
     @Test
     public void testArrayOfPushes() throws Exception {
         String json = "["
-            + "  { "
-            + "    \"audience\" : \"all\","
-            + "    \"device_types\" : [ \"ios\" ],"
-            + "    \"notification\" : { \"alert\" : \"wat\" }"
-            + "  },"
-            + "  { "
-            + "    \"audience\" : \"all\","
-            + "    \"device_types\" : [ \"ios\" ],"
-            + "    \"notification\" : { \"alert\" : \"derp\" }"
-            + "  }"
-            + "]";
+                + "  { "
+                + "    \"audience\" : \"all\","
+                + "    \"device_types\" : [ \"ios\" ],"
+                + "    \"notification\" : { \"alert\" : \"wat\" }"
+                + "  },"
+                + "  { "
+                + "    \"audience\" : \"all\","
+                + "    \"device_types\" : [ \"ios\" ],"
+                + "    \"notification\" : { \"alert\" : \"derp\" }"
+                + "  }"
+                + "]";
         List<PushPayload> pushes = mapper.readValue(json, new TypeReference<List<PushPayload>>() {});
         assertNotNull(pushes);
         assertEquals(2, pushes.size());
@@ -52,11 +52,11 @@ public class PushPayloadBasicSerializationTest {
     @Test
     public void testSinglePushAsList() throws Exception {
         String json
-            = "{"
-            + "  \"audience\" : \"all\","
-            + "  \"device_types\" : [ \"ios\" ],"
-            + "  \"notification\" : { \"alert\" : \"wat\" }"
-            + "}";
+                = "{"
+                + "  \"audience\" : \"all\","
+                + "  \"device_types\" : [ \"ios\" ],"
+                + "  \"notification\" : { \"alert\" : \"wat\" }"
+                + "}";
         List<PushPayload> pushes = mapper.readValue(json, new TypeReference<List<PushPayload>>() {});
         assertNotNull(pushes);
         assertEquals(1, pushes.size());
@@ -65,37 +65,37 @@ public class PushPayloadBasicSerializationTest {
     @Test
     public void testNoOptions() throws Exception {
         String json
-            = "{"
-            + "  \"audience\" : \"all\","
-            + "  \"device_types\" : [ \"ios\" ],"
-            + "  \"notification\" : { \"alert\" : \"wat\" }"
-            + "}";
+                = "{"
+                + "  \"audience\" : \"all\","
+                + "  \"device_types\" : [ \"ios\" ],"
+                + "  \"notification\" : { \"alert\" : \"wat\" }"
+                + "}";
         PushPayload push = mapper.readValue(json, PushPayload.class);
-        assertFalse(push.getOptions().isPresent());
+        assertFalse(push.getPushOptions().isPresent());
     }
 
     @Test
     public void testOptions() throws Exception {
         String json
-            = "{"
-            + "  \"audience\" : \"all\","
-            + "  \"device_types\" : [ \"ios\" ],"
-            + "  \"notification\" : { \"alert\" : \"wat\" },"
-            + "  \"options\" : {"
-            + "  }"
-            + "}";
+                = "{"
+                + "  \"audience\" : \"all\","
+                + "  \"device_types\" : [ \"ios\" ],"
+                + "  \"notification\" : { \"alert\" : \"wat\" },"
+                + "  \"options\" : {"
+                + "  }"
+                + "}";
         PushPayload push = mapper.readValue(json, PushPayload.class);
-        assertTrue(push.getOptions().isPresent());
+        assertTrue(push.getPushOptions().isPresent());
     }
 
     @Test
     public void testDeviceTypesAll() throws Exception {
         String json
-            = "{"
-            + "  \"audience\" : \"all\","
-            + "  \"device_types\" : \"all\","
-            + "  \"notification\" : { \"alert\" : \"wat\" }"
-            + "}";
+                = "{"
+                + "  \"audience\" : \"all\","
+                + "  \"device_types\" : \"all\","
+                + "  \"notification\" : { \"alert\" : \"wat\" }"
+                + "}";
         PushPayload push = mapper.readValue(json, PushPayload.class);
         assertTrue(push.getPlatforms().isAll());
         assertFalse(push.getPlatforms().getPlatforms().isPresent());
@@ -104,11 +104,11 @@ public class PushPayloadBasicSerializationTest {
     @Test
     public void testDeviceTypesList() throws Exception {
         String json
-            = "{"
-            + "  \"audience\" : \"all\","
-            + "  \"device_types\" : [\"ios\", \"android\", \"wns\", \"adm\"],"
-            + "  \"notification\" : { \"alert\" : \"wat\" }"
-            + "}";
+                = "{"
+                + "  \"audience\" : \"all\","
+                + "  \"device_types\" : [\"ios\", \"android\", \"wns\", \"adm\"],"
+                + "  \"notification\" : { \"alert\" : \"wat\" }"
+                + "}";
         PushPayload push = mapper.readValue(json, PushPayload.class);
         assertFalse(push.getPlatforms().isAll());
         assertTrue(push.getPlatforms().getPlatforms().isPresent());
@@ -123,33 +123,33 @@ public class PushPayloadBasicSerializationTest {
     @Test(expected=APIParsingException.class)
     public void testDeviceTypesInvalidString() throws Exception {
         String json
-            = "{"
-            + "  \"audience\" : \"all\","
-            + "  \"device_types\" : \"ios\","
-            + "  \"notification\" : { \"alert\" : \"wat\" }"
-            + "}";
+                = "{"
+                + "  \"audience\" : \"all\","
+                + "  \"device_types\" : \"ios\","
+                + "  \"notification\" : { \"alert\" : \"wat\" }"
+                + "}";
         mapper.readValue(json, PushPayload.class);
     }
 
     @Test(expected=APIParsingException.class)
     public void testDeviceTypesAllInList() throws Exception {
         String json
-            = "{"
-            + "  \"audience\" : \"all\","
-            + "  \"device_types\" : [\"ios\",\"all\"],"
-            + "  \"notification\" : { \"alert\" : \"wat\" }"
-            + "}";
+                = "{"
+                + "  \"audience\" : \"all\","
+                + "  \"device_types\" : [\"ios\",\"all\"],"
+                + "  \"notification\" : { \"alert\" : \"wat\" }"
+                + "}";
         mapper.readValue(json, PushPayload.class);
     }
 
     @Test
     public void testRichPush1() throws Exception {
         String json
-            = "{"
-            + "  \"audience\" : \"all\","
-            + "  \"device_types\" : [\"ios\"],"
-            + "  \"message\" : { \"title\" : \"T\", \"body\" : \"B\" }"
-            + "}";
+                = "{"
+                + "  \"audience\" : \"all\","
+                + "  \"device_types\" : [\"ios\"],"
+                + "  \"message\" : { \"title\" : \"T\", \"body\" : \"B\" }"
+                + "}";
         PushPayload payload = mapper.readValue(json, PushPayload.class);
         assertTrue(payload.getMessage().isPresent());
         assertFalse(payload.getNotification().isPresent());
@@ -161,31 +161,31 @@ public class PushPayloadBasicSerializationTest {
     @Test
     public void testPlatformOverrides() throws Exception {
         String json
-            = "{"
-            + "  \"audience\" : \"all\","
-            + "  \"device_types\" : [ \"ios\", \"wns\", \"mpns\", \"android\" ],"
-            + "  \"notification\" : { "
-            + "    \"alert\" : \"wat\","
-            + "    \"ios\" : {"
-            + "      \"alert\" : \"ios\""
-            + "    },"
-            + "    \"wns\" : {"
-            + "      \"alert\" : \"wns\""
-            + "    },"
-            + "    \"mpns\" : {"
-            + "      \"alert\" : \"mpns\""
-            + "    },"
-            + "    \"android\" : {"
-            + "      \"alert\" : \"droid\""
-            + "    },"
-            + "    \"blackberry\" : {"
-            + "      \"alert\" : \"doomed\""
-            + "    },"
-            + "    \"adm\" : {"
-            + "      \"alert\" : \"phoenix\""
-            + "    }"
-            + "  }"
-            + "}";
+                = "{"
+                + "  \"audience\" : \"all\","
+                + "  \"device_types\" : [ \"ios\", \"wns\", \"mpns\", \"android\" ],"
+                + "  \"notification\" : { "
+                + "    \"alert\" : \"wat\","
+                + "    \"ios\" : {"
+                + "      \"alert\" : \"ios\""
+                + "    },"
+                + "    \"wns\" : {"
+                + "      \"alert\" : \"wns\""
+                + "    },"
+                + "    \"mpns\" : {"
+                + "      \"alert\" : \"mpns\""
+                + "    },"
+                + "    \"android\" : {"
+                + "      \"alert\" : \"droid\""
+                + "    },"
+                + "    \"blackberry\" : {"
+                + "      \"alert\" : \"doomed\""
+                + "    },"
+                + "    \"adm\" : {"
+                + "      \"alert\" : \"phoenix\""
+                + "    }"
+                + "  }"
+                + "}";
         PushPayload push = mapper.readValue(json, PushPayload.class);
         Notification notification = push.getNotification().get();
         assertTrue(notification.getPlatformOverride(Platform.IOS, IOSDevicePayload.class).isPresent());
@@ -225,15 +225,15 @@ public class PushPayloadBasicSerializationTest {
     public void testRoundTrip() throws Exception {
 
         PushPayload expected = PushPayload.newBuilder()
-            .setAudience(Selectors.tag("derp"))
-            .setNotification(Notification.newBuilder()
-                             .setAlert(RandomStringUtils.randomAlphabetic(10))
-                             .build()
+                .setAudience(Selectors.tag("derp"))
+                .setNotification(Notification.newBuilder()
+                                .setAlert(RandomStringUtils.randomAlphabetic(10))
+                                .build()
                 )
-            .setPlatforms(PlatformData.newBuilder()
-                          .addPlatform(Platform.WNS)
-                          .build())
-            .build();
+                .setPlatforms(PlatformData.newBuilder()
+                        .addPlatform(Platform.WNS)
+                        .build())
+                .build();
 
         String serial = mapper.writeValueAsString(expected);
         PushPayload parsed = mapper.readValue(serial, PushPayload.class);
@@ -241,15 +241,15 @@ public class PushPayloadBasicSerializationTest {
         assertEquals(expected,  parsed);
 
         expected = PushPayload.newBuilder()
-            .setAudience(Selectors.tags("this", "that"))
-            .setNotification(Notification.newBuilder()
-                        .setAlert(RandomStringUtils.randomAlphabetic(10))
-                        .build()
+                .setAudience(Selectors.tags("this", "that"))
+                .setNotification(Notification.newBuilder()
+                                .setAlert(RandomStringUtils.randomAlphabetic(10))
+                                .build()
                 )
-            .setPlatforms(PlatformData.newBuilder()
-                          .addPlatform(Platform.WNS)
-                          .build())
-            .build();
+                .setPlatforms(PlatformData.newBuilder()
+                        .addPlatform(Platform.WNS)
+                        .build())
+                .build();
 
         serial = mapper.writeValueAsString(expected);
         parsed = mapper.readValue(serial, PushPayload.class);
@@ -257,14 +257,14 @@ public class PushPayloadBasicSerializationTest {
         assertEquals(expected,  parsed);
 
         expected = PushPayload.newBuilder()
-            .setAudience(Selectors.or(Selectors.alias("alpern"), Selectors.tag("wat")))
-            .setNotification(Notification.newBuilder()
-                             .setAlert(RandomStringUtils.randomAlphabetic(10))
-                             .build())
-            .setPlatforms(PlatformData.newBuilder()
-                          .addPlatform(Platform.WNS)
-                          .build())
-            .build();
+                .setAudience(Selectors.or(Selectors.alias("alpern"), Selectors.tag("wat")))
+                .setNotification(Notification.newBuilder()
+                        .setAlert(RandomStringUtils.randomAlphabetic(10))
+                        .build())
+                .setPlatforms(PlatformData.newBuilder()
+                        .addPlatform(Platform.WNS)
+                        .build())
+                .build();
 
         serial = mapper.writeValueAsString(expected);
         parsed = mapper.readValue(serial, PushPayload.class);
@@ -272,14 +272,14 @@ public class PushPayloadBasicSerializationTest {
         assertEquals(expected,  parsed);
 
         expected = PushPayload.newBuilder()
-            .setAudience(Selectors.and(Selectors.tag("Beyonce"), Selectors.tag("GreenDay")))
-            .setNotification(Notification.newBuilder()
-                             .setAlert(RandomStringUtils.randomAlphabetic(10))
-                             .build())
-            .setPlatforms(PlatformData.newBuilder()
-                          .addPlatform(Platform.WNS)
-                          .build())
-            .build();
+                .setAudience(Selectors.and(Selectors.tag("Beyonce"), Selectors.tag("GreenDay")))
+                .setNotification(Notification.newBuilder()
+                        .setAlert(RandomStringUtils.randomAlphabetic(10))
+                        .build())
+                .setPlatforms(PlatformData.newBuilder()
+                        .addPlatform(Platform.WNS)
+                        .build())
+                .build();
 
         serial = mapper.writeValueAsString(expected);
         parsed = mapper.readValue(serial, PushPayload.class);
@@ -290,28 +290,28 @@ public class PushPayloadBasicSerializationTest {
     @Test(expected = APIParsingException.class)
     public void testInvalidDeviceIdentifiers() throws Exception {
         PushPayload payload = PushPayload.newBuilder()
-            .setAudience(Selectors.apid("wat"))
-            .setNotification(Notification.newBuilder()
-                             .setAlert("WAT")
-                             .build())
-            .setPlatforms(PlatformData.newBuilder()
-                          .addPlatform(Platform.WNS)
-                          .build())
-            .build();
+                .setAudience(Selectors.apid("wat"))
+                .setNotification(Notification.newBuilder()
+                        .setAlert("WAT")
+                        .build())
+                .setPlatforms(PlatformData.newBuilder()
+                        .addPlatform(Platform.WNS)
+                        .build())
+                .build();
         mapper.readValue(mapper.writeValueAsString(payload), PushPayload.class);
     }
 
     @Test
     public void testValidDeviceIdentifiers() throws Exception {
         PushPayload payload = PushPayload.newBuilder()
-            .setAudience(Selectors.apid("6de14dab-a4e0-fe5b-06f7-f03b090e4a25"))
-            .setNotification(Notification.newBuilder()
-                             .setAlert("WAT")
-                             .build())
-            .setPlatforms(PlatformData.newBuilder()
-                          .addPlatform(Platform.WNS)
-                          .build())
-            .build();
+                .setAudience(Selectors.apid("6de14dab-a4e0-fe5b-06f7-f03b090e4a25"))
+                .setNotification(Notification.newBuilder()
+                        .setAlert("WAT")
+                        .build())
+                .setPlatforms(PlatformData.newBuilder()
+                        .addPlatform(Platform.WNS)
+                        .build())
+                .build();
         mapper.readValue(mapper.writeValueAsString(payload), PushPayload.class);
     }
 

@@ -1,3 +1,7 @@
+/*
+ * Copyright 2013 Urban Airship and Contributors
+ */
+
 package com.urbanairship.api.push.model;
 
 import com.urbanairship.api.push.model.notification.Notification;
@@ -7,27 +11,22 @@ import com.urbanairship.api.push.model.audience.SelectorType;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Supplier;
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
-import com.google.common.collect.Sets;
-import org.apache.commons.lang.StringUtils;
-import org.joda.time.DateTime;
 
-import java.util.Collection;
-import java.util.Set;
-
+/**
+ * Represents a Push payload for the Urban Airship API
+ */
 public final class PushPayload extends PushModelObject {
 
     private final Selector audience;
     private final Optional<Notification> notification;
     private final Optional<RichPushMessage> message;
-    private final PlatformData platforms;
-    private final Optional<PushOptions> options;
+    private final PlatformData deviceTypes;
+    private final Optional<PushOptions> pushOptions;
 
+    /**
+     * PushPayload builder
+     * @return Builder
+     */
     public static Builder newBuilder() {
         return new Builder();
     }
@@ -35,37 +34,57 @@ public final class PushPayload extends PushModelObject {
     private PushPayload(Selector audience,
                         Optional<Notification> notification,
                         Optional<RichPushMessage> message,
-                        PlatformData platforms,
-                        PushOptions options) {
+                        PlatformData deviceTypes,
+                        Optional<PushOptions> pushOptions) {
         this.audience = audience;
         this.notification = notification;
         this.message = message;
-        this.platforms = platforms;
-        this.options = Optional.fromNullable(options);
+        this.deviceTypes = deviceTypes;
+        this.pushOptions = pushOptions;
     }
 
+    /**
+     * Get the audience
+     * @return audience
+     */
     public Selector getAudience() {
         return audience;
     }
 
+    /**
+     * Get the Notification. This is optional.
+     * @return Optional<<T>Notification</T>>
+     */
     public Optional<Notification> getNotification() {
         return notification;
     }
 
+    /**
+     * Get the rich push message. This is optional
+     * @return Optional<<T>RichPushMessage</T>>
+     */
     public Optional<RichPushMessage> getMessage() {
         return message;
     }
 
+    /**
+     * Get the deviceTypes
+     * @return DeviceTypeData
+     */
     public PlatformData getPlatforms() {
-        return platforms;
+        return deviceTypes;
     }
 
-    public Optional<PushOptions> getOptions() {
-        return options;
-    }
-
+    /**
+     * Boolean indicating whether audience is SelectorType.ALL
+     * @return audience is all
+     */
     public boolean isBroadcast() {
         return audience.getType().equals(SelectorType.ALL);
+    }
+
+    public Optional<PushOptions> getPushOptions() {
+        return pushOptions;
     }
 
     @Override
@@ -88,7 +107,10 @@ public final class PushPayload extends PushModelObject {
         if (message != null ? !message.equals(that.message) : that.message != null) {
             return false;
         }
-        if (platforms != null ? !platforms.equals(that.platforms) : that.platforms != null) {
+        if (deviceTypes != null ? !deviceTypes.equals(that.deviceTypes) : that.deviceTypes != null) {
+            return false;
+        }
+        if (pushOptions != null ? !pushOptions.equals(that.pushOptions) : that.pushOptions != null) {
             return false;
         }
 
@@ -100,64 +122,101 @@ public final class PushPayload extends PushModelObject {
         int result = (audience != null ? audience.hashCode() : 0);
         result = 31 * result + (notification != null ? notification.hashCode() : 0);
         result = 31 * result + (message != null ? message.hashCode() : 0);
-        result = 31 * result + (platforms != null ? platforms.hashCode() : 0);
+        result = 31 * result + (deviceTypes != null ? deviceTypes.hashCode() : 0);
+        result = 31 * result + (pushOptions != null ? pushOptions.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "PushPayload{" +
-            "audience=" + audience +
-            ", notification=" + notification +
-            ", message=" + message +
-            ", platforms=" + platforms +
-            '}';
+                "audience=" + audience +
+                ", notification=" + notification +
+                ", message=" + message +
+                ", deviceTypes=" + deviceTypes +
+                ", pushOptions=" + pushOptions +
+                '}';
     }
 
     public static class Builder {
-        private PlatformData platforms = null;
+        private PlatformData deviceTypes = null;
         private Selector audience = null;
         private Notification notification = null;
         private RichPushMessage message = null;
-        private PushOptions options = null;
+        private PushOptions pushOptions = null;
+
 
         private Builder() { }
 
+        /**
+         * Set the Audience.
+         * @param value audience Selector
+         * @return Builder
+         */
         public Builder setAudience(Selector value) {
             this.audience = value;
             return this;
         }
 
+        /**
+         * Set the Notification
+         * @param notification Notification
+         * @return Builder
+         */
         public Builder setNotification(Notification notification) {
             this.notification = notification;
             return this;
         }
 
+        /**
+         * Set the rich push message.
+         * @param message RichPushMessage
+         * @return Builder
+         */
         public Builder setMessage(RichPushMessage message) {
             this.message = message;
             return this;
         }
 
-        public Builder setOptions(PushOptions options) {
-            this.options = options;
+        /**
+         * Set the Device Type data
+         * @param deviceTypes DeviceTypeData
+         * @return Builder
+         */
+        public Builder setPlatforms(PlatformData deviceTypes) {
+            this.deviceTypes = deviceTypes;
             return this;
         }
 
-        public Builder setPlatforms(PlatformData platforms) {
-            this.platforms = platforms;
+        public Builder setPushOptions(PushOptions pushOptions) {
+            this.pushOptions = pushOptions;
             return this;
         }
 
+        /**
+         * Build a PushPayload object. Will fail if any of the following
+         * preconditions are not met.
+         * <pre>
+         * 1. At least one of notification or message must be set.
+         * 2. Audience must be set.
+         * 3. DeviceTypes (device types) must be set.
+         * </pre>
+         *
+         * @throws IllegalArgumentException
+         * @throws NullPointerException
+         * @return PushPayload
+         */
         public PushPayload build() {
-            Preconditions.checkArgument(!(notification == null && message == null), "At least one of 'notification' or 'message' must be set.");
+            Preconditions.checkArgument(!(notification == null && message == null),
+                    "At least one of 'notification' or 'message' must be set.");
             Preconditions.checkNotNull(audience, "'audience' must be set");
-            Preconditions.checkNotNull(platforms, "'device_types' must be set");
+            Preconditions.checkNotNull(deviceTypes, "'device_types' must be set");
 
             return new PushPayload(audience,
-                                   Optional.fromNullable(notification),
-                                   Optional.fromNullable(message),
-                                   platforms,
-                                   options);
+                    Optional.fromNullable(notification),
+                    Optional.fromNullable(message),
+                    deviceTypes,
+                    Optional.fromNullable(pushOptions));
         }
     }
 }

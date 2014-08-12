@@ -1,7 +1,11 @@
 package com.urbanairship.api.push.model.notification.richpush;
 
+import com.urbanairship.api.push.model.PushExpiry;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class RichPushMessageTest {
     @Test
@@ -45,6 +49,7 @@ public class RichPushMessageTest {
             .setBody("B")
             .setContentType("application/json")
             .setContentEncoding("base64")
+            .setExpiry(PushExpiry.newBuilder().setExpirySeconds(3600).build())
             .addExtraEntry("this", "that")
             .build();
         assertEquals("T", m.getTitle());
@@ -55,6 +60,8 @@ public class RichPushMessageTest {
         assertEquals(1, m.getExtra().get().size());
         assertTrue(m.getExtra().get().containsKey("this"));
         assertEquals("that", m.getExtra().get().get("this"));
+        assertTrue(m.getExpiry().get().getExpirySeconds().isPresent());
+
     }
 
     @Test(expected=Exception.class)

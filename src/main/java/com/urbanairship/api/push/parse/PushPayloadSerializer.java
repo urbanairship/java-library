@@ -1,8 +1,9 @@
+/*
+ * Copyright 2013 Urban Airship and Contributors
+ */
+
 package com.urbanairship.api.push.parse;
 
-import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableMultimap;
-import com.urbanairship.api.push.model.Platform;
 import com.urbanairship.api.push.model.PushPayload;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
@@ -28,8 +29,8 @@ public class PushPayloadSerializer extends JsonSerializer<PushPayload> {
         if (payload.getMessage().isPresent()) {
             jgen.writeObjectField("message", payload.getMessage().get());
         }
-        if (payload.getOptions().isPresent()) {
-            jgen.writeObjectField("options", payload.getOptions().get());
+        if (payload.getPushOptions().isPresent()) {
+            jgen.writeObjectField("options", payload.getPushOptions());
         }
 
         jgen.writeEndObject();

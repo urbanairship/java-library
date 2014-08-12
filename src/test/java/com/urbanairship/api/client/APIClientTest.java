@@ -313,6 +313,8 @@ public class APIClientTest {
 
         DateTime dateTime = DateTime.now(DateTimeZone.UTC).plusSeconds(60);
         Schedule schedule = Schedule.newBuilder()
+                //To test local schedule time instead build
+                //                  .setLocalScheduledTimestamp(dateTime)
                                     .setScheduledTimestamp(dateTime)
                                     .build();
 
@@ -349,6 +351,8 @@ public class APIClientTest {
             assertTrue(name.equals("Test"));
             Map<String, String> scheduleMap =
                     (Map<String,String>)result.get("schedule");
+            //When testing local schedule test instead use
+            //String dateTimeString = scheduleMap.get("local_scheduled_time");
             String dateTimeString = scheduleMap.get("scheduled_time");
 
             // Test DateTime

@@ -55,7 +55,7 @@ public final class BatchTagSet {
         result = 31 * result + (tags != null ? tags.hashCode() : 0);
         return result;
     }
-    
+
     @Override
     public String toString() {
         return "BatchTagSet{" +

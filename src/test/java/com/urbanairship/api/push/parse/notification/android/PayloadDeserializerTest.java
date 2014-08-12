@@ -1,5 +1,6 @@
 package com.urbanairship.api.push.parse.notification.android;
 
+import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
@@ -62,13 +63,15 @@ public class PayloadDeserializerTest {
             + "}";
 
         AndroidDevicePayload expected = AndroidDevicePayload.newBuilder()
-            .setTimeToLive(1234)
+            .setTimeToLive(PushExpiry.newBuilder()
+                            .setExpirySeconds((long) 1234)
+                            .build())
             .build();
 
         AndroidDevicePayload payload = mapper.readValue(json, AndroidDevicePayload.class);
         assertEquals(expected, payload);
         assertTrue(payload.getTimeToLive().isPresent());
-        assertEquals(1234, payload.getTimeToLive().get().intValue());
+        assertEquals(1234, payload.getTimeToLive().get().getExpirySeconds().get().intValue());
     }
 
     @Test(expected=APIParsingException.class)

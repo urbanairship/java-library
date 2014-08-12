@@ -1,8 +1,14 @@
+/*
+ * Copyright 2013 Urban Airship and Contributors
+ */
+
 package com.urbanairship.api.push.model.notification.richpush;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
+import com.urbanairship.api.push.model.PushExpiry;
+
 import java.util.Map;
 
 public final class RichPushMessage {
@@ -10,23 +16,26 @@ public final class RichPushMessage {
     public static final String CONTENT_TYPE_DEFAULT = "text/html";
     public static final String CONTENT_ENCODING_DEFAULT = "utf8";
 
-    private String title;
-    private String body;
-    private String contentType;
-    private String contentEncoding;
-    private Optional<ImmutableMap<String, String>> extra;
+    private final String title;
+    private final String body;
+    private final String contentType;
+    private final String contentEncoding;
+    private final Optional<ImmutableMap<String, String>> extra;
+    private final Optional<PushExpiry> expiry;
 
     private RichPushMessage(String title,
                             String body,
                             String contentType,
                             String contentEncoding,
-                            Optional<ImmutableMap<String, String>> extra)
+                            Optional<ImmutableMap<String, String>> extra,
+                            Optional<PushExpiry> expiry)
     {
         this.title = title;
         this.body = body;
         this.contentType = contentType;
         this.contentEncoding = contentEncoding;
         this.extra = extra;
+        this.expiry = expiry;
     }
 
     public static Builder newBuilder() {
@@ -51,6 +60,10 @@ public final class RichPushMessage {
 
     public Optional<ImmutableMap<String, String>> getExtra() {
         return extra;
+    }
+
+    public Optional<PushExpiry> getExpiry() {
+        return expiry;
     }
 
     @Override
@@ -78,6 +91,9 @@ public final class RichPushMessage {
         if (extra != null ? !extra.equals(that.extra) : that.extra != null) {
             return false;
         }
+        if (expiry != null ? !expiry.equals(that.expiry) : that.expiry != null) {
+            return false;
+        }
         return true;
     }
 
@@ -88,18 +104,20 @@ public final class RichPushMessage {
         result = 31 * result + (contentType != null ? contentType.hashCode() : 0);
         result = 31 * result + (contentEncoding != null ? contentEncoding.hashCode() : 0);
         result = 31 * result + (extra != null ? extra.hashCode() : 0);
+        result = 31 * result + (expiry != null ? expiry.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "RichPushMessage{" +
-            "title='" + title +
-            "', body='" + body +
-            "', contentType=" + contentType +
-            ", contentEncoding=" + contentEncoding +
-            ", extra=" + extra +
-            '}';
+                "title='" + title +
+                "', body='" + body +
+                "', contentType=" + contentType +
+                ", contentEncoding=" + contentEncoding +
+                ", extra=" + extra +
+                ", expiry=" + expiry +
+                '}';
     }
 
     public static final class Builder {
@@ -108,6 +126,7 @@ public final class RichPushMessage {
         private String contentType = null;
         private String contentEncoding = null;
         private ImmutableMap.Builder<String, String> extra = null;
+        private PushExpiry expiry = null;
 
         private Builder() { }
 
@@ -147,14 +166,20 @@ public final class RichPushMessage {
             return this;
         }
 
+        public Builder setExpiry (PushExpiry value) {
+            this.expiry = value;
+            return this;
+        }
+
         public RichPushMessage build() {
             Preconditions.checkNotNull(title, "Must supply a value for 'title'");
             Preconditions.checkNotNull(body, "Must supply a value for 'body'");
             return new RichPushMessage(title,
-                                       body,
-                                       contentType != null ? contentType : CONTENT_TYPE_DEFAULT,
-                                       contentEncoding != null ? contentEncoding : CONTENT_ENCODING_DEFAULT,
-                                       extra != null ? Optional.fromNullable(extra.build()) : Optional.<ImmutableMap<String, String>>absent());
+                    body,
+                    contentType != null ? contentType : CONTENT_TYPE_DEFAULT,
+                    contentEncoding != null ? contentEncoding : CONTENT_ENCODING_DEFAULT,
+                    extra != null ? Optional.fromNullable(extra.build()) : Optional.<ImmutableMap<String, String>>absent(),
+                    Optional.fromNullable(expiry));
         }
     }
 }
