@@ -1,7 +1,7 @@
 package com.urbanairship.api.push.model.notification;
 
+import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushModelObject;
-import com.urbanairship.api.push.model.Platform;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
@@ -9,7 +9,6 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 
 import java.util.Map;
-import java.util.Set;
 
 public final class Notification extends PushModelObject {
 
@@ -30,28 +29,28 @@ public final class Notification extends PushModelObject {
         return alert;
     }
 
-    public Optional<ImmutableSet<Platform>> getOverridePlatforms() {
+    public Optional<ImmutableSet<DeviceType>> getOverridePlatforms() {
         if (platformPayloadOverrides == null || platformPayloadOverrides.size() == 0 ) {
-            return Optional.<ImmutableSet<Platform>>absent();
+            return Optional.<ImmutableSet<DeviceType>>absent();
         } else {
-            ImmutableSet.Builder<Platform> builder = ImmutableSet.<Platform>builder();
+            ImmutableSet.Builder<DeviceType> builder = ImmutableSet.<DeviceType>builder();
             for (NotificationPayloadOverrideKey key : platformPayloadOverrides.keySet()) {
-                builder.add(key.getPlatform());
+                builder.add(key.getDeviceType());
             }
             return Optional.of(builder.build());
         }
     }
 
     @SuppressWarnings("unchecked")
-    public <O extends DevicePayloadOverride> Optional<O> getPlatformOverride(Platform platform, Class<O> overrideType) {
+    public <O extends DevicePayloadOverride> Optional<O> getPlatformOverride(DeviceType deviceType, Class<O> overrideType) {
         // Safe because the builder enforces the tie between the Class key and the value in the map
-        return Optional.fromNullable((O) platformPayloadOverrides.get(new NotificationPayloadOverrideKey(platform, overrideType)));
+        return Optional.fromNullable((O) platformPayloadOverrides.get(new NotificationPayloadOverrideKey(deviceType, overrideType)));
     }
 
-    public Map<Platform, DevicePayloadOverride> getPlatformPayloadOverrides() {
-        Map<Platform, DevicePayloadOverride> overrides = Maps.newHashMap();
+    public Map<DeviceType, DevicePayloadOverride> getPlatformPayloadOverrides() {
+        Map<DeviceType, DevicePayloadOverride> overrides = Maps.newHashMap();
         for (Map.Entry<NotificationPayloadOverrideKey, ? extends DevicePayloadOverride> entry : platformPayloadOverrides.entrySet()) {
-            overrides.put(entry.getKey().getPlatform(), entry.getValue());
+            overrides.put(entry.getKey().getDeviceType(), entry.getValue());
         }
 
         return overrides;
@@ -107,8 +106,8 @@ public final class Notification extends PushModelObject {
             return this;
         }
 
-        public <P extends DevicePayloadOverride> Builder addPlatformOverride(Platform platform, P payload) {
-            this.platformPayloadOverridesBuilder.put(new NotificationPayloadOverrideKey(platform, payload.getClass()), payload);
+        public <P extends DevicePayloadOverride> Builder addPlatformOverride(DeviceType deviceType, P payload) {
+            this.platformPayloadOverridesBuilder.put(new NotificationPayloadOverrideKey(deviceType, payload.getClass()), payload);
             return this;
         }
 

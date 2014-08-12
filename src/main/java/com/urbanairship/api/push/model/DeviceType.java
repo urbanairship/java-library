@@ -3,7 +3,7 @@ package com.urbanairship.api.push.model;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 
-public enum Platform {
+public enum DeviceType {
 
     IOS("ios"),
     WNS("wns"),
@@ -12,17 +12,17 @@ public enum Platform {
     BLACKBERRY("blackberry"),
     ADM("adm");
 
-    public static Platform first() {
+    public static DeviceType first() {
         return IOS;
     }
 
-    public static Platform last() {
+    public static DeviceType last() {
         return BLACKBERRY;
     }
 
     private final String identifier;
 
-    private Platform(String identifier) {
+    private DeviceType(String identifier) {
         this.identifier = identifier;
     }
 
@@ -30,16 +30,16 @@ public enum Platform {
         return identifier;
     }
 
-    public static Optional<Platform> find(String id) {
+    public static Optional<DeviceType> find(String id) {
         return fromIdentifierFunction.apply(id);
     }
 
-    public static final Function<String, Optional<Platform>> fromIdentifierFunction = new Function<String, Optional<Platform>>() {
+    public static final Function<String, Optional<DeviceType>> fromIdentifierFunction = new Function<String, Optional<DeviceType>>() {
         @Override
-        public Optional<Platform> apply(String identifier) {
-            for (Platform platform : values()) {
-                if (platform.getIdentifier().equals(identifier)) {
-                    return Optional.of(platform);
+        public Optional<DeviceType> apply(String identifier) {
+            for (DeviceType deviceType : values()) {
+                if (deviceType.getIdentifier().equals(identifier)) {
+                    return Optional.of(deviceType);
                 }
             }
 

@@ -1,8 +1,8 @@
 package com.urbanairship.api.push.parse.notification;
 
+import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.urbanairship.api.push.model.notification.Notification;
-import com.urbanairship.api.push.model.Platform;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
@@ -20,7 +20,7 @@ public class NotificationSerializer extends JsonSerializer<Notification> {
             jsonGenerator.writeStringField("alert", notification.getAlert().get());
         }
 
-        for (Map.Entry<Platform, DevicePayloadOverride> entry : notification.getPlatformPayloadOverrides().entrySet()) {
+        for (Map.Entry<DeviceType, DevicePayloadOverride> entry : notification.getPlatformPayloadOverrides().entrySet()) {
             jsonGenerator.writeObjectField(entry.getKey().getIdentifier(), entry.getValue());
         }
 

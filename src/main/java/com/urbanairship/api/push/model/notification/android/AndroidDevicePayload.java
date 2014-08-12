@@ -2,9 +2,9 @@ package com.urbanairship.api.push.model.notification.android;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
+import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.PushModelObject;
-import com.urbanairship.api.push.model.Platform;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 
 import java.util.Map;
@@ -34,8 +34,8 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
     }
 
     @Override
-    public Platform getPlatform() {
-        return Platform.ANDROID;
+    public DeviceType getPlatform() {
+        return DeviceType.ANDROID;
     }
 
     @Override

@@ -1,20 +1,15 @@
 package com.urbanairship.api.push.parse;
 
-import com.google.common.base.Optional;
+import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import com.urbanairship.api.push.model.audience.Selector;
-import com.urbanairship.api.push.model.Platform;
-import com.urbanairship.api.push.model.PlatformData;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.PushOptions;
 import com.urbanairship.api.common.parse.*;
 import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.type.TypeReference;
-import org.joda.time.DateTime;
 
 import java.io.IOException;
-import java.util.Set;
 
 public class PushPayloadReader implements JsonObjectReader<PushPayload> {
 
@@ -41,7 +36,7 @@ public class PushPayloadReader implements JsonObjectReader<PushPayload> {
     }
 
     public void readDeviceTypes(JsonParser parser) throws IOException {
-        builder.setPlatforms(parser.readValueAs(PlatformData.class));
+        builder.setPlatforms(parser.readValueAs(DeviceTypeData.class));
     }
 
     @Override

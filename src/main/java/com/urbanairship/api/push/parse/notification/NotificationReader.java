@@ -1,10 +1,9 @@
 package com.urbanairship.api.push.parse.notification;
 
 import com.google.common.collect.Maps;
+import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.urbanairship.api.push.model.notification.Notification;
-import com.urbanairship.api.push.model.Platform;
-import com.urbanairship.api.push.parse.*;
 import com.urbanairship.api.common.parse.*;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
@@ -15,12 +14,12 @@ import java.util.Map;
 
 public class NotificationReader implements JsonObjectReader<Notification> {
 
-    private final Map<Platform, JsonDeserializer<? extends DevicePayloadOverride>> payloadOverridesDeserializerRegistry;
-    private final Map<Platform, DevicePayloadOverride> payloadOverrides = Maps.newHashMap();
+    private final Map<DeviceType, JsonDeserializer<? extends DevicePayloadOverride>> payloadOverridesDeserializerRegistry;
+    private final Map<DeviceType, DevicePayloadOverride> payloadOverrides = Maps.newHashMap();
 
     private String alert = null;
 
-    public NotificationReader(Map<Platform, JsonDeserializer<? extends DevicePayloadOverride>> payloadOverridesDeserializerRegistry) {
+    public NotificationReader(Map<DeviceType, JsonDeserializer<? extends DevicePayloadOverride>> payloadOverridesDeserializerRegistry) {
         this.payloadOverridesDeserializerRegistry = payloadOverridesDeserializerRegistry;
     }
 
@@ -28,13 +27,13 @@ public class NotificationReader implements JsonObjectReader<Notification> {
         alert = StringFieldDeserializer.INSTANCE.deserialize(parser, "alert");
     }
 
-    public void readPlatformDevicePayloadOverride(Platform platform, JsonParser parser, DeserializationContext context) throws IOException {
-        JsonDeserializer<? extends DevicePayloadOverride> deserializer = payloadOverridesDeserializerRegistry.get(platform);
+    public void readPlatformDevicePayloadOverride(DeviceType deviceType, JsonParser parser, DeserializationContext context) throws IOException {
+        JsonDeserializer<? extends DevicePayloadOverride> deserializer = payloadOverridesDeserializerRegistry.get(deviceType);
         if (deserializer == null) {
-            APIParsingException.raise("Unsupported platform " + platform.getIdentifier(), parser);
+            APIParsingException.raise("Unsupported platform " + deviceType.getIdentifier(), parser);
         }
 
-        payloadOverrides.put(platform, deserializer.deserialize(parser, context));
+        payloadOverrides.put(deviceType, deserializer.deserialize(parser, context));
     }
 
     @Override
@@ -48,7 +47,7 @@ public class NotificationReader implements JsonObjectReader<Notification> {
             builder.setAlert(alert);
         }
 
-        for (Map.Entry<Platform, DevicePayloadOverride> overrideEntry : payloadOverrides.entrySet()) {
+        for (Map.Entry<DeviceType, DevicePayloadOverride> overrideEntry : payloadOverrides.entrySet()) {
             builder.addPlatformOverride(overrideEntry.getKey(), overrideEntry.getValue());
         }
 

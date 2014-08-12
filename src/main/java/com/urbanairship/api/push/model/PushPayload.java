@@ -20,7 +20,7 @@ public final class PushPayload extends PushModelObject {
     private final Selector audience;
     private final Optional<Notification> notification;
     private final Optional<RichPushMessage> message;
-    private final PlatformData deviceTypes;
+    private final DeviceTypeData deviceTypes;
     private final Optional<PushOptions> pushOptions;
 
     /**
@@ -34,7 +34,7 @@ public final class PushPayload extends PushModelObject {
     private PushPayload(Selector audience,
                         Optional<Notification> notification,
                         Optional<RichPushMessage> message,
-                        PlatformData deviceTypes,
+                        DeviceTypeData deviceTypes,
                         Optional<PushOptions> pushOptions) {
         this.audience = audience;
         this.notification = notification;
@@ -71,7 +71,7 @@ public final class PushPayload extends PushModelObject {
      * Get the deviceTypes
      * @return DeviceTypeData
      */
-    public PlatformData getPlatforms() {
+    public DeviceTypeData getPlatforms() {
         return deviceTypes;
     }
 
@@ -139,7 +139,7 @@ public final class PushPayload extends PushModelObject {
     }
 
     public static class Builder {
-        private PlatformData deviceTypes = null;
+        private DeviceTypeData deviceTypes = null;
         private Selector audience = null;
         private Notification notification = null;
         private RichPushMessage message = null;
@@ -183,7 +183,7 @@ public final class PushPayload extends PushModelObject {
          * @param deviceTypes DeviceTypeData
          * @return Builder
          */
-        public Builder setPlatforms(PlatformData deviceTypes) {
+        public Builder setPlatforms(DeviceTypeData deviceTypes) {
             this.deviceTypes = deviceTypes;
             return this;
         }

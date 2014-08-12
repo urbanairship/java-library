@@ -1,7 +1,7 @@
 package com.urbanairship.api.push.model.notification;
 
-import com.urbanairship.api.push.model.Platform;
-import com.urbanairship.api.push.model.PlatformData;
+import com.urbanairship.api.push.model.DeviceType;
+import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
 import com.urbanairship.api.push.model.notification.blackberry.BlackberryDevicePayload;
@@ -38,8 +38,8 @@ public class Notifications {
 
     /* Simple alert platform overrides */
 
-    public static DevicePayloadOverride alert(Platform platform, String text) {
-        switch (platform) {
+    public static DevicePayloadOverride alert(DeviceType deviceType, String text) {
+        switch (deviceType) {
         case IOS:
             return iosAlert(text);
         case ANDROID:
@@ -53,7 +53,7 @@ public class Notifications {
         case ADM:
             return admAlert(text);
         default:
-            throw unknownPlatform(platform.getIdentifier());
+            throw unknownPlatform(deviceType.getIdentifier());
         }
     }
 
@@ -95,13 +95,13 @@ public class Notifications {
 
     /* Platform selector (device_types) */
 
-    public static PlatformData platforms(String ... names) {
-        PlatformData.Builder platforms = PlatformData.newBuilder();
+    public static DeviceTypeData platforms(String ... names) {
+        DeviceTypeData.Builder platforms = DeviceTypeData.newBuilder();
         for (String name : names) {
             if (name.equalsIgnoreCase("all")) {
-                return PlatformData.all();
+                return DeviceTypeData.all();
             }
-            Optional<Platform> platform = Platform.find(name);
+            Optional<DeviceType> platform = DeviceType.find(name);
             if (! platform.isPresent()) {
                 throw unknownPlatform(name);
             }

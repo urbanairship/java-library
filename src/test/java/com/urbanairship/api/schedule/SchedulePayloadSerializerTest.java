@@ -1,7 +1,7 @@
 package com.urbanairship.api.schedule;
 
-import com.urbanairship.api.push.model.Platform;
-import com.urbanairship.api.push.model.PlatformData;
+import com.urbanairship.api.push.model.DeviceType;
+import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushOptions;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.audience.Selectors;
@@ -27,7 +27,7 @@ public class SchedulePayloadSerializerTest {
 
         PushPayload pushPayload = PushPayload.newBuilder()
                 .setAudience(Selectors.tag("tag"))
-                .setPlatforms(PlatformData.newBuilder().addPlatform(Platform.IOS).build())
+                .setPlatforms(DeviceTypeData.newBuilder().addPlatform(DeviceType.IOS).build())
                 .setNotification(Notification.newBuilder().setAlert("alert").build())
                 .setPushOptions(PushOptions.newBuilder().build())
                 .build();
@@ -50,7 +50,7 @@ public class SchedulePayloadSerializerTest {
 
         PushPayload pushPayload = PushPayload.newBuilder()
                 .setAudience(Selectors.tag("tag"))
-                .setPlatforms(PlatformData.newBuilder().addPlatform(Platform.IOS).build())
+                .setPlatforms(DeviceTypeData.newBuilder().addPlatform(DeviceType.IOS).build())
                 .setNotification(Notification.newBuilder().setAlert("alert").build())
                 .setPushOptions(PushOptions.newBuilder().build())
                 .build();
@@ -71,7 +71,7 @@ public class SchedulePayloadSerializerTest {
 
         PushPayload pushPayload = PushPayload.newBuilder()
                 .setAudience(Selectors.tag("tag"))
-                .setPlatforms(PlatformData.newBuilder().addPlatform(Platform.IOS).build())
+                .setPlatforms(DeviceTypeData.newBuilder().addPlatform(DeviceType.IOS).build())
                 .setNotification(Notification.newBuilder().setAlert("alert").build())
                 .setPushOptions(PushOptions.newBuilder().build())
                 .build();
@@ -86,7 +86,7 @@ public class SchedulePayloadSerializerTest {
 
         PushPayload pushPayloadLocal = PushPayload.newBuilder()
                 .setAudience(Selectors.tag("tag"))
-                .setPlatforms(PlatformData.newBuilder().addPlatform(Platform.IOS).build())
+                .setPlatforms(DeviceTypeData.newBuilder().addPlatform(DeviceType.IOS).build())
                 .setNotification(Notification.newBuilder().setAlert("alert").build())
                 .setPushOptions(PushOptions.newBuilder().build())
                 .build();

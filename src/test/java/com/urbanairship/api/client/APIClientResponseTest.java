@@ -1,7 +1,7 @@
 package com.urbanairship.api.client;
 
-import com.urbanairship.api.push.model.Platform;
-import com.urbanairship.api.push.model.PlatformData;
+import com.urbanairship.api.push.model.DeviceType;
+import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
@@ -59,7 +59,7 @@ public class APIClientResponseTest {
                                                 .setNotification(Notification.newBuilder()
                                                         .setAlert("Derp")
                                                         .build())
-                                                .setPlatforms(PlatformData.of(Platform.IOS))
+                                                .setPlatforms(DeviceTypeData.of(DeviceType.IOS))
                                                 .build())
                                         .setUrl("http://sample.com/")
                                         .build();

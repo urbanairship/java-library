@@ -4,11 +4,11 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 
-public final class PlatformData extends PushModelObject {
+public final class DeviceTypeData extends PushModelObject {
     private final boolean all;
-    private final Optional<ImmutableSet<Platform>> platforms;
+    private final Optional<ImmutableSet<DeviceType>> platforms;
 
-    private PlatformData(boolean all, Optional<ImmutableSet<Platform>> platforms) {
+    private DeviceTypeData(boolean all, Optional<ImmutableSet<DeviceType>> platforms) {
         this.all = all;
         this.platforms = platforms;
     }
@@ -17,15 +17,15 @@ public final class PlatformData extends PushModelObject {
         return new Builder();
     }
 
-    public static PlatformData all() {
-        return PlatformData.newBuilder()
+    public static DeviceTypeData all() {
+        return DeviceTypeData.newBuilder()
             .setAll(true)
             .build();
     }
 
-    public static PlatformData of(Platform... platforms) {
-        PlatformData.Builder builder = PlatformData.newBuilder();
-        for (Platform p : platforms) {
+    public static DeviceTypeData of(DeviceType... deviceTypes) {
+        DeviceTypeData.Builder builder = DeviceTypeData.newBuilder();
+        for (DeviceType p : deviceTypes) {
             builder.addPlatform(p);
         }
         return builder.build();
@@ -35,7 +35,7 @@ public final class PlatformData extends PushModelObject {
         return all;
     }
 
-    public Optional<ImmutableSet<Platform>> getPlatforms() {
+    public Optional<ImmutableSet<DeviceType>> getPlatforms() {
         return platforms;
     }
 
@@ -48,7 +48,7 @@ public final class PlatformData extends PushModelObject {
             return false;
         }
 
-        PlatformData that = (PlatformData) o;
+        DeviceTypeData that = (DeviceTypeData) o;
 
         if (all != that.all) {
             return false;
@@ -77,7 +77,7 @@ public final class PlatformData extends PushModelObject {
     public static class Builder {
 
         private boolean all = false;
-        private ImmutableSet.Builder<Platform> platforms = null;
+        private ImmutableSet.Builder<DeviceType> platforms = null;
 
         private Builder() { }
 
@@ -86,15 +86,15 @@ public final class PlatformData extends PushModelObject {
             return this;
         }
 
-        public Builder addPlatform(Platform platform) {
+        public Builder addPlatform(DeviceType deviceType) {
             if (platforms == null) {
                 platforms = ImmutableSet.builder();
             }
-            this.platforms.add(platform);
+            this.platforms.add(deviceType);
             return this;
         }
 
-        public Builder addAllPlatforms(Iterable<Platform> platforms) {
+        public Builder addAllPlatforms(Iterable<DeviceType> platforms) {
             if (this.platforms == null) {
                 this.platforms = ImmutableSet.builder();
             }
@@ -102,11 +102,11 @@ public final class PlatformData extends PushModelObject {
             return this;
         }
 
-        public PlatformData build() {
+        public DeviceTypeData build() {
             Preconditions.checkArgument(!(all && (platforms != null)), "'device_types' cannot be both 'all' and a list of platforms.");
-            return new PlatformData(all,
+            return new DeviceTypeData(all,
                                     platforms == null
-                                    ? Optional.<ImmutableSet<Platform>>absent()
+                                    ? Optional.<ImmutableSet<DeviceType>>absent()
                                     : Optional.fromNullable(platforms.build()));
         }
     }

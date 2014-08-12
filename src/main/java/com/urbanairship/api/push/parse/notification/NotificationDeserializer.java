@@ -2,10 +2,9 @@ package com.urbanairship.api.push.parse.notification;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
+import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.urbanairship.api.push.model.notification.Notification;
-import com.urbanairship.api.push.model.Platform;
-import com.urbanairship.api.push.parse.*;
 import com.urbanairship.api.common.parse.*;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
@@ -28,44 +27,44 @@ public class NotificationDeserializer extends JsonDeserializer<Notification> {
             .put("wns", new FieldParser<NotificationReader>() {
                     @Override
                     public void parse(NotificationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                        reader.readPlatformDevicePayloadOverride(Platform.WNS, jsonParser, deserializationContext);
+                        reader.readPlatformDevicePayloadOverride(DeviceType.WNS, jsonParser, deserializationContext);
                     }
                 })
             .put("mpns", new FieldParser<NotificationReader>() {
                     @Override
                     public void parse(NotificationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                        reader.readPlatformDevicePayloadOverride(Platform.MPNS, jsonParser, deserializationContext);
+                        reader.readPlatformDevicePayloadOverride(DeviceType.MPNS, jsonParser, deserializationContext);
                     }
                 })
             .put("ios", new FieldParser<NotificationReader>() {
                     @Override
                     public void parse(NotificationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                        reader.readPlatformDevicePayloadOverride(Platform.IOS, jsonParser, deserializationContext);
+                        reader.readPlatformDevicePayloadOverride(DeviceType.IOS, jsonParser, deserializationContext);
                     }
                 })
             .put("android", new FieldParser<NotificationReader>() {
                     @Override
                     public void parse(NotificationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                        reader.readPlatformDevicePayloadOverride(Platform.ANDROID, jsonParser, deserializationContext);
+                        reader.readPlatformDevicePayloadOverride(DeviceType.ANDROID, jsonParser, deserializationContext);
                     }
                 })
             .put("blackberry", new FieldParser<NotificationReader>() {
                     @Override
                     public void parse(NotificationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                        reader.readPlatformDevicePayloadOverride(Platform.BLACKBERRY, jsonParser, deserializationContext);
+                        reader.readPlatformDevicePayloadOverride(DeviceType.BLACKBERRY, jsonParser, deserializationContext);
                     }
                 })
             .put("adm", new FieldParser<NotificationReader>() {
                     @Override
                     public void parse(NotificationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                        reader.readPlatformDevicePayloadOverride(Platform.ADM, jsonParser, deserializationContext);
+                        reader.readPlatformDevicePayloadOverride(DeviceType.ADM, jsonParser, deserializationContext);
                     }
                 })
             .build());
 
     private final StandardObjectDeserializer<Notification, ?> deserializer;
 
-    public NotificationDeserializer(final Map<Platform, JsonDeserializer<? extends DevicePayloadOverride>> payloadOverridesDeserializersRegistry) {
+    public NotificationDeserializer(final Map<DeviceType, JsonDeserializer<? extends DevicePayloadOverride>> payloadOverridesDeserializersRegistry) {
         deserializer = new StandardObjectDeserializer<Notification, NotificationReader>(
             FIELD_PARSERS,
             new Supplier<NotificationReader>() {

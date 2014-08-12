@@ -1,19 +1,19 @@
 package com.urbanairship.api.push.model.notification;
 
-import com.urbanairship.api.push.model.Platform;
+import com.urbanairship.api.push.model.DeviceType;
 
 public class NotificationPayloadOverrideKey {
 
-    private final Platform platform;
+    private final DeviceType deviceType;
     private final Class<? extends DevicePayloadOverride> clazz;
 
-    public NotificationPayloadOverrideKey(Platform platform, Class<? extends DevicePayloadOverride> clazz) {
-        this.platform = platform;
+    public NotificationPayloadOverrideKey(DeviceType deviceType, Class<? extends DevicePayloadOverride> clazz) {
+        this.deviceType = deviceType;
         this.clazz = clazz;
     }
 
-    public Platform getPlatform() {
-        return platform;
+    public DeviceType getDeviceType() {
+        return deviceType;
     }
 
     public Class<? extends DevicePayloadOverride> getOverrideClass() {
@@ -34,7 +34,7 @@ public class NotificationPayloadOverrideKey {
         if (clazz != null ? !clazz.equals(that.clazz) : that.clazz != null) {
             return false;
         }
-        if (platform != that.platform) {
+        if (deviceType != that.deviceType) {
             return false;
         }
 
@@ -43,7 +43,7 @@ public class NotificationPayloadOverrideKey {
 
     @Override
     public int hashCode() {
-        int result = platform != null ? platform.hashCode() : 0;
+        int result = deviceType != null ? deviceType.hashCode() : 0;
         result = 31 * result + (clazz != null ? clazz.hashCode() : 0);
         return result;
     }
@@ -51,7 +51,7 @@ public class NotificationPayloadOverrideKey {
     @Override
     public String toString() {
         return "NotificationPayloadOverrideKey{" +
-                "platform=" + platform +
+                "platform=" + deviceType +
                 ", clazz=" + clazz +
                 '}';
     }

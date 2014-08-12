@@ -1,16 +1,10 @@
 package com.urbanairship.api.push.parse.notification.wns;
 
 import com.urbanairship.api.push.model.notification.wns.WNSBinding;
-import com.urbanairship.api.push.model.notification.Notification;
-import com.urbanairship.api.push.model.Platform;
-import com.urbanairship.api.push.parse.*;
 import com.urbanairship.api.common.parse.*;
 import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.type.TypeReference;
-import org.joda.time.DateTime;
 
 import java.io.IOException;
-import java.util.Set;
 
 public class WNSBindingReader implements JsonObjectReader<WNSBinding> {
 

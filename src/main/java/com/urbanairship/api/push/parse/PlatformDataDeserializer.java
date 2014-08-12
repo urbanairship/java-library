@@ -1,7 +1,7 @@
 package com.urbanairship.api.push.parse;
 
-import com.urbanairship.api.push.model.PlatformData;
-import com.urbanairship.api.push.model.Platform;
+import com.urbanairship.api.push.model.DeviceType;
+import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.common.parse.APIParsingException;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
@@ -11,15 +11,15 @@ import org.codehaus.jackson.map.JsonDeserializer;
 import java.io.IOException;
 import java.util.Set;
 
-public class PlatformDataDeserializer extends JsonDeserializer<PlatformData> {
+public class PlatformDataDeserializer extends JsonDeserializer<DeviceTypeData> {
 
     public static final PlatformDataDeserializer INSTANCE = new PlatformDataDeserializer();
 
     public PlatformDataDeserializer() { }
 
     @Override
-    public PlatformData deserialize(JsonParser parser, DeserializationContext context) throws IOException {
-        PlatformData.Builder builder = PlatformData.newBuilder();
+    public DeviceTypeData deserialize(JsonParser parser, DeserializationContext context) throws IOException {
+        DeviceTypeData.Builder builder = DeviceTypeData.newBuilder();
 
         JsonToken token = parser.getCurrentToken();
         if (token == JsonToken.VALUE_STRING) {
@@ -32,8 +32,8 @@ public class PlatformDataDeserializer extends JsonDeserializer<PlatformData> {
                 builder.setAll(true);
             }
         } else {
-            Set<Platform> platforms = parser.readValueAs(new TypeReference<Set<Platform>>() {});
-            builder.addAllPlatforms(platforms);
+            Set<DeviceType> deviceTypes = parser.readValueAs(new TypeReference<Set<DeviceType>>() {});
+            builder.addAllPlatforms(deviceTypes);
         }
         return builder.build();
     }

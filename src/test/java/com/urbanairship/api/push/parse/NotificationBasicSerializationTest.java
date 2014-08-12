@@ -1,9 +1,7 @@
 package com.urbanairship.api.push.parse;
 
 import com.urbanairship.api.common.parse.*;
-import com.urbanairship.api.push.model.Platform;
 import com.urbanairship.api.push.model.notification.Notification;
-import com.urbanairship.api.push.model.notification.wns.WNSDevicePayload;
 import org.apache.commons.lang.RandomStringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;

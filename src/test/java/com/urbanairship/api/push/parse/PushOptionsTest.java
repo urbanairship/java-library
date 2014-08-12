@@ -3,11 +3,9 @@ package com.urbanairship.api.push.parse;
 import com.urbanairship.api.push.model.*;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
-import com.google.common.base.Optional;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
@@ -26,7 +24,7 @@ public class PushOptionsTest {
                 + "}";
         PushPayload pushPayload = PushPayload.newBuilder()
                 .setAudience(Selectors.all())
-                .setPlatforms(PlatformData.newBuilder().addPlatform(Platform.IOS).build())
+                .setPlatforms(DeviceTypeData.newBuilder().addPlatform(DeviceType.IOS).build())
                 .setNotification(Notification.newBuilder().setAlert("wat").build())
                         .build();
 
@@ -47,7 +45,7 @@ public class PushOptionsTest {
                 + "}";
         PushPayload push = PushPayload.newBuilder()
                 .setAudience(Selectors.all())
-                .setPlatforms(PlatformData.newBuilder().addPlatform(Platform.IOS).build())
+                .setPlatforms(DeviceTypeData.newBuilder().addPlatform(DeviceType.IOS).build())
                 .setNotification(Notification.newBuilder().setAlert("wat").build())
                 .setPushOptions(PushOptions.newBuilder().build())
                 .build();

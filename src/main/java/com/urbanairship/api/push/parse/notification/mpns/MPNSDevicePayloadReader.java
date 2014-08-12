@@ -2,19 +2,12 @@ package com.urbanairship.api.push.parse.notification.mpns;
 
 import com.urbanairship.api.push.model.notification.mpns.MPNSDevicePayload;
 import com.urbanairship.api.push.model.notification.mpns.MPNSPush;
-import com.urbanairship.api.push.model.notification.Notification;
-import com.urbanairship.api.push.model.Platform;
-import com.urbanairship.api.push.parse.*;
 import com.urbanairship.api.common.parse.*;
 import com.google.common.base.Optional;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
-import org.codehaus.jackson.map.JsonDeserializer;
-import org.codehaus.jackson.type.TypeReference;
-import org.joda.time.DateTime;
 
 import java.io.IOException;
-import java.util.Set;
 
 public class MPNSDevicePayloadReader implements JsonObjectReader<MPNSDevicePayload> {
 

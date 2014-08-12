@@ -76,13 +76,13 @@ public class PushObjectMapper {
 
 
         NotificationDeserializer notificationDeserializer = new NotificationDeserializer(
-                ImmutableMap.<Platform, JsonDeserializer<? extends DevicePayloadOverride>>builder()
-                        .put(Platform.WNS, wnsPayloadDS)
-                        .put(Platform.MPNS, mpnsPayloadDS)
-                        .put(Platform.IOS, iosPayloadDS)
-                        .put(Platform.ANDROID, androidPayloadDS)
-                        .put(Platform.BLACKBERRY, blackberryPayloadDS)
-                        .put(Platform.ADM, admPayloadDS)
+                ImmutableMap.<DeviceType, JsonDeserializer<? extends DevicePayloadOverride>>builder()
+                        .put(DeviceType.WNS, wnsPayloadDS)
+                        .put(DeviceType.MPNS, mpnsPayloadDS)
+                        .put(DeviceType.IOS, iosPayloadDS)
+                        .put(DeviceType.ANDROID, androidPayloadDS)
+                        .put(DeviceType.BLACKBERRY, blackberryPayloadDS)
+                        .put(DeviceType.ADM, admPayloadDS)
                         .build());
 
         MODULE
@@ -92,8 +92,8 @@ public class PushObjectMapper {
                 .addDeserializer(PushOptions.class, new PushOptionsDeserializer())
                 .addSerializer(Notification.class, new NotificationSerializer())
                 .addDeserializer(Notification.class, notificationDeserializer)
-                .addSerializer(Platform.class, new PlatformSerializer())
-                .addDeserializer(Platform.class, new PlatformDeserializer())
+                .addSerializer(DeviceType.class, new PlatformSerializer())
+                .addDeserializer(DeviceType.class, new PlatformDeserializer())
                 .addSerializer(Selector.class, new SelectorSerializer())
                 .addDeserializer(Selector.class, new SelectorDeserializer())
                 .addSerializer(LocationSelector.class, new LocationSelectorSerializer())
@@ -102,8 +102,8 @@ public class PushObjectMapper {
                 .addDeserializer(AbsoluteDateRange.Builder.class, new AbsoluteDateRangeDeserializer())
                 .addSerializer(RecentDateRange.class, new RecentDateRangeSerializer())
                 .addDeserializer(RecentDateRange.Builder.class, new RecentDateRangeDeserializer())
-                .addSerializer(PlatformData.class, new PlatformDataSerializer())
-                .addDeserializer(PlatformData.class, new PlatformDataDeserializer())
+                .addSerializer(DeviceTypeData.class, new PlatformDataSerializer())
+                .addDeserializer(DeviceTypeData.class, new PlatformDataDeserializer())
                 .addDeserializer(DateRange.class, new DateRangeDeserializer())
                 .addSerializer(PushExpiry.class, PushExpirySerializer.INSTANCE)
 

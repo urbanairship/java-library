@@ -1,10 +1,8 @@
 package com.urbanairship.api.push.parse;
 
-import com.google.common.base.Optional;
 import com.urbanairship.api.common.parse.APIParsingException;
-import com.urbanairship.api.push.model.Platform;
-import com.urbanairship.api.push.model.PlatformData;
-import com.urbanairship.api.push.model.PushOptions;
+import com.urbanairship.api.push.model.DeviceType;
+import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
@@ -112,12 +110,12 @@ public class PushPayloadBasicSerializationTest {
         PushPayload push = mapper.readValue(json, PushPayload.class);
         assertFalse(push.getPlatforms().isAll());
         assertTrue(push.getPlatforms().getPlatforms().isPresent());
-        Set<Platform> platforms = push.getPlatforms().getPlatforms().get();
-        assertEquals(4, platforms.size());
-        assertTrue(platforms.contains(Platform.IOS));
-        assertTrue(platforms.contains(Platform.ANDROID));
-        assertTrue(platforms.contains(Platform.WNS));
-        assertTrue(platforms.contains(Platform.ADM));
+        Set<DeviceType> deviceTypes = push.getPlatforms().getPlatforms().get();
+        assertEquals(4, deviceTypes.size());
+        assertTrue(deviceTypes.contains(DeviceType.IOS));
+        assertTrue(deviceTypes.contains(DeviceType.ANDROID));
+        assertTrue(deviceTypes.contains(DeviceType.WNS));
+        assertTrue(deviceTypes.contains(DeviceType.ADM));
     }
 
     @Test(expected=APIParsingException.class)
@@ -188,34 +186,34 @@ public class PushPayloadBasicSerializationTest {
                 + "}";
         PushPayload push = mapper.readValue(json, PushPayload.class);
         Notification notification = push.getNotification().get();
-        assertTrue(notification.getPlatformOverride(Platform.IOS, IOSDevicePayload.class).isPresent());
-        assertTrue(notification.getPlatformOverride(Platform.WNS, WNSDevicePayload.class).isPresent());
-        assertTrue(notification.getPlatformOverride(Platform.MPNS, MPNSDevicePayload.class).isPresent());
-        assertTrue(notification.getPlatformOverride(Platform.ANDROID, AndroidDevicePayload.class).isPresent());
-        assertTrue(notification.getPlatformOverride(Platform.BLACKBERRY, BlackberryDevicePayload.class).isPresent());
-        assertTrue(notification.getPlatformOverride(Platform.ADM, ADMDevicePayload.class).isPresent());
+        assertTrue(notification.getPlatformOverride(DeviceType.IOS, IOSDevicePayload.class).isPresent());
+        assertTrue(notification.getPlatformOverride(DeviceType.WNS, WNSDevicePayload.class).isPresent());
+        assertTrue(notification.getPlatformOverride(DeviceType.MPNS, MPNSDevicePayload.class).isPresent());
+        assertTrue(notification.getPlatformOverride(DeviceType.ANDROID, AndroidDevicePayload.class).isPresent());
+        assertTrue(notification.getPlatformOverride(DeviceType.BLACKBERRY, BlackberryDevicePayload.class).isPresent());
+        assertTrue(notification.getPlatformOverride(DeviceType.ADM, ADMDevicePayload.class).isPresent());
 
-        IOSDevicePayload ios = notification.getPlatformOverride(Platform.IOS, IOSDevicePayload.class).get();
+        IOSDevicePayload ios = notification.getPlatformOverride(DeviceType.IOS, IOSDevicePayload.class).get();
         assertTrue(ios.getAlert().isPresent());
         assertEquals("ios", ios.getAlert().get());
 
-        WNSDevicePayload wns = notification.getPlatformOverride(Platform.WNS, WNSDevicePayload.class).get();
+        WNSDevicePayload wns = notification.getPlatformOverride(DeviceType.WNS, WNSDevicePayload.class).get();
         assertTrue(wns.getAlert().isPresent());
         assertEquals("wns", wns.getAlert().get());
 
-        MPNSDevicePayload mpns = notification.getPlatformOverride(Platform.MPNS, MPNSDevicePayload.class).get();
+        MPNSDevicePayload mpns = notification.getPlatformOverride(DeviceType.MPNS, MPNSDevicePayload.class).get();
         assertTrue(mpns.getAlert().isPresent());
         assertEquals("mpns", mpns.getAlert().get());
 
-        AndroidDevicePayload android = notification.getPlatformOverride(Platform.ANDROID, AndroidDevicePayload.class).get();
+        AndroidDevicePayload android = notification.getPlatformOverride(DeviceType.ANDROID, AndroidDevicePayload.class).get();
         assertTrue(android.getAlert().isPresent());
         assertEquals("droid", android.getAlert().get());
 
-        BlackberryDevicePayload bb = notification.getPlatformOverride(Platform.BLACKBERRY, BlackberryDevicePayload.class).get();
+        BlackberryDevicePayload bb = notification.getPlatformOverride(DeviceType.BLACKBERRY, BlackberryDevicePayload.class).get();
         assertTrue(bb.getAlert().isPresent());
         assertEquals("doomed", bb.getAlert().get());
 
-        ADMDevicePayload adm = notification.getPlatformOverride(Platform.ADM, ADMDevicePayload.class).get();
+        ADMDevicePayload adm = notification.getPlatformOverride(DeviceType.ADM, ADMDevicePayload.class).get();
         assertTrue(adm.getAlert().isPresent());
         assertEquals("phoenix", adm.getAlert().get());
     }
@@ -230,8 +228,8 @@ public class PushPayloadBasicSerializationTest {
                                 .setAlert(RandomStringUtils.randomAlphabetic(10))
                                 .build()
                 )
-                .setPlatforms(PlatformData.newBuilder()
-                        .addPlatform(Platform.WNS)
+                .setPlatforms(DeviceTypeData.newBuilder()
+                        .addPlatform(DeviceType.WNS)
                         .build())
                 .build();
 
@@ -246,8 +244,8 @@ public class PushPayloadBasicSerializationTest {
                                 .setAlert(RandomStringUtils.randomAlphabetic(10))
                                 .build()
                 )
-                .setPlatforms(PlatformData.newBuilder()
-                        .addPlatform(Platform.WNS)
+                .setPlatforms(DeviceTypeData.newBuilder()
+                        .addPlatform(DeviceType.WNS)
                         .build())
                 .build();
 
@@ -261,8 +259,8 @@ public class PushPayloadBasicSerializationTest {
                 .setNotification(Notification.newBuilder()
                         .setAlert(RandomStringUtils.randomAlphabetic(10))
                         .build())
-                .setPlatforms(PlatformData.newBuilder()
-                        .addPlatform(Platform.WNS)
+                .setPlatforms(DeviceTypeData.newBuilder()
+                        .addPlatform(DeviceType.WNS)
                         .build())
                 .build();
 
@@ -276,8 +274,8 @@ public class PushPayloadBasicSerializationTest {
                 .setNotification(Notification.newBuilder()
                         .setAlert(RandomStringUtils.randomAlphabetic(10))
                         .build())
-                .setPlatforms(PlatformData.newBuilder()
-                        .addPlatform(Platform.WNS)
+                .setPlatforms(DeviceTypeData.newBuilder()
+                        .addPlatform(DeviceType.WNS)
                         .build())
                 .build();
 
@@ -294,8 +292,8 @@ public class PushPayloadBasicSerializationTest {
                 .setNotification(Notification.newBuilder()
                         .setAlert("WAT")
                         .build())
-                .setPlatforms(PlatformData.newBuilder()
-                        .addPlatform(Platform.WNS)
+                .setPlatforms(DeviceTypeData.newBuilder()
+                        .addPlatform(DeviceType.WNS)
                         .build())
                 .build();
         mapper.readValue(mapper.writeValueAsString(payload), PushPayload.class);
@@ -308,8 +306,8 @@ public class PushPayloadBasicSerializationTest {
                 .setNotification(Notification.newBuilder()
                         .setAlert("WAT")
                         .build())
-                .setPlatforms(PlatformData.newBuilder()
-                        .addPlatform(Platform.WNS)
+                .setPlatforms(DeviceTypeData.newBuilder()
+                        .addPlatform(DeviceType.WNS)
                         .build())
                 .build();
         mapper.readValue(mapper.writeValueAsString(payload), PushPayload.class);

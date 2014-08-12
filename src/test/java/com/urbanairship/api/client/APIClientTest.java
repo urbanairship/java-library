@@ -92,7 +92,7 @@ public class APIClientTest {
 
         PushPayload payload = PushPayload.newBuilder()
                 .setAudience(Selectors.all())
-                .setPlatforms(PlatformData.of(Platform.IOS))
+                .setPlatforms(DeviceTypeData.of(DeviceType.IOS))
                 .setNotification(Notifications.alert("Foo"))
                 .build();
 
@@ -129,7 +129,7 @@ public class APIClientTest {
             // DeviceType
             List<String> deviceTypeData = (List<String>)result.get("device_types");
             assertTrue(deviceTypeData.get(0).equals("ios"));
-            assertEquals(Platform.find(deviceTypeData.get(0)).get(), Platform.IOS);
+            assertEquals(DeviceType.find(deviceTypeData.get(0)).get(), DeviceType.IOS);
 
             // Notification
             Map<String, String> notification =
@@ -307,7 +307,7 @@ public class APIClientTest {
 
         PushPayload pushPayload = PushPayload.newBuilder()
                                          .setAudience(Selectors.all())
-                                         .setPlatforms(PlatformData.of(Platform.IOS))
+                                         .setPlatforms(DeviceTypeData.of(DeviceType.IOS))
                                          .setNotification(Notifications.alert("Foo"))
                                          .build();
 
@@ -382,7 +382,7 @@ public class APIClientTest {
 
         PushPayload payload = PushPayload.newBuilder()
                                          .setAudience(Selectors.all())
-                                         .setPlatforms(PlatformData.of(Platform.IOS))
+                                         .setPlatforms(DeviceTypeData.of(DeviceType.IOS))
                                          .setNotification(Notifications.alert("Foo"))
                                          .build();
 

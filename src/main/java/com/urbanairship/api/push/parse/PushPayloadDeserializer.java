@@ -2,7 +2,6 @@ package com.urbanairship.api.push.parse;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
-import com.urbanairship.api.push.model.Platform;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.common.parse.*;
 import org.codehaus.jackson.JsonParser;
