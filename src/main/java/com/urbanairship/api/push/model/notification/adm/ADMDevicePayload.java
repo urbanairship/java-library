@@ -28,7 +28,7 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
     }
 
     @Override
-    public DeviceType getPlatform() {
+    public DeviceType getDeviceType() {
         return DeviceType.ADM;
     }
 

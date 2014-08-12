@@ -20,7 +20,7 @@ public class NotificationSerializer extends JsonSerializer<Notification> {
             jsonGenerator.writeStringField("alert", notification.getAlert().get());
         }
 
-        for (Map.Entry<DeviceType, DevicePayloadOverride> entry : notification.getPlatformPayloadOverrides().entrySet()) {
+        for (Map.Entry<DeviceType, DevicePayloadOverride> entry : notification.getDeviceTypePayloadOverrides().entrySet()) {
             jsonGenerator.writeObjectField(entry.getKey().getIdentifier(), entry.getValue());
         }
 

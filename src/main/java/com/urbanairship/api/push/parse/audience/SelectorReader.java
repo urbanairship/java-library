@@ -15,8 +15,6 @@ import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
@@ -24,7 +22,6 @@ import java.io.IOException;
 
 public class SelectorReader implements JsonObjectReader<Selector> {
 
-    private static final Logger log = LogManager.getLogger(SelectorReader.class);
     private BasicSelector.Builder basic = null;
     private BasicValueSelector.Builder value = null;
     private BasicCompoundSelector.Builder compound = null;

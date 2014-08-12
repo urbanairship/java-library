@@ -46,18 +46,15 @@ public final class LocationIdentifier extends PushModelObject {
 
         LocationIdentifier that = (LocationIdentifier) o;
 
-        if (alias != that.alias) {
-            return false;
+        if (alias.isPresent() && that.getAlias().isPresent()){
+            return (alias.hashCode() == that.getAlias().hashCode());
         }
-        if (id != null ? !id.equals(that.id) : that.id != null) {
-            return false;
+        else if (id.isPresent() && that.getId().isPresent()){
+            return (id.hashCode() == that.getId().hashCode());
         }
-        if (alias != null ? !alias.equals(that.alias) : that.alias != null) {
-            return false;
-        }
-
-        return true;
+        else return false;
     }
+
 
     @Override
     public int hashCode() {

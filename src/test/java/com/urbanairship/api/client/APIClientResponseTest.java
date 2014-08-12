@@ -59,7 +59,7 @@ public class APIClientResponseTest {
                                                 .setNotification(Notification.newBuilder()
                                                         .setAlert("Derp")
                                                         .build())
-                                                .setPlatforms(DeviceTypeData.of(DeviceType.IOS))
+                                                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
                                                 .build())
                                         .setUrl("http://sample.com/")
                                         .build();

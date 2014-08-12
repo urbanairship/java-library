@@ -1,14 +1,14 @@
 package com.urbanairship.api.push.model.notification.mpns;
 
-import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushModelObject;
+import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.google.common.base.Optional;
 
 public final class MPNSDevicePayload extends PushModelObject implements DevicePayloadOverride {
 
-    private Optional<MPNSPush> body;
-    private Optional<String> alert;
+    private final Optional<MPNSPush> body;
+    private final Optional<String> alert;
 
     private MPNSDevicePayload(Optional<MPNSPush> body, Optional<String> alert) {
         this.body = body;
@@ -20,7 +20,7 @@ public final class MPNSDevicePayload extends PushModelObject implements DevicePa
     }
 
     @Override
-    public DeviceType getPlatform() {
+    public DeviceType getDeviceType() {
         return DeviceType.MPNS;
     }
 

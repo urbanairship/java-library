@@ -24,7 +24,7 @@ public class PushOptionsTest {
                 + "}";
         PushPayload pushPayload = PushPayload.newBuilder()
                 .setAudience(Selectors.all())
-                .setPlatforms(DeviceTypeData.newBuilder().addPlatform(DeviceType.IOS).build())
+                .setDeviceTypes(DeviceTypeData.newBuilder().addDeviceType(DeviceType.IOS).build())
                 .setNotification(Notification.newBuilder().setAlert("wat").build())
                         .build();
 
@@ -45,7 +45,7 @@ public class PushOptionsTest {
                 + "}";
         PushPayload push = PushPayload.newBuilder()
                 .setAudience(Selectors.all())
-                .setPlatforms(DeviceTypeData.newBuilder().addPlatform(DeviceType.IOS).build())
+                .setDeviceTypes(DeviceTypeData.newBuilder().addDeviceType(DeviceType.IOS).build())
                 .setNotification(Notification.newBuilder().setAlert("wat").build())
                 .setPushOptions(PushOptions.newBuilder().build())
                 .build();

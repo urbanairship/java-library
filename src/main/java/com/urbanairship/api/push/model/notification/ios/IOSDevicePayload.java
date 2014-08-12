@@ -10,7 +10,6 @@ import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
-
 import java.util.Map;
 
 /**
@@ -55,7 +54,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
      * @return deviceType
      */
     @Override
-    public DeviceType getPlatform() {
+    public DeviceType getDeviceType() {
         return DeviceType.IOS;
     }
 

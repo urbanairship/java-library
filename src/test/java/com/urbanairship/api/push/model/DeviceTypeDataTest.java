@@ -7,24 +7,24 @@ import com.google.common.collect.ImmutableSet;
 public class DeviceTypeDataTest {
 
     @Test
-    public void testPlatformDataOf() {
+    public void testDeviceTypeDataOf() {
         DeviceTypeData data = DeviceTypeData.of(DeviceType.IOS, DeviceType.ANDROID, DeviceType.ADM);
-        assertTrue(data.getPlatforms().isPresent());
+        assertTrue(data.getDeviceTypes().isPresent());
         assertFalse(data.isAll());
-        assertEquals(3, data.getPlatforms().get().size());
-        assertTrue(data.getPlatforms().get().contains(DeviceType.IOS));
-        assertTrue(data.getPlatforms().get().contains(DeviceType.ANDROID));
-        assertTrue(data.getPlatforms().get().contains(DeviceType.ADM));
-        assertFalse(data.getPlatforms().get().contains(DeviceType.WNS));
-        assertFalse(data.getPlatforms().get().contains(DeviceType.MPNS));
-        assertFalse(data.getPlatforms().get().contains(DeviceType.BLACKBERRY));
+        assertEquals(3, data.getDeviceTypes().get().size());
+        assertTrue(data.getDeviceTypes().get().contains(DeviceType.IOS));
+        assertTrue(data.getDeviceTypes().get().contains(DeviceType.ANDROID));
+        assertTrue(data.getDeviceTypes().get().contains(DeviceType.ADM));
+        assertFalse(data.getDeviceTypes().get().contains(DeviceType.WNS));
+        assertFalse(data.getDeviceTypes().get().contains(DeviceType.MPNS));
+        assertFalse(data.getDeviceTypes().get().contains(DeviceType.BLACKBERRY));
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void testPlatformDataValidation() {
+    public void testDeviceTypeDataValidation() {
         DeviceTypeData.newBuilder()
             .setAll(true)
-            .addPlatform(DeviceType.IOS)
+            .addDeviceType(DeviceType.IOS)
             .build();
     }
 
@@ -45,12 +45,12 @@ public class DeviceTypeDataTest {
     @Test
     public void testBuilder() {
         assertEquals(DeviceTypeData.newBuilder()
-                     .addPlatform(DeviceType.IOS)
-                     .addPlatform(DeviceType.ADM)
-                     .addPlatform(DeviceType.WNS)
+                     .addDeviceType(DeviceType.IOS)
+                     .addDeviceType(DeviceType.WNS)
+                     .addDeviceType(DeviceType.ADM)
                      .build(),
                      DeviceTypeData.newBuilder()
-                     .addAllPlatforms(ImmutableSet.of(DeviceType.IOS,
+                     .addAllDeviceTypes(ImmutableSet.of(DeviceType.IOS,
                                                       DeviceType.ADM,
                                                       DeviceType.WNS))
                      .build());

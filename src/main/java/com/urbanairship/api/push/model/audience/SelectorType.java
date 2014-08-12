@@ -19,9 +19,6 @@ public enum SelectorType {
 
     LOCATION("location", SelectorCategory.LOCATION),
 
-    /**
-     * @see http://www.rdio.com/artist/Descendents/album/Somery/track/All/
-     */
     ALL("all", SelectorCategory.ATOMIC),
     TRIGGERED("triggered", SelectorCategory.ATOMIC);
 

@@ -45,13 +45,12 @@ public class WNSTileData {
 
     @Override
     public int hashCode() {
-        int result = (bindings != null ? bindings.hashCode() : 0);
-        return result;
+        return (bindings != null ? bindings.hashCode() : 0);
     }
 
     public static class Builder {
 
-        private ImmutableList.Builder<WNSBinding> bindingsBuilder = ImmutableList.builder();
+        private final ImmutableList.Builder<WNSBinding> bindingsBuilder = ImmutableList.builder();
 
         private Builder() { }
 

@@ -48,7 +48,7 @@ public class NotificationReader implements JsonObjectReader<Notification> {
         }
 
         for (Map.Entry<DeviceType, DevicePayloadOverride> overrideEntry : payloadOverrides.entrySet()) {
-            builder.addPlatformOverride(overrideEntry.getKey(), overrideEntry.getValue());
+            builder.addDeviceTypeOverride(overrideEntry.getKey(), overrideEntry.getValue());
         }
 
         try {

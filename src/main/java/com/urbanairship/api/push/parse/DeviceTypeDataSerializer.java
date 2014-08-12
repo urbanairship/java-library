@@ -7,14 +7,14 @@ import org.codehaus.jackson.map.SerializerProvider;
 
 import java.io.IOException;
 
-public class PlatformDataSerializer extends JsonSerializer<DeviceTypeData> {
+public class DeviceTypeDataSerializer extends JsonSerializer<DeviceTypeData> {
 
     @Override
     public void serialize(DeviceTypeData payload, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         if (payload.isAll()) {
             jgen.writeString("all");
         } else {
-            jgen.writeObject(payload.getPlatforms().get());
+            jgen.writeObject(payload.getDeviceTypes().get());
         }
     }
 }

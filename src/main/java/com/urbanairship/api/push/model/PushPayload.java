@@ -71,7 +71,7 @@ public final class PushPayload extends PushModelObject {
      * Get the deviceTypes
      * @return DeviceTypeData
      */
-    public DeviceTypeData getPlatforms() {
+    public DeviceTypeData getDeviceTypes() {
         return deviceTypes;
     }
 
@@ -183,7 +183,7 @@ public final class PushPayload extends PushModelObject {
          * @param deviceTypes DeviceTypeData
          * @return Builder
          */
-        public Builder setPlatforms(DeviceTypeData deviceTypes) {
+        public Builder setDeviceTypes(DeviceTypeData deviceTypes) {
             this.deviceTypes = deviceTypes;
             return this;
         }

@@ -7,7 +7,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 public class MPNSCycleTileData extends MPNSTileData
 {
     private final Optional<String> smallBackgroundImage;
-    private Optional<ImmutableList<String>> images;
+    private final Optional<ImmutableList<String>> images;
 
     private MPNSCycleTileData(Optional<String> id,
                               Optional<String> title,

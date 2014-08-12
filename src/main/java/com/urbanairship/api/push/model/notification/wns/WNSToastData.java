@@ -22,9 +22,9 @@ public class WNSToastData {
         }
     }
 
-    private WNSBinding binding;
-    private Optional<Duration> duration;
-    private Optional<WNSAudioData> audio;
+    private final WNSBinding binding;
+    private final Optional<Duration> duration;
+    private final Optional<WNSAudioData> audio;
 
     private WNSToastData(WNSBinding binding,
                          Optional<Duration> duration,

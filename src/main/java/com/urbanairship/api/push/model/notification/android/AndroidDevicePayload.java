@@ -34,7 +34,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
     }
 
     @Override
-    public DeviceType getPlatform() {
+    public DeviceType getDeviceType() {
         return DeviceType.ANDROID;
     }
 

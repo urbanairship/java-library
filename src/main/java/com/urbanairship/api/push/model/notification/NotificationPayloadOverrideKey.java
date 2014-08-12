@@ -51,7 +51,7 @@ public class NotificationPayloadOverrideKey {
     @Override
     public String toString() {
         return "NotificationPayloadOverrideKey{" +
-                "platform=" + deviceType +
+                "deviceType=" + deviceType +
                 ", clazz=" + clazz +
                 '}';
     }

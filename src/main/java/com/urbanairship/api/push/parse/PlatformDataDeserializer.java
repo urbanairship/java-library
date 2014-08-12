@@ -33,7 +33,7 @@ public class PlatformDataDeserializer extends JsonDeserializer<DeviceTypeData> {
             }
         } else {
             Set<DeviceType> deviceTypes = parser.readValueAs(new TypeReference<Set<DeviceType>>() {});
-            builder.addAllPlatforms(deviceTypes);
+            builder.addAllDeviceTypes(deviceTypes);
         }
         return builder.build();
     }

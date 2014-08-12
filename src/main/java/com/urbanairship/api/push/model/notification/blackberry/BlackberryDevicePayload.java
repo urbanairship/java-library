@@ -1,15 +1,15 @@
 package com.urbanairship.api.push.model.notification.blackberry;
 
 import com.google.common.base.Optional;
-import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushModelObject;
+import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 
 public final class BlackberryDevicePayload extends PushModelObject implements DevicePayloadOverride {
 
-    private Optional<String> alert;
-    private Optional<String> body;
-    private Optional<String> contentType;
+    private final Optional<String> alert;
+    private final Optional<String> body;
+    private final Optional<String> contentType;
 
     private BlackberryDevicePayload(Optional<String> alert,
                                     Optional<String> body,
@@ -24,7 +24,7 @@ public final class BlackberryDevicePayload extends PushModelObject implements De
     }
 
     @Override
-    public DeviceType getPlatform() {
+    public DeviceType getDeviceType() {
         return DeviceType.BLACKBERRY;
     }
 

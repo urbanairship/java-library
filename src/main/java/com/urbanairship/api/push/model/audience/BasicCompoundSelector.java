@@ -2,7 +2,6 @@ package com.urbanairship.api.push.model.audience;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.base.Preconditions;
-import java.util.List;
 
 public class BasicCompoundSelector implements CompoundSelector {
 
@@ -73,7 +72,7 @@ public class BasicCompoundSelector implements CompoundSelector {
 
     public static class Builder {
         private SelectorType type;
-        private ImmutableList.Builder<Selector> selectorsBuilder = ImmutableList.builder();
+        private final ImmutableList.Builder<Selector> selectorsBuilder = ImmutableList.builder();
 
         private Builder() { }
 

@@ -92,7 +92,7 @@ public class APIClientTest {
 
         PushPayload payload = PushPayload.newBuilder()
                 .setAudience(Selectors.all())
-                .setPlatforms(DeviceTypeData.of(DeviceType.IOS))
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
                 .setNotification(Notifications.alert("Foo"))
                 .build();
 
@@ -307,7 +307,7 @@ public class APIClientTest {
 
         PushPayload pushPayload = PushPayload.newBuilder()
                                          .setAudience(Selectors.all())
-                                         .setPlatforms(DeviceTypeData.of(DeviceType.IOS))
+                                         .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
                                          .setNotification(Notifications.alert("Foo"))
                                          .build();
 
@@ -382,7 +382,7 @@ public class APIClientTest {
 
         PushPayload payload = PushPayload.newBuilder()
                                          .setAudience(Selectors.all())
-                                         .setPlatforms(DeviceTypeData.of(DeviceType.IOS))
+                                         .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
                                          .setNotification(Notifications.alert("Foo"))
                                          .build();
 

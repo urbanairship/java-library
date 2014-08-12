@@ -44,8 +44,7 @@ public class BasicSelector extends PushModelObject implements Selector  {
 
     @Override
     public int hashCode() {
-        int result = (type != null ? type.hashCode() : 0);
-        return result;
+        return  (type != null ? type.hashCode() : 0);
     }
 
     @Override

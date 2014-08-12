@@ -36,7 +36,7 @@ public class PushPayloadReader implements JsonObjectReader<PushPayload> {
     }
 
     public void readDeviceTypes(JsonParser parser) throws IOException {
-        builder.setPlatforms(parser.readValueAs(DeviceTypeData.class));
+        builder.setDeviceTypes(parser.readValueAs(DeviceTypeData.class));
     }
 
     @Override

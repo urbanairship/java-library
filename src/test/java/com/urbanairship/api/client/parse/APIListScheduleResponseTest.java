@@ -47,8 +47,8 @@ public class APIListScheduleResponseTest {
 
             PushPayload firstpush = list.get(0).getPushPayload();
             assertTrue(firstpush.getAudience().getType().getIdentifier().equals("all"));
-            assertTrue(firstpush.getPlatforms().getPlatforms().get().contains(DeviceType.IOS));
-            assertTrue(firstpush.getPlatforms().getPlatforms().get().contains(DeviceType.ANDROID));
+            assertTrue(firstpush.getDeviceTypes().getDeviceTypes().get().contains(DeviceType.IOS));
+            assertTrue(firstpush.getDeviceTypes().getDeviceTypes().get().contains(DeviceType.ANDROID));
             assertTrue(firstpush.getNotification().get().getAlert().get().equals("Happy New Year 2015!"));
 
             assertTrue(list.get(1).getUrl().get().equals("https://go.urbanairship.com/api/schedules/f53aa2bd-018a-4482-8d7d-691d13407973"));
@@ -59,8 +59,8 @@ public class APIListScheduleResponseTest {
 
             PushPayload secondpush = list.get(1).getPushPayload();
             assertTrue(secondpush.getAudience().getType().getIdentifier().equals("all"));
-            assertTrue(secondpush.getPlatforms().getPlatforms().get().contains(DeviceType.IOS));
-            assertTrue(secondpush.getPlatforms().getPlatforms().get().contains(DeviceType.ANDROID));
+            assertTrue(secondpush.getDeviceTypes().getDeviceTypes().get().contains(DeviceType.IOS));
+            assertTrue(secondpush.getDeviceTypes().getDeviceTypes().get().contains(DeviceType.ANDROID));
             assertTrue(secondpush.getNotification().get().getAlert().get().equals("Happy New Year 2016!"));
 
         }
@@ -100,8 +100,8 @@ public class APIListScheduleResponseTest {
 
             PushPayload firstpush = list.get(0).getPushPayload();
             assertTrue(firstpush.getAudience().getType().getIdentifier().equals("all"));
-            assertTrue(firstpush.getPlatforms().getPlatforms().get().contains(DeviceType.IOS));
-            assertTrue(firstpush.getPlatforms().getPlatforms().get().contains(DeviceType.ANDROID));
+            assertTrue(firstpush.getDeviceTypes().getDeviceTypes().get().contains(DeviceType.IOS));
+            assertTrue(firstpush.getDeviceTypes().getDeviceTypes().get().contains(DeviceType.ANDROID));
             assertTrue(firstpush.getNotification().get().getAlert().get().equals("Happy New Year 2015!"));
 
             assertTrue(list.get(1).getUrl().get().equals("https://go.urbanairship.com/api/schedules/f53aa2bd-018a-4482-8d7d-691d13407973"));
@@ -112,8 +112,8 @@ public class APIListScheduleResponseTest {
 
             PushPayload secondpush = list.get(1).getPushPayload();
             assertTrue(secondpush.getAudience().getType().getIdentifier().equals("all"));
-            assertTrue(secondpush.getPlatforms().getPlatforms().get().contains(DeviceType.IOS));
-            assertTrue(secondpush.getPlatforms().getPlatforms().get().contains(DeviceType.ANDROID));
+            assertTrue(secondpush.getDeviceTypes().getDeviceTypes().get().contains(DeviceType.IOS));
+            assertTrue(secondpush.getDeviceTypes().getDeviceTypes().get().contains(DeviceType.ANDROID));
             assertTrue(secondpush.getNotification().get().getAlert().get().equals("Happy New Year 2016!"));
         }
         catch (Exception ex){

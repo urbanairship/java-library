@@ -16,7 +16,7 @@ public class WNSAudioData {
         LOOPING_CALL,
         LOOPING_CALL2;
 
-        private String id;
+        private final String id;
 
         Sound() {
             id = name().toLowerCase().replace('_', '-');
@@ -36,8 +36,8 @@ public class WNSAudioData {
         }
     }
 
-    private Sound sound;
-    private Optional<Boolean> loop;
+    private final Sound sound;
+    private final Optional<Boolean> loop;
 
     private WNSAudioData(Sound sound,
                          Optional<Boolean> loop)
@@ -96,8 +96,8 @@ public class WNSAudioData {
             return this;
         }
 
-        public Builder setLoop(boolean value) {
-            this.loop = new Boolean(value);
+        public Builder setLoop(Boolean value) {
+            this.loop = value;
             return this;
         }
 

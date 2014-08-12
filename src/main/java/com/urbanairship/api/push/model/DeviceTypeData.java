@@ -6,11 +6,11 @@ import com.google.common.collect.ImmutableSet;
 
 public final class DeviceTypeData extends PushModelObject {
     private final boolean all;
-    private final Optional<ImmutableSet<DeviceType>> platforms;
+    private final Optional<ImmutableSet<DeviceType>> deviceTypes;
 
-    private DeviceTypeData(boolean all, Optional<ImmutableSet<DeviceType>> platforms) {
+    private DeviceTypeData(boolean all, Optional<ImmutableSet<DeviceType>> deviceTypes) {
         this.all = all;
-        this.platforms = platforms;
+        this.deviceTypes = deviceTypes;
     }
 
     public static Builder newBuilder() {
@@ -26,7 +26,7 @@ public final class DeviceTypeData extends PushModelObject {
     public static DeviceTypeData of(DeviceType... deviceTypes) {
         DeviceTypeData.Builder builder = DeviceTypeData.newBuilder();
         for (DeviceType p : deviceTypes) {
-            builder.addPlatform(p);
+            builder.addDeviceType(p);
         }
         return builder.build();
     }
@@ -35,8 +35,8 @@ public final class DeviceTypeData extends PushModelObject {
         return all;
     }
 
-    public Optional<ImmutableSet<DeviceType>> getPlatforms() {
-        return platforms;
+    public Optional<ImmutableSet<DeviceType>> getDeviceTypes() {
+        return deviceTypes;
     }
 
     @Override
@@ -53,7 +53,7 @@ public final class DeviceTypeData extends PushModelObject {
         if (all != that.all) {
             return false;
         }
-        if (platforms != null ? !platforms.equals(that.platforms) : that.platforms != null) {
+        if (deviceTypes != null ? !deviceTypes.equals(that.deviceTypes) : that.deviceTypes != null) {
             return false;
         }
         return true;
@@ -61,23 +61,23 @@ public final class DeviceTypeData extends PushModelObject {
 
     @Override
     public int hashCode() {
-        int result = (platforms != null ? platforms.hashCode() : 0);
+        int result = (deviceTypes != null ? deviceTypes.hashCode() : 0);
         result = 31 * result + (all ? 1 : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "PlatformData{" +
+        return "DeviceTypeData{" +
             "all=" + all +
-            ", platforms=" + platforms +
+            ", deviceTypes=" + deviceTypes +
             '}';
     }
 
     public static class Builder {
 
         private boolean all = false;
-        private ImmutableSet.Builder<DeviceType> platforms = null;
+        private ImmutableSet.Builder<DeviceType> deviceTypes = null;
 
         private Builder() { }
 
@@ -86,28 +86,28 @@ public final class DeviceTypeData extends PushModelObject {
             return this;
         }
 
-        public Builder addPlatform(DeviceType deviceType) {
-            if (platforms == null) {
-                platforms = ImmutableSet.builder();
+        public Builder addDeviceType(DeviceType deviceType) {
+            if (deviceTypes == null) {
+                deviceTypes = ImmutableSet.builder();
             }
-            this.platforms.add(deviceType);
+            this.deviceTypes.add(deviceType);
             return this;
         }
 
-        public Builder addAllPlatforms(Iterable<DeviceType> platforms) {
-            if (this.platforms == null) {
-                this.platforms = ImmutableSet.builder();
+        public Builder addAllDeviceTypes(Iterable<DeviceType> deviceTypes) {
+            if (this.deviceTypes == null) {
+                this.deviceTypes = ImmutableSet.builder();
             }
-            this.platforms.addAll(platforms);
+            this.deviceTypes.addAll(deviceTypes);
             return this;
         }
 
         public DeviceTypeData build() {
-            Preconditions.checkArgument(!(all && (platforms != null)), "'device_types' cannot be both 'all' and a list of platforms.");
+            Preconditions.checkArgument(!(all && (deviceTypes != null)), "'device_types' cannot be both 'all' and a list of device types.");
             return new DeviceTypeData(all,
-                                    platforms == null
+                                    deviceTypes == null
                                     ? Optional.<ImmutableSet<DeviceType>>absent()
-                                    : Optional.fromNullable(platforms.build()));
+                                    : Optional.fromNullable(deviceTypes.build()));
         }
     }
 }

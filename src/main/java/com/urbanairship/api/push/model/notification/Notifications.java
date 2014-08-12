@@ -23,7 +23,7 @@ public class Notifications {
         Notification.Builder builder = Notification.newBuilder()
             .setAlert(text);
         for (DevicePayloadOverride override : overrides) {
-            builder.addPlatformOverride(override.getPlatform(), override);
+            builder.addDeviceTypeOverride(override.getDeviceType(), override);
         }
         return builder.build();
     }
@@ -31,12 +31,12 @@ public class Notifications {
     public static Notification notification(DevicePayloadOverride ... overrides) {
         Notification.Builder builder = Notification.newBuilder();
         for (DevicePayloadOverride override : overrides) {
-            builder.addPlatformOverride(override.getPlatform(), override);
+            builder.addDeviceTypeOverride(override.getDeviceType(), override);
         }
         return builder.build();
     }
 
-    /* Simple alert platform overrides */
+    /* Simple alert deviceType overrides */
 
     public static DevicePayloadOverride alert(DeviceType deviceType, String text) {
         switch (deviceType) {
@@ -53,7 +53,7 @@ public class Notifications {
         case ADM:
             return admAlert(text);
         default:
-            throw unknownPlatform(deviceType.getIdentifier());
+            throw unknownDeviceType(deviceType.getIdentifier());
         }
     }
 
@@ -95,19 +95,19 @@ public class Notifications {
 
     /* Platform selector (device_types) */
 
-    public static DeviceTypeData platforms(String ... names) {
-        DeviceTypeData.Builder platforms = DeviceTypeData.newBuilder();
+    public static DeviceTypeData deviceTypes(String ... names) {
+        DeviceTypeData.Builder deviceTypes = DeviceTypeData.newBuilder();
         for (String name : names) {
             if (name.equalsIgnoreCase("all")) {
                 return DeviceTypeData.all();
             }
-            Optional<DeviceType> platform = DeviceType.find(name);
-            if (! platform.isPresent()) {
-                throw unknownPlatform(name);
+            Optional<DeviceType> deviceType = DeviceType.find(name);
+            if (! deviceType.isPresent()) {
+                throw unknownDeviceType(name);
             }
-            platforms.addPlatform(platform.get());
+            deviceTypes.addDeviceType(deviceType.get());
         }
-        return platforms.build();
+        return deviceTypes.build();
     }
 
     /* Rich Push */
@@ -129,7 +129,7 @@ public class Notifications {
 
     /* Exceptions */
 
-    public static IllegalArgumentException unknownPlatform(String name) {
-        throw new IllegalArgumentException(String.format("Unknown platform '%s'", name));
+    public static IllegalArgumentException unknownDeviceType(String name) {
+        throw new IllegalArgumentException(String.format("Unknown deviceType '%s'", name));
     }
 }

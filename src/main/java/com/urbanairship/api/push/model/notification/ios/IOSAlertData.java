@@ -7,11 +7,11 @@ import java.util.List;
 
 public final class IOSAlertData extends PushModelObject {
 
-    private Optional<String> body;
-    private Optional<String> actionLocKey;
-    private Optional<String> locKey;
-    private Optional<List<String>> locArgs;
-    private Optional<String> launchImage;
+    private final Optional<String> body;
+    private final Optional<String> actionLocKey;
+    private final Optional<String> locKey;
+    private final Optional<List<String>> locArgs;
+    private final Optional<String> launchImage;
 
     private IOSAlertData(Optional<String> body,
                          Optional<String> actionLocKey,

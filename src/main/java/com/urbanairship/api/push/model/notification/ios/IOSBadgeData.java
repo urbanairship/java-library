@@ -12,12 +12,11 @@ public final class IOSBadgeData extends PushModelObject {
         INCREMENT,
         DECREMENT;
 
-        private String id;
+        private final String id;
 
         Type() {
             id = name().toLowerCase();
         }
-
         public String getIdentifier() {
             return id;
         }
@@ -32,8 +31,8 @@ public final class IOSBadgeData extends PushModelObject {
         }
     }
 
-    private Optional<Integer> value;
-    private Type type;
+    private final Optional<Integer> value;
+    private final Type type;
 
     private IOSBadgeData(Type type, Optional<Integer> value) {
         this.type = type;

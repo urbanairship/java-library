@@ -11,8 +11,6 @@ import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
 import org.apache.commons.collections.map.CaseInsensitiveMap;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -20,8 +18,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class SelectorDeserializer extends JsonDeserializer<Selector> {
-
-    private static final Logger log = LogManager.getLogger(SelectorDeserializer.class);
 
     private static final FieldParserRegistry<Selector, SelectorReader> FIELD_PARSERS
         = new MapFieldParserRegistry<Selector, SelectorReader>(

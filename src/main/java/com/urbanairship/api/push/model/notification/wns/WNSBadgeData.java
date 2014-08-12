@@ -18,7 +18,7 @@ public class WNSBadgeData {
         ERROR,
         ATTENTION;
 
-        private String id;
+        private final String id;
 
         Glyph() {
             id = name().toLowerCase().replace('_', '-');
