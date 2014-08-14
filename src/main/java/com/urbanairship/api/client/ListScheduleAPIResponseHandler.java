@@ -11,50 +11,33 @@ import java.io.IOException;
 public final class ListScheduleAPIResponseHandler implements
         ResponseHandler<APIClientResponse<APIListScheduleResponse>> {
 
-    /**
-     * Handle HttpResponse. Returns an APIClientResponse on success, or
-     * raises an APIRequestException, or an IOException.
-     * @param response HttpResponse returned from the Request
-     * @return APIClientResponse appropriate for the request.
-     * @throws java.io.IOException
-     */
+    private static final ObjectMapper mapper = APIResponseObjectMapper.getInstance();
+    private static final APIClientResponse.Builder<APIListScheduleResponse> builder = APIClientResponse.newListScheduleResponseBuilder();
+
     @Override
     public APIClientResponse<APIListScheduleResponse> handleResponse(HttpResponse response)
             throws IOException {
 
-        // HTTP response code
         int statusCode = response.getStatusLine().getStatusCode();
 
-        // Uncommon, or unknown
-        if (statusCode >= 200 && statusCode < 300){
+        if (statusCode >= 200 && statusCode < 300) {
             return handleSuccessfulSchedule(response);
-        }
-        // Handle unhandled server error codes
-        else {
+        } else {
             throw APIRequestException.exceptionForResponse(response);
         }
     }
 
-    /*
-     * Create an APIResponse for the successful list schedule request.
-     * Any exceptions thrown by HttpResponse object that are related to
-     * closing the response body are ignored.
-     * @param response
-     * @return APIClientResponse<APIListScheduleResponse>
-     * @throws IOException
-     */
     private APIClientResponse<APIListScheduleResponse> handleSuccessfulSchedule(HttpResponse response)
             throws IOException {
+
         String jsonPayload = EntityUtils.toString(response.getEntity());
-        // toss out exceptions related to closing the entity
         EntityUtils.consumeQuietly(response.getEntity());
-        ObjectMapper mapper = APIResponseObjectMapper.getInstance();
-        APIListScheduleResponse scheduleResponse =
-                mapper.readValue(jsonPayload, APIListScheduleResponse.class);
-        APIClientResponse.Builder<APIListScheduleResponse> builder =
-                APIClientResponse.newListScheduleResponseBuilder();
+
+        APIListScheduleResponse scheduleResponse = mapper.readValue(jsonPayload, APIListScheduleResponse.class);
+
         builder.setHttpResponse(response);
         builder.setApiResponse(scheduleResponse);
+
         return builder.build();
     }
 }

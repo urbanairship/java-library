@@ -1,7 +1,3 @@
-/*
- * Copyright 2013 Urban Airship and Contributors
- */
-
 package com.urbanairship.api.client;
 
 import com.urbanairship.api.client.parse.APIResponseObjectMapper;
@@ -17,33 +13,18 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-/**
-Handles the server response when working with Push API endpoints.
- */
-public final class PushAPIResponseHandler implements
-        ResponseHandler<APIClientResponse<APIPushResponse>> {
 
-    private final Logger logger;
+public final class PushAPIResponseHandler implements ResponseHandler<APIClientResponse<APIPushResponse>> {
 
-    PushAPIResponseHandler(){
-        logger = LoggerFactory.getLogger("com.urbanairship.api");
-    }
+    private static final Logger logger = LoggerFactory.getLogger("com.urbanairship.api");
+    private static final ObjectMapper mapper = APIResponseObjectMapper.getInstance();
+    private static final APIClientResponse.Builder<APIPushResponse> builder = APIClientResponse.newPushResponseBuilder();
 
-    /**
-     * Handle HttpResponse. Returns an APIClientResponse on success, or
-     * raises an APIRequestException, or an IOException.
-     * @param response HttpResponse returned from the Request
-     * @return APIClientResponse appropriate for the request.
-     * @throws IOException
-     */
     @Override
-    public APIClientResponse<APIPushResponse> handleResponse(HttpResponse response)
-            throws IOException {
+    public APIClientResponse<APIPushResponse> handleResponse(HttpResponse response) throws IOException {
 
-        // HTTP Response Code
         int statusCode = response.getStatusLine().getStatusCode();
 
-        // Documented cases
         switch (statusCode){
             case HttpStatus.SC_ACCEPTED:
                 if (logger.isDebugEnabled()) {
@@ -59,33 +40,23 @@ public final class PushAPIResponseHandler implements
                 break;
         }
 
-        // Uncommon, or unknown
         if (statusCode >= 200 && statusCode < 300){
             return handleSuccessfulPush(response);
-        }
-        // Handle unhandled server error codes
-        else {
+        } else {
             throw APIRequestException.exceptionForResponse(response);
         }
     }
 
-    /*
-     * Create an API response object for a successful push
-     * @param response HttpResponse from Urban Airship
-     * @return APIClientResponse
-     * @throws IOException
-     */
-    private APIClientResponse<APIPushResponse> handleSuccessfulPush(HttpResponse response)
-            throws IOException{
+    private APIClientResponse<APIPushResponse> handleSuccessfulPush(HttpResponse response) throws IOException {
+
         String jsonPayload = EntityUtils.toString(response.getEntity());
         EntityUtils.consumeQuietly(response.getEntity());
-        ObjectMapper mapper = APIResponseObjectMapper.getInstance();
-        APIPushResponse pushResponse =
-                mapper.readValue(jsonPayload, APIPushResponse.class);
-        APIClientResponse.Builder<APIPushResponse> builder =
-                APIClientResponse.newPushResponseBuilder();
+
+        APIPushResponse pushResponse = mapper.readValue(jsonPayload, APIPushResponse.class);
+
         builder.setApiResponse(pushResponse);
         builder.setHttpResponse(response);
+
         return builder.build();
     }
 
