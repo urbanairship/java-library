@@ -8,33 +8,33 @@ import java.util.List;
 public final class APIListScheduleResponse {
 
     private final int count;
-    private final int total_count;
-    private final String next_page;
-    private final List<SchedulePayload> scheduleobjects;
+    private final int totalCount;
+    private final String nextPage;
+    private final List<SchedulePayload> scheduleObjects;
 
     public static Builder newBuilder(){
         return new Builder();
     }
 
-    private APIListScheduleResponse(int count, int total_count, String next_page, List<SchedulePayload> response){
+    private APIListScheduleResponse(int count, int totalCount, String nextPage, List<SchedulePayload> response){
         this.count = count;
-        this.total_count = total_count;
-        this.next_page = next_page;
-        this.scheduleobjects = response;
+        this.totalCount = totalCount;
+        this.nextPage = nextPage;
+        this.scheduleObjects = response;
     }
 
     public int getCount() { return count; }
-    public int getTotal_Count() { return total_count; }
-    public String getNext_Page() { return next_page; }
-    public List<SchedulePayload> getSchedules() { return scheduleobjects; }
+    public int getTotal_Count() { return totalCount; }
+    public String getNext_Page() { return nextPage; }
+    public List<SchedulePayload> getSchedules() { return scheduleObjects; }
 
     @Override
     public String toString() {
         return "APIListScheduleResponse{" +
                 "count=" + count +
-                ", total_count=" + total_count +
-                ", next_page=" + next_page +
-                ", scheduleobjects=" + scheduleobjects +
+                ", totalCount=" + totalCount +
+                ", nextPage=" + nextPage +
+                ", scheduleObjects=" + scheduleObjects +
                 '}';
     }
 
@@ -46,9 +46,9 @@ public final class APIListScheduleResponse {
         APIListScheduleResponse that = (APIListScheduleResponse) o;
 
         if (count != that.count) { return false; }
-        if (total_count != that.total_count) { return false; }
-        if (next_page != null ? !next_page.equals(that.next_page) : that.next_page != null)  { return false; }
-        if (scheduleobjects != null ? !scheduleobjects.equals(that.scheduleobjects) : that.scheduleobjects != null) {
+        if (totalCount != that.totalCount) { return false; }
+        if (nextPage != null ? !nextPage.equals(that.nextPage) : that.nextPage != null)  { return false; }
+        if (scheduleObjects != null ? !scheduleObjects.equals(that.scheduleObjects) : that.scheduleObjects != null) {
             return false;
         }
         return true;
@@ -57,9 +57,9 @@ public final class APIListScheduleResponse {
     @Override
     public int hashCode() {
         int result = count;
-        result = 31 * result + total_count;
-        result = 31 * result + (next_page != null ? next_page.hashCode() : 0);
-        result = 31 * result + (scheduleobjects != null ? scheduleobjects.hashCode() : 0);
+        result = 31 * result + totalCount;
+        result = 31 * result + (nextPage != null ? nextPage.hashCode() : 0);
+        result = 31 * result + (scheduleObjects != null ? scheduleObjects.hashCode() : 0);
         return result;
     }
 

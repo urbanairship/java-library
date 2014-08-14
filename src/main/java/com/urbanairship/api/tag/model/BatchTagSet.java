@@ -8,26 +8,26 @@ public final class BatchTagSet {
 
     public enum DEVICEIDTYPES { IOS_CHANNEL, DEVICE_TOKEN, APID }
 
-    private final DEVICEIDTYPES id_type;
-    private final String device_id;
+    private final DEVICEIDTYPES idType;
+    private final String deviceID;
     private final ImmutableSet<String> tags;
 
     public static Builder newBuilder() {
         return new Builder();
     }
 
-    private BatchTagSet(DEVICEIDTYPES id_type, String device_id, ImmutableSet<String> tags) {
-        this.id_type = id_type;
-        this.device_id = device_id;
+    private BatchTagSet(DEVICEIDTYPES idType, String deviceID, ImmutableSet<String> tags) {
+        this.idType = idType;
+        this.deviceID = deviceID;
         this.tags = tags;
     }
 
     public DEVICEIDTYPES getIdType() {
-        return id_type;
+        return idType;
     }
 
     public String getDeviceID() {
-        return device_id;
+        return deviceID;
     }
 
     public ImmutableSet<String> getTags() {
@@ -41,8 +41,8 @@ public final class BatchTagSet {
 
         BatchTagSet that = (BatchTagSet) o;
 
-        if (device_id != null ? !device_id.equals(that.device_id) : that.device_id != null) { return false; }
-        if (id_type != that.id_type) { return false; }
+        if (deviceID != null ? !deviceID.equals(that.deviceID) : that.deviceID != null) { return false; }
+        if (idType != that.idType) { return false; }
         if (tags != null ? !tags.equals(that.tags) : that.tags != null) { return false; }
 
         return true;
@@ -50,8 +50,8 @@ public final class BatchTagSet {
 
     @Override
     public int hashCode() {
-        int result = id_type != null ? id_type.hashCode() : 0;
-        result = 31 * result + (device_id != null ? device_id.hashCode() : 0);
+        int result = idType != null ? idType.hashCode() : 0;
+        result = 31 * result + (deviceID != null ? deviceID.hashCode() : 0);
         result = 31 * result + (tags != null ? tags.hashCode() : 0);
         return result;
     }
@@ -59,8 +59,8 @@ public final class BatchTagSet {
     @Override
     public String toString() {
         return "BatchTagSet{" +
-                "id_type=" + id_type +
-                ", device_id='" + device_id + '\'' +
+                "idType=" + idType +
+                ", deviceID='" + deviceID + '\'' +
                 ", tags=" + tags +
                 '}';
     }

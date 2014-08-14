@@ -7,24 +7,24 @@ import com.urbanairship.api.push.model.PushModelObject;
 
 public final class BatchModificationPayload extends PushModelObject {
 
-    private final ImmutableSet<BatchTagSet> batch_object;
+    private final ImmutableSet<BatchTagSet> batchObject;
 
     public static Builder newBuilder() {
         return new Builder();
     }
 
     private BatchModificationPayload(ImmutableSet<BatchTagSet> set) {
-        this.batch_object = set;
+        this.batchObject = set;
     }
 
     public ImmutableSet<BatchTagSet> getBatchObjects() {
-        return batch_object;
+        return batchObject;
     }
 
     @Override
     public String toString() {
         return "BatchModificationPayload{" +
-                "batch_object=" + batch_object +
+                "batchObject=" + batchObject +
                 '}';
     }
 
@@ -35,7 +35,7 @@ public final class BatchModificationPayload extends PushModelObject {
 
         BatchModificationPayload that = (BatchModificationPayload) o;
 
-        if (batch_object != null ? !batch_object.equals(that.batch_object) : that.batch_object != null) {
+        if (batchObject != null ? !batchObject.equals(that.batchObject) : that.batchObject != null) {
             return false;
         }
 
@@ -44,7 +44,7 @@ public final class BatchModificationPayload extends PushModelObject {
 
     @Override
     public int hashCode() {
-        return batch_object != null ? batch_object.hashCode() : 0;
+        return batchObject != null ? batchObject.hashCode() : 0;
     }
 
     public static class Builder {
