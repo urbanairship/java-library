@@ -1,7 +1,5 @@
 package com.urbanairship.api.common.parse;
 
-import com.urbanairship.api.common.model.APIResponse;
-import com.urbanairship.api.common.model.APIErrorDetails;
 import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.JsonDeserializer;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -17,9 +15,7 @@ public class CommonObjectMapper {
     static {
         MODULE
             .addSerializer(DateTime.class, new DateTimeSerializer())
-            .addDeserializer(DateTime.class, new DateTimeDeserializer())
-            .addSerializer(APIResponse.class, new APIResponseSerializer())
-            .addSerializer(APIErrorDetails.class, new APIErrorDetailsSerializer());
+            .addDeserializer(DateTime.class, new DateTimeDeserializer());
 
         MAPPER.registerModule(MODULE);
         MAPPER.configure(DeserializationConfig.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
