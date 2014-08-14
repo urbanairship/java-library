@@ -232,7 +232,9 @@ public class APIClient {
         Executor executor = Executor.newInstance()
                 .auth(uaHost, appKey, appSecret)
                 .authPreemptive(uaHost);
-        logger.debug(String.format("Executing standard request %s", request));
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing standard request %s", request));
+        }
         return executor.execute(request).returnResponse();
     }
 
@@ -244,7 +246,9 @@ public class APIClient {
         Executor executor = Executor.newInstance()
                                     .auth(uaHost, appKey, appSecret)
                                     .authPreemptive(uaHost);
-        logger.debug(String.format("Executing push request %s", request));
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing push request %s", request));
+        }
         return executor.execute(request).handleResponse(new PushAPIResponseHandler());
     }
 
@@ -284,7 +288,9 @@ public class APIClient {
         Executor executor = Executor.newInstance()
                                     .auth(uaHost, appKey, appSecret)
                                     .authPreemptive(uaHost);
-        logger.debug(String.format("Executing schedule request %s", request));
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing schedule request %s", request));
+        }
         return executor.execute(request).handleResponse(new ScheduleAPIResponseHandler());
     }
 
@@ -296,7 +302,9 @@ public class APIClient {
         Executor executor = Executor.newInstance()
                                     .auth(uaHost, appKey, appSecret)
                                     .authPreemptive(uaHost);
-        logger.debug(String.format("Executing list schedule request %s", request));
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list schedule request %s", request));
+        }
         return executor.execute(request).handleResponse(new ListScheduleAPIResponseHandler());
     }
 
@@ -308,7 +316,9 @@ public class APIClient {
         Executor executor = Executor.newInstance()
                 .auth(uaHost, appKey, appSecret)
                 .authPreemptive(uaHost);
-        logger.debug(String.format("Executing list tags request %s", request));
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list tags request %s", request));
+        }
         return executor.execute(request).handleResponse(new ListTagsAPIResponseHandler());
     }
 

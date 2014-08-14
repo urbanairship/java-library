@@ -64,9 +64,13 @@ public class APIParsingException extends APIException {
                                     parser.getCurrentLocation().getLineNr(),
                                     parser.getCurrentLocation().getColumnNr(),
                                     getPath(parser));
-            log.debug(msg);
+            if (log.isDebugEnabled()) {
+                log.debug(msg);
+            }
         } catch ( Exception ex ) {
-            log.debug("Exception while formatting exception.", ex);
+            if (log.isDebugEnabled()) {
+                log.debug("Exception while formatting exception.", ex);
+            }
         }
         throw new APIParsingException(msg, getPath(parser), parser.getCurrentLocation());
     }

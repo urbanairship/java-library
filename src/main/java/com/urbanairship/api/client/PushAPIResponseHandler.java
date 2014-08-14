@@ -46,8 +46,9 @@ public final class PushAPIResponseHandler implements
         // Documented cases
         switch (statusCode){
             case HttpStatus.SC_ACCEPTED:
-                logger.debug(String.format("Handling response code:%s",
-                                           statusCode));
+                if (logger.isDebugEnabled()) {
+                    logger.debug(String.format("Handling response code:%s", statusCode));
+                }
                 return handleSuccessfulPush(response);
 
             case HttpStatus.SC_BAD_REQUEST:
