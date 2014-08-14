@@ -161,9 +161,8 @@ public class APIClient {
 
     private Request tagAddRemoveDeviceRequest(AddRemoveDeviceFromTagPayload payload, @SuppressWarnings("SameParameterValue") String path) {
         URI uri = baseURI.resolve(path);
-        Request request;
+        Request request = Request.Post(uri);
 
-        request = Request.Post(uri);
         if (payload != null) {
             request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
         }
@@ -173,9 +172,7 @@ public class APIClient {
 
     private Request tagBatchRequest(BatchModificationPayload payload, @SuppressWarnings("SameParameterValue") String path) {
         URI uri = baseURI.resolve(path);
-        Request request;
-
-        request = Request.Post(uri);
+        Request request = Request.Post(uri);
         request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
 
         return request.config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
