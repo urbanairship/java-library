@@ -195,9 +195,9 @@ public class APIClient {
         Request request;
 
         request = Request.Post(uri);
-        if (payload != null)
+        if (payload != null) {
             request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
-
+        }
         return request.config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
                 .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
     }

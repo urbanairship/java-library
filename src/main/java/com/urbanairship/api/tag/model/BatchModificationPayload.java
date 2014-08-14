@@ -30,12 +30,14 @@ public final class BatchModificationPayload extends PushModelObject {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) { return true; }
+        if (o == null || getClass() != o.getClass()) { return false; }
 
         BatchModificationPayload that = (BatchModificationPayload) o;
 
-        if (batch_object != null ? !batch_object.equals(that.batch_object) : that.batch_object != null) return false;
+        if (batch_object != null ? !batch_object.equals(that.batch_object) : that.batch_object != null) {
+            return false;
+        }
 
         return true;
     }
@@ -51,8 +53,7 @@ public final class BatchModificationPayload extends PushModelObject {
         private Builder() { }
 
         public Builder addBatchObject(BatchTagSet value) {
-            if (batch_object == null)
-                batch_object = ImmutableSet.builder();
+            if (batch_object == null) { batch_object = ImmutableSet.builder(); }
             batch_object.add(value);
             return this;
         }

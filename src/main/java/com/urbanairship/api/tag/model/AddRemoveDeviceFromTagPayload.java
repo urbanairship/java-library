@@ -53,16 +53,19 @@ public final class AddRemoveDeviceFromTagPayload extends PushModelObject {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) { return true; }
+        if (o == null || getClass() != o.getClass()) { return false; }
 
         AddRemoveDeviceFromTagPayload that = (AddRemoveDeviceFromTagPayload) o;
 
-        if (apids != null ? !apids.equals(that.apids) : that.apids != null) return false;
-        if (device_pins != null ? !device_pins.equals(that.device_pins) : that.device_pins != null) return false;
-        if (device_tokens != null ? !device_tokens.equals(that.device_tokens) : that.device_tokens != null)
+        if (apids != null ? !apids.equals(that.apids) : that.apids != null) { return false; }
+        if (device_pins != null ? !device_pins.equals(that.device_pins) : that.device_pins != null) { return false; }
+        if (device_tokens != null ? !device_tokens.equals(that.device_tokens) : that.device_tokens != null) {
             return false;
-        if (ios_channels != null ? !ios_channels.equals(that.ios_channels) : that.ios_channels != null) return false;
+        }
+        if (ios_channels != null ? !ios_channels.equals(that.ios_channels) : that.ios_channels != null)  {
+            return false;
+        }
 
         return true;
     }

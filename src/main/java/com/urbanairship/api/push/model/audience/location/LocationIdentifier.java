@@ -52,7 +52,7 @@ public final class LocationIdentifier extends PushModelObject {
         else if (id.isPresent() && that.getId().isPresent()){
             return (id.hashCode() == that.getId().hashCode());
         }
-        else return false;
+        else { return false; }
     }
 
 

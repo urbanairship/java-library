@@ -40,16 +40,17 @@ public final class APIListScheduleResponse {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) { return true; }
+        if (o == null || getClass() != o.getClass())  { return false; }
 
         APIListScheduleResponse that = (APIListScheduleResponse) o;
 
-        if (count != that.count) return false;
-        if (total_count != that.total_count) return false;
-        if (next_page != null ? !next_page.equals(that.next_page) : that.next_page != null) return false;
-        if (!scheduleobjects.equals(that.scheduleobjects)) return false;
-
+        if (count != that.count) { return false; }
+        if (total_count != that.total_count) { return false; }
+        if (next_page != null ? !next_page.equals(that.next_page) : that.next_page != null)  { return false; }
+        if (scheduleobjects != null ? !scheduleobjects.equals(that.scheduleobjects) : that.scheduleobjects != null) {
+            return false;
+        }
         return true;
     }
 
@@ -58,7 +59,7 @@ public final class APIListScheduleResponse {
         int result = count;
         result = 31 * result + total_count;
         result = 31 * result + (next_page != null ? next_page.hashCode() : 0);
-        result = 31 * result + scheduleobjects.hashCode();
+        result = 31 * result + (scheduleobjects != null ? scheduleobjects.hashCode() : 0);
         return result;
     }
 

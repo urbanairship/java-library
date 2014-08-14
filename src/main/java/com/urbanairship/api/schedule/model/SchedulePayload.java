@@ -58,16 +58,16 @@ public class SchedulePayload extends PushModelObject {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)  { return true; }
+        if (o == null || getClass() != o.getClass()) { return false; }
 
         SchedulePayload that = (SchedulePayload) o;
 
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (pushIds != null ? !pushIds.equals(that.pushIds) : that.pushIds != null) return false;
-        if (!pushPayload.equals(that.pushPayload)) return false;
-        if (!schedule.equals(that.schedule)) return false;
-        if (url != null ? !url.equals(that.url) : that.url != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) { return false; }
+        if (pushIds != null ? !pushIds.equals(that.pushIds) : that.pushIds != null) { return false; }
+        if (!pushPayload.equals(that.pushPayload)) { return false; }
+        if (!schedule.equals(that.schedule)) { return false; }
+        if (url != null ? !url.equals(that.url) : that.url != null) { return false; }
 
         return true;
     }

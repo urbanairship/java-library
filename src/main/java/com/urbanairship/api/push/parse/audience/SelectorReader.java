@@ -69,8 +69,9 @@ public class SelectorReader implements JsonObjectReader<Selector> {
         compound = BasicCompoundSelector.newBuilder()
             .setType(type);
         List<Selector> children = readListOfSelectors(parser, context);
-        for (Selector child : children)
+        for (Selector child : children) {
             Validation.validate(child);
+        }
         compound.addAllSelectors(children);
         // log.debug("readCompoundSelector() end: " + parser.getCurrentToken());
     }

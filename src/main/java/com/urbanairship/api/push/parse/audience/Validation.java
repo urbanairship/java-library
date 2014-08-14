@@ -27,8 +27,9 @@ public class Validation {
           case WNS:
           case MPNS:
               // TODO: make this better
-              if (v.getValue().length() < 16)
+              if (v.getValue().length() < 16) {
                   throw new APIParsingException("Invalid APID");
+              }
               break;
           case DEVICE_TOKEN:
               // TODO: validate Apple device tokens
