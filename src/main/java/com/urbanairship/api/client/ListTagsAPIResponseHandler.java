@@ -26,14 +26,17 @@ public final class ListTagsAPIResponseHandler implements ResponseHandler<APIClie
     }
 
     private APIClientResponse<APIListTagsResponse> handleSuccessfulSchedule(HttpResponse response) throws IOException {
-        String jsonPayload = EntityUtils.toString(response.getEntity());
-        EntityUtils.consumeQuietly(response.getEntity());
-
-        APIListTagsResponse tagResponse = mapper.readValue(jsonPayload, APIListTagsResponse.class);
 
         builder.setHttpResponse(response);
-        builder.setApiResponse(tagResponse);
-        
+
+        try {
+            String jsonPayload = EntityUtils.toString(response.getEntity());
+            APIListTagsResponse tagResponse = mapper.readValue(jsonPayload, APIListTagsResponse.class);
+            builder.setApiResponse(tagResponse);
+        } finally {
+            EntityUtils.consumeQuietly(response.getEntity());
+        }
+
         return builder.build();
     }
 }

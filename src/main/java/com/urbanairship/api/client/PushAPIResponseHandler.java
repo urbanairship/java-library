@@ -49,13 +49,15 @@ public final class PushAPIResponseHandler implements ResponseHandler<APIClientRe
 
     private APIClientResponse<APIPushResponse> handleSuccessfulPush(HttpResponse response) throws IOException {
 
-        String jsonPayload = EntityUtils.toString(response.getEntity());
-        EntityUtils.consumeQuietly(response.getEntity());
-
-        APIPushResponse pushResponse = mapper.readValue(jsonPayload, APIPushResponse.class);
-
-        builder.setApiResponse(pushResponse);
         builder.setHttpResponse(response);
+
+        try {
+            String jsonPayload = EntityUtils.toString(response.getEntity());
+            APIPushResponse pushResponse = mapper.readValue(jsonPayload, APIPushResponse.class);
+            builder.setApiResponse(pushResponse);
+        } finally {
+            EntityUtils.consumeQuietly(response.getEntity());
+        }
 
         return builder.build();
     }

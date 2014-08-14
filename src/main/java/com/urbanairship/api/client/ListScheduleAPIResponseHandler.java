@@ -8,15 +8,13 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
 
-public final class ListScheduleAPIResponseHandler implements
-        ResponseHandler<APIClientResponse<APIListScheduleResponse>> {
+public final class ListScheduleAPIResponseHandler implements ResponseHandler<APIClientResponse<APIListScheduleResponse>> {
 
     private static final ObjectMapper mapper = APIResponseObjectMapper.getInstance();
     private static final APIClientResponse.Builder<APIListScheduleResponse> builder = APIClientResponse.newListScheduleResponseBuilder();
 
     @Override
-    public APIClientResponse<APIListScheduleResponse> handleResponse(HttpResponse response)
-            throws IOException {
+    public APIClientResponse<APIListScheduleResponse> handleResponse(HttpResponse response) throws IOException {
 
         int statusCode = response.getStatusLine().getStatusCode();
 
@@ -27,16 +25,17 @@ public final class ListScheduleAPIResponseHandler implements
         }
     }
 
-    private APIClientResponse<APIListScheduleResponse> handleSuccessfulSchedule(HttpResponse response)
-            throws IOException {
-
-        String jsonPayload = EntityUtils.toString(response.getEntity());
-        EntityUtils.consumeQuietly(response.getEntity());
-
-        APIListScheduleResponse scheduleResponse = mapper.readValue(jsonPayload, APIListScheduleResponse.class);
+    private APIClientResponse<APIListScheduleResponse> handleSuccessfulSchedule(HttpResponse response) throws IOException {
 
         builder.setHttpResponse(response);
-        builder.setApiResponse(scheduleResponse);
+
+        try {
+            String jsonPayload = EntityUtils.toString(response.getEntity());
+            APIListScheduleResponse scheduleResponse = mapper.readValue(jsonPayload, APIListScheduleResponse.class);
+            builder.setApiResponse(scheduleResponse);
+        } finally {
+            EntityUtils.consumeQuietly(response.getEntity());
+        }
 
         return builder.build();
     }

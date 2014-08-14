@@ -43,13 +43,16 @@ public final class ScheduleAPIResponseHandler implements ResponseHandler<APIClie
     }
 
     private APIClientResponse<APIScheduleResponse> handleSuccessfulSchedule(HttpResponse response) throws IOException {
-        String jsonPayload = EntityUtils.toString(response.getEntity());
-        EntityUtils.consumeQuietly(response.getEntity());
-
-        APIScheduleResponse scheduleResponse = mapper.readValue(jsonPayload, APIScheduleResponse.class);
 
         builder.setHttpResponse(response);
-        builder.setApiResponse(scheduleResponse);
+
+        try {
+            String jsonPayload = EntityUtils.toString(response.getEntity());
+            APIScheduleResponse scheduleResponse = mapper.readValue(jsonPayload, APIScheduleResponse.class);
+            builder.setApiResponse(scheduleResponse);
+        } finally {
+            EntityUtils.consumeQuietly(response.getEntity());
+        }
 
         return builder.build();
     }
