@@ -160,17 +160,17 @@ public class APIClient {
     }
 
     private Request tagAddRemoveDeviceRequest(AddRemoveDeviceFromTagPayload payload, @SuppressWarnings("SameParameterValue") String path) {
+        Preconditions.checkArgument(payload != null, "Payload is required when adding and/or removing devices from a tag");
         URI uri = baseURI.resolve(path);
         Request request = Request.Post(uri);
+        request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
 
-        if (payload != null) {
-            request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
-        }
         return request.config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
                 .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
     }
 
     private Request tagBatchRequest(BatchModificationPayload payload, @SuppressWarnings("SameParameterValue") String path) {
+        Preconditions.checkArgument(payload != null, "Payload is required when performing batch modification of tags");
         URI uri = baseURI.resolve(path);
         Request request = Request.Post(uri);
         request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
@@ -229,6 +229,7 @@ public class APIClient {
      * @throws IOException
      */
     public APIClientResponse<APIPushResponse> push(PushPayload payload) throws IOException {
+        Preconditions.checkArgument(payload != null, "Payload required when executing a push operation");
         Request request = pushRequest(payload, API_PUSH_PATH);
         return executePushRequest(request);
     }
@@ -284,6 +285,7 @@ public class APIClient {
      * @throws IOException
      */
     public APIClientResponse<APIScheduleResponse> schedule(SchedulePayload payload) throws IOException {
+        Preconditions.checkArgument(payload != null, "Payload required when scheduling a push request");
         Request request = scheduleRequest(payload, API_SCHEDULE_PATH, POST);
         return executeScheduleRequest(request);
     }
@@ -333,11 +335,13 @@ public class APIClient {
     }
 
     public HttpResponse addRemoveDevicesFromTag(String tag, AddRemoveDeviceFromTagPayload payload) throws IOException {
+        Preconditions.checkArgument(payload != null, "Payload is required when adding and/or removing devices from a tag");
         Request request = tagAddRemoveDeviceRequest(payload, API_TAGS_PATH + tag);
         return executeStandardRequest(request);
     }
 
     public HttpResponse batchModificationofTags(BatchModificationPayload payload) throws IOException {
+        Preconditions.checkArgument(payload != null, "Payload is required when performing batch modification of tags");
         Request request = tagBatchRequest(payload, API_TAGS_BATCH_PATH);
         return executeStandardRequest(request);
     }
