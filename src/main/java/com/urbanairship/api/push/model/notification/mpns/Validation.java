@@ -1,3 +1,7 @@
+/*
+ * Copyright 2013 Urban Airship and Contributors
+ */
+
 package com.urbanairship.api.push.model.notification.mpns;
 
 import static com.google.common.base.Preconditions.checkArgument;

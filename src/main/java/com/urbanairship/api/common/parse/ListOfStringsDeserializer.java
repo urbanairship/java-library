@@ -1,3 +1,7 @@
+/*
+ * Copyright 2013 Urban Airship and Contributors
+ */
+
 package com.urbanairship.api.common.parse;
 
 import org.codehaus.jackson.JsonParser;
@@ -12,7 +16,7 @@ public class ListOfStringsDeserializer {
 
     private ListOfStringsDeserializer() { }
 
-    public List<String> deserialize(JsonParser parser, String fieldName) throws IOException {
+    public List<String> deserialize(JsonParser parser, String fieldName) {
         try {
             return parser.readValueAs(new TypeReference<List<String>>() {});
         }

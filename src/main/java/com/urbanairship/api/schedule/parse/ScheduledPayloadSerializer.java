@@ -1,3 +1,7 @@
+/*
+ * Copyright 2013 Urban Airship and Contributors
+ */
+
 package com.urbanairship.api.schedule.parse;
 
 import com.urbanairship.api.schedule.model.SchedulePayload;

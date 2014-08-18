@@ -1,3 +1,7 @@
+/*
+ * Copyright 2013 Urban Airship and Contributors
+ */
+
 package com.urbanairship.api.common.model;
 
 import com.urbanairship.api.common.parse.CommonObjectMapper;
