@@ -39,10 +39,10 @@ public final class APIScheduleResponse {
     }
 
     /**
-     * List of push id's, one for every actual push message that moves through
+     * List of schedule urls, one for every scheduled push message that moves through
      * the API. This is useful for tracking an individual message as part of
      * an operation, and can be used when support is needed.
-     * @return List of push ids.
+     * @return List of schedule urls.
      */
     public ImmutableList<String> getScheduleUrls() {
         return scheduleUrls;
