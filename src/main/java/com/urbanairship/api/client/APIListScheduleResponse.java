@@ -2,6 +2,7 @@ package com.urbanairship.api.client;
 
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 
 import java.util.List;
@@ -11,13 +12,13 @@ public final class APIListScheduleResponse {
     private final int count;
     private final int totalCount;
     private final String nextPage;
-    private final List<SchedulePayload> scheduleObjects;
+    private final ImmutableList<SchedulePayload> scheduleObjects;
 
     public static Builder newBuilder(){
         return new Builder();
     }
 
-    private APIListScheduleResponse(int count, int totalCount, String nextPage, List<SchedulePayload> response){
+    private APIListScheduleResponse(int count, int totalCount, String nextPage, ImmutableList<SchedulePayload> response){
         this.count = count;
         this.totalCount = totalCount;
         this.nextPage = nextPage;
@@ -72,7 +73,7 @@ public final class APIListScheduleResponse {
         private int count;
         private int total_count;
         private String next_page;
-        private List<SchedulePayload> scheduleresponse;
+        private ImmutableList.Builder<SchedulePayload> scheduleresponse = ImmutableList.builder();
 
         private Builder() { }
 
@@ -91,8 +92,13 @@ public final class APIListScheduleResponse {
             return this;
         }
 
-        public Builder setSchedule(List<SchedulePayload> schedules){
-            this.scheduleresponse = schedules;
+        public Builder addSchedule(SchedulePayload schedule) {
+            this.scheduleresponse.add(schedule);
+            return this;
+        }
+
+        public Builder addAllSchedule(Iterable<? extends SchedulePayload> schedulelist) {
+            this.scheduleresponse.addAll(schedulelist);
             return this;
         }
 
@@ -100,7 +106,7 @@ public final class APIListScheduleResponse {
             Preconditions.checkNotNull(count, "count must be set to build APIListScheduleResponse");
             Preconditions.checkNotNull(total_count, "total count must be set to build APIListScheduleResponse");
             Preconditions.checkNotNull(scheduleresponse, "sch must be set to build APIListScheduleResponse");
-            return new APIListScheduleResponse(count, total_count, next_page, scheduleresponse);
+            return new APIListScheduleResponse(count, total_count, next_page, scheduleresponse.build());
         }
     }
 }

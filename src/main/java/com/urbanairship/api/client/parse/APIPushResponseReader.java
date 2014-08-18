@@ -32,7 +32,7 @@ public class APIPushResponseReader implements JsonObjectReader<APIPushResponse>{
     public void readPushIds(JsonParser jsonParser) throws IOException {
         List<String> list =
                 jsonParser.readValueAs(new TypeReference<List<String>>(){});
-        builder.setPushIds(list);
+        builder.addAllPushIds(list);
     }
 
     @Override

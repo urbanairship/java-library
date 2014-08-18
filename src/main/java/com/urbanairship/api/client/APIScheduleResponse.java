@@ -4,7 +4,8 @@
 
 package com.urbanairship.api.client;
 
-import java.util.List;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * Represents a response from the Urban Airship API for Scheduled Notifications.
@@ -12,7 +13,7 @@ import java.util.List;
 public final class APIScheduleResponse {
 
     private final String operationId;
-    private final List<String> scheduleUrls;
+    private final ImmutableList<String> scheduleUrls;
 
     /**
      * New APIScheduleResponse builder
@@ -22,7 +23,7 @@ public final class APIScheduleResponse {
         return new Builder();
     }
 
-    private APIScheduleResponse(String operationId, List<String> scheduleUrls){
+    private APIScheduleResponse(String operationId, ImmutableList<String> scheduleUrls){
         this.operationId = operationId;
         this.scheduleUrls = scheduleUrls;
     }
@@ -43,17 +44,16 @@ public final class APIScheduleResponse {
      * an operation, and can be used when support is needed.
      * @return List of push ids.
      */
-    public List<String> getScheduleUrls() {
+    public ImmutableList<String> getScheduleUrls() {
         return scheduleUrls;
     }
 
     @Override
-    public String toString(){
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("APIScheduleResponse:");
-        stringBuilder.append(String.format("\nOperationId:%s", operationId));
-        stringBuilder.append(String.format("\nScheduleUrls:\n%s", scheduleUrls));
-        return stringBuilder.toString();
+    public String toString() {
+        return "APIScheduleResponse{" +
+                "operationId='" + operationId + '\'' +
+                ", scheduleUrls=" + scheduleUrls +
+                '}';
     }
 
     /**
@@ -62,7 +62,7 @@ public final class APIScheduleResponse {
     public static class Builder {
 
         private String operationId;
-        private List<String> scheduleUrls;
+        private ImmutableList.Builder<String> scheduleUrls = ImmutableList.builder();
 
         private Builder() {}
 
@@ -71,13 +71,18 @@ public final class APIScheduleResponse {
             return this;
         }
 
-        public Builder setScheduleUrls(List<String> scheduleUrls){
-            this.scheduleUrls = scheduleUrls;
+        public Builder addScheduleUrl(String scheduleurl) {
+            this.scheduleUrls.add(scheduleurl);
+            return this;
+        }
+
+        public Builder addAllScheduleUrls(Iterable<? extends String> scheduleUrls){
+            this.scheduleUrls.addAll(scheduleUrls);
             return this;
         }
 
         public APIScheduleResponse build(){
-            return new APIScheduleResponse(this.operationId, this.scheduleUrls);
+            return new APIScheduleResponse(operationId, scheduleUrls.build());
         }
     }
 }

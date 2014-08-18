@@ -16,7 +16,7 @@ public class APIListTagsResponseReader implements JsonObjectReader<APIListTagsRe
 
     public APIListTagsResponseReader() { this.builder = APIListTagsResponse.newBuilder(); }
 
-    public void readTags(JsonParser jsonParser) throws IOException { builder.setTags( (List<String>) jsonParser.readValueAs(new TypeReference<List<String>>() {})); }
+    public void readTags(JsonParser jsonParser) throws IOException { builder.allAllTags((List<String>) jsonParser.readValueAs(new TypeReference<List<String>>() {})); }
 
     @Override
     public APIListTagsResponse validateAndBuild() throws IOException {

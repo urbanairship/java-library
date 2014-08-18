@@ -32,7 +32,7 @@ public class APIScheduleResponseReader implements JsonObjectReader <APIScheduleR
     public void readScheduleIds(JsonParser jsonParser) throws IOException {
         List<String> list =
                 jsonParser.readValueAs(new TypeReference<List<String>>(){});
-        builder.setScheduleUrls(list);
+        builder.addAllScheduleUrls(list);
     }
 
     @Override

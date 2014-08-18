@@ -1,10 +1,12 @@
 package com.urbanairship.api.client;
 
+import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
+import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import org.apache.http.HttpResponse;
@@ -29,7 +31,7 @@ public class APIClientResponseTest {
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP",1,1), 200, "OK"));
         APIScheduleResponse scheduleResponse = APIScheduleResponse.newBuilder()
-                .setScheduleUrls(Arrays.asList("ID1", "ID2"))
+                .addAllScheduleUrls(Arrays.asList("ID1", "ID2"))
                 .setOperationId("ID")
                 .build();
         APIClientResponse.Builder<APIScheduleResponse> builder =
@@ -64,14 +66,21 @@ public class APIClientResponseTest {
                                         .setUrl("http://sample.com/")
                                         .build();
 
-        List<SchedulePayload> samplelist = new ArrayList<SchedulePayload>();
-        samplelist.add(sample);
-
         APIListScheduleResponse listScheduleResponse = APIListScheduleResponse.newBuilder()
                 .setCount(5)
                 .setTotalCount(6)
-                .setSchedule(samplelist)
+                .addSchedule(SchedulePayload.newBuilder()
+                        .setSchedule(Schedule.newBuilder()
+                                .setScheduledTimestamp(DateTime.now())
+                                .build())
+                        .setPushPayload(PushPayload.newBuilder()
+                                                   .setAudience(Selectors.deviceToken("token"))
+                                                   .setNotification(Notifications.notification("UA Push"))
+                                                   .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                                                   .build())
+                        .build())
                 .build();
+
         APIClientResponse.Builder<APIListScheduleResponse> builder =
                 APIClientResponse.newListScheduleResponseBuilder()
                         .setApiResponse(listScheduleResponse)
@@ -95,7 +104,7 @@ public class APIClientResponseTest {
         listOTags.add("Kitties");
 
         APIListTagsResponse listTagsResponse = APIListTagsResponse.newBuilder()
-                .setTags(listOTags)
+                .allAllTags(listOTags)
                 .build();
         APIClientResponse.Builder<APIListTagsResponse> builder =
                 APIClientResponse.newListTagsResponseBuilder()
@@ -114,7 +123,7 @@ public class APIClientResponseTest {
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP",1,1), 200, "OK"));
         APIPushResponse pushResponse = APIPushResponse.newBuilder()
-                .setPushIds(Arrays.asList("ID1", "ID2"))
+                .addAllPushIds(Arrays.asList("ID1", "ID2"))
                 .setOperationId("OpID")
                 .build();
         APIClientResponse.Builder<APIPushResponse>builder =

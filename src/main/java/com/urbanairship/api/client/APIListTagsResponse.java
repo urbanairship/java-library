@@ -1,18 +1,19 @@
 package com.urbanairship.api.client;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 
 public final class APIListTagsResponse {
 
-    private final List<String> tags;
+    private final ImmutableList<String> tags;
 
     public static Builder newBuilder(){
         return new Builder();
     }
 
-    private APIListTagsResponse(List<String> tags){
+    private APIListTagsResponse(ImmutableList<String> tags){
         this.tags = tags;
     }
 
@@ -46,18 +47,23 @@ public final class APIListTagsResponse {
      * APIListTagResponse Builder
      */
     public static class Builder {
-        private List<String> tags;
+        private ImmutableList.Builder<String> tags = ImmutableList.builder();
 
         private Builder() { }
 
-        public Builder setTags(List<String> tags) {
-            this.tags = tags;
+        public Builder addTag(String tag) {
+            this.tags.add(tag);
+            return this;
+        }
+
+        public Builder allAllTags(Iterable<? extends String> tags) {
+            this.tags.addAll(tags);
             return this;
         }
 
         public APIListTagsResponse build() {
             Preconditions.checkNotNull(tags);
-            return new APIListTagsResponse(tags);
+            return new APIListTagsResponse(tags.build());
         }
     }
 }
