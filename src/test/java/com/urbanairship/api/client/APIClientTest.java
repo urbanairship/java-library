@@ -49,13 +49,13 @@ public class APIClientTest {
     public static WireMockClassRule wireMockClassRule = new WireMockClassRule();
 
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testAPIClientThrowsForNoAppKey(){
         @SuppressWarnings("UnusedAssignment") APIClient apiClient = APIClient.newBuilder().setKey("foo")
                 .build();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testAPIClientThrowsForNoAppSecret(){
         @SuppressWarnings("UnusedAssignment") APIClient apiClient = APIClient.newBuilder().setSecret("foo")
                                        .build();

@@ -85,9 +85,9 @@ public final class BatchTagSet {
         }
 
         public BatchTagSet build() {
-            Preconditions.checkArgument(!(id_type == null), "There must be a type specified");
-            Preconditions.checkArgument(!(device_id == null), "There must be a device id");
-            Preconditions.checkArgument(!(tags == null), "There must be tags to apply");
+            Preconditions.checkNotNull(id_type, "There must be a type specified");
+            Preconditions.checkNotNull(device_id, "There must be a device id");
+            Preconditions.checkNotNull(tags, "There must be tags to apply");
 
             return new BatchTagSet(id_type, device_id, tags.build());
         }

@@ -1,6 +1,7 @@
 package com.urbanairship.api.client;
 
 
+import com.google.common.base.Preconditions;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 
 import java.util.List;
@@ -96,6 +97,9 @@ public final class APIListScheduleResponse {
         }
 
         public APIListScheduleResponse build(){
+            Preconditions.checkNotNull(count, "count must be set to build APIListScheduleResponse");
+            Preconditions.checkNotNull(total_count, "total count must be set to build APIListScheduleResponse");
+            Preconditions.checkNotNull(scheduleresponse, "sch must be set to build APIListScheduleResponse");
             return new APIListScheduleResponse(count, total_count, next_page, scheduleresponse);
         }
     }

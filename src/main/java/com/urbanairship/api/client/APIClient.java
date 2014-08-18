@@ -421,6 +421,10 @@ public class APIClient {
          * @return APIClient
          */
         public APIClient build() {
+            Preconditions.checkNotNull(key, "app key needed to build APIClient");
+            Preconditions.checkNotNull(secret, "app secret needed to build APIClient");
+            Preconditions.checkNotNull(baseURI, "base URI needed to build APIClient");
+            Preconditions.checkNotNull(version, "version needed to build APIClient");
             return new APIClient(key, secret, baseURI, version);
         }
 

@@ -59,7 +59,7 @@ public final class BatchModificationPayload extends PushModelObject {
         }
 
         public BatchModificationPayload build() {
-            Preconditions.checkArgument(!(batch_object == null), "There must be a batch object");
+            Preconditions.checkNotNull(batch_object, "There must be a batch object");
 
             return new BatchModificationPayload(batch_object.build());
         }

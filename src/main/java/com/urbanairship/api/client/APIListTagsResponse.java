@@ -1,5 +1,7 @@
 package com.urbanairship.api.client;
 
+import com.google.common.base.Preconditions;
+
 import java.util.List;
 
 public final class APIListTagsResponse {
@@ -48,12 +50,13 @@ public final class APIListTagsResponse {
 
         private Builder() { }
 
-        public Builder setTags(List<String> tags){
+        public Builder setTags(List<String> tags) {
             this.tags = tags;
             return this;
         }
 
-        public APIListTagsResponse build(){
+        public APIListTagsResponse build() {
+            Preconditions.checkNotNull(tags);
             return new APIListTagsResponse(tags);
         }
     }
