@@ -1,3 +1,7 @@
+/*
+ * Copyright 2014 Urban Airship and Contributors
+ */
+
 package com.urbanairship.api.client;
 
 import com.google.common.base.Preconditions;
