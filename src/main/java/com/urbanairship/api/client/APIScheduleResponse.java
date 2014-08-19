@@ -5,7 +5,9 @@
 package com.urbanairship.api.client;
 
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.urbanairship.api.schedule.model.SchedulePayload;
 
 /**
  * Represents a response from the Urban Airship API for Scheduled Notifications.
@@ -14,6 +16,7 @@ public final class APIScheduleResponse {
 
     private final String operationId;
     private final ImmutableList<String> scheduleUrls;
+    private final ImmutableList<SchedulePayload> schedulePayloads;
 
     /**
      * New APIScheduleResponse builder
@@ -23,9 +26,10 @@ public final class APIScheduleResponse {
         return new Builder();
     }
 
-    private APIScheduleResponse(String operationId, ImmutableList<String> scheduleUrls){
+    private APIScheduleResponse(String operationId, ImmutableList<String> scheduleUrls, ImmutableList<SchedulePayload> schedulePayloads){
         this.operationId = operationId;
         this.scheduleUrls = scheduleUrls;
+        this.schedulePayloads = schedulePayloads;
     }
 
     /**
@@ -48,11 +52,16 @@ public final class APIScheduleResponse {
         return scheduleUrls;
     }
 
+    public ImmutableList<SchedulePayload> getSchedulePayloads() {
+        return schedulePayloads;
+    }
+
     @Override
     public String toString() {
         return "APIScheduleResponse{" +
                 "operationId='" + operationId + '\'' +
                 ", scheduleUrls=" + scheduleUrls +
+                ", schedulePayloads=" + schedulePayloads +
                 '}';
     }
 
@@ -63,6 +72,7 @@ public final class APIScheduleResponse {
 
         private String operationId;
         private ImmutableList.Builder<String> scheduleUrls = ImmutableList.builder();
+        private ImmutableList.Builder<SchedulePayload> schedulePayloads = ImmutableList.builder();
 
         private Builder() {}
 
@@ -81,8 +91,21 @@ public final class APIScheduleResponse {
             return this;
         }
 
+        public Builder addSchedulePayload(SchedulePayload schedulePayload) {
+            this.schedulePayloads.add(schedulePayload);
+            return this;
+        }
+
+        public Builder addAllSchedulePayload(Iterable<? extends SchedulePayload> schedulePayloads) {
+            this.schedulePayloads.addAll(schedulePayloads);
+            return this;
+        }
+
         public APIScheduleResponse build(){
-            return new APIScheduleResponse(operationId, scheduleUrls.build());
+            Preconditions.checkNotNull(operationId, "Operation ID must be set in order to build APIScheduleResponse");
+            Preconditions.checkNotNull(scheduleUrls, "ScheduleUrls must be set in order to build APIScheduleResponse");
+            Preconditions.checkNotNull(schedulePayloads, "SchedulePayloads must be set in order to build APIScheduleResponse");
+            return new APIScheduleResponse(operationId, scheduleUrls.build(), schedulePayloads.build());
         }
     }
 }

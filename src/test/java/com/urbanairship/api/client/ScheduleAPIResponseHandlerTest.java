@@ -30,7 +30,16 @@ public class ScheduleAPIResponseHandlerTest {
     @Test
     public void testHandleSuccess(){
         String successJSON = "{\"ok\" : true, \"operation_id\" : \"OpID\", " +
-                "\"schedule_ids\" : [\"ScheduleID\"]}";
+                "\"schedule_ids\" : [\"ScheduleID\"],    \"schedules\" : [\n" +
+                "      {\n" +
+                "         \"url\" : \"http://go.urbanairship/api/schedules/2d69320c-3c91-5241-fac4-248269eed109\",\n" +
+                "         \"schedule\" : { \"scheduled_time\": \"2013-04-01T18:45:00\" },\n" +
+                "         \"push\" : { \"audience\":{ \"tag\": \"spoaaaarts\" },\n" +
+                "            \"notification\": { \"alert\": \"Booyah!\" },\n" +
+                "            \"device_types\": \"all\" },\n" +
+                "         \"push_ids\" : [ \"8f18fcb5-e2aa-4b61-b190-43852eadb5ef\" ]\n" +
+                "      }\n" +
+                "   ]}";
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP",1,1), 200, "OK"));
         InputStreamEntity inputStreamEntity = new InputStreamEntity(
@@ -43,9 +52,9 @@ public class ScheduleAPIResponseHandlerTest {
             APIClientResponse<APIScheduleResponse> response =
                     handler.handleResponse(httpResponse);
             assertTrue("Operation ID incorrect",
-                       response.getApiResponse().getOperationId().equals("OpID"));
+                    response.getApiResponse().getOperationId().equals("OpID"));
             assertTrue("HttpResponse is incorrect",
-                       httpResponse.equals(httpResponse));
+                    httpResponse.equals(httpResponse));
         }
         catch (Exception ex){
             fail("Exception " + ex);
@@ -74,7 +83,7 @@ public class ScheduleAPIResponseHandlerTest {
                 errorJson.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
-                                               UA_JSON_RESPONSE));
+                UA_JSON_RESPONSE));
 
         ScheduleAPIResponseHandler handler = new ScheduleAPIResponseHandler();
 
@@ -142,7 +151,7 @@ public class ScheduleAPIResponseHandlerTest {
                 errorString.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
-                                               CONTENT_TYPE_TEXT_HTML));
+                CONTENT_TYPE_TEXT_HTML));
 
         ScheduleAPIResponseHandler handler = new ScheduleAPIResponseHandler();
 
@@ -152,7 +161,7 @@ public class ScheduleAPIResponseHandlerTest {
         catch (APIRequestException ex){
             APIError error = ex.getError().get();
             assertTrue("String error message is incorrect",
-                       error.getError().equals("Unauthorized"));
+                    error.getError().equals("Unauthorized"));
             return;
         }
         catch (Exception ex){
