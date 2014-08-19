@@ -19,10 +19,6 @@ public final class Notification extends PushModelObject {
     private final Optional<String> alert;
     private final ImmutableMap<NotificationPayloadOverrideKey, ? extends DevicePayloadOverride> deviceTypePayloadOverrides;
 
-    /**
-     * New Notification Builder
-     * @return Builder
-     */
     public static Builder newBuilder() {
         return new Builder();
     }
@@ -33,19 +29,10 @@ public final class Notification extends PushModelObject {
         this.deviceTypePayloadOverrides = deviceTypePayloadOverrides;
     }
 
-    /**
-     * Get the alert for this notification. This is optional if there are
-     * deviceType overrides
-     * @return alert
-     */
     public Optional<String> getAlert() {
         return alert;
     }
 
-    /**
-     * Get the deviceType overrides for this notification. These are optional
-     * @return deviceType overrides
-     */
     public Optional<ImmutableSet<DeviceType>> getOverrideDeviceTypes() {
         if (deviceTypePayloadOverrides == null || deviceTypePayloadOverrides.size() == 0 ) {
             return Optional.<ImmutableSet<DeviceType>>absent();
@@ -58,23 +45,12 @@ public final class Notification extends PushModelObject {
         }
     }
 
-    /**
-     * Return the DeviceType override for this Notification for the given key if
-     * set.
-     * @param deviceType DeviceType of the override
-     * @param overrideType Class of the override
-     * @return override or Optional.absent()
-     */
     @SuppressWarnings("unchecked")
     public <O extends DevicePayloadOverride> Optional<O> getDeviceTypeOverride(DeviceType deviceType, Class<O> overrideType) {
         // Safe because the builder enforces the tie between the Class key and the value in the map
         return Optional.fromNullable((O) deviceTypePayloadOverrides.get(new NotificationPayloadOverrideKey(deviceType, overrideType)));
     }
 
-    /**
-     * Returna a map of all the deviceType overrides for the Notification.
-     * @return overrides
-     */
     public Map<DeviceType, DevicePayloadOverride> getDeviceTypePayloadOverrides() {
         Map<DeviceType, DevicePayloadOverride> overrides = Maps.newHashMap();
         for (Map.Entry<NotificationPayloadOverrideKey, ? extends DevicePayloadOverride> entry : deviceTypePayloadOverrides.entrySet()) {
@@ -129,33 +105,16 @@ public final class Notification extends PushModelObject {
 
         private Builder() { }
 
-        /**
-         * Set an alert for this Notification. If a DeviceType override is included,
-         * this alert is optional.
-         * @param alert The alert
-         * @return Builder
-         */
         public Builder setAlert(String alert) {
             this.alert = alert;
             return this;
         }
 
-        /**
-         * Add a deviceType override. There is a deviceType override for each supported
-         * deviceType that provide options specific to that deviceType.
-         * @param deviceType Specific deviceType
-         * @param payload Payload for the deviceType
-         * @return Builder
-         */
         public <P extends DevicePayloadOverride> Builder addDeviceTypeOverride(DeviceType deviceType, P payload) {
             this.deviceTypePayloadOverridesBuilder.put(new NotificationPayloadOverrideKey(deviceType, payload.getClass()), payload);
             return this;
         }
 
-        /**
-         * Build a Notification
-         * @return Notification
-         */
         public Notification build() {
             ImmutableMap<NotificationPayloadOverrideKey, DevicePayloadOverride> overrides = deviceTypePayloadOverridesBuilder.build();
             Preconditions.checkArgument(alert != null || !overrides.isEmpty(),

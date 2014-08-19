@@ -130,12 +130,12 @@ public final class PushPayload extends PushModelObject {
     @Override
     public String toString() {
         return "PushPayload{" +
-            "audience=" + audience +
-            ", notification=" + notification +
-            ", message=" + message +
-            ", deviceTypes=" + deviceTypes +
-            ", pushOptions=" + pushOptions +
-            '}';
+                "audience=" + audience +
+                ", notification=" + notification +
+                ", message=" + message +
+                ", deviceTypes=" + deviceTypes +
+                ", pushOptions=" + pushOptions +
+                '}';
     }
 
     public static class Builder {
@@ -208,15 +208,15 @@ public final class PushPayload extends PushModelObject {
          */
         public PushPayload build() {
             Preconditions.checkArgument(!(notification == null && message == null),
-                                        "At least one of 'notification' or 'message' must be set.");
+                    "At least one of 'notification' or 'message' must be set.");
             Preconditions.checkNotNull(audience, "'audience' must be set");
             Preconditions.checkNotNull(deviceTypes, "'device_types' must be set");
 
             return new PushPayload(audience,
-                                   Optional.fromNullable(notification),
-                                   Optional.fromNullable(message),
-                                   deviceTypes,
-                                   Optional.fromNullable(pushOptions));
+                    Optional.fromNullable(notification),
+                    Optional.fromNullable(message),
+                    deviceTypes,
+                    Optional.fromNullable(pushOptions));
         }
     }
 }

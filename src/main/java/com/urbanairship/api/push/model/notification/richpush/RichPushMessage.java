@@ -111,13 +111,13 @@ public final class RichPushMessage {
     @Override
     public String toString() {
         return "RichPushMessage{" +
-            "title='" + title +
-            "', body='" + body +
-            "', contentType=" + contentType +
-            ", contentEncoding=" + contentEncoding +
-            ", extra=" + extra +
-            ", expiry=" + expiry +
-            '}';
+                "title='" + title +
+                "', body='" + body +
+                "', contentType=" + contentType +
+                ", contentEncoding=" + contentEncoding +
+                ", extra=" + extra +
+                ", expiry=" + expiry +
+                '}';
     }
 
     public static final class Builder {
@@ -175,11 +175,11 @@ public final class RichPushMessage {
             Preconditions.checkNotNull(title, "Must supply a value for 'title'");
             Preconditions.checkNotNull(body, "Must supply a value for 'body'");
             return new RichPushMessage(title,
-                                       body,
-                                       contentType != null ? contentType : CONTENT_TYPE_DEFAULT,
-                                       contentEncoding != null ? contentEncoding : CONTENT_ENCODING_DEFAULT,
-                                       extra != null ? Optional.fromNullable(extra.build()) : Optional.<ImmutableMap<String, String>>absent(),
-                                       Optional.fromNullable(expiry));
+                    body,
+                    contentType != null ? contentType : CONTENT_TYPE_DEFAULT,
+                    contentEncoding != null ? contentEncoding : CONTENT_ENCODING_DEFAULT,
+                    extra != null ? Optional.fromNullable(extra.build()) : Optional.<ImmutableMap<String, String>>absent(),
+                    Optional.fromNullable(expiry));
         }
     }
 }

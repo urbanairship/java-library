@@ -16,15 +16,15 @@ public class MapOfStringsDeserializer {
 
     private MapOfStringsDeserializer() { }
 
-    public Map<String, String> deserialize(JsonParser parser, String fieldName) {
+    public Map<String, String> deserialize(JsonParser parser, String fieldName) throws APIParsingException {
         try {
             return parser.readValueAs(new TypeReference<Map<String, String>>() {});
         }
-        catch (IOException e){
-            throw new APIParsingException(
-                    String.format(
-                            "Error %s\nin deserializer MapOfStrings at field name %s",
-                            e, fieldName));
+        catch (IOException e) {
+            APIParsingException.raise(String.format("%s must contain simple strings as keys/values", fieldName), parser);
         }
+        // Satisfy the java compiler - it can't figure out that
+        // APIParsingException.raise() always throws.
+        return null;
     }
 }

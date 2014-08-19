@@ -4,14 +4,12 @@
 
 package com.urbanairship.api.push.model.notification.ios;
 
+import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.PushModelObject;
-import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
-import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
-
 import java.util.Map;
 
 /**
@@ -205,8 +203,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
          */
         public Builder setAlert(String alert) {
             this.alert = IOSAlertData.newBuilder()
-                .setBody(alert)
-                .build();
+                    .setBody(alert)
+                    .build();
             return this;
         }
 
@@ -307,12 +305,12 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         public IOSDevicePayload build() {
             // Yes, empty payloads are valid (for Passes)
             return new IOSDevicePayload(Optional.fromNullable(alert),
-                                        Optional.fromNullable(sound),
-                                        Optional.fromNullable(badge),
-                                        Optional.fromNullable(contentAvailable),
-                                        Optional.fromNullable(expiry),
-                                        Optional.fromNullable(priority),
-                                        extra == null ? Optional.<ImmutableMap<String,String>>absent() : Optional.fromNullable(extra.build()));
+                    Optional.fromNullable(sound),
+                    Optional.fromNullable(badge),
+                    Optional.fromNullable(contentAvailable),
+                    Optional.fromNullable(expiry),
+                    Optional.fromNullable(priority),
+                    extra == null ? Optional.<ImmutableMap<String,String>>absent() : Optional.fromNullable(extra.build()));
 
         }
     }

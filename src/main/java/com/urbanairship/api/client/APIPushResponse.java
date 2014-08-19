@@ -6,20 +6,17 @@ package com.urbanairship.api.client;
 
 
 import com.google.common.base.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.List;
+import com.google.common.collect.ImmutableList;
 
 /**
  * Represents a response from the Urban Airship API for Push Notifications.
  */
-public class APIPushResponse {
+public final class APIPushResponse {
 
     private final Optional<String> operationId;
-    private final Optional<List<String>> pushIds;
+    private final Optional<ImmutableList<String>> pushIds;
 
-    public APIPushResponse (String operationId, List<String> pushIds) {
+    public APIPushResponse (String operationId, ImmutableList<String> pushIds) {
         this.operationId = Optional.fromNullable(operationId);
         this.pushIds = Optional.fromNullable(pushIds);
     }
@@ -40,23 +37,16 @@ public class APIPushResponse {
      * an operation, and can be used when support is needed.
      * @return List of push ids.
      */
-    public Optional<List<String>> getPushIds() {
+    public Optional<ImmutableList<String>> getPushIds() {
         return pushIds;
     }
 
     @Override
-    public String toString(){
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("\nAPIPushResponse\n");
-        if (operationId.isPresent()){
-            stringBuilder.append("OperationId:");
-            stringBuilder.append(operationId);
-        }
-        if (getPushIds().isPresent()){
-            stringBuilder.append("\nPushIds:");
-            stringBuilder.append(pushIds.toString());
-        }
-        return stringBuilder.toString();
+    public String toString() {
+        return "APIPushResponse{" +
+                "operationId=" + operationId +
+                ", pushIds=" + pushIds +
+                '}';
     }
 
     public static Builder newBuilder(){
@@ -68,22 +58,27 @@ public class APIPushResponse {
      */
     public static class Builder {
         private String operationId;
-        private List<String> pushIds;
+        private ImmutableList.Builder<String> pushIds = ImmutableList.builder();
 
-        private Builder (){}
+        private Builder() { }
 
-        public Builder setOperationId(String operationId){
+        public Builder setOperationId(String operationId) {
             this.operationId = operationId;
             return this;
         }
 
-        public Builder setPushIds(List<String>pushIds){
-            this.pushIds = pushIds;
+        public Builder addPushId(String pushid) {
+            this.pushIds.add(pushid);
             return this;
         }
 
-        public APIPushResponse build(){
-            return new APIPushResponse(operationId, pushIds);
+        public Builder addAllPushIds(Iterable<? extends String> pushIds) {
+            this.pushIds.addAll(pushIds);
+            return this;
+        }
+
+        public APIPushResponse build() {
+            return new APIPushResponse(operationId, pushIds.build());
 
         }
     }

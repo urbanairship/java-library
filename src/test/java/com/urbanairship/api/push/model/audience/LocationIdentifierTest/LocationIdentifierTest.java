@@ -11,16 +11,16 @@ public class LocationIdentifierTest {
     @Test
     public void testEquals(){
         LocationIdentifier l1= LocationIdentifier.newBuilder()
-                                                  .setId("ID")
-                                                  .build();
+                .setId("ID")
+                .build();
 
         LocationIdentifier l2 = LocationIdentifier.newBuilder()
-                                                  .setId("ID")
-                                                  .build();
+                .setId("ID")
+                .build();
         assertTrue("Equals should return true",l1.equals(l2));
         LocationIdentifier l3 = LocationIdentifier.newBuilder()
-                                                  .setId("foo")
-                                                  .build();
+                .setId("foo")
+                .build();
 
         assertFalse("Equals should return false", l1.equals(l3));
 

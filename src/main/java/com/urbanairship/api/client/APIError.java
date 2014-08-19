@@ -132,10 +132,11 @@ public class APIError {
         }
 
         // wut?
-        else
+        else {
             return APIError.newBuilder()
-                           .setError("Unknown response parsing error")
-                           .build();
+                    .setError("Unknown response parsing error")
+                    .build();
+        }
     }
 
     /*

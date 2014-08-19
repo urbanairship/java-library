@@ -18,7 +18,7 @@ public class StringFieldDeserializer {
     public String deserialize(JsonParser parser, String fieldName) throws IOException {
         JsonToken token = parser.getCurrentToken();
         if (token != JsonToken.VALUE_STRING) {
-            throw new APIParsingException(String.format("\"%s\" field is expected to be a string", fieldName));
+            APIParsingException.raise(String.format("\"%s\" field is expected to be a string", fieldName), parser);
         }
 
         return parser.getText();

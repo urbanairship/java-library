@@ -16,12 +16,13 @@ public class SetOfStringsDeserializer {
 
     private SetOfStringsDeserializer() { }
 
-    public Set<String> deserialize(JsonParser parser, String fieldName) {
+    public Set<String> deserialize(JsonParser parser, String fieldName) throws IOException {
         try {
             return parser.readValueAs(new TypeReference<Set<String>>() {});
         }
         catch (IOException e) {
-            throw new APIParsingException(String.format("%s must be an array of simple strings", fieldName));
+            APIParsingException.raise(String.format("%s must be an array of simple strings", fieldName), parser);
         }
+        return null;
     }
 }

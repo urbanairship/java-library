@@ -10,5 +10,5 @@ public interface DateRange {
     DateTime getStart();
     DateTime getEnd();
     DateRangeUnit getResolution();
-    PresenceTimeFrame getTimeframe();
+    PresenceTimeframe getTimeframe();
 }

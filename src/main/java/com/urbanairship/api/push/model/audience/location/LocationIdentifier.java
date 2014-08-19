@@ -23,34 +23,18 @@ public final class LocationIdentifier extends PushModelObject {
         this.alias = alias;
     }
 
-    /**
-     * New LocationIdentifier Builder
-     * @return Builder
-     */
     public static Builder newBuilder() {
         return new Builder();
     }
 
-    /**
-     * Returns true if this LocationIdentifier is an alias
-     * @return true if alias, false if id
-     */
     public boolean isAlias() {
         return alias != null && alias.isPresent();
     }
 
-    /**
-     * Get the LocationAlias. This is optional
-     * @return Optional<<T>LocationAlias</T>>
-     */
     public Optional<LocationAlias> getAlias() {
         return alias;
     }
 
-    /**
-     * Get the id. This is optional.
-     * @return Optional<<T>String</T>> id
-     */
     public Optional<String> getId() {
         return id;
     }
@@ -72,7 +56,7 @@ public final class LocationIdentifier extends PushModelObject {
         else if (id.isPresent() && that.getId().isPresent()){
             return (id.hashCode() == that.getId().hashCode());
         }
-        else return false;
+        else { return false; }
     }
 
 
@@ -91,39 +75,22 @@ public final class LocationIdentifier extends PushModelObject {
                 '}';
     }
 
-    /**
-     * LocationIdentifier Builder
-     */
     public static class Builder {
         private String id;
         private LocationAlias alias;
 
         private Builder() { }
 
-        /**
-         * Set the id
-         * @param value id value
-         * @return Builder
-         */
         public Builder setId(String value) {
             id = value;
             return this;
         }
 
-        /**
-         * Set the location alias.
-         * @param value LocationAlias
-         * @return Builder
-         */
         public Builder setAlias(LocationAlias value) {
             alias = value;
             return this;
         }
 
-        /**
-         * Build a new LocationIdentifier
-         * @return LocationIdentifier
-         */
         public LocationIdentifier build() {
             Preconditions.checkArgument(id != null || alias != null, "Must have only one of 'id' or an alias");
             return new LocationIdentifier(Optional.fromNullable(id),

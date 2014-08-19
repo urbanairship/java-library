@@ -11,6 +11,7 @@ import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload
 import com.urbanairship.api.push.model.notification.blackberry.BlackberryDevicePayload;
 import com.urbanairship.api.push.model.notification.wns.WNSDevicePayload;
 import com.urbanairship.api.push.model.notification.mpns.MPNSDevicePayload;
+import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import com.google.common.base.Optional;
 
@@ -53,6 +54,8 @@ public class Notifications {
             return wnsAlert(text);
         case MPNS:
             return mpnsAlert(text);
+        case ADM:
+            return admAlert(text);
         default:
             throw unknownDeviceType(deviceType.getIdentifier());
         }
@@ -88,7 +91,13 @@ public class Notifications {
             .build();
     }
 
-    /* DeviceType selector (device_types) */
+    public static ADMDevicePayload admAlert(String text) {
+        return ADMDevicePayload.newBuilder()
+            .setAlert(text)
+            .build();
+    }
+
+    /* Platform selector (device_types) */
 
     public static DeviceTypeData deviceTypes(String ... names) {
         DeviceTypeData.Builder deviceTypes = DeviceTypeData.newBuilder();

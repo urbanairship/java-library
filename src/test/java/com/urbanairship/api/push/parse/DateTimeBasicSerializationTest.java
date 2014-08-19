@@ -1,4 +1,4 @@
-package com.urbanairship.api.common.parse;
+package com.urbanairship.api.push.parse;
 
 import com.urbanairship.api.common.parse.*;
 import com.google.common.collect.Sets;

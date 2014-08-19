@@ -45,7 +45,7 @@ public class SchedulePayloadSerializerTest {
         assertEquals(json, properJson);
     }
 
-   @Test (expected = Exception.class)
+    @Test (expected = Exception.class)
     public void testNoSchedule() throws Exception {
 
         PushPayload pushPayload = PushPayload.newBuilder()
@@ -66,38 +66,38 @@ public class SchedulePayloadSerializerTest {
 
     }
 
-   @Test
+    @Test
     public void testLocalTimeFlag() throws Exception {
 
-       PushPayload pushPayload = PushPayload.newBuilder()
-               .setAudience(Selectors.tag("tag"))
-               .setDeviceTypes(DeviceTypeData.newBuilder().addDeviceType(DeviceType.IOS).build())
-               .setNotification(Notification.newBuilder().setAlert("alert").build())
-               .setPushOptions(PushOptions.newBuilder().build())
-               .build();
-       SchedulePayload schedulePayload = SchedulePayload.newBuilder()
-               .setSchedule(Schedule.newBuilder()
-                       .setScheduledTimestamp(new DateTime("2013-05-05T00:00:01", DateTimeZone.UTC))
-                       .build())
-               .setPushPayload(pushPayload)
-               .build();
+        PushPayload pushPayload = PushPayload.newBuilder()
+                .setAudience(Selectors.tag("tag"))
+                .setDeviceTypes(DeviceTypeData.newBuilder().addDeviceType(DeviceType.IOS).build())
+                .setNotification(Notification.newBuilder().setAlert("alert").build())
+                .setPushOptions(PushOptions.newBuilder().build())
+                .build();
+        SchedulePayload schedulePayload = SchedulePayload.newBuilder()
+                .setSchedule(Schedule.newBuilder()
+                        .setScheduledTimestamp(new DateTime("2013-05-05T00:00:01", DateTimeZone.UTC))
+                        .build())
+                .setPushPayload(pushPayload)
+                .build();
 
-       assertFalse(schedulePayload.getSchedule().getLocalTimePresent());
+        assertFalse(schedulePayload.getSchedule().getLocalTimePresent());
 
-       PushPayload pushPayloadLocal = PushPayload.newBuilder()
-               .setAudience(Selectors.tag("tag"))
-               .setDeviceTypes(DeviceTypeData.newBuilder().addDeviceType(DeviceType.IOS).build())
-               .setNotification(Notification.newBuilder().setAlert("alert").build())
-               .setPushOptions(PushOptions.newBuilder().build())
-               .build();
-       SchedulePayload schedulePayloadLocal = SchedulePayload.newBuilder()
-               .setSchedule(Schedule.newBuilder()
-                       .setLocalScheduledTimestamp(new DateTime("2013-05-05T00:00:01", DateTimeZone.UTC))
-                       .build())
-               .setPushPayload(pushPayloadLocal)
-               .build();
+        PushPayload pushPayloadLocal = PushPayload.newBuilder()
+                .setAudience(Selectors.tag("tag"))
+                .setDeviceTypes(DeviceTypeData.newBuilder().addDeviceType(DeviceType.IOS).build())
+                .setNotification(Notification.newBuilder().setAlert("alert").build())
+                .setPushOptions(PushOptions.newBuilder().build())
+                .build();
+        SchedulePayload schedulePayloadLocal = SchedulePayload.newBuilder()
+                .setSchedule(Schedule.newBuilder()
+                        .setLocalScheduledTimestamp(new DateTime("2013-05-05T00:00:01", DateTimeZone.UTC))
+                        .build())
+                .setPushPayload(pushPayloadLocal)
+                .build();
 
-       assertTrue(schedulePayloadLocal.getSchedule().getLocalTimePresent());
-   }
+        assertTrue(schedulePayloadLocal.getSchedule().getLocalTimePresent());
+    }
 
 }

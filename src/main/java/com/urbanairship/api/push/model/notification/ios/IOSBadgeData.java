@@ -8,9 +8,6 @@ import com.urbanairship.api.push.model.PushModelObject;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
-/**
- * Represents badge data for an iOS Push notification payload
- */
 public final class IOSBadgeData extends PushModelObject {
 
     public enum Type {
@@ -46,26 +43,14 @@ public final class IOSBadgeData extends PushModelObject {
         this.value = value;
     }
 
-    /**
-     * Get a new IOSBadgeData builder
-     * @return Builder
-     */
     public static Builder newBuilder() {
         return new Builder();
     }
 
-    /**
-     * Get the badge type.
-     * @return Type
-     */
     public Type getType() {
         return type;
     }
 
-    /**
-     * Get the badge value
-     * @return Int value
-     */
     public Optional<Integer> getValue() {
         return value;
     }
@@ -110,30 +95,16 @@ public final class IOSBadgeData extends PushModelObject {
 
         private Builder() { }
 
-        /**
-         * Set the badge type. Can be one of VALUE, AUTO, INCREMENT, DECREMENT
-         * @param type Badge Type
-         * @return Builder
-         */
         public Builder setType(Type type) {
             this.type = type;
             return this;
         }
 
-        /**
-         * Set the badge value.
-         * @param value int value of the badge
-         * @return Builder
-         */
         public Builder setValue(int value) {
             this.value = value;
             return this;
         }
 
-        /**
-         * Build a new object
-         * @return IOSBadgeData
-         */
         public IOSBadgeData build() {
             Preconditions.checkNotNull(type);
             return new IOSBadgeData(type, Optional.fromNullable(value));

@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 
-public class ScheduleAPIResponseTest {
+public class ListTagsAPIResponseHandlerTest {
 
     /* Header keys, values */
     public final static String CONTENT_TYPE_KEY = "Content-type";
@@ -23,29 +23,27 @@ public class ScheduleAPIResponseTest {
     public final static String UA_JSON_RESPONSE =
             "application/vnd.urbanairship+json; version=3; charset=utf8;";
 
-    /* Test that a successful server response produces and APIPushResponse
-     that has been built correctly, and that the HttpResponse has been correctly
-     retained
-     */
     @Test
     public void testHandleSuccess(){
-        String successJSON = "{\"ok\" : true, \"operation_id\" : \"OpID\", " +
-                "\"schedule_ids\" : [\"ScheduleID\"]}";
+
+        String listtagresponse = "{\"tags\":[\"Puppies\",\"Kitties\",\"GrumpyCat\"]}";
+
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP",1,1), 200, "OK"));
         InputStreamEntity inputStreamEntity = new InputStreamEntity(
-                new ByteArrayInputStream(successJSON.getBytes()),
-                successJSON.getBytes().length);
+                new ByteArrayInputStream(listtagresponse.getBytes()),
+                listtagresponse.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
-        ScheduleAPIResponseHandler handler = new ScheduleAPIResponseHandler();
+        ListTagsAPIResponseHandler handler = new ListTagsAPIResponseHandler();
 
         try {
-            APIClientResponse<APIScheduleResponse> response =
+            APIClientResponse<APIListTagsResponse> response =
                     handler.handleResponse(httpResponse);
-            assertTrue("Operation ID incorrect",
-                       response.getApiResponse().getOperationId().equals("OpID"));
-            assertTrue("HttpResponse is incorrect",
-                       httpResponse.equals(httpResponse));
+            assertTrue("Tags incorrect",
+                    response.getApiResponse().getTags().contains("Puppies") &&
+                    response.getApiResponse().getTags().contains("Kitties") &&
+                    response.getApiResponse().getTags().contains("GrumpyCat"));
+            assertTrue(httpResponse.getStatusLine().toString().equals("HTTP/1.1 200 OK"));
         }
         catch (Exception ex){
             fail("Exception " + ex);
@@ -53,13 +51,6 @@ public class ScheduleAPIResponseTest {
 
     }
 
-    /*
-    Test that a failed message generates the proper exception, with the
-    appropriate data. The APIError, APIErrorDetails, and Location objects
-    are tested in their respective test classes, this test only verifies
-    that they were properly setup during the process of building the
-    exception
-     */
     @Test
     public void testAPIV3Error(){
         String errorJson = "{\"ok\" : false,\"operation_id\" : \"OpID\"," +
@@ -74,9 +65,9 @@ public class ScheduleAPIResponseTest {
                 errorJson.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
-                                               UA_JSON_RESPONSE));
+                UA_JSON_RESPONSE));
 
-        ScheduleAPIResponseHandler handler = new ScheduleAPIResponseHandler();
+        ListTagsAPIResponseHandler handler = new ListTagsAPIResponseHandler();
 
         try{
             handler.handleResponse(httpResponse);
@@ -93,11 +84,6 @@ public class ScheduleAPIResponseTest {
         fail("Test should have succeeded by now");
     }
 
-    /*
-     Test for error where the default JSON error message is returned instead
-     of the v3 error message is returned. Default message json is in the form
-     {"message":"description"}
-     */
     @Test
     public void testDeprecatedJSONError(){
         /* Build a BasicHttpResponse */
@@ -110,7 +96,7 @@ public class ScheduleAPIResponseTest {
         httpResponse.setEntity(inputStreamEntity);
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_JSON));
 
-        ScheduleAPIResponseHandler handler = new ScheduleAPIResponseHandler();
+        ListTagsAPIResponseHandler handler = new ListTagsAPIResponseHandler();
 
         try {
             handler.handleResponse(httpResponse);
@@ -142,9 +128,9 @@ public class ScheduleAPIResponseTest {
                 errorString.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
-                                               CONTENT_TYPE_TEXT_HTML));
+                CONTENT_TYPE_TEXT_HTML));
 
-        ScheduleAPIResponseHandler handler = new ScheduleAPIResponseHandler();
+        ListTagsAPIResponseHandler handler = new ListTagsAPIResponseHandler();
 
         try{
             handler.handleResponse(httpResponse);
@@ -152,7 +138,7 @@ public class ScheduleAPIResponseTest {
         catch (APIRequestException ex){
             APIError error = ex.getError().get();
             assertTrue("String error message is incorrect",
-                       error.getError().equals("Unauthorized"));
+                    error.getError().equals("Unauthorized"));
             return;
         }
         catch (Exception ex){

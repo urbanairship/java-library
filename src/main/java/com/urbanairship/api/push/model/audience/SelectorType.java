@@ -15,6 +15,7 @@ public enum SelectorType {
     APID("apid", SelectorCategory.VALUE, true),
     WNS("wns", SelectorCategory.VALUE, true),
     MPNS("mpns", SelectorCategory.VALUE, true),
+    ADM("adm", SelectorCategory.VALUE, true),
 
     AND("and", SelectorCategory.COMPOUND),
     OR("or", SelectorCategory.COMPOUND),
@@ -41,18 +42,10 @@ public enum SelectorType {
         this.isDeviceId = isDeviceId;
     }
 
-    /**
-     * Get the identifier for this Selector
-     * @return String identifier
-     */
     public String getIdentifier() {
         return identifier;
     }
 
-    /**
-     * Get the category for this selector.
-     * @return SelectorCategory
-     */
     public SelectorCategory getCategory() {
         return category;
     }

@@ -34,7 +34,7 @@ public class StandardObjectDeserializer<T, R extends JsonObjectReader<T>> {
         R reader = readerSupplier.get();
         while (token != null && token != JsonToken.END_OBJECT) {
             if (token != JsonToken.FIELD_NAME) {
-               throw new APIParsingException(String.format("Parsing of json failed. Expected to be at field name token but was %s", token.name()));
+                APIParsingException.raise("Parsing of json failed.  Expected to be at field name token but was " + token.name(), jp);
             }
 
             String name = jp.getCurrentName();
