@@ -30,16 +30,7 @@ public class ScheduleAPIResponseHandlerTest {
     @Test
     public void testHandleSuccess(){
         String successJSON = "{\"ok\" : true, \"operation_id\" : \"OpID\", " +
-                "\"schedule_ids\" : [\"ScheduleID\"],    \"schedules\" : [\n" +
-                "      {\n" +
-                "         \"url\" : \"http://go.urbanairship/api/schedules/2d69320c-3c91-5241-fac4-248269eed109\",\n" +
-                "         \"schedule\" : { \"scheduled_time\": \"2013-04-01T18:45:00\" },\n" +
-                "         \"push\" : { \"audience\":{ \"tag\": \"spoaaaarts\" },\n" +
-                "            \"notification\": { \"alert\": \"Booyah!\" },\n" +
-                "            \"device_types\": \"all\" },\n" +
-                "         \"push_ids\" : [ \"8f18fcb5-e2aa-4b61-b190-43852eadb5ef\" ]\n" +
-                "      }\n" +
-                "   ]}";
+                "\"schedule_ids\" : [\"ScheduleID\"]}";
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP",1,1), 200, "OK"));
         InputStreamEntity inputStreamEntity = new InputStreamEntity(
