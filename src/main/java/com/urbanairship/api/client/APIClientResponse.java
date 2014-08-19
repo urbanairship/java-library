@@ -24,6 +24,10 @@ public class APIClientResponse<T> {
         this.httpResponse = httpResponse;
     }
 
+    public static <T> Builder<T> newGenericResponseBuilder() {
+        return new Builder<T>();
+    }
+
     /**
      * Return a Builder for an APIPushResponse
      * @return Builder
