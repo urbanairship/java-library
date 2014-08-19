@@ -252,7 +252,7 @@ public class APIClient {
     /*
     Execute the list schedule request and log errors.
      */
-    private APIClientResponse<APIListScheduleResponse> executeListScheduleRequest(Request request) throws IOException {
+    private APIClientResponse<APIListAllSchedulesResponse> executeListScheduleRequest(Request request) throws IOException {
         Executor executor = Executor.newInstance()
                                     .auth(uaHost, appKey, appSecret)
                                     .authPreemptive(uaHost);
@@ -260,7 +260,7 @@ public class APIClient {
             logger.debug(String.format("Executing list schedule request %s", request));
         }
 
-        return executor.execute(request).handleResponse(new ListScheduleAPIResponseHandler());
+        return executor.execute(request).handleResponse(new ListAllSchedulesAPIResponseHandler());
     }
 
     /*
@@ -297,18 +297,18 @@ public class APIClient {
      * @return APIClientResponse <<T>APIListScheduleResponse</T>>
      * @throws IOException
      */
-    public APIClientResponse<APIListScheduleResponse> listSchedules() throws IOException {
+    public APIClientResponse<APIListAllSchedulesResponse> listSchedules() throws IOException {
         Request request = scheduleRequest(null, API_SCHEDULE_PATH, GET);
         return executeListScheduleRequest(request);
     }
 
-    public APIClientResponse<APIListScheduleResponse> listSchedules(String start, int limit, String order) throws IOException {
+    public APIClientResponse<APIListAllSchedulesResponse> listSchedules(String start, int limit, String order) throws IOException {
         String path = "/api/schedules" + "?" + "start=" + start + "&limit=" + limit +"&order=" + order;
         Request request = scheduleRequest(null, path, GET);
         return executeListScheduleRequest(request);
     }
 
-    public APIClientResponse<APIListScheduleResponse> listSchedules(String next_page) throws IOException, URISyntaxException {
+    public APIClientResponse<APIListAllSchedulesResponse> listSchedules(String next_page) throws IOException, URISyntaxException {
         URI np = new URI(next_page);
         Request request = scheduleRequest(null, np.getPath() + "?" + np.getQuery(), GET);
         return executeListScheduleRequest(request);

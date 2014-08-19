@@ -5,7 +5,7 @@
 package com.urbanairship.api.client;
 
 import com.urbanairship.api.client.model.APIClientResponse;
-import com.urbanairship.api.client.model.APIListScheduleResponse;
+import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
 import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
@@ -14,13 +14,13 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
 
-public final class ListScheduleAPIResponseHandler implements ResponseHandler<APIClientResponse<APIListScheduleResponse>> {
+public final class ListAllSchedulesAPIResponseHandler implements ResponseHandler<APIClientResponse<APIListAllSchedulesResponse>> {
 
     private static final ObjectMapper mapper = APIResponseObjectMapper.getInstance();
-    private static final APIClientResponse.Builder<APIListScheduleResponse> builder = APIClientResponse.newListScheduleResponseBuilder();
+    private static final APIClientResponse.Builder<APIListAllSchedulesResponse> builder = APIClientResponse.newListScheduleResponseBuilder();
 
     @Override
-    public APIClientResponse<APIListScheduleResponse> handleResponse(HttpResponse response) throws IOException {
+    public APIClientResponse<APIListAllSchedulesResponse> handleResponse(HttpResponse response) throws IOException {
 
         int statusCode = response.getStatusLine().getStatusCode();
 
@@ -31,13 +31,13 @@ public final class ListScheduleAPIResponseHandler implements ResponseHandler<API
         }
     }
 
-    private APIClientResponse<APIListScheduleResponse> handleSuccessfulSchedule(HttpResponse response) throws IOException {
+    private APIClientResponse<APIListAllSchedulesResponse> handleSuccessfulSchedule(HttpResponse response) throws IOException {
 
         builder.setHttpResponse(response);
 
         try {
             String jsonPayload = EntityUtils.toString(response.getEntity());
-            APIListScheduleResponse scheduleResponse = mapper.readValue(jsonPayload, APIListScheduleResponse.class);
+            APIListAllSchedulesResponse scheduleResponse = mapper.readValue(jsonPayload, APIListAllSchedulesResponse.class);
             builder.setApiResponse(scheduleResponse);
         } finally {
             EntityUtils.consumeQuietly(response.getEntity());

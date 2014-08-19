@@ -66,7 +66,7 @@ public class APIClientResponseTest {
                                         .setUrl("http://sample.com/")
                                         .build();
 
-        APIListScheduleResponse listScheduleResponse = APIListScheduleResponse.newBuilder()
+        APIListAllSchedulesResponse listScheduleResponse = APIListAllSchedulesResponse.newBuilder()
                 .setCount(5)
                 .setTotalCount(6)
                 .addSchedule(SchedulePayload.newBuilder()
@@ -81,11 +81,11 @@ public class APIClientResponseTest {
                         .build())
                 .build();
 
-        APIClientResponse.Builder<APIListScheduleResponse> builder =
+        APIClientResponse.Builder<APIListAllSchedulesResponse> builder =
                 APIClientResponse.newListScheduleResponseBuilder()
                         .setApiResponse(listScheduleResponse)
                         .setHttpResponse(httpResponse);
-        APIClientResponse<APIListScheduleResponse> testResponse = builder.build();
+        APIClientResponse<APIListAllSchedulesResponse> testResponse = builder.build();
         assertTrue("HTTP response not set properly",
                 testResponse.getHttpResponse().equals(httpResponse));
 

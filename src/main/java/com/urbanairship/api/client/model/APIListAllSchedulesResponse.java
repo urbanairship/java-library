@@ -11,7 +11,7 @@ import com.urbanairship.api.schedule.model.SchedulePayload;
 
 import java.util.List;
 
-public final class APIListScheduleResponse {
+public final class APIListAllSchedulesResponse {
 
     private final int count;
     private final int totalCount;
@@ -22,7 +22,7 @@ public final class APIListScheduleResponse {
         return new Builder();
     }
 
-    private APIListScheduleResponse(int count, int totalCount, String nextPage, ImmutableList<SchedulePayload> response){
+    private APIListAllSchedulesResponse(int count, int totalCount, String nextPage, ImmutableList<SchedulePayload> response){
         this.count = count;
         this.totalCount = totalCount;
         this.nextPage = nextPage;
@@ -49,7 +49,7 @@ public final class APIListScheduleResponse {
         if (this == o) { return true; }
         if (o == null || getClass() != o.getClass())  { return false; }
 
-        APIListScheduleResponse that = (APIListScheduleResponse) o;
+        APIListAllSchedulesResponse that = (APIListAllSchedulesResponse) o;
 
         if (count != that.count) { return false; }
         if (totalCount != that.totalCount) { return false; }
@@ -106,11 +106,11 @@ public final class APIListScheduleResponse {
             return this;
         }
 
-        public APIListScheduleResponse build(){
+        public APIListAllSchedulesResponse build(){
             Preconditions.checkNotNull(count, "count must be set to build APIListScheduleResponse");
             Preconditions.checkNotNull(total_count, "total count must be set to build APIListScheduleResponse");
             Preconditions.checkNotNull(scheduleresponse, "sch must be set to build APIListScheduleResponse");
-            return new APIListScheduleResponse(count, total_count, next_page, scheduleresponse.build());
+            return new APIListAllSchedulesResponse(count, total_count, next_page, scheduleresponse.build());
         }
     }
 }
