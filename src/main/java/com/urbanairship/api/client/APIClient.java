@@ -252,7 +252,7 @@ public class APIClient {
     /*
     Execute the list schedule request and log errors.
      */
-    private APIClientResponse<APIListAllSchedulesResponse> executeListScheduleRequest(Request request) throws IOException {
+    private APIClientResponse<APIListAllSchedulesResponse> executeListAllSchedulesRequest(Request request) throws IOException {
         Executor executor = Executor.newInstance()
                                     .auth(uaHost, appKey, appSecret)
                                     .authPreemptive(uaHost);
@@ -292,26 +292,26 @@ public class APIClient {
     }
 
     /**
-     * Send a list schedule request to the Urban Airship API.
+     * Send a list all schedules request to the Urban Airship API.
      *
-     * @return APIClientResponse <<T>APIListScheduleResponse</T>>
+     * @return APIClientResponse <<T>APIListAllSchedulesResponse</T>>
      * @throws IOException
      */
-    public APIClientResponse<APIListAllSchedulesResponse> listSchedules() throws IOException {
+    public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules() throws IOException {
         Request request = scheduleRequest(null, API_SCHEDULE_PATH, GET);
-        return executeListScheduleRequest(request);
+        return executeListAllSchedulesRequest(request);
     }
 
-    public APIClientResponse<APIListAllSchedulesResponse> listSchedules(String start, int limit, String order) throws IOException {
+    public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules(String start, int limit, String order) throws IOException {
         String path = "/api/schedules" + "?" + "start=" + start + "&limit=" + limit +"&order=" + order;
         Request request = scheduleRequest(null, path, GET);
-        return executeListScheduleRequest(request);
+        return executeListAllSchedulesRequest(request);
     }
 
-    public APIClientResponse<APIListAllSchedulesResponse> listSchedules(String next_page) throws IOException, URISyntaxException {
+    public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules(String next_page) throws IOException, URISyntaxException {
         URI np = new URI(next_page);
         Request request = scheduleRequest(null, np.getPath() + "?" + np.getQuery(), GET);
-        return executeListScheduleRequest(request);
+        return executeListAllSchedulesRequest(request);
     }
 
     /**

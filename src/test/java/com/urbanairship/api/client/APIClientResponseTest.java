@@ -82,7 +82,7 @@ public class APIClientResponseTest {
                 .build();
 
         APIClientResponse.Builder<APIListAllSchedulesResponse> builder =
-                APIClientResponse.newListScheduleResponseBuilder()
+                APIClientResponse.newListAllSchedulesResponseBuilder()
                         .setApiResponse(listScheduleResponse)
                         .setHttpResponse(httpResponse);
         APIClientResponse<APIListAllSchedulesResponse> testResponse = builder.build();

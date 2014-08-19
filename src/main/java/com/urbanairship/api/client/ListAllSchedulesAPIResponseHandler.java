@@ -17,7 +17,7 @@ import java.io.IOException;
 public final class ListAllSchedulesAPIResponseHandler implements ResponseHandler<APIClientResponse<APIListAllSchedulesResponse>> {
 
     private static final ObjectMapper mapper = APIResponseObjectMapper.getInstance();
-    private static final APIClientResponse.Builder<APIListAllSchedulesResponse> builder = APIClientResponse.newListScheduleResponseBuilder();
+    private static final APIClientResponse.Builder<APIListAllSchedulesResponse> builder = APIClientResponse.newListAllSchedulesResponseBuilder();
 
     @Override
     public APIClientResponse<APIListAllSchedulesResponse> handleResponse(HttpResponse response) throws IOException {
