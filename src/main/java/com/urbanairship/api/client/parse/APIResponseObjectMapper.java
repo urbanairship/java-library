@@ -5,6 +5,10 @@
 package com.urbanairship.api.client.parse;
 
 import com.urbanairship.api.client.*;
+import com.urbanairship.api.client.model.APIListScheduleResponse;
+import com.urbanairship.api.client.model.APIListTagsResponse;
+import com.urbanairship.api.client.model.APIPushResponse;
+import com.urbanairship.api.client.model.APIScheduleResponse;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.push.parse.PushPayloadDeserializer;

@@ -6,7 +6,7 @@ package com.urbanairship.api.client.parse;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
-import com.urbanairship.api.client.APIPushResponse;
+import com.urbanairship.api.client.model.APIPushResponse;
 import com.urbanairship.api.common.parse.FieldParser;
 import com.urbanairship.api.common.parse.FieldParserRegistry;
 import com.urbanairship.api.common.parse.MapFieldParserRegistry;

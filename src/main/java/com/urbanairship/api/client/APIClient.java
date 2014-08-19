@@ -6,6 +6,7 @@ package com.urbanairship.api.client;
 
 import com.google.common.base.Preconditions;
 
+import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 

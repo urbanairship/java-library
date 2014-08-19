@@ -4,12 +4,11 @@
 
 package com.urbanairship.api.client.parse;
 
-import com.urbanairship.api.client.APIScheduleResponse;
+import com.urbanairship.api.client.model.APIScheduleResponse;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.type.TypeReference;
 
 import java.io.IOException;
@@ -38,7 +37,8 @@ public class APIScheduleResponseReader implements JsonObjectReader <APIScheduleR
     }
 
     public void readSchedulePayloads(JsonParser jsonParser) throws IOException {
-        builder.addAllSchedulePayload((List<SchedulePayload>) jsonParser.readValueAs(new TypeReference<List<SchedulePayload>>() { }));
+        builder.addAllSchedulePayload((List<SchedulePayload>) jsonParser.readValueAs(new TypeReference<List<SchedulePayload>>() {
+        }));
     }
 
     @Override

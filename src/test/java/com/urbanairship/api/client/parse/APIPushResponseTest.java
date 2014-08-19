@@ -1,11 +1,7 @@
 package com.urbanairship.api.client.parse;
 
-import com.urbanairship.api.client.APIPushResponse;
-import com.urbanairship.api.client.parse.APIResponseObjectMapper;
-import org.apache.log4j.BasicConfigurator;
+import com.urbanairship.api.client.model.APIPushResponse;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.junit.Test;
 

@@ -4,6 +4,8 @@
 
 package com.urbanairship.api.client;
 
+import com.urbanairship.api.client.model.APIClientResponse;
+import com.urbanairship.api.client.model.APIListScheduleResponse;
 import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;

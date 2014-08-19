@@ -1,6 +1,6 @@
 package com.urbanairship.api.client;
 
-import com.google.common.collect.ImmutableList;
+import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushPayload;

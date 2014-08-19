@@ -1,6 +1,6 @@
 package com.urbanairship.api.client.parse;
 
-import com.urbanairship.api.client.APIListTagsResponse;
+import com.urbanairship.api.client.model.APIListTagsResponse;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 

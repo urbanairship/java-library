@@ -1,7 +1,7 @@
 package com.urbanairship.api.client.parse;
 
 
-import com.urbanairship.api.client.APIScheduleResponse;
+import com.urbanairship.api.client.model.APIScheduleResponse;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 import static org.junit.Assert.assertTrue;

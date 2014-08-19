@@ -4,7 +4,7 @@
 
 package com.urbanairship.api.client.parse;
 
-import com.urbanairship.api.client.APIPushResponse;
+import com.urbanairship.api.client.model.APIPushResponse;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.common.parse.APIParsingException;
 import org.codehaus.jackson.JsonParser;

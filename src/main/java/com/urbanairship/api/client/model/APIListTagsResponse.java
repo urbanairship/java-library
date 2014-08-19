@@ -2,7 +2,7 @@
  * Copyright 2014 Urban Airship and Contributors
  */
 
-package com.urbanairship.api.client;
+package com.urbanairship.api.client.model;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;

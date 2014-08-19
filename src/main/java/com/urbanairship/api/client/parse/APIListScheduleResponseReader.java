@@ -5,7 +5,7 @@
 package com.urbanairship.api.client.parse;
 
 
-import com.urbanairship.api.client.APIListScheduleResponse;
+import com.urbanairship.api.client.model.APIListScheduleResponse;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.schedule.model.SchedulePayload;

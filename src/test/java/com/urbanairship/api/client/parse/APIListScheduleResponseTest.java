@@ -1,6 +1,6 @@
 package com.urbanairship.api.client.parse;
 
-import com.urbanairship.api.client.APIListScheduleResponse;
+import com.urbanairship.api.client.model.APIListScheduleResponse;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.schedule.model.Schedule;

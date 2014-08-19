@@ -2,7 +2,7 @@
  * Copyright 2013 Urban Airship and Contributors
  */
 
-package com.urbanairship.api.client;
+package com.urbanairship.api.client.model;
 
 
 import com.google.common.base.Optional;
