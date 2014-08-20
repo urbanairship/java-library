@@ -146,7 +146,7 @@ public class APIClientTest {
     }
 
     @Test
-    public void testListSchedules() {
+    public void testListAllSchedules() {
         // Setup a client and a schedule payload
         APIClient client = APIClient.newBuilder()
                 .setBaseURI("http://localhost:8080")
@@ -196,7 +196,46 @@ public class APIClientTest {
     }
 
     @Test
-    public void testListSchedulesWithParameters() {
+    public void testSpecificSchedule() {
+        // Setup a client and a schedule payload
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        // Setup a stubbed response for the server
+        String listscheduleresponse = "{\"schedule\":{\"scheduled_time\":\"2015-08-07T22:10:44\"},\"name\":\"Special Scheduled Push 20\",\"push\":{\"audience\":\"ALL\",\"device_types\":\"all\",\"notification\":{\"alert\":\"Scheduled Push 20\"}},\"push_ids\":[\"274f9aa4-2d00-4911-a043-70129f29adf2\"]}";
+
+        stubFor(get(urlEqualTo("/api/schedules/ee0dd92c-de3b-46dc-9937-c9dcaef0170f"))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withBody(listscheduleresponse)
+                        .withStatus(201)));
+
+        try {
+            APIClientResponse<SchedulePayload> response = client.listSpecificSchedule("ee0dd92c-de3b-46dc-9937-c9dcaef0170f");
+
+            // Verify components of the underlying HttpRequest
+            verify(getRequestedFor(urlEqualTo("/api/schedules/ee0dd92c-de3b-46dc-9937-c9dcaef0170f"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+            List<LoggedRequest> requests = findAll(getRequestedFor(
+                    urlEqualTo("/api/schedules/ee0dd92c-de3b-46dc-9937-c9dcaef0170f")));
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+            assertNotNull(response.getApiResponse());
+            assertNotNull(response.getHttpResponse());
+        }
+        catch (Exception ex){
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testListAllSchedulesWithParameters() {
         // Setup a client and a schedule payload
         APIClient client = APIClient.newBuilder()
                 .setBaseURI("http://localhost:8080")
@@ -246,7 +285,7 @@ public class APIClientTest {
     }
 
     @Test
-    public void testListSchedulesNextPage() {
+    public void testListAllSchedulesNextPage() {
         // Setup a client and a schedule payload
         APIClient client = APIClient.newBuilder()
                 .setBaseURI("http://localhost:8080")

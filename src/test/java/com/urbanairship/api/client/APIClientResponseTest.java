@@ -47,7 +47,7 @@ public class APIClientResponseTest {
     }
 
     @Test
-    public void testAPIListScheduleResponse(){
+    public void testAPIListAllSchedulesResponse(){
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP",1,1), 200, "OK"));
 

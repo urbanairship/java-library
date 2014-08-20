@@ -5,6 +5,7 @@
 
 package com.urbanairship.api.client.model;
 
+import com.urbanairship.api.schedule.model.SchedulePayload;
 import org.apache.http.HttpResponse;
 
 /**
@@ -41,11 +42,19 @@ public class APIClientResponse<T> {
     }
 
     /**
-     * Return a Builder for an APIListScheduleResponse
+     * Return a Builder for an APIListAllSchedulesResponse
      * @return Builder
      */
     public static Builder<APIListAllSchedulesResponse> newListAllSchedulesResponseBuilder(){
         return new Builder<APIListAllSchedulesResponse>();
+    }
+
+    /**
+     * Return a Builder for an SchedulePayload
+     * @return Builder
+     */
+    public static Builder<SchedulePayload> newSchedulePayloadBuilder(){
+        return new Builder<SchedulePayload>();
     }
 
     /**

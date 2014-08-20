@@ -250,17 +250,31 @@ public class APIClient {
     }
 
     /*
-    Execute the list schedule request and log errors.
+    Execute the list all schedules request and log errors.
      */
     private APIClientResponse<APIListAllSchedulesResponse> executeListAllSchedulesRequest(Request request) throws IOException {
         Executor executor = Executor.newInstance()
                                     .auth(uaHost, appKey, appSecret)
                                     .authPreemptive(uaHost);
         if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing list schedule request %s", request));
+            logger.debug(String.format("Executing list all schedules request %s", request));
         }
 
         return executor.execute(request).handleResponse(new ListAllSchedulesAPIResponseHandler());
+    }
+
+    /*
+    Execute the list specific schedule request and log errors.
+    */
+    private APIClientResponse<SchedulePayload> executeListSpecificScheduleRequest(Request request) throws IOException {
+        Executor executor = Executor.newInstance()
+                .auth(uaHost, appKey, appSecret)
+                .authPreemptive(uaHost);
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list specific schedule request %s", request));
+        }
+
+        return executor.execute(request).handleResponse(new ListSpecificScheduleAPIResponseHandler());
     }
 
     /*
@@ -312,6 +326,17 @@ public class APIClient {
         URI np = new URI(next_page);
         Request request = scheduleRequest(null, np.getPath() + "?" + np.getQuery(), GET);
         return executeListAllSchedulesRequest(request);
+    }
+
+    /**
+     * Send a list a specific schedule request to the Urban Airship API.
+     *
+     * @return APIClientResponse <<T>SchedulePayload</T>>
+     * @throws IOException
+     */
+    public APIClientResponse<SchedulePayload> listSpecificSchedule(String id) throws IOException {
+        Request request = scheduleRequest(null, API_SCHEDULE_PATH + id, GET);
+        return executeListSpecificScheduleRequest(request);
     }
 
     /**
