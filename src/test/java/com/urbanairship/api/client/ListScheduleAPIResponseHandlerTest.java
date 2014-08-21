@@ -1,7 +1,6 @@
 package com.urbanairship.api.client;
 
 import com.urbanairship.api.client.model.APIClientResponse;
-import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
@@ -17,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 
-public class ListSpecificScheduleAPIResponseHandlerTest {
+public class ListScheduleAPIResponseHandlerTest {
 
     /* Header keys, values */
     public final static String CONTENT_TYPE_KEY = "Content-type";
@@ -37,7 +36,7 @@ public class ListSpecificScheduleAPIResponseHandlerTest {
                 new ByteArrayInputStream(listscheduleresponse.getBytes()),
                 listscheduleresponse.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
-        ListSpecificScheduleAPIResponseHandler handler = new ListSpecificScheduleAPIResponseHandler();
+        ListScheduleAPIResponseHandler handler = new ListScheduleAPIResponseHandler();
 
         try {
             APIClientResponse<SchedulePayload> response =
@@ -68,7 +67,7 @@ public class ListSpecificScheduleAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 UA_JSON_RESPONSE));
 
-        ListSpecificScheduleAPIResponseHandler handler = new ListSpecificScheduleAPIResponseHandler();
+        ListScheduleAPIResponseHandler handler = new ListScheduleAPIResponseHandler();
 
         try{
             handler.handleResponse(httpResponse);
@@ -97,7 +96,7 @@ public class ListSpecificScheduleAPIResponseHandlerTest {
         httpResponse.setEntity(inputStreamEntity);
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_JSON));
 
-        ListSpecificScheduleAPIResponseHandler handler = new ListSpecificScheduleAPIResponseHandler();
+        ListScheduleAPIResponseHandler handler = new ListScheduleAPIResponseHandler();
 
         try {
             handler.handleResponse(httpResponse);
@@ -131,7 +130,7 @@ public class ListSpecificScheduleAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 CONTENT_TYPE_TEXT_HTML));
 
-        ListSpecificScheduleAPIResponseHandler handler = new ListSpecificScheduleAPIResponseHandler();
+        ListScheduleAPIResponseHandler handler = new ListScheduleAPIResponseHandler();
 
         try{
             handler.handleResponse(httpResponse);

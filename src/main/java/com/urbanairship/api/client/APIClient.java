@@ -266,7 +266,7 @@ public class APIClient {
     /*
     Execute the list specific schedule request and log errors.
     */
-    private APIClientResponse<SchedulePayload> executeListSpecificScheduleRequest(Request request) throws IOException {
+    private APIClientResponse<SchedulePayload> executeListScheduleRequest(Request request) throws IOException {
         Executor executor = Executor.newInstance()
                 .auth(uaHost, appKey, appSecret)
                 .authPreemptive(uaHost);
@@ -274,7 +274,7 @@ public class APIClient {
             logger.debug(String.format("Executing list specific schedule request %s", request));
         }
 
-        return executor.execute(request).handleResponse(new ListSpecificScheduleAPIResponseHandler());
+        return executor.execute(request).handleResponse(new ListScheduleAPIResponseHandler());
     }
 
     /*
@@ -334,9 +334,9 @@ public class APIClient {
      * @return APIClientResponse <<T>SchedulePayload</T>>
      * @throws IOException
      */
-    public APIClientResponse<SchedulePayload> listSpecificSchedule(String id) throws IOException {
+    public APIClientResponse<SchedulePayload> listSchedule(String id) throws IOException {
         Request request = scheduleRequest(null, API_SCHEDULE_PATH + id, GET);
-        return executeListSpecificScheduleRequest(request);
+        return executeListScheduleRequest(request);
     }
 
     /**
@@ -345,7 +345,7 @@ public class APIClient {
      * @return APIClientResponse <<T>APIScheduleResponse</T>>
      * @throws IOException
      */
-    public APIClientResponse<APIScheduleResponse> updateSpecificSchedule(SchedulePayload payload, String id) throws IOException {
+    public APIClientResponse<APIScheduleResponse> updateSchedule(SchedulePayload payload, String id) throws IOException {
         Request request = scheduleRequest(payload, API_SCHEDULE_PATH + id, PUT);
         return executeScheduleRequest(request);
     }
@@ -356,7 +356,7 @@ public class APIClient {
      * @return HttpResponse
      * @throws IOException
      */
-    public HttpResponse deleteSpecificSchedule(String id) throws IOException {
+    public HttpResponse deleteSchedule(String id) throws IOException {
         Request request = scheduleRequest(null, API_SCHEDULE_PATH + id, DELETE);
         return executeStandardRequest(request);
     }
@@ -388,7 +388,7 @@ public class APIClient {
         return executeStandardRequest(request);
     }
 
-    public HttpResponse batchModificationofTags(BatchModificationPayload payload) throws IOException {
+    public HttpResponse batchModificationOfTags(BatchModificationPayload payload) throws IOException {
         Preconditions.checkNotNull(payload, "Payload is required when performing batch modification of tags");
         Request request = tagBatchRequest(payload, API_TAGS_BATCH_PATH);
         return executeStandardRequest(request);

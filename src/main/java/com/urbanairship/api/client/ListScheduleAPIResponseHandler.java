@@ -14,7 +14,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
 
-public final class ListSpecificScheduleAPIResponseHandler implements ResponseHandler<APIClientResponse<SchedulePayload>> {
+public final class ListScheduleAPIResponseHandler implements ResponseHandler<APIClientResponse<SchedulePayload>> {
 
     private static final ObjectMapper mapper = APIResponseObjectMapper.getInstance();
     private static final APIClientResponse.Builder<SchedulePayload> builder = APIClientResponse.newSchedulePayloadBuilder();

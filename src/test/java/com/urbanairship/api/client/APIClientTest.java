@@ -214,7 +214,7 @@ public class APIClientTest {
                         .withStatus(201)));
 
         try {
-            APIClientResponse<SchedulePayload> response = client.listSpecificSchedule("ee0dd92c-de3b-46dc-9937-c9dcaef0170f");
+            APIClientResponse<SchedulePayload> response = client.listSchedule("ee0dd92c-de3b-46dc-9937-c9dcaef0170f");
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/schedules/ee0dd92c-de3b-46dc-9937-c9dcaef0170f"))
@@ -443,7 +443,7 @@ public class APIClientTest {
                         .withStatus(201)));
 
         try {
-            APIClientResponse<APIScheduleResponse> response = client.updateSpecificSchedule(schedulePayload, "id");
+            APIClientResponse<APIScheduleResponse> response = client.updateSchedule(schedulePayload, "id");
 
             // Verify components of the underlying request
             verify(putRequestedFor(urlEqualTo("/api/schedules/id"))
@@ -475,7 +475,7 @@ public class APIClientTest {
                         .withStatus(204)));
 
         try {
-            HttpResponse response = client.deleteSpecificSchedule("puppies");
+            HttpResponse response = client.deleteSchedule("puppies");
 
             // Verify components of the underlying HttpRequest
             verify(deleteRequestedFor(urlEqualTo("/api/schedules/puppies"))
@@ -687,7 +687,7 @@ public class APIClientTest {
                         .withStatus(200)));
 
         try {
-            HttpResponse response = client.batchModificationofTags(BatchModificationPayload.newBuilder()
+            HttpResponse response = client.batchModificationOfTags(BatchModificationPayload.newBuilder()
                     .addBatchObject(BatchTagSet.newBuilder()
                             .setDevice(BatchTagSet.DEVICEIDTYPES.APID, "device1")
                             .addTag("tag1")
