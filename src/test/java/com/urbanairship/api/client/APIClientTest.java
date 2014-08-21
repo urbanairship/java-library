@@ -196,7 +196,7 @@ public class APIClientTest {
     }
 
     @Test
-    public void testSpecificSchedule() {
+    public void testListSpecificSchedule() {
         // Setup a client and a schedule payload
         APIClient client = APIClient.newBuilder()
                 .setBaseURI("http://localhost:8080")
@@ -399,6 +399,61 @@ public class APIClientTest {
             DateTime receivedDateTime = DateTime.parse(dateTimeString, DateFormats.DATE_FORMATTER);
             // Server truncates milliseconds off request
             assertEquals(receivedDateTime.getMillis(), dateTime.getMillis(), 1000);
+
+        }
+        catch (Exception ex){
+            fail("Exception " + ex);
+        }
+    }
+
+    @Test
+    public void testUpdateSchedule() {
+
+        // Setup a client and a schedule payload
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        PushPayload pushPayload = PushPayload.newBuilder()
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setNotification(Notifications.alert("Foo"))
+                .build();
+
+        DateTime dateTime = DateTime.now(DateTimeZone.UTC).plusSeconds(60);
+        Schedule schedule = Schedule.newBuilder()
+                .setScheduledTimestamp(dateTime)
+                .build();
+
+        SchedulePayload schedulePayload = SchedulePayload.newBuilder()
+                .setName("Test")
+                .setPushPayload(pushPayload)
+                .setSchedule(schedule)
+                .build();
+
+        // Stub out endpoint
+        // Setup a stubbed response for the server
+        String responseJson = "{\"ok\" : true,\"operation_id\" : \"OpID\" }";
+        stubFor(put(urlEqualTo("/api/schedules/id"))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, APP_JSON)
+                        .withBody(responseJson)
+                        .withStatus(201)));
+
+        try {
+            APIClientResponse<APIScheduleResponse> response = client.updateSpecificSchedule(schedulePayload, "id");
+
+            // Verify components of the underlying request
+            verify(putRequestedFor(urlEqualTo("/api/schedules/id"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+            List<LoggedRequest> requests = findAll(putRequestedFor(urlEqualTo("/api/schedules/id")));
+            assertEquals(requests.size(), 1);
+
+            assertNotNull(response);
+            assertNotNull(response.getApiResponse());
+            assertNotNull(response.getHttpResponse());
 
         }
         catch (Exception ex){

@@ -340,6 +340,17 @@ public class APIClient {
     }
 
     /**
+     * Send a update schedule request to the Urban Airship API.
+     *
+     * @return APIClientResponse <<T>APIScheduleResponse</T>>
+     * @throws IOException
+     */
+    public APIClientResponse<APIScheduleResponse> updateSpecificSchedule(SchedulePayload payload, String id) throws IOException {
+        Request request = scheduleRequest(payload, API_SCHEDULE_PATH + id, PUT);
+        return executeScheduleRequest(request);
+    }
+
+    /**
      * Sends a tag request to the Urban Airship API.
      *
      * @return APIClientResponse <<T>APIListTagResponse</T>>
