@@ -86,7 +86,7 @@ public class PushObjectMapper {
                         .put(DeviceType.IOS, iosPayloadDS)
                         .put(DeviceType.ANDROID, androidPayloadDS)
                         .put(DeviceType.BLACKBERRY, blackberryPayloadDS)
-                        .put(DeviceType.ADM, admPayloadDS)
+                        .put(DeviceType.AMAZON, admPayloadDS)
                         .build());
 
         MODULE
@@ -162,7 +162,7 @@ public class PushObjectMapper {
                 .addSerializer(BlackberryDevicePayload.class, new BlackberryDevicePayloadSerializer())
                 .addDeserializer(BlackberryDevicePayload.class, blackberryPayloadDS)
 
-            /* ADM */
+            /* AMAZON */
                 .addSerializer(ADMDevicePayload.class, new ADMDevicePayloadSerializer())
                 .addDeserializer(ADMDevicePayload.class, admPayloadDS)
 

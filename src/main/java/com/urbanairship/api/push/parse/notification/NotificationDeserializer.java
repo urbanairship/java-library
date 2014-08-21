@@ -54,10 +54,10 @@ public class NotificationDeserializer extends JsonDeserializer<Notification> {
                         reader.readPlatformDevicePayloadOverride(DeviceType.BLACKBERRY, jsonParser, deserializationContext);
                     }
                 })
-            .put("adm", new FieldParser<NotificationReader>() {
+            .put("amazon", new FieldParser<NotificationReader>() {
                     @Override
                     public void parse(NotificationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                        reader.readPlatformDevicePayloadOverride(DeviceType.ADM, jsonParser, deserializationContext);
+                        reader.readPlatformDevicePayloadOverride(DeviceType.AMAZON, jsonParser, deserializationContext);
                     }
                 })
             .build());
