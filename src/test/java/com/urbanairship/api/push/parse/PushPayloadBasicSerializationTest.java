@@ -104,7 +104,7 @@ public class PushPayloadBasicSerializationTest {
         String json
                 = "{"
                 + "  \"audience\" : \"all\","
-                + "  \"device_types\" : [\"ios\", \"android\", \"wns\", \"adm\"],"
+                + "  \"device_types\" : [\"ios\", \"android\", \"wns\", \"amazon\"],"
                 + "  \"notification\" : { \"alert\" : \"wat\" }"
                 + "}";
         PushPayload push = mapper.readValue(json, PushPayload.class);
@@ -115,7 +115,7 @@ public class PushPayloadBasicSerializationTest {
         assertTrue(deviceTypes.contains(DeviceType.IOS));
         assertTrue(deviceTypes.contains(DeviceType.ANDROID));
         assertTrue(deviceTypes.contains(DeviceType.WNS));
-        assertTrue(deviceTypes.contains(DeviceType.ADM));
+        assertTrue(deviceTypes.contains(DeviceType.AMAZON));
     }
 
     @Test(expected=APIParsingException.class)
@@ -179,7 +179,7 @@ public class PushPayloadBasicSerializationTest {
                 + "    \"blackberry\" : {"
                 + "      \"alert\" : \"doomed\""
                 + "    },"
-                + "    \"adm\" : {"
+                + "    \"amazon\" : {"
                 + "      \"alert\" : \"phoenix\""
                 + "    }"
                 + "  }"
@@ -191,7 +191,7 @@ public class PushPayloadBasicSerializationTest {
         assertTrue(notification.getDeviceTypeOverride(DeviceType.MPNS, MPNSDevicePayload.class).isPresent());
         assertTrue(notification.getDeviceTypeOverride(DeviceType.ANDROID, AndroidDevicePayload.class).isPresent());
         assertTrue(notification.getDeviceTypeOverride(DeviceType.BLACKBERRY, BlackberryDevicePayload.class).isPresent());
-        assertTrue(notification.getDeviceTypeOverride(DeviceType.ADM, ADMDevicePayload.class).isPresent());
+        assertTrue(notification.getDeviceTypeOverride(DeviceType.AMAZON, ADMDevicePayload.class).isPresent());
 
         IOSDevicePayload ios = notification.getDeviceTypeOverride(DeviceType.IOS, IOSDevicePayload.class).get();
         assertTrue(ios.getAlert().isPresent());
@@ -213,7 +213,7 @@ public class PushPayloadBasicSerializationTest {
         assertTrue(bb.getAlert().isPresent());
         assertEquals("doomed", bb.getAlert().get());
 
-        ADMDevicePayload adm = notification.getDeviceTypeOverride(DeviceType.ADM, ADMDevicePayload.class).get();
+        ADMDevicePayload adm = notification.getDeviceTypeOverride(DeviceType.AMAZON, ADMDevicePayload.class).get();
         assertTrue(adm.getAlert().isPresent());
         assertEquals("phoenix", adm.getAlert().get());
     }

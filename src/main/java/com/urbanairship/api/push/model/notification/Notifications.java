@@ -54,7 +54,7 @@ public class Notifications {
             return wnsAlert(text);
         case MPNS:
             return mpnsAlert(text);
-        case ADM:
+        case AMAZON:
             return admAlert(text);
         default:
             throw unknownDeviceType(deviceType.getIdentifier());

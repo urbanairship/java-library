@@ -29,7 +29,7 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
 
     @Override
     public DeviceType getDeviceType() {
-        return DeviceType.ADM;
+        return DeviceType.AMAZON;
     }
 
     @Override

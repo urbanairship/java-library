@@ -205,18 +205,18 @@ public class Selectors {
         return compound(SelectorType.OR, SelectorType.MPNS, ids);
     }
 
-    /* ADM APIDs */
+    /* AMAZON APIDs */
 
     public static final Selector adm(String adm) {
-        return value(SelectorType.ADM, adm);
+        return value(SelectorType.AMAZON_CHANNEL, adm);
     }
 
     public static final Selector admDevices(String ... ids) {
-        return compound(SelectorType.OR, SelectorType.ADM, ids);
+        return compound(SelectorType.OR, SelectorType.AMAZON_CHANNEL, ids);
     }
 
     public static final Selector admDevices(Collection<String> ids) {
-        return compound(SelectorType.OR, SelectorType.ADM, ids);
+        return compound(SelectorType.OR, SelectorType.AMAZON_CHANNEL, ids);
     }
 
     /* Logical operators */
