@@ -460,6 +460,39 @@ public class APIClientTest {
             fail("Exception " + ex);
         }
     }
+
+    @Test
+    public void testDeleteSpecificSchedule(){
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        stubFor(delete(urlEqualTo("/api/schedules/puppies"))
+                .willReturn(aResponse()
+                        .withStatus(204)));
+
+        try {
+            HttpResponse response = client.deleteSpecificSchedule("puppies");
+
+            // Verify components of the underlying HttpRequest
+            verify(deleteRequestedFor(urlEqualTo("/api/schedules/puppies"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+            List<LoggedRequest> requests = findAll(deleteRequestedFor(
+                    urlEqualTo("/api/schedules/puppies")));
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+            assertEquals(204, response.getStatusLine().getStatusCode());
+        }
+        catch (Exception ex){
+            fail("Exception thrown " + ex);
+        }
+    }
 //
 //    /*
 //    Validate is the exact workflow as push, with the exception of the URL,

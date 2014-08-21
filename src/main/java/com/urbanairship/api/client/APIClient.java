@@ -351,6 +351,17 @@ public class APIClient {
     }
 
     /**
+     * Send a delete schedule request to the Urban Airship API.
+     *
+     * @return HttpResponse
+     * @throws IOException
+     */
+    public HttpResponse deleteSpecificSchedule(String id) throws IOException {
+        Request request = scheduleRequest(null, API_SCHEDULE_PATH + id, DELETE);
+        return executeStandardRequest(request);
+    }
+
+    /**
      * Sends a tag request to the Urban Airship API.
      *
      * @return APIClientResponse <<T>APIListTagResponse</T>>
