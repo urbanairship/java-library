@@ -125,6 +125,20 @@ public class APIClient {
      */
     private Request scheduleRequest(SchedulePayload payload, @SuppressWarnings("SameParameterValue") String path,
                                     @SuppressWarnings("SameParameterValue") String httpMethod){
+        return scheduleRequest(payload, path, httpMethod, null);
+    }
+
+    /*
+    Base request for all API schedule operations
+    Suppressing warnings until more of schedule API is implemented
+     */
+    private Request scheduleRequest(SchedulePayload payload, @SuppressWarnings("SameParameterValue") String path,
+                                    @SuppressWarnings("SameParameterValue") String httpMethod, String id){
+        // add id to the uri
+        if (id != null) {
+            path = path + "/" + id;
+        }
+
         URI uri = baseURI.resolve(path);
         Request request;
 
@@ -265,6 +279,19 @@ public class APIClient {
     public APIClientResponse<APIScheduleResponse> schedule(SchedulePayload payload)
             throws IOException {
         Request request = scheduleRequest(payload, API_SCHEDULE_PATH, "POST");
+        return executeScheduleRequest(request);
+    }
+
+    /**
+     * Send a update schedule request to the Urban Airship API with the parameters setup in the schedule payload.
+     *
+     * @param payload A schedule payload
+     * @return APIClientResponse <<T>APIScheduleResponse</T>>
+     * @throws IOException
+     */
+    public APIClientResponse<APIScheduleResponse> updateSchedule(SchedulePayload payload, String id)
+            throws IOException {
+        Request request = scheduleRequest(payload, API_SCHEDULE_PATH, "PUT", id);
         return executeScheduleRequest(request);
     }
 
