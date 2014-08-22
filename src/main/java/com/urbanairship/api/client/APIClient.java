@@ -16,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
+import org.apache.http.client.fluent.Response;
 import org.apache.http.entity.ContentType;
 import org.apache.http.params.CoreProtocolPNames;
 
@@ -307,6 +308,21 @@ public class APIClient {
         return executor.execute(request).handleResponse(new ListSchedulesAPIResponseHandler());
     }
 
+    /*
+    Execute the request and log errors.
+     */
+    private Response executeDeleteScheduleRequest(Request request)
+            throws IOException{
+        Executor executor = Executor.newInstance()
+                .auth(uaHost, appKey, appSecret)
+                .authPreemptive(uaHost);
+        logger.debug(String.format("Executing delete schedule request %s", request));
+
+        Response response = executor.execute(request);
+
+        return response;
+    }
+
     /**
      * Send a list schedules request to the Urban Airship API with the parameters setup in the ScheduleListPayload.
      *
@@ -318,6 +334,19 @@ public class APIClient {
             throws IOException {
         Request request = listSchedulesRequest(listSchedulePayload, API_SCHEDULE_PATH, "GET");
         return executeListSchedulesRequest(request);
+    }
+
+    /**
+     * Send a delete schedule request to the Urban Airship API
+     *
+     * @param id the schedule id
+     * @return the http status code
+     * @throws IOException
+     */
+    public int deleteSchedule(String id)
+            throws IOException {
+        Request request = scheduleRequest(null, API_SCHEDULE_PATH, "DELETE", id);
+        return executeDeleteScheduleRequest(request).returnResponse().getStatusLine().getStatusCode();
     }
 
     /*
