@@ -4,9 +4,11 @@
 
 package com.urbanairship.api.client;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 import com.urbanairship.api.push.model.PushPayload;
+import com.urbanairship.api.schedule.model.ListSchedulePayload;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 
 import org.apache.commons.lang.StringUtils;
@@ -151,6 +153,44 @@ public class APIClient {
                 .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
     }
 
+    /*
+     */
+    private Request listSchedulesRequest(ListSchedulePayload listSchedulePayload,
+                                         @SuppressWarnings("SameParameterValue") String path,
+                                         @SuppressWarnings("SameParameterValue") String httpMethod) {
+        Optional<Integer> limit = listSchedulePayload.getLimit();
+        Optional<String> start = listSchedulePayload.getStart();
+
+        StringBuilder sb = new StringBuilder();
+        if (limit.isPresent() || start.isPresent()) {
+            sb.append("?");
+            if (limit.isPresent()) {
+                sb.append("limit=" + limit.get() + "&");
+            }
+            if (start.isPresent()) {
+                sb.append("start=" + start.get());
+            }
+        }
+
+        URI uri = baseURI.resolve(path + sb.toString());
+        Request request;
+
+        if (httpMethod.equals("GET")){
+            request = Request.Get(uri);
+        }
+        else {
+            throw new
+                    IllegalArgumentException(
+                    String.format("Schedule requests support POST/GET/DELETE/PUT " +
+                            "HTTP %s Method passed", httpMethod));
+        }
+        return request.config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
+                .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
+                .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
+
+    }
+
+
 //    /*
 //    Append the id to the path, pass to base schedule method
 //     */
@@ -226,6 +266,31 @@ public class APIClient {
             throws IOException {
         Request request = scheduleRequest(payload, API_SCHEDULE_PATH, "POST");
         return executeScheduleRequest(request);
+    }
+
+    /*
+    Execute the request and log errors.
+     */
+    private APIClientResponse<APIListSchedulesResponse> executeListSchedulesRequest(Request request)
+            throws IOException{
+        Executor executor = Executor.newInstance()
+                .auth(uaHost, appKey, appSecret)
+                .authPreemptive(uaHost);
+        logger.debug(String.format("Executing list schedules request %s", request));
+        return executor.execute(request).handleResponse(new ListSchedulesAPIResponseHandler());
+    }
+
+    /**
+     * Send a list schedules request to the Urban Airship API with the parameters setup in the ScheduleListPayload.
+     *
+     * @param listSchedulePayload ScheduleListPayload for specifying start id and pagination
+     * @return APIClientResponse <<T>APIScheduleListResponse</T> response for this request.
+     * @throws IOException
+     */
+    public APIClientResponse<APIListSchedulesResponse> listSchedules(ListSchedulePayload listSchedulePayload)
+            throws IOException {
+        Request request = listSchedulesRequest(listSchedulePayload, API_SCHEDULE_PATH, "GET");
+        return executeListSchedulesRequest(request);
     }
 
     /*
