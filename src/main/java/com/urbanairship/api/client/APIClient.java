@@ -6,6 +6,7 @@ package com.urbanairship.api.client;
 
 import com.google.common.base.Preconditions;
 
+import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 
@@ -249,14 +250,28 @@ public class APIClient {
     }
 
     /*
-    Execute the list schedule request and log errors.
+    Execute the list all schedules request and log errors.
      */
-    private APIClientResponse<APIListScheduleResponse> executeListScheduleRequest(Request request) throws IOException {
+    private APIClientResponse<APIListAllSchedulesResponse> executeListAllSchedulesRequest(Request request) throws IOException {
         Executor executor = Executor.newInstance()
                                     .auth(uaHost, appKey, appSecret)
                                     .authPreemptive(uaHost);
         if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing list schedule request %s", request));
+            logger.debug(String.format("Executing list all schedules request %s", request));
+        }
+
+        return executor.execute(request).handleResponse(new ListAllSchedulesAPIResponseHandler());
+    }
+
+    /*
+    Execute the list specific schedule request and log errors.
+    */
+    private APIClientResponse<SchedulePayload> executeListScheduleRequest(Request request) throws IOException {
+        Executor executor = Executor.newInstance()
+                .auth(uaHost, appKey, appSecret)
+                .authPreemptive(uaHost);
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list specific schedule request %s", request));
         }
 
         return executor.execute(request).handleResponse(new ListScheduleAPIResponseHandler());
@@ -291,26 +306,59 @@ public class APIClient {
     }
 
     /**
-     * Send a list schedule request to the Urban Airship API.
+     * Send a list all schedules request to the Urban Airship API.
      *
-     * @return APIClientResponse <<T>APIListScheduleResponse</T>>
+     * @return APIClientResponse <<T>APIListAllSchedulesResponse</T>>
      * @throws IOException
      */
-    public APIClientResponse<APIListScheduleResponse> listSchedules() throws IOException {
+    public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules() throws IOException {
         Request request = scheduleRequest(null, API_SCHEDULE_PATH, GET);
-        return executeListScheduleRequest(request);
+        return executeListAllSchedulesRequest(request);
     }
 
-    public APIClientResponse<APIListScheduleResponse> listSchedules(String start, int limit, String order) throws IOException {
+    public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules(String start, int limit, String order) throws IOException {
         String path = "/api/schedules" + "?" + "start=" + start + "&limit=" + limit +"&order=" + order;
         Request request = scheduleRequest(null, path, GET);
+        return executeListAllSchedulesRequest(request);
+    }
+
+    public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules(String next_page) throws IOException, URISyntaxException {
+        URI np = new URI(next_page);
+        Request request = scheduleRequest(null, np.getPath() + "?" + np.getQuery(), GET);
+        return executeListAllSchedulesRequest(request);
+    }
+
+    /**
+     * Send a list a specific schedule request to the Urban Airship API.
+     *
+     * @return APIClientResponse <<T>SchedulePayload</T>>
+     * @throws IOException
+     */
+    public APIClientResponse<SchedulePayload> listSchedule(String id) throws IOException {
+        Request request = scheduleRequest(null, API_SCHEDULE_PATH + id, GET);
         return executeListScheduleRequest(request);
     }
 
-    public APIClientResponse<APIListScheduleResponse> listSchedules(String next_page) throws IOException, URISyntaxException {
-        URI np = new URI(next_page);
-        Request request = scheduleRequest(null, np.getPath() + "?" + np.getQuery(), GET);
-        return executeListScheduleRequest(request);
+    /**
+     * Send a update schedule request to the Urban Airship API.
+     *
+     * @return APIClientResponse <<T>APIScheduleResponse</T>>
+     * @throws IOException
+     */
+    public APIClientResponse<APIScheduleResponse> updateSchedule(SchedulePayload payload, String id) throws IOException {
+        Request request = scheduleRequest(payload, API_SCHEDULE_PATH + id, PUT);
+        return executeScheduleRequest(request);
+    }
+
+    /**
+     * Send a delete schedule request to the Urban Airship API.
+     *
+     * @return HttpResponse
+     * @throws IOException
+     */
+    public HttpResponse deleteSchedule(String id) throws IOException {
+        Request request = scheduleRequest(null, API_SCHEDULE_PATH + id, DELETE);
+        return executeStandardRequest(request);
     }
 
     /**
@@ -340,7 +388,7 @@ public class APIClient {
         return executeStandardRequest(request);
     }
 
-    public HttpResponse batchModificationofTags(BatchModificationPayload payload) throws IOException {
+    public HttpResponse batchModificationOfTags(BatchModificationPayload payload) throws IOException {
         Preconditions.checkNotNull(payload, "Payload is required when performing batch modification of tags");
         Request request = tagBatchRequest(payload, API_TAGS_BATCH_PATH);
         return executeStandardRequest(request);

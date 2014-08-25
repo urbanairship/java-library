@@ -1,7 +1,7 @@
 package com.urbanairship.api.client;
 
 import com.urbanairship.api.client.model.APIClientResponse;
-import com.urbanairship.api.client.model.APIPushResponse;
+import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.entity.InputStreamEntity;
@@ -16,8 +16,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 
-
-public class PushAPIResponseHandlerTest {
+public class ListAllSchedulesAPIResponseHandlerTest {
 
     /* Header keys, values */
     public final static String CONTENT_TYPE_KEY = "Content-type";
@@ -26,96 +25,73 @@ public class PushAPIResponseHandlerTest {
     public final static String UA_JSON_RESPONSE =
             "application/vnd.urbanairship+json; version=3; charset=utf8;";
 
-    /* Test that a successful server response produces and APIPushResponse
-    that has been built correctly, and that the HttpResponse has been correctly
-    retained
-     */
     @Test
     public void testHandleSuccess(){
-        String pushJSON = "{\n" +
-                "    \"ok\" : true,\n" +
-                "    \"operation_id\" : \"df6a6b50\",\n" +
-                "    \"push_ids\": [\n" +
-                "        \"id1\",\n" +
-                "        \"id2\"\n" +
-                "    ]\n" +
-                "}";
+
+        String listscheduleresponse = "{\"ok\":true,\"count\":5,\"total_count\":6,\"schedules\":" +
+                "[{\"url\":\"https://go.urbanairship.com/api/schedules/5a60e0a6-9aa7-449f-a038-6806e572baf3\",\"" +
+                "schedule\":{\"scheduled_time\":\"2015-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device" +
+                "_types\":[\"android\",\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2015!\",\"android\"" +
+                ":{},\"ios\":{}}},\"push_ids\":[\"8430f2e0-ec07-4c1e-adc4-0c7c7978e648\"]},{\"url\":\"https://go" +
+                ".urbanairship.com/api/schedules/f53aa2bd-018a-4482-8d7d-691d13407973\",\"schedule\":{\"schedule" +
+                "d_time\":\"2016-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device_types\":[\"android\"," +
+                "\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2016!\",\"android\":{},\"ios\":{}}},\"pus" +
+                "h_ids\":[\"b217a321-922f-4aee-b239-ca1b58c6b652\"]}]}";
+
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP",1,1), 200, "OK"));
         InputStreamEntity inputStreamEntity = new InputStreamEntity(
-                new ByteArrayInputStream(pushJSON.getBytes()),
-                pushJSON.getBytes().length);
+                new ByteArrayInputStream(listscheduleresponse.getBytes()),
+                listscheduleresponse.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
-        PushAPIResponseHandler handler = new PushAPIResponseHandler();
-        try{
-            APIClientResponse<APIPushResponse> response =
-                handler.handleResponse(httpResponse);
-            assertTrue("HttpResponse incorrect",
-                       httpResponse.equals(response.getHttpResponse()));
-            String operationId = response.getApiResponse().getOperationId().get();
-            assertTrue("APIPushResponse incorrectly configured",
-                       "df6a6b50".equals(operationId));
+        ListAllSchedulesAPIResponseHandler handler = new ListAllSchedulesAPIResponseHandler();
 
+        try {
+            APIClientResponse<APIListAllSchedulesResponse> response =
+                    handler.handleResponse(httpResponse);
+            assertTrue("Count incorrect",
+                    response.getApiResponse().getCount() == 5);
+            assertTrue(httpResponse.getStatusLine().toString().equals("HTTP/1.1 200 OK"));
         }
         catch (Exception ex){
-            fail("Failed with exception " + ex.getMessage());
+            fail("Exception " + ex);
         }
+
     }
 
-    /*
-    Test that a failed message generates the proper exception, with the
-    appropriate data. The APIError, APIErrorDetails, and Location objects
-    are tested in their respective test classes, this test only verifies
-    that they were properly setup during the process of building the
-    exception
-     */
     @Test
     public void testAPIV3Error(){
-
-        /* Build a BasicHttpResponse */
-        String pushJSON = "{\"ok\" : false,\"operation_id\" : \"OpID\"," +
+        String errorJson = "{\"ok\" : false,\"operation_id\" : \"OpID\"," +
                 "\"error\" : \"Could not parse request body\"," +
                 "\"error_code\" : 40000," +
                 "\"details\" : {\"error\" : \"Unexpected token '#'\"," +
                 "\"location\" : {\"line\" : 10,\"column\" : 3}}}";
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-                new ProtocolVersion("HTTP",1,1), 400, "Unauthorized"));
+                new ProtocolVersion("HTTP",1,1), 400, "Bad Request"));
         InputStreamEntity inputStreamEntity = new InputStreamEntity(
-                new ByteArrayInputStream(pushJSON.getBytes()),
-                pushJSON.getBytes().length);
+                new ByteArrayInputStream(errorJson.getBytes()),
+                errorJson.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
-        httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY, UA_JSON_RESPONSE));
+        httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
+                UA_JSON_RESPONSE));
 
-        /* Test handling */
-        PushAPIResponseHandler handler = new PushAPIResponseHandler();
+        ListAllSchedulesAPIResponseHandler handler = new ListAllSchedulesAPIResponseHandler();
+
         try{
             handler.handleResponse(httpResponse);
         }
         catch (APIRequestException ex){
-            System.out.println("Exception " + ex.getMessage());
-            APIError error = ex.getError().get();
-            System.out.println("Error " + error);
-            assertTrue("Operation ID is incorrect",
-                       error.getOperationId().get().equals("OpID"));
-            assertTrue("Error code is incorrect",
-                       error.getErrorCode().get().equals(40000));
-            APIErrorDetails details = error.getDetails().get();
-            APIErrorDetails.Location errorLocation = details.getLocation().get();
-            assertTrue("Location not setup properly",
-                       errorLocation.getLine().equals(10));
+            APIErrorDetails details = ex.getError().get().getDetails().get();
+            assertTrue("Incorrect error details", details.getError().equals("Unexpected token '#'"));
+            assertTrue("HttpResponse set incorrectly", ex.getHttpResponse().equals(httpResponse));
+            return;
         }
-
         catch (Exception ex){
-            fail("Failed with incorrect exception " + ex.getMessage());
+            fail("Incorrect exception thrown " + ex);
         }
-
+        fail("Test should have succeeded by now");
     }
 
-    /*
-    Test for error where the default JSON error message is returned instead
-    of the v3 error message is returned. Default message json is in the form
-    {"message":"description"}
-     */
     @Test
     public void testDeprecatedJSONError(){
         /* Build a BasicHttpResponse */
@@ -127,7 +103,8 @@ public class PushAPIResponseHandlerTest {
                 pushJSON.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_JSON));
-        PushAPIResponseHandler handler = new PushAPIResponseHandler();
+
+        ListAllSchedulesAPIResponseHandler handler = new ListAllSchedulesAPIResponseHandler();
 
         try {
             handler.handleResponse(httpResponse);
@@ -145,12 +122,12 @@ public class PushAPIResponseHandlerTest {
         fail("Test should have succeeded by now");
     }
 
-    /*
-    Test the deprecated API response where only a string is returned.
+    /**
+     Test the deprecated API response where only a string is returned.
      */
     @Test
     public void testDeprecatedStringError(){
-        /* Build a BasicHttpResponse */
+        // Build a BasicHttpResponse
         String errorString = "Unauthorized";
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP",1,1), 400, "Unauthorized"));
@@ -159,9 +136,9 @@ public class PushAPIResponseHandlerTest {
                 errorString.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
-                                               CONTENT_TYPE_TEXT_HTML));
+                CONTENT_TYPE_TEXT_HTML));
 
-        PushAPIResponseHandler handler = new PushAPIResponseHandler();
+        ListAllSchedulesAPIResponseHandler handler = new ListAllSchedulesAPIResponseHandler();
 
         try{
             handler.handleResponse(httpResponse);
@@ -169,7 +146,7 @@ public class PushAPIResponseHandlerTest {
         catch (APIRequestException ex){
             APIError error = ex.getError().get();
             assertTrue("String error message is incorrect",
-                       error.getError().equals("Unauthorized"));
+                    error.getError().equals("Unauthorized"));
             return;
         }
         catch (Exception ex){

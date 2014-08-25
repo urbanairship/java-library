@@ -1,6 +1,6 @@
 package com.urbanairship.api.client;
 
-import com.google.common.collect.ImmutableList;
+import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushPayload;
@@ -47,7 +47,7 @@ public class APIClientResponseTest {
     }
 
     @Test
-    public void testAPIListScheduleResponse(){
+    public void testAPIListAllSchedulesResponse(){
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP",1,1), 200, "OK"));
 
@@ -66,7 +66,7 @@ public class APIClientResponseTest {
                                         .setUrl("http://sample.com/")
                                         .build();
 
-        APIListScheduleResponse listScheduleResponse = APIListScheduleResponse.newBuilder()
+        APIListAllSchedulesResponse listScheduleResponse = APIListAllSchedulesResponse.newBuilder()
                 .setCount(5)
                 .setTotalCount(6)
                 .addSchedule(SchedulePayload.newBuilder()
@@ -81,11 +81,11 @@ public class APIClientResponseTest {
                         .build())
                 .build();
 
-        APIClientResponse.Builder<APIListScheduleResponse> builder =
-                APIClientResponse.newListScheduleResponseBuilder()
+        APIClientResponse.Builder<APIListAllSchedulesResponse> builder =
+                APIClientResponse.newListAllSchedulesResponseBuilder()
                         .setApiResponse(listScheduleResponse)
                         .setHttpResponse(httpResponse);
-        APIClientResponse<APIListScheduleResponse> testResponse = builder.build();
+        APIClientResponse<APIListAllSchedulesResponse> testResponse = builder.build();
         assertTrue("HTTP response not set properly",
                 testResponse.getHttpResponse().equals(httpResponse));
 

@@ -2,6 +2,7 @@ package com.urbanairship.api.client;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
+import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.push.model.*;
 import com.urbanairship.api.push.model.audience.Selectors;
@@ -145,7 +146,7 @@ public class APIClientTest {
     }
 
     @Test
-    public void testListSchedules() {
+    public void testListAllSchedules() {
         // Setup a client and a schedule payload
         APIClient client = APIClient.newBuilder()
                 .setBaseURI("http://localhost:8080")
@@ -171,7 +172,7 @@ public class APIClientTest {
                                             .withStatus(201)));
 
         try {
-            APIClientResponse<APIListScheduleResponse> response = client.listSchedules();
+            APIClientResponse<APIListAllSchedulesResponse> response = client.listAllSchedules();
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/schedules/"))
@@ -195,7 +196,46 @@ public class APIClientTest {
     }
 
     @Test
-    public void testListSchedulesWithParameters() {
+    public void testListSpecificSchedule() {
+        // Setup a client and a schedule payload
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        // Setup a stubbed response for the server
+        String listscheduleresponse = "{\"schedule\":{\"scheduled_time\":\"2015-08-07T22:10:44\"},\"name\":\"Special Scheduled Push 20\",\"push\":{\"audience\":\"ALL\",\"device_types\":\"all\",\"notification\":{\"alert\":\"Scheduled Push 20\"}},\"push_ids\":[\"274f9aa4-2d00-4911-a043-70129f29adf2\"]}";
+
+        stubFor(get(urlEqualTo("/api/schedules/ee0dd92c-de3b-46dc-9937-c9dcaef0170f"))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withBody(listscheduleresponse)
+                        .withStatus(201)));
+
+        try {
+            APIClientResponse<SchedulePayload> response = client.listSchedule("ee0dd92c-de3b-46dc-9937-c9dcaef0170f");
+
+            // Verify components of the underlying HttpRequest
+            verify(getRequestedFor(urlEqualTo("/api/schedules/ee0dd92c-de3b-46dc-9937-c9dcaef0170f"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+            List<LoggedRequest> requests = findAll(getRequestedFor(
+                    urlEqualTo("/api/schedules/ee0dd92c-de3b-46dc-9937-c9dcaef0170f")));
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+            assertNotNull(response.getApiResponse());
+            assertNotNull(response.getHttpResponse());
+        }
+        catch (Exception ex){
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testListAllSchedulesWithParameters() {
         // Setup a client and a schedule payload
         APIClient client = APIClient.newBuilder()
                 .setBaseURI("http://localhost:8080")
@@ -221,7 +261,7 @@ public class APIClientTest {
                         .withStatus(201)));
 
         try {
-            APIClientResponse<APIListScheduleResponse> response = client.listSchedules("643a297a-7313-45f0-853f-e68785e54c77", 25, "asc");
+            APIClientResponse<APIListAllSchedulesResponse> response = client.listAllSchedules("643a297a-7313-45f0-853f-e68785e54c77", 25, "asc");
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/schedules?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"))
@@ -245,7 +285,7 @@ public class APIClientTest {
     }
 
     @Test
-    public void testListSchedulesNextPage() {
+    public void testListAllSchedulesNextPage() {
         // Setup a client and a schedule payload
         APIClient client = APIClient.newBuilder()
                 .setBaseURI("http://localhost:8080")
@@ -271,7 +311,7 @@ public class APIClientTest {
                         .withStatus(201)));
 
         try {
-            APIClientResponse<APIListScheduleResponse> response = client.listSchedules("https://go.urbanairship.com/api/schedules?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc");
+            APIClientResponse<APIListAllSchedulesResponse> response = client.listAllSchedules("https://go.urbanairship.com/api/schedules?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc");
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/schedules?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"))
@@ -363,6 +403,94 @@ public class APIClientTest {
         }
         catch (Exception ex){
             fail("Exception " + ex);
+        }
+    }
+
+    @Test
+    public void testUpdateSchedule() {
+
+        // Setup a client and a schedule payload
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        PushPayload pushPayload = PushPayload.newBuilder()
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setNotification(Notifications.alert("Foo"))
+                .build();
+
+        DateTime dateTime = DateTime.now(DateTimeZone.UTC).plusSeconds(60);
+        Schedule schedule = Schedule.newBuilder()
+                .setScheduledTimestamp(dateTime)
+                .build();
+
+        SchedulePayload schedulePayload = SchedulePayload.newBuilder()
+                .setName("Test")
+                .setPushPayload(pushPayload)
+                .setSchedule(schedule)
+                .build();
+
+        // Stub out endpoint
+        // Setup a stubbed response for the server
+        String responseJson = "{\"ok\" : true,\"operation_id\" : \"OpID\" }";
+        stubFor(put(urlEqualTo("/api/schedules/id"))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, APP_JSON)
+                        .withBody(responseJson)
+                        .withStatus(201)));
+
+        try {
+            APIClientResponse<APIScheduleResponse> response = client.updateSchedule(schedulePayload, "id");
+
+            // Verify components of the underlying request
+            verify(putRequestedFor(urlEqualTo("/api/schedules/id"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+            List<LoggedRequest> requests = findAll(putRequestedFor(urlEqualTo("/api/schedules/id")));
+            assertEquals(requests.size(), 1);
+
+            assertNotNull(response);
+            assertNotNull(response.getApiResponse());
+            assertNotNull(response.getHttpResponse());
+
+        }
+        catch (Exception ex){
+            fail("Exception " + ex);
+        }
+    }
+
+    @Test
+    public void testDeleteSpecificSchedule(){
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        stubFor(delete(urlEqualTo("/api/schedules/puppies"))
+                .willReturn(aResponse()
+                        .withStatus(204)));
+
+        try {
+            HttpResponse response = client.deleteSchedule("puppies");
+
+            // Verify components of the underlying HttpRequest
+            verify(deleteRequestedFor(urlEqualTo("/api/schedules/puppies"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+            List<LoggedRequest> requests = findAll(deleteRequestedFor(
+                    urlEqualTo("/api/schedules/puppies")));
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+            assertEquals(204, response.getStatusLine().getStatusCode());
+        }
+        catch (Exception ex){
+            fail("Exception thrown " + ex);
         }
     }
 //
@@ -559,7 +687,7 @@ public class APIClientTest {
                         .withStatus(200)));
 
         try {
-            HttpResponse response = client.batchModificationofTags(BatchModificationPayload.newBuilder()
+            HttpResponse response = client.batchModificationOfTags(BatchModificationPayload.newBuilder()
                     .addBatchObject(BatchTagSet.newBuilder()
                             .setDevice(BatchTagSet.DEVICEIDTYPES.APID, "device1")
                             .addTag("tag1")

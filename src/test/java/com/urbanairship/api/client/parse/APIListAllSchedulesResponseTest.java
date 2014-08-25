@@ -1,6 +1,6 @@
 package com.urbanairship.api.client.parse;
 
-import com.urbanairship.api.client.APIListScheduleResponse;
+import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.schedule.model.Schedule;
@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 
-public class APIListScheduleResponseTest {
+public class APIListAllSchedulesResponseTest {
 
     @Test
     public void testAPIScheduleResponse(){
@@ -32,7 +32,7 @@ public class APIListScheduleResponseTest {
         ObjectMapper mapper = APIResponseObjectMapper.getInstance();
 
         try{
-            APIListScheduleResponse response = mapper.readValue(listscheduleresponse, APIListScheduleResponse.class);
+            APIListAllSchedulesResponse response = mapper.readValue(listscheduleresponse, APIListAllSchedulesResponse.class);
             assertTrue(response.getCount() == 5);
             assertTrue(response.getTotal_Count() == 6);
             assertTrue(response.getNext_Page() == null);
@@ -85,7 +85,7 @@ public class APIListScheduleResponseTest {
         ObjectMapper mapper = APIResponseObjectMapper.getInstance();
 
         try{
-            APIListScheduleResponse response = mapper.readValue(listscheduleresponse, APIListScheduleResponse.class);
+            APIListAllSchedulesResponse response = mapper.readValue(listscheduleresponse, APIListAllSchedulesResponse.class);
             assertTrue(response.getCount() == 5);
             assertTrue(response.getTotal_Count() == 6);
             assertTrue(response.getNext_Page().equals("puppies"));
