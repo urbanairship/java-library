@@ -18,11 +18,11 @@ public class SetOfAPIDsDeserializer {
 
     private SetOfAPIDsDeserializer() { }
 
-    public Set<String> deserialize(JsonParser parser, String fieldName) {
+    public Set<String> deserialize(JsonParser parser, String fieldName) throws IOException {
         Set<String> apids = SetOfStringsDeserializer.INSTANCE.deserialize(parser, fieldName);
         for (String apid : apids) {
             if (apid.length() < UUID_STRING_LENGTH) {
-               throw new APIParsingException(String.format(APID_FORMAT_ERROR_MESSAGE, apid));
+                APIParsingException.raise(String.format(APID_FORMAT_ERROR_MESSAGE, apid), parser);
             }
         }
         return apids;

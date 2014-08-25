@@ -114,8 +114,8 @@ public class Schedule extends PushModelObject {
          * @return Schedule
          */
         public Schedule build() {
-           Preconditions.checkArgument((scheduledTimestamp != null),"" +
-                "Either scheduled_time or local_scheduled_time must be set.");
+            Preconditions.checkArgument((scheduledTimestamp != null),"" +
+                    "Either scheduled_time or local_scheduled_time must be set.");
 
             return new Schedule(scheduledTimestamp, localTimePresent);
         }

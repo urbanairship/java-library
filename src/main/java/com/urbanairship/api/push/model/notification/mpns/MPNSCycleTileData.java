@@ -109,15 +109,13 @@ public class MPNSCycleTileData extends MPNSTileData
         }
 
         public Builder addImage(String value) {
-            if (imagesBuilder == null)
-                imagesBuilder = ImmutableList.builder();
+            if (imagesBuilder == null) { imagesBuilder = ImmutableList.builder(); }
             this.imagesBuilder.add(value);
             return this;
         }
 
         public Builder addAllImages(Iterable<String> values) {
-            if (imagesBuilder == null)
-                imagesBuilder = ImmutableList.builder();
+            if (imagesBuilder == null) { imagesBuilder = ImmutableList.builder(); }
             this.imagesBuilder.addAll(values);
             return this;
         }

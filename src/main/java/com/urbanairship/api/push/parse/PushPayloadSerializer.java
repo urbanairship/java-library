@@ -4,12 +4,12 @@
 
 package com.urbanairship.api.push.parse;
 
-        import com.urbanairship.api.push.model.PushPayload;
-        import org.codehaus.jackson.JsonGenerator;
-        import org.codehaus.jackson.map.JsonSerializer;
-        import org.codehaus.jackson.map.SerializerProvider;
+import com.urbanairship.api.push.model.PushPayload;
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.map.JsonSerializer;
+import org.codehaus.jackson.map.SerializerProvider;
 
-        import java.io.IOException;
+import java.io.IOException;
 
 public class PushPayloadSerializer extends JsonSerializer<PushPayload> {
 

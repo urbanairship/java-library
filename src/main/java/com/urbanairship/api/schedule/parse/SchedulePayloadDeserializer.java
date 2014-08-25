@@ -17,26 +17,38 @@ import java.io.IOException;
 public class SchedulePayloadDeserializer extends JsonDeserializer<SchedulePayload> {
 
     private static final FieldParserRegistry<SchedulePayload, SchedulePayloadReader> FIELD_PARSERS = new MapFieldParserRegistry<SchedulePayload, SchedulePayloadReader>(
-        ImmutableMap.<String, FieldParser<SchedulePayloadReader>>builder()
-            .put("schedule", new FieldParser<SchedulePayloadReader>() {
-                @Override
-                public void parse(SchedulePayloadReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readSchedule(jsonParser);
-                }
-            })
-            .put("name", new FieldParser<SchedulePayloadReader>() {
-                @Override
-                public void parse(SchedulePayloadReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readName(jsonParser);
-                }
-                })
-            .put("push", new FieldParser<SchedulePayloadReader>() {
-                @Override
-                public void parse(SchedulePayloadReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readPushPayload(jsonParser);
-                }
-            })
-            .build()
+            ImmutableMap.<String, FieldParser<SchedulePayloadReader>>builder()
+                    .put("schedule", new FieldParser<SchedulePayloadReader>() {
+                        @Override
+                        public void parse(SchedulePayloadReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readSchedule(jsonParser);
+                        }
+                    })
+                    .put("url", new FieldParser<SchedulePayloadReader>() {
+                        @Override
+                        public void parse(SchedulePayloadReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readUrl(jsonParser);
+                        }
+                    })
+                    .put("name", new FieldParser<SchedulePayloadReader>() {
+                        @Override
+                        public void parse(SchedulePayloadReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readName(jsonParser);
+                        }
+                    })
+                    .put("push", new FieldParser<SchedulePayloadReader>() {
+                        @Override
+                        public void parse(SchedulePayloadReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readPushPayload(jsonParser);
+                        }
+                    })
+                    .put("push_ids", new FieldParser<SchedulePayloadReader>() {
+                        @Override
+                        public void parse(SchedulePayloadReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readPushIds(jsonParser);
+                        }
+                    })
+                    .build()
     );
 
     public static final SchedulePayloadDeserializer INSTANCE = new SchedulePayloadDeserializer();
@@ -45,13 +57,13 @@ public class SchedulePayloadDeserializer extends JsonDeserializer<SchedulePayloa
 
     public SchedulePayloadDeserializer() {
         deserializer = new StandardObjectDeserializer<SchedulePayload, SchedulePayloadReader>(
-            FIELD_PARSERS,
-            new Supplier<SchedulePayloadReader>() {
-                @Override
-                public SchedulePayloadReader get() {
-                    return new SchedulePayloadReader();
+                FIELD_PARSERS,
+                new Supplier<SchedulePayloadReader>() {
+                    @Override
+                    public SchedulePayloadReader get() {
+                        return new SchedulePayloadReader();
+                    }
                 }
-            }
         );
     }
 
@@ -60,7 +72,7 @@ public class SchedulePayloadDeserializer extends JsonDeserializer<SchedulePayloa
         try {
             return deserializer.deserialize(parser, deserializationContext);
         } catch (Exception e) {
-            throw new APIParsingException(e.getMessage());
+            throw APIParsingException.raise(String.format("Error parsing schedule object. %s", e.getMessage()), parser);
         }
     }
 }

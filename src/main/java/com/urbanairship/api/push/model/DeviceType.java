@@ -13,7 +13,16 @@ public enum DeviceType {
     WNS("wns"),
     MPNS("mpns"),
     ANDROID("android"),
-    BLACKBERRY("blackberry");
+    BLACKBERRY("blackberry"),
+    AMAZON("amazon");
+
+    public static DeviceType first() {
+        return IOS;
+    }
+
+    public static DeviceType last() {
+        return AMAZON;
+    }
 
     private final String identifier;
 

@@ -3,8 +3,9 @@
  * Copyright 2013 Urban Airship and Contributors
  */
 
-package com.urbanairship.api.client;
+package com.urbanairship.api.client.model;
 
+import com.urbanairship.api.schedule.model.SchedulePayload;
 import org.apache.http.HttpResponse;
 
 /**
@@ -40,6 +41,29 @@ public class APIClientResponse<T> {
         return new Builder<APIScheduleResponse>();
     }
 
+    /**
+     * Return a Builder for an APIListAllSchedulesResponse
+     * @return Builder
+     */
+    public static Builder<APIListAllSchedulesResponse> newListAllSchedulesResponseBuilder(){
+        return new Builder<APIListAllSchedulesResponse>();
+    }
+
+    /**
+     * Return a Builder for an SchedulePayload
+     * @return Builder
+     */
+    public static Builder<SchedulePayload> newSchedulePayloadBuilder(){
+        return new Builder<SchedulePayload>();
+    }
+
+    /**
+     * Return a Builder for an APIListTagsResponse
+     * @return Builder
+     */
+    public static Builder<APIListTagsResponse> newListTagsResponseBuilder(){
+        return new Builder<APIListTagsResponse>();
+    }
 
     /**
      * Return the HTTP request object used for the request.

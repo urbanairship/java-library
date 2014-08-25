@@ -1,5 +1,7 @@
 package com.urbanairship.api.client;
 
+import com.urbanairship.api.client.model.APIClientResponse;
+import com.urbanairship.api.client.model.APIPushResponse;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.entity.InputStreamEntity;

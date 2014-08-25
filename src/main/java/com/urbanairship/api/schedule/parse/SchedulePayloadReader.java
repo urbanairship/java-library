@@ -10,8 +10,10 @@ import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.type.TypeReference;
 
 import java.io.IOException;
+import java.util.List;
 
 public class SchedulePayloadReader implements JsonObjectReader<SchedulePayload> {
 
@@ -25,12 +27,20 @@ public class SchedulePayloadReader implements JsonObjectReader<SchedulePayload> 
         builder.setSchedule(jsonParser.readValueAs(Schedule.class));
     }
 
+    public void readUrl(JsonParser jsonParser) throws IOException {
+        builder.setUrl(jsonParser.readValueAs(String.class));
+    }
+
     public void readName(JsonParser jsonParser) throws IOException {
         builder.setName(jsonParser.readValueAs(String.class));
     }
 
     public void readPushPayload(JsonParser parser) throws IOException {
         builder.setPushPayload(parser.readValueAs(PushPayload.class));
+    }
+
+    public void readPushIds(JsonParser parser) throws IOException {
+        builder.addAllPushIds( (List<String>) parser.readValueAs(new TypeReference<List<String>>() { }));
     }
 
     @Override

@@ -4,11 +4,14 @@
 
 package com.urbanairship.api.push.parse;
 
+import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.CommonObjectMapper;
 import com.urbanairship.api.push.model.*;
+import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.location.LocationSelector;
+import com.urbanairship.api.push.model.audience.location.DateRange;
 import com.urbanairship.api.push.model.audience.location.AbsoluteDateRange;
 import com.urbanairship.api.push.model.audience.location.RecentDateRange;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
@@ -26,10 +29,16 @@ import com.urbanairship.api.push.model.notification.wns.WNSToastData;
 import com.urbanairship.api.push.model.notification.mpns.MPNSDevicePayload;
 import com.urbanairship.api.push.model.notification.mpns.MPNSPush;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
+import com.urbanairship.api.push.parse.notification.android.AndroidDevicePayloadDeserializer;
 import com.urbanairship.api.push.parse.notification.android.AndroidDevicePayloadSerializer;
+import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
+import com.urbanairship.api.push.parse.notification.adm.ADMDevicePayloadDeserializer;
+import com.urbanairship.api.push.parse.notification.adm.ADMDevicePayloadSerializer;
 import com.urbanairship.api.push.model.notification.blackberry.BlackberryDevicePayload;
+import com.urbanairship.api.push.parse.notification.blackberry.BlackberryDevicePayloadDeserializer;
 import com.urbanairship.api.push.parse.notification.blackberry.BlackberryDevicePayloadSerializer;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
+import com.urbanairship.api.push.parse.notification.richpush.RichPushMessageDeserializer;
 import com.urbanairship.api.push.parse.notification.richpush.RichPushMessageSerializer;
 import com.urbanairship.api.push.parse.notification.ios.*;
 import com.urbanairship.api.push.parse.notification.wns.*;
@@ -39,7 +48,12 @@ import com.urbanairship.api.push.parse.audience.*;
 import com.urbanairship.api.push.parse.audience.location.*;
 import com.urbanairship.api.schedule.model.*;
 import com.urbanairship.api.schedule.parse.*;
+import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
+import com.urbanairship.api.tag.model.BatchModificationPayload;
+import com.urbanairship.api.tag.parse.AddRemoveDeviceFromTagPayloadSerializer;
+import com.urbanairship.api.tag.parse.BatchModificationPayloadSerializer;
 import org.codehaus.jackson.Version;
+import org.codehaus.jackson.map.JsonDeserializer;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.module.SimpleModule;
@@ -50,58 +64,123 @@ public class PushObjectMapper {
     private static final SimpleModule MODULE = new SimpleModule("Push API Module", new Version(1, 0, 0, null));
 
     static {
+        WNSBindingDeserializer bindingDS = new WNSBindingDeserializer();
+        WNSAudioDeserializer audioDS = new WNSAudioDeserializer();
+        WNSToastDeserializer wnsToastDS = new WNSToastDeserializer(bindingDS, audioDS);
+        WNSTileDeserializer wnsTileDS = new WNSTileDeserializer(bindingDS);
+        WNSBadgeDeserializer badgeDS = new WNSBadgeDeserializer();
+        WNSDevicePayloadDeserializer wnsPayloadDS = new WNSDevicePayloadDeserializer(wnsToastDS, wnsTileDS, badgeDS);
+        MPNSToastDeserializer mpnsToastDS = new MPNSToastDeserializer();
+        MPNSTileDeserializer mpnsTileDS = new MPNSTileDeserializer();
+        MPNSDevicePayloadDeserializer mpnsPayloadDS = new MPNSDevicePayloadDeserializer(mpnsToastDS, mpnsTileDS);
+        IOSDevicePayloadDeserializer iosPayloadDS = new IOSDevicePayloadDeserializer();
+        AndroidDevicePayloadDeserializer androidPayloadDS = new AndroidDevicePayloadDeserializer();
+        ADMDevicePayloadDeserializer admPayloadDS = new ADMDevicePayloadDeserializer();
+        BlackberryDevicePayloadDeserializer blackberryPayloadDS = new BlackberryDevicePayloadDeserializer();
+
+
+        NotificationDeserializer notificationDeserializer = new NotificationDeserializer(
+                ImmutableMap.<DeviceType, JsonDeserializer<? extends DevicePayloadOverride>>builder()
+                        .put(DeviceType.WNS, wnsPayloadDS)
+                        .put(DeviceType.MPNS, mpnsPayloadDS)
+                        .put(DeviceType.IOS, iosPayloadDS)
+                        .put(DeviceType.ANDROID, androidPayloadDS)
+                        .put(DeviceType.BLACKBERRY, blackberryPayloadDS)
+                        .put(DeviceType.AMAZON, admPayloadDS)
+                        .build());
 
         MODULE
-            .addSerializer(PushPayload.class, new PushPayloadSerializer())
-            .addSerializer(Notification.class, new NotificationSerializer())
-            .addSerializer(DeviceType.class, new DeviceTypeSerializer())
-            .addSerializer(Selector.class, new SelectorSerializer())
-            .addSerializer(LocationSelector.class, new LocationSelectorSerializer())
-            .addSerializer(AbsoluteDateRange.class, new AbsoluteDateRangeSerializer())
-            .addSerializer(RecentDateRange.class, new RecentDateRangeSerializer())
-            .addSerializer(DeviceTypeData.class, new DeviceTypeDataSerializer())
-            .addSerializer(PushOptions.class, new PushOptionsSerializer())
-            .addSerializer(PushExpiry.class, PushExpirySerializer.INSTANCE)
+                .addSerializer(PushPayload.class, new PushPayloadSerializer())
+                .addDeserializer(PushPayload.class, new PushPayloadDeserializer())
+                .addSerializer(PushOptions.class, new PushOptionsSerializer())
+                .addDeserializer(PushOptions.class, new PushOptionsDeserializer())
+                .addSerializer(Notification.class, new NotificationSerializer())
+                .addDeserializer(Notification.class, notificationDeserializer)
+                .addSerializer(DeviceType.class, new DeviceTypeSerializer())
+                .addDeserializer(DeviceType.class, new PlatformDeserializer())
+                .addSerializer(Selector.class, new SelectorSerializer())
+                .addDeserializer(Selector.class, new SelectorDeserializer())
+                .addSerializer(LocationSelector.class, new LocationSelectorSerializer())
+                .addDeserializer(LocationSelector.class, new LocationSelectorDeserializer())
+                .addSerializer(AbsoluteDateRange.class, new AbsoluteDateRangeSerializer())
+                .addDeserializer(AbsoluteDateRange.Builder.class, new AbsoluteDateRangeDeserializer())
+                .addSerializer(RecentDateRange.class, new RecentDateRangeSerializer())
+                .addDeserializer(RecentDateRange.Builder.class, new RecentDateRangeDeserializer())
+                .addSerializer(DeviceTypeData.class, new DeviceTypeDataSerializer())
+                .addDeserializer(DeviceTypeData.class, new PlatformDataDeserializer())
+                .addDeserializer(DateRange.class, new DateRangeDeserializer())
+                .addSerializer(PushExpiry.class, PushExpirySerializer.INSTANCE)
 
             /* IOS */
-            .addSerializer(IOSDevicePayload.class, new IOSDevicePayloadSerializer())
-            .addSerializer(IOSBadgeData.class, new IOSBadgeDataSerializer())
-            .addSerializer(IOSAlertData.class, new IOSAlertDataSerializer())
+                .addSerializer(IOSDevicePayload.class, new IOSDevicePayloadSerializer())
+                .addDeserializer(IOSDevicePayload.class, iosPayloadDS)
+                .addSerializer(IOSBadgeData.class, new IOSBadgeDataSerializer())
+                .addSerializer(IOSAlertData.class, new IOSAlertDataSerializer())
+                .addDeserializer(IOSAlertData.class, new IOSAlertDataDeserializer())
 
             /* WNS enums */
-            .addSerializer(WNSToastData.Duration.class, new WNSDurationSerializer())
-            .addSerializer(WNSAudioData.Sound.class, new WNSSoundSerializer())
-            .addSerializer(WNSBadgeData.Glyph.class, new WNSGlyphSerializer())
-            .addSerializer(WNSPush.CachePolicy.class, new WNSCachePolicySerializer())
+                .addSerializer(WNSToastData.Duration.class, new WNSDurationSerializer())
+                .addDeserializer(WNSToastData.Duration.class, new WNSDurationDeserializer())
+                .addSerializer(WNSAudioData.Sound.class, new WNSSoundSerializer())
+                .addDeserializer(WNSAudioData.Sound.class, new WNSSoundDeserializer())
+                .addSerializer(WNSBadgeData.Glyph.class, new WNSGlyphSerializer())
+                .addDeserializer(WNSBadgeData.Glyph.class, new WNSGlyphDeserializer())
+                .addSerializer(WNSPush.CachePolicy.class, new WNSCachePolicySerializer())
+                .addDeserializer(WNSPush.CachePolicy.class, new WNSCachePolicyDeserializer())
 
             /* WNS composite types */
-            .addSerializer(WNSDevicePayload.class, new WNSDevicePayloadSerializer())
-            .addSerializer(WNSBinding.class, new WNSBindingSerializer())
-            .addSerializer(WNSToastData.class, new WNSToastSerializer())
-            .addSerializer(WNSTileData.class, new WNSTileSerializer())
-            .addSerializer(WNSBadgeData.class, new WNSBadgeSerializer())
-            .addSerializer(WNSAudioData.class, new WNSAudioSerializer())
+                .addSerializer(WNSDevicePayload.class, new WNSDevicePayloadSerializer())
+                .addDeserializer(WNSDevicePayload.class, wnsPayloadDS)
+                .addSerializer(WNSBinding.class, new WNSBindingSerializer())
+                .addDeserializer(WNSBinding.class, bindingDS)
+                .addSerializer(WNSToastData.class, new WNSToastSerializer())
+                .addDeserializer(WNSToastData.class, wnsToastDS)
+                .addSerializer(WNSTileData.class, new WNSTileSerializer())
+                .addDeserializer(WNSTileData.class, wnsTileDS)
+                .addSerializer(WNSBadgeData.class, new WNSBadgeSerializer())
+                .addDeserializer(WNSBadgeData.class, badgeDS)
+                .addSerializer(WNSAudioData.class, new WNSAudioSerializer())
+                .addDeserializer(WNSAudioData.class, audioDS)
 
             /* MPNS Enums */
-            .addSerializer(MPNSPush.BatchingInterval.class, new MPNSBatchingIntervalSerializer())
+                .addSerializer(MPNSPush.BatchingInterval.class, new MPNSBatchingIntervalSerializer())
+                .addDeserializer(MPNSPush.BatchingInterval.class, new MPNSBatchingIntervalDeserializer())
 
             /* MPNS composite types */
-            .addSerializer(MPNSDevicePayload.class, new MPNSDevicePayloadSerializer())
-            .addSerializer(MPNSToastData.class, new MPNSToastSerializer())
-            .addSerializer(MPNSTileData.class, new MPNSTileSerializer())
+                .addSerializer(MPNSDevicePayload.class, new MPNSDevicePayloadSerializer())
+                .addDeserializer(MPNSDevicePayload.class, mpnsPayloadDS)
+                .addSerializer(MPNSToastData.class, new MPNSToastSerializer())
+                .addDeserializer(MPNSToastData.class, mpnsToastDS)
+                .addSerializer(MPNSTileData.class, new MPNSTileSerializer())
+                .addDeserializer(MPNSTileData.class, mpnsTileDS)
 
             /* Android */
-            .addSerializer(AndroidDevicePayload.class, new AndroidDevicePayloadSerializer())
+                .addSerializer(AndroidDevicePayload.class, new AndroidDevicePayloadSerializer())
+                .addDeserializer(AndroidDevicePayload.class, androidPayloadDS)
 
             /* Blackberry */
-            .addSerializer(BlackberryDevicePayload.class, new BlackberryDevicePayloadSerializer())
+                .addSerializer(BlackberryDevicePayload.class, new BlackberryDevicePayloadSerializer())
+                .addDeserializer(BlackberryDevicePayload.class, blackberryPayloadDS)
+
+            /* AMAZON */
+                .addSerializer(ADMDevicePayload.class, new ADMDevicePayloadSerializer())
+                .addDeserializer(ADMDevicePayload.class, admPayloadDS)
 
             /* Rich Push */
-            .addSerializer(RichPushMessage.class, new RichPushMessageSerializer())
+                .addSerializer(RichPushMessage.class, new RichPushMessageSerializer())
+                .addDeserializer(RichPushMessage.class, new RichPushMessageDeserializer())
 
             /* Schedules */
-            .addSerializer(SchedulePayload.class, ScheduledPayloadSerializer.INSTANCE)
-            .addSerializer(Schedule.class, ScheduleSerializer.INSTANCE);
+                .addDeserializer(SchedulePayload.class, SchedulePayloadDeserializer.INSTANCE)
+                .addSerializer(SchedulePayload.class, ScheduledPayloadSerializer.INSTANCE)
+                .addDeserializer(Schedule.class, ScheduleDeserializer.INSTANCE)
+                .addSerializer(Schedule.class, ScheduleSerializer.INSTANCE)
+                .addSerializer(ScheduleDetails.class, ScheduleDetailsSerializer.INSTANCE)
+
+            /* Tags */
+                .addSerializer(AddRemoveDeviceFromTagPayload.class, new AddRemoveDeviceFromTagPayloadSerializer())
+                .addSerializer(BatchModificationPayload.class, new BatchModificationPayloadSerializer());
+
 
 
         MAPPER.registerModule(MODULE);

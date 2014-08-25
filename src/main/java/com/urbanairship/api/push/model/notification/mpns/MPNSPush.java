@@ -126,8 +126,7 @@ public class MPNSPush
         }
 
         public Builder setBatchingInterval(BatchingInterval value) {
-            if (value != null)
-                this.interval = value;
+            if (value != null) { this.interval = value; }
             return this;
         }
 

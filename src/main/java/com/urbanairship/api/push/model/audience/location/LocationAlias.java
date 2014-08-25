@@ -23,20 +23,10 @@ public final class LocationAlias extends PushModelObject {
         this.aliasValue = aliasValue;
     }
 
-    /**
-     * Get the location value.
-     * @return alias
-     */
     public String getValue() {
         return aliasValue;
     }
 
-    /**
-     * Get the location type. Alias types are predefined locations in the
-     * API, such as "us_state", and "us_zip". See Urban Airship API documentation
-     * for details.
-     * @return alias type
-     */
     public String getType() {
         return aliasType;
     }
@@ -77,10 +67,6 @@ public final class LocationAlias extends PushModelObject {
                 '}';
     }
 
-    /**
-     * Create a new LocationAlias Builder
-     * @return Builder
-     */
     public static Builder newBuilder() {
         return new Builder();
     }
@@ -92,32 +78,16 @@ public final class LocationAlias extends PushModelObject {
 
         private Builder() { }
 
-        /**
-         * Set the value. The value of the location is related to the location
-         * type. For example, a "us_zip" could have a value of 97239
-         * @param aliasValue value appropriate for location type.
-         * @return Builder
-         */
         public Builder setValue(String aliasValue) {
             this.aliasValue = aliasValue;
             return this;
         }
 
-        /**
-         * Set the location type. Alias types are predefined locations in the
-         * API, such as "us_state", and "us_zip". See Urban Airship API documentation
-         * for details.
-         * @return alias type
-         */
         public Builder setType(String aliasType) {
             this.aliasType = aliasType;
             return this;
         }
 
-        /**
-         * Build LocationAlias
-         * @return LocationAlias
-         */
         public LocationAlias build() {
             Preconditions.checkArgument(StringUtils.isNotBlank(aliasType), "Alias type must be non empty string");
             Preconditions.checkArgument(StringUtils.isNotBlank(aliasValue), "Alias name must be non empty string");

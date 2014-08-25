@@ -5,7 +5,7 @@
 package com.urbanairship.api.push.parse.audience.location;
 
 import com.urbanairship.api.push.model.audience.location.AbsoluteDateRange;
-import com.urbanairship.api.push.model.audience.location.PresenceTimeFrame;
+import com.urbanairship.api.push.model.audience.location.PresenceTimeframe;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
@@ -15,7 +15,7 @@ public class AbsoluteDateRangeSerializer extends JsonSerializer<AbsoluteDateRang
     @Override
     public void serialize(AbsoluteDateRange range, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         jgen.writeStartObject();
-        if (range.getTimeframe() == PresenceTimeFrame.LAST_SEEN) {
+        if (range.getTimeframe() == PresenceTimeframe.LAST_SEEN) {
             jgen.writeBooleanField("last_seen", true);
         }
         jgen.writeObjectFieldStart(range.getResolution().getIdentifier());

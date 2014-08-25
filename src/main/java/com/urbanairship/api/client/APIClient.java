@@ -6,12 +6,16 @@ package com.urbanairship.api.client;
 
 import com.google.common.base.Preconditions;
 
+import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 
+import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
+import com.urbanairship.api.tag.model.BatchModificationPayload;
 import org.apache.commons.lang.StringUtils;
 
 import org.apache.http.HttpHost;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
@@ -22,6 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 /**
  * APIClient handles HTTP requests to the Urban Airship API
@@ -31,15 +36,15 @@ public class APIClient {
     /* Header keys/values */
     private final static String CONTENT_TYPE_KEY = "Content-type";
     private final static String ACCEPT_KEY = "Accept";
-    private final static String UA_APPLICATION_JSON =
-            "application/vnd.urbanairship+json;";
-
+    private final static String UA_APPLICATION_JSON = "application/vnd.urbanairship+json;";
     private final static String USER_AGENT = "UrbanAirship/version0.1beta";
 
     /* URI Paths */
     private final static String API_PUSH_PATH = "/api/push/";
     private final static String API_VALIDATE_PATH = "/api/push/validate/";
     private final static String API_SCHEDULE_PATH = "/api/schedules/";
+    private final static String API_TAGS_PATH = "/api/tags/";
+    private final static String API_TAGS_BATCH_PATH = "/api/tags/batch/";
 
     /* User auth */
     private final String appKey;
@@ -52,22 +57,18 @@ public class APIClient {
     /* HTTP */
     private final HttpHost uaHost;
     private final static String UA_HOSTNAME = "go.urbanairship.com";
+    private final static String GET = "GET";
+    private final static String POST = "POST";
+    private final static String PUT = "PUT";
+    private final static String DELETE = "DELETE";
 
-    private final static Logger logger =
-            LoggerFactory.getLogger("com.urbanairship.api");
+    private final static Logger logger = LoggerFactory.getLogger("com.urbanairship.api");
 
-    /**
-     * APIClient Builder
-     * @return Builder
-     */
     public static Builder newBuilder(){
         return new Builder();
     }
 
-    private APIClient(String appKey,
-                      String appSecret,
-                      String baseURI,
-                      Number version){
+    private APIClient(String appKey, String appSecret, String baseURI, Number version) {
         Preconditions.checkArgument(StringUtils.isNotBlank(appKey),
                                     "App key must be provided.");
         Preconditions.checkArgument(StringUtils.isNotBlank(appSecret),
@@ -77,32 +78,16 @@ public class APIClient {
         this.baseURI = URI.create(baseURI);
         this.version = version;
         this.uaHost = new HttpHost(UA_HOSTNAME, 443, "https");
-
     }
 
-    /**
-     * The application master secret associated with the application on Urban
-     * Airship.
-     * @return Application secret for this client.
-     */
-    public String getAppSecret() {
-        return appSecret;
-    }
-
-    /**
-     * The application key associated with the application on Urban Airship.
-     * @return Application key for this client.
-     */
-    public String getAppKey() {
-        return appKey;
-    }
+    public String getAppSecret() { return appSecret; }
+    public String getAppKey() { return appKey; }
 
     /*
     Add the version number to the default version header.
      */
     private String versionedAcceptHeader(Number version){
-        return String.format("%s version=%s", UA_APPLICATION_JSON,
-                             version.toString());
+        return String.format("%s version=%s", UA_APPLICATION_JSON, version.toString());
     }
 
     /*
@@ -126,51 +111,100 @@ public class APIClient {
         URI uri = baseURI.resolve(path);
         Request request;
 
-        if (httpMethod.equals("POST")){
+        if (httpMethod.equals(POST)) {
             request = Request.Post(uri);
             request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
-
-        } else if (httpMethod.equals("GET")){
+        } else if (httpMethod.equals(GET)) {
             request = Request.Get(uri);
-        }
-        else if (httpMethod.equals("PUT")){
+        } else if (httpMethod.equals(PUT)) {
             request = Request.Put(uri);
             request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
-        }
-        else if (httpMethod.equals("DELETE")){
+        } else if (httpMethod.equals(DELETE)) {
             request = Request.Delete(uri);
-        }
-        else {
+        } else {
             throw new
                     IllegalArgumentException(
                     String.format("Schedule requests support POST/GET/DELETE/PUT " +
                                           "HTTP %s Method passed", httpMethod));
         }
+
         return request.config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
                 .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
                 .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
     }
 
-//    /*
-//    Append the id to the path, pass to base schedule method
-//     */
-//    private Request scheduleRequest(SchedulePayload payload, String path,
-//                                    String httpMethod, String id){
-//        StringBuilder builder = new StringBuilder(path);
-//        builder.append(String.format("/%s/", id));
-//        throw new NotImplementedException("Schedule API not implemented yet");
-//        return scheduleRequest(payload, builder.toString(), httpMethod);
-//    }
+    /*
+    Base request for all API tag operations
+    Suppressing warnings until more of schedule API is implemented
+     */
+    private Request tagRequest(@SuppressWarnings("SameParameterValue") String path,
+                               @SuppressWarnings("SameParameterValue") String httpMethod) {
+        URI uri = baseURI.resolve(path);
+        Request request;
+
+        if (httpMethod.equals(GET)) {
+            request = Request.Get(uri);
+        } else if (httpMethod.equals(PUT)) {
+            request = Request.Put(uri);
+        } else if (httpMethod.equals(DELETE)) {
+            request = Request.Delete(uri);
+        } else {
+            throw new
+                    IllegalArgumentException(
+                    String.format("tag requests support GET/PUT/DELETE " +
+                            "HTTP %s Method passed", httpMethod));
+        }
+
+        return request.config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
+                .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
+                .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
+    }
+
+    private Request tagAddRemoveDeviceRequest(AddRemoveDeviceFromTagPayload payload, @SuppressWarnings("SameParameterValue") String path) {
+        Preconditions.checkNotNull(payload, "Payload is required when adding and/or removing devices from a tag");
+        URI uri = baseURI.resolve(path);
+        Request request = Request.Post(uri);
+        request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
+
+        return request.config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
+                .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
+    }
+
+    private Request tagBatchRequest(BatchModificationPayload payload, @SuppressWarnings("SameParameterValue") String path) {
+        Preconditions.checkNotNull(payload, "Payload is required when performing batch modification of tags");
+        URI uri = baseURI.resolve(path);
+        Request request = Request.Post(uri);
+        request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
+
+        return request.config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
+                .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
+    }
+
+    /*
+    Execute a standard request for which the expected response is HttpResponse
+     */
+    private HttpResponse executeStandardRequest(Request request) throws IOException{
+        Executor executor = Executor.newInstance()
+                .auth(uaHost, appKey, appSecret)
+                .authPreemptive(uaHost);
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing standard request %s", request));
+        }
+
+        return executor.execute(request).returnResponse();
+    }
 
     /*
     Execute the push request and log errors.
      */
-    private APIClientResponse<APIPushResponse> executePushRequest(Request request)
-            throws IOException{
+    private APIClientResponse<APIPushResponse> executePushRequest(Request request) throws IOException {
         Executor executor = Executor.newInstance()
                                     .auth(uaHost, appKey, appSecret)
                                     .authPreemptive(uaHost);
-        logger.debug(String.format("Executing push request %s", request));
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing push request %s", request));
+        }
+
         return executor.execute(request).handleResponse(new PushAPIResponseHandler());
     }
 
@@ -182,8 +216,7 @@ public class APIClient {
      * @return APIClientResponse <<T>APIPushResponse</T>> API response for this request.
      * @throws IOException
      */
-    public APIClientResponse<APIPushResponse> validate(PushPayload payload) throws
-            IOException {
+    public APIClientResponse<APIPushResponse> validate(PushPayload payload) throws IOException {
         Request request = pushRequest(payload, API_VALIDATE_PATH);
         return executePushRequest(request);
     }
@@ -197,21 +230,65 @@ public class APIClient {
      * @throws IOException
      */
     public APIClientResponse<APIPushResponse> push(PushPayload payload) throws IOException {
+        Preconditions.checkNotNull(payload, "Payload required when executing a push operation");
         Request request = pushRequest(payload, API_PUSH_PATH);
         return executePushRequest(request);
     }
 
-
     /*
     Execute the push request and log errors.
      */
-    private APIClientResponse<APIScheduleResponse> executeScheduleRequest(Request request)
-        throws IOException{
+    private APIClientResponse<APIScheduleResponse> executeScheduleRequest(Request request) throws IOException {
         Executor executor = Executor.newInstance()
                                     .auth(uaHost, appKey, appSecret)
                                     .authPreemptive(uaHost);
-        logger.debug(String.format("Executing schedule request %s", request));
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing schedule request %s", request));
+        }
+
         return executor.execute(request).handleResponse(new ScheduleAPIResponseHandler());
+    }
+
+    /*
+    Execute the list all schedules request and log errors.
+     */
+    private APIClientResponse<APIListAllSchedulesResponse> executeListAllSchedulesRequest(Request request) throws IOException {
+        Executor executor = Executor.newInstance()
+                                    .auth(uaHost, appKey, appSecret)
+                                    .authPreemptive(uaHost);
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list all schedules request %s", request));
+        }
+
+        return executor.execute(request).handleResponse(new ListAllSchedulesAPIResponseHandler());
+    }
+
+    /*
+    Execute the list specific schedule request and log errors.
+    */
+    private APIClientResponse<SchedulePayload> executeListScheduleRequest(Request request) throws IOException {
+        Executor executor = Executor.newInstance()
+                .auth(uaHost, appKey, appSecret)
+                .authPreemptive(uaHost);
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list specific schedule request %s", request));
+        }
+
+        return executor.execute(request).handleResponse(new ListScheduleAPIResponseHandler());
+    }
+
+    /*
+    Execute the list tags request and log errors.
+     */
+    private APIClientResponse<APIListTagsResponse> executeListTagsRequest(Request request) throws IOException {
+        Executor executor = Executor.newInstance()
+                .auth(uaHost, appKey, appSecret)
+                .authPreemptive(uaHost);
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list tags request %s", request));
+        }
+
+        return executor.execute(request).handleResponse(new ListTagsAPIResponseHandler());
     }
 
     /**
@@ -222,10 +299,99 @@ public class APIClient {
      * @return APIClientResponse <<T>APIScheduleResponse</T>>
      * @throws IOException
      */
-    public APIClientResponse<APIScheduleResponse> schedule(SchedulePayload payload)
-            throws IOException {
-        Request request = scheduleRequest(payload, API_SCHEDULE_PATH, "POST");
+    public APIClientResponse<APIScheduleResponse> schedule(SchedulePayload payload) throws IOException {
+        Preconditions.checkNotNull(payload, "Payload required when scheduling a push request");
+        Request request = scheduleRequest(payload, API_SCHEDULE_PATH, POST);
         return executeScheduleRequest(request);
+    }
+
+    /**
+     * Send a list all schedules request to the Urban Airship API.
+     *
+     * @return APIClientResponse <<T>APIListAllSchedulesResponse</T>>
+     * @throws IOException
+     */
+    public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules() throws IOException {
+        Request request = scheduleRequest(null, API_SCHEDULE_PATH, GET);
+        return executeListAllSchedulesRequest(request);
+    }
+
+    public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules(String start, int limit, String order) throws IOException {
+        String path = "/api/schedules" + "?" + "start=" + start + "&limit=" + limit +"&order=" + order;
+        Request request = scheduleRequest(null, path, GET);
+        return executeListAllSchedulesRequest(request);
+    }
+
+    public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules(String next_page) throws IOException, URISyntaxException {
+        URI np = new URI(next_page);
+        Request request = scheduleRequest(null, np.getPath() + "?" + np.getQuery(), GET);
+        return executeListAllSchedulesRequest(request);
+    }
+
+    /**
+     * Send a list a specific schedule request to the Urban Airship API.
+     *
+     * @return APIClientResponse <<T>SchedulePayload</T>>
+     * @throws IOException
+     */
+    public APIClientResponse<SchedulePayload> listSchedule(String id) throws IOException {
+        Request request = scheduleRequest(null, API_SCHEDULE_PATH + id, GET);
+        return executeListScheduleRequest(request);
+    }
+
+    /**
+     * Send a update schedule request to the Urban Airship API.
+     *
+     * @return APIClientResponse <<T>APIScheduleResponse</T>>
+     * @throws IOException
+     */
+    public APIClientResponse<APIScheduleResponse> updateSchedule(SchedulePayload payload, String id) throws IOException {
+        Request request = scheduleRequest(payload, API_SCHEDULE_PATH + id, PUT);
+        return executeScheduleRequest(request);
+    }
+
+    /**
+     * Send a delete schedule request to the Urban Airship API.
+     *
+     * @return HttpResponse
+     * @throws IOException
+     */
+    public HttpResponse deleteSchedule(String id) throws IOException {
+        Request request = scheduleRequest(null, API_SCHEDULE_PATH + id, DELETE);
+        return executeStandardRequest(request);
+    }
+
+    /**
+     * Sends a tag request to the Urban Airship API.
+     *
+     * @return APIClientResponse <<T>APIListTagResponse</T>>
+     * @throws IOException
+     */
+    public APIClientResponse<APIListTagsResponse> listTags() throws IOException {
+        Request request = tagRequest(API_TAGS_PATH, GET);
+        return executeListTagsRequest(request);
+    }
+
+    public HttpResponse createTag(String tag) throws IOException {
+        Request request = tagRequest(API_TAGS_PATH + tag, PUT);
+        return executeStandardRequest(request);
+    }
+
+    public HttpResponse deleteTag(String tag) throws IOException {
+        Request request = tagRequest(API_TAGS_PATH + tag, DELETE);
+        return executeStandardRequest(request);
+    }
+
+    public HttpResponse addRemoveDevicesFromTag(String tag, AddRemoveDeviceFromTagPayload payload) throws IOException {
+        Preconditions.checkNotNull(payload, "Payload is required when adding and/or removing devices from a tag");
+        Request request = tagAddRemoveDeviceRequest(payload, API_TAGS_PATH + tag);
+        return executeStandardRequest(request);
+    }
+
+    public HttpResponse batchModificationOfTags(BatchModificationPayload payload) throws IOException {
+        Preconditions.checkNotNull(payload, "Payload is required when performing batch modification of tags");
+        Request request = tagBatchRequest(payload, API_TAGS_BATCH_PATH);
+        return executeStandardRequest(request);
     }
 
     /*
@@ -303,6 +469,10 @@ public class APIClient {
          * @return APIClient
          */
         public APIClient build() {
+            Preconditions.checkNotNull(key, "app key needed to build APIClient");
+            Preconditions.checkNotNull(secret, "app secret needed to build APIClient");
+            Preconditions.checkNotNull(baseURI, "base URI needed to build APIClient");
+            Preconditions.checkNotNull(version, "version needed to build APIClient");
             return new APIClient(key, secret, baseURI, version);
         }
 

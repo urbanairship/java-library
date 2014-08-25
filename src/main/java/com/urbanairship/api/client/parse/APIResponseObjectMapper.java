@@ -4,10 +4,18 @@
 
 package com.urbanairship.api.client.parse;
 
-import com.urbanairship.api.client.APIError;
-import com.urbanairship.api.client.APIErrorDetails;
-import com.urbanairship.api.client.APIPushResponse;
-import com.urbanairship.api.client.APIScheduleResponse;
+import com.urbanairship.api.client.*;
+import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
+import com.urbanairship.api.client.model.APIListTagsResponse;
+import com.urbanairship.api.client.model.APIPushResponse;
+import com.urbanairship.api.client.model.APIScheduleResponse;
+import com.urbanairship.api.push.model.PushPayload;
+import com.urbanairship.api.push.parse.PushObjectMapper;
+import com.urbanairship.api.push.parse.PushPayloadDeserializer;
+import com.urbanairship.api.schedule.model.Schedule;
+import com.urbanairship.api.schedule.model.SchedulePayload;
+import com.urbanairship.api.schedule.parse.ScheduleDeserializer;
+import com.urbanairship.api.schedule.parse.SchedulePayloadDeserializer;
 import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.module.SimpleModule;
@@ -27,6 +35,13 @@ public class APIResponseObjectMapper {
         MODULE.addDeserializer(APIErrorDetails.class, new APIErrorDetailsDeserializer());
         MODULE.addDeserializer(APIError.class, new APIErrorDeserializer());
         MODULE.addDeserializer(APIScheduleResponse.class, new APIScheduleResponseDeserializer());
+        MODULE.addDeserializer(APIListAllSchedulesResponse.class, new APIListAllSchedulesResponseDeserializer());
+        MODULE.addDeserializer(Schedule.class, ScheduleDeserializer.INSTANCE);
+        MODULE.addDeserializer(SchedulePayload.class, SchedulePayloadDeserializer.INSTANCE);
+        MODULE.addDeserializer(PushPayload.class, new PushPayloadDeserializer());
+        MODULE.addDeserializer(APIListTagsResponse.class, new APIListTagsResponseDeserializer());
+
+        MAPPER.registerModule(PushObjectMapper.getModule());
         MAPPER.registerModule(MODULE);
     }
 

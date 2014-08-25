@@ -12,9 +12,9 @@ public class RecentDateRange extends PushModelObject implements DateRange {
 
     private final DateRangeUnit resolution;
     private final int units;
-    private final PresenceTimeFrame timeframe;
+    private final PresenceTimeframe timeframe;
 
-    private RecentDateRange(DateRangeUnit resolution, int units, PresenceTimeFrame timeframe) {
+    private RecentDateRange(DateRangeUnit resolution, int units, PresenceTimeframe timeframe) {
         this.resolution = resolution;
         this.units = units;
         this.timeframe = timeframe;
@@ -46,7 +46,7 @@ public class RecentDateRange extends PushModelObject implements DateRange {
     }
 
     @Override
-    public PresenceTimeFrame getTimeframe() {
+    public PresenceTimeframe getTimeframe() {
         return timeframe;
     }
 
@@ -94,7 +94,7 @@ public class RecentDateRange extends PushModelObject implements DateRange {
     public static class Builder {
         private DateRangeUnit resolution;
         private int units = 0;
-        private PresenceTimeFrame timeframe = PresenceTimeFrame.ANYTIME;
+        private PresenceTimeframe timeframe = PresenceTimeframe.ANYTIME;
 
         private Builder() { }
 
@@ -108,7 +108,7 @@ public class RecentDateRange extends PushModelObject implements DateRange {
             return this;
         }
 
-        public Builder setTimeframe(PresenceTimeFrame value) {
+        public Builder setTimeframe(PresenceTimeframe value) {
             timeframe = value;
             return this;
         }
