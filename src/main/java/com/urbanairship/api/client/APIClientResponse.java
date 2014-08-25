@@ -40,6 +40,13 @@ public class APIClientResponse<T> {
         return new Builder<APIScheduleResponse>();
     }
 
+    /**
+     * Return a Builder for an APIListSchedulesResponse
+     * @return Builder
+     */
+    public static Builder<APIListSchedulesResponse> newScheduleListResponseBuilder(){
+        return new Builder<APIListSchedulesResponse>();
+    }
 
     /**
      * Return the HTTP request object used for the request.

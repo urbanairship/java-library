@@ -4,6 +4,7 @@
 
 package com.urbanairship.api.client;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 import com.urbanairship.api.push.model.PushPayload;
@@ -14,6 +15,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
+import org.apache.http.client.fluent.Response;
 import org.apache.http.entity.ContentType;
 import org.apache.http.params.CoreProtocolPNames;
 
@@ -122,7 +124,12 @@ public class APIClient {
     Suppressing warnings until more of schedule API is implemented
      */
     private Request scheduleRequest(SchedulePayload payload, @SuppressWarnings("SameParameterValue") String path,
-                                    @SuppressWarnings("SameParameterValue") String httpMethod){
+                                    @SuppressWarnings("SameParameterValue") String httpMethod, String id){
+        // add id to the uri. id is used for delete and update operation
+        if (id != null) {
+            path = path + "/" + id;
+        }
+
         URI uri = baseURI.resolve(path);
         Request request;
 
@@ -150,6 +157,47 @@ public class APIClient {
                 .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
                 .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
     }
+
+    /**
+     * Request for listing schedules
+     */
+    private Request listSchedulesRequest(@SuppressWarnings("SameParameterValue") String path,
+                                         @SuppressWarnings("SameParameterValue") String httpMethod,
+                                         Integer limitUrlParam,
+                                         String startUrlParam) {
+
+        Optional<Integer> limit = Optional.fromNullable(limitUrlParam);
+        Optional<String> start = Optional.fromNullable(startUrlParam);
+
+        StringBuilder sb = new StringBuilder();
+        if (limit.isPresent() || start.isPresent()) {
+            sb.append("?");
+            if (limit.isPresent()) {
+                sb.append("limit=" + limit.get() + "&");
+            }
+            if (start.isPresent()) {
+                sb.append("start=" + start.get());
+            }
+        }
+
+        URI uri = baseURI.resolve(path + sb.toString());
+        Request request;
+
+        if (httpMethod.equals("GET")){
+            request = Request.Get(uri);
+        }
+        else {
+            throw new
+                    IllegalArgumentException(
+                    String.format("Schedule requests support POST/GET/DELETE/PUT " +
+                            "HTTP %s Method passed", httpMethod));
+        }
+        return request.config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
+                .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
+                .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
+
+    }
+
 
 //    /*
 //    Append the id to the path, pass to base schedule method
@@ -224,8 +272,90 @@ public class APIClient {
      */
     public APIClientResponse<APIScheduleResponse> schedule(SchedulePayload payload)
             throws IOException {
-        Request request = scheduleRequest(payload, API_SCHEDULE_PATH, "POST");
+        Request request = scheduleRequest(payload, API_SCHEDULE_PATH, "POST", null);
         return executeScheduleRequest(request);
+    }
+
+    /**
+     * Send a update schedule request to the Urban Airship API with the parameters setup in the schedule payload.
+     *
+     * @param payload A schedule payload
+     * @return APIClientResponse <<T>APIScheduleResponse</T>>
+     * @throws IOException
+     */
+    public APIClientResponse<APIScheduleResponse> updateSchedule(SchedulePayload payload, String id)
+            throws IOException {
+        Request request = scheduleRequest(payload, API_SCHEDULE_PATH, "PUT", id);
+        return executeScheduleRequest(request);
+    }
+
+    /*
+    Execute the request and log errors.
+     */
+    private APIClientResponse<APIListSchedulesResponse> executeListSchedulesRequest(Request request)
+            throws IOException{
+        Executor executor = Executor.newInstance()
+                .auth(uaHost, appKey, appSecret)
+                .authPreemptive(uaHost);
+        logger.debug(String.format("Executing list schedules request %s", request));
+        return executor.execute(request).handleResponse(new ListSchedulesAPIResponseHandler());
+    }
+
+    /*
+    Execute the request and log errors.
+     */
+    private Response executeDeleteScheduleRequest(Request request)
+            throws IOException{
+        Executor executor = Executor.newInstance()
+                .auth(uaHost, appKey, appSecret)
+                .authPreemptive(uaHost);
+        logger.debug(String.format("Executing delete schedule request %s", request));
+
+        Response response = executor.execute(request);
+
+        return response;
+    }
+
+    /**
+     * Send a list schedules request to the Urban Airship API.
+     *
+     *
+     * @return APIClientResponse <<T>APIListSchedulesResponse</T> response for this request.
+     * @throws IOException
+     */
+    public APIClientResponse<APIListSchedulesResponse> listSchedules()
+            throws IOException {
+        Request request = listSchedulesRequest(API_SCHEDULE_PATH, "GET", null, null);
+        return executeListSchedulesRequest(request);
+    }
+
+    /**
+     * Send a list schedules request to the Urban Airship API.
+     *
+     *
+     * @param limit max number of data to return
+     * @param start - id of the notification to start paginating from
+     *
+     * @return APIClientResponse <<T>APIListSchedulesResponse</T> response for this request.
+     * @throws IOException
+     */
+    public APIClientResponse<APIListSchedulesResponse> listSchedules(Integer limit, String start)
+            throws IOException {
+        Request request = listSchedulesRequest(API_SCHEDULE_PATH, "GET", limit, start);
+        return executeListSchedulesRequest(request);
+    }
+
+    /**
+     * Send a delete schedule request to the Urban Airship API
+     *
+     * @param id the schedule id
+     * @return the http status code
+     * @throws IOException
+     */
+    public int deleteSchedule(String id)
+            throws IOException {
+        Request request = scheduleRequest(null, API_SCHEDULE_PATH, "DELETE", id);
+        return executeDeleteScheduleRequest(request).returnResponse().getStatusLine().getStatusCode();
     }
 
     /*
