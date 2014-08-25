@@ -43,10 +43,10 @@ public class APIListSchedulesResponseReader implements JsonObjectReader <APIList
     }
 
     public void readSchedules(JsonParser jsonParser) throws IOException {
-        List<Map> list = jsonParser.readValueAs(new TypeReference<List<Map>>() {
+        List<Map> schedules = jsonParser.readValueAs(new TypeReference<List<Map>>() {
         });
 
-        builder.setSchedules(list);
+        builder.setSchedules(schedules);
     }
 
     @Override

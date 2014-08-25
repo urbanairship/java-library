@@ -41,7 +41,7 @@ public class APIClientResponse<T> {
     }
 
     /**
-     * Return a Builder for an APIScheduleResponse
+     * Return a Builder for an APIListSchedulesResponse
      * @return Builder
      */
     public static Builder<APIListSchedulesResponse> newScheduleListResponseBuilder(){

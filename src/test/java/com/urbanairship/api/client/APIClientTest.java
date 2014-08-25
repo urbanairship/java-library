@@ -7,7 +7,6 @@ import com.urbanairship.api.push.model.*;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import com.urbanairship.api.schedule.model.ListSchedulePayload;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import org.apache.log4j.BasicConfigurator;
@@ -254,6 +253,5 @@ public class APIClientTest {
 
     }
 //
-
 
 }

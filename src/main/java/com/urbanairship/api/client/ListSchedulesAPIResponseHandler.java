@@ -15,7 +15,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import java.io.IOException;
 
 /**
- * Handle server responses for Scheduling.
+ * Handle server responses for a list schedules.
  */
 public class ListSchedulesAPIResponseHandler implements
         ResponseHandler<APIClientResponse<APIListSchedulesResponse>> {
@@ -37,7 +37,7 @@ public class ListSchedulesAPIResponseHandler implements
         // Documented cases
         switch (statusCode){
             case HttpStatus.SC_CREATED:
-                return handleSuccessfulSchedule(response);
+                return handleSuccessfulListSchedules(response);
 
             case HttpStatus.SC_UNAUTHORIZED:
             case HttpStatus.SC_FORBIDDEN:
@@ -47,7 +47,7 @@ public class ListSchedulesAPIResponseHandler implements
 
         // Uncommon, or unknown
         if (statusCode >= 200 && statusCode < 300){
-            return handleSuccessfulSchedule(response);
+            return handleSuccessfulListSchedules(response);
         }
         // Handle unhandled server error codes
         else {
@@ -56,14 +56,14 @@ public class ListSchedulesAPIResponseHandler implements
     }
 
     /*
-     * Create an APIResponse for the successful schedule request.
+     * Create an APIResponse for the successful list schedules request.
      * Any exceptions thrown by HttpResponse object that are related to
      * closing the response body are ignored.
      * @param response
-     * @return APIClientResponse<APIScheduleResponse>
+     * @return APIClientResponse<APIListSchedulesResponse>
      * @throws IOException
      */
-    private APIClientResponse<APIListSchedulesResponse> handleSuccessfulSchedule(HttpResponse response)
+    private APIClientResponse<APIListSchedulesResponse> handleSuccessfulListSchedules(HttpResponse response)
             throws IOException {
         String jsonPayload = EntityUtils.toString(response.getEntity());
         // toss out exceptions related to closing the entity

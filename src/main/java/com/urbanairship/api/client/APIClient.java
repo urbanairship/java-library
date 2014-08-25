@@ -8,7 +8,6 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 import com.urbanairship.api.push.model.PushPayload;
-import com.urbanairship.api.schedule.model.ListSchedulePayload;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 
 import org.apache.commons.lang.StringUtils;
@@ -125,17 +124,8 @@ public class APIClient {
     Suppressing warnings until more of schedule API is implemented
      */
     private Request scheduleRequest(SchedulePayload payload, @SuppressWarnings("SameParameterValue") String path,
-                                    @SuppressWarnings("SameParameterValue") String httpMethod){
-        return scheduleRequest(payload, path, httpMethod, null);
-    }
-
-    /*
-    Base request for all API schedule operations
-    Suppressing warnings until more of schedule API is implemented
-     */
-    private Request scheduleRequest(SchedulePayload payload, @SuppressWarnings("SameParameterValue") String path,
                                     @SuppressWarnings("SameParameterValue") String httpMethod, String id){
-        // add id to the uri
+        // add id to the uri. id is used for delete and update operation
         if (id != null) {
             path = path + "/" + id;
         }
@@ -168,13 +158,16 @@ public class APIClient {
                 .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
     }
 
-    /*
+    /**
+     * Request for listing schedules
      */
-    private Request listSchedulesRequest(ListSchedulePayload listSchedulePayload,
-                                         @SuppressWarnings("SameParameterValue") String path,
-                                         @SuppressWarnings("SameParameterValue") String httpMethod) {
-        Optional<Integer> limit = listSchedulePayload.getLimit();
-        Optional<String> start = listSchedulePayload.getStart();
+    private Request listSchedulesRequest(@SuppressWarnings("SameParameterValue") String path,
+                                         @SuppressWarnings("SameParameterValue") String httpMethod,
+                                         Integer limitUrlParam,
+                                         String startUrlParam) {
+
+        Optional<Integer> limit = Optional.fromNullable(limitUrlParam);
+        Optional<String> start = Optional.fromNullable(startUrlParam);
 
         StringBuilder sb = new StringBuilder();
         if (limit.isPresent() || start.isPresent()) {
@@ -279,7 +272,7 @@ public class APIClient {
      */
     public APIClientResponse<APIScheduleResponse> schedule(SchedulePayload payload)
             throws IOException {
-        Request request = scheduleRequest(payload, API_SCHEDULE_PATH, "POST");
+        Request request = scheduleRequest(payload, API_SCHEDULE_PATH, "POST", null);
         return executeScheduleRequest(request);
     }
 
@@ -324,15 +317,31 @@ public class APIClient {
     }
 
     /**
-     * Send a list schedules request to the Urban Airship API with the parameters setup in the ScheduleListPayload.
+     * Send a list schedules request to the Urban Airship API.
      *
-     * @param listSchedulePayload ScheduleListPayload for specifying start id and pagination
-     * @return APIClientResponse <<T>APIScheduleListResponse</T> response for this request.
+     *
+     * @return APIClientResponse <<T>APIListSchedulesResponse</T> response for this request.
      * @throws IOException
      */
-    public APIClientResponse<APIListSchedulesResponse> listSchedules(ListSchedulePayload listSchedulePayload)
+    public APIClientResponse<APIListSchedulesResponse> listSchedules()
             throws IOException {
-        Request request = listSchedulesRequest(listSchedulePayload, API_SCHEDULE_PATH, "GET");
+        Request request = listSchedulesRequest(API_SCHEDULE_PATH, "GET", null, null);
+        return executeListSchedulesRequest(request);
+    }
+
+    /**
+     * Send a list schedules request to the Urban Airship API.
+     *
+     *
+     * @param limit max number of data to return
+     * @param start - id of the notification to start paginating from
+     *
+     * @return APIClientResponse <<T>APIListSchedulesResponse</T> response for this request.
+     * @throws IOException
+     */
+    public APIClientResponse<APIListSchedulesResponse> listSchedules(Integer limit, String start)
+            throws IOException {
+        Request request = listSchedulesRequest(API_SCHEDULE_PATH, "GET", limit, start);
         return executeListSchedulesRequest(request);
     }
 

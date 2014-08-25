@@ -4,10 +4,10 @@
 
 package com.urbanairship.api.schedule.model;
 
-import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.PushPayload;
+import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import org.apache.commons.lang.StringUtils;
 
 /**

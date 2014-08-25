@@ -19,7 +19,7 @@ public class APIListSchedulesResponse {
     private final List<Map> schedules;
 
     /**
-     * New APIScheduleListResponse builder
+     * New APIListSchedulesResponse builder
      * @return Builder
      */
     public static Builder newBuilder(){
@@ -93,7 +93,7 @@ public class APIListSchedulesResponse {
     }
 
     /**
-     * APIScheduleListResponse Builder
+     * APIListSchedulesResponse Builder
      */
     public static class Builder {
 
