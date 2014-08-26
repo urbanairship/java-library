@@ -104,7 +104,7 @@ public class APIClient {
         try {
             props.load(stream);
             stream.close();
-            return "UrbanAirship/" + props.get("client.version");
+            return "UAJavaLib/" + props.get("client.version");
         } catch (IOException e) {
             return "UNKNOWN";
         }

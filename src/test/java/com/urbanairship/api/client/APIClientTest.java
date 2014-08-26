@@ -81,10 +81,10 @@ public class APIClientTest {
         String userAgent = client.getUserAgent();
         assertNotNull(userAgent);
         assertFalse(userAgent.equals("UNKNOWN"));
-        assertFalse(userAgent.equals("UrbanAirship/UNKNOWN"));
-        assertFalse(userAgent.equals("UrbanAirship/"));
+        assertFalse(userAgent.equals("UAJavaLib/UNKNOWN"));
+        assertFalse(userAgent.equals("UAJavaLib/"));
         assertFalse(userAgent.endsWith("/"));
-        assertTrue(userAgent.startsWith("UrbanAirship/"));
+        assertTrue(userAgent.startsWith("UAJavaLib/"));
     }
 
     /* Test the following attributes of the push method on the APIClient object
