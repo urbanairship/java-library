@@ -13,7 +13,6 @@ import com.urbanairship.api.push.model.audience.location.LocationIdentifier;
 import com.urbanairship.api.push.model.audience.location.PresenceTimeframe;
 import com.google.common.collect.ImmutableList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * A collection of factory methods for building audience selector
