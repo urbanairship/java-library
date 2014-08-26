@@ -1,11 +1,8 @@
 package com.urbanairship.api.push.parse.audience;
 
+import com.urbanairship.api.push.model.audience.*;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
-import com.urbanairship.api.push.model.audience.Selector;
-import com.urbanairship.api.push.model.audience.ValueSelector;
-import com.urbanairship.api.push.model.audience.CompoundSelector;
-import com.urbanairship.api.push.model.audience.SelectorType;
 import com.google.common.collect.Iterables;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.apache.log4j.LogManager;
@@ -29,6 +26,33 @@ public class SelectorDeserializerTest {
     public void testDeserializeTriggered() throws Exception {
         Selector value = mapper.readValue("\"triggered\"", Selector.class);
         assertEquals(value.getType(), SelectorType.TRIGGERED);
+    }
+
+    @Test
+    public void testIosChannelCase() throws Exception {
+        String iosChannel = UUID.randomUUID().toString();
+        String json = "{\"ios_channel\": \"" + iosChannel + "\"}";
+        BasicValueSelector value = (BasicValueSelector) mapper.readValue(json, Selector.class);
+        assertTrue(value.getType() == SelectorType.IOS_CHANNEL);
+        assertEquals(value.getValue(), iosChannel);
+    }
+
+    @Test
+    public void testAndroidChannelCase() throws Exception {
+        String androidChannel = UUID.randomUUID().toString();
+        String json = "{\"android_channel\": \"" + androidChannel + "\"}";
+        BasicValueSelector value = (BasicValueSelector) mapper.readValue(json, Selector.class);
+        assertTrue(value.getType() == SelectorType.ANDROID_CHANNEL);
+        assertEquals(value.getValue(), androidChannel);
+    }
+
+    @Test
+    public void testAmazonChannelCase() throws Exception {
+        String amazonChannel = UUID.randomUUID().toString();
+        String json = "{\"amazon_channel\": \"" + amazonChannel + "\"}";
+        BasicValueSelector value = (BasicValueSelector) mapper.readValue(json, Selector.class);
+        assertTrue(value.getType() == SelectorType.AMAZON_CHANNEL);
+        assertEquals(value.getValue(), amazonChannel);
     }
 
     @Test
@@ -285,5 +309,30 @@ public class SelectorDeserializerTest {
             + "  ]\n"
             + "}";
         mapper.readValue(json, Selector.class);
+    }
+
+    @Test(expected=APIParsingException.class)
+    public void testCompoundValidation_AND1() throws Exception {
+        mapper.readValue("{\"and\" : \"foo\"}", Selector.class);
+    }
+
+    /*    @Test(expected=APIParsingException.class)
+    public void testCompoundValidation_AND2() throws Exception {
+        mapper.readValue("{\"and\" : [ { \"tag\" : \"foo\" } ]}", Selector.class);
+        }
+
+    @Test(expected=APIParsingException.class)
+    public void testCompoundValidation_AND3() throws Exception {
+        mapper.readValue("{\"and\" : { \"tag\" : \"foo\" } }", Selector.class);
+        } */
+
+    @Test(expected=APIParsingException.class)
+    public void testCompoundValidation_NOT() throws Exception {
+        mapper.readValue("{\"not\" : [ { \"tag\" : \"foo\" }, { \"tag\" : \"bar\" } ] }", Selector.class);
+    }
+
+    @Test(expected=APIParsingException.class)
+    public void testCompoundValidation_ContainsAtomic() throws Exception {
+        mapper.readValue("{\"or\" : [ \"all\", \"triggered\" ] }", Selector.class);
     }
 }

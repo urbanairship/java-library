@@ -6,6 +6,7 @@ package com.urbanairship.api.push.model.audience;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.base.Preconditions;
+import com.urbanairship.api.push.model.DeviceTypeData;
 
 public class BasicCompoundSelector implements CompoundSelector {
 
@@ -24,6 +25,32 @@ public class BasicCompoundSelector implements CompoundSelector {
     @Override
     public SelectorType getType() {
         return this.type;
+    }
+
+    @Override
+    public DeviceTypeData getApplicableDeviceTypes() {
+        switch (type) {
+            case OR: {
+                // For OR, take a union of all sets of platforms
+                DeviceTypeData platforms = DeviceTypeData.newBuilder().build();
+                for (Selector child : children) {
+                    DeviceTypeData childPlatforms = child.getApplicableDeviceTypes();
+                    platforms = platforms.union(childPlatforms);
+                }
+                return platforms;
+            }
+            case AND: {
+                // For AND, take an intersection of all sets of platforms
+                DeviceTypeData platforms = DeviceTypeData.all();
+                for (Selector child : children) {
+                    DeviceTypeData childPlatforms = child.getApplicableDeviceTypes();
+                    platforms = platforms.intersect(childPlatforms);
+                }
+                return platforms;
+            }
+            default:
+                return DeviceTypeData.all();
+        }
     }
 
     @Override

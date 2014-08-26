@@ -5,6 +5,7 @@
 package com.urbanairship.api.push.model.audience.location;
 
 import com.google.common.base.Preconditions;
+import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.SelectorType;
@@ -32,6 +33,11 @@ public final class LocationSelector extends PushModelObject implements Selector 
     @Override
     public SelectorType getType() {
         return SelectorType.LOCATION;
+    }
+
+    @Override
+    public DeviceTypeData getApplicableDeviceTypes() {
+        return DeviceTypeData.all();
     }
 
     @Override

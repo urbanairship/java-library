@@ -8,6 +8,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.urbanairship.api.push.model.DeviceTypeData;
+
 import java.util.Map;
 
 public class BasicValueSelector implements ValueSelector {
@@ -29,6 +31,14 @@ public class BasicValueSelector implements ValueSelector {
     @Override
     public SelectorType getType() {
         return this.type;
+    }
+
+    @Override
+    public DeviceTypeData getApplicableDeviceTypes() {
+        if (type.getPlatform().isPresent()) {
+            return DeviceTypeData.of(type.getPlatform().get());
+        }
+        return DeviceTypeData.all();
     }
 
     @Override
