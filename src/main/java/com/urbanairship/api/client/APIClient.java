@@ -24,9 +24,11 @@ import org.apache.http.params.CoreProtocolPNames;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.InputStream;
 import java.net.URI;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Properties;
 
 /**
  * APIClient handles HTTP requests to the Urban Airship API
@@ -37,7 +39,6 @@ public class APIClient {
     private final static String CONTENT_TYPE_KEY = "Content-type";
     private final static String ACCEPT_KEY = "Accept";
     private final static String UA_APPLICATION_JSON = "application/vnd.urbanairship+json;";
-    private final static String USER_AGENT = "UrbanAirship/version0.1beta";
 
     /* URI Paths */
     private final static String API_PUSH_PATH = "/api/push/";
@@ -91,12 +92,31 @@ public class APIClient {
     }
 
     /*
+    Retrieves Java Client API Version
+     */
+    public String getUserAgent() {
+        InputStream stream = getClass().getResourceAsStream("/client.properties");
+
+        if (stream == null) { return "UNKNOWN"; }
+
+        Properties props = new Properties();
+
+        try {
+            props.load(stream);
+            stream.close();
+            return "UrbanAirship/" + props.get("client.version");
+        } catch (IOException e) {
+            return "UNKNOWN";
+        }
+    }
+
+    /*
     Base request common for all API push operations
      */
     private Request pushRequest(PushPayload payload, String path){
         URI uri = baseURI.resolve(path);
         return Request.Post(uri)
-                      .config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
+                      .config(CoreProtocolPNames.USER_AGENT, getUserAgent())
                       .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
                       .addHeader(ACCEPT_KEY, versionedAcceptHeader(version))
                       .bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
@@ -128,7 +148,7 @@ public class APIClient {
                                           "HTTP %s Method passed", httpMethod));
         }
 
-        return request.config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
+        return request.config(CoreProtocolPNames.USER_AGENT, getUserAgent())
                 .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
                 .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
     }
@@ -155,7 +175,7 @@ public class APIClient {
                             "HTTP %s Method passed", httpMethod));
         }
 
-        return request.config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
+        return request.config(CoreProtocolPNames.USER_AGENT, getUserAgent())
                 .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
                 .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
     }
@@ -166,7 +186,7 @@ public class APIClient {
         Request request = Request.Post(uri);
         request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
 
-        return request.config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
+        return request.config(CoreProtocolPNames.USER_AGENT, getUserAgent())
                 .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
     }
 
@@ -176,7 +196,7 @@ public class APIClient {
         Request request = Request.Post(uri);
         request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
 
-        return request.config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
+        return request.config(CoreProtocolPNames.USER_AGENT, getUserAgent())
                 .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
     }
 
