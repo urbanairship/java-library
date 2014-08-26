@@ -28,9 +28,6 @@ import java.net.URI;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-/**
- * APIClient handles HTTP requests to the Urban Airship API
- */
 public class APIClient {
 
     /* Header keys/values */
@@ -57,10 +54,6 @@ public class APIClient {
     /* HTTP */
     private final HttpHost uaHost;
     private final static String UA_HOSTNAME = "go.urbanairship.com";
-    private final static String GET = "GET";
-    private final static String POST = "POST";
-    private final static String PUT = "PUT";
-    private final static String DELETE = "DELETE";
 
     private final static Logger logger = LoggerFactory.getLogger("com.urbanairship.api");
 
@@ -70,9 +63,9 @@ public class APIClient {
 
     private APIClient(String appKey, String appSecret, String baseURI, Number version) {
         Preconditions.checkArgument(StringUtils.isNotBlank(appKey),
-                                    "App key must be provided.");
+                "App key must be provided.");
         Preconditions.checkArgument(StringUtils.isNotBlank(appSecret),
-                                    "App secret must be provided");
+                "App secret must be provided");
         this.appKey = appKey;
         this.appSecret = appSecret;
         this.baseURI = URI.create(baseURI);
@@ -90,326 +83,186 @@ public class APIClient {
         return String.format("%s version=%s", UA_APPLICATION_JSON, version.toString());
     }
 
-    /*
-    Base request common for all API push operations
-     */
-    private Request pushRequest(PushPayload payload, String path){
-        URI uri = baseURI.resolve(path);
-        return Request.Post(uri)
-                      .config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
-                      .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
-                      .addHeader(ACCEPT_KEY, versionedAcceptHeader(version))
-                      .bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
-    }
+    /** Provisioning Methods **/
 
-    /*
-    Base request for all API schedule operations
-    Suppressing warnings until more of schedule API is implemented
-     */
-    private Request scheduleRequest(SchedulePayload payload, @SuppressWarnings("SameParameterValue") String path,
-                                    @SuppressWarnings("SameParameterValue") String httpMethod){
-        URI uri = baseURI.resolve(path);
-        Request request;
-
-        if (httpMethod.equals(POST)) {
-            request = Request.Post(uri);
-            request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
-        } else if (httpMethod.equals(GET)) {
-            request = Request.Get(uri);
-        } else if (httpMethod.equals(PUT)) {
-            request = Request.Put(uri);
-            request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
-        } else if (httpMethod.equals(DELETE)) {
-            request = Request.Delete(uri);
-        } else {
-            throw new
-                    IllegalArgumentException(
-                    String.format("Schedule requests support POST/GET/DELETE/PUT " +
-                                          "HTTP %s Method passed", httpMethod));
-        }
-
-        return request.config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
+    private Request provisionRequest(Request object) {
+        return object
+                .config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
                 .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
                 .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
     }
 
-    /*
-    Base request for all API tag operations
-    Suppressing warnings until more of schedule API is implemented
-     */
-    private Request tagRequest(@SuppressWarnings("SameParameterValue") String path,
-                               @SuppressWarnings("SameParameterValue") String httpMethod) {
-        URI uri = baseURI.resolve(path);
-        Request request;
-
-        if (httpMethod.equals(GET)) {
-            request = Request.Get(uri);
-        } else if (httpMethod.equals(PUT)) {
-            request = Request.Put(uri);
-        } else if (httpMethod.equals(DELETE)) {
-            request = Request.Delete(uri);
-        } else {
-            throw new
-                    IllegalArgumentException(
-                    String.format("tag requests support GET/PUT/DELETE " +
-                            "HTTP %s Method passed", httpMethod));
-        }
-
-        return request.config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
-                .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
-                .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
-    }
-
-    private Request tagAddRemoveDeviceRequest(AddRemoveDeviceFromTagPayload payload, @SuppressWarnings("SameParameterValue") String path) {
-        Preconditions.checkNotNull(payload, "Payload is required when adding and/or removing devices from a tag");
-        URI uri = baseURI.resolve(path);
-        Request request = Request.Post(uri);
-        request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
-
-        return request.config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
-                .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
-    }
-
-    private Request tagBatchRequest(BatchModificationPayload payload, @SuppressWarnings("SameParameterValue") String path) {
-        Preconditions.checkNotNull(payload, "Payload is required when performing batch modification of tags");
-        URI uri = baseURI.resolve(path);
-        Request request = Request.Post(uri);
-        request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
-
-        return request.config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
-                .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
-    }
-
-    /*
-    Execute a standard request for which the expected response is HttpResponse
-     */
-    private HttpResponse executeStandardRequest(Request request) throws IOException{
-        Executor executor = Executor.newInstance()
+    private Executor provisionExecutor() {
+        return Executor.newInstance()
                 .auth(uaHost, appKey, appSecret)
                 .authPreemptive(uaHost);
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing standard request %s", request));
-        }
-
-        return executor.execute(request).returnResponse();
     }
 
-    /*
-    Execute the push request and log errors.
-     */
-    private APIClientResponse<APIPushResponse> executePushRequest(Request request) throws IOException {
-        Executor executor = Executor.newInstance()
-                                    .auth(uaHost, appKey, appSecret)
-                                    .authPreemptive(uaHost);
+    /** Push API **/
+
+    public APIClientResponse<APIPushResponse> push(PushPayload payload) throws IOException {
+        Preconditions.checkNotNull(payload, "Payload required when executing a push operation");
+        Request request = provisionRequest(Request.Post(baseURI.resolve(API_PUSH_PATH)));
+        request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
+
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("Executing push request %s", request));
         }
 
-        return executor.execute(request).handleResponse(new PushAPIResponseHandler());
+        return provisionExecutor().execute(request).handleResponse(new PushAPIResponseHandler());
     }
 
-    /**
-     * Validates a request with the Urban Airship API. This does not result
-     * in a push being sent through the system. Useful for development.
-     *
-     * @param payload PushPayload for the message to be validated.
-     * @return APIClientResponse <<T>APIPushResponse</T>> API response for this request.
-     * @throws IOException
-     */
     public APIClientResponse<APIPushResponse> validate(PushPayload payload) throws IOException {
-        Request request = pushRequest(payload, API_VALIDATE_PATH);
-        return executePushRequest(request);
+        Preconditions.checkNotNull(payload, "Payload required when executing a validate push operation");
+        Request request = provisionRequest(Request.Post(baseURI.resolve(API_VALIDATE_PATH)));
+        request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing validate push request %s", request));
+        }
+
+        return provisionExecutor().execute(request).handleResponse(new PushAPIResponseHandler());
     }
 
-    /**
-     * Send request to Urban Airship API to push a message immediately with
-     * the parameters setup in the PushPayload.
-     *
-     * @param payload PushPayload for the message to be sent through the API.
-     * @return APIClientResponse <<T>APIPushResponse</T> response for this request.
-     * @throws IOException
-     */
-    public APIClientResponse<APIPushResponse> push(PushPayload payload) throws IOException {
-        Preconditions.checkNotNull(payload, "Payload required when executing a push operation");
-        Request request = pushRequest(payload, API_PUSH_PATH);
-        return executePushRequest(request);
-    }
+    /** Schedules API **/
 
-    /*
-    Execute the push request and log errors.
-     */
-    private APIClientResponse<APIScheduleResponse> executeScheduleRequest(Request request) throws IOException {
-        Executor executor = Executor.newInstance()
-                                    .auth(uaHost, appKey, appSecret)
-                                    .authPreemptive(uaHost);
+    public APIClientResponse<APIScheduleResponse> schedule(SchedulePayload payload) throws IOException {
+        Preconditions.checkNotNull(payload, "Payload required when scheduling a push request");
+        Request request = provisionRequest(Request.Post(baseURI.resolve(API_SCHEDULE_PATH)));
+        request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
+
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("Executing schedule request %s", request));
         }
 
-        return executor.execute(request).handleResponse(new ScheduleAPIResponseHandler());
+        return provisionExecutor().execute(request).handleResponse(new ScheduleAPIResponseHandler());
     }
 
-    /*
-    Execute the list all schedules request and log errors.
-     */
-    private APIClientResponse<APIListAllSchedulesResponse> executeListAllSchedulesRequest(Request request) throws IOException {
-        Executor executor = Executor.newInstance()
-                                    .auth(uaHost, appKey, appSecret)
-                                    .authPreemptive(uaHost);
+    public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules() throws IOException {
+        Request request = provisionRequest(Request.Get(baseURI.resolve(API_SCHEDULE_PATH)));
+
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("Executing list all schedules request %s", request));
         }
 
-        return executor.execute(request).handleResponse(new ListAllSchedulesAPIResponseHandler());
-    }
-
-    /*
-    Execute the list specific schedule request and log errors.
-    */
-    private APIClientResponse<SchedulePayload> executeListScheduleRequest(Request request) throws IOException {
-        Executor executor = Executor.newInstance()
-                .auth(uaHost, appKey, appSecret)
-                .authPreemptive(uaHost);
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing list specific schedule request %s", request));
-        }
-
-        return executor.execute(request).handleResponse(new ListScheduleAPIResponseHandler());
-    }
-
-    /*
-    Execute the list tags request and log errors.
-     */
-    private APIClientResponse<APIListTagsResponse> executeListTagsRequest(Request request) throws IOException {
-        Executor executor = Executor.newInstance()
-                .auth(uaHost, appKey, appSecret)
-                .authPreemptive(uaHost);
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing list tags request %s", request));
-        }
-
-        return executor.execute(request).handleResponse(new ListTagsAPIResponseHandler());
-    }
-
-    /**
-     * Send a scheduled push request to the Urban Airship API to be delivered
-     * according to the parameters setup in the schedule payload.
-     *
-     * @param payload A schedule payload
-     * @return APIClientResponse <<T>APIScheduleResponse</T>>
-     * @throws IOException
-     */
-    public APIClientResponse<APIScheduleResponse> schedule(SchedulePayload payload) throws IOException {
-        Preconditions.checkNotNull(payload, "Payload required when scheduling a push request");
-        Request request = scheduleRequest(payload, API_SCHEDULE_PATH, POST);
-        return executeScheduleRequest(request);
-    }
-
-    /**
-     * Send a list all schedules request to the Urban Airship API.
-     *
-     * @return APIClientResponse <<T>APIListAllSchedulesResponse</T>>
-     * @throws IOException
-     */
-    public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules() throws IOException {
-        Request request = scheduleRequest(null, API_SCHEDULE_PATH, GET);
-        return executeListAllSchedulesRequest(request);
+        return provisionExecutor().execute(request).handleResponse(new ListAllSchedulesAPIResponseHandler());
     }
 
     public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules(String start, int limit, String order) throws IOException {
         String path = "/api/schedules" + "?" + "start=" + start + "&limit=" + limit +"&order=" + order;
-        Request request = scheduleRequest(null, path, GET);
-        return executeListAllSchedulesRequest(request);
+        Request request = provisionRequest(Request.Get(baseURI.resolve(path)));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list all schedules request %s", request));
+        }
+
+        return provisionExecutor().execute(request).handleResponse(new ListAllSchedulesAPIResponseHandler());
     }
 
     public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules(String next_page) throws IOException, URISyntaxException {
         URI np = new URI(next_page);
-        Request request = scheduleRequest(null, np.getPath() + "?" + np.getQuery(), GET);
-        return executeListAllSchedulesRequest(request);
+        Request request = provisionRequest(Request.Get(baseURI.resolve(np.getPath() + "?" + np.getQuery())));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list all schedules request %s", request));
+        }
+
+        return provisionExecutor().execute(request).handleResponse(new ListAllSchedulesAPIResponseHandler());
     }
 
-    /**
-     * Send a list a specific schedule request to the Urban Airship API.
-     *
-     * @return APIClientResponse <<T>SchedulePayload</T>>
-     * @throws IOException
-     */
     public APIClientResponse<SchedulePayload> listSchedule(String id) throws IOException {
-        Request request = scheduleRequest(null, API_SCHEDULE_PATH + id, GET);
-        return executeListScheduleRequest(request);
+        Request request = provisionRequest(Request.Get(baseURI.resolve(API_SCHEDULE_PATH + id)));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list specific schedule request %s", request));
+        }
+
+        return provisionExecutor().execute(request).handleResponse(new ListScheduleAPIResponseHandler());
     }
 
-    /**
-     * Send a update schedule request to the Urban Airship API.
-     *
-     * @return APIClientResponse <<T>APIScheduleResponse</T>>
-     * @throws IOException
-     */
     public APIClientResponse<APIScheduleResponse> updateSchedule(SchedulePayload payload, String id) throws IOException {
-        Request request = scheduleRequest(payload, API_SCHEDULE_PATH + id, PUT);
-        return executeScheduleRequest(request);
+        Preconditions.checkNotNull(payload, "Payload is required when updating schedule");
+        Request req = provisionRequest(Request.Put(baseURI.resolve(API_SCHEDULE_PATH + id)));
+        req.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing update schedule request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ScheduleAPIResponseHandler());
     }
 
-    /**
-     * Send a delete schedule request to the Urban Airship API.
-     *
-     * @return HttpResponse
-     * @throws IOException
-     */
     public HttpResponse deleteSchedule(String id) throws IOException {
-        Request request = scheduleRequest(null, API_SCHEDULE_PATH + id, DELETE);
-        return executeStandardRequest(request);
+        Request req = provisionRequest(Request.Delete(baseURI.resolve(API_SCHEDULE_PATH + id)));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing delete schedule request %s", req));
+        }
+
+        return provisionExecutor().execute(req).returnResponse();
     }
 
-    /**
-     * Sends a tag request to the Urban Airship API.
-     *
-     * @return APIClientResponse <<T>APIListTagResponse</T>>
-     * @throws IOException
-     */
+    /** Tags API **/
+
     public APIClientResponse<APIListTagsResponse> listTags() throws IOException {
-        Request request = tagRequest(API_TAGS_PATH, GET);
-        return executeListTagsRequest(request);
+        Request req = provisionRequest(Request.Get(baseURI.resolve(API_TAGS_PATH)));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list tags request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ListTagsAPIResponseHandler());
     }
 
     public HttpResponse createTag(String tag) throws IOException {
-        Request request = tagRequest(API_TAGS_PATH + tag, PUT);
-        return executeStandardRequest(request);
+        Request req = provisionRequest(Request.Put(baseURI.resolve(API_TAGS_PATH + tag)));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing create tag request %s", req));
+        }
+
+        return provisionExecutor().execute(req).returnResponse();
     }
 
     public HttpResponse deleteTag(String tag) throws IOException {
-        Request request = tagRequest(API_TAGS_PATH + tag, DELETE);
-        return executeStandardRequest(request);
+        Request req = provisionRequest(Request.Delete(baseURI.resolve(API_TAGS_PATH + tag)));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing delete tag request %s", req));
+        }
+
+        return provisionExecutor().execute(req).returnResponse();
     }
 
     public HttpResponse addRemoveDevicesFromTag(String tag, AddRemoveDeviceFromTagPayload payload) throws IOException {
         Preconditions.checkNotNull(payload, "Payload is required when adding and/or removing devices from a tag");
-        Request request = tagAddRemoveDeviceRequest(payload, API_TAGS_PATH + tag);
-        return executeStandardRequest(request);
+        Request req = provisionRequest(Request.Post(baseURI.resolve(API_TAGS_PATH + tag)));
+        req.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing add/remove devices from tag request %s", req));
+        }
+
+        return provisionExecutor().execute(req).returnResponse();
     }
 
     public HttpResponse batchModificationOfTags(BatchModificationPayload payload) throws IOException {
         Preconditions.checkNotNull(payload, "Payload is required when performing batch modification of tags");
-        Request request = tagBatchRequest(payload, API_TAGS_BATCH_PATH);
-        return executeStandardRequest(request);
+        Request req = provisionRequest(Request.Post(baseURI.resolve(API_TAGS_BATCH_PATH)));
+        req.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing batch modification of tags request %s", req));
+        }
+
+        return provisionExecutor().execute(req).returnResponse();
     }
 
-    /*
-    Object methods
-     */
-    public String toString(){
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("APIClient");
-        stringBuilder.append("\nAppKey:");
-        stringBuilder.append(appKey);
-        stringBuilder.append("\nAppSecret:");
-        stringBuilder.append(appSecret);
-        return stringBuilder.toString();
+    @Override
+    public String toString() {
+        return "APIClient\nAppKey:"+ appKey +"\nAppSecret:" + appSecret + "\n";
     }
 
-    /**
-     * Builder for the APIClient.
-     */
     public static class Builder {
 
         private String key;
@@ -422,52 +275,26 @@ public class APIClient {
             version = 3;
         }
 
-        /**
-         * The application key that corresponds with an application on
-         * Urban Airship
-         * @param key String Application key.
-         * @return This builder.
-         */
         public Builder setKey(String key) {
             this.key = key;
             return this;
         }
 
-        /**
-         * The application master secret that matches the application key and
-         * corresponds with the application on Urban Airship
-         * @param appSecret String Application master secret
-         * @return This builder.
-         */
         public Builder setSecret(String appSecret) {
             this.secret = appSecret;
             return this;
         }
 
-        /**
-         * Base URI for the APIClient.
-         * @param URI String Base URI
-         * @return This builder.
-         */
         public Builder setBaseURI(String URI){
             this.baseURI = URI;
             return this;
         }
 
-        /**
-         * API version to work with.
-         * @param version Number Version
-         * @return This builder.
-         */
         public Builder setVersion(Number version){
             this.version = version;
             return this;
         }
 
-        /**
-         * Build the APIClient using the given key, secret, baseURI and version.
-         * @return APIClient
-         */
         public APIClient build() {
             Preconditions.checkNotNull(key, "app key needed to build APIClient");
             Preconditions.checkNotNull(secret, "app secret needed to build APIClient");
