@@ -32,6 +32,7 @@ public class DeviceTypeDeserializerTest {
         mapper.readValue(json, new TypeReference<Set<DeviceType>>() {});
     }
 
+    @Test
     public void testDeserializeAndroid() throws Exception {
         String json = "[\"android\"]";
 
@@ -41,6 +42,7 @@ public class DeviceTypeDeserializerTest {
         assertEquals(DeviceType.ANDROID, Iterables.getOnlyElement(parsed));
     }
 
+    @Test
     public void testDeserializeBlackberry() throws Exception {
         String json = "[\"blackberry\"]";
 
