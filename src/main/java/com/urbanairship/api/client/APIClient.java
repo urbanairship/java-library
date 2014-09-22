@@ -16,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
+import org.apache.http.auth.NTCredentials;
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
@@ -59,13 +60,18 @@ public class APIClient {
     /* HTTP */
     private final HttpHost uaHost;
 
+	private final String proxyhost; // proxy hostname
+	private final int proxyport; // proxy portnumber
+	private final String proxyuserid; // proxy userid
+	private final String proxypassword; // proxy password
+
     private final static Logger logger = LoggerFactory.getLogger("com.urbanairship.api");
 
     public static Builder newBuilder(){
         return new Builder();
     }
 
-    private APIClient(String appKey, String appSecret, String baseURI, Number version) {
+    private APIClient(String appKey, String appSecret, String baseURI, Number version, String proxyhost, int proxyport, String proxyuserid, String proxypassword) {
         Preconditions.checkArgument(StringUtils.isNotBlank(appKey),
                 "App key must be provided.");
         Preconditions.checkArgument(StringUtils.isNotBlank(appSecret),
@@ -75,6 +81,11 @@ public class APIClient {
         this.baseURI = URI.create(baseURI);
         this.version = version;
         this.uaHost = new HttpHost(URI.create(baseURI).getHost(), 443, "https");
+
+		this.proxyhost = proxyhost; // proxy hostname
+		this.proxyport = proxyport; // proxy portnumber
+		this.proxyuserid = proxyuserid; // proxy userid
+		this.proxypassword = proxypassword; // proxy password
     }
 
     public String getAppSecret() { return appSecret; }
@@ -296,6 +307,12 @@ public class APIClient {
         private String baseURI;
         private Number version;
 
+        /** For setting up calls through a HTTPS proxy */
+		private String proxyhost;
+		private int proxyport;
+		private String proxyuserid;
+		private String proxypassword;
+
         private Builder(){
             baseURI = "https://go.urbanairship.com";
             version = 3;
@@ -321,12 +338,30 @@ public class APIClient {
             return this;
         }
 
+        /**
+         * @param hostName hostname of proxy
+         * @param portNumber portnumber of proxy
+         * @param userId user id for proxy (optional)
+         * @param password password for proxy (optional)
+         */
+		public Builder setProxy(String hostName, int portNumber, String userId, String password) {
+			this.proxyhost = hostName;
+			this.proxyport = portNumber;
+			this.proxyuserid = userId;
+			this.proxypassword = password;
+			return this;
+		}
+
+        /**
+         * Build the APIClient using the given key, secret, baseURI and version.
+         * @return APIClient
+         */
         public APIClient build() {
             Preconditions.checkNotNull(key, "app key needed to build APIClient");
             Preconditions.checkNotNull(secret, "app secret needed to build APIClient");
             Preconditions.checkNotNull(baseURI, "base URI needed to build APIClient");
             Preconditions.checkNotNull(version, "version needed to build APIClient");
-            return new APIClient(key, secret, baseURI, version);
+            return new APIClient(key, secret, baseURI, version, proxyhost, proxyport, proxyuserid, proxypassword);
         }
 
     }
