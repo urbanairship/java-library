@@ -60,10 +60,10 @@ public class APIClient {
     /* HTTP */
     private final HttpHost uaHost;
 
-	private final String proxyhost; // proxy hostname
-	private final int proxyport; // proxy portnumber
-	private final String proxyuserid; // proxy userid
-	private final String proxypassword; // proxy password
+    private final String proxyhost; // proxy hostname
+    private final int proxyport; // proxy portnumber
+    private final String proxyuserid; // proxy userid
+    private final String proxypassword; // proxy password
 
     private final static Logger logger = LoggerFactory.getLogger("com.urbanairship.api");
 
@@ -82,10 +82,10 @@ public class APIClient {
         this.version = version;
         this.uaHost = new HttpHost(URI.create(baseURI).getHost(), 443, "https");
 
-		this.proxyhost = proxyhost; // proxy hostname
-		this.proxyport = proxyport; // proxy portnumber
-		this.proxyuserid = proxyuserid; // proxy userid
-		this.proxypassword = proxypassword; // proxy password
+        this.proxyhost = proxyhost; // proxy hostname
+        this.proxyport = proxyport; // proxy portnumber
+        this.proxyuserid = proxyuserid; // proxy userid
+        this.proxypassword = proxypassword; // proxy password
     }
 
     public String getAppSecret() { return appSecret; }
@@ -308,10 +308,10 @@ public class APIClient {
         private Number version;
 
         /** For setting up calls through a HTTPS proxy */
-		private String proxyhost;
-		private int proxyport;
-		private String proxyuserid;
-		private String proxypassword;
+        private String proxyhost;
+        private int proxyport;
+        private String proxyuserid;
+        private String proxypassword;
 
         private Builder(){
             baseURI = "https://go.urbanairship.com";
@@ -344,13 +344,13 @@ public class APIClient {
          * @param userId user id for proxy (optional)
          * @param password password for proxy (optional)
          */
-		public Builder setProxy(String hostName, int portNumber, String userId, String password) {
-			this.proxyhost = hostName;
-			this.proxyport = portNumber;
-			this.proxyuserid = userId;
-			this.proxypassword = password;
-			return this;
-		}
+        public Builder setProxy(String hostName, int portNumber, String userId, String password) {
+            this.proxyhost = hostName;
+            this.proxyport = portNumber;
+            this.proxyuserid = userId;
+            this.proxypassword = password;
+            return this;
+        }
 
         /**
          * Build the APIClient using the given key, secret, baseURI and version.
