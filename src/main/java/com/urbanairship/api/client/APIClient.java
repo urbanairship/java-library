@@ -28,6 +28,10 @@ import java.net.URI;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+/**
+ * The APIClient class handles HTTP requests to the Urban Airship API
+ */
+
 public class APIClient {
 
     /* Header keys/values */
@@ -76,14 +80,13 @@ public class APIClient {
     public String getAppSecret() { return appSecret; }
     public String getAppKey() { return appKey; }
 
-    /*
-    Add the version number to the default version header.
-     */
+    /* Add the version number to the default version header */
+
     private String versionedAcceptHeader(Number version){
         return String.format("%s version=%s", UA_APPLICATION_JSON, version.toString());
     }
 
-    /** Provisioning Methods **/
+    /* Provisioning Methods */
 
     private Request provisionRequest(Request object) {
         return object
@@ -98,7 +101,7 @@ public class APIClient {
                 .authPreemptive(uaHost);
     }
 
-    /** Push API **/
+    /* Push API */
 
     public APIClientResponse<APIPushResponse> push(PushPayload payload) throws IOException {
         Preconditions.checkNotNull(payload, "Payload required when executing a push operation");
@@ -124,7 +127,7 @@ public class APIClient {
         return provisionExecutor().execute(request).handleResponse(new PushAPIResponseHandler());
     }
 
-    /** Schedules API **/
+    /* Schedules API */
 
     public APIClientResponse<APIScheduleResponse> schedule(SchedulePayload payload) throws IOException {
         Preconditions.checkNotNull(payload, "Payload required when scheduling a push request");
@@ -202,7 +205,7 @@ public class APIClient {
         return provisionExecutor().execute(req).returnResponse();
     }
 
-    /** Tags API **/
+    /* Tags API */
 
     public APIClientResponse<APIListTagsResponse> listTags() throws IOException {
         Request req = provisionRequest(Request.Get(baseURI.resolve(API_TAGS_PATH)));
@@ -258,10 +261,14 @@ public class APIClient {
         return provisionExecutor().execute(req).returnResponse();
     }
 
+    /* Object methods */
+
     @Override
     public String toString() {
         return "APIClient\nAppKey:"+ appKey +"\nAppSecret:" + appSecret + "\n";
     }
+
+    /* Builder for APIClient */
 
     public static class Builder {
 
