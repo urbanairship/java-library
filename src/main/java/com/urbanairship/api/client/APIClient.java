@@ -24,9 +24,11 @@ import org.apache.http.params.CoreProtocolPNames;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.InputStream;
 import java.net.URI;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Properties;
 
 /**
  * The APIClient class handles HTTP requests to the Urban Airship API
@@ -38,7 +40,6 @@ public class APIClient {
     private final static String CONTENT_TYPE_KEY = "Content-type";
     private final static String ACCEPT_KEY = "Accept";
     private final static String UA_APPLICATION_JSON = "application/vnd.urbanairship+json;";
-    private final static String USER_AGENT = "UrbanAirship/version0.1beta";
 
     /* URI Paths */
     private final static String API_PUSH_PATH = "/api/push/";
@@ -86,11 +87,30 @@ public class APIClient {
         return String.format("%s version=%s", UA_APPLICATION_JSON, version.toString());
     }
 
+    /*
+    Retrieves Java Client API Version
+    */
+    public String getUserAgent() {
+        InputStream stream = getClass().getResourceAsStream("/client.properties");
+
+        if (stream == null) { return "UNKNOWN"; }
+
+        Properties props = new Properties();
+
+        try {
+            props.load(stream);
+            stream.close();
+            return "UAJavaLib/" + props.get("client.version");
+        } catch (IOException e) {
+            return "UNKNOWN";
+        }
+    }
+    
     /* Provisioning Methods */
 
     private Request provisionRequest(Request object) {
         return object
-                .config(CoreProtocolPNames.USER_AGENT, USER_AGENT)
+                .config(CoreProtocolPNames.USER_AGENT, getUserAgent())
                 .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
                 .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
     }

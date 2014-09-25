@@ -72,6 +72,21 @@ public class APIClientTest {
         assertEquals("App secret incorrect", "secret", client.getAppSecret());
     }
 
+    @Test
+    public void testGetUserAgent(){
+        APIClient client = APIClient.newBuilder()
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+        String userAgent = client.getUserAgent();
+        assertNotNull(userAgent);
+        assertFalse(userAgent.equals("UNKNOWN"));
+        assertFalse(userAgent.equals("UAJavaLib/UNKNOWN"));
+        assertFalse(userAgent.equals("UAJavaLib/"));
+        assertFalse(userAgent.endsWith("/"));
+        assertTrue(userAgent.startsWith("UAJavaLib/"));
+    }
+
     /* Test the following attributes of the push method on the APIClient object
         1. Method produces a post request
         2. Request has proper headers
