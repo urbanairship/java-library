@@ -272,7 +272,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
         /**
          * Add an extra key value pair to the notification payload. Maximum
-         * payload is 256 bytes.
+         * payload is 2000 bytes.
          * @param key String key
          * @param value String value
          * @return Builder
@@ -286,7 +286,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         }
 
         /**
-         * Add key value pairs to payload. Maximum payload is 256 bytes.
+         * Add key value pairs to payload. Maximum payload is 2000 bytes.
          * @param entries Map of key value pairs
          * @return Builder.
          */
