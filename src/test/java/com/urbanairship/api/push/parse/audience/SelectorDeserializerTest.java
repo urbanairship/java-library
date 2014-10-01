@@ -316,16 +316,6 @@ public class SelectorDeserializerTest {
         mapper.readValue("{\"and\" : \"foo\"}", Selector.class);
     }
 
-    /*    @Test(expected=APIParsingException.class)
-    public void testCompoundValidation_AND2() throws Exception {
-        mapper.readValue("{\"and\" : [ { \"tag\" : \"foo\" } ]}", Selector.class);
-        }
-
-    @Test(expected=APIParsingException.class)
-    public void testCompoundValidation_AND3() throws Exception {
-        mapper.readValue("{\"and\" : { \"tag\" : \"foo\" } }", Selector.class);
-        } */
-
     @Test(expected=APIParsingException.class)
     public void testCompoundValidation_NOT() throws Exception {
         mapper.readValue("{\"not\" : [ { \"tag\" : \"foo\" }, { \"tag\" : \"bar\" } ] }", Selector.class);
