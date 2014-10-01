@@ -29,7 +29,7 @@ public class BasicCompoundSelector implements CompoundSelector {
 
     @Override
     public DeviceTypeData getApplicableDeviceTypes() {
-                return DeviceTypeData.all();
+        return DeviceTypeData.all();
     }
 
     @Override
