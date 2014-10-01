@@ -1,10 +1,12 @@
 package com.urbanairship.api.push.parse.notification;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.common.parse.*;
+import com.urbanairship.api.push.model.notification.actions.Actions;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
@@ -18,6 +20,7 @@ public class NotificationReader implements JsonObjectReader<Notification> {
     private final Map<DeviceType, DevicePayloadOverride> payloadOverrides = Maps.newHashMap();
 
     private String alert = null;
+    private Optional<Actions> optActions = Optional.absent();
 
     public NotificationReader(Map<DeviceType, JsonDeserializer<? extends DevicePayloadOverride>> payloadOverridesDeserializerRegistry) {
         this.payloadOverridesDeserializerRegistry = payloadOverridesDeserializerRegistry;
@@ -36,6 +39,10 @@ public class NotificationReader implements JsonObjectReader<Notification> {
         payloadOverrides.put(deviceType, deserializer.deserialize(parser, context));
     }
 
+    public void readActions(JsonParser parser) throws IOException {
+        optActions = Optional.of(parser.readValueAs(Actions.class));
+    }
+
     @Override
     public Notification validateAndBuild() throws IOException {
         if (alert == null && payloadOverrides.isEmpty()) {
@@ -49,6 +56,10 @@ public class NotificationReader implements JsonObjectReader<Notification> {
 
         for (Map.Entry<DeviceType, DevicePayloadOverride> overrideEntry : payloadOverrides.entrySet()) {
             builder.addDeviceTypeOverride(overrideEntry.getKey(), overrideEntry.getValue());
+        }
+
+        if(optActions.isPresent()) {
+            builder.setActions(optActions.get());
         }
 
         try {
