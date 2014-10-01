@@ -7,13 +7,10 @@ package com.urbanairship.api.push.parse;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.CommonObjectMapper;
 import com.urbanairship.api.push.model.*;
+import com.urbanairship.api.push.model.audience.location.*;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.audience.Selector;
-import com.urbanairship.api.push.model.audience.location.LocationSelector;
-import com.urbanairship.api.push.model.audience.location.DateRange;
-import com.urbanairship.api.push.model.audience.location.AbsoluteDateRange;
-import com.urbanairship.api.push.model.audience.location.RecentDateRange;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 import com.urbanairship.api.push.model.notification.ios.IOSBadgeData;
 import com.urbanairship.api.push.model.notification.ios.IOSAlertData;
@@ -110,6 +107,7 @@ public class PushObjectMapper {
                 .addDeserializer(DeviceTypeData.class, new PlatformDataDeserializer())
                 .addDeserializer(DateRange.class, new DateRangeDeserializer())
                 .addSerializer(PushExpiry.class, PushExpirySerializer.INSTANCE)
+                .addDeserializer(SegmentDefinition.class, new SegmentDefinitionDeserializer())
 
             /* IOS */
                 .addSerializer(IOSDevicePayload.class, new IOSDevicePayloadSerializer())

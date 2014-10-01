@@ -38,6 +38,7 @@ public class APIClient {
 
     /* Header keys/values */
     private final static String CONTENT_TYPE_KEY = "Content-type";
+    private final static String CONTENT_TYPE_VALUE = "application/json";
     private final static String ACCEPT_KEY = "Accept";
     private final static String UA_APPLICATION_JSON = "application/vnd.urbanairship+json;";
 
@@ -47,6 +48,7 @@ public class APIClient {
     private final static String API_SCHEDULE_PATH = "/api/schedules/";
     private final static String API_TAGS_PATH = "/api/tags/";
     private final static String API_TAGS_BATCH_PATH = "/api/tags/batch/";
+    private final static String API_SEGMENTS_PATH = "/api/segments/";
 
     /* User auth */
     private final String appKey;
@@ -84,7 +86,7 @@ public class APIClient {
     /* Add the version number to the default version header */
 
     private String versionedAcceptHeader(Number version){
-        return String.format("%s version=%s", UA_APPLICATION_JSON, version.toString());
+        return String.format("%s version=%s;", UA_APPLICATION_JSON, version.toString());
     }
 
     /*
@@ -111,8 +113,14 @@ public class APIClient {
     private Request provisionRequest(Request object) {
         return object
                 .config(CoreProtocolPNames.USER_AGENT, getUserAgent())
-                .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
+                .addHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_VALUE)
                 .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
+    }
+
+    private Request provisionRequestWithoutAcceptKey(Request object) {
+        return object
+                .config(CoreProtocolPNames.USER_AGENT, getUserAgent())
+                .addHeader(CONTENT_TYPE_KEY, "application/json");
     }
 
     private Executor provisionExecutor() {
@@ -279,6 +287,18 @@ public class APIClient {
         }
 
         return provisionExecutor().execute(req).returnResponse();
+    }
+
+    /* Segments API */
+
+    public APIClientResponse<APIListAllSegmentsResponse> listAllSegments() throws IOException {
+        Request req = provisionRequestWithoutAcceptKey(Request.Get(baseURI.resolve(API_SEGMENTS_PATH)));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list all segments request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ListAllSegmentsAPIResponseHandler());
     }
 
     /* Object methods */
