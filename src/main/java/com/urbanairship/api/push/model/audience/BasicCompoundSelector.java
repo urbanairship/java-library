@@ -6,6 +6,7 @@ package com.urbanairship.api.push.model.audience;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.base.Preconditions;
+import com.urbanairship.api.push.model.DeviceTypeData;
 
 public class BasicCompoundSelector implements CompoundSelector {
 
@@ -24,6 +25,11 @@ public class BasicCompoundSelector implements CompoundSelector {
     @Override
     public SelectorType getType() {
         return this.type;
+    }
+
+    @Override
+    public DeviceTypeData getApplicableDeviceTypes() {
+        return DeviceTypeData.all();
     }
 
     @Override

@@ -4,6 +4,7 @@
 
 package com.urbanairship.api.push.model.audience;
 
+import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.audience.location.DateRange;
 import com.urbanairship.api.push.model.audience.location.DateRangeUnit;
 import com.urbanairship.api.push.model.audience.location.RecentDateRange;
@@ -149,6 +150,20 @@ public class Selectors {
         return compound(SelectorType.OR, SelectorType.DEVICE_TOKEN, deviceTokens);
     }
 
+    /* iOS channels */
+
+    public static final Selector iosChannel(String iosChannel) {
+        return value(SelectorType.IOS_CHANNEL, iosChannel);
+    }
+
+    public static final Selector iosChannel(String ... iosChannels) {
+        return compound(SelectorType.OR, SelectorType.IOS_CHANNEL, iosChannels);
+    }
+
+    public static final Selector iosChannel(Collection<String> iosChannels) {
+        return compound(SelectorType.OR, SelectorType.IOS_CHANNEL, iosChannels);
+    }
+
     /* Device pins */
 
     public static final Selector devicePin(String devicePin) {
@@ -175,6 +190,20 @@ public class Selectors {
 
     public static final Selector apids(Collection<String> apids) {
         return compound(SelectorType.OR, SelectorType.APID, apids);
+    }
+
+    /* Android channels */
+
+    public static final Selector androidChannel(String androidChannel) {
+        return value(SelectorType.ANDROID_CHANNEL, androidChannel);
+    }
+
+    public static final Selector androidChannels(String ... androidChannels) {
+        return compound(SelectorType.OR, SelectorType.ANDROID_CHANNEL, androidChannels);
+    }
+
+    public static final Selector androidChannels(Collection<String> androidChannels) {
+        return compound(SelectorType.OR, SelectorType.ANDROID_CHANNEL, androidChannels);
     }
 
     /* WNS APIDs */
@@ -205,17 +234,17 @@ public class Selectors {
         return compound(SelectorType.OR, SelectorType.MPNS, ids);
     }
 
-    /* AMAZON APIDs */
+    /* Amazon Channels */
 
-    public static final Selector adm(String adm) {
-        return value(SelectorType.AMAZON_CHANNEL, adm);
+    public static final Selector amazon(String id) {
+        return value(SelectorType.AMAZON_CHANNEL, id);
     }
 
-    public static final Selector admDevices(String ... ids) {
+    public static final Selector amazonDevices(String ... ids) {
         return compound(SelectorType.OR, SelectorType.AMAZON_CHANNEL, ids);
     }
 
-    public static final Selector admDevices(Collection<String> ids) {
+    public static final Selector amazonDevices(Collection<String> ids) {
         return compound(SelectorType.OR, SelectorType.AMAZON_CHANNEL, ids);
     }
 

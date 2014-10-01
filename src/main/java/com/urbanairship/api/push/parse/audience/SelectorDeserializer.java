@@ -74,10 +74,22 @@ public class SelectorDeserializer extends JsonDeserializer<Selector> {
                         reader.readValueSelector(SelectorType.MPNS, parser, context);
                     }
                 })
+            .put("ios_channel", new FieldParser<SelectorReader>() {
+                @Override
+                public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
+                    reader.readValueSelector(SelectorType.IOS_CHANNEL, parser, context);
+                }
+            })
             .put("amazon_channel", new FieldParser<SelectorReader>() {
                 @Override
                 public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
                     reader.readValueSelector(SelectorType.AMAZON_CHANNEL, parser, context);
+                }
+            })
+            .put("android_channel", new FieldParser<SelectorReader>() {
+                @Override
+                public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
+                    reader.readValueSelector(SelectorType.ANDROID_CHANNEL, parser, context);
                 }
             })
 

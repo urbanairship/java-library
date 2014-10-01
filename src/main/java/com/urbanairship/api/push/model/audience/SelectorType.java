@@ -4,18 +4,23 @@
 
 package com.urbanairship.api.push.model.audience;
 
+import com.google.common.base.Optional;
+import com.urbanairship.api.push.model.DeviceType;
+
 public enum SelectorType {
 
     TAG("tag", SelectorCategory.VALUE),
     ALIAS("alias", SelectorCategory.VALUE),
     SEGMENT("segment", SelectorCategory.VALUE),
 
-    DEVICE_TOKEN("device_token", SelectorCategory.VALUE, true),
-    DEVICE_PIN("device_pin", SelectorCategory.VALUE, true),
-    APID("apid", SelectorCategory.VALUE, true),
-    WNS("wns", SelectorCategory.VALUE, true),
-    MPNS("mpns", SelectorCategory.VALUE, true),
-    AMAZON_CHANNEL("amazon_channel", SelectorCategory.VALUE, true),
+    DEVICE_TOKEN("device_token", SelectorCategory.VALUE, true, DeviceType.IOS),
+    DEVICE_PIN("device_pin", SelectorCategory.VALUE, true, DeviceType.BLACKBERRY),
+    APID("apid", SelectorCategory.VALUE, true, DeviceType.ANDROID),
+    WNS("wns", SelectorCategory.VALUE, true, DeviceType.WNS),
+    MPNS("mpns", SelectorCategory.VALUE, true, DeviceType.MPNS),
+    AMAZON_CHANNEL("amazon_channel", SelectorCategory.VALUE, true, true, DeviceType.AMAZON),
+    IOS_CHANNEL("ios_channel", SelectorCategory.VALUE, true, true, DeviceType.IOS),
+    ANDROID_CHANNEL("android_channel", SelectorCategory.VALUE, true, true, DeviceType.ANDROID),
 
     AND("and", SelectorCategory.COMPOUND),
     OR("or", SelectorCategory.COMPOUND),
@@ -29,17 +34,31 @@ public enum SelectorType {
     private final String identifier;
     private final SelectorCategory category;
     private final boolean isDeviceId;
+    private final boolean isChannel;
+    private final Optional<DeviceType> deviceType;
 
     SelectorType(String identifier, SelectorCategory category) {
         this.identifier = identifier;
         this.category = category;
         this.isDeviceId = false;
+        this.isChannel = false;
+        this.deviceType = Optional.absent();
     }
 
-    SelectorType(String identifier, SelectorCategory category, boolean isDeviceId) {
+    SelectorType(String identifier, SelectorCategory category, boolean isDeviceId, DeviceType deviceType) {
         this.identifier = identifier;
         this.category = category;
         this.isDeviceId = isDeviceId;
+        this.isChannel = false;
+        this.deviceType = Optional.of(deviceType);
+    }
+
+    SelectorType(String identifier, SelectorCategory category, boolean isDeviceId, boolean isChannel, DeviceType deviceType) {
+        this.identifier = identifier;
+        this.category = category;
+        this.isDeviceId = isDeviceId;
+        this.isChannel = isChannel;
+        this.deviceType = Optional.of(deviceType);
     }
 
     public String getIdentifier() {
@@ -52,6 +71,14 @@ public enum SelectorType {
 
     public boolean isDeviceId() {
         return isDeviceId;
+    }
+
+    public boolean isChannel() {
+        return isChannel;
+    }
+
+    public Optional<DeviceType> getPlatform() {
+        return deviceType;
     }
 
     public static SelectorType getSelectorTypeFromIdentifier(String identifier) {
