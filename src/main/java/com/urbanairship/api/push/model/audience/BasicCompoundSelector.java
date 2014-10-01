@@ -29,28 +29,7 @@ public class BasicCompoundSelector implements CompoundSelector {
 
     @Override
     public DeviceTypeData getApplicableDeviceTypes() {
-        switch (type) {
-            case OR: {
-                // For OR, take a union of all sets of platforms
-                DeviceTypeData platforms = DeviceTypeData.newBuilder().build();
-                for (Selector child : children) {
-                    DeviceTypeData childPlatforms = child.getApplicableDeviceTypes();
-                    platforms = platforms.union(childPlatforms);
-                }
-                return platforms;
-            }
-            case AND: {
-                // For AND, take an intersection of all sets of platforms
-                DeviceTypeData platforms = DeviceTypeData.all();
-                for (Selector child : children) {
-                    DeviceTypeData childPlatforms = child.getApplicableDeviceTypes();
-                    platforms = platforms.intersect(childPlatforms);
-                }
-                return platforms;
-            }
-            default:
                 return DeviceTypeData.all();
-        }
     }
 
     @Override

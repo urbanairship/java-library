@@ -35,66 +35,12 @@ public final class DeviceTypeData extends PushModelObject {
         return builder.build();
     }
 
-    public int size() {
-        if (all) {
-            return 1000; /* This number is irrelevant, as long as it's
-                          * larger than any possible subset of all. */
-        } else if (deviceTypes.isPresent()) {
-            return deviceTypes.get().size();
-        } else {
-            return 0;
-        }
-    }
-
     public boolean isAll() {
         return all;
     }
 
     public Optional<ImmutableSet<DeviceType>> getDeviceTypes() {
         return deviceTypes;
-    }
-
-    public ImmutableSet<DeviceType> getDeviceTypesAsSet() {
-        return deviceTypes.isPresent() ? deviceTypes.get() : new ImmutableSet.Builder<DeviceType>().build();
-    }
-
-    public DeviceTypeData intersect(DeviceTypeData other) {
-        if (all) {
-            return other;
-        } else if (other.isAll()) {
-            return this;
-        } else if (size() == 0) {
-            return this;
-        } else if (other.size() == 0) {
-            return other;
-        } else {
-            DeviceTypeData.Builder builder = new Builder();
-            ImmutableSet<DeviceType> otherPlatforms = other.getDeviceTypesAsSet();
-            ImmutableSet<DeviceType> thesePlatforms = deviceTypes.get();
-            for (DeviceType p : otherPlatforms) {
-                if (thesePlatforms.contains(p)) {
-                    builder.addDeviceType(p);
-                }
-            }
-            DeviceTypeData pd = builder.build();
-            return pd;
-        }
-    }
-
-    public DeviceTypeData union(DeviceTypeData other) {
-        if (all || other.isAll()) {
-            return DeviceTypeData.all();
-        } else if (size() == 0) {
-            return other;
-        } else if (other.size() == 0) {
-            return this;
-        } else {
-            DeviceTypeData.Builder builder = new Builder();
-            builder.addAllDevicetypes(this);
-            builder.addAllDevicetypes(other);
-            DeviceTypeData pd = builder.build();
-            return pd;
-        }
     }
 
     @Override
@@ -149,15 +95,6 @@ public final class DeviceTypeData extends PushModelObject {
                 deviceTypes = ImmutableSet.builder();
             }
             this.deviceTypes.add(deviceType);
-            return this;
-        }
-
-        public Builder addAllDevicetypes(DeviceTypeData other) {
-            if (other.isAll()) {
-                all = true;
-            } else {
-                addAllDeviceTypes(other.getDeviceTypesAsSet());
-            }
             return this;
         }
 
