@@ -7,10 +7,14 @@ package com.urbanairship.api.push.parse;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.CommonObjectMapper;
 import com.urbanairship.api.push.model.*;
-import com.urbanairship.api.push.model.audience.location.*;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.audience.Selector;
+import com.urbanairship.api.push.model.audience.location.LocationSelector;
+import com.urbanairship.api.push.model.audience.location.DateRange;
+import com.urbanairship.api.push.model.audience.location.AbsoluteDateRange;
+import com.urbanairship.api.push.model.audience.location.RecentDateRange;
+import com.urbanairship.api.push.model.notification.actions.*;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 import com.urbanairship.api.push.model.notification.ios.IOSBadgeData;
 import com.urbanairship.api.push.model.notification.ios.IOSAlertData;
@@ -26,6 +30,7 @@ import com.urbanairship.api.push.model.notification.wns.WNSToastData;
 import com.urbanairship.api.push.model.notification.mpns.MPNSDevicePayload;
 import com.urbanairship.api.push.model.notification.mpns.MPNSPush;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
+import com.urbanairship.api.push.parse.notification.actions.*;
 import com.urbanairship.api.push.parse.notification.android.AndroidDevicePayloadDeserializer;
 import com.urbanairship.api.push.parse.notification.android.AndroidDevicePayloadSerializer;
 import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
@@ -107,7 +112,6 @@ public class PushObjectMapper {
                 .addDeserializer(DeviceTypeData.class, new PlatformDataDeserializer())
                 .addDeserializer(DateRange.class, new DateRangeDeserializer())
                 .addSerializer(PushExpiry.class, PushExpirySerializer.INSTANCE)
-                .addDeserializer(SegmentDefinition.class, new SegmentDefinitionDeserializer())
 
             /* IOS */
                 .addSerializer(IOSDevicePayload.class, new IOSDevicePayloadSerializer())
@@ -174,6 +178,22 @@ public class PushObjectMapper {
                 .addDeserializer(Schedule.class, ScheduleDeserializer.INSTANCE)
                 .addSerializer(Schedule.class, ScheduleSerializer.INSTANCE)
                 .addSerializer(ScheduleDetails.class, ScheduleDetailsSerializer.INSTANCE)
+
+           /* Actions */
+                .addDeserializer(Actions.class, new ActionsDeserializer())
+                .addSerializer(Actions.class, new ActionsSerializer(ActionNameRegistry.INSTANCE))
+
+                .addSerializer(OpenLandingPageWithContentAction.class, new LandingPageWithContentSerializer())
+                .addSerializer(OpenExternalURLAction.class, new ExternalURLSerializer())
+                .addSerializer(AddTagAction.class, new AddTagActionSerializer())
+                .addSerializer(RemoveTagAction.class, new RemoveTagActionSerializer())
+                .addSerializer(TagActionData.class, new TagActionDataSerializer())
+                .addSerializer(AppDefinedAction.class, new AppDefinedSerializer())
+                .addSerializer(DeepLinkAction.class, new DeepLinkSerializer())
+                .addDeserializer(ShareAction.class, new ShareActionDeserializer())
+                .addSerializer(ShareAction.class, new ShareActionSerializer())
+
+                .addDeserializer(TagActionData.class, new TagActionDataDeserializer())
 
             /* Tags */
                 .addSerializer(AddRemoveDeviceFromTagPayload.class, new AddRemoveDeviceFromTagPayloadSerializer())

@@ -60,7 +60,6 @@ public class APIClient {
 
     /* HTTP */
     private final HttpHost uaHost;
-    private final static String UA_HOSTNAME = "go.urbanairship.com";
 
     private final static Logger logger = LoggerFactory.getLogger("com.urbanairship.api");
 
@@ -77,7 +76,7 @@ public class APIClient {
         this.appSecret = appSecret;
         this.baseURI = URI.create(baseURI);
         this.version = version;
-        this.uaHost = new HttpHost(UA_HOSTNAME, 443, "https");
+        this.uaHost = new HttpHost(URI.create(baseURI).getHost(), 443, "https");
     }
 
     public String getAppSecret() { return appSecret; }

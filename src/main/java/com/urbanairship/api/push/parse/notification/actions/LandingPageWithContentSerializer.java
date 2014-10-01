@@ -1,0 +1,39 @@
+package com.urbanairship.api.push.parse.notification.actions;
+
+import com.urbanairship.api.push.model.notification.actions.OpenLandingPageWithContentAction;
+import com.urbanairship.api.push.model.notification.actions.LandingPageContent;
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.JsonProcessingException;
+import org.codehaus.jackson.map.JsonSerializer;
+import org.codehaus.jackson.map.SerializerProvider;
+
+import java.io.IOException;
+
+public final class LandingPageWithContentSerializer extends JsonSerializer<OpenLandingPageWithContentAction> {
+    @Override
+    public void serialize(OpenLandingPageWithContentAction value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+        jgen.writeStartObject();
+        try {
+            jgen.writeObjectField("type", "landing_page");
+
+            LandingPageContent content = value.getValue();
+            jgen.writeFieldName("content");
+            jgen.writeStartObject();
+            try {
+                jgen.writeStringField("body", content.getBody());
+                jgen.writeStringField("content_type", content.getContentType());
+                if(content.getEncoding().isPresent()) {
+                    jgen.writeStringField("content_encoding", content.getEncoding().get() == LandingPageContent.Encoding.UTF8 ?
+                            "utf-8" :
+                            "base64");
+                }
+            }
+            finally {
+                jgen.writeEndObject();
+            }
+        }
+        finally {
+            jgen.writeEndObject();
+        }
+    }
+}
