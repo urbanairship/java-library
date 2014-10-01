@@ -120,7 +120,7 @@ public class APIClient {
     private Request provisionRequestWithoutAcceptKey(Request object) {
         return object
                 .config(CoreProtocolPNames.USER_AGENT, getUserAgent())
-                .addHeader(CONTENT_TYPE_KEY, "application/json");
+                .addHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_VALUE);
     }
 
     private Executor provisionExecutor() {
