@@ -300,6 +300,28 @@ public class APIClient {
         return provisionExecutor().execute(req).handleResponse(new ListAllSegmentsAPIResponseHandler());
     }
 
+    public APIClientResponse<APIListAllSegmentsResponse> listAllSegments(String nextPage) throws IOException, URISyntaxException {
+        URI np = new URI(nextPage);
+        Request req = provisionRequestWithoutAcceptKey(Request.Get(baseURI.resolve(np.getPath() + "?" + np.getQuery())));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list all segments request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ListAllSegmentsAPIResponseHandler());
+    }
+
+    public APIClientResponse<APIListAllSegmentsResponse> listAllSegments(String start, int limit, String order) throws IOException, URISyntaxException {
+        String path = "/api/segments" + "?" + "start=" + start + "&limit=" + limit +"&order=" + order;
+        Request req = provisionRequest(Request.Get(baseURI.resolve(path)));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list all segments request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ListAllSegmentsAPIResponseHandler());
+    }
+
     /* Object methods */
 
     @Override
