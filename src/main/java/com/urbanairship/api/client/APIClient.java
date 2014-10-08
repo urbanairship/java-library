@@ -116,12 +116,6 @@ public class APIClient {
                 .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
     }
 
-    private Request provisionRequestWithoutAcceptKey(Request object) {
-        return object
-                .config(CoreProtocolPNames.USER_AGENT, getUserAgent())
-                .addHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_VALUE);
-    }
-
     private Executor provisionExecutor() {
         return Executor.newInstance()
                 .auth(uaHost, appKey, appSecret)
@@ -291,7 +285,7 @@ public class APIClient {
     /* Segments API */
 
     public APIClientResponse<APIListAllSegmentsResponse> listAllSegments() throws IOException {
-        Request req = provisionRequestWithoutAcceptKey(Request.Get(baseURI.resolve(API_SEGMENTS_PATH)));
+        Request req = provisionRequest(Request.Get(baseURI.resolve(API_SEGMENTS_PATH)));
 
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("Executing list all segments request %s", req));
@@ -302,7 +296,7 @@ public class APIClient {
 
     public APIClientResponse<APIListAllSegmentsResponse> listAllSegments(String nextPage) throws IOException, URISyntaxException {
         URI np = new URI(nextPage);
-        Request req = provisionRequestWithoutAcceptKey(Request.Get(baseURI.resolve(np.getPath() + "?" + np.getQuery())));
+        Request req = provisionRequest(Request.Get(baseURI.resolve(np.getPath() + "?" + np.getQuery())));
 
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("Executing list all segments request %s", req));
