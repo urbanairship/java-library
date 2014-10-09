@@ -129,13 +129,13 @@ public class APIClient {
 
         // If proxy has been set, set it on the executor
         if( proxyhost != null ) {
-			executor.authPreemptiveProxy(proxyhost);
-			request = request.viaProxy(proxyhost);
-			//If proxy authentication has been set, set it on the executor
-			if (proxycredentials != null) {
-				executor.auth(proxyhost, proxycredentials);
-			}
-		}
+            executor.authPreemptiveProxy(proxyhost);
+            request = request.viaProxy(proxyhost);
+            //If proxy authentication has been set, set it on the executor
+            if (proxycredentials != null) {
+                executor.auth(proxyhost, proxycredentials);
+            }
+        }
 
         return executor;
     }
