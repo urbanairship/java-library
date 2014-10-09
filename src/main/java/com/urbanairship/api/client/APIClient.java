@@ -5,23 +5,21 @@
 package com.urbanairship.api.client;
 
 import com.google.common.base.Preconditions;
-
 import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.schedule.model.SchedulePayload;
-
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
 import com.urbanairship.api.tag.model.BatchModificationPayload;
-import org.apache.commons.lang.StringUtils;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.NTCredentials;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.apache.http.params.CoreProtocolPNames;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -125,10 +123,24 @@ public class APIClient {
                 .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
     }
 
-    private Executor provisionExecutor() {
-        return Executor.newInstance()
+    private Executor provisionExecutor(Request request) {
+        Executor executor = Executor.newInstance()
                 .auth(uaHost, appKey, appSecret)
                 .authPreemptive(uaHost);
+
+        // If proxy has been set, set it on the executor
+        if( proxyhost != null ) {
+			HttpHost proxy = new HttpHost(proxyhost, proxyport);
+			executor.authPreemptiveProxy(proxy);
+			request = request.viaProxy(proxy);
+			//If proxy authentication has been set, set it on the executor
+			if (proxyuserid != null) {
+				UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(proxyuserid, proxypassword);
+				executor.auth(proxy, credentials);
+			}
+		}
+
+        return executor;
     }
 
     /* Push API */
@@ -142,7 +154,7 @@ public class APIClient {
             logger.debug(String.format("Executing push request %s", request));
         }
 
-        return provisionExecutor().execute(request).handleResponse(new PushAPIResponseHandler());
+        return provisionExecutor(request).execute(request).handleResponse(new PushAPIResponseHandler());
     }
 
     public APIClientResponse<APIPushResponse> validate(PushPayload payload) throws IOException {
@@ -154,7 +166,7 @@ public class APIClient {
             logger.debug(String.format("Executing validate push request %s", request));
         }
 
-        return provisionExecutor().execute(request).handleResponse(new PushAPIResponseHandler());
+        return provisionExecutor(request).execute(request).handleResponse(new PushAPIResponseHandler());
     }
 
     /* Schedules API */
@@ -168,7 +180,7 @@ public class APIClient {
             logger.debug(String.format("Executing schedule request %s", request));
         }
 
-        return provisionExecutor().execute(request).handleResponse(new ScheduleAPIResponseHandler());
+        return provisionExecutor(request).execute(request).handleResponse(new ScheduleAPIResponseHandler());
     }
 
     public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules() throws IOException {
@@ -178,7 +190,7 @@ public class APIClient {
             logger.debug(String.format("Executing list all schedules request %s", request));
         }
 
-        return provisionExecutor().execute(request).handleResponse(new ListAllSchedulesAPIResponseHandler());
+        return provisionExecutor(request).execute(request).handleResponse(new ListAllSchedulesAPIResponseHandler());
     }
 
     public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules(String start, int limit, String order) throws IOException {
@@ -189,7 +201,7 @@ public class APIClient {
             logger.debug(String.format("Executing list all schedules request %s", request));
         }
 
-        return provisionExecutor().execute(request).handleResponse(new ListAllSchedulesAPIResponseHandler());
+        return provisionExecutor(request).execute(request).handleResponse(new ListAllSchedulesAPIResponseHandler());
     }
 
     public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules(String next_page) throws IOException, URISyntaxException {
@@ -200,7 +212,7 @@ public class APIClient {
             logger.debug(String.format("Executing list all schedules request %s", request));
         }
 
-        return provisionExecutor().execute(request).handleResponse(new ListAllSchedulesAPIResponseHandler());
+        return provisionExecutor(request).execute(request).handleResponse(new ListAllSchedulesAPIResponseHandler());
     }
 
     public APIClientResponse<SchedulePayload> listSchedule(String id) throws IOException {
@@ -210,7 +222,7 @@ public class APIClient {
             logger.debug(String.format("Executing list specific schedule request %s", request));
         }
 
-        return provisionExecutor().execute(request).handleResponse(new ListScheduleAPIResponseHandler());
+        return provisionExecutor(request).execute(request).handleResponse(new ListScheduleAPIResponseHandler());
     }
 
     public APIClientResponse<APIScheduleResponse> updateSchedule(SchedulePayload payload, String id) throws IOException {
@@ -222,7 +234,7 @@ public class APIClient {
             logger.debug(String.format("Executing update schedule request %s", req));
         }
 
-        return provisionExecutor().execute(req).handleResponse(new ScheduleAPIResponseHandler());
+        return provisionExecutor(req).execute(req).handleResponse(new ScheduleAPIResponseHandler());
     }
 
     public HttpResponse deleteSchedule(String id) throws IOException {
@@ -232,7 +244,7 @@ public class APIClient {
             logger.debug(String.format("Executing delete schedule request %s", req));
         }
 
-        return provisionExecutor().execute(req).returnResponse();
+        return provisionExecutor(req).execute(req).returnResponse();
     }
 
     /* Tags API */
@@ -244,7 +256,7 @@ public class APIClient {
             logger.debug(String.format("Executing list tags request %s", req));
         }
 
-        return provisionExecutor().execute(req).handleResponse(new ListTagsAPIResponseHandler());
+        return provisionExecutor(req).execute(req).handleResponse(new ListTagsAPIResponseHandler());
     }
 
     public HttpResponse createTag(String tag) throws IOException {
@@ -254,7 +266,7 @@ public class APIClient {
             logger.debug(String.format("Executing create tag request %s", req));
         }
 
-        return provisionExecutor().execute(req).returnResponse();
+        return provisionExecutor(req).execute(req).returnResponse();
     }
 
     public HttpResponse deleteTag(String tag) throws IOException {
@@ -264,7 +276,7 @@ public class APIClient {
             logger.debug(String.format("Executing delete tag request %s", req));
         }
 
-        return provisionExecutor().execute(req).returnResponse();
+        return provisionExecutor(req).execute(req).returnResponse();
     }
 
     public HttpResponse addRemoveDevicesFromTag(String tag, AddRemoveDeviceFromTagPayload payload) throws IOException {
@@ -276,7 +288,7 @@ public class APIClient {
             logger.debug(String.format("Executing add/remove devices from tag request %s", req));
         }
 
-        return provisionExecutor().execute(req).returnResponse();
+        return provisionExecutor(req).execute(req).returnResponse();
     }
 
     public HttpResponse batchModificationOfTags(BatchModificationPayload payload) throws IOException {
@@ -288,7 +300,7 @@ public class APIClient {
             logger.debug(String.format("Executing batch modification of tags request %s", req));
         }
 
-        return provisionExecutor().execute(req).returnResponse();
+        return provisionExecutor(req).execute(req).returnResponse();
     }
 
     /* Object methods */
