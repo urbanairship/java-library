@@ -4,17 +4,16 @@
 
 package com.urbanairship.api.client;
 
-import com.google.common.base.Preconditions;
-import com.urbanairship.api.client.model.*;
-import com.urbanairship.api.push.model.PushPayload;
-import com.urbanairship.api.schedule.model.SchedulePayload;
-import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
-import com.urbanairship.api.tag.model.BatchModificationPayload;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
-import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.auth.Credentials;
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
@@ -22,11 +21,16 @@ import org.apache.http.params.CoreProtocolPNames;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.InputStream;
-import java.net.URI;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.Properties;
+import com.google.common.base.Preconditions;
+import com.urbanairship.api.client.model.APIClientResponse;
+import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
+import com.urbanairship.api.client.model.APIListTagsResponse;
+import com.urbanairship.api.client.model.APIPushResponse;
+import com.urbanairship.api.client.model.APIScheduleResponse;
+import com.urbanairship.api.push.model.PushPayload;
+import com.urbanairship.api.schedule.model.SchedulePayload;
+import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
+import com.urbanairship.api.tag.model.BatchModificationPayload;
 
 /**
  * The APIClient class handles HTTP requests to the Urban Airship API
@@ -57,10 +61,8 @@ public class APIClient {
     /* HTTP */
     private final HttpHost uaHost;
 
-    private final String proxyhost; // proxy hostname
-    private final int proxyport; // proxy portnumber
-    private final String proxyuserid; // proxy userid
-    private final String proxypassword; // proxy password
+    private HttpHost proxyhost = null; // proxy host
+    private Credentials proxycredentials = null; //Optional proxy credentials
 
     private final static Logger logger = LoggerFactory.getLogger("com.urbanairship.api");
 
@@ -68,7 +70,7 @@ public class APIClient {
         return new Builder();
     }
 
-    private APIClient(String appKey, String appSecret, String baseURI, Number version, String proxyhost, int proxyport, String proxyuserid, String proxypassword) {
+    private APIClient(String appKey, String appSecret, String baseURI, Number version, HttpHost proxyhost, Credentials proxycredentials) {
         Preconditions.checkArgument(StringUtils.isNotBlank(appKey),
                 "App key must be provided.");
         Preconditions.checkArgument(StringUtils.isNotBlank(appSecret),
@@ -79,10 +81,8 @@ public class APIClient {
         this.version = version;
         this.uaHost = new HttpHost(URI.create(baseURI).getHost(), 443, "https");
 
-        this.proxyhost = proxyhost; // proxy hostname
-        this.proxyport = proxyport; // proxy portnumber
-        this.proxyuserid = proxyuserid; // proxy userid
-        this.proxypassword = proxypassword; // proxy password
+        this.proxyhost = proxyhost;
+        this.proxycredentials = proxycredentials;
     }
 
     public String getAppSecret() { return appSecret; }
@@ -129,13 +129,11 @@ public class APIClient {
 
         // If proxy has been set, set it on the executor
         if( proxyhost != null ) {
-			HttpHost proxy = new HttpHost(proxyhost, proxyport);
-			executor.authPreemptiveProxy(proxy);
-			request = request.viaProxy(proxy);
+			executor.authPreemptiveProxy(proxyhost);
+			request = request.viaProxy(proxyhost);
 			//If proxy authentication has been set, set it on the executor
-			if (proxyuserid != null) {
-				UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(proxyuserid, proxypassword);
-				executor.auth(proxy, credentials);
+			if (proxycredentials != null) {
+				executor.auth(proxyhost, proxycredentials);
 			}
 		}
 
@@ -319,10 +317,8 @@ public class APIClient {
         private Number version;
 
         /** For setting up calls through a HTTPS proxy */
-        private String proxyhost;
-        private int proxyport;
-        private String proxyuserid;
-        private String proxypassword;
+        private HttpHost proxyhost;
+        private Credentials proxycredentials;
 
         private Builder(){
             baseURI = "https://go.urbanairship.com";
@@ -350,16 +346,18 @@ public class APIClient {
         }
 
         /**
-         * @param hostName hostname of proxy
-         * @param portNumber portnumber of proxy
-         * @param userId user id for proxy (optional)
-         * @param password password for proxy (optional)
+         * @param proxyhost proxy hostname and portnumber
          */
-        public Builder setProxy(String hostName, int portNumber, String userId, String password) {
-            this.proxyhost = hostName;
-            this.proxyport = portNumber;
-            this.proxyuserid = userId;
-            this.proxypassword = password;
+        public Builder setProxyHost(HttpHost proxyhost) {
+            this.proxyhost = proxyhost;
+            return this;
+        }
+
+        /**
+         * @param proxycredentials Credentials to use when using http proxy (optional)
+         */
+        public Builder setProxyCredentials(Credentials proxycredentials) {
+            this.proxycredentials = proxycredentials;
             return this;
         }
 
@@ -372,7 +370,7 @@ public class APIClient {
             Preconditions.checkNotNull(secret, "app secret needed to build APIClient");
             Preconditions.checkNotNull(baseURI, "base URI needed to build APIClient");
             Preconditions.checkNotNull(version, "version needed to build APIClient");
-            return new APIClient(key, secret, baseURI, version, proxyhost, proxyport, proxyuserid, proxypassword);
+            return new APIClient(key, secret, baseURI, version, proxyhost, proxycredentials);
         }
 
     }
