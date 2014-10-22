@@ -8,6 +8,7 @@ import com.urbanairship.api.push.model.*;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.push.parse.PushObjectMapper;
+import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
@@ -20,6 +21,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Period;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -721,6 +723,167 @@ public class APIClientTest {
             assertEquals(200, response.getStatusLine().getStatusCode());
         }
         catch (Exception ex){
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testListPushStatisticsInCSVString() {
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        String queryPathString = "/api/push/stats/?start=2014-10-01T12%3A00%3A00.000&end=2014-10-03T12%3A00%3A00.000&format=csv";
+
+        String responseString = "2014-10-01 19:00:00,19,0,0,0,60,0,0\n" +
+                "2014-10-01 20:00:00,133,0,0,0,67,0,0\n" +
+                "2014-10-01 21:00:00,11,0,0,0,60,0,0\n" +
+                "2014-10-01 22:00:00,7,0,0,0,60,0,0\n" +
+                "2014-10-01 23:00:00,533,0,0,0,60,0,0\n" +
+                "2014-10-02 00:00:00,116,0,0,0,129,0,0\n" +
+                "2014-10-02 01:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 02:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 03:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 04:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 05:00:00,1,0,0,0,60,0,0\n" +
+                "2014-10-02 06:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 07:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 08:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 09:00:00,1,0,0,0,60,0,0\n" +
+                "2014-10-02 10:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 11:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 12:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 13:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 14:00:00,1,0,0,0,60,0,0\n" +
+                "2014-10-02 15:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 16:00:00,374,0,0,0,275,0,0\n" +
+                "2014-10-02 17:00:00,1,0,0,0,60,0,0\n" +
+                "2014-10-02 18:00:00,0,0,0,0,132,0,0\n" +
+                "2014-10-02 19:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 20:00:00,0,0,0,0,132,0,0\n" +
+                "2014-10-02 21:00:00,0,0,0,0,62,0,0\n" +
+                "2014-10-02 22:00:00,122,0,0,0,132,0,0\n" +
+                "2014-10-02 23:00:00,488,0,0,0,132,0,0\n" +
+                "2014-10-03 00:00:00,121,0,0,0,132,0,0\n" +
+                "2014-10-03 01:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-03 02:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-03 03:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-03 04:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-03 05:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-03 06:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-03 07:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-03 08:00:00,0,0,0,0,61,0,0\n" +
+                "2014-10-03 09:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-03 10:00:00,0,0,0,0,62,0,0\n" +
+                "2014-10-03 11:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-03 12:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-03 13:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-03 14:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-03 15:00:00,115,0,0,0,130,0,0\n" +
+                "2014-10-03 16:00:00,124,0,0,0,132,0,0\n" +
+                "2014-10-03 17:00:00,7,0,0,0,76,0,0\n" +
+                "2014-10-03 18:00:00,19,0,0,0,70,0,0\n" +
+                "2014-10-03 19:00:00,0,0,0,0,60,0,0";
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseString)
+                        .withStatus(200)));
+
+        try {
+            DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+            DateTime end = start.plus(Period.hours(48));
+
+            APIClientResponse<String> response = client.listPushStatisticsInCSVString(start, end);
+
+            List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
+            assertEquals(1, requests.size());
+            assertNotNull(response);
+
+            assertEquals(200, response.getHttpResponse().getStatusLine().getStatusCode());
+
+            assertEquals(responseString, response.getApiResponse().toString());
+
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testListPushStatistics() {
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        String queryPathString = "/api/push/stats/?start=2014-10-01T12%3A00%3A00.000&end=2014-10-03T12%3A00%3A00.000&format=json";
+
+        String responseString = "[\n" +
+                "    {\n" +
+                "        \"c2dm_messages\": 0,\n" +
+                "        \"gcm_messages\": 3,\n" +
+                "        \"messages\": 2,\n" +
+                "        \"wns_messages\": 0,\n" +
+                "        \"start\": \"2014-06-22 00:00:00\",\n" +
+                "        \"android_messages\": 0,\n" +
+                "        \"mpns_messages\": 0,\n" +
+                "        \"bb_messages\": 0\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"c2dm_messages\": 0,\n" +
+                "        \"gcm_messages\": 2,\n" +
+                "        \"messages\": 0,\n" +
+                "        \"wns_messages\": 0,\n" +
+                "        \"start\": \"2014-06-22 01:00:00\",\n" +
+                "        \"android_messages\": 0,\n" +
+                "        \"mpns_messages\": 0,\n" +
+                "        \"bb_messages\": 0\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"messages\": 0,\n" +
+                "        \"mpns_messages\": 0,\n" +
+                "        \"gcm_messages\": 0,\n" +
+                "        \"c2dm_messages\": 0,\n" +
+                "        \"wns_messages\": 0,\n" +
+                "        \"start\": \"2014-06-22 02:00:00\",\n" +
+                "        \"android_messages\": 0,\n" +
+                "        \"bb_messages\": 0\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"c2dm_messages\": 0,\n" +
+                "        \"gcm_messages\": 1,\n" +
+                "        \"messages\": 3,\n" +
+                "        \"wns_messages\": 0,\n" +
+                "        \"start\": \"2014-06-22 03:00:00\",\n" +
+                "        \"android_messages\": 0,\n" +
+                "        \"mpns_messages\": 0,\n" +
+                "        \"bb_messages\": 0\n" +
+                "    }\n" +
+                "]";
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseString)
+                        .withStatus(200)));
+
+        try {
+            DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+            DateTime end = start.plus(Period.hours(48));
+
+            APIClientResponse<List<AppStats>> response = client.listPushStatistics(start, end);
+
+            List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
+            assertEquals(1, requests.size());
+            assertNotNull(response);
+
+            assertEquals(200, response.getHttpResponse().getStatusLine().getStatusCode());
+
+        } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
     }

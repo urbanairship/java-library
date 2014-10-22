@@ -8,6 +8,7 @@ import com.google.common.base.Preconditions;
 
 import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.push.model.PushPayload;
+import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
@@ -18,9 +19,11 @@ import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.params.CoreProtocolPNames;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +31,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -47,6 +51,7 @@ public class APIClient {
     private final static String API_SCHEDULE_PATH = "/api/schedules/";
     private final static String API_TAGS_PATH = "/api/tags/";
     private final static String API_TAGS_BATCH_PATH = "/api/tags/batch/";
+    private final static String API_STATISTICS_PATH = "/api/push/stats/";
 
     /* User auth */
     private final String appKey;
@@ -278,6 +283,70 @@ public class APIClient {
         }
 
         return provisionExecutor().execute(req).returnResponse();
+    }
+
+    /* Reports API */
+
+
+    /**
+     * Returns hourly counts for pushes sent for this application.
+     * JSON format
+     *
+     * @param start Start Time
+     * @param end Hours
+     * @return APIClientResponse of List of AppStats in JSON. Times are in UTC, and data is provided for each push platform.
+     * @throws IOException
+     */
+    public APIClientResponse<List<AppStats>> listPushStatistics(DateTime start, DateTime end) throws IOException, URISyntaxException {
+        Preconditions.checkNotNull(start, "Start time is required when performing listing of push statistics");
+        Preconditions.checkNotNull(end, "End time is required when performing listing of push statistics");
+
+        URIBuilder builder = new URIBuilder(baseURI.resolve(API_STATISTICS_PATH));
+
+        builder.addParameter("start", start.toLocalDateTime().toString());
+        builder.addParameter("end", end.toLocalDateTime().toString());
+        builder.addParameter("format", "json");
+
+        Request req = provisionRequest(Request.Get(builder.toString()));
+
+        req.removeHeaders(ACCEPT_KEY);      // Workaround for v3 routing bug
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list Statistics in CSV String format request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ListAppStatsAPIResponseHandler());
+    }
+
+    /**
+     * Returns hourly counts for pushes sent for this application.
+     * CSV format for easy importing into spreadsheets.
+     *
+     * @param start Start Time
+     * @param end   End Time
+     * @return APIClientResponse of String in CSV. Times are in UTC, and data is provided for each push platform.
+     * (Currently: iOS, Helium, BlackBerry, C2DM, GCM, Windows 8, and Windows Phone 8, in that order.)
+     * @throws IOException
+     */
+    public APIClientResponse<String> listPushStatisticsInCSVString(DateTime start, DateTime end) throws IOException {
+        Preconditions.checkNotNull(start, "Start time is required when performing listing of push statistics");
+        Preconditions.checkNotNull(end, "End time is required when performing listing of push statistics");
+
+        URIBuilder builder = new URIBuilder(baseURI.resolve(API_STATISTICS_PATH));
+
+        builder.addParameter("start", start.toLocalDateTime().toString());
+        builder.addParameter("end", end.toLocalDateTime().toString());
+        builder.addParameter("format", "csv");
+
+        Request req = provisionRequest(Request.Get(builder.toString()));
+
+        req.removeHeaders(ACCEPT_KEY);      // Workaround for v3 routing bug
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list Statistics in CSV String format request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new StringAPIResponseHandler());
     }
 
     /* Object methods */
