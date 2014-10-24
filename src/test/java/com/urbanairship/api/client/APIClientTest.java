@@ -28,6 +28,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 
@@ -886,5 +888,139 @@ public class APIClientTest {
         } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testListPushStatisticsStartAfterEnd() throws IOException, URISyntaxException, IllegalArgumentException
+    {
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        String queryPathString = "/api/push/stats/?start=2014-10-01T12%3A00%3A00.000&end=2014-10-03T12%3A00%3A00.000&format=json";
+
+        String responseString = "[\n" +
+                "    {\n" +
+                "        \"c2dm_messages\": 0,\n" +
+                "        \"gcm_messages\": 3,\n" +
+                "        \"messages\": 2,\n" +
+                "        \"wns_messages\": 0,\n" +
+                "        \"start\": \"2014-06-22 00:00:00\",\n" +
+                "        \"android_messages\": 0,\n" +
+                "        \"mpns_messages\": 0,\n" +
+                "        \"bb_messages\": 0\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"c2dm_messages\": 0,\n" +
+                "        \"gcm_messages\": 2,\n" +
+                "        \"messages\": 0,\n" +
+                "        \"wns_messages\": 0,\n" +
+                "        \"start\": \"2014-06-22 01:00:00\",\n" +
+                "        \"android_messages\": 0,\n" +
+                "        \"mpns_messages\": 0,\n" +
+                "        \"bb_messages\": 0\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"messages\": 0,\n" +
+                "        \"mpns_messages\": 0,\n" +
+                "        \"gcm_messages\": 0,\n" +
+                "        \"c2dm_messages\": 0,\n" +
+                "        \"wns_messages\": 0,\n" +
+                "        \"start\": \"2014-06-22 02:00:00\",\n" +
+                "        \"android_messages\": 0,\n" +
+                "        \"bb_messages\": 0\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"c2dm_messages\": 0,\n" +
+                "        \"gcm_messages\": 1,\n" +
+                "        \"messages\": 3,\n" +
+                "        \"wns_messages\": 0,\n" +
+                "        \"start\": \"2014-06-22 03:00:00\",\n" +
+                "        \"android_messages\": 0,\n" +
+                "        \"mpns_messages\": 0,\n" +
+                "        \"bb_messages\": 0\n" +
+                "    }\n" +
+                "]";
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseString)
+                        .withStatus(200)));
+
+        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+        DateTime end = start.minus(Period.hours(48));
+
+        APIClientResponse<List<AppStats>> response = client.listPushStatistics(start, end);
+        assertNotNull(response);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testListPushStatisticsStartAfterEndCSV() throws IOException, URISyntaxException, IllegalArgumentException
+    {
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        String queryPathString = "/api/push/stats/?start=2014-10-01T12%3A00%3A00.000&end=2014-10-03T12%3A00%3A00.000&format=csv";
+
+        String responseString = "[\n" +
+                "    {\n" +
+                "        \"c2dm_messages\": 0,\n" +
+                "        \"gcm_messages\": 3,\n" +
+                "        \"messages\": 2,\n" +
+                "        \"wns_messages\": 0,\n" +
+                "        \"start\": \"2014-06-22 00:00:00\",\n" +
+                "        \"android_messages\": 0,\n" +
+                "        \"mpns_messages\": 0,\n" +
+                "        \"bb_messages\": 0\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"c2dm_messages\": 0,\n" +
+                "        \"gcm_messages\": 2,\n" +
+                "        \"messages\": 0,\n" +
+                "        \"wns_messages\": 0,\n" +
+                "        \"start\": \"2014-06-22 01:00:00\",\n" +
+                "        \"android_messages\": 0,\n" +
+                "        \"mpns_messages\": 0,\n" +
+                "        \"bb_messages\": 0\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"messages\": 0,\n" +
+                "        \"mpns_messages\": 0,\n" +
+                "        \"gcm_messages\": 0,\n" +
+                "        \"c2dm_messages\": 0,\n" +
+                "        \"wns_messages\": 0,\n" +
+                "        \"start\": \"2014-06-22 02:00:00\",\n" +
+                "        \"android_messages\": 0,\n" +
+                "        \"bb_messages\": 0\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"c2dm_messages\": 0,\n" +
+                "        \"gcm_messages\": 1,\n" +
+                "        \"messages\": 3,\n" +
+                "        \"wns_messages\": 0,\n" +
+                "        \"start\": \"2014-06-22 03:00:00\",\n" +
+                "        \"android_messages\": 0,\n" +
+                "        \"mpns_messages\": 0,\n" +
+                "        \"bb_messages\": 0\n" +
+                "    }\n" +
+                "]";
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseString)
+                        .withStatus(200)));
+
+        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+        DateTime end = start.minus(Period.hours(48));
+
+        APIClientResponse<String> response = client.listPushStatisticsInCSVString(start, end);
+        assertNotNull(response);
     }
 }

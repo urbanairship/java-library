@@ -300,6 +300,7 @@ public class APIClient {
     public APIClientResponse<List<AppStats>> listPushStatistics(DateTime start, DateTime end) throws IOException, URISyntaxException {
         Preconditions.checkNotNull(start, "Start time is required when performing listing of push statistics");
         Preconditions.checkNotNull(end, "End time is required when performing listing of push statistics");
+        Preconditions.checkArgument(start.isBefore(end), "Start time must be before End time");
 
         URIBuilder builder = new URIBuilder(baseURI.resolve(API_STATISTICS_PATH));
 
@@ -331,6 +332,7 @@ public class APIClient {
     public APIClientResponse<String> listPushStatisticsInCSVString(DateTime start, DateTime end) throws IOException {
         Preconditions.checkNotNull(start, "Start time is required when performing listing of push statistics");
         Preconditions.checkNotNull(end, "End time is required when performing listing of push statistics");
+        Preconditions.checkArgument(start.isBefore(end), "Start time must be before End time");
 
         URIBuilder builder = new URIBuilder(baseURI.resolve(API_STATISTICS_PATH));
 
