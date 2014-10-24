@@ -25,6 +25,23 @@ import java.util.List;
 
 public class APIClientResponseTest {
 
+    @Test
+    public void testAPILocationResponse(){
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP",1,1), 200, "OK"));
+        APILocationResponse locationResponse = APILocationResponse.newBuilder()
+                .build();
+        APIClientResponse.Builder<APILocationResponse> builder =
+                APIClientResponse.newLocationResponseBuilder()
+                        .setApiResponse(locationResponse)
+                        .setHttpResponse(httpResponse);
+        APIClientResponse<APILocationResponse> testResponse = builder.build();
+        assertTrue("HTTP response not set properly",
+                testResponse.getHttpResponse().equals(httpResponse));
+
+        assertTrue("APIResponse not set properly",
+                testResponse.getApiResponse().equals(locationResponse));
+    }
 
     @Test
     public void testAPIScheduleResponse(){
