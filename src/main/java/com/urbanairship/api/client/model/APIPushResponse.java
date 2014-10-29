@@ -5,6 +5,7 @@
 package com.urbanairship.api.client.model;
 
 
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
@@ -41,6 +42,10 @@ public final class APIPushResponse {
         return pushIds;
     }
 
+    public static Builder newBuilder(){
+        return new Builder();
+    }
+
     @Override
     public String toString() {
         return "APIPushResponse{" +
@@ -49,8 +54,21 @@ public final class APIPushResponse {
                 '}';
     }
 
-    public static Builder newBuilder(){
-        return new Builder();
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(operationId, pushIds);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final APIPushResponse other = (APIPushResponse) obj;
+        return Objects.equal(this.operationId, other.operationId) && Objects.equal(this.pushIds, other.pushIds);
     }
 
     /**
