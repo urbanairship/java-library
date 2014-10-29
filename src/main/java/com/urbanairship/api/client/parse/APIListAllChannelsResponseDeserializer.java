@@ -13,7 +13,7 @@ import org.codehaus.jackson.map.JsonDeserializer;
 
 import java.io.IOException;
 
-public class APIListAllChannelsResponseDeserializer extends JsonDeserializer<APIListAllChannelsResponse> {
+public final class APIListAllChannelsResponseDeserializer extends JsonDeserializer<APIListAllChannelsResponse> {
 
     private static final FieldParserRegistry<APIListAllChannelsResponse, APIListAllChannelsResponseReader> FIELD_PARSER =
             new MapFieldParserRegistry<APIListAllChannelsResponse, APIListAllChannelsResponseReader>(
