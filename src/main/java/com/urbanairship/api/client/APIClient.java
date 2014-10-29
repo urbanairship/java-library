@@ -94,9 +94,8 @@ public class APIClient {
         return String.format("%s version=%s;", UA_APPLICATION_JSON, version.toString());
     }
 
-    /*
-    Retrieves Java Client API Version
-    */
+    /* Retrieves Java Client API Version */
+
     public String getUserAgent() {
         InputStream stream = getClass().getResourceAsStream("/client.properties");
 
@@ -335,7 +334,6 @@ public class APIClient {
     }
 
     /* Reports API */
-
 
     /**
      * Returns hourly counts for pushes sent for this application.
