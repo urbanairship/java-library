@@ -21,7 +21,7 @@ import java.util.Map;
  * error. Optional values from Google Guava are used in place of values
  * that may not be present.
  */
-public class APIError {
+public final class APIError {
 
     /* Header keys, values */
     private final static String CONTENT_TYPE_KEY = "Content-type";

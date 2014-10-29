@@ -21,7 +21,7 @@ the boilerplate necessary for Jackson stream parsing, which is essentially what
  If you're using Intellij, be sure and toggle open the code that's
  been collapsed.
  */
-class APIErrorDeserializer extends JsonDeserializer<APIError> {
+public final class APIErrorDeserializer extends JsonDeserializer<APIError> {
 
     private static final FieldParserRegistry<APIError, APIErrorReader> FIELD_PARSERS =
             new MapFieldParserRegistry<APIError, APIErrorReader>(

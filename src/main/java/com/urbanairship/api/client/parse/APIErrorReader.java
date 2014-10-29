@@ -17,7 +17,7 @@ import java.io.IOException;
 Readers are the part of the deserialization process that actually builds and
 return an object.
  */
-public class APIErrorReader implements JsonObjectReader<APIError> {
+public final class APIErrorReader implements JsonObjectReader<APIError> {
 
     private final APIError.Builder builder;
 

@@ -11,7 +11,7 @@ import com.google.common.base.Optional;
  * Provides details on processing errors that are returned by the Urban Airship
  * API. These are available in some error cases, and can assist in debugging.
  */
-public class APIErrorDetails {
+public final class APIErrorDetails {
 
     private final String path;
     private final String error;
