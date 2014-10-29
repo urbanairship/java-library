@@ -27,9 +27,7 @@ public class APIError {
     private final static String CONTENT_TYPE_KEY = "Content-type";
     private final static String CONTENT_TYPE_TEXT_HTML = "text/html";
     private final static String CONTENT_TYPE_JSON = "application/json";
-    private final static String UA_APPLICATION_JSON =
-            "application/vnd.urbanairship+json";
-
+    private final static String UA_APPLICATION_JSON = "application/vnd.urbanairship+json";
 
     private final Optional<String> operationId;
     private final String error;
