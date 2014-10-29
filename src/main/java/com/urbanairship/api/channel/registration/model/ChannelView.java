@@ -3,7 +3,6 @@ package com.urbanairship.api.channel.registration.model;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
-import com.urbanairship.api.channel.registration.model.DeviceType;
 import com.urbanairship.api.channel.registration.model.ios.IosSettings;
 import org.apache.commons.lang.StringUtils;
 
