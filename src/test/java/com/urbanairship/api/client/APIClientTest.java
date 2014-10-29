@@ -38,8 +38,6 @@ public class APIClientTest {
 
     public final static String CONTENT_TYPE_KEY = "Content-type";
     public final static String APP_JSON = "application/json";
-    public final static String UA_APP_JSON =
-            "application/vnd.urbanairship+json; version=3;";
 
     static {
         BasicConfigurator.configure();
@@ -126,7 +124,7 @@ public class APIClientTest {
 
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/push/"))
-                           .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                           .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(postRequestedFor(
                     urlEqualTo("/api/push/")));
             // There should only be one request
@@ -191,7 +189,7 @@ public class APIClientTest {
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/schedules/"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(getRequestedFor(
                     urlEqualTo("/api/schedules/")));
             // There should only be one request
@@ -233,7 +231,7 @@ public class APIClientTest {
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/schedules/ee0dd92c-de3b-46dc-9937-c9dcaef0170f"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(getRequestedFor(
                     urlEqualTo("/api/schedules/ee0dd92c-de3b-46dc-9937-c9dcaef0170f")));
             // There should only be one request
@@ -280,7 +278,7 @@ public class APIClientTest {
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/schedules?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(getRequestedFor(
                     urlEqualTo("/api/schedules?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc")));
             // There should only be one request
@@ -330,7 +328,7 @@ public class APIClientTest {
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/schedules?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(getRequestedFor(
                     urlEqualTo("/api/schedules?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc")));
             // There should only be one request
@@ -393,7 +391,7 @@ public class APIClientTest {
 
             // Verify components of the underlying request
             verify(postRequestedFor(urlEqualTo("/api/schedules/"))
-                           .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                           .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(postRequestedFor(urlEqualTo("/api/schedules/")));
             assertEquals(requests.size(), 1);
             String receivedBody = requests.get(0).getBodyAsString();
@@ -462,7 +460,7 @@ public class APIClientTest {
 
             // Verify components of the underlying request
             verify(putRequestedFor(urlEqualTo("/api/schedules/id"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(putRequestedFor(urlEqualTo("/api/schedules/id")));
             assertEquals(requests.size(), 1);
 
@@ -494,7 +492,7 @@ public class APIClientTest {
 
             // Verify components of the underlying HttpRequest
             verify(deleteRequestedFor(urlEqualTo("/api/schedules/puppies"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(deleteRequestedFor(
                     urlEqualTo("/api/schedules/puppies")));
             // There should only be one request
@@ -541,7 +539,7 @@ public class APIClientTest {
 
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/push/validate/"))
-                           .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                           .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             assertNotNull(response);
         }
         catch (Exception ex){
@@ -573,7 +571,7 @@ public class APIClientTest {
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/tags/"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(getRequestedFor(
                     urlEqualTo("/api/tags/")));
             // There should only be one request
@@ -607,7 +605,7 @@ public class APIClientTest {
 
             // Verify components of the underlying HttpRequest
             verify(putRequestedFor(urlEqualTo("/api/tags/puppies"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(putRequestedFor(
                     urlEqualTo("/api/tags/puppies")));
             // There should only be one request
@@ -640,7 +638,7 @@ public class APIClientTest {
 
             // Verify components of the underlying HttpRequest
             verify(deleteRequestedFor(urlEqualTo("/api/tags/puppies"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(deleteRequestedFor(
                     urlEqualTo("/api/tags/puppies")));
             // There should only be one request
