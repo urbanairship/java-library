@@ -4,6 +4,14 @@
 
 package com.urbanairship.api.client.parse;
 
+import com.urbanairship.api.channel.registration.model.ChannelView;
+import com.urbanairship.api.channel.registration.model.DeviceType;
+import com.urbanairship.api.channel.registration.model.ios.IosSettings;
+import com.urbanairship.api.channel.registration.model.ios.QuietTime;
+import com.urbanairship.api.channel.registration.parse.ChannelViewDeserializer;
+import com.urbanairship.api.channel.registration.parse.DeviceTypeDeserializer;
+import com.urbanairship.api.channel.registration.parse.ios.IosSettingsDeserializer;
+import com.urbanairship.api.channel.registration.parse.ios.QuietTimeDeserializer;
 import com.urbanairship.api.client.*;
 import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.push.model.PushPayload;
@@ -39,6 +47,11 @@ public class APIResponseObjectMapper {
         MODULE.addDeserializer(APIListTagsResponse.class, new APIListTagsResponseDeserializer());
         MODULE.addDeserializer(SegmentInformation.class, new SegmentInformationDeserializer());
         MODULE.addDeserializer(APIListAllSegmentsResponse.class, new APIListAllSegmentsResponseDeserializer());
+        MODULE.addDeserializer(IosSettings.class, new IosSettingsDeserializer());
+        MODULE.addDeserializer(QuietTime.class, new QuietTimeDeserializer());
+        MODULE.addDeserializer(ChannelView.class, new ChannelViewDeserializer());
+        MODULE.addDeserializer(DeviceType.class, new DeviceTypeDeserializer());
+        MODULE.addDeserializer(APIListAllChannelsResponse.class, new APIListAllChannelsResponseDeserializer());
 
         MAPPER.registerModule(PushObjectMapper.getModule());
         MAPPER.registerModule(MODULE);

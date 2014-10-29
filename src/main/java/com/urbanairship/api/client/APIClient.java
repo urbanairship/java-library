@@ -49,6 +49,7 @@ public class APIClient {
     private final static String API_TAGS_PATH = "/api/tags/";
     private final static String API_TAGS_BATCH_PATH = "/api/tags/batch/";
     private final static String API_SEGMENTS_PATH = "/api/segments/";
+    private final static String API_DEVICE_CHANNELS_PATH = "/api/channels/";
 
     /* User auth */
     private final String appKey;
@@ -314,6 +315,18 @@ public class APIClient {
         }
 
         return provisionExecutor().execute(req).handleResponse(new ListAllSegmentsAPIResponseHandler());
+    }
+
+    /* Device Information API */
+
+    public APIClientResponse<APIListAllChannelsResponse> listAllChannels() throws IOException {
+        Request req = provisionRequest(Request.Get(baseURI.resolve(API_DEVICE_CHANNELS_PATH)));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list all channels request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ListAllChannelsAPIResponseHandler());
     }
 
     /* Object methods */

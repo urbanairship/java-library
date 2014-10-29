@@ -66,6 +66,14 @@ public class APIClientResponse<T> {
     }
 
     /**
+     * Return a Builder for an APIListAllChannelsResponse
+     * @return Builder
+     */
+    public static Builder<APIListAllChannelsResponse> newListAllChannelsResponseBuilder(){
+        return new Builder<APIListAllChannelsResponse>();
+    }
+
+    /**
      * Return a Builder for an APIListAllSegmentsResponse
      * @return Builder
      */
