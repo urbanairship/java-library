@@ -9,6 +9,7 @@ import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.notification.Notifications;
+import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import org.apache.http.HttpResponse;
@@ -30,8 +31,58 @@ import java.util.List;
 public class APIClientResponseTest {
 
     @Test
-    public void testAPIListAllSegmentsResponse() {
+    public void testListOfAppStatsAPIResponse(){
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP",1,1), 200, "OK"));
 
+        AppStats one = AppStats.newBuilder()
+                .setStartTime(new DateTime(2015, 1, 1, 0, 0, 0, 0))
+                .build();
+
+        AppStats two = AppStats.newBuilder()
+                .setStartTime(new DateTime(2016, 1, 1, 0, 0, 0, 0))
+                .build();
+
+        List<AppStats> list = new ArrayList<AppStats>();
+
+        list.add(one);
+        list.add(two);
+
+        APIClientResponse.Builder<List<AppStats>> builder =
+                APIClientResponse.newListAppStatsBuilder()
+                        .setApiResponse(list)
+                        .setHttpResponse(httpResponse);
+
+        APIClientResponse<List<AppStats>> testResponse = builder.build();
+
+        assertTrue("HTTP response not set properly",
+                testResponse.getHttpResponse().equals(httpResponse));
+
+        assertTrue("APIResponse not set properly",
+                testResponse.getApiResponse().equals(list));
+    }
+
+    @Test
+    public void testStringAPIResponse(){
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP",1,1), 200, "OK"));
+
+        APIClientResponse.Builder<String> builder =
+                APIClientResponse.newStringResponseBuilder()
+                        .setApiResponse("StringLaLaLa")
+                        .setHttpResponse(httpResponse);
+
+        APIClientResponse<String> testResponse = builder.build();
+
+        assertTrue("HTTP response not set properly",
+                testResponse.getHttpResponse().equals(httpResponse));
+
+        assertTrue("APIResponse not set properly",
+                testResponse.getApiResponse().equals("StringLaLaLa"));
+    }
+
+    @Test
+    public void testAPIListAllSegmentsResponse() {
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP",1,1), 200, "OK"));
 

@@ -17,6 +17,8 @@ import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.push.parse.PushPayloadDeserializer;
+import com.urbanairship.api.reports.model.AppStats;
+import com.urbanairship.api.reports.parse.AppStatsDeserializer;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.schedule.parse.ScheduleDeserializer;
@@ -52,6 +54,7 @@ public class APIResponseObjectMapper {
         MODULE.addDeserializer(ChannelView.class, new ChannelViewDeserializer());
         MODULE.addDeserializer(DeviceType.class, new DeviceTypeDeserializer());
         MODULE.addDeserializer(APIListAllChannelsResponse.class, new APIListAllChannelsResponseDeserializer());
+        MODULE.addDeserializer(AppStats.class, new AppStatsDeserializer());
 
         MAPPER.registerModule(PushObjectMapper.getModule());
         MAPPER.registerModule(MODULE);
