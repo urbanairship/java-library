@@ -9,7 +9,7 @@ import org.joda.time.format.DateTimeFormat;
 
 import java.io.IOException;
 
-public class AppStatsReader implements JsonObjectReader<AppStats> {
+public final class AppStatsReader implements JsonObjectReader<AppStats> {
 
     private final AppStats.Builder builder;
 
