@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ */
+
 package com.urbanairship.api.channel.information.parse.ios;
 
 import com.urbanairship.api.common.parse.APIParsingException;
