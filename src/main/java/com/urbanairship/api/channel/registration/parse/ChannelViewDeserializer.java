@@ -15,7 +15,7 @@ import org.codehaus.jackson.map.JsonDeserializer;
 
 import java.io.IOException;
 
-public class ChannelViewDeserializer extends JsonDeserializer<ChannelView> {
+public final class ChannelViewDeserializer extends JsonDeserializer<ChannelView> {
 
     private static final FieldParserRegistry<ChannelView, ChannelViewReader> FIELD_PARSERS = new MapFieldParserRegistry<ChannelView, ChannelViewReader>(
             ImmutableMap.<String, FieldParser<ChannelViewReader>>builder()

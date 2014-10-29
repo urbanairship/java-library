@@ -15,7 +15,7 @@ import org.joda.time.DateTime;
 
 import java.io.IOException;
 
-public class ChannelViewReader implements JsonObjectReader<ChannelView> {
+public final class ChannelViewReader implements JsonObjectReader<ChannelView> {
     private final ChannelView.Builder builder;
 
     public ChannelViewReader() {
