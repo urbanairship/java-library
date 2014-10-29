@@ -4,14 +4,14 @@
 
 package com.urbanairship.api.client.parse;
 
-import com.urbanairship.api.channel.registration.model.ChannelView;
-import com.urbanairship.api.channel.registration.model.DeviceType;
-import com.urbanairship.api.channel.registration.model.ios.IosSettings;
-import com.urbanairship.api.channel.registration.model.ios.QuietTime;
-import com.urbanairship.api.channel.registration.parse.ChannelViewDeserializer;
-import com.urbanairship.api.channel.registration.parse.DeviceTypeDeserializer;
-import com.urbanairship.api.channel.registration.parse.ios.IosSettingsDeserializer;
-import com.urbanairship.api.channel.registration.parse.ios.QuietTimeDeserializer;
+import com.urbanairship.api.channel.information.model.ChannelView;
+import com.urbanairship.api.channel.information.model.DeviceType;
+import com.urbanairship.api.channel.information.model.ios.IosSettings;
+import com.urbanairship.api.channel.information.model.ios.QuietTime;
+import com.urbanairship.api.channel.information.parse.ChannelViewDeserializer;
+import com.urbanairship.api.channel.information.parse.DeviceTypeDeserializer;
+import com.urbanairship.api.channel.information.parse.ios.IosSettingsDeserializer;
+import com.urbanairship.api.channel.information.parse.ios.QuietTimeDeserializer;
 import com.urbanairship.api.client.*;
 import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.push.model.PushPayload;

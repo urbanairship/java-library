@@ -1,6 +1,6 @@
 package com.urbanairship.api.client;
 
-import com.urbanairship.api.channel.registration.model.ChannelView;
+import com.urbanairship.api.channel.information.model.ChannelView;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.push.model.DeviceType;
@@ -219,7 +219,7 @@ public class APIClientResponseTest {
                         .setBackground(true)
                         .setChannelId("channelID")
                         .setCreatedMillis(12345L)
-                        .setDeviceType(com.urbanairship.api.channel.registration.model.DeviceType.ANDROID)
+                        .setDeviceType(com.urbanairship.api.channel.information.model.DeviceType.ANDROID)
                         .setInstalled(true)
                         .setLastRegistrationMillis(12345L)
                         .setOptedIn(true)
