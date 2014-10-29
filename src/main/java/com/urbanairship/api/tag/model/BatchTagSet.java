@@ -5,6 +5,7 @@
 package com.urbanairship.api.tag.model;
 
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 
@@ -39,34 +40,29 @@ public final class BatchTagSet {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) { return true; }
-        if (o == null || getClass() != o.getClass()) { return false; }
-
-        BatchTagSet that = (BatchTagSet) o;
-
-        if (deviceID != null ? !deviceID.equals(that.deviceID) : that.deviceID != null) { return false; }
-        if (idType != that.idType) { return false; }
-        if (tags != null ? !tags.equals(that.tags) : that.tags != null) { return false; }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = idType != null ? idType.hashCode() : 0;
-        result = 31 * result + (deviceID != null ? deviceID.hashCode() : 0);
-        result = 31 * result + (tags != null ? tags.hashCode() : 0);
-        return result;
-    }
-
-    @Override
     public String toString() {
         return "BatchTagSet{" +
                 "idType=" + idType +
                 ", deviceID='" + deviceID + '\'' +
                 ", tags=" + tags +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(idType, deviceID, tags);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final BatchTagSet other = (BatchTagSet) obj;
+        return Objects.equal(this.idType, other.idType) && Objects.equal(this.deviceID, other.deviceID) && Objects.equal(this.tags, other.tags);
     }
 
     public static class Builder {

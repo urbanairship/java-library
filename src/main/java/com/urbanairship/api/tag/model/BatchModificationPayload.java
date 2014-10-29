@@ -5,6 +5,7 @@
 package com.urbanairship.api.tag.model;
 
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.push.model.PushModelObject;
@@ -33,22 +34,20 @@ public final class BatchModificationPayload extends PushModelObject {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) { return true; }
-        if (o == null || getClass() != o.getClass()) { return false; }
-
-        BatchModificationPayload that = (BatchModificationPayload) o;
-
-        if (batchObject != null ? !batchObject.equals(that.batchObject) : that.batchObject != null) {
-            return false;
-        }
-
-        return true;
+    public int hashCode() {
+        return Objects.hashCode(batchObject);
     }
 
     @Override
-    public int hashCode() {
-        return batchObject != null ? batchObject.hashCode() : 0;
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final BatchModificationPayload other = (BatchModificationPayload) obj;
+        return Objects.equal(this.batchObject, other.batchObject);
     }
 
     public static class Builder {

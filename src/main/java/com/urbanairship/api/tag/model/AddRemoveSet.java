@@ -4,6 +4,7 @@
 
 package com.urbanairship.api.tag.model;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
@@ -40,23 +41,20 @@ public final class AddRemoveSet {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) { return true; }
-        if (o == null || getClass() != o.getClass()) { return false; }
-
-        AddRemoveSet that = (AddRemoveSet) o;
-
-        if (add != null ? !add.equals(that.add) : that.add != null) { return false; }
-        if (remove != null ? !remove.equals(that.remove) : that.remove != null) { return false; }
-
-        return true;
+    public int hashCode() {
+        return Objects.hashCode(add, remove);
     }
 
     @Override
-    public int hashCode() {
-        int result = add != null ? add.hashCode() : 0;
-        result = 31 * result + (remove != null ? remove.hashCode() : 0);
-        return result;
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final AddRemoveSet other = (AddRemoveSet) obj;
+        return Objects.equal(this.add, other.add) && Objects.equal(this.remove, other.remove);
     }
 
 
