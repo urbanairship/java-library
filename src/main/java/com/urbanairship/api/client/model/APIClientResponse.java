@@ -5,6 +5,7 @@
 
 package com.urbanairship.api.client.model;
 
+import com.google.common.base.Objects;
 import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import org.apache.http.HttpResponse;
@@ -117,6 +118,23 @@ public class APIClientResponse<T> {
      */
     public T getApiResponse() {
         return apiResponse;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(apiResponse, httpResponse);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final APIClientResponse other = (APIClientResponse) obj;
+        return Objects.equal(this.apiResponse, other.apiResponse) && Objects.equal(this.httpResponse, other.httpResponse);
     }
 
     public String toString(){
