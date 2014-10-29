@@ -1,15 +1,15 @@
-package com.urbanairship.api.channel.registration.parse;
+package com.urbanairship.api.channel.information.parse;
 
-import com.urbanairship.api.channel.registration.model.DeviceType;
+import com.urbanairship.api.channel.information.model.DeviceType;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.BooleanFieldDeserializer;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.common.parse.ListOfStringsDeserializer;
 import com.urbanairship.api.common.parse.StringFieldDeserializer;
-import com.urbanairship.api.channel.registration.model.ChannelView;
+import com.urbanairship.api.channel.information.model.ChannelView;
 
-import com.urbanairship.api.channel.registration.model.ios.IosSettings;
-import com.urbanairship.api.channel.registration.util.Constants;
+import com.urbanairship.api.channel.information.model.ios.IosSettings;
+import com.urbanairship.api.channel.information.util.Constants;
 import org.codehaus.jackson.JsonParser;
 import org.joda.time.DateTime;
 

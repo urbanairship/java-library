@@ -1,4 +1,4 @@
-package com.urbanairship.api.channel.registration.util;
+package com.urbanairship.api.channel.information.util;
 
 /**
  * Constants

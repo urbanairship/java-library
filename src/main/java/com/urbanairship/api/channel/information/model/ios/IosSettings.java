@@ -1,4 +1,4 @@
-package com.urbanairship.api.channel.registration.model.ios;
+package com.urbanairship.api.channel.information.model.ios;
 
 
 import com.google.common.base.Optional;

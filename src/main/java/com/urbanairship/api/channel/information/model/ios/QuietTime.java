@@ -1,4 +1,4 @@
-package com.urbanairship.api.channel.registration.model.ios;
+package com.urbanairship.api.channel.information.model.ios;
 
 
 public final class QuietTime {
