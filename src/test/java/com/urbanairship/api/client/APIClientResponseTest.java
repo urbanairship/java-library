@@ -1,5 +1,7 @@
 package com.urbanairship.api.client;
 
+import com.urbanairship.api.channel.registration.model.ChannelView;
+import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
@@ -17,6 +19,8 @@ import org.apache.http.message.BasicStatusLine;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -26,6 +30,8 @@ import java.util.List;
 
 public class APIClientResponseTest {
 
+    @Test
+    public void testAPIListAllSegmentsResponse() {
     @Test
     public void testListOfAppStatsAPIResponse(){
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
@@ -75,6 +81,38 @@ public class APIClientResponseTest {
 
         assertTrue("APIResponse not set properly",
                 testResponse.getApiResponse().equals("StringLaLaLa"));
+    }
+
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP",1,1), 200, "OK"));
+
+        httpResponse.setHeader("Link", "NextPage");
+
+        SegmentInformation si = SegmentInformation.newBuilder()
+                .setCreationDate(123L)
+                .setDisplayName("DisplayName")
+                .setId("Id")
+                .setModificationDate(321L)
+                .build();
+
+        ImmutableList<SegmentInformation> listsi = ImmutableList.<SegmentInformation>builder()
+                .add(si)
+                .build();
+
+        APIListAllSegmentsResponse segmentsResponse = APIListAllSegmentsResponse.newBuilder()
+                .setNextPage("NextPage")
+                .setSegments(listsi)
+                .build();
+
+        APIClientResponse.Builder<APIListAllSegmentsResponse> builder =
+                APIClientResponse.newListAllSegmentsResponseBuilder()
+                        .setApiResponse(segmentsResponse)
+                        .setHttpResponse(httpResponse);
+
+        APIClientResponse<APIListAllSegmentsResponse> testResponse = builder.build();
+
+        assertEquals("HTTP response not set properly", httpResponse, testResponse.getHttpResponse());
+        assertEquals("APIResponse not set properly", segmentsResponse, testResponse.getApiResponse());
     }
 
     @Test
@@ -167,6 +205,40 @@ public class APIClientResponseTest {
 
         assertTrue("APIResponse not set properly",
                 testResponse.getApiResponse().equals(listTagsResponse));
+    }
+
+    @Test
+    public void testAPIListAllChannelsResponse(){
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP",1,1), 200, "OK"));
+
+        APIListAllChannelsResponse response = APIListAllChannelsResponse.newBuilder()
+                .setNextPage("nextPage")
+                .addChannel(ChannelView.newBuilder()
+                        .setAlias("Alias")
+                        .setBackground(true)
+                        .setChannelId("channelID")
+                        .setCreatedMillis(12345L)
+                        .setDeviceType(com.urbanairship.api.channel.registration.model.DeviceType.ANDROID)
+                        .setInstalled(true)
+                        .setLastRegistrationMillis(12345L)
+                        .setOptedIn(true)
+                        .setPushAddress("PUSH")
+                        .build())
+                .build();
+
+        APIClientResponse.Builder<APIListAllChannelsResponse> builder =
+                APIClientResponse.newListAllChannelsResponseBuilder()
+                        .setApiResponse(response)
+                        .setHttpResponse(httpResponse);
+
+        APIClientResponse<APIListAllChannelsResponse> testResponse = builder.build();
+
+        assertTrue("HTTP response not set properly",
+                testResponse.getHttpResponse().equals(httpResponse));
+
+        assertTrue("APIResponse not set properly",
+                testResponse.getApiResponse().equals(response));
     }
 
     @Test
