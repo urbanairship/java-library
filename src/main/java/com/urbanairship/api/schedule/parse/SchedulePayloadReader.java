@@ -15,7 +15,7 @@ import org.codehaus.jackson.type.TypeReference;
 import java.io.IOException;
 import java.util.List;
 
-public class SchedulePayloadReader implements JsonObjectReader<SchedulePayload> {
+public final class SchedulePayloadReader implements JsonObjectReader<SchedulePayload> {
 
     private final SchedulePayload.Builder builder;
 

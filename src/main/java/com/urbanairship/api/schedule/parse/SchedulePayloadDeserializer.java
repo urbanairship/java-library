@@ -14,7 +14,7 @@ import org.codehaus.jackson.map.JsonDeserializer;
 
 import java.io.IOException;
 
-public class SchedulePayloadDeserializer extends JsonDeserializer<SchedulePayload> {
+public final class SchedulePayloadDeserializer extends JsonDeserializer<SchedulePayload> {
 
     private static final FieldParserRegistry<SchedulePayload, SchedulePayloadReader> FIELD_PARSERS = new MapFieldParserRegistry<SchedulePayload, SchedulePayloadReader>(
             ImmutableMap.<String, FieldParser<SchedulePayloadReader>>builder()

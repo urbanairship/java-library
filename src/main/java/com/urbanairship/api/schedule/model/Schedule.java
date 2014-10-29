@@ -4,11 +4,12 @@
 
 package com.urbanairship.api.schedule.model;
 
+import com.google.common.base.Objects;
 import com.urbanairship.api.push.model.PushModelObject;
 import com.google.common.base.Preconditions;
 import org.joda.time.DateTime;
 
-public class Schedule extends PushModelObject {
+public final class Schedule extends PushModelObject {
 
     private final DateTime scheduledTimestamp;
     private final Boolean localTimePresent;
@@ -36,28 +37,6 @@ public class Schedule extends PushModelObject {
         return localTimePresent;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Schedule that = (Schedule) o;
-
-        if (scheduledTimestamp != null ? !scheduledTimestamp.equals(that.scheduledTimestamp) : that.scheduledTimestamp != null) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = scheduledTimestamp != null ? scheduledTimestamp.hashCode() : 0;
-        return result;
-    }
 
     @Override
     public String toString() {
@@ -73,6 +52,23 @@ public class Schedule extends PushModelObject {
      */
     public static Builder newBuilder() {
         return new Builder();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(scheduledTimestamp, localTimePresent);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final Schedule other = (Schedule) obj;
+        return Objects.equal(this.scheduledTimestamp, other.scheduledTimestamp) && Objects.equal(this.localTimePresent, other.localTimePresent);
     }
 
     /**

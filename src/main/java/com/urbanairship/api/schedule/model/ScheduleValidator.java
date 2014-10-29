@@ -4,13 +4,12 @@
 
 package com.urbanairship.api.schedule.model;
 
-import com.google.common.base.Optional;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.schedule.parse.TimeZones;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
-public class ScheduleValidator {
+public final class ScheduleValidator {
 
     public void validate(Schedule schedule) throws APIParsingException {
 

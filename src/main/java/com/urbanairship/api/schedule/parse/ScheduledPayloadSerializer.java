@@ -11,7 +11,7 @@ import org.codehaus.jackson.map.SerializerProvider;
 
 import java.io.IOException;
 
-public class ScheduledPayloadSerializer extends JsonSerializer<SchedulePayload> {
+public final class ScheduledPayloadSerializer extends JsonSerializer<SchedulePayload> {
 
     public static final ScheduledPayloadSerializer INSTANCE = new ScheduledPayloadSerializer();
 

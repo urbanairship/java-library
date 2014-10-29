@@ -9,7 +9,6 @@ import com.urbanairship.api.schedule.model.Schedule;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
-import org.joda.time.DateTime;
 
 import java.io.IOException;
 

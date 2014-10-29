@@ -12,7 +12,7 @@ import org.joda.time.DateTime;
 
 import java.io.IOException;
 
-public class ScheduleReader implements JsonObjectReader<Schedule> {
+public final class ScheduleReader implements JsonObjectReader<Schedule> {
 
     private final Schedule.Builder builder;
 

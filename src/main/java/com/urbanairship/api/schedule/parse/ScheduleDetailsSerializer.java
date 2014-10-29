@@ -5,14 +5,13 @@
 package com.urbanairship.api.schedule.parse;
 
 import com.urbanairship.api.schedule.model.ScheduleDetails;
-import com.urbanairship.api.schedule.model.SchedulePayload;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
 
 import java.io.IOException;
 
-public class ScheduleDetailsSerializer extends JsonSerializer<ScheduleDetails> {
+public final class ScheduleDetailsSerializer extends JsonSerializer<ScheduleDetails> {
 
     public static final ScheduleDetailsSerializer INSTANCE = new ScheduleDetailsSerializer();
 

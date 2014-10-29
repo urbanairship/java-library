@@ -4,8 +4,8 @@
 
 package com.urbanairship.api.schedule.model;
 
+import com.google.common.base.Objects;
 import com.urbanairship.api.push.model.PushModelObject;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 public final class ScheduleDetails extends PushModelObject {
@@ -30,33 +30,6 @@ public final class ScheduleDetails extends PushModelObject {
         return jobId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        ScheduleDetails scheduleDetails = (ScheduleDetails) o;
-
-        if (schedulePayload != null ? !schedulePayload.equals(scheduleDetails.schedulePayload) : scheduleDetails.schedulePayload != null) {
-            return false;
-        }
-        if (jobId != null ? !jobId.equals(scheduleDetails.jobId) : scheduleDetails.jobId != null) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = schedulePayload != null ? schedulePayload.hashCode() : 0;
-        result = 31 * result + (jobId != null ? jobId.hashCode() : 0);
-        return result;
-    }
 
     @Override
     public String toString() {
@@ -64,6 +37,23 @@ public final class ScheduleDetails extends PushModelObject {
                 "jobId='" + jobId + '\'' +
                 ", schedulePayload='" + schedulePayload + '\'' +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(jobId, schedulePayload);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final ScheduleDetails other = (ScheduleDetails) obj;
+        return Objects.equal(this.jobId, other.jobId) && Objects.equal(this.schedulePayload, other.schedulePayload);
     }
 
     public static final class Builder {
