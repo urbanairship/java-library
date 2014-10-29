@@ -31,7 +31,7 @@ import org.codehaus.jackson.map.module.SimpleModule;
 This is where object serialization and deserialization are registered with
 Jackson to enable object parsing.
  */
-public class APIResponseObjectMapper {
+public final class APIResponseObjectMapper {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final SimpleModule MODULE = new SimpleModule("Urban Airship API Client Module", new Version(1,0,0,null));
