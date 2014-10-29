@@ -74,6 +74,14 @@ public class APIClientResponse<T> {
     }
 
     /**
+     * Return a Builder for an APIListAllSegmentsResponse
+     * @return Builder
+     */
+    public static Builder<APIListAllSegmentsResponse> newListAllSegmentsResponseBuilder(){
+        return new Builder<APIListAllSegmentsResponse>();
+    }
+
+    /**
      * Return the HTTP request object used for the request.
      * The HttpEntity associated with the request will be closed, and
      * attempting to read from it will throw an exception

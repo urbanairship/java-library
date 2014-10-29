@@ -45,6 +45,8 @@ public class APIResponseObjectMapper {
         MODULE.addDeserializer(SchedulePayload.class, SchedulePayloadDeserializer.INSTANCE);
         MODULE.addDeserializer(PushPayload.class, new PushPayloadDeserializer());
         MODULE.addDeserializer(APIListTagsResponse.class, new APIListTagsResponseDeserializer());
+        MODULE.addDeserializer(SegmentInformation.class, new SegmentInformationDeserializer());
+        MODULE.addDeserializer(APIListAllSegmentsResponse.class, new APIListAllSegmentsResponseDeserializer());
         MODULE.addDeserializer(IosSettings.class, new IosSettingsDeserializer());
         MODULE.addDeserializer(QuietTime.class, new QuietTimeDeserializer());
         MODULE.addDeserializer(ChannelView.class, new ChannelViewDeserializer());
