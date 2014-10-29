@@ -18,7 +18,7 @@ import java.util.List;
 Readers are the part of the deserialization process that actually builds and
 return an object.
  */
-public class APIScheduleResponseReader implements JsonObjectReader <APIScheduleResponse> {
+public final class APIScheduleResponseReader implements JsonObjectReader <APIScheduleResponse> {
 
     private final APIScheduleResponse.Builder builder;
 
