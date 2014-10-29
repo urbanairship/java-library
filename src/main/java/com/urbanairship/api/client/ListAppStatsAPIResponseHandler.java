@@ -13,7 +13,7 @@ import org.codehaus.jackson.type.TypeReference;
 import java.io.IOException;
 import java.util.List;
 
-public class ListAppStatsAPIResponseHandler implements ResponseHandler<APIClientResponse<List<AppStats>>> {
+public final class ListAppStatsAPIResponseHandler implements ResponseHandler<APIClientResponse<List<AppStats>>> {
 
     private static final ObjectMapper mapper = APIResponseObjectMapper.getInstance();
     private static final APIClientResponse.Builder<List<AppStats>> builder = APIClientResponse.newListAppStatsBuilder();
