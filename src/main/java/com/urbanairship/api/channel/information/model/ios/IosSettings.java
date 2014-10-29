@@ -1,6 +1,7 @@
 package com.urbanairship.api.channel.information.model.ios;
 
 
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
@@ -48,25 +49,20 @@ public final class IosSettings {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) { return true; }
-        if (o == null || getClass() != o.getClass()) { return false; }
-
-        IosSettings that = (IosSettings) o;
-
-        if (badge != that.badge) { return false; }
-        if (!quiettime.equals(that.quiettime)) { return false; }
-        if (!timezone.equals(that.timezone)) { return false; }
-
-        return true;
+    public int hashCode() {
+        return Objects.hashCode(badge, quiettime, timezone);
     }
 
     @Override
-    public int hashCode() {
-        int result = badge;
-        result = 31 * result + quiettime.hashCode();
-        result = 31 * result + timezone.hashCode();
-        return result;
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final IosSettings other = (IosSettings) obj;
+        return Objects.equal(this.badge, other.badge) && Objects.equal(this.quiettime, other.quiettime) && Objects.equal(this.timezone, other.timezone);
     }
 
     public final static class Builder {
