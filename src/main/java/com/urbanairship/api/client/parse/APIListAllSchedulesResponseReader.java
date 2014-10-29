@@ -15,8 +15,7 @@ import org.codehaus.jackson.type.TypeReference;
 import java.io.IOException;
 import java.util.List;
 
-// No Unit Tests for this Class
-public class APIListAllSchedulesResponseReader implements JsonObjectReader<APIListAllSchedulesResponse> {
+public final class APIListAllSchedulesResponseReader implements JsonObjectReader<APIListAllSchedulesResponse> {
 
     private final APIListAllSchedulesResponse.Builder builder;
 
