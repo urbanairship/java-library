@@ -31,8 +31,6 @@ import java.util.List;
 public class APIClientResponseTest {
 
     @Test
-    public void testAPIListAllSegmentsResponse() {
-    @Test
     public void testListOfAppStatsAPIResponse(){
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP",1,1), 200, "OK"));
@@ -83,6 +81,8 @@ public class APIClientResponseTest {
                 testResponse.getApiResponse().equals("StringLaLaLa"));
     }
 
+    @Test
+    public void testAPIListAllSegmentsResponse() {
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP",1,1), 200, "OK"));
 
