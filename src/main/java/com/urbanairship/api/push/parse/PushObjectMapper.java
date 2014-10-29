@@ -7,13 +7,10 @@ package com.urbanairship.api.push.parse;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.CommonObjectMapper;
 import com.urbanairship.api.push.model.*;
+import com.urbanairship.api.push.model.audience.location.*;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.audience.Selector;
-import com.urbanairship.api.push.model.audience.location.LocationSelector;
-import com.urbanairship.api.push.model.audience.location.DateRange;
-import com.urbanairship.api.push.model.audience.location.AbsoluteDateRange;
-import com.urbanairship.api.push.model.audience.location.RecentDateRange;
 import com.urbanairship.api.push.model.notification.actions.*;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 import com.urbanairship.api.push.model.notification.ios.IOSBadgeData;
@@ -197,8 +194,10 @@ public class PushObjectMapper {
 
             /* Tags */
                 .addSerializer(AddRemoveDeviceFromTagPayload.class, new AddRemoveDeviceFromTagPayloadSerializer())
-                .addSerializer(BatchModificationPayload.class, new BatchModificationPayloadSerializer());
+                .addSerializer(BatchModificationPayload.class, new BatchModificationPayloadSerializer())
 
+            /* Segments */
+                .addDeserializer(SegmentDefinition.class, new SegmentDefinitionDeserializer());
 
 
         MAPPER.registerModule(MODULE);

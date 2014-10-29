@@ -5,10 +5,7 @@
 package com.urbanairship.api.client.parse;
 
 import com.urbanairship.api.client.*;
-import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
-import com.urbanairship.api.client.model.APIListTagsResponse;
-import com.urbanairship.api.client.model.APIPushResponse;
-import com.urbanairship.api.client.model.APIScheduleResponse;
+import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.push.parse.PushPayloadDeserializer;
@@ -40,6 +37,8 @@ public class APIResponseObjectMapper {
         MODULE.addDeserializer(SchedulePayload.class, SchedulePayloadDeserializer.INSTANCE);
         MODULE.addDeserializer(PushPayload.class, new PushPayloadDeserializer());
         MODULE.addDeserializer(APIListTagsResponse.class, new APIListTagsResponseDeserializer());
+        MODULE.addDeserializer(SegmentInformation.class, new SegmentInformationDeserializer());
+        MODULE.addDeserializer(APIListAllSegmentsResponse.class, new APIListAllSegmentsResponseDeserializer());
 
         MAPPER.registerModule(PushObjectMapper.getModule());
         MAPPER.registerModule(MODULE);

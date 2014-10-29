@@ -39,7 +39,7 @@ public class APIClientTest {
     public final static String CONTENT_TYPE_KEY = "Content-type";
     public final static String APP_JSON = "application/json";
     public final static String UA_APP_JSON =
-            "application/vnd.urbanairship+json; version=3";
+            "application/vnd.urbanairship+json; version=3;";
 
     static {
         BasicConfigurator.configure();
@@ -126,7 +126,7 @@ public class APIClientTest {
 
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/push/"))
-                           .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                           .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(postRequestedFor(
                     urlEqualTo("/api/push/")));
             // There should only be one request
@@ -191,7 +191,7 @@ public class APIClientTest {
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/schedules/"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(getRequestedFor(
                     urlEqualTo("/api/schedules/")));
             // There should only be one request
@@ -233,7 +233,7 @@ public class APIClientTest {
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/schedules/ee0dd92c-de3b-46dc-9937-c9dcaef0170f"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(getRequestedFor(
                     urlEqualTo("/api/schedules/ee0dd92c-de3b-46dc-9937-c9dcaef0170f")));
             // There should only be one request
@@ -280,7 +280,7 @@ public class APIClientTest {
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/schedules?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(getRequestedFor(
                     urlEqualTo("/api/schedules?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc")));
             // There should only be one request
@@ -330,7 +330,7 @@ public class APIClientTest {
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/schedules?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(getRequestedFor(
                     urlEqualTo("/api/schedules?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc")));
             // There should only be one request
@@ -393,7 +393,7 @@ public class APIClientTest {
 
             // Verify components of the underlying request
             verify(postRequestedFor(urlEqualTo("/api/schedules/"))
-                           .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                           .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(postRequestedFor(urlEqualTo("/api/schedules/")));
             assertEquals(requests.size(), 1);
             String receivedBody = requests.get(0).getBodyAsString();
@@ -462,7 +462,7 @@ public class APIClientTest {
 
             // Verify components of the underlying request
             verify(putRequestedFor(urlEqualTo("/api/schedules/id"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(putRequestedFor(urlEqualTo("/api/schedules/id")));
             assertEquals(requests.size(), 1);
 
@@ -494,7 +494,7 @@ public class APIClientTest {
 
             // Verify components of the underlying HttpRequest
             verify(deleteRequestedFor(urlEqualTo("/api/schedules/puppies"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(deleteRequestedFor(
                     urlEqualTo("/api/schedules/puppies")));
             // There should only be one request
@@ -541,7 +541,7 @@ public class APIClientTest {
 
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/push/validate/"))
-                           .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                           .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             assertNotNull(response);
         }
         catch (Exception ex){
@@ -573,7 +573,7 @@ public class APIClientTest {
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/tags/"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(getRequestedFor(
                     urlEqualTo("/api/tags/")));
             // There should only be one request
@@ -607,7 +607,7 @@ public class APIClientTest {
 
             // Verify components of the underlying HttpRequest
             verify(putRequestedFor(urlEqualTo("/api/tags/puppies"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(putRequestedFor(
                     urlEqualTo("/api/tags/puppies")));
             // There should only be one request
@@ -640,7 +640,7 @@ public class APIClientTest {
 
             // Verify components of the underlying HttpRequest
             verify(deleteRequestedFor(urlEqualTo("/api/tags/puppies"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(deleteRequestedFor(
                     urlEqualTo("/api/tags/puppies")));
             // There should only be one request
@@ -719,6 +719,170 @@ public class APIClientTest {
             // The response is tested elsewhere, just check that it exists
             assertNotNull(response);
             assertEquals(200, response.getStatusLine().getStatusCode());
+        }
+        catch (Exception ex){
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testListAllSegments() {
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        String testresponse = "{\n" +
+                "   \"next_page\": \"https://go.urbanairship.com/api/segments?limit=1&sort=id&order=asc&start=3832cf72-cb44-4132-a11f-eafb41b82f64\",\n" +
+                "   \"segments\": [\n" +
+                "      {\n" +
+                "         \"creation_date\": 1346248822220,\n" +
+                "         \"display_name\": \"A segment\",\n" +
+                "         \"id\": \"00c0d899-a595-4c66-9071-bc59374bbe6b\",\n" +
+                "         \"modification_date\": 1346248822221\n" +
+                "      }\n" +
+                "   ]\n" +
+                "}";
+
+        stubFor(get(urlEqualTo("/api/segments/"))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withHeader("Link", "NextPage")
+                        .withBody(testresponse)
+                        .withStatus(200)));
+
+        try {
+            APIClientResponse<APIListAllSegmentsResponse> response = client.listAllSegments();
+
+            // Verify components of the underlying HttpRequest
+            verify(getRequestedFor(urlEqualTo("/api/segments/"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+
+            List<LoggedRequest> requests = findAll(getRequestedFor(
+                    urlEqualTo("/api/segments/")));
+
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+            assertNotNull(response.getApiResponse());
+            assertNotNull(response.getHttpResponse());
+            assertNotNull(response.getApiResponse().getNextPage());
+            assertNotNull(response.getApiResponse().getSegments());
+
+        }
+        catch (Exception ex){
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testListAllSegmentsNextPage() {
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        String testresponse = "{\n" +
+                "   \"next_page\": \"https://go.urbanairship.com/api/segments?limit=1&sort=id&order=asc&start=3832cf72-cb44-4132-a11f-eafb41b82f64\",\n" +
+                "   \"segments\": [\n" +
+                "      {\n" +
+                "         \"creation_date\": 1346248822220,\n" +
+                "         \"display_name\": \"A segment\",\n" +
+                "         \"id\": \"00c0d899-a595-4c66-9071-bc59374bbe6b\",\n" +
+                "         \"modification_date\": 1346248822221\n" +
+                "      }\n" +
+                "   ]\n" +
+                "}";
+
+        stubFor(get(urlEqualTo("/api/segments?limit=1&sort=id&order=asc&start=3832cf72-cb44-4132-a11f-eafb41b82f64"))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withHeader("Link", "NextPage")
+                        .withBody(testresponse)
+                        .withStatus(200)));
+
+        String nextPage = "https://go.urbanairship.com/api/segments?limit=1&sort=id&order=asc&start=3832cf72-cb44-4132-a11f-eafb41b82f64";
+
+        try {
+            APIClientResponse<APIListAllSegmentsResponse> response = client.listAllSegments(nextPage);
+
+            // Verify components of the underlying HttpRequest
+            verify(getRequestedFor(urlEqualTo("/api/segments?limit=1&sort=id&order=asc&start=3832cf72-cb44-4132-a11f-eafb41b82f64"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+
+            List<LoggedRequest> requests = findAll(getRequestedFor(
+                    urlEqualTo("/api/segments?limit=1&sort=id&order=asc&start=3832cf72-cb44-4132-a11f-eafb41b82f64")));
+
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+            assertNotNull(response.getApiResponse());
+            assertNotNull(response.getHttpResponse());
+            assertNotNull(response.getApiResponse().getNextPage());
+            assertNotNull(response.getApiResponse().getSegments());
+
+        }
+        catch (Exception ex){
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testListAllSegmentsWithParameters() {
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        String testresponse = "{\n" +
+                "   \"next_page\": \"https://go.urbanairship.com/api/segments?limit=1&sort=id&order=asc&start=3832cf72-cb44-4132-a11f-eafb41b82f64\",\n" +
+                "   \"segments\": [\n" +
+                "      {\n" +
+                "         \"creation_date\": 1346248822220,\n" +
+                "         \"display_name\": \"A segment\",\n" +
+                "         \"id\": \"00c0d899-a595-4c66-9071-bc59374bbe6b\",\n" +
+                "         \"modification_date\": 1346248822221\n" +
+                "      }\n" +
+                "   ]\n" +
+                "}";
+
+        stubFor(get(urlEqualTo("/api/segments?start=3832cf72-cb44-4132-a11f-eafb41b82f64&limit=1&order=asc"))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withHeader("Link", "NextPage")
+                        .withBody(testresponse)
+                        .withStatus(200)));
+
+        try {
+            APIClientResponse<APIListAllSegmentsResponse> response = client.listAllSegments("3832cf72-cb44-4132-a11f-eafb41b82f64", 1, "asc");
+
+            // Verify components of the underlying HttpRequest
+            verify(getRequestedFor(urlEqualTo("/api/segments?start=3832cf72-cb44-4132-a11f-eafb41b82f64&limit=1&order=asc"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+
+            List<LoggedRequest> requests = findAll(getRequestedFor(
+                    urlEqualTo("/api/segments?start=3832cf72-cb44-4132-a11f-eafb41b82f64&limit=1&order=asc")));
+
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+            assertNotNull(response.getApiResponse());
+            assertNotNull(response.getHttpResponse());
+            assertNotNull(response.getApiResponse().getNextPage());
+            assertNotNull(response.getApiResponse().getSegments());
+
         }
         catch (Exception ex){
             fail("Exception thrown " + ex);
