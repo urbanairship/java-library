@@ -14,7 +14,7 @@ import org.codehaus.jackson.type.TypeReference;
 import java.io.IOException;
 import java.util.List;
 
-public class APIListTagsResponseReader implements JsonObjectReader<APIListTagsResponse> {
+public final class APIListTagsResponseReader implements JsonObjectReader<APIListTagsResponse> {
 
     private final APIListTagsResponse.Builder builder;
 
