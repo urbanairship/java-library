@@ -7,7 +7,7 @@ import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
 
-public class SegmentInformationReader implements JsonObjectReader<SegmentInformation> {
+public final class SegmentInformationReader implements JsonObjectReader<SegmentInformation> {
 
     private final SegmentInformation.Builder builder;
 

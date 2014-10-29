@@ -13,7 +13,7 @@ import org.codehaus.jackson.map.JsonDeserializer;
 
 import java.io.IOException;
 
-public class SegmentInformationDeserializer extends JsonDeserializer<SegmentInformation> {
+public final class SegmentInformationDeserializer extends JsonDeserializer<SegmentInformation> {
 
     private static final FieldParserRegistry<SegmentInformation, SegmentInformationReader> FIELD_PARSER =
             new MapFieldParserRegistry<SegmentInformation, SegmentInformationReader>(
