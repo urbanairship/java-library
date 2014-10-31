@@ -10,10 +10,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Properties;
 
+import com.google.common.base.Optional;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
-import org.apache.http.auth.Credentials;
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
@@ -60,9 +60,7 @@ public class APIClient {
 
     /* HTTP */
     private final HttpHost uaHost;
-
-    private HttpHost proxyhost = null; // proxy host
-    private Credentials proxycredentials = null; //Optional proxy credentials
+    private final Optional<ProxyInfo> proxyInfo;
 
     private final static Logger logger = LoggerFactory.getLogger("com.urbanairship.api");
 
@@ -70,7 +68,7 @@ public class APIClient {
         return new Builder();
     }
 
-    private APIClient(String appKey, String appSecret, String baseURI, Number version, HttpHost proxyhost, Credentials proxycredentials) {
+    private APIClient(String appKey, String appSecret, String baseURI, Number version, Optional<ProxyInfo> proxyInfoOptional) {
         Preconditions.checkArgument(StringUtils.isNotBlank(appKey),
                 "App key must be provided.");
         Preconditions.checkArgument(StringUtils.isNotBlank(appSecret),
@@ -80,13 +78,12 @@ public class APIClient {
         this.baseURI = URI.create(baseURI);
         this.version = version;
         this.uaHost = new HttpHost(URI.create(baseURI).getHost(), 443, "https");
-
-        this.proxyhost = proxyhost;
-        this.proxycredentials = proxycredentials;
+        this.proxyInfo = proxyInfoOptional;
     }
 
     public String getAppSecret() { return appSecret; }
     public String getAppKey() { return appKey; }
+    public Optional<ProxyInfo> getProxyInfo() { return proxyInfo; }
 
     /* Add the version number to the default version header */
 
@@ -116,24 +113,27 @@ public class APIClient {
     /* Provisioning Methods */
 
     private Request provisionRequest(Request object) {
-        return object
-                .config(CoreProtocolPNames.USER_AGENT, getUserAgent())
-                .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
-                .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
+        object.config(CoreProtocolPNames.USER_AGENT, getUserAgent())
+            .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
+            .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
+
+        if (proxyInfo.isPresent()) { object.viaProxy(proxyInfo.get().getProxyHost()); }
+
+        return object;
     }
 
-    private Executor provisionExecutor(Request request) {
+    private Executor provisionExecutor() {
         Executor executor = Executor.newInstance()
                 .auth(uaHost, appKey, appSecret)
                 .authPreemptive(uaHost);
 
-        // If proxy has been set, set it on the executor
-        if( proxyhost != null ) {
-            executor.authPreemptiveProxy(proxyhost);
-            request = request.viaProxy(proxyhost);
-            //If proxy authentication has been set, set it on the executor
-            if (proxycredentials != null) {
-                executor.auth(proxyhost, proxycredentials);
+        if (proxyInfo.isPresent()) {
+
+            HttpHost host = proxyInfo.get().getProxyHost();
+            executor.authPreemptiveProxy(host);
+
+            if (proxyInfo.get().getProxyCredentials().isPresent()) {
+                executor.auth(host, proxyInfo.get().getProxyCredentials().get());
             }
         }
 
@@ -151,7 +151,7 @@ public class APIClient {
             logger.debug(String.format("Executing push request %s", request));
         }
 
-        return provisionExecutor(request).execute(request).handleResponse(new PushAPIResponseHandler());
+        return provisionExecutor().execute(request).handleResponse(new PushAPIResponseHandler());
     }
 
     public APIClientResponse<APIPushResponse> validate(PushPayload payload) throws IOException {
@@ -163,7 +163,7 @@ public class APIClient {
             logger.debug(String.format("Executing validate push request %s", request));
         }
 
-        return provisionExecutor(request).execute(request).handleResponse(new PushAPIResponseHandler());
+        return provisionExecutor().execute(request).handleResponse(new PushAPIResponseHandler());
     }
 
     /* Schedules API */
@@ -177,7 +177,7 @@ public class APIClient {
             logger.debug(String.format("Executing schedule request %s", request));
         }
 
-        return provisionExecutor(request).execute(request).handleResponse(new ScheduleAPIResponseHandler());
+        return provisionExecutor().execute(request).handleResponse(new ScheduleAPIResponseHandler());
     }
 
     public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules() throws IOException {
@@ -187,7 +187,7 @@ public class APIClient {
             logger.debug(String.format("Executing list all schedules request %s", request));
         }
 
-        return provisionExecutor(request).execute(request).handleResponse(new ListAllSchedulesAPIResponseHandler());
+        return provisionExecutor().execute(request).handleResponse(new ListAllSchedulesAPIResponseHandler());
     }
 
     public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules(String start, int limit, String order) throws IOException {
@@ -198,7 +198,7 @@ public class APIClient {
             logger.debug(String.format("Executing list all schedules request %s", request));
         }
 
-        return provisionExecutor(request).execute(request).handleResponse(new ListAllSchedulesAPIResponseHandler());
+        return provisionExecutor().execute(request).handleResponse(new ListAllSchedulesAPIResponseHandler());
     }
 
     public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules(String next_page) throws IOException, URISyntaxException {
@@ -209,7 +209,7 @@ public class APIClient {
             logger.debug(String.format("Executing list all schedules request %s", request));
         }
 
-        return provisionExecutor(request).execute(request).handleResponse(new ListAllSchedulesAPIResponseHandler());
+        return provisionExecutor().execute(request).handleResponse(new ListAllSchedulesAPIResponseHandler());
     }
 
     public APIClientResponse<SchedulePayload> listSchedule(String id) throws IOException {
@@ -219,7 +219,7 @@ public class APIClient {
             logger.debug(String.format("Executing list specific schedule request %s", request));
         }
 
-        return provisionExecutor(request).execute(request).handleResponse(new ListScheduleAPIResponseHandler());
+        return provisionExecutor().execute(request).handleResponse(new ListScheduleAPIResponseHandler());
     }
 
     public APIClientResponse<APIScheduleResponse> updateSchedule(SchedulePayload payload, String id) throws IOException {
@@ -231,7 +231,7 @@ public class APIClient {
             logger.debug(String.format("Executing update schedule request %s", req));
         }
 
-        return provisionExecutor(req).execute(req).handleResponse(new ScheduleAPIResponseHandler());
+        return provisionExecutor().execute(req).handleResponse(new ScheduleAPIResponseHandler());
     }
 
     public HttpResponse deleteSchedule(String id) throws IOException {
@@ -241,7 +241,7 @@ public class APIClient {
             logger.debug(String.format("Executing delete schedule request %s", req));
         }
 
-        return provisionExecutor(req).execute(req).returnResponse();
+        return provisionExecutor().execute(req).returnResponse();
     }
 
     /* Tags API */
@@ -253,7 +253,7 @@ public class APIClient {
             logger.debug(String.format("Executing list tags request %s", req));
         }
 
-        return provisionExecutor(req).execute(req).handleResponse(new ListTagsAPIResponseHandler());
+        return provisionExecutor().execute(req).handleResponse(new ListTagsAPIResponseHandler());
     }
 
     public HttpResponse createTag(String tag) throws IOException {
@@ -263,7 +263,7 @@ public class APIClient {
             logger.debug(String.format("Executing create tag request %s", req));
         }
 
-        return provisionExecutor(req).execute(req).returnResponse();
+        return provisionExecutor().execute(req).returnResponse();
     }
 
     public HttpResponse deleteTag(String tag) throws IOException {
@@ -273,7 +273,7 @@ public class APIClient {
             logger.debug(String.format("Executing delete tag request %s", req));
         }
 
-        return provisionExecutor(req).execute(req).returnResponse();
+        return provisionExecutor().execute(req).returnResponse();
     }
 
     public HttpResponse addRemoveDevicesFromTag(String tag, AddRemoveDeviceFromTagPayload payload) throws IOException {
@@ -285,7 +285,7 @@ public class APIClient {
             logger.debug(String.format("Executing add/remove devices from tag request %s", req));
         }
 
-        return provisionExecutor(req).execute(req).returnResponse();
+        return provisionExecutor().execute(req).returnResponse();
     }
 
     public HttpResponse batchModificationOfTags(BatchModificationPayload payload) throws IOException {
@@ -297,7 +297,7 @@ public class APIClient {
             logger.debug(String.format("Executing batch modification of tags request %s", req));
         }
 
-        return provisionExecutor(req).execute(req).returnResponse();
+        return provisionExecutor().execute(req).returnResponse();
     }
 
     /* Object methods */
@@ -315,10 +315,7 @@ public class APIClient {
         private String secret;
         private String baseURI;
         private Number version;
-
-        /** For setting up calls through a HTTPS proxy */
-        private HttpHost proxyhost;
-        private Credentials proxycredentials;
+        private ProxyInfo proxyInfoOptional;
 
         private Builder(){
             baseURI = "https://go.urbanairship.com";
@@ -345,32 +342,18 @@ public class APIClient {
             return this;
         }
 
-        /**
-         * @param proxyhost proxy hostname and portnumber
-         */
-        public Builder setProxyHost(HttpHost proxyhost) {
-            this.proxyhost = proxyhost;
+        public Builder setProxyInfo(ProxyInfo value) {
+            this.proxyInfoOptional = value;
             return this;
         }
 
-        /**
-         * @param proxycredentials Credentials to use when using http proxy (optional)
-         */
-        public Builder setProxyCredentials(Credentials proxycredentials) {
-            this.proxycredentials = proxycredentials;
-            return this;
-        }
-
-        /**
-         * Build the APIClient using the given key, secret, baseURI and version.
-         * @return APIClient
-         */
         public APIClient build() {
             Preconditions.checkNotNull(key, "app key needed to build APIClient");
             Preconditions.checkNotNull(secret, "app secret needed to build APIClient");
             Preconditions.checkNotNull(baseURI, "base URI needed to build APIClient");
             Preconditions.checkNotNull(version, "version needed to build APIClient");
-            return new APIClient(key, secret, baseURI, version, proxyhost, proxycredentials);
+
+            return new APIClient(key, secret, baseURI, version, Optional.fromNullable(proxyInfoOptional));
         }
 
     }
