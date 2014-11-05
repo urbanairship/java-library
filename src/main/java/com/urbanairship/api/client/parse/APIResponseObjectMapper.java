@@ -53,6 +53,7 @@ public class APIResponseObjectMapper {
         MODULE.addDeserializer(QuietTime.class, new QuietTimeDeserializer());
         MODULE.addDeserializer(ChannelView.class, new ChannelViewDeserializer());
         MODULE.addDeserializer(DeviceType.class, new DeviceTypeDeserializer());
+        MODULE.addDeserializer(APIListSingleChannelResponse.class, new APIListSingleChannelResponseDeserializer());
         MODULE.addDeserializer(APIListAllChannelsResponse.class, new APIListAllChannelsResponseDeserializer());
         MODULE.addDeserializer(AppStats.class, new AppStatsDeserializer());
 

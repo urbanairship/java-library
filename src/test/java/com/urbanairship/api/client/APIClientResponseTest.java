@@ -208,6 +208,40 @@ public class APIClientResponseTest {
     }
 
     @Test
+    public void testAPIChannelViewResponse(){
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP",1,1), 200, "OK"));
+
+        APIListSingleChannelResponse response =
+                APIListSingleChannelResponse.newBuilder()
+                        .setChannelObject(ChannelView.newBuilder()
+                        .setAlias("Alias")
+                        .setBackground(true)
+                        .setChannelId("channelID")
+                        .setCreatedMillis(12345L)
+                        .setDeviceType(com.urbanairship.api.channel.registration.model.DeviceType.ANDROID)
+                        .setInstalled(true)
+                        .setLastRegistrationMillis(12345L)
+                        .setOptedIn(true)
+                        .setPushAddress("PUSH")
+                        .build())
+                .build();
+
+        APIClientResponse.Builder<APIListSingleChannelResponse> builder =
+                APIClientResponse.newSingleChannelResponseBuilder()
+                        .setApiResponse(response)
+                        .setHttpResponse(httpResponse);
+
+        APIClientResponse<APIListSingleChannelResponse> testResponse = builder.build();
+
+        assertTrue("HTTP response not set properly",
+                testResponse.getHttpResponse().equals(httpResponse));
+
+        assertTrue("APIResponse not set properly",
+                testResponse.getApiResponse().equals(response));
+    }
+
+    @Test
     public void testAPIListAllChannelsResponse(){
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP",1,1), 200, "OK"));
