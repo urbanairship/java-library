@@ -14,7 +14,9 @@ import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
 import com.urbanairship.api.tag.model.AddRemoveSet;
 import com.urbanairship.api.tag.model.BatchModificationPayload;
 import com.urbanairship.api.tag.model.BatchTagSet;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.log4j.BasicConfigurator;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -70,6 +72,41 @@ public class APIClientTest {
                 .build();
         assertEquals("App key incorrect", "key", client.getAppKey());
         assertEquals("App secret incorrect", "secret", client.getAppSecret());
+        assertFalse(client.getProxyInfo().isPresent());
+    }
+
+    @Test
+    public void testAPIClientBuilderWithOptionalProxyInfoOptionalCredential() {
+        APIClient proxyClient = APIClient.newBuilder()
+                .setKey("key")
+                .setSecret("secret")
+                .setProxyInfo(ProxyInfo.newBuilder()
+                        .setProxyHost(new HttpHost("host"))
+                        .setProxyCredentials(new UsernamePasswordCredentials("user", "password"))
+                        .build())
+                .build();
+
+        assertTrue(proxyClient.getProxyInfo().isPresent());
+        assertTrue(proxyClient.getProxyInfo().get().getProxyCredentials().isPresent());
+
+        assertEquals(new HttpHost("host"), proxyClient.getProxyInfo().get().getProxyHost());
+        assertEquals(new UsernamePasswordCredentials("user", "password"), proxyClient.getProxyInfo().get().getProxyCredentials().get());
+    }
+
+    @Test
+    public void testAPIClientBuilderWithOptionalProxyInfoNoCredential() {
+        APIClient proxyClient = APIClient.newBuilder()
+                .setKey("key")
+                .setSecret("secret")
+                .setProxyInfo(ProxyInfo.newBuilder()
+                        .setProxyHost(new HttpHost("host"))
+                        .build())
+                .build();
+
+        assertTrue(proxyClient.getProxyInfo().isPresent());
+        assertFalse(proxyClient.getProxyInfo().get().getProxyCredentials().isPresent());
+
+        assertEquals(new HttpHost("host"), proxyClient.getProxyInfo().get().getProxyHost());
     }
 
     @Test
@@ -105,6 +142,8 @@ public class APIClientTest {
                 .setKey("key")
                 .setSecret("secret")
                 .build();
+
+        assertFalse(client.getProxyInfo().isPresent());
 
         PushPayload payload = PushPayload.newBuilder()
                 .setAudience(Selectors.all())
@@ -156,6 +195,82 @@ public class APIClientTest {
             assertNotNull(response);
         }
         catch (Exception ex){
+            ex.printStackTrace();
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testPushWithProxyClient(){
+
+        // Setup a client and a push payload
+        APIClient proxyClient = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .setProxyInfo(ProxyInfo.newBuilder()
+                        .setProxyHost(new HttpHost("localhost", 8080))
+                        .setProxyCredentials(new UsernamePasswordCredentials("user", "password"))
+                        .build())
+                .build();
+
+        assertTrue(proxyClient.getProxyInfo().isPresent());
+        assertTrue(proxyClient.getProxyInfo().get().getProxyCredentials().isPresent());
+
+        PushPayload payload = PushPayload.newBuilder()
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setNotification(Notifications.alert("Foo"))
+                .build();
+
+        // Setup a stubbed response for the server
+        String pushJSON = "{\"ok\" : true,\"operation_id\" : \"df6a6b50\", \"push_ids\":[\"PushID\"]}";
+        stubFor(post(urlEqualTo("/api/push/"))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withBody(pushJSON)
+                        .withStatus(201)
+                ));
+
+
+        try {
+            APIClientResponse<APIPushResponse> response = proxyClient.push(payload);
+
+            // Verify components of the underlying HttpRequest
+            verify(postRequestedFor(urlEqualTo("/api/push/"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON))
+            );
+            List<LoggedRequest> requests = findAll(postRequestedFor(
+                    urlEqualTo("/api/push/")));
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+            // Parse the request using the server side deserializer and check
+            // results
+            String requestPayload = requests.get(0).getBodyAsString();
+            ObjectMapper mapper = PushObjectMapper.getInstance();
+            Map<String, Object> result =
+                    mapper.readValue(requestPayload,
+                            new TypeReference<Map<String,Object>>(){});
+            // Audience
+            String audience = (String)result.get("audience");
+            assertTrue(audience.equals("ALL"));
+
+            // DeviceType
+            List<String> deviceTypeData = (List<String>)result.get("device_types");
+            assertTrue(deviceTypeData.get(0).equals("ios"));
+            assertEquals(DeviceType.find(deviceTypeData.get(0)).get(), DeviceType.IOS);
+
+            // Notification
+            Map<String, String> notification =
+                    (Map<String,String>)result.get("notification");
+            assertTrue(notification.get("alert").equals("Foo"));
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
             fail("Exception thrown " + ex);
         }
     }
