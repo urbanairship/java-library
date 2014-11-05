@@ -10,6 +10,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Properties;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpHost;
@@ -303,8 +304,32 @@ public class APIClient {
     /* Object methods */
 
     @Override
+    public int hashCode() {
+        return Objects.hashCode(appKey, appSecret, baseURI, version, uaHost, proxyInfo);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final APIClient other = (APIClient) obj;
+        return Objects.equal(this.appKey, other.appKey) && Objects.equal(this.appSecret, other.appSecret) && Objects.equal(this.baseURI, other.baseURI) && Objects.equal(this.version, other.version) && Objects.equal(this.uaHost, other.uaHost) && Objects.equal(this.proxyInfo, other.proxyInfo);
+    }
+
+    @Override
     public String toString() {
-        return "APIClient\nAppKey:"+ appKey +"\nAppSecret:" + appSecret + "\n";
+        return "APIClient{" +
+                "appKey='" + appKey + '\'' +
+                ", appSecret='" + appSecret + '\'' +
+                ", baseURI=" + baseURI +
+                ", version=" + version +
+                ", uaHost=" + uaHost +
+                ", proxyInfo=" + proxyInfo +
+                '}';
     }
 
     /* Builder for APIClient */
