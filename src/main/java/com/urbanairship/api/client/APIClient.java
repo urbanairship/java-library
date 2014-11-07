@@ -11,6 +11,7 @@ import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 
+import com.urbanairship.api.segments.model.AudienceSegment;
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
 import com.urbanairship.api.tag.model.BatchModificationPayload;
 import org.apache.commons.lang.StringUtils;
@@ -320,6 +321,63 @@ public class APIClient {
         }
 
         return provisionExecutor().execute(req).handleResponse(new ListAllSegmentsAPIResponseHandler());
+    }
+
+    public APIClientResponse<AudienceSegment> listSegment(String segmentID) throws IOException, URISyntaxException {
+        Preconditions.checkArgument(StringUtils.isNotBlank(segmentID), "segmentID is required when listing segment");
+
+        String path = API_SEGMENTS_PATH + segmentID;
+        Request req = provisionRequest(Request.Get(baseURI.resolve(path)));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list all segments request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new AudienceSegmentAPIResponseHandler());
+    }
+
+    public HttpResponse createSegment(AudienceSegment payload) throws IOException {
+        Preconditions.checkNotNull(payload, "Payload is required when creating segment");
+        Request req = provisionRequest(Request.Post(baseURI.resolve(API_SEGMENTS_PATH)));
+
+
+        req.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing create segment request %s", req));
+        }
+
+        return provisionExecutor().execute(req).returnResponse();
+    }
+
+    public HttpResponse changeSegment(String segmentID, AudienceSegment payload) throws IOException {
+        Preconditions.checkArgument(StringUtils.isNotBlank(segmentID), "segmentID is required when updating segment");
+        Preconditions.checkNotNull(payload, "Payload is required when updating segment");
+
+        String path = API_SEGMENTS_PATH + segmentID;
+        Request req = provisionRequest(Request.Put(baseURI.resolve(path)));
+
+
+        req.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing change segment request %s", req));
+        }
+
+        return provisionExecutor().execute(req).returnResponse();
+    }
+
+    public HttpResponse deleteSegment(String segmentID) throws IOException, URISyntaxException {
+        Preconditions.checkArgument(StringUtils.isNotBlank(segmentID), "segmentID is required when deleting segment");
+
+        String path = API_SEGMENTS_PATH + segmentID;
+        Request req = provisionRequest(Request.Delete(baseURI.resolve(path)));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing delete segment request %s", req));
+        }
+
+        return provisionExecutor().execute(req).returnResponse();
     }
 
     /* Device Information API */

@@ -7,6 +7,7 @@ package com.urbanairship.api.client.model;
 
 import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.schedule.model.SchedulePayload;
+import com.urbanairship.api.segments.model.AudienceSegment;
 import org.apache.http.HttpResponse;
 
 import java.util.List;
@@ -98,6 +99,14 @@ public class APIClientResponse<T> {
      */
     public static Builder<APIListAllSegmentsResponse> newListAllSegmentsResponseBuilder(){
         return new Builder<APIListAllSegmentsResponse>();
+    }
+
+    /**
+     * Return a Builder for an AudienceSegment
+     * @return Builder
+     */
+    public static Builder<AudienceSegment> newAudienceSegmentResponseBuilder(){
+        return new Builder<AudienceSegment>();
     }
 
     /**
