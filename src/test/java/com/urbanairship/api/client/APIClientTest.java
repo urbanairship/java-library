@@ -2,6 +2,7 @@ package com.urbanairship.api.client;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
+import com.google.common.base.Optional;
 import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.push.model.*;
@@ -9,6 +10,7 @@ import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.reports.model.AppStats;
+import com.urbanairship.api.reports.model.SinglePushInfoResponse;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
@@ -1306,6 +1308,169 @@ public class APIClientTest {
         DateTime end = start.minus(Period.hours(48));
 
         APIClientResponse<String> response = client.listPushStatisticsInCSVString(start, end);
+        assertNotNull(response);
+    }
+
+    @Test
+    public void testListIndividualPushResponseStatistics() throws IOException {
+
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        String queryPathString = "/api/reports/responses/abc";
+
+        String responseString = "{  \n" +
+                "  \"push_uuid\":\"5e42ddfc-fa2d-11e2-9ca2-90e2ba025cd0\",\n" +
+                "  \"push_time\":\"2013-07-31 22:05:53\",\n" +
+                "  \"push_type\":\"BROADCAST_PUSH\",\n" +
+                "  \"direct_responses\":4,\n" +
+                "  \"sends\":176,\n" +
+                "  \"group_id\":\"5e42ddfc-fa2d-11e2-9ca2-90e2ba025cd0\"\n" +
+                "}";
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseString)
+                        .withStatus(200)));
+
+        APIClientResponse<SinglePushInfoResponse> response = client.listIndividualPushResponseStatistics("abc");
+        assertNotNull(response);
+
+    }
+
+    @Test
+    public void testListReportsListingResponse() throws IOException {
+
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        String queryPathString = "/api/reports/responses/list?start=2014-10-01T12%3A00%3A00.000&end=2014-10-03T12%3A00%3A00.000";
+
+        String responseString = "{  \n" +
+                "  \"next_page\":\"Value for Next Page\",\n" +
+                "  \"pushes\":[  \n" +
+                "    {  \n" +
+                "      \"push_uuid\":\"df31cae0-fa3c-11e2-97ce-14feb5d317b8\",\n" +
+                "      \"push_time\":\"2013-07-31 23:56:52\",\n" +
+                "      \"push_type\":\"BROADCAST_PUSH\",\n" +
+                "      \"direct_responses\":0,\n" +
+                "      \"sends\":1\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"push_uuid\":\"3043779a-fa3c-11e2-a22b-d4bed9a887d4\",\n" +
+                "      \"push_time\":\"2013-07-31 23:51:58\",\n" +
+                "      \"push_type\":\"BROADCAST_PUSH\",\n" +
+                "      \"direct_responses\":0,\n" +
+                "      \"sends\":1\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"push_uuid\":\"1c06d01a-fa3c-11e2-aa2d-d4bed9a88699\",\n" +
+                "      \"push_time\":\"2013-07-31 23:51:24\",\n" +
+                "      \"push_type\":\"BROADCAST_PUSH\",\n" +
+                "      \"direct_responses\":0,\n" +
+                "      \"sends\":1\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"push_uuid\":\"a50eb7de-fa3b-11e2-912f-90e2ba025998\",\n" +
+                "      \"push_time\":\"2013-07-31 23:48:05\",\n" +
+                "      \"push_type\":\"BROADCAST_PUSH\",\n" +
+                "      \"direct_responses\":0,\n" +
+                "      \"sends\":1\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"push_uuid\":\"90483c8a-fa3b-11e2-92d0-90e2ba0253a0\",\n" +
+                "      \"push_time\":\"2013-07-31 23:47:30\",\n" +
+                "      \"push_type\":\"BROADCAST_PUSH\",\n" +
+                "      \"direct_responses\":0,\n" +
+                "      \"sends\":1\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseString)
+                        .withStatus(200)));
+
+        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+        DateTime end = start.plus(Period.hours(48));
+
+        APIClientResponse<APIReportsListingResponse> response =
+                client.listReportsResponseListing(start, end, Optional.<Integer>absent(), Optional.<String>absent());
+        assertNotNull(response);
+    }
+
+    @Test
+    public void testListReportsListingResponseWithOptionalParameters() throws IOException {
+
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        String queryPathString = "/api/reports/responses/list?start=2014-10-01T12%3A00%3A00.000&end=2014-10-03T12%3A00%3A00.000&limit=1&push_id_start=start_push";
+
+        String responseString = "{  \n" +
+                "  \"next_page\":\"Value for Next Page\",\n" +
+                "  \"pushes\":[  \n" +
+                "    {  \n" +
+                "      \"push_uuid\":\"df31cae0-fa3c-11e2-97ce-14feb5d317b8\",\n" +
+                "      \"push_time\":\"2013-07-31 23:56:52\",\n" +
+                "      \"push_type\":\"BROADCAST_PUSH\",\n" +
+                "      \"direct_responses\":0,\n" +
+                "      \"sends\":1\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"push_uuid\":\"3043779a-fa3c-11e2-a22b-d4bed9a887d4\",\n" +
+                "      \"push_time\":\"2013-07-31 23:51:58\",\n" +
+                "      \"push_type\":\"BROADCAST_PUSH\",\n" +
+                "      \"direct_responses\":0,\n" +
+                "      \"sends\":1\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"push_uuid\":\"1c06d01a-fa3c-11e2-aa2d-d4bed9a88699\",\n" +
+                "      \"push_time\":\"2013-07-31 23:51:24\",\n" +
+                "      \"push_type\":\"BROADCAST_PUSH\",\n" +
+                "      \"direct_responses\":0,\n" +
+                "      \"sends\":1\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"push_uuid\":\"a50eb7de-fa3b-11e2-912f-90e2ba025998\",\n" +
+                "      \"push_time\":\"2013-07-31 23:48:05\",\n" +
+                "      \"push_type\":\"BROADCAST_PUSH\",\n" +
+                "      \"direct_responses\":0,\n" +
+                "      \"sends\":1\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"push_uuid\":\"90483c8a-fa3b-11e2-92d0-90e2ba0253a0\",\n" +
+                "      \"push_time\":\"2013-07-31 23:47:30\",\n" +
+                "      \"push_type\":\"BROADCAST_PUSH\",\n" +
+                "      \"direct_responses\":0,\n" +
+                "      \"sends\":1\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseString)
+                        .withStatus(200)));
+
+        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+        DateTime end = start.plus(Period.hours(48));
+
+        APIClientResponse<APIReportsListingResponse> response =
+                client.listReportsResponseListing(start, end, Optional.of(1), Optional.of("start_push"));
         assertNotNull(response);
     }
 }

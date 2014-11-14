@@ -6,6 +6,7 @@
 package com.urbanairship.api.client.model;
 
 import com.urbanairship.api.reports.model.AppStats;
+import com.urbanairship.api.reports.model.SinglePushInfoResponse;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import org.apache.http.HttpResponse;
 
@@ -66,6 +67,22 @@ public class APIClientResponse<T> {
      */
     public static Builder<APIListTagsResponse> newListTagsResponseBuilder(){
         return new Builder<APIListTagsResponse>();
+    }
+
+    /**
+     * Return a Builder for a SinglePushInfoResponse
+     * @return Builder
+     */
+    public static Builder<SinglePushInfoResponse> newSinglePushInfoResponseBuilder(){
+        return new Builder<SinglePushInfoResponse>();
+    }
+
+    /**
+     * Return a Builder for a APIReportsListingResponse
+     * @return Builder
+     */
+    public static Builder<APIReportsListingResponse> newReportsListingResponseBuilder(){
+        return new Builder<APIReportsListingResponse>();
     }
 
     /**
