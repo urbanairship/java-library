@@ -58,6 +58,8 @@ public class APIResponseObjectMapper {
         MODULE.addDeserializer(PerPushCounts.class, new PerPushCountsDeserializer());
         MODULE.addDeserializer(RichPerPushCounts.class, new RichPerPushCountsDeserializer());
         MODULE.addDeserializer(PerPushDetailResponse.class, new PerPushDetailResponseDeserializer());
+        MODULE.addDeserializer(PlatformCounts.class, new PlatformCountsDeserializer());
+        MODULE.addDeserializer(PerPushSeriesResponse.class, new PerPushSeriesResponseDeserializer());
 
         MAPPER.registerModule(PushObjectMapper.getModule());
         MAPPER.registerModule(MODULE);
