@@ -6,6 +6,7 @@
 package com.urbanairship.api.client.model;
 
 import com.urbanairship.api.reports.model.AppStats;
+import com.urbanairship.api.reports.model.PerPushDetailResponse;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import org.apache.http.HttpResponse;
 
@@ -74,6 +75,14 @@ public class APIClientResponse<T> {
      */
     public static Builder<List<AppStats>> newListAppStatsBuilder(){
         return new Builder<List<AppStats>>();
+    }
+
+    /**
+     * Return a Builder for a PerPushDetailResponse
+     * @return Builder
+     */
+    public static Builder<PerPushDetailResponse> newListPerPushDetailBuilder(){
+        return new Builder<PerPushDetailResponse>();
     }
 
     /**

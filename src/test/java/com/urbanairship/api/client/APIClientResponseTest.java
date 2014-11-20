@@ -10,6 +10,7 @@ import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.reports.model.AppStats;
+import com.urbanairship.api.reports.model.PerPushDetailResponse;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import org.apache.http.HttpResponse;
@@ -29,6 +30,28 @@ import java.util.List;
 
 
 public class APIClientResponseTest {
+
+    @Test
+    public void testListPerPushDetailAPIResponseHandlerTest() {
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP",1,1), 200, "OK"));
+
+        PerPushDetailResponse obj = PerPushDetailResponse.newBuilder()
+                .setAppKey("blah")
+                .build();
+
+        APIClientResponse.Builder<PerPushDetailResponse> builder = APIClientResponse.newListPerPushDetailBuilder()
+                .setApiResponse(obj)
+                .setHttpResponse(httpResponse);
+
+        APIClientResponse<PerPushDetailResponse> testResponse = builder.build();
+
+        assertTrue("HTTP response not set properly",
+                testResponse.getHttpResponse().equals(httpResponse));
+
+        assertTrue("APIResponse not set properly",
+                testResponse.getApiResponse().equals(obj));
+    }
 
     @Test
     public void testListOfAppStatsAPIResponse(){

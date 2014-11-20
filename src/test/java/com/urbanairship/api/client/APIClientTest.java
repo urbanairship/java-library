@@ -3,12 +3,14 @@ package com.urbanairship.api.client;
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
 import com.urbanairship.api.client.model.*;
+import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.push.model.*;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.reports.model.AppStats;
+import com.urbanairship.api.reports.model.PerPushDetailResponse;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
@@ -1307,5 +1309,56 @@ public class APIClientTest {
 
         APIClientResponse<String> response = client.listPushStatisticsInCSVString(start, end);
         assertNotNull(response);
+    }
+
+    @Test
+    public void testListPerPushDetail() throws IOException {
+
+        ObjectMapper mapper = APIResponseObjectMapper.getInstance();
+
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        String queryPathString = "/api/reports/perpush/detail/push_id";
+
+        String json = "{  \n" +
+                "  \"app_key\":\"some_app_key\",\n" +
+                "  \"push_id\":\"57ef3728-79dc-46b1-a6b9-20081e561f97\",\n" +
+                "  \"created\":\"2013-07-31 22:05:53\",\n" +
+                "  \"push_body\":\"PEJhc2U2NC1lbmNvZGVkIHN0cmluZz4=\",\n" +
+                "  \"rich_deletions\":1,\n" +
+                "  \"rich_responses\":2,\n" +
+                "  \"rich_sends\":3,\n" +
+                "  \"sends\":58,\n" +
+                "  \"direct_responses\":4,\n" +
+                "  \"influenced_responses\":5,\n" +
+                "  \"platforms\":{  \n" +
+                "    \"android\":{  \n" +
+                "      \"direct_responses\":6,\n" +
+                "      \"influenced_responses\":7,\n" +
+                "      \"sends\":22\n" +
+                "    },\n" +
+                "    \"ios\":{  \n" +
+                "      \"direct_responses\":8,\n" +
+                "      \"influenced_responses\":9,\n" +
+                "      \"sends\":36\n" +
+                "    }\n" +
+                "  }\n" +
+                "}";
+
+        stubFor(get(urlEqualTo(queryPathString))
+            .willReturn(aResponse()
+            .withBody(json)
+            .withStatus(200)));
+
+        APIClientResponse<PerPushDetailResponse> response = client.listPerPushDetail("push_id");
+        assertNotNull(response);
+
+        PerPushDetailResponse obj = mapper.readValue(json, PerPushDetailResponse.class);
+        assertEquals(obj, response.getApiResponse());
     }
 }

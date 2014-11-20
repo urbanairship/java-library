@@ -9,6 +9,7 @@ import com.google.common.base.Preconditions;
 import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.reports.model.AppStats;
+import com.urbanairship.api.reports.model.PerPushDetailResponse;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
@@ -33,6 +34,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Properties;
+import java.util.UUID;
 
 /**
  * The APIClient class handles HTTP requests to the Urban Airship API
@@ -55,6 +57,7 @@ public class APIClient {
     private final static String API_SEGMENTS_PATH = "/api/segments/";
     private final static String API_DEVICE_CHANNELS_PATH = "/api/channels/";
     private final static String API_STATISTICS_PATH = "/api/push/stats/";
+    private final static String API_REPORTS_PER_PUSH_DETAIL_PATH = "/api/reports/perpush/detail/";
 
     /* User auth */
     private final String appKey;
@@ -336,6 +339,17 @@ public class APIClient {
 
     /* Reports API */
 
+    public APIClientResponse<PerPushDetailResponse> listPerPushDetail(String pushID) throws IOException {
+        URIBuilder builder = new URIBuilder(baseURI.resolve(API_REPORTS_PER_PUSH_DETAIL_PATH + pushID));
+
+        Request req = provisionRequest(Request.Get(builder.toString()));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list per push detail request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ListPerPushDetailAPIResponseHandler());
+    }
 
     /**
      * Returns hourly counts for pushes sent for this application.
