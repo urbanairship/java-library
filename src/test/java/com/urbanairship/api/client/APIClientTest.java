@@ -11,6 +11,7 @@ import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.reports.model.PerPushDetailResponse;
+import com.urbanairship.api.reports.model.PerPushSeriesResponse;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
@@ -1359,6 +1360,351 @@ public class APIClientTest {
         assertNotNull(response);
 
         PerPushDetailResponse obj = mapper.readValue(json, PerPushDetailResponse.class);
+        assertEquals(obj, response.getApiResponse());
+    }
+
+    @Test
+    public void testListPerPushSeries() throws IOException {
+
+        ObjectMapper mapper = APIResponseObjectMapper.getInstance();
+
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        String queryPathString = "/api/reports/perpush/series/push_id";
+
+        String json = "{  \n" +
+                "  \"app_key\":\"some_app_key\",\n" +
+                "  \"push_id\":\"57ef3728-79dc-46b1-a6b9-20081e561f97\",\n" +
+                "  \"start\":\"2013-07-25 23:00:00\",\n" +
+                "  \"end\":\"2013-07-26 11:00:00\",\n" +
+                "  \"precision\":\"HOURLY\",\n" +
+                "  \"counts\":[  \n" +
+                "    {  \n" +
+                "      \"push_platforms\":{  \n" +
+                "        \"all\":{  \n" +
+                "          \"direct_responses\":1,\n" +
+                "          \"influenced_responses\":2,\n" +
+                "          \"sends\":58\n" +
+                "        },\n" +
+                "        \"android\":{  \n" +
+                "          \"direct_responses\":3,\n" +
+                "          \"influenced_responses\":4,\n" +
+                "          \"sends\":22\n" +
+                "        },\n" +
+                "        \"ios\":{  \n" +
+                "          \"direct_responses\":5,\n" +
+                "          \"influenced_responses\":6,\n" +
+                "          \"sends\":36\n" +
+                "        }\n" +
+                "      },\n" +
+                "      \"rich_push_platforms\":{  \n" +
+                "        \"all\":{  \n" +
+                "          \"responses\":7,\n" +
+                "          \"sends\":8\n" +
+                "        }\n" +
+                "      },\n" +
+                "      \"time\":\"2013-07-25 23:00:00\"\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"push_platforms\":{  \n" +
+                "        \"all\":{  \n" +
+                "          \"direct_responses\":9,\n" +
+                "          \"influenced_responses\":10,\n" +
+                "          \"sends\":11\n" +
+                "        },\n" +
+                "        \"android\":{  \n" +
+                "          \"direct_responses\":12,\n" +
+                "          \"influenced_responses\":13,\n" +
+                "          \"sends\":14\n" +
+                "        },\n" +
+                "        \"ios\":{  \n" +
+                "          \"direct_responses\":15,\n" +
+                "          \"influenced_responses\":16,\n" +
+                "          \"sends\":17\n" +
+                "        }\n" +
+                "      },\n" +
+                "      \"rich_push_platforms\":{  \n" +
+                "        \"all\":{  \n" +
+                "          \"responses\":18,\n" +
+                "          \"sends\":19\n" +
+                "        }\n" +
+                "      },\n" +
+                "      \"time\":\"2013-07-26 00:00:00\"\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"push_platforms\":{  \n" +
+                "        \"all\":{  \n" +
+                "          \"direct_responses\":20,\n" +
+                "          \"influenced_responses\":21,\n" +
+                "          \"sends\":22\n" +
+                "        },\n" +
+                "        \"android\":{  \n" +
+                "          \"direct_responses\":23,\n" +
+                "          \"influenced_responses\":24,\n" +
+                "          \"sends\":25\n" +
+                "        },\n" +
+                "        \"ios\":{  \n" +
+                "          \"direct_responses\":26,\n" +
+                "          \"influenced_responses\":27,\n" +
+                "          \"sends\":28\n" +
+                "        }\n" +
+                "      },\n" +
+                "      \"rich_push_platforms\":{  \n" +
+                "        \"all\":{  \n" +
+                "          \"responses\":29,\n" +
+                "          \"sends\":30\n" +
+                "        }\n" +
+                "      },\n" +
+                "      \"time\":\"2013-07-26 01:00:00\"\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(json)
+                        .withStatus(200)));
+
+        APIClientResponse<PerPushSeriesResponse> response = client.listPerPushSeries("push_id");
+        assertNotNull(response);
+
+        PerPushSeriesResponse obj = mapper.readValue(json, PerPushSeriesResponse.class);
+        assertEquals(obj, response.getApiResponse());
+    }
+
+    @Test
+    public void testListPerPushSeriesWithPrecision() throws IOException {
+
+        ObjectMapper mapper = APIResponseObjectMapper.getInstance();
+
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        String queryPathString = "/api/reports/perpush/series/push_id?precision=DAILY";
+
+        String json = "{  \n" +
+                "  \"app_key\":\"some_app_key\",\n" +
+                "  \"push_id\":\"57ef3728-79dc-46b1-a6b9-20081e561f97\",\n" +
+                "  \"start\":\"2013-07-25 23:00:00\",\n" +
+                "  \"end\":\"2013-07-26 11:00:00\",\n" +
+                "  \"precision\":\"HOURLY\",\n" +
+                "  \"counts\":[  \n" +
+                "    {  \n" +
+                "      \"push_platforms\":{  \n" +
+                "        \"all\":{  \n" +
+                "          \"direct_responses\":1,\n" +
+                "          \"influenced_responses\":2,\n" +
+                "          \"sends\":58\n" +
+                "        },\n" +
+                "        \"android\":{  \n" +
+                "          \"direct_responses\":3,\n" +
+                "          \"influenced_responses\":4,\n" +
+                "          \"sends\":22\n" +
+                "        },\n" +
+                "        \"ios\":{  \n" +
+                "          \"direct_responses\":5,\n" +
+                "          \"influenced_responses\":6,\n" +
+                "          \"sends\":36\n" +
+                "        }\n" +
+                "      },\n" +
+                "      \"rich_push_platforms\":{  \n" +
+                "        \"all\":{  \n" +
+                "          \"responses\":7,\n" +
+                "          \"sends\":8\n" +
+                "        }\n" +
+                "      },\n" +
+                "      \"time\":\"2013-07-25 23:00:00\"\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"push_platforms\":{  \n" +
+                "        \"all\":{  \n" +
+                "          \"direct_responses\":9,\n" +
+                "          \"influenced_responses\":10,\n" +
+                "          \"sends\":11\n" +
+                "        },\n" +
+                "        \"android\":{  \n" +
+                "          \"direct_responses\":12,\n" +
+                "          \"influenced_responses\":13,\n" +
+                "          \"sends\":14\n" +
+                "        },\n" +
+                "        \"ios\":{  \n" +
+                "          \"direct_responses\":15,\n" +
+                "          \"influenced_responses\":16,\n" +
+                "          \"sends\":17\n" +
+                "        }\n" +
+                "      },\n" +
+                "      \"rich_push_platforms\":{  \n" +
+                "        \"all\":{  \n" +
+                "          \"responses\":18,\n" +
+                "          \"sends\":19\n" +
+                "        }\n" +
+                "      },\n" +
+                "      \"time\":\"2013-07-26 00:00:00\"\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"push_platforms\":{  \n" +
+                "        \"all\":{  \n" +
+                "          \"direct_responses\":20,\n" +
+                "          \"influenced_responses\":21,\n" +
+                "          \"sends\":22\n" +
+                "        },\n" +
+                "        \"android\":{  \n" +
+                "          \"direct_responses\":23,\n" +
+                "          \"influenced_responses\":24,\n" +
+                "          \"sends\":25\n" +
+                "        },\n" +
+                "        \"ios\":{  \n" +
+                "          \"direct_responses\":26,\n" +
+                "          \"influenced_responses\":27,\n" +
+                "          \"sends\":28\n" +
+                "        }\n" +
+                "      },\n" +
+                "      \"rich_push_platforms\":{  \n" +
+                "        \"all\":{  \n" +
+                "          \"responses\":29,\n" +
+                "          \"sends\":30\n" +
+                "        }\n" +
+                "      },\n" +
+                "      \"time\":\"2013-07-26 01:00:00\"\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(json)
+                        .withStatus(200)));
+
+        APIClientResponse<PerPushSeriesResponse> response = client.listPerPushSeries("push_id", "DAILY");
+        assertNotNull(response);
+
+        PerPushSeriesResponse obj = mapper.readValue(json, PerPushSeriesResponse.class);
+        assertEquals(obj, response.getApiResponse());
+    }
+
+    @Test
+    public void testListPerPushSeriesWithPrecisionWithRange() throws IOException {
+
+        ObjectMapper mapper = APIResponseObjectMapper.getInstance();
+
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        String queryPathString = "/api/reports/perpush/series/push_id?precision=DAILY&start=2014-10-01T12%3A00%3A00.000&end=2014-10-03T12%3A00%3A00.000";
+
+        String json = "{  \n" +
+                "  \"app_key\":\"some_app_key\",\n" +
+                "  \"push_id\":\"57ef3728-79dc-46b1-a6b9-20081e561f97\",\n" +
+                "  \"start\":\"2013-07-25 23:00:00\",\n" +
+                "  \"end\":\"2013-07-26 11:00:00\",\n" +
+                "  \"precision\":\"HOURLY\",\n" +
+                "  \"counts\":[  \n" +
+                "    {  \n" +
+                "      \"push_platforms\":{  \n" +
+                "        \"all\":{  \n" +
+                "          \"direct_responses\":1,\n" +
+                "          \"influenced_responses\":2,\n" +
+                "          \"sends\":58\n" +
+                "        },\n" +
+                "        \"android\":{  \n" +
+                "          \"direct_responses\":3,\n" +
+                "          \"influenced_responses\":4,\n" +
+                "          \"sends\":22\n" +
+                "        },\n" +
+                "        \"ios\":{  \n" +
+                "          \"direct_responses\":5,\n" +
+                "          \"influenced_responses\":6,\n" +
+                "          \"sends\":36\n" +
+                "        }\n" +
+                "      },\n" +
+                "      \"rich_push_platforms\":{  \n" +
+                "        \"all\":{  \n" +
+                "          \"responses\":7,\n" +
+                "          \"sends\":8\n" +
+                "        }\n" +
+                "      },\n" +
+                "      \"time\":\"2013-07-25 23:00:00\"\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"push_platforms\":{  \n" +
+                "        \"all\":{  \n" +
+                "          \"direct_responses\":9,\n" +
+                "          \"influenced_responses\":10,\n" +
+                "          \"sends\":11\n" +
+                "        },\n" +
+                "        \"android\":{  \n" +
+                "          \"direct_responses\":12,\n" +
+                "          \"influenced_responses\":13,\n" +
+                "          \"sends\":14\n" +
+                "        },\n" +
+                "        \"ios\":{  \n" +
+                "          \"direct_responses\":15,\n" +
+                "          \"influenced_responses\":16,\n" +
+                "          \"sends\":17\n" +
+                "        }\n" +
+                "      },\n" +
+                "      \"rich_push_platforms\":{  \n" +
+                "        \"all\":{  \n" +
+                "          \"responses\":18,\n" +
+                "          \"sends\":19\n" +
+                "        }\n" +
+                "      },\n" +
+                "      \"time\":\"2013-07-26 00:00:00\"\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"push_platforms\":{  \n" +
+                "        \"all\":{  \n" +
+                "          \"direct_responses\":20,\n" +
+                "          \"influenced_responses\":21,\n" +
+                "          \"sends\":22\n" +
+                "        },\n" +
+                "        \"android\":{  \n" +
+                "          \"direct_responses\":23,\n" +
+                "          \"influenced_responses\":24,\n" +
+                "          \"sends\":25\n" +
+                "        },\n" +
+                "        \"ios\":{  \n" +
+                "          \"direct_responses\":26,\n" +
+                "          \"influenced_responses\":27,\n" +
+                "          \"sends\":28\n" +
+                "        }\n" +
+                "      },\n" +
+                "      \"rich_push_platforms\":{  \n" +
+                "        \"all\":{  \n" +
+                "          \"responses\":29,\n" +
+                "          \"sends\":30\n" +
+                "        }\n" +
+                "      },\n" +
+                "      \"time\":\"2013-07-26 01:00:00\"\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(json)
+                        .withStatus(200)));
+
+        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+        DateTime end = start.plus(Period.hours(48));
+
+        APIClientResponse<PerPushSeriesResponse> response = client.listPerPushSeries("push_id", "DAILY", start, end);
+        assertNotNull(response);
+
+        PerPushSeriesResponse obj = mapper.readValue(json, PerPushSeriesResponse.class);
         assertEquals(obj, response.getApiResponse());
     }
 }
