@@ -20,14 +20,14 @@ handle the results.
 
     // Setup a push payload to send to the API with our handy builders
     PushPayload payload = PushPayload.newBuilder()
-                                     .setAudience(Selectors.deviceToken(deviceToken))
-                                     .setNotification(Notifications.notification("UA Push"))
-                                     .setPlatforms(PlatformData.of(Platform.IOS))
-                                     .build();
+            .setAudience(Selectors.all())
+            .setNotification(Notifications.notification("UA Push"))
+            .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+            .build();
     // Try and send, handle anything that comes up
     try {
         APIClientResponse<APIPushResponse> response = apiClient.push(payload);
-        log.info("Sent a push message!");
+        logger.info("Sent a push message!");
     }
     // Non 200 responses throw an APIRequestException. Check the documentation
     // to debug your request.
