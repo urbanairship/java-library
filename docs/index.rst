@@ -84,6 +84,8 @@ Contents:
 .. toctree::
    :maxdepth: 5
 
+   definingsending.rst
+   apiclient.rst
    push.rst
    schedule.rst
    exception.rst

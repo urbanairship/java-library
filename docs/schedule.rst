@@ -24,6 +24,17 @@ scheduled for delivery at current time plus 60 seconds.
                                                     .setSchedule(schedule)
                                                     .build();
 
+   APIClientResponse<APIScheduleResponse> response = apiClient.schedule(schedulePayload);
+
+Optionally, scheduled pushes can be configured to be delievered at the device local time.
+This is done by calling a different method when building your Schedule object.
+
+.. code-block:: java 
+
+    Schedule schedule = Schedule.newBuilder()
+                             .setLocalScheduledTimestamp(DateTime.now().plusSeconds(60))
+                             .build();
+
 Dates and times are handled by the `Joda-Time
 <http://joda-time.sourceforge.net>`_ library. Scheduled pushes require
 time to be in ISO format, which is handled by the DateTime library.
@@ -36,5 +47,17 @@ Joda-Time documentation for more examples.
 
 Attempting to schedule a push for a previous time will result in a
 HTTP 400 response and an APIResponseException.
+
+List Schedules
+--------------
+
+
+Update Schedule
+---------------
+
+
+Delete Schedule
+---------------
+
 
 
