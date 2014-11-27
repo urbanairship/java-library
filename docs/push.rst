@@ -29,8 +29,8 @@ audience for an application.
 
         // Build and configure an APIClient
         APIClient apiClient = APIClient.newBuilder()
-                .setAppKey(appKey)
-                .setAppSecret(appSecret)
+                .setKey(appKey)
+                .setSecret(appSecret)
                 .build();
 
         // Setup a payload for the message you want to send
@@ -63,12 +63,25 @@ APIClient
 .. code-block:: java
 
     APIClient apiClient = APIClient.newBuilder()
-            .setAppKey(appKey)
-            .setAppSecret(appSecret)
+            .setKey(appKey)
+            .setSecret(appSecret)
             .build();
 
 The APIClient handles the interaction between the client and the API. The client will throw an
 exception if there is an issue with the request, or if it is improperly configured.
+
+Optionally, a client can be created with proxy server support.
+
+.. code-block:: java
+
+    APIClient proxyClient = APIClient.newBuilder()
+          .setKey(appKey)
+          .setSecret(appSecret)
+              .setProxyInfo(ProxyInfo.newBuilder()
+              .setProxyHost(new HttpHost("host"))
+              .setProxyCredentials(new UsernamePasswordCredentials("user", "password"))
+              .build())
+          .build();
 
 PushPayload
 ===========
@@ -212,42 +225,24 @@ sending a message to iOS and Android.
 The DeviceTypeData class has several convenience methods for working with
 DeviceTypes. 
 
-SchedulePayload
-===============
+Validation
+----------
 
-Sending a scheduled push notification via the API simply adds the
-extra step of wrapping a PushPayload in a SchedulePayload.
-
-First, create a PushPayload using the steps outlined above. Then
-create a SchedulePayload and send it to the API. The message is
-scheduled for delivery at current time plus 60 seconds.
+Accepts the same range of push payloads as the Push API, but parse and validate only, without sending any pushes.
 
 .. code-block:: java
 
-   // Create a PushPayload
-   PushPayload payload = PushPayload.newBuilder().build();
+    PushPayload payload = PushPayload.newBuilder()
+        .setAudience(Selectors.all())
+        .setNotification(Notification.newBuilder()
+                .addDeviceTypeOverride(DeviceType.IOS, IOSDevicePayload.newBuilder()
+                        .setAlert("Background Push Priority 5")
+                        .setContentAvailable(true)
+                        .setPriority(5)
+                        .build())
+                .build())
+        .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+        .build();
 
-   // Add it to a SchedulePayload
-   Schedule schedule = Schedule.newBuilder()
-                               .setScheduledTimestamp(DateTime.now().plusSeconds(60))
-                               .build();
-
-   SchedulePayload schedulePayload = SchedulePayload.newBuilder()
-                                                    .setName("v3 Scheduled Push Test")
-                                                    .setPushPayload(payload)
-                                                    .setSchedule(schedule)
-                                                    .build();
-
-Dates and times are handled by the `Joda-Time
-<http://joda-time.sourceforge.net>`_ library. Scheduled pushes require
-time to be in ISO format, which is handled by the DateTime library.
-Here's an example set for a particular month, day and time. See the
-Joda-Time documentation for more examples.
-
-.. code-block:: java
-   DateTime dt = new DateTime(2013,7,22,11,57);
-
-Attempting to schedule a push for a previous time will result in a
-HTTP 400 response and an APIResponseException.
-
-
+    APIClientResponse<APIPushResponse> response = apiClient.validate(payload);
+    
