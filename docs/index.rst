@@ -73,7 +73,7 @@ The Urban Airship Java client streamlines API requests. API
 interactions all follow the same basic work flow.
 
 #. Configure a payload using the appropriate Java model classes
-#. Configure an APICleint to authenticate, send, and return a
+#. Configure an APIClient to authenticate, send, and return a
    response.
 #. Handle the response or exception appropriately.
 
@@ -85,7 +85,7 @@ Contents:
    :maxdepth: 5
 
    push.rst
-   packages.rst
+   schedule.rst
    exception.rst
 
 
