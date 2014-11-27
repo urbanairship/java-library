@@ -51,13 +51,69 @@ HTTP 400 response and an APIResponseException.
 List Schedules
 --------------
 
+List all existing schedules.
+
+.. code-block:: java
+
+    APIClientResponse<APIListAllSchedulesResponse> response = apiClient.listAllSchedules();
+
+    APIListAllSchedulesResponse obj = response.getApiResponse();
+    int count = obj.getCount();
+    int totalCount = obj.getTotal_Count();
+    String nextPage = obj.getNext_Page();
+    List<SchedulePayload> listOfSchedules = obj.getSchedules();
+
+    // You can specify a url string for nextPage
+
+    APIClientResponse<APIListAllSchedulesResponse> nextPageResponse = 
+    apiClient.listAllSchedules(nextPage);
+
+    // You can also specify a starting id, limit and order
+
+    APIClientResponse<APIListAllSchedulesResponse> constrainedResponse = 
+    apiClient.listAllSchedules("5c69320c-3e91-5241-fad3-248269eed104", 10, "asc");
+
+
 
 Update Schedule
 ---------------
 
+Update the state of a single schedule resource.
+
+.. code-block:: java
+
+    String id = "the_id_of_the_schedule_to_update";
+
+    SchedulePayload sp = SchedulePayload.newBuilder()
+          .setName("Booyah Sports")
+          .setSchedule(Schedule.newBuilder()
+                  .setScheduledTimestamp(DateTime.now().plusYears(1))
+                  .build())
+          .setPushPayload(PushPayload.newBuilder()
+                  .setAudience(Selectors.tags("spoaaaarts", "Beyonce", "Nickelback"))
+                  .setNotification(Notification.newBuilder()
+                          .setAlert("Booyah!")
+                          .build())
+                  .setDeviceTypes(DeviceTypeData.all())
+                  .build())
+          .build();
+
+    APIClientResponse<APIScheduleResponse> = apiClient.updateSchedule(sp, id);
+
+The response is a APIScheduleResponse representing the updated state.
 
 Delete Schedule
 ---------------
+
+Delete a schedule resource, which will result in no more pushes being sent.  If the 
+resource is successfully deleted, the response does not include a body.
+
+.. code-block:: java
+
+    String id = "the_id_of_the_schedule_to_delete";
+    HttpResponse response = apiClient.deleteSchedule(id);
+
+    int status = response.getStatusLine().getStatusCode();    //Returns 204 on success
 
 
 
