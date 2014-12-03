@@ -15,11 +15,11 @@ import java.io.IOException;
 Readers are the part of the deserialization process that actually builds and
 return an object.
  */
-public final class LocationReader implements JsonObjectReader<APIErrorDetails.Location> {
+public class StreamLocationReader implements JsonObjectReader<APIErrorDetails.Location> {
 
     private final APIErrorDetails.Location.Builder builder;
 
-    public LocationReader (){
+    public StreamLocationReader(){
         this.builder = APIErrorDetails.Location.newBuilder();
     }
 
