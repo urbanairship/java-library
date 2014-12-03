@@ -802,7 +802,7 @@ public class APIClientTest {
 
             // Verify components of the underlying request
             verify(getRequestedFor(urlEqualTo("/api/location/?q=San+Francisco&type=city"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo("/api/location/?q=San+Francisco&type=city")));
             assertEquals(requests.size(), 1);
 
@@ -889,7 +889,7 @@ public class APIClientTest {
 
             // Verify components of the underlying request
             verify(getRequestedFor(urlEqualTo("/api/location/?q=San+Francisco"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo("/api/location/?q=San+Francisco")));
             assertEquals(requests.size(), 1);
 
@@ -981,7 +981,7 @@ public class APIClientTest {
 
             // Verify components of the underlying request
             verify(getRequestedFor(urlEqualTo("/api/location/45.52,-122.681944?type=city"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo("/api/location/45.52,-122.681944?type=city")));
             assertEquals(requests.size(), 1);
 
@@ -1073,7 +1073,7 @@ public class APIClientTest {
 
             // Verify components of the underlying request
             verify(getRequestedFor(urlEqualTo("/api/location/45.52,-122.681944"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo("/api/location/45.52,-122.681944")));
             assertEquals(requests.size(), 1);
 
@@ -1168,7 +1168,7 @@ public class APIClientTest {
 
             // Verify components of the underlying request
             verify(getRequestedFor(urlEqualTo("/api/location/32.5343,-124.4096,42.0095,-114.1308?type=city"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo("/api/location/32.5343,-124.4096,42.0095,-114.1308?type=city")));
             assertEquals(requests.size(), 1);
 
@@ -1263,7 +1263,7 @@ public class APIClientTest {
 
             // Verify components of the underlying request
             verify(getRequestedFor(urlEqualTo("/api/location/32.5343,-124.4096,42.0095,-114.1308"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo("/api/location/32.5343,-124.4096,42.0095,-114.1308")));
             assertEquals(requests.size(), 1);
 
