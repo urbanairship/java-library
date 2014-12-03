@@ -115,15 +115,6 @@ public class LocationTest {
                 .setLocationType("Type")
                 .setPropertiesNode(node)
                 .build();
-
-        assertNotNull(target);
-        assertEquals(testBounds, target.getBounds().get());
-        assertEquals(testPoint, target.getCentroid().get());
-        assertEquals("ID", target.getLocationId());
-        assertEquals("Type", target.getLocationType());
-        assertEquals("{\"hello\":\"kitty\"}", target.getPropertiesJsonString());
-        assertEquals(node, target.getPropertiesJsonNode());
-        assertEquals(target.getPropertiesJsonString(), target.getPropertiesJsonNode().toString());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -170,15 +161,6 @@ public class LocationTest {
                 .setLocationType("Type")
                 .setPropertiesNode(node)
                 .build();
-
-        assertNotNull(target);
-        assertEquals(testBounds, target.getBounds().get());
-        assertEquals(testPoint, target.getCentroid().get());
-        assertEquals("ID", target.getLocationId());
-        assertEquals("Type", target.getLocationType());
-        assertEquals("{\"hello\":\"kitty\"}", target.getPropertiesJsonString());
-        assertEquals(node, target.getPropertiesJsonNode());
-        assertEquals(target.getPropertiesJsonString(), target.getPropertiesJsonNode().toString());
     }
 
 }
