@@ -1,0 +1,102 @@
+{%- extends "ua_docs/home.html" %}
+
+{% set title = 'Urban Airship Documentation' %}
+
+{%- block body %}
+<section class="intro">
+  <div id="developers-resources">
+    <div class="bg-img"></div>
+    <div class="quicklinks">
+      <h2>Development</h2>
+      <p>Get started by integrating our SDK in your app project. Discover the full capabilities of the Urban Airship API.</p>
+      <h4>Mobile Platform</h4>
+      <div class="btn-group">
+        <a href="{{ pathto("platform/ios") }}" class="btn med primary">iOS</a>
+        <a href="{{ pathto("platform/android") }}" class="btn med primary">Android</a>
+        <a href="{{ pathto("platform/blackberry") }}" class="btn med primary">BlackBerry</a>
+        <a href="{{ pathto("platform/windows") }}" class="btn med primary">Windows</a>
+        <a href="{{ pathto("platform/phonegap") }}" class="btn med primary">PhoneGap</a>
+      </div>
+      <h4>Server<h4>
+      <div class="btn-group">
+        <a href="{{ pathto("integration") }}" class="btn med primary">Integration</a>
+        <a href="{{ pathto("api/overview") }}" class="btn med primary">API Overview</a>
+        <a href="{{ pathto("api/ua") }}" class="btn med primary">API Reference</a>
+      </div>
+    </div>
+  </div>
+  <div id="user-guide">
+    <div class="bg-img"></div>
+    <div class="quicklinks">
+      <h2>User Guide</h2>
+      <p>Explore Urban Airship's fully-featured web application.</p>
+      <div class="btn-group">
+        <a href="{{ pathto("user-guide/getting-started") }}" class="btn med primary">Getting Started</a>
+        <a href="{{ pathto("user-guide/message-composer") }}" class="btn med primary">Messaging</a>
+        <a href="{{ pathto("user-guide/audience") }}" class="btn med primary">Audience</a>
+        <a href="{{ pathto("user-guide/reports") }}" class="btn med primary">Reports</a>
+      </div>
+      <h2>Wallet Studio</h2>
+      <p>Integrate our digital wallet solution with your app.</p>
+      <div class="btn-group">
+        <a href="{{ pathto("wallet-studio/getting-started") }}" class="btn med primary">Getting Started</a>
+        <a href="{{ pathto("wallet-studio/add-passbook") }}" class="btn med primary">iOS: Push to Pass</a>
+        <a href="{{ pathto("wallet-studio/reference") }}" class="btn med primary">Reference</a>
+        <a href="{{ pathto("api/wallet") }}" class="btn med primary">API</a>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="guides">
+  <h2 class="section-header">Topic Guides</h2>
+  <div class="row">
+    <article class="guide rich-content">
+      <div class="rubric">Rich Content</div>
+      <div class="heading">
+        <h2><a href="topic-guides/ios-message-center-widget.html">Building an iOS Message Center Widget</a></h2>
+      </div>
+      <div class="teaser">
+         <p>Learn how to build a custom widget that embeds a message center in the user's Today screen.</p>
+      </div>
+    </article>
+    <article class="guide location">
+      <div class="rubric">Location</div>
+      <div class="heading">
+        <h2><a href="topic-guides/gimbal-integration.html">Gimbal Integration Guide</a></h2>
+      </div>
+      <div class="teaser">
+         <p>Take advantage of Urban Airship's partnership with Gimbal by integrating their location technologies with UA's advanced Automated Messaging services.</p>
+      </div>
+    </article>
+    <article class="guide channels">
+      <div class="rubric">Channels</div>
+      <div class="heading">
+        <h2><a href="topic-guides/channels.html">Channels</a></h2>
+      </div>
+      <div class="teaser">
+         <p>Learn about our new method of tracking application installations on iOS, Android, and Amazon devices</p>
+      </div>
+    </article>
+  </div>
+  <div class="view-all">
+    <a href="topic-guides/index.html" class="btn med primary">View All</a>
+  </div>
+</section>
+<section class="news">
+  <h2 class="section-header">What's New</h2>
+  <div class="row">
+    <div class="featured-news-item">
+      <h2>New Custom Events Reporting Capability</h2>
+      <img src="{{ pathto("_images/aggregate-events-report.png", 1) }}">
+      <p>If you have Custom Events set up in your app, you will now see events associated with a push notification on that notification’s Message Report. The table will appear at the bottom of the report, and detail events attributed to that push notification.</p>
+      <p>In addition to the Custom Events associated with a particular push notification on that notification’s Message Report, the new Event Tracking Report provides an overview of all of the Custom Events recorded from your app, as well as their associated values.</p>
+    </div>
+    <div class="recent-news">
+
+    </div>
+  </div>
+  <div class="view-all">
+    <a href="whats-new/index.html" class="btn med primary">View All</a>
+  </div>
+</section>
+{% endblock %}

@@ -13,12 +13,12 @@
 # serve to show the default.
 
 import sys, os
-import sphinx_rtd_theme
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
+sys.path.insert(0, os.path.abspath('./_extensions'))
 
 # -- General configuration -----------------------------------------------------
 
@@ -27,7 +27,7 @@ import sphinx_rtd_theme
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-# extensions = ['javasphinx']
+extensions = ['httpdomain', 'locationdomain', 'sphinx.ext.todo']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -96,7 +96,7 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'ua_docs'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -105,7 +105,24 @@ html_theme = 'sphinx_rtd_theme'
 
 # Add any paths that contain custom themes here, relative to this
 # directory.
-html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+sys.path.append(os.path.abspath('_themes'))
+html_theme_path = ['_themes']
+
+
+# If false, no module index is generated.
+html_domain_indices = False
+
+# If false, no index is generated.
+html_use_index = False
+
+# If true, the index is split into individual pages for each letter.
+#html_split_index = False
+
+# If true, links to the reST sources are added to the pages.
+html_show_sourcelink = False
+
+# If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
+html_show_sphinx = False
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
@@ -126,7 +143,7 @@ html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-# html_static_path = ['_static']
+html_static_path = ['_themes/ua_docs/static']
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
