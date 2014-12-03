@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ */
+
 package com.urbanairship.api.client;
 
 import com.urbanairship.api.client.model.APIClientResponse;
@@ -13,7 +17,7 @@ import org.codehaus.jackson.type.TypeReference;
 import java.io.IOException;
 import java.util.List;
 
-public class ListAppStatsAPIResponseHandler implements ResponseHandler<APIClientResponse<List<AppStats>>> {
+public final class ListAppStatsAPIResponseHandler implements ResponseHandler<APIClientResponse<List<AppStats>>> {
 
     private static final ObjectMapper mapper = APIResponseObjectMapper.getInstance();
     private static final APIClientResponse.Builder<List<AppStats>> builder = APIClientResponse.newListAppStatsBuilder();

@@ -1,10 +1,11 @@
 /*
- * Copyright 2013 Urban Airship and Contributors
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.client.model;
 
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.schedule.model.SchedulePayload;
@@ -63,6 +64,23 @@ public final class APIScheduleResponse {
                 ", scheduleUrls=" + scheduleUrls +
                 ", schedulePayloads=" + schedulePayloads +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(operationId, scheduleUrls, schedulePayloads);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final APIScheduleResponse other = (APIScheduleResponse) obj;
+        return Objects.equal(this.operationId, other.operationId) && Objects.equal(this.scheduleUrls, other.scheduleUrls) && Objects.equal(this.schedulePayloads, other.schedulePayloads);
     }
 
     /**

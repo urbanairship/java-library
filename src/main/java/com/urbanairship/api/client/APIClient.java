@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Urban Airship and Contributors
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.client;
@@ -98,9 +98,8 @@ public class APIClient {
         return String.format("%s version=%s;", UA_APPLICATION_JSON, version.toString());
     }
 
-    /*
-    Retrieves Java Client API Version
-    */
+    /* Retrieves Java Client API Version */
+
     public String getUserAgent() {
         InputStream stream = getClass().getResourceAsStream("/client.properties");
 
@@ -457,7 +456,6 @@ public class APIClient {
     }
 
     /* Reports API */
-
 
     /**
      * Returns hourly counts for pushes sent for this application.

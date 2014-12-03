@@ -1,9 +1,10 @@
 /*
- * Copyright 2013 Urban Airship and Contributors
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.schedule.model;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
@@ -15,7 +16,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public class SchedulePayload extends PushModelObject {
+public final class SchedulePayload extends PushModelObject {
 
     private final Schedule schedule;
     private final Optional<String> url;
@@ -60,30 +61,8 @@ public class SchedulePayload extends PushModelObject {
         this.pushIds.addAll(pushIds);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)  { return true; }
-        if (o == null || getClass() != o.getClass()) { return false; }
-
-        SchedulePayload that = (SchedulePayload) o;
-
-        if (name != null ? !name.equals(that.name) : that.name != null) { return false; }
-        if (pushIds != null ? !pushIds.equals(that.pushIds) : that.pushIds != null) { return false; }
-        if (!pushPayload.equals(that.pushPayload)) { return false; }
-        if (!schedule.equals(that.schedule)) { return false; }
-        if (url != null ? !url.equals(that.url) : that.url != null) { return false; }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = schedule.hashCode();
-        result = 31 * result + (url != null ? url.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + pushPayload.hashCode();
-        result = 31 * result + (pushIds != null ? pushIds.hashCode() : 0);
-        return result;
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
     @Override
@@ -97,8 +76,21 @@ public class SchedulePayload extends PushModelObject {
                 '}';
     }
 
-    public static Builder newBuilder() {
-        return new Builder();
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(schedule, url, name, pushPayload, pushIds);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final SchedulePayload other = (SchedulePayload) obj;
+        return Objects.equal(this.schedule, other.schedule) && Objects.equal(this.url, other.url) && Objects.equal(this.name, other.name) && Objects.equal(this.pushPayload, other.pushPayload) && Objects.equal(this.pushIds, other.pushIds);
     }
 
     public static class Builder {

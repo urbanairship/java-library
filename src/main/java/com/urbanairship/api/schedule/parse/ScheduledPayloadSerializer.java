@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Urban Airship and Contributors
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.schedule.parse;
@@ -11,7 +11,7 @@ import org.codehaus.jackson.map.SerializerProvider;
 
 import java.io.IOException;
 
-public class ScheduledPayloadSerializer extends JsonSerializer<SchedulePayload> {
+public final class ScheduledPayloadSerializer extends JsonSerializer<SchedulePayload> {
 
     public static final ScheduledPayloadSerializer INSTANCE = new ScheduledPayloadSerializer();
 

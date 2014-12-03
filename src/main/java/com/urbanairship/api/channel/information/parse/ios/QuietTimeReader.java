@@ -1,8 +1,12 @@
-package com.urbanairship.api.channel.registration.parse.ios;
+/*
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ */
+
+package com.urbanairship.api.channel.information.parse.ios;
 
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
-import com.urbanairship.api.channel.registration.model.ios.QuietTime;
+import com.urbanairship.api.channel.information.model.ios.QuietTime;
 import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;

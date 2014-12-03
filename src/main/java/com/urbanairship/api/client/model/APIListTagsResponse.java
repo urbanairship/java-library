@@ -1,9 +1,10 @@
 /*
- * Copyright 2014 Urban Airship and Contributors
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.client.model;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
@@ -31,20 +32,20 @@ public final class APIListTagsResponse {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)  { return true; }
-        if (o == null || getClass() != o.getClass()) { return false; }
-
-        APIListTagsResponse that = (APIListTagsResponse) o;
-
-        if (!tags.equals(that.tags)) { return false; }
-
-        return true;
+    public int hashCode() {
+        return Objects.hashCode(tags);
     }
 
     @Override
-    public int hashCode() {
-        return tags.hashCode();
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final APIListTagsResponse other = (APIListTagsResponse) obj;
+        return Objects.equal(this.tags, other.tags);
     }
 
     /**
