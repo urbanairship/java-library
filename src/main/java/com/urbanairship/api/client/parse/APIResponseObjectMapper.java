@@ -14,6 +14,9 @@ import com.urbanairship.api.channel.registration.parse.ios.IosSettingsDeserializ
 import com.urbanairship.api.channel.registration.parse.ios.QuietTimeDeserializer;
 import com.urbanairship.api.client.*;
 import com.urbanairship.api.client.model.*;
+import com.urbanairship.api.location.model.Location;
+import com.urbanairship.api.location.parse.LocationDeserializer;
+import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.push.parse.PushPayloadDeserializer;
@@ -38,7 +41,7 @@ public class APIResponseObjectMapper {
 
     static {
         MODULE.addDeserializer(APIPushResponse.class, new APIPushResponseDeserializer());
-        MODULE.addDeserializer(APIErrorDetails.Location.class, new LocationDeserializer());
+        MODULE.addDeserializer(APIErrorDetails.Location.class, new StreamLocationDeserializer());
         MODULE.addDeserializer(APIErrorDetails.class, new APIErrorDetailsDeserializer());
         MODULE.addDeserializer(APIError.class, new APIErrorDeserializer());
         MODULE.addDeserializer(APIScheduleResponse.class, new APIScheduleResponseDeserializer());
@@ -55,6 +58,8 @@ public class APIResponseObjectMapper {
         MODULE.addDeserializer(DeviceType.class, new DeviceTypeDeserializer());
         MODULE.addDeserializer(APIListAllChannelsResponse.class, new APIListAllChannelsResponseDeserializer());
         MODULE.addDeserializer(AppStats.class, new AppStatsDeserializer());
+        MODULE.addDeserializer(Location.class, new LocationDeserializer());
+        MODULE.addDeserializer(APILocationResponse.class, new APILocationResponseDeserializer());
 
         MAPPER.registerModule(PushObjectMapper.getModule());
         MAPPER.registerModule(MODULE);
