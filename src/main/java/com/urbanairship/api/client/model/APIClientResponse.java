@@ -5,8 +5,11 @@
 
 package com.urbanairship.api.client.model;
 
+import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import org.apache.http.HttpResponse;
+
+import java.util.List;
 
 /**
  * APIClientResponse encapsulates relevant data about responses from the
@@ -63,6 +66,38 @@ public class APIClientResponse<T> {
      */
     public static Builder<APIListTagsResponse> newListTagsResponseBuilder(){
         return new Builder<APIListTagsResponse>();
+    }
+
+    /**
+     * Return a Builder for a List of AppStats
+     * @return Builder
+     */
+    public static Builder<List<AppStats>> newListAppStatsBuilder(){
+        return new Builder<List<AppStats>>();
+    }
+
+    /**
+     * Return a Builder for a String
+     * @return Builder
+     */
+    public static Builder<String> newStringResponseBuilder(){
+        return new Builder<String>();
+    }
+
+    /**
+     * Return a Builder for an APIListAllChannelsResponse
+     * @return Builder
+     */
+    public static Builder<APIListAllChannelsResponse> newListAllChannelsResponseBuilder(){
+        return new Builder<APIListAllChannelsResponse>();
+    }
+
+    /**
+     * Return a Builder for an APIListAllSegmentsResponse
+     * @return Builder
+     */
+    public static Builder<APIListAllSegmentsResponse> newListAllSegmentsResponseBuilder(){
+        return new Builder<APIListAllSegmentsResponse>();
     }
 
     /**

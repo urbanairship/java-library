@@ -11,6 +11,7 @@ import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.Point;
 import com.urbanairship.api.push.model.PushPayload;
+import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
@@ -25,6 +26,7 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.params.CoreProtocolPNames;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +34,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -42,6 +45,7 @@ public class APIClient {
 
     /* Header keys/values */
     private final static String CONTENT_TYPE_KEY = "Content-type";
+    private final static String CONTENT_TYPE_VALUE = "application/json";
     private final static String ACCEPT_KEY = "Accept";
     private final static String UA_APPLICATION_JSON = "application/vnd.urbanairship+json;";
 
@@ -52,6 +56,9 @@ public class APIClient {
     private final static String API_TAGS_PATH = "/api/tags/";
     private final static String API_TAGS_BATCH_PATH = "/api/tags/batch/";
     private final static String API_LOCATION_PATH = "/api/location/";
+    private final static String API_SEGMENTS_PATH = "/api/segments/";
+    private final static String API_DEVICE_CHANNELS_PATH = "/api/channels/";
+    private final static String API_STATISTICS_PATH = "/api/push/stats/";
 
     /* User auth */
     private final String appKey;
@@ -88,7 +95,7 @@ public class APIClient {
     /* Add the version number to the default version header */
 
     private String versionedAcceptHeader(Number version){
-        return String.format("%s version=%s", UA_APPLICATION_JSON, version.toString());
+        return String.format("%s version=%s;", UA_APPLICATION_JSON, version.toString());
     }
 
     /*
@@ -115,7 +122,7 @@ public class APIClient {
     private Request provisionRequest(Request object) {
         return object
                 .config(CoreProtocolPNames.USER_AGENT, getUserAgent())
-                .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
+                .addHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_VALUE)
                 .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
     }
 
@@ -401,6 +408,118 @@ public class APIClient {
         }
 
         return provisionExecutor().execute(req).handleResponse(new LocationAPIResponseHandler());
+    }
+
+    /* Segments API */
+
+    public APIClientResponse<APIListAllSegmentsResponse> listAllSegments() throws IOException {
+        Request req = provisionRequest(Request.Get(baseURI.resolve(API_SEGMENTS_PATH)));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list all segments request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ListAllSegmentsAPIResponseHandler());
+    }
+
+    public APIClientResponse<APIListAllSegmentsResponse> listAllSegments(String nextPage) throws IOException, URISyntaxException {
+        URI np = new URI(nextPage);
+        Request req = provisionRequest(Request.Get(baseURI.resolve(np.getPath() + "?" + np.getQuery())));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list all segments request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ListAllSegmentsAPIResponseHandler());
+    }
+
+    public APIClientResponse<APIListAllSegmentsResponse> listAllSegments(String start, int limit, String order) throws IOException, URISyntaxException {
+        String path = "/api/segments" + "?" + "start=" + start + "&limit=" + limit +"&order=" + order;
+        Request req = provisionRequest(Request.Get(baseURI.resolve(path)));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list all segments request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ListAllSegmentsAPIResponseHandler());
+    }
+
+    /* Device Information API */
+
+    public APIClientResponse<APIListAllChannelsResponse> listAllChannels() throws IOException {
+        Request req = provisionRequest(Request.Get(baseURI.resolve(API_DEVICE_CHANNELS_PATH)));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list all channels request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ListAllChannelsAPIResponseHandler());
+    }
+
+    /* Reports API */
+
+
+    /**
+     * Returns hourly counts for pushes sent for this application.
+     * JSON format
+     *
+     * @param start Start Time
+     * @param end Hours
+     * @return APIClientResponse of List of AppStats in JSON. Times are in UTC, and data is provided for each push platform.
+     * @throws IOException
+     */
+    public APIClientResponse<List<AppStats>> listPushStatistics(DateTime start, DateTime end) throws IOException, URISyntaxException {
+        Preconditions.checkNotNull(start, "Start time is required when performing listing of push statistics");
+        Preconditions.checkNotNull(end, "End time is required when performing listing of push statistics");
+        Preconditions.checkArgument(start.isBefore(end), "Start time must be before End time");
+
+        URIBuilder builder = new URIBuilder(baseURI.resolve(API_STATISTICS_PATH));
+
+        builder.addParameter("start", start.toLocalDateTime().toString());
+        builder.addParameter("end", end.toLocalDateTime().toString());
+        builder.addParameter("format", "json");
+
+        Request req = provisionRequest(Request.Get(builder.toString()));
+
+        req.removeHeaders(ACCEPT_KEY);      // Workaround for v3 routing bug
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list Statistics in CSV String format request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ListAppStatsAPIResponseHandler());
+    }
+
+    /**
+     * Returns hourly counts for pushes sent for this application.
+     * CSV format for easy importing into spreadsheets.
+     *
+     * @param start Start Time
+     * @param end   End Time
+     * @return APIClientResponse of String in CSV. Times are in UTC, and data is provided for each push platform.
+     * (Currently: iOS, Helium, BlackBerry, C2DM, GCM, Windows 8, and Windows Phone 8, in that order.)
+     * @throws IOException
+     */
+    public APIClientResponse<String> listPushStatisticsInCSVString(DateTime start, DateTime end) throws IOException {
+        Preconditions.checkNotNull(start, "Start time is required when performing listing of push statistics");
+        Preconditions.checkNotNull(end, "End time is required when performing listing of push statistics");
+        Preconditions.checkArgument(start.isBefore(end), "Start time must be before End time");
+
+        URIBuilder builder = new URIBuilder(baseURI.resolve(API_STATISTICS_PATH));
+
+        builder.addParameter("start", start.toLocalDateTime().toString());
+        builder.addParameter("end", end.toLocalDateTime().toString());
+        builder.addParameter("format", "csv");
+
+        Request req = provisionRequest(Request.Get(builder.toString()));
+
+        req.removeHeaders(ACCEPT_KEY);      // Workaround for v3 routing bug
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list Statistics in CSV String format request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new StringAPIResponseHandler());
     }
 
     /* Object methods */

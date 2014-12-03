@@ -4,13 +4,24 @@
 
 package com.urbanairship.api.client.parse;
 
+import com.urbanairship.api.channel.registration.model.ChannelView;
+import com.urbanairship.api.channel.registration.model.DeviceType;
+import com.urbanairship.api.channel.registration.model.ios.IosSettings;
+import com.urbanairship.api.channel.registration.model.ios.QuietTime;
+import com.urbanairship.api.channel.registration.parse.ChannelViewDeserializer;
+import com.urbanairship.api.channel.registration.parse.DeviceTypeDeserializer;
+import com.urbanairship.api.channel.registration.parse.ios.IosSettingsDeserializer;
+import com.urbanairship.api.channel.registration.parse.ios.QuietTimeDeserializer;
 import com.urbanairship.api.client.*;
 import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.location.model.Location;
 import com.urbanairship.api.location.parse.LocationDeserializer;
+import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.push.parse.PushPayloadDeserializer;
+import com.urbanairship.api.reports.model.AppStats;
+import com.urbanairship.api.reports.parse.AppStatsDeserializer;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.schedule.parse.ScheduleDeserializer;
@@ -39,6 +50,14 @@ public class APIResponseObjectMapper {
         MODULE.addDeserializer(SchedulePayload.class, SchedulePayloadDeserializer.INSTANCE);
         MODULE.addDeserializer(PushPayload.class, new PushPayloadDeserializer());
         MODULE.addDeserializer(APIListTagsResponse.class, new APIListTagsResponseDeserializer());
+        MODULE.addDeserializer(SegmentInformation.class, new SegmentInformationDeserializer());
+        MODULE.addDeserializer(APIListAllSegmentsResponse.class, new APIListAllSegmentsResponseDeserializer());
+        MODULE.addDeserializer(IosSettings.class, new IosSettingsDeserializer());
+        MODULE.addDeserializer(QuietTime.class, new QuietTimeDeserializer());
+        MODULE.addDeserializer(ChannelView.class, new ChannelViewDeserializer());
+        MODULE.addDeserializer(DeviceType.class, new DeviceTypeDeserializer());
+        MODULE.addDeserializer(APIListAllChannelsResponse.class, new APIListAllChannelsResponseDeserializer());
+        MODULE.addDeserializer(AppStats.class, new AppStatsDeserializer());
         MODULE.addDeserializer(Location.class, new LocationDeserializer());
         MODULE.addDeserializer(APILocationResponse.class, new APILocationResponseDeserializer());
 
