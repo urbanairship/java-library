@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ */
+
 package com.urbanairship.api.client.parse;
 
 import com.urbanairship.api.client.model.SegmentInformation;
@@ -7,7 +11,7 @@ import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
 
-public class SegmentInformationReader implements JsonObjectReader<SegmentInformation> {
+public final class SegmentInformationReader implements JsonObjectReader<SegmentInformation> {
 
     private final SegmentInformation.Builder builder;
 

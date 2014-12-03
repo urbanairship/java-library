@@ -1,6 +1,6 @@
 package com.urbanairship.api.client;
 
-import com.urbanairship.api.channel.registration.model.ChannelView;
+import com.urbanairship.api.channel.information.model.ChannelView;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.push.model.DeviceType;
@@ -30,6 +30,23 @@ import java.util.List;
 
 public class APIClientResponseTest {
 
+    @Test
+    public void testAPILocationResponse(){
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP",1,1), 200, "OK"));
+        APILocationResponse locationResponse = APILocationResponse.newBuilder()
+                .build();
+        APIClientResponse.Builder<APILocationResponse> builder =
+                APIClientResponse.newLocationResponseBuilder()
+                        .setApiResponse(locationResponse)
+                        .setHttpResponse(httpResponse);
+        APIClientResponse<APILocationResponse> testResponse = builder.build();
+        assertTrue("HTTP response not set properly",
+                testResponse.getHttpResponse().equals(httpResponse));
+
+        assertTrue("APIResponse not set properly",
+                testResponse.getApiResponse().equals(locationResponse));
+    }
     @Test
     public void testListOfAppStatsAPIResponse(){
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
@@ -219,7 +236,7 @@ public class APIClientResponseTest {
                         .setBackground(true)
                         .setChannelId("channelID")
                         .setCreatedMillis(12345L)
-                        .setDeviceType(com.urbanairship.api.channel.registration.model.DeviceType.ANDROID)
+                        .setDeviceType(com.urbanairship.api.channel.information.model.DeviceType.ANDROID)
                         .setInstalled(true)
                         .setLastRegistrationMillis(12345L)
                         .setOptedIn(true)

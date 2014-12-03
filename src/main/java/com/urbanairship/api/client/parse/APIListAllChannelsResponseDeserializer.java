@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ */
+
 package com.urbanairship.api.client.parse;
 
 import com.google.common.base.Supplier;
@@ -13,7 +17,7 @@ import org.codehaus.jackson.map.JsonDeserializer;
 
 import java.io.IOException;
 
-public class APIListAllChannelsResponseDeserializer extends JsonDeserializer<APIListAllChannelsResponse> {
+public final class APIListAllChannelsResponseDeserializer extends JsonDeserializer<APIListAllChannelsResponse> {
 
     private static final FieldParserRegistry<APIListAllChannelsResponse, APIListAllChannelsResponseReader> FIELD_PARSER =
             new MapFieldParserRegistry<APIListAllChannelsResponse, APIListAllChannelsResponseReader>(

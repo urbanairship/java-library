@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ */
+
 package com.urbanairship.api.client.parse;
 
 import com.google.common.base.Supplier;
@@ -13,7 +17,7 @@ import org.codehaus.jackson.map.JsonDeserializer;
 
 import java.io.IOException;
 
-public class SegmentInformationDeserializer extends JsonDeserializer<SegmentInformation> {
+public final class SegmentInformationDeserializer extends JsonDeserializer<SegmentInformation> {
 
     private static final FieldParserRegistry<SegmentInformation, SegmentInformationReader> FIELD_PARSER =
             new MapFieldParserRegistry<SegmentInformation, SegmentInformationReader>(

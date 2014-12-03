@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Urban Airship and Contributors
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.client.parse;
@@ -18,7 +18,7 @@ import org.codehaus.jackson.map.JsonDeserializer;
 
 import java.io.IOException;
 
-public class APIListTagsResponseDeserializer extends JsonDeserializer<APIListTagsResponse> {
+public final class APIListTagsResponseDeserializer extends JsonDeserializer<APIListTagsResponse> {
 
     private static final FieldParserRegistry<APIListTagsResponse, APIListTagsResponseReader> FIELD_PARSER =
             new MapFieldParserRegistry<APIListTagsResponse, APIListTagsResponseReader>(

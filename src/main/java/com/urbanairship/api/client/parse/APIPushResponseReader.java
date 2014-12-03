@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Urban Airship and Contributors
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.client.parse;
@@ -17,7 +17,7 @@ import java.util.List;
 Readers are the part of the deserialization process that actually builds and
 return an object.
  */
-public class APIPushResponseReader implements JsonObjectReader<APIPushResponse>{
+public final class APIPushResponseReader implements JsonObjectReader<APIPushResponse>{
 
     private final APIPushResponse.Builder builder;
 

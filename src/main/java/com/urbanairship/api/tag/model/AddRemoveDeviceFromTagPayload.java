@@ -1,9 +1,10 @@
 /*
- * Copyright 2014 Urban Airship and Contributors
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.tag.model;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.PushModelObject;
@@ -56,32 +57,22 @@ public final class AddRemoveDeviceFromTagPayload extends PushModelObject {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) { return true; }
-        if (o == null || getClass() != o.getClass()) { return false; }
-
-        AddRemoveDeviceFromTagPayload that = (AddRemoveDeviceFromTagPayload) o;
-
-        if (apids != null ? !apids.equals(that.apids) : that.apids != null) { return false; }
-        if (devicePins != null ? !devicePins.equals(that.devicePins) : that.devicePins != null) { return false; }
-        if (deviceTokens != null ? !deviceTokens.equals(that.deviceTokens) : that.deviceTokens != null) {
-            return false;
-        }
-        if (iosChannels != null ? !iosChannels.equals(that.iosChannels) : that.iosChannels != null)  {
-            return false;
-        }
-
-        return true;
+    public int hashCode() {
+        return Objects.hashCode(iosChannels, deviceTokens, devicePins, apids);
     }
 
     @Override
-    public int hashCode() {
-        int result = iosChannels != null ? iosChannels.hashCode() : 0;
-        result = 31 * result + (deviceTokens != null ? deviceTokens.hashCode() : 0);
-        result = 31 * result + (devicePins != null ? devicePins.hashCode() : 0);
-        result = 31 * result + (apids != null ? apids.hashCode() : 0);
-        return result;
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final AddRemoveDeviceFromTagPayload other = (AddRemoveDeviceFromTagPayload) obj;
+        return Objects.equal(this.iosChannels, other.iosChannels) && Objects.equal(this.deviceTokens, other.deviceTokens) && Objects.equal(this.devicePins, other.devicePins) && Objects.equal(this.apids, other.apids);
     }
+
 
     public static class Builder {
         private AddRemoveSet ios_channels = null;

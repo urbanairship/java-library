@@ -1,8 +1,12 @@
-package com.urbanairship.api.channel.registration.parse;
+/*
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ */
+
+package com.urbanairship.api.channel.information.parse;
 
 import com.google.common.base.Optional;
 import com.urbanairship.api.common.parse.APIParsingException;
-import com.urbanairship.api.channel.registration.model.DeviceType;
+import com.urbanairship.api.channel.information.model.DeviceType;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;

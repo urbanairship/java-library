@@ -1,4 +1,8 @@
-package com.urbanairship.api.channel.registration.util;
+/*
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ */
+
+package com.urbanairship.api.channel.information.util;
 
 /**
  * Constants

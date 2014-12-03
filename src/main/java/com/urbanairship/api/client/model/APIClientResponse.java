@@ -1,10 +1,11 @@
 
 /*
- * Copyright 2013 Urban Airship and Contributors
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.client.model;
 
+import com.google.common.base.Objects;
 import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import org.apache.http.HttpResponse;
@@ -101,6 +102,14 @@ public class APIClientResponse<T> {
     }
 
     /**
+     * Return a Builder for an APILocationResponse
+     * @return Builder
+     */
+    public static Builder<APILocationResponse> newLocationResponseBuilder(){
+        return new Builder<APILocationResponse>();
+    }
+
+    /**
      * Return the HTTP request object used for the request.
      * The HttpEntity associated with the request will be closed, and
      * attempting to read from it will throw an exception
@@ -117,6 +126,23 @@ public class APIClientResponse<T> {
      */
     public T getApiResponse() {
         return apiResponse;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(apiResponse, httpResponse);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final APIClientResponse other = (APIClientResponse) obj;
+        return Objects.equal(this.apiResponse, other.apiResponse) && Objects.equal(this.httpResponse, other.httpResponse);
     }
 
     public String toString(){
