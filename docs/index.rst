@@ -1,11 +1,9 @@
-.. Urban Airship Java Client documentation master file, created by
-   sphinx-quickstart on Tue Jul 16 12:21:44 2013.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 #########################
 Urban Airship Java Client
 #########################
+
+.. toctree::
+  :maxdepth: 2
 
 ************
 Introduction
@@ -51,7 +49,7 @@ to use log4j, you would add the following to your pom.xml
       <version>1.2.17</version>
     </dependency>
 
-Note the logging framework plus the adapter. For more info, see the facade `documentation <http://www.slf4j.org/manual.html>`_
+Note the logging framework plus the adapter. For more info, see the facade `documentation <http://www.slf4j.org/manual.html>`__
 In code, simply add the log handler of your choice. Again, with log4j:
 
 .. code-block:: java
@@ -156,6 +154,10 @@ APIClient
 
 The APIClient handles the interaction between the client and the API. The client will throw an
 exception if there is an issue with the request, or if it is improperly configured.
+
+
+Proxy Support
+=============
 
 Optionally, a client can be created with proxy server support.
 
@@ -317,6 +319,18 @@ sending a message to iOS and Android.
 The DeviceTypeData class has several convenience methods for working with
 DeviceTypes. 
 
+Send Push
+=========
+
+Sends a push notification to a specified device or list of devices.
+
+.. code-block:: java
+
+  APIClientResponse<APIPushResponse> response = apiClient.push(payload);
+
+  String operationID = response.getApiResponse().getOperationId().get();  // Operation ID
+  List<String> pushIDs = response.getApiResponse().getPushIds().get();    // List of Push IDs
+
 Validation
 ==========
 
@@ -338,9 +352,15 @@ Accepts the same range of push payloads as the Push API, but parse and validate 
 
     APIClientResponse<APIPushResponse> response = apiClient.validate(payload);
 
+    String operationID = response.getApiResponse().getOperationId().get();  // Operation ID
+    List<String> pushIDs = response.getApiResponse().getPushIds().get();    // List of Push IDs
+
 ********
 Schedule
 ********
+
+Send Scheduled Push
+===================
 
 Sending a scheduled push notification via the API simply adds the
 extra step of wrapping a PushPayload in a SchedulePayload.
@@ -351,21 +371,30 @@ scheduled for delivery at current time plus 60 seconds.
 
 .. code-block:: java
 
-   // Create a PushPayload
-   PushPayload payload = PushPayload.newBuilder().build();
+    // Create a PushPayload
+    PushPayload payload = PushPayload.newBuilder().build();
 
-   // Add it to a SchedulePayload
-   Schedule schedule = Schedule.newBuilder()
+    // Add it to a SchedulePayload
+    Schedule schedule = Schedule.newBuilder()
                                .setScheduledTimestamp(DateTime.now().plusSeconds(60))
                                .build();
 
-   SchedulePayload schedulePayload = SchedulePayload.newBuilder()
+    SchedulePayload schedulePayload = SchedulePayload.newBuilder()
                                                     .setName("v3 Scheduled Push Test")
                                                     .setPushPayload(payload)
                                                     .setSchedule(schedule)
                                                     .build();
 
-   APIClientResponse<APIScheduleResponse> response = apiClient.schedule(schedulePayload);
+    APIClientResponse<APIScheduleResponse> response = apiClient.schedule(schedulePayload);
+
+    // Operation ID
+    String operationID = response.getApiResponse().getOperationId();
+    
+    // List of SchedulePayloads
+    List<SchedulePayload> listOfPayloads = response.getApiResponse().getSchedulePayloads();
+    
+    // List of Schedule URLs
+    List<String> listOfScheduleURLs = response.getApiResponse().getScheduleUrls();
 
 Optionally, scheduled pushes can be configured to be delievered at the device local time.
 This is done by calling a different method when building your Schedule object.
@@ -399,9 +428,17 @@ List all existing schedules.
     APIClientResponse<APIListAllSchedulesResponse> response = apiClient.listAllSchedules();
 
     APIListAllSchedulesResponse obj = response.getApiResponse();
+
+    // Number of scheduled pushes in this response
     int count = obj.getCount();
+
+    // Total number of scheduled pushes in the app
     int totalCount = obj.getTotal_Count();
+
+    // URL for the next page of schedule pushes
     String nextPage = obj.getNext_Page();
+
+    // List of SchedulePayloads
     List<SchedulePayload> listOfSchedules = obj.getSchedules();
 
     // You can specify a url string for nextPage
@@ -413,7 +450,6 @@ List all existing schedules.
 
     APIClientResponse<APIListAllSchedulesResponse> constrainedResponse = 
     apiClient.listAllSchedules("5c69320c-3e91-5241-fad3-248269eed104", 10, "asc");
-
 
 
 Update Schedule
@@ -441,6 +477,15 @@ Update the state of a single schedule resource.
 
     APIClientResponse<APIScheduleResponse> = apiClient.updateSchedule(sp, id);
 
+    // Operation ID
+    String operationID = response.getApiResponse().getOperationId();
+    
+    // List of SchedulePayloads
+    List<SchedulePayload> listOfPayloads = response.getApiResponse().getSchedulePayloads();
+    
+    // List of Schedule URLs
+    List<String> listOfScheduleURLs = response.getApiResponse().getScheduleUrls();
+
 The response is a APIScheduleResponse representing the updated state.
 
 Delete Schedule
@@ -454,12 +499,104 @@ resource is successfully deleted, the response does not include a body.
     String id = "the_id_of_the_schedule_to_delete";
     HttpResponse response = apiClient.deleteSchedule(id);
 
-    int status = response.getStatusLine().getStatusCode();    //Returns 204 on success
+    //Returns 204 on success
+    int status = response.getStatusLine().getStatusCode();    
 
 
 ****
 Tags
 ****
+
+Tag Listing
+===========
+
+List tags that exist for this application.
+
+.. code-block:: java
+  
+    APIClientResponse<APIListTagsResponse> response = apiClient.listTags();
+
+    // List of Tags
+    List<String> tags = response.getApiResponse().getTags();
+
+
+Tag Creation
+============
+
+Explicitly create a tag with no devices associated with it.
+
+.. code-block:: java
+
+  String newTag = "California";
+  HttpResponse response = apiClient.createTag(newTag);
+
+  // Returns 200 if tag already exists
+  // Returns 201 if tag was created
+  // Returns 400 if tag is invalid
+  int status = response.getStatusLine().getStatusCode();
+
+Adding and Removing Devices from a tag
+======================================
+
+Add or remove one or more devices to a particular tag.
+
+.. code-block:: java
+    
+    String tag = "California";
+
+    AddRemoveDeviceFromTagPayload payload = AddRemoveDeviceFromTagPayload.newBuilder()
+          .setApids(AddRemoveSet.newBuilder()
+                  .add("01234567-890a-bcde-f012-34567890abc0")
+                  .add("01234567-890a-bcde-f012-34567890abc1")
+                  .add("01234567-890a-bcde-f012-34567890abc3")
+                  .add("01234567-890a-bcde-f012-34567890abc5")
+                  .add("01234567-890a-bcde-f012-34567890abc7")
+                  .build())
+          .build();
+
+    HttpResponse response = apiClient.addRemoveDevicesFromTag(tag, payload);
+
+    // Returns 200 if the devices are being added or removed from this tag.
+    // Returns 401 if authorization credentials are incorrect.
+    int status = response.getStatusLine().getStatusCode();
+
+Deleting a tag
+==============
+
+Deletes a tag and remove it from devices.
+
+.. code-block:: java
+    
+    HttpResponse response = apiClient.deleteTag(tag);
+
+    // Returns 204 if the tag has been removed.
+    // Returns 401 if authorization credentials are incorrect.
+    // Returns 404 if the tag was not found or has already been removed.
+    int status = response.getStatusLine().getStatusCode();
+
+Batch Modification of tags
+==========================
+
+Modify the tags for a number of devices.
+
+.. code-block:: java
+    
+    BatchTagSet bts = BatchTagSet.newBuilder()
+        .setDevice(BatchTagSet.DEVICEIDTYPES.DEVICE_TOKEN, "device_token_to_tag_2")
+        .addTag("GrumpyCat")
+        .addTag("Kitties")
+        .addTag("Puppies")
+        .build();
+
+    HttpResponse response = apiClient.batchModificationOfTags(BatchModificationPayload.newBuilder()
+        .addBatchObject(bts)
+        .build()
+    );
+
+    // Returns 200 if tags are being applied
+    // Returns 400 if batch tag request was invalid.
+    // Returns 401 if authorization credentials are incorrect.
+    int status = response.getStatusLine().getStatusCode();
 
 *******
 Reports
@@ -469,13 +606,187 @@ Reports
 Device Information
 ******************
 
+Individual Device Lookup
+========================
+
+Get information on an individual channel.
+
+Device Listing
+==============
+
+Fetch channels registered to this application, along with associated metadata.
+
+.. code-block:: java
+
+    APIClientResponse<APIListAllChannelsResponse> response = apiClient.listAllChannels();
+
+    // Get URL of next page of results, if available
+    String nextPage = response.getApiResponse().getNextPage().get();
+
+    // Get a list of ChannelView objects, each representing a channel
+    List<ChannelView> channelViewList = response.getApiResponse().getChannelObjects();
+
+    // Grab the first ChannelView object in the list
+    ChannelView cv = channelViewList.get(0);
+
+    // Get the channel ID
+    String channelID = cv.getChannelId();
+
+    // Get the creation date, expressed in milliseconds since Unix epoch time
+    long created = cv.getCreatedMillis();
+
+    // Get the string representing the device type
+    String deviceType = cv.getDeviceType().toString();
+
+    // Get a set of tags associated with the channel
+    Set<String> tags = cv.getTags();
+
+    // Get the string representing the alias, if available
+    String alias = cv.getAlias().get();
+
+    // Get the background status, if available
+    boolean background = cv.getBackground().get();
+
+    // Get the date of last registration, expressed in milliseconds since Unix epoch time, if available
+    long lastRegistration = cv.getLastRegistrationMillis().get();
+
+    // Get the push address, if available
+    String pushAddress = cv.getPushAddress().get();
+
+    // get the IosSettings object, if available
+    IosSettings iosSettings = cv.getIosSettings().get();
+
+
 ********
 Segments
 ********
 
+Segments Information
+====================
+
+List All Segments
+-----------------
+
+List all of the segments for the application.
+
+.. code-block:: java
+
+    APIClientResponse<APIListAllSegmentsResponse> response = apiClient.listAllSegments();
+
+    // Get URL of next page of results, if available
+    String nextPage = response.getApiResponse().getNextPage();
+    
+    // Get a list of SegmentInformation objects, each representing a separate segment
+    List<SegmentInformation> segmentInformations = response.getApiResponse().getSegments();
+
+    // Get the first SegmentInformation in the list
+    SegmentInformation si = segmentInformations.get(0);
+
+    // Get the creation date, expressed in milliseconds since Unix epoch time
+    Long creationDate = si.getCreationDate();
+
+    // Get the modification date, expressed in milliseconds since Unix epoch time
+    Long modificationDate = si.getModificationDate();
+
+    // Get the display name of the segment
+    String displayName = si.getDisplayName();
+
+    // Get the ID of the segment
+    String id = si.getId();
+
+
+List Single Segment
+-------------------
+
+Fetch information about a particular segment.
+
+
+Segment Creation
+================
+
+Create a new segment.
+
+
+Update Segment
+==============
+
+Change the definition fo the segment.
+
+
+Delete Segment
+==============
+
+Remove the segement.
+
+
+
 ********
 Location
 ********
+
+Location Boundary Information
+=============================
+
+Search for a location and return its information.
+
+.. code-block:: java
+    
+    // Search for a location by name
+    APIClientResponse<APILocationResponse> response = apiClient.queryLocationInformation("San Francisco");
+
+    // Search for a location by name and type
+    APIClientResponse<APILocationResponse> response = apiClient.queryLocationInformation("San Francisco", "city");
+
+    // Search for a location by centroid point
+    Point portland = Point.newBuilder()
+        .setLatitude(45.52)
+        .setLongitude(-122.681944)
+        .build();
+
+    APIClientResponse<APILocationResponse> response = client.queryLocationInformation(portland);
+
+    // Search for a location by centroid point and type
+    APIClientResponse<APILocationResponse> response = client.queryLocationInformation(portland, "city");
+
+    // Search for a location by bounded box
+    BoundedBox california = new BoundedBox(Point.newBuilder()
+    .setLatitude(32.5343)
+    .setLongitude(-124.4096)
+    .build(), Point.newBuilder()
+            .setLatitude(42.0095)
+            .setLongitude(-114.1308)
+            .build());
+
+    APIClientResponse<APILocationResponse> response = apiClient.queryLocationInformation(california);
+
+    // Search for a location by bounded box and type
+    APIClientResponse<APILocationResponse> response = apiClient.queryLocationInformation(california, "province");
+
+
+    // Get a list of Location objects
+    List<Location> listOfLocations = response.getApiResponse().getFeatures().get();
+
+    // Grab the first item in the list
+    Location location = listOfLocations.get(0);
+
+    // Get the location ID
+    String locationID = location.getLocationId();
+
+    // Get the location type
+    String locationType = location.getLocationType();
+
+    // Get the properties JSON String
+    String propertiesJSONString = location.getPropertiesJsonString();
+
+    // Get the properties JSON as a JsonNode
+    JsonNode propertiesJSONNode = location.getPropertiesJsonNode();
+
+    // If available, get a bounded box of the location
+    BoundedBox box = location.getBounds().get();
+
+    // If available, get a centroid point of the location
+    Point point = location.getCentroid().get();
+
 
 **********
 Exceptions
@@ -609,7 +920,7 @@ IOException
 
 In the context of this library, IOExceptions are thrown by the Apache
 HttpComponents library, usually in response to a problem with the HTTP connection.
-See the Apache `documentation <https://hc.apache.org>`_ for more
+See the Apache `documentation <https://hc.apache.org>`__ for more
 details.
 
 
