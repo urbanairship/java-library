@@ -602,6 +602,309 @@ Modify the tags for a number of devices.
 Reports
 *******
 
+Individual Push Response Statistics
+===================================
+
+Returns detailed reports information about a specific push notification.
+
+.. code-block:: java
+
+    APIClientResponse<SinglePushInfoResponse> response = client.listIndividualPushResponseStatistics("pushID");
+
+    SinglePushInfoResponse obj = response.getApiResponse();
+
+    // Push UUID
+    UUID pushUUID = obj.getPushUUID();
+
+    // Push Time
+    DateTime pushTime = obj.getPushTime();
+
+    // Push Type
+    SinglePushInfoResponse.PushType pushType = obj.getPushType();
+
+    // Direct Responses 
+    int directResponses = obj.getDirectResponses();
+
+    // Sends
+    int sends = obj.getSends();
+
+    // Group ID, if available
+    UUID groupID = obj.getGroupID().get();
+
+
+
+Response Listing
+================
+
+Get a list of all pushes, plus basic response information, in a given timeframe.
+
+.. code-block:: java
+
+    DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+    DateTime end = start.plus(Period.hours(48));
+
+    // Start and end date times are required parameters
+    // Optional parameter: limit of 5
+    // Optional parameter: begin with the id of "start_push"
+    APIClientResponse<APIReportsListingResponse> response =
+        client.listReportsResponseListing(start, end, Optional.of(5), Optional.of("start_push"));
+
+    APIReportsListingResponse obj = response.getApiResponse();
+
+    // Next page of responses, if available.
+    String nextPage = obj.getNextPage();
+
+    // List of detailed information about specific push notificaitons.
+    List<SinglePushInfoResponse> listPushes = obj.getSinglePushInfoResponseObjects();
+
+
+App Opens Report
+================
+
+Get the number of users who have opened your app within the specified time period.
+
+.. code-block:: java
+  
+    DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+    DateTime end = start.plus(Period.hours(48));
+
+    // Gets app opens from start to end by month.
+    // Other possible values for precision are hourly and daily.
+    APIClientResponse<ReportsAPIOpensResponse> response = client.listAppsOpenReport(start, end, "monthly");
+
+    ReportsAPIOpensResponse obj = response.getApiResponse();
+
+    // Returns a list of Open objects
+    List<Opens> listOpens = obj.getObject();
+
+    // Get first open object
+    Open openObj = listOpens.get(0);
+
+    // Get number of Android opens
+    long android = openObj.getAndroid();
+
+    // Get number of IOS opens
+    long ios = openObj.getIos();
+
+    // Get time corresponding to the result
+    DateTime time = openObj.getDate();
+
+
+Time in App Report
+==================
+
+Get the average amount of time users have spent in your app within the specified time period.
+
+.. code-block:: java
+
+    DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+    DateTime end = start.plus(Period.hours(48));
+
+    // Gets time in app report from start to end by month.
+    // Other possible values for precision are hourly and daily.
+    APIClientResponse<ReportsAPITimeInAppResponse> response = client.listTimeInAppReport(start, end, "monthly");
+
+    ReportsAPITimeInAppResponse obj = response.getApiResponse();
+
+    // Returns a list of TimeInApp objects
+    List<TimeInApp> listTimeInApp = obj.getObject();
+
+    // Get first TimeInApp object
+    TimeInApp timeInAppObj = listTimeInApp.get(0);
+
+    // Get amount of time in app for Android
+    float android = timeInAppObj.getAndroid();
+
+    // Get amount of time in app for iOS
+    float ios = timeInAppObj.getIos();
+
+    // Get time corresponding to the result.
+    DateTime time = timeInAppObj.getDate();
+
+
+Statistics
+==========
+
+Return hourly counts for pushes sent for this application.
+
+JSON format
+-----------
+
+.. code-block:: java
+    
+    DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+    DateTime end = start.plus(Period.hours(48));
+
+    // JSON result is deserialized to a list of AppStats objects
+    APIClientResponse<List<AppStats>> response = client.listPushStatistics(start, end);
+
+    // Get list of AppStat objects
+    List<AppStats> listStats = response.getApiResponse();
+
+    // Retrieve first object in list
+    AppStats as = listStats.get(0);
+
+    // Get the start date corresponding to this set of hourly counts
+    DateTime start = as.getStart();
+
+    // Get IOS counts
+    int ios = as.getiOSCount();
+
+    // Get BlackBerry counts
+    int blackberry = as.getBlackBerryCount();
+
+    // Get C2DM counts
+    int c2dm = as.getC2DMCount();
+
+    // Get GCM counts
+    int gcm = as.getGCMCount();
+
+    // Get Windows 8 counts
+    int windows8 = as.getWindows8Count();
+
+    // Get Windows Phone 8 counts
+    int windowsPhone8 = as.getWindowsPhone8Count();
+
+CSV format
+----------
+
+.. code-block:: java
+    
+    DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+    DateTime end = start.plus(Period.hours(48));
+
+    APIClientResponse<String> response = client.listPushStatisticsInCSVString(start, end);
+
+    // CSV Response String
+    String csv = response.getApiResponse();
+
+
+Per Push Reporting
+==================
+
+Retrieve data specific to the performance of an individual push.
+
+Detail
+------
+
+Get all the analytics detail for a specific push ID.
+
+.. code-block:: java
+
+  String pushID = "push_id";
+
+  // Fetches the analytics detail for a given push id
+  APIClientResponse<PerPushDetailResponse> response = apiClient.listPerPushDetail(pushID);
+
+  // Get PerPushDetailResponse object
+  PerPushDetailResponse obj = response.getApiResponse();
+
+  // Get App Key
+  String appKey = obj.getAppKey();
+
+  // Get Push ID
+  UUID pushID = obj.getPushID();
+
+  // Get time created, if available
+  DateTime created = obj.getCreated().get();
+
+  // Get Push Body, if available
+  Base64ByteArray pushBody = obj.getPushBody().get();
+
+  // Get number of rich deletions
+  long richDeletions = obj.getRichDeletions();
+
+  // Get number of rich responses
+  long richResponses = obj.getRichResponses();
+
+  // Get number of rich sends
+  long richSends = obj.getRichSends();
+
+  // Get number of sends
+  long sends = obj.getSends();
+
+  // Get number of direct responses
+  long directResponses = obj.getDirectResponses();
+
+  // Get number of influenced responses
+  long influencedResponses = obj.getInfluencedResponses();
+
+  // Get Map of Platform counts
+  Map<PlatformType, PerPushCounts> platformCountMap = obj.getPlatforms();
+
+  // Get IOS platform counts
+  PerPushCounts iosCounts = platformCountMap.get(PlatformType.IOS);
+
+  // Get IOS platform direct responses
+  long iosDirectResponses = iosCounts.getDirectResponses();
+
+  // Get IOS influenced responses
+  long iosInfluencedResponses = iosCounts.getInfluencedResponses();
+
+  // Get IOS sends
+  long iosSends = iosCounts.getSends();
+
+
+Series
+------
+
+Get all the analytics detail for a specific push ID over time.
+
+.. code-block:: java
+
+    // Fetches the analytics detail for a given push id over time and precision
+    APIClientResponse<PerPushSeriesResponse> response = 
+        apiClient.listPerPushSeries(id, "MONTHLY", DateTime.parse("2013-07-01T00:00:00.000-07:00"), DateTime.now());
+
+    // Get PerPushSeriesResponse object
+    PerPushSeriesResponse obj = response.getApiResponse();
+
+    // Get App Key
+    String appKey = obj.getAppKey();
+
+    // Get Push ID
+    UUID pushID = obj.getPushID();
+
+    // Get start time
+    DateTime start = obj.getStart();
+
+    // Get end time
+    DateTime end = obj.getEnd();
+
+    // Get precision
+    String precision = obj.getPrecision();
+
+    // Get List of PlatformCounts objects
+    List<PlatformCounts> counts = obj.getCounts();
+
+    // Get timestamp 
+    DateTime = counts.getTime();
+
+    // Get Map of push counts
+    Map<PlatformType, PerPushCounts> pushPlatforms = counts.getPushPlatforms();
+
+    // Get IOS platform counts
+    PerPushCounts iosCounts = pushPlatforms.get(PlatformType.IOS);
+
+    // Get IOS platform direct responses
+    long iosDirectResponses = iosCounts.getDirectResponses();
+
+    // Get IOS influenced responses
+    long iosInfluencedResponses = iosCounts.getInfluencedResponses();
+
+    // Get Map of rich push counts
+    Map<PlatformType, RichPerPushCounts> richPushPlatforms = counts.getRichPushPlatforms();
+
+    // Get IOS rich platform counts
+    RichPerPushCounts iosRichCounts = richPushPlatforms.get(PlatformType.IOS);
+
+    // Get IOS rich platform sends
+    long iosRichSends = iosRichCounts.getSends();
+
+    // Get IOS rich platofrm responses
+    long iosRichResponses = iosRichCounts.getResponses();
+
+
 ******************
 Device Information
 ******************
@@ -610,6 +913,45 @@ Individual Device Lookup
 ========================
 
 Get information on an individual channel.
+
+.. code-block:: java
+
+    String channel = "channel_id";
+
+    APIClientResponse<APIListSingleChannelResponse> response = apiClient.listChannel(channel);
+
+    APIListSingleChannelResponse obj = response.getApiResponse();
+
+    ChannelView cv = obj.getChannelObject();
+
+    // Get the channel ID
+    String channelID = cv.getChannelId();
+
+    // Get the creation date, expressed in milliseconds since Unix epoch time
+    long created = cv.getCreatedMillis();
+
+    // Get the string representing the device type
+    String deviceType = cv.getDeviceType().toString();
+
+    // Get a set of tags associated with the channel
+    Set<String> tags = cv.getTags();
+
+    // Get the string representing the alias, if available
+    String alias = cv.getAlias().get();
+
+    // Get the background status, if available
+    boolean background = cv.getBackground().get();
+
+    // Get the date of last registration, expressed in milliseconds since Unix epoch time, if available
+    long lastRegistration = cv.getLastRegistrationMillis().get();
+
+    // Get the push address, if available
+    String pushAddress = cv.getPushAddress().get();
+
+    // get the IosSettings object, if available
+    IosSettings iosSettings = cv.getIosSettings().get();
+
+
 
 Device Listing
 ==============
@@ -700,17 +1042,130 @@ List Single Segment
 
 Fetch information about a particular segment.
 
+.. code-block:: java
+  
+    // Request to fetch information about a particular segment by segment id
+    APIClientResponse<AudienceSegment> response = apiClient.listSegment("a656186e-1263-4d45-964b-44e46faa2e00");
+
+    // Get AudienceSegment object
+    AudienceSegment obj = response.getApiResponse();
+
+    // Get display name
+    String displayName = obj.getDisplayName();
+
+    // Get Operator
+    Operator operator = obj.getRootOperator();
+
+    // Get Predicate
+    Predicate predicate = obj.getRootPredicate();
+
+    // Get count
+    long count = obj.getCount();
 
 Segment Creation
 ================
 
-Create a new segment.
+Creates a new segment.
 
+Helper Methods
+--------------
+
+The following helper methods are useful in reducing the verboseness of creating an operator object
+
+.. code-block:: java
+
+    private TagPredicate buildTagPredicate(String tag) {
+      return TagPredicateBuilder.newInstance().setTag(tag).build();
+    }
+
+    private TagPredicate buildTagPredicate(String tag, String tagClass) {
+      return TagPredicateBuilder.newInstance().setTag(tag).setTagClass(tagClass).build();
+    }
+
+Operator Construction
+---------------------
+
+The following is an example of how to build a complex operator
+
+.. code-block:: java
+
+    DateTime end = new DateTime(new Date());
+    String endString = DateTimeFormats.DAYS_FORMAT.print(end);
+    DateTime start = end.minusDays(5);
+    String startString = DateTimeFormats.DAYS_FORMAT.print(start);
+
+    Operator op = Operator.newBuilder(OperatorType.AND)
+            .addPredicate(new LocationPredicate(new com.urbanairship.api.segments.model.LocationIdentifier(LocationAlias.newBuilder()
+                    .setAliasType("us_state")
+                    .setAliasValue("OR")
+                    .build()),
+                    new com.urbanairship.api.segments.model.DateRange(DateRangeUnit.DAYS, startString, endString), PresenceTimeframe.ANYTIME))
+            .addPredicate(new LocationPredicate(new com.urbanairship.api.segments.model.LocationIdentifier(LocationAlias.newBuilder()
+                    .setAliasType("us_state")
+                    .setAliasValue("CA")
+                    .build()),
+                    new RecentDateRange(DateRangeUnit.MONTHS, 3), PresenceTimeframe.ANYTIME))
+            .addOperator(Operator.newBuilder(OperatorType.OR)
+                    .addPredicate(buildTagPredicate("tag1"))
+                    .addPredicate(buildTagPredicate("tag2"))
+                    .build())
+            .addOperator(Operator.newBuilder(OperatorType.NOT)
+                            .addPredicate(buildTagPredicate("not-tag"))
+                            .build()
+            )
+            .addOperator(Operator.newBuilder(OperatorType.NOT)
+                            .addOperator(Operator.newBuilder(OperatorType.AND)
+                                            .addPredicate(
+                                                    new LocationPredicate(new com.urbanairship.api.segments.model.LocationIdentifier(LocationAlias.newBuilder()
+                                                            .setAliasType("us_state")
+                                                            .setAliasValue("WA")
+                                                            .build()), new com.urbanairship.api.segments.model.DateRange(DateRangeUnit.MONTHS, "2011-05", "2012-02"),
+                                                            PresenceTimeframe.ANYTIME))
+                                            .addPredicate(buildTagPredicate("woot"))
+                                            .build()
+                            )
+                            .build()
+            )
+            .build();
+
+Creating the Segment Object
+---------------------------
+
+.. code-block:: java
+
+    AudienceSegment segment = AudienceSegment.newBuilder()
+            .setDisplayName(DateTime.now().toString())
+            .setRootOperator(op)
+            .build();
+
+Making the Request
+------------------
+
+.. code-block:: java
+
+    HttpResponse response = apiClient.createSegment(segment);
+
+    // Returns 201 on success
+    int status = response.getStatusLine().getStatusCode();
 
 Update Segment
 ==============
 
 Change the definition fo the segment.
+
+.. code-block:: java
+
+    String id = "segment_id";
+
+    AudienceSegment payload = AudienceSegment.newBuilder()
+        .setDisplayName("**CHANGED**")
+        .setRootPredicate(TagPredicateBuilder.newInstance().setTag("CHANGE").build())
+        .build();
+
+    HttpResponse response = apiClient.changeSegment(id, payload);
+
+    // Returns 200 on success
+    int status = response.getStatusLine().getStatusCode();
 
 
 Delete Segment
@@ -718,7 +1173,14 @@ Delete Segment
 
 Remove the segement.
 
+.. code-block:: java
 
+    String id = "segment_id";
+
+    HttpResponse response = apiClient.deleteSegment(id);
+
+    // Returns 204 on success
+    int status = response.getStatusLine().getStatusCode();
 
 ********
 Location
