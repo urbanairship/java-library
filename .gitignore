@@ -5,6 +5,11 @@
 *.iml
 *.orig
 docs/_build
+docs/_extensions
+docs/_templates
+docs/_themes
+docs/Makefile
+docs/conf.py
 docs/com
 \#*#
 /example/target
