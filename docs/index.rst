@@ -396,7 +396,7 @@ scheduled for delivery at current time plus 60 seconds.
     // List of Schedule URLs
     List<String> listOfScheduleURLs = response.getApiResponse().getScheduleUrls();
 
-Optionally, scheduled pushes can be configured to be delievered at the device local time.
+Optionally, scheduled pushes can be configured to be delivered at the device local time.
 This is done by calling a different method when building your Schedule object.
 
 .. code-block:: java 
@@ -415,8 +415,8 @@ Joda-Time documentation for more examples.
 
    DateTime dt = new DateTime(2013,7,22,11,57);
 
-Attempting to schedule a push for a previous time will result in a
-HTTP 400 response and an APIResponseException.
+Scheduled pushes may not be scheduled for a time that has already passed.  Doing so will
+result in a HTTP 400 response and an APIResponseException.
 
 List Schedules
 ==============
@@ -535,7 +535,7 @@ Explicitly create a tag with no devices associated with it.
   // Returns 400 if tag is invalid
   int status = response.getStatusLine().getStatusCode();
 
-Adding and Removing Devices from a tag
+Adding and Removing Devices from a Tag
 ======================================
 
 Add or remove one or more devices to a particular tag.
@@ -545,14 +545,14 @@ Add or remove one or more devices to a particular tag.
     String tag = "California";
 
     AddRemoveDeviceFromTagPayload payload = AddRemoveDeviceFromTagPayload.newBuilder()
-          .setApids(AddRemoveSet.newBuilder()
-                  .add("01234567-890a-bcde-f012-34567890abc0")
-                  .add("01234567-890a-bcde-f012-34567890abc1")
-                  .add("01234567-890a-bcde-f012-34567890abc3")
-                  .add("01234567-890a-bcde-f012-34567890abc5")
-                  .add("01234567-890a-bcde-f012-34567890abc7")
-                  .build())
-          .build();
+            .setIOSChannels(AddRemoveSet.newBuilder()
+                    .add("01234567-890a-bcde-f012-34567890abc0")
+                    .add("01234567-890a-bcde-f012-34567890abc1")
+                    .add("01234567-890a-bcde-f012-34567890abc3")
+                    .add("01234567-890a-bcde-f012-34567890abc5")
+                    .add("01234567-890a-bcde-f012-34567890abc7")
+                    .build())
+            .build();
 
     HttpResponse response = apiClient.addRemoveDevicesFromTag(tag, payload);
 
@@ -560,10 +560,10 @@ Add or remove one or more devices to a particular tag.
     // Returns 401 if authorization credentials are incorrect.
     int status = response.getStatusLine().getStatusCode();
 
-Deleting a tag
+Deleting a Tag
 ==============
 
-Deletes a tag and remove it from devices.
+Deletes a tag and removes it from devices.
 
 .. code-block:: java
     
@@ -574,7 +574,7 @@ Deletes a tag and remove it from devices.
     // Returns 404 if the tag was not found or has already been removed.
     int status = response.getStatusLine().getStatusCode();
 
-Batch Modification of tags
+Batch Modification of Tags
 ==========================
 
 Modify the tags for a number of devices.
@@ -582,11 +582,11 @@ Modify the tags for a number of devices.
 .. code-block:: java
     
     BatchTagSet bts = BatchTagSet.newBuilder()
-        .setDevice(BatchTagSet.DEVICEIDTYPES.DEVICE_TOKEN, "device_token_to_tag_2")
-        .addTag("GrumpyCat")
-        .addTag("Kitties")
-        .addTag("Puppies")
-        .build();
+            .setDevice(BatchTagSet.DEVICEIDTYPES.IOS_CHANNEL, "ios_channel_to_tag_2")
+            .addTag("GrumpyCat")
+            .addTag("Kitties")
+            .addTag("Puppies")
+            .build();
 
     HttpResponse response = apiClient.batchModificationOfTags(BatchModificationPayload.newBuilder()
         .addBatchObject(bts)
@@ -654,7 +654,7 @@ Get a list of all pushes, plus basic response information, in a given timeframe.
     // Next page of responses, if available.
     String nextPage = obj.getNextPage();
 
-    // List of detailed information about specific push notificaitons.
+    // List of detailed information about specific push notifications.
     List<SinglePushInfoResponse> listPushes = obj.getSinglePushInfoResponseObjects();
 
 
