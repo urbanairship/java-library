@@ -9,8 +9,8 @@ Urban Airship Java Client
 Introduction
 ************
 
-This is a Java library for using the `Urban Airship
-<http://urbanairship.com/>`_ web service API for push notifications.
+This is a Java library for using the :doc:`Urban Airship web Service API
+</api/overview>` web service API for push notifications.
 
 Installation
 ============
@@ -31,8 +31,8 @@ jar to your classpath.
 Logging
 =======
 
-Logging is done using the `Simple Logging Facade for Java <http://www.slf4j.org>`_
-Using the logging facade allow for flexibility in logging choices. For example,
+Logging is done using the `Simple Logging Facade for Java <http://www.slf4j.org>`_.
+Using the logging facade allows for flexibility in logging choices. For example,
 to use log4j, you would add the following to your pom.xml
 
 .. code-block:: xml
@@ -49,8 +49,9 @@ to use log4j, you would add the following to your pom.xml
       <version>1.2.17</version>
     </dependency>
 
-Note the logging framework plus the adapter. For more info, see the facade `documentation <http://www.slf4j.org/manual.html>`__
-In code, simply add the log handler of your choice. Again, with log4j:
+Note the logging framework plus the adapter. For more info, see the `Simple Logging Facade documentation <http://www.slf4j.org/manual.html>`__
+
+Simply add the log handler of your choice. Again, with log4j:
 
 .. code-block:: java
 
@@ -69,13 +70,13 @@ Source code is available on Github.
 Tests are located in the standard test directory and use JUnit
 
 
-Basic Work Flow
+Basic Workflow
 ===============
 
 The Urban Airship Java client streamlines API requests. API
-interactions all follow the same basic work flow.
+interactions all follow the same basic workflow.
 
-#. Configure a payload using the appropriate Java model classes
+#. Configure a payload using appropriate Java model classes.
 #. Configure an APIClient to authenticate, send, and return a
    response.
 #. Handle the response or exception appropriately.
@@ -88,13 +89,13 @@ Defining and Sending Push Notifications
 Sending push notifications requires the following basic steps. This pattern
 is present throughout the Urban Airship API:
 
-#. Create a payload that represents the data you want to send to the API, in this case, a Push notification.
-#. Create an authenticated communication channel, using an APIClient.
+#. Create a payload that represents the data you want to send to the API, in this case, a push notification.
+#. Create an authenticated communication channel using an APIClient.
 #. Dispatch the data payload.
-#. Handle the response, which will either be successful, or contain an exception with error details.
+#. Handle the response, which will either be successful or contain an exception with error details.
 
 Here is an example of sending a Push message immediately to an iOS
-audience for an application.
+audience.
 
 .. code-block:: java
 
@@ -147,10 +148,10 @@ APIClient
 
 .. code-block:: java
 
-    APIClient apiClient = APIClient.newBuilder()
-            .setKey(appKey)
-            .setSecret(appSecret)
-            .build();
+   APIClient apiClient = APIClient.newBuilder()
+         .setKey(appKey)
+         .setSecret(appSecret)
+         .build();
 
 The APIClient handles the interaction between the client and the API. The client will throw an
 exception if there is an issue with the request, or if it is improperly configured.
@@ -163,28 +164,28 @@ Optionally, a client can be created with proxy server support.
 
 .. code-block:: java
 
-    APIClient proxyClient = APIClient.newBuilder()
-          .setKey(appKey)
-          .setSecret(appSecret)
-              .setProxyInfo(ProxyInfo.newBuilder()
-              .setProxyHost(new HttpHost("host"))
-              .setProxyCredentials(new UsernamePasswordCredentials("user", "password"))
-              .build())
-          .build();
+   APIClient proxyClient = APIClient.newBuilder()
+       .setKey(appKey)
+       .setSecret(appSecret)
+           .setProxyInfo(ProxyInfo.newBuilder()
+           .setProxyHost(new HttpHost("host"))
+           .setProxyCredentials(new UsernamePasswordCredentials("user", "password"))
+           .build())
+       .build();
 
 
 ****
 Push
 ****
 
-PushPayload
-===========
+``PushPayload``
+===============
 
-The PushPayload is comprised of three pieces:
+The ``PushPayload`` is comprised of three pieces:
 
   - Audience and Selectors
   - Notifications
-  - DeviceTypes
+  - ``DeviceTypes``
 
 The first is the Audience. The audience
 is composed of Selectors, which can be compound or atomic (not compound). Selectors
@@ -254,13 +255,13 @@ which will send messages to users who have the tags "puppies" or
 Notifications
 =============
 
-Notifications are the second part of the PushPayload. Notifications
+Notifications are the second part of the ``PushPayload``. Notifications
 are configured for each type of device you would like to
-send a message to. An Notification for an iOS device contains options
-for alert, badge, sound, content_available, or extra. Other devices
-offer different configurations based on available features. Here's an
-example of an iOS notification with an alert, a badge, and extra key
-value pairs.
+send a message to. A Notification for an iOS device contains options
+for ``alert``, ``badge``, ``sound``, ``content_available``, or ``extra``. Other platforms,
+e.g., Android, may offer different configurations based on available features. 
+
+Here's an example of an iOS notification with an alert, a badge, and extra key/value pairs:
 
 .. code-block:: java
 
@@ -304,20 +305,21 @@ This will generate and send a payload similar to the following
       }
   }
 
-DeviceTypes
-===========
+``DeviceTypes``
+===============
 
-The final part of the PushPayload is the DeviceTypes. 
-Messages can be segregated by device types. You can set the device types you
-want to send to using a DeviceTypeData object. Here's an example of
+The final part of the ``PushPayload`` is ``DeviceTypes``, which defines the 
+platform
+Messages can be segregated by device types. Set the device types you
+want to send to using a ``DeviceTypeData`` object. Here's an example of
 sending a message to iOS and Android.
 
 .. code-block:: java
 
    DeviceTypeData deviceTypeData  = DeviceTypeData.of(DeviceType.IOS, DeviceType.ANDROID);
    
-The DeviceTypeData class has several convenience methods for working with
-DeviceTypes. 
+The ``DeviceTypeData`` class has several convenience methods for working with
+``DeviceTypes``. 
 
 Send Push
 =========
@@ -334,7 +336,7 @@ Sends a push notification to a specified device or list of devices.
 Validation
 ==========
 
-Accepts the same range of push payloads as the Push API, but parse and validate only, without sending any pushes.
+Accepts the same range of push payloads as the Push API, but parses and validates only, without sending any pushes.
 
 .. code-block:: java
 
