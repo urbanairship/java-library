@@ -153,7 +153,7 @@ APIClient
          .setSecret(appSecret)
          .build();
 
-The APIClient handles the interaction between the client and the API. The client will throw an
+The ``APIClient`` handles the interaction between the client and the API. The client will throw an
 exception if there is an issue with the request, or if it is improperly configured.
 
 
@@ -178,8 +178,8 @@ Optionally, a client can be created with proxy server support.
 Push
 ****
 
-``PushPayload``
-===============
+PushPayload
+===========
 
 The ``PushPayload`` is comprised of three pieces:
 
@@ -305,11 +305,11 @@ This will generate and send a payload similar to the following
       }
   }
 
-``DeviceTypes``
-===============
+DeviceTypes
+===========
 
 The final part of the ``PushPayload`` is ``DeviceTypes``, which defines the 
-platform
+platform you're sending to, e.g., iOS or Amazon.
 Messages can be segregated by device types. Set the device types you
 want to send to using a ``DeviceTypeData`` object. Here's an example of
 sending a message to iOS and Android.
@@ -365,11 +365,11 @@ Send Scheduled Push
 ===================
 
 Sending a scheduled push notification via the API simply adds the
-extra step of wrapping a PushPayload in a SchedulePayload.
+extra step of wrapping a ``PushPayload`` in a ``SchedulePayload``.
 
-First, create a PushPayload using the steps outlined above. Then
-create a SchedulePayload and send it to the API. The message is
-scheduled for delivery at current time plus 60 seconds.
+First, create a ``PushPayload`` using the steps outlined above. Then
+create a ``SchedulePayload`` and send it to the API. The message in the following
+example is scheduled for delivery at current time plus 60 seconds.
 
 .. code-block:: java
 
@@ -398,7 +398,7 @@ scheduled for delivery at current time plus 60 seconds.
     // List of Schedule URLs
     List<String> listOfScheduleURLs = response.getApiResponse().getScheduleUrls();
 
-Optionally, scheduled pushes can be configured to be delivered at the device local time.
+Optionally, scheduled pushes can be configured to be delivered at the device's local time.
 This is done by calling a different method when building your Schedule object.
 
 .. code-block:: java 
@@ -1263,7 +1263,7 @@ library.
 APIRequestException
 ===================
 
-APIRequestExceptions are thrown in cases where the server returns a non 200
+``APIRequestExceptions`` are thrown in cases where the server returns a non-200
 response.
 
 .. code-block:: java
@@ -1281,7 +1281,7 @@ response.
         // Exeption thrown here
     }
 
-The code above will throw an APIResponseException
+The code above will throw an ``APIResponseException``
 
 ::
 
@@ -1295,11 +1295,11 @@ The code above will throw an APIResponseException
 APIErrorDetails
 ===============
 
-The APIErrorDetails object contains information on errors for requests
+The ``APIErrorDetails`` object contains information on errors for requests
 that are syntactically valid but are otherwise malformed. For example,
-setting the platform value for a PushPayload to include both
-DeviceType.IOS and DeviceType.ANDROID but only providing a single
-IOSDevicePayloadf for the notification would be an error.
+setting the platform value for a ``PushPayload`` to include both
+``DeviceType.IOS and DeviceType.ANDROID but only providing a single
+IOSDevicePayload for the notification would result in an error.
 
 
 .. code-block:: json
@@ -1362,9 +1362,9 @@ will produce
  provided.
 
 
-The APIRequestException contains both the raw HttpResponse from the
+The ``APIRequestException`` contains both the raw ``HttpResponse`` from the
 underlying Apache request and the APIError. The APIError is specific
-to Urban Airship functionality, and the APIErrorDetails provides
+to Urban Airship functionality, and the ``APIErrorDetails`` provides
 extended details for badly formed API requests. Providing this level
 of detail allows for more customization. 
 
@@ -1372,7 +1372,7 @@ of detail allows for more customization.
 APIParsingException
 ===================
 
-APIParsingExceptions are thrown in response to parsing errors while
+``APIParsingExceptions`` are thrown in response to parsing errors while
 serializing or deserializing JSON. If this is thrown outside of
 development it is most likely an issue with the library or the server,
 and should be sent to the Urban Airship support team. Please include
@@ -1384,7 +1384,7 @@ IOException
 
 In the context of this library, IOExceptions are thrown by the Apache
 HttpComponents library, usually in response to a problem with the HTTP connection.
-See the Apache `documentation <https://hc.apache.org>`__ for more
+See the `Apache documentation <https://hc.apache.org>`__ for more
 details.
 
 
