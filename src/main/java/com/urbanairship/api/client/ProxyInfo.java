@@ -14,13 +14,13 @@ public final class ProxyInfo {
     private final HttpHost proxyHost;
     private final Optional<Credentials> proxyCredentials;
 
-    public static Builder newBuilder(){
-        return new Builder();
-    }
-
     private ProxyInfo(HttpHost proxyHost, Optional<Credentials> proxyCredentials) {
         this.proxyHost = proxyHost;
         this.proxyCredentials = proxyCredentials;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
     public Optional<Credentials> getProxyCredentials() {
@@ -61,7 +61,8 @@ public final class ProxyInfo {
         private HttpHost proxyHost;
         private Credentials proxyCredentials;
 
-        private Builder() { }
+        private Builder() {
+        }
 
         public Builder setProxyHost(HttpHost value) {
             this.proxyHost = value;

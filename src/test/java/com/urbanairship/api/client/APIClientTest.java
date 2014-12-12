@@ -85,7 +85,6 @@ public class APIClientTest {
     }
 
     @Test
-    public void testGetUserAgent() {
     public void testAPIClientBuilderWithOptionalProxyInfoOptionalCredential() {
         APIClient proxyClient = APIClient.newBuilder()
                 .setKey("key")
@@ -168,11 +167,6 @@ public class APIClientTest {
                         .withHeader(CONTENT_TYPE_KEY, "application/json")
                         .withBody(pushJSON)
                         .withStatus(201)));
-                        .willReturn(aResponse()
-                                .withHeader(CONTENT_TYPE_KEY, "application/json")
-                                .withBody(pushJSON)
-                                .withStatus(201)));
-
 
         try {
             APIClientResponse<APIPushResponse> response = client.push(payload);
@@ -209,8 +203,6 @@ public class APIClientTest {
             // The response is tested elsewhere, just check that it exists
             assertNotNull(response);
         } catch (Exception ex) {
-        }
-        catch (Exception ex){
             ex.printStackTrace();
             fail("Exception thrown " + ex);
         }

@@ -48,7 +48,6 @@ public class APIClient {
 
     /* Header keys/values */
     private final static String CONTENT_TYPE_KEY = "Content-type";
-    private final static String CONTENT_TYPE_VALUE = "application/json";
     private final static String ACCEPT_KEY = "Accept";
     private final static String UA_APPLICATION_JSON = "application/vnd.urbanairship+json;";
 
@@ -78,12 +77,6 @@ public class APIClient {
     private final HttpHost uaHost;
     private final Optional<ProxyInfo> proxyInfo;
 
-    private APIClient(String appKey, String appSecret, String baseURI, Number version) {
-    private final static Logger logger = LoggerFactory.getLogger("com.urbanairship.api");
-
-    public static Builder newBuilder(){
-        return new Builder();
-    }
 
     private APIClient(String appKey, String appSecret, String baseURI, Number version, Optional<ProxyInfo> proxyInfoOptional) {
         Preconditions.checkArgument(StringUtils.isNotBlank(appKey),
@@ -101,9 +94,10 @@ public class APIClient {
     public static Builder newBuilder() {
         return new Builder();
     }
-    public String getAppSecret() { return appSecret; }
-    public String getAppKey() { return appKey; }
-    public Optional<ProxyInfo> getProxyInfo() { return proxyInfo; }
+
+    public Optional<ProxyInfo> getProxyInfo() {
+        return proxyInfo;
+    }
 
     public String getAppSecret() {
         return appSecret;
@@ -143,10 +137,12 @@ public class APIClient {
 
     private Request provisionRequest(Request object) {
         object.config(CoreProtocolPNames.USER_AGENT, getUserAgent())
-            .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
-            .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
+                .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
+                .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
 
-        if (proxyInfo.isPresent()) { object.viaProxy(proxyInfo.get().getProxyHost()); }
+        if (proxyInfo.isPresent()) {
+            object.viaProxy(proxyInfo.get().getProxyHost());
+        }
 
         return object;
     }
@@ -817,7 +813,7 @@ public class APIClient {
 
     @Override
     public String toString() {
-        return "APIClient\nAppKey:"+ appKey +"\nAppSecret:" + appSecret + "\n";
+        return "APIClient\nAppKey:" + appKey + "\nAppSecret:" + appSecret + "\n";
     }
 
     /* Builder for APIClient */
