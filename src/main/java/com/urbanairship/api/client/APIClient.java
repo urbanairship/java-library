@@ -4,30 +4,18 @@
 
 package com.urbanairship.api.client;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Properties;
-
 import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.Point;
 import com.urbanairship.api.push.model.PushPayload;
-import com.urbanairship.api.reports.model.AppStats;
-import com.urbanairship.api.reports.model.PerPushDetailResponse;
-import com.urbanairship.api.reports.model.PerPushSeriesResponse;
-import com.urbanairship.api.reports.model.ReportsAPIOpensResponse;
-import com.urbanairship.api.reports.model.ReportsAPITimeInAppResponse;
-import com.urbanairship.api.reports.model.SinglePushInfoResponse;
+import com.urbanairship.api.reports.model.*;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.segments.model.AudienceSegment;
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
 import com.urbanairship.api.tag.model.BatchModificationPayload;
-import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -36,28 +24,16 @@ import org.apache.http.client.fluent.Request;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.params.CoreProtocolPNames;
-
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Properties;
-import java.util.UUID;
-import com.google.common.base.Preconditions;
-import com.urbanairship.api.client.model.APIClientResponse;
-import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
-import com.urbanairship.api.client.model.APIListTagsResponse;
-import com.urbanairship.api.client.model.APIPushResponse;
-import com.urbanairship.api.client.model.APIScheduleResponse;
-import com.urbanairship.api.push.model.PushPayload;
-import com.urbanairship.api.schedule.model.SchedulePayload;
-import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
-import com.urbanairship.api.tag.model.BatchModificationPayload;
 
 /**
  * The APIClient class handles HTTP requests to the Urban Airship API
@@ -72,7 +48,6 @@ public class APIClient {
 
     /* Header keys/values */
     private final static String CONTENT_TYPE_KEY = "Content-type";
-    private final static String CONTENT_TYPE_VALUE = "application/json";
     private final static String ACCEPT_KEY = "Accept";
     private final static String UA_APPLICATION_JSON = "application/vnd.urbanairship+json;";
 

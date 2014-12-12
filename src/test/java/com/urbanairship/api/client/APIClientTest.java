@@ -54,7 +54,7 @@ public class APIClientTest {
     private static final Logger logger = LoggerFactory.getLogger(APIClientTest.class);
 
     public final static String CONTENT_TYPE_KEY = "Content-type";
-    public final static String APP_JSON = "application/json";
+    public final static String APP_JSON = "application/vnd.urbanairship+json; version=3;";
 
     static {
         BasicConfigurator.configure();
@@ -168,9 +168,9 @@ public class APIClientTest {
         String pushJSON = "{\"ok\" : true,\"operation_id\" : \"df6a6b50\", \"push_ids\":[\"PushID\"]}";
         stubFor(post(urlEqualTo("/api/push/"))
                         .willReturn(aResponse()
-                                            .withHeader(CONTENT_TYPE_KEY, "application/json")
-                                            .withBody(pushJSON)
-                                            .withStatus(201)));
+                                .withHeader(CONTENT_TYPE_KEY, "application/json")
+                                .withBody(pushJSON)
+                                .withStatus(201)));
 
 
         try {
@@ -252,7 +252,7 @@ public class APIClientTest {
 
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/push/"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(UA_APP_JSON))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON))
             );
             List<LoggedRequest> requests = findAll(postRequestedFor(
                     urlEqualTo("/api/push/")));
