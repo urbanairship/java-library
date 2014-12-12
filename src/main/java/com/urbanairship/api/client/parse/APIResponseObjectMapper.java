@@ -1,18 +1,21 @@
 /*
- * Copyright 2013 Urban Airship and Contributors
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.client.parse;
 
-import com.urbanairship.api.channel.registration.model.ChannelView;
-import com.urbanairship.api.channel.registration.model.DeviceType;
-import com.urbanairship.api.channel.registration.model.ios.IosSettings;
-import com.urbanairship.api.channel.registration.model.ios.QuietTime;
-import com.urbanairship.api.channel.registration.parse.ChannelViewDeserializer;
-import com.urbanairship.api.channel.registration.parse.DeviceTypeDeserializer;
-import com.urbanairship.api.channel.registration.parse.ios.IosSettingsDeserializer;
-import com.urbanairship.api.channel.registration.parse.ios.QuietTimeDeserializer;
+import com.urbanairship.api.channel.information.model.ChannelView;
+import com.urbanairship.api.channel.information.model.DeviceType;
+import com.urbanairship.api.channel.information.model.ios.IosSettings;
+import com.urbanairship.api.channel.information.model.ios.QuietTime;
+import com.urbanairship.api.channel.information.parse.ChannelViewDeserializer;
+import com.urbanairship.api.channel.information.parse.DeviceTypeDeserializer;
+import com.urbanairship.api.channel.information.parse.ios.IosSettingsDeserializer;
+import com.urbanairship.api.channel.information.parse.ios.QuietTimeDeserializer;
 import com.urbanairship.api.client.*;
+import com.urbanairship.api.client.model.*;
+import com.urbanairship.api.location.model.Location;
+import com.urbanairship.api.location.parse.LocationDeserializer;
 import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.parse.PushObjectMapper;
@@ -23,6 +26,10 @@ import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.schedule.parse.ScheduleDeserializer;
 import com.urbanairship.api.schedule.parse.SchedulePayloadDeserializer;
+
+
+import com.urbanairship.api.segments.model.*;
+import com.urbanairship.api.segments.parse.*;
 import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.module.SimpleModule;
@@ -31,14 +38,14 @@ import org.codehaus.jackson.map.module.SimpleModule;
 This is where object serialization and deserialization are registered with
 Jackson to enable object parsing.
  */
-public class APIResponseObjectMapper {
+public final class APIResponseObjectMapper {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final SimpleModule MODULE = new SimpleModule("Urban Airship API Client Module", new Version(1,0,0,null));
 
     static {
         MODULE.addDeserializer(APIPushResponse.class, new APIPushResponseDeserializer());
-        MODULE.addDeserializer(APIErrorDetails.Location.class, new LocationDeserializer());
+        MODULE.addDeserializer(APIErrorDetails.Location.class, new StreamLocationDeserializer());
         MODULE.addDeserializer(APIErrorDetails.class, new APIErrorDetailsDeserializer());
         MODULE.addDeserializer(APIError.class, new APIErrorDeserializer());
         MODULE.addDeserializer(APIScheduleResponse.class, new APIScheduleResponseDeserializer());
@@ -49,10 +56,18 @@ public class APIResponseObjectMapper {
         MODULE.addDeserializer(APIListTagsResponse.class, new APIListTagsResponseDeserializer());
         MODULE.addDeserializer(SegmentInformation.class, new SegmentInformationDeserializer());
         MODULE.addDeserializer(APIListAllSegmentsResponse.class, new APIListAllSegmentsResponseDeserializer());
+        MODULE.addDeserializer(AudienceSegment.class, AudienceSegmentDeserializer.INSTANCE);
+        MODULE.addSerializer(AudienceSegment.class, AudienceSegmentSerializer.INSTANCE);
+        MODULE.addDeserializer(LocationPredicate.class, LocationPredicateDeserializer.INSTANCE);
+        MODULE.addSerializer(LocationPredicate.class, LocationPredicateSerializer.INSTANCE);
+        MODULE.addDeserializer(Operator.class, OperatorDeserializer.INSTANCE);
+        MODULE.addSerializer(Operator.class, OperatorSerializer.INSTANCE);
+        MODULE.addDeserializer(Predicate.class, PredicateDeserializer.INSTANCE);
         MODULE.addDeserializer(IosSettings.class, new IosSettingsDeserializer());
         MODULE.addDeserializer(QuietTime.class, new QuietTimeDeserializer());
         MODULE.addDeserializer(ChannelView.class, new ChannelViewDeserializer());
         MODULE.addDeserializer(DeviceType.class, new DeviceTypeDeserializer());
+        MODULE.addDeserializer(APIListSingleChannelResponse.class, new APIListSingleChannelResponseDeserializer());
         MODULE.addDeserializer(APIListAllChannelsResponse.class, new APIListAllChannelsResponseDeserializer());
         MODULE.addDeserializer(AppStats.class, new AppStatsDeserializer());
         MODULE.addDeserializer(PerPushCounts.class, new PerPushCountsDeserializer());
@@ -60,6 +75,8 @@ public class APIResponseObjectMapper {
         MODULE.addDeserializer(PerPushDetailResponse.class, new PerPushDetailResponseDeserializer());
         MODULE.addDeserializer(PlatformCounts.class, new PlatformCountsDeserializer());
         MODULE.addDeserializer(PerPushSeriesResponse.class, new PerPushSeriesResponseDeserializer());
+        MODULE.addDeserializer(Location.class, new LocationDeserializer());
+        MODULE.addDeserializer(APILocationResponse.class, new APILocationResponseDeserializer());
 
         MAPPER.registerModule(PushObjectMapper.getModule());
         MAPPER.registerModule(MODULE);

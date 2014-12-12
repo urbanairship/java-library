@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Urban Airship and Contributors
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.client.parse;
@@ -14,7 +14,7 @@ import org.codehaus.jackson.type.TypeReference;
 import java.io.IOException;
 import java.util.List;
 
-public class APIListTagsResponseReader implements JsonObjectReader<APIListTagsResponse> {
+public final class APIListTagsResponseReader implements JsonObjectReader<APIListTagsResponse> {
 
     private final APIListTagsResponse.Builder builder;
 

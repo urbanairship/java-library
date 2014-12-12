@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Urban Airship and Contributors
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.client.parse;
@@ -17,7 +17,7 @@ import java.io.IOException;
 Readers are the part of the deserialization process that actually builds and
 return an object.
  */
-public class APIErrorReader implements JsonObjectReader<APIError> {
+public final class APIErrorReader implements JsonObjectReader<APIError> {
 
     private final APIError.Builder builder;
 

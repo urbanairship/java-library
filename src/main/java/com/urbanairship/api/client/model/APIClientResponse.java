@@ -1,14 +1,17 @@
 
 /*
- * Copyright 2013 Urban Airship and Contributors
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.client.model;
 
+import com.google.common.base.Objects;
+import com.urbanairship.api.channel.information.model.ChannelView;
 import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.reports.model.PerPushDetailResponse;
 import com.urbanairship.api.reports.model.PerPushSeriesResponse;
 import com.urbanairship.api.schedule.model.SchedulePayload;
+import com.urbanairship.api.segments.model.AudienceSegment;
 import org.apache.http.HttpResponse;
 
 import java.util.List;
@@ -103,6 +106,14 @@ public class APIClientResponse<T> {
     }
 
     /**
+     * Return a Builder for an APIListSingleChannelResponse
+     * @return Builder
+     */
+    public static Builder<APIListSingleChannelResponse> newSingleChannelResponseBuilder(){
+        return new Builder<APIListSingleChannelResponse>();
+    }
+
+    /**
      * Return a Builder for an APIListAllChannelsResponse
      * @return Builder
      */
@@ -116,6 +127,22 @@ public class APIClientResponse<T> {
      */
     public static Builder<APIListAllSegmentsResponse> newListAllSegmentsResponseBuilder(){
         return new Builder<APIListAllSegmentsResponse>();
+    }
+
+    /**
+     * Return a Builder for an AudienceSegment
+     * @return Builder
+     */
+    public static Builder<AudienceSegment> newAudienceSegmentResponseBuilder(){
+        return new Builder<AudienceSegment>();
+    }
+
+    /**
+     * Return a Builder for an APILocationResponse
+     * @return Builder
+     */
+    public static Builder<APILocationResponse> newLocationResponseBuilder(){
+        return new Builder<APILocationResponse>();
     }
 
     /**
@@ -135,6 +162,23 @@ public class APIClientResponse<T> {
      */
     public T getApiResponse() {
         return apiResponse;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(apiResponse, httpResponse);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final APIClientResponse other = (APIClientResponse) obj;
+        return Objects.equal(this.apiResponse, other.apiResponse) && Objects.equal(this.httpResponse, other.httpResponse);
     }
 
     public String toString(){

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ */
+
 package com.urbanairship.api.reports.parse;
 
 import com.urbanairship.api.common.parse.APIParsingException;
@@ -9,7 +13,7 @@ import org.joda.time.format.DateTimeFormat;
 
 import java.io.IOException;
 
-public class AppStatsReader implements JsonObjectReader<AppStats> {
+public final class AppStatsReader implements JsonObjectReader<AppStats> {
 
     private static final String datePattern = "yyyy-MM-dd HH:mm:ss";
 
