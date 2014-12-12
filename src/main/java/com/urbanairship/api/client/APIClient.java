@@ -6,6 +6,11 @@ package com.urbanairship.api.client;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Properties;
 
 import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.location.model.BoundedBox;
@@ -21,8 +26,9 @@ import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.segments.model.AudienceSegment;
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
 import com.urbanairship.api.tag.model.BatchModificationPayload;
+import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Executor;
@@ -42,6 +48,16 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
+import com.google.common.base.Preconditions;
+import com.urbanairship.api.client.model.APIClientResponse;
+import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
+import com.urbanairship.api.client.model.APIListTagsResponse;
+import com.urbanairship.api.client.model.APIPushResponse;
+import com.urbanairship.api.client.model.APIScheduleResponse;
+import com.urbanairship.api.push.model.PushPayload;
+import com.urbanairship.api.schedule.model.SchedulePayload;
+import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
+import com.urbanairship.api.tag.model.BatchModificationPayload;
 
 /**
  * The APIClient class handles HTTP requests to the Urban Airship API
@@ -86,6 +102,7 @@ public class APIClient {
 
     /* HTTP */
     private final HttpHost uaHost;
+    private final Optional<ProxyInfo> proxyInfo;
 
     private final static Logger logger = LoggerFactory.getLogger("com.urbanairship.api");
 
@@ -93,7 +110,7 @@ public class APIClient {
         return new Builder();
     }
 
-    private APIClient(String appKey, String appSecret, String baseURI, Number version) {
+    private APIClient(String appKey, String appSecret, String baseURI, Number version, Optional<ProxyInfo> proxyInfoOptional) {
         Preconditions.checkArgument(StringUtils.isNotBlank(appKey),
                 "App key must be provided.");
         Preconditions.checkArgument(StringUtils.isNotBlank(appSecret),
@@ -103,10 +120,12 @@ public class APIClient {
         this.baseURI = URI.create(baseURI);
         this.version = version;
         this.uaHost = new HttpHost(URI.create(baseURI).getHost(), 443, "https");
+        this.proxyInfo = proxyInfoOptional;
     }
 
     public String getAppSecret() { return appSecret; }
     public String getAppKey() { return appKey; }
+    public Optional<ProxyInfo> getProxyInfo() { return proxyInfo; }
 
     /* Add the version number to the default version header */
 
@@ -135,16 +154,31 @@ public class APIClient {
     /* Provisioning Methods */
 
     private Request provisionRequest(Request object) {
-        return object
-                .config(CoreProtocolPNames.USER_AGENT, getUserAgent())
-                .addHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_VALUE)
-                .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
+        object.config(CoreProtocolPNames.USER_AGENT, getUserAgent())
+            .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
+            .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
+
+        if (proxyInfo.isPresent()) { object.viaProxy(proxyInfo.get().getProxyHost()); }
+
+        return object;
     }
 
     private Executor provisionExecutor() {
-        return Executor.newInstance()
+        Executor executor = Executor.newInstance()
                 .auth(uaHost, appKey, appSecret)
                 .authPreemptive(uaHost);
+
+        if (proxyInfo.isPresent()) {
+
+            HttpHost host = proxyInfo.get().getProxyHost();
+            executor.authPreemptiveProxy(host);
+
+            if (proxyInfo.get().getProxyCredentials().isPresent()) {
+                executor.auth(host, proxyInfo.get().getProxyCredentials().get());
+            }
+        }
+
+        return executor;
     }
 
     /* Push API */
@@ -772,8 +806,32 @@ public class APIClient {
     /* Object methods */
 
     @Override
+    public int hashCode() {
+        return Objects.hashCode(appKey, appSecret, baseURI, version, uaHost, proxyInfo);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final APIClient other = (APIClient) obj;
+        return Objects.equal(this.appKey, other.appKey) && Objects.equal(this.appSecret, other.appSecret) && Objects.equal(this.baseURI, other.baseURI) && Objects.equal(this.version, other.version) && Objects.equal(this.uaHost, other.uaHost) && Objects.equal(this.proxyInfo, other.proxyInfo);
+    }
+
+    @Override
     public String toString() {
-        return "APIClient\nAppKey:"+ appKey +"\nAppSecret:" + appSecret + "\n";
+        return "APIClient{" +
+                "appKey='" + appKey + '\'' +
+                ", appSecret='" + appSecret + '\'' +
+                ", baseURI=" + baseURI +
+                ", version=" + version +
+                ", uaHost=" + uaHost +
+                ", proxyInfo=" + proxyInfo +
+                '}';
     }
 
     /* Builder for APIClient */
@@ -784,6 +842,7 @@ public class APIClient {
         private String secret;
         private String baseURI;
         private Number version;
+        private ProxyInfo proxyInfoOptional;
 
         private Builder(){
             baseURI = "https://go.urbanairship.com";
@@ -810,12 +869,18 @@ public class APIClient {
             return this;
         }
 
+        public Builder setProxyInfo(ProxyInfo value) {
+            this.proxyInfoOptional = value;
+            return this;
+        }
+
         public APIClient build() {
             Preconditions.checkNotNull(key, "app key needed to build APIClient");
             Preconditions.checkNotNull(secret, "app secret needed to build APIClient");
             Preconditions.checkNotNull(baseURI, "base URI needed to build APIClient");
             Preconditions.checkNotNull(version, "version needed to build APIClient");
-            return new APIClient(key, secret, baseURI, version);
+
+            return new APIClient(key, secret, baseURI, version, Optional.fromNullable(proxyInfoOptional));
         }
 
     }
