@@ -353,7 +353,7 @@ public class APIClient {
         return provisionExecutor().execute(req).handleResponse(new ListIndividualPushAPIResponseHandler());
     }
 
-    public APIClientResponse<APIReportsListingResponse> listReportsResponseListing(DateTime start,
+    public APIClientResponse<APIReportsPushListingResponse> listReportsResponseListing(DateTime start,
                                                                                    DateTime end,
                                                                                    Optional<Integer> limit,
                                                                                    Optional<String> pushIDStart)

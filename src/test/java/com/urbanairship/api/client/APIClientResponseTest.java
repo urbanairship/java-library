@@ -50,18 +50,18 @@ public class APIClientResponseTest {
                 .setGroupID(two)
                 .build();
 
-        APIReportsListingResponse obj = APIReportsListingResponse.newBuilder()
+        APIReportsPushListingResponse obj = APIReportsPushListingResponse.newBuilder()
                 .setNextPage("123")
                 .addPushInfoResponse(spir)
                 .addPushInfoResponse(spir)
                 .addPushInfoResponse(spir)
                 .build();
 
-        APIClientResponse.Builder<APIReportsListingResponse> builder = APIClientResponse.newReportsListingResponseBuilder()
+        APIClientResponse.Builder<APIReportsPushListingResponse> builder = APIClientResponse.newReportsListingResponseBuilder()
                 .setApiResponse(obj)
                 .setHttpResponse(httpResponse);
 
-        APIClientResponse<APIReportsListingResponse> testResponse = builder.build();
+        APIClientResponse<APIReportsPushListingResponse> testResponse = builder.build();
 
         assertTrue("HTTP response not set properly",
                 testResponse.getHttpResponse().equals(httpResponse));

@@ -5,13 +5,13 @@
 package com.urbanairship.api.client.parse;
 
 
-import com.urbanairship.api.client.model.APIReportsListingResponse;
+import com.urbanairship.api.client.model.APIReportsPushListingResponse;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class APIReportsListingResponseTest {
+public class APIReportsPushListingResponseTest {
 
     ObjectMapper mapper = APIResponseObjectMapper.getInstance();
 
@@ -58,7 +58,7 @@ public class APIReportsListingResponseTest {
 
     @Test
     public void testAPIReportsListingResponse() throws Exception {
-        APIReportsListingResponse response = mapper.readValue(fiveresponse, APIReportsListingResponse.class);
+        APIReportsPushListingResponse response = mapper.readValue(fiveresponse, APIReportsPushListingResponse.class);
         assertNotNull(response);
         assertEquals(5, response.getSinglePushInfoResponseObjects().size());
         assertEquals("Value for Next Page", response.getNextPage().get());

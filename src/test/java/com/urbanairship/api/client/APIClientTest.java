@@ -1403,7 +1403,7 @@ public class APIClientTest {
         DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
         DateTime end = start.plus(Period.hours(48));
 
-        APIClientResponse<APIReportsListingResponse> response =
+        APIClientResponse<APIReportsPushListingResponse> response =
                 client.listReportsResponseListing(start, end, Optional.<Integer>absent(), Optional.<String>absent());
         assertNotNull(response);
     }
@@ -1469,7 +1469,7 @@ public class APIClientTest {
         DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
         DateTime end = start.plus(Period.hours(48));
 
-        APIClientResponse<APIReportsListingResponse> response =
+        APIClientResponse<APIReportsPushListingResponse> response =
                 client.listReportsResponseListing(start, end, Optional.of(1), Optional.of("start_push"));
         assertNotNull(response);
     }

@@ -5,8 +5,7 @@
 package com.urbanairship.api.client;
 
 import com.urbanairship.api.client.model.APIClientResponse;
-import com.urbanairship.api.client.model.APIListAllChannelsResponse;
-import com.urbanairship.api.client.model.APIReportsListingResponse;
+import com.urbanairship.api.client.model.APIReportsPushListingResponse;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.entity.InputStreamEntity;
@@ -82,7 +81,7 @@ public class ListReportsListingResponseHandlerTest {
         ListReportsListingResponseHandler handler = new ListReportsListingResponseHandler();
 
         try {
-            APIClientResponse<APIReportsListingResponse> response =
+            APIClientResponse<APIReportsPushListingResponse> response =
                     handler.handleResponse(httpResponse);
             assertTrue("Count incorrect",
                     response.getApiResponse().getSinglePushInfoResponseObjects().size() == 5);

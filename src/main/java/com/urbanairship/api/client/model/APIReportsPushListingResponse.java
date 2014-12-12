@@ -10,7 +10,7 @@ import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.reports.model.SinglePushInfoResponse;
 
 
-public final class APIReportsListingResponse {
+public final class APIReportsPushListingResponse {
 
     private final Optional<String> nextPage;
     private final ImmutableList<SinglePushInfoResponse> singlePushInfoResponseObjects;
@@ -19,8 +19,8 @@ public final class APIReportsListingResponse {
         return new Builder();
     }
 
-    private APIReportsListingResponse(String nextPage,
-                                      ImmutableList<SinglePushInfoResponse> singlePushInfoResponseObjects) {
+    private APIReportsPushListingResponse(String nextPage,
+                                          ImmutableList<SinglePushInfoResponse> singlePushInfoResponseObjects) {
         this.nextPage = Optional.fromNullable(nextPage);
         this.singlePushInfoResponseObjects = singlePushInfoResponseObjects;
     }
@@ -54,7 +54,7 @@ public final class APIReportsListingResponse {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final APIReportsListingResponse other = (APIReportsListingResponse) obj;
+        final APIReportsPushListingResponse other = (APIReportsPushListingResponse) obj;
         return Objects.equal(this.nextPage, other.nextPage) && Objects.equal(this.singlePushInfoResponseObjects, other.singlePushInfoResponseObjects);
     }
 
@@ -80,8 +80,8 @@ public final class APIReportsListingResponse {
             return this;
         }
 
-        public APIReportsListingResponse build() {
-            return new APIReportsListingResponse(nextPage, singlePushInfoResponseBuilder.build());
+        public APIReportsPushListingResponse build() {
+            return new APIReportsPushListingResponse(nextPage, singlePushInfoResponseBuilder.build());
         }
     }
 }

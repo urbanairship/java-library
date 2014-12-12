@@ -5,7 +5,7 @@
 package com.urbanairship.api.client;
 
 import com.urbanairship.api.client.model.APIClientResponse;
-import com.urbanairship.api.client.model.APIReportsListingResponse;
+import com.urbanairship.api.client.model.APIReportsPushListingResponse;
 import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
@@ -14,13 +14,13 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
 
-public class ListReportsListingResponseHandler implements ResponseHandler<APIClientResponse<APIReportsListingResponse>> {
+public class ListReportsListingResponseHandler implements ResponseHandler<APIClientResponse<APIReportsPushListingResponse>> {
 
     private static final ObjectMapper mapper = APIResponseObjectMapper.getInstance();
-    private static final APIClientResponse.Builder<APIReportsListingResponse> builder = APIClientResponse.newReportsListingResponseBuilder();
+    private static final APIClientResponse.Builder<APIReportsPushListingResponse> builder = APIClientResponse.newReportsListingResponseBuilder();
 
     @Override
-    public APIClientResponse<APIReportsListingResponse> handleResponse(HttpResponse response) throws IOException {
+    public APIClientResponse<APIReportsPushListingResponse> handleResponse(HttpResponse response) throws IOException {
 
         int statusCode = response.getStatusLine().getStatusCode();
 
@@ -31,14 +31,14 @@ public class ListReportsListingResponseHandler implements ResponseHandler<APICli
         }
     }
 
-    private APIClientResponse<APIReportsListingResponse> handleSuccessfulRequest(HttpResponse response) throws IOException
+    private APIClientResponse<APIReportsPushListingResponse> handleSuccessfulRequest(HttpResponse response) throws IOException
     {
 
         builder.setHttpResponse(response);
 
         try {
             String jsonPayload = EntityUtils.toString(response.getEntity());
-            APIReportsListingResponse reportsListingResponse = mapper.readValue(jsonPayload, APIReportsListingResponse.class);
+            APIReportsPushListingResponse reportsListingResponse = mapper.readValue(jsonPayload, APIReportsPushListingResponse.class);
             builder.setApiResponse(reportsListingResponse);
         } finally {
             EntityUtils.consumeQuietly(response.getEntity());

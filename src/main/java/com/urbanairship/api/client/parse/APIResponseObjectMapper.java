@@ -58,7 +58,7 @@ public class APIResponseObjectMapper {
         MODULE.addDeserializer(APIListAllChannelsResponse.class, new APIListAllChannelsResponseDeserializer());
         MODULE.addDeserializer(AppStats.class, new AppStatsDeserializer());
         MODULE.addDeserializer(SinglePushInfoResponse.class, new SinglePushInfoResponseDeserializer());
-        MODULE.addDeserializer(APIReportsListingResponse.class, new APIReportsListingResponseDeserializer());
+        MODULE.addDeserializer(APIReportsPushListingResponse.class, new APIReportsListingResponseDeserializer());
 
         MAPPER.registerModule(PushObjectMapper.getModule());
         MAPPER.registerModule(MODULE);

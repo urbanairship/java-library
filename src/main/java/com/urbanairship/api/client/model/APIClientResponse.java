@@ -81,8 +81,8 @@ public class APIClientResponse<T> {
      * Return a Builder for a APIReportsListingResponse
      * @return Builder
      */
-    public static Builder<APIReportsListingResponse> newReportsListingResponseBuilder(){
-        return new Builder<APIReportsListingResponse>();
+    public static Builder<APIReportsPushListingResponse> newReportsListingResponseBuilder(){
+        return new Builder<APIReportsPushListingResponse>();
     }
 
     /**
