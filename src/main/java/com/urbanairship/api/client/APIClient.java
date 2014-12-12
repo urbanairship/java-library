@@ -7,6 +7,7 @@ package com.urbanairship.api.client;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
+import com.urbanairship.api.channel.information.model.ChannelView;
 import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.Point;
@@ -444,6 +445,18 @@ public class APIClient {
     }
 
     /* Device Information API */
+
+    public APIClientResponse<APIListSingleChannelResponse> listChannel(String channel) throws IOException, URISyntaxException {
+
+        String path = API_DEVICE_CHANNELS_PATH + channel;
+        Request req = provisionRequest(Request.Get(baseURI.resolve(path)));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing get single channels request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ListSingleChannelAPIResponseHandler());
+    }
 
     public APIClientResponse<APIListAllChannelsResponse> listAllChannels() throws IOException {
         Request req = provisionRequest(Request.Get(baseURI.resolve(API_DEVICE_CHANNELS_PATH)));
