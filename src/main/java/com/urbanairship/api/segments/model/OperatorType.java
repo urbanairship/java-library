@@ -13,10 +13,6 @@ public enum OperatorType {
         this.identifier = identifier;
     }
 
-    public String getIdentifier() {
-        return identifier;
-    }
-
     public static OperatorType getOperatorTypeFromIdentifier(String identifier) {
         for (OperatorType operatorType : values()) {
             if (operatorType.identifier.equals(identifier)) {
@@ -25,5 +21,9 @@ public enum OperatorType {
         }
 
         return null;
+    }
+
+    public String getIdentifier() {
+        return identifier;
     }
 }

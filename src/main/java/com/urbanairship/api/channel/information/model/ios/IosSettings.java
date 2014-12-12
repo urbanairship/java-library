@@ -16,18 +16,18 @@ public final class IosSettings {
     private final Optional<QuietTime> quiettime;
     private final Optional<String> timezone;
 
+    private IosSettings(int badge, Optional<QuietTime> quiettime, Optional<String> timezone) {
+        this.badge = badge;
+        this.quiettime = quiettime;
+        this.timezone = timezone;
+    }
+
     public static IosSettings getDefaultInstance() {
         return DEFAULT_INSTANCE;
     }
 
     public static Builder newBuilder() {
         return new Builder();
-    }
-
-    private IosSettings(int badge, Optional<QuietTime> quiettime, Optional<String> timezone) {
-        this.badge = badge;
-        this.quiettime = quiettime;
-        this.timezone = timezone;
     }
 
     public int getBadge() {
@@ -75,7 +75,8 @@ public final class IosSettings {
         private QuietTime quiettime = null;
         private String timezone = null;
 
-        private Builder() { }
+        private Builder() {
+        }
 
         public Builder setBadge(int badge) {
             this.badge = badge;

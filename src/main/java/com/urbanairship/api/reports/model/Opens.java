@@ -14,14 +14,14 @@ public final class Opens {
     private final Long ios;
     private final DateTime date;
 
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     private Opens(Long android, Long ios, DateTime date) {
         this.android = android;
         this.ios = ios;
         this.date = date;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
     public long getAndroid() {
@@ -68,7 +68,8 @@ public final class Opens {
         private Long ios;
         private DateTime date;
 
-        private Builder() { }
+        private Builder() {
+        }
 
         public Builder setAndroid(Long value) {
             this.android = value;

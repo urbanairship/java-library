@@ -1,10 +1,10 @@
 package com.urbanairship.api.push.model;
 
-import com.urbanairship.api.push.model.audience.*;
-import static com.urbanairship.api.push.model.audience.Selectors.*;
-import org.junit.Test;
-import static org.junit.Assert.*;
 import com.google.common.collect.ImmutableSet;
+import org.junit.Test;
+
+import static com.urbanairship.api.push.model.audience.Selectors.*;
+import static org.junit.Assert.*;
 
 public class DeviceTypeDataTest {
 

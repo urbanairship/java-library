@@ -56,7 +56,7 @@ public final class AppStatsReader implements JsonObjectReader<AppStats> {
         try {
             return builder.build();
         } catch (Exception e) {
-            throw  new APIParsingException(e.getMessage());
+            throw new APIParsingException(e.getMessage());
         }
     }
 

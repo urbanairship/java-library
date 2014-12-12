@@ -6,7 +6,10 @@ package com.urbanairship.api.reports.parse;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
-import com.urbanairship.api.common.parse.*;
+import com.urbanairship.api.common.parse.FieldParser;
+import com.urbanairship.api.common.parse.FieldParserRegistry;
+import com.urbanairship.api.common.parse.MapFieldParserRegistry;
+import com.urbanairship.api.common.parse.StandardObjectDeserializer;
 import com.urbanairship.api.reports.model.PlatformCounts;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
@@ -18,26 +21,26 @@ public class PlatformCountsDeserializer extends JsonDeserializer<PlatformCounts>
 
     private static final FieldParserRegistry<PlatformCounts, PlatformCountsReader> FIELD_PARSERS =
             new MapFieldParserRegistry<PlatformCounts, PlatformCountsReader>(ImmutableMap.<String, FieldParser<PlatformCountsReader>>builder()
-            .put("push_platforms", new FieldParser<PlatformCountsReader>() {
-                @Override
-                public void parse(PlatformCountsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readPlatformCounts(jsonParser);
-                }
-            })
-            .put("rich_push_platforms", new FieldParser<PlatformCountsReader>() {
-                @Override
-                public void parse(PlatformCountsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readRichPlatformCounts(jsonParser);
-                }
-            })
-            .put("time", new FieldParser<PlatformCountsReader>() {
-                @Override
-                public void parse(PlatformCountsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readTime(jsonParser);
-                }
-            })
-            .build()
-    );
+                    .put("push_platforms", new FieldParser<PlatformCountsReader>() {
+                        @Override
+                        public void parse(PlatformCountsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readPlatformCounts(jsonParser);
+                        }
+                    })
+                    .put("rich_push_platforms", new FieldParser<PlatformCountsReader>() {
+                        @Override
+                        public void parse(PlatformCountsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readRichPlatformCounts(jsonParser);
+                        }
+                    })
+                    .put("time", new FieldParser<PlatformCountsReader>() {
+                        @Override
+                        public void parse(PlatformCountsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readTime(jsonParser);
+                        }
+                    })
+                    .build()
+            );
 
     private final StandardObjectDeserializer<PlatformCounts, ?> deserializer;
 

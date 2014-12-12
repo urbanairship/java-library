@@ -37,7 +37,7 @@ public final class APIListTagsResponseDeserializer extends JsonDeserializer<APIL
     private final StandardObjectDeserializer<APIListTagsResponse, ?> deserializer;
 
     // See Google Guava for Supplier details
-    public APIListTagsResponseDeserializer(){
+    public APIListTagsResponseDeserializer() {
         this.deserializer = new StandardObjectDeserializer<APIListTagsResponse, APIListTagsResponseReader>(
                 FIELD_PARSER,
                 new Supplier<APIListTagsResponseReader>() {

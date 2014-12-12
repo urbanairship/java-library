@@ -22,24 +22,24 @@ public final class APIListAllChannelsResponseDeserializer extends JsonDeserializ
     private static final FieldParserRegistry<APIListAllChannelsResponse, APIListAllChannelsResponseReader> FIELD_PARSER =
             new MapFieldParserRegistry<APIListAllChannelsResponse, APIListAllChannelsResponseReader>(
                     ImmutableMap.<String, FieldParser<APIListAllChannelsResponseReader>>builder()
-                    .put("next_page", new FieldParser<APIListAllChannelsResponseReader>() {
-                        @Override
-                        public void parse(APIListAllChannelsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readNextPage(jsonParser);
-                        }
-                    })
-                    .put("channels", new FieldParser<APIListAllChannelsResponseReader>() {
-                        @Override
-                        public void parse(APIListAllChannelsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readChannelObjects(jsonParser);
-                        }
-                    })
-                    .build()
+                            .put("next_page", new FieldParser<APIListAllChannelsResponseReader>() {
+                                @Override
+                                public void parse(APIListAllChannelsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                    reader.readNextPage(jsonParser);
+                                }
+                            })
+                            .put("channels", new FieldParser<APIListAllChannelsResponseReader>() {
+                                @Override
+                                public void parse(APIListAllChannelsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                    reader.readChannelObjects(jsonParser);
+                                }
+                            })
+                            .build()
             );
 
     private final StandardObjectDeserializer<APIListAllChannelsResponse, ?> deserializer;
 
-    public APIListAllChannelsResponseDeserializer(){
+    public APIListAllChannelsResponseDeserializer() {
         this.deserializer = new StandardObjectDeserializer<APIListAllChannelsResponse, APIListAllChannelsResponseReader>(
                 FIELD_PARSER,
                 new Supplier<APIListAllChannelsResponseReader>() {

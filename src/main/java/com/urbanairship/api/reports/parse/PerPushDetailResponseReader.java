@@ -82,7 +82,8 @@ public class PerPushDetailResponseReader implements JsonObjectReader<PerPushDeta
     }
 
     public void readPlatforms(JsonParser jsonParser) throws IOException {
-        Map<String, PerPushCounts> obj = jsonParser.readValueAs(new TypeReference<Map<String, PerPushCounts>>() { });
+        Map<String, PerPushCounts> obj = jsonParser.readValueAs(new TypeReference<Map<String, PerPushCounts>>() {
+        });
 
         for (String s : obj.keySet()) {
             PlatformType type = PlatformType.find(s).get();

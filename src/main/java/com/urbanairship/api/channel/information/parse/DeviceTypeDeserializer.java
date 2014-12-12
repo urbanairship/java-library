@@ -5,8 +5,8 @@
 package com.urbanairship.api.channel.information.parse;
 
 import com.google.common.base.Optional;
-import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.channel.information.model.DeviceType;
+import com.urbanairship.api.common.parse.APIParsingException;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;

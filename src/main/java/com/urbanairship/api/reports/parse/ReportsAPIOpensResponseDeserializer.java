@@ -6,7 +6,10 @@ package com.urbanairship.api.reports.parse;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
-import com.urbanairship.api.common.parse.*;
+import com.urbanairship.api.common.parse.FieldParser;
+import com.urbanairship.api.common.parse.FieldParserRegistry;
+import com.urbanairship.api.common.parse.MapFieldParserRegistry;
+import com.urbanairship.api.common.parse.StandardObjectDeserializer;
 import com.urbanairship.api.reports.model.ReportsAPIOpensResponse;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
@@ -17,16 +20,16 @@ import java.io.IOException;
 public class ReportsAPIOpensResponseDeserializer extends JsonDeserializer<ReportsAPIOpensResponse> {
 
     private static final FieldParserRegistry<ReportsAPIOpensResponse, ReportsAPIOpensResponseReader> FIELD_PARSERS =
-        new MapFieldParserRegistry<ReportsAPIOpensResponse, ReportsAPIOpensResponseReader>(
-                ImmutableMap.<String, FieldParser<ReportsAPIOpensResponseReader>>builder()
-        .put("opens", new FieldParser<ReportsAPIOpensResponseReader>() {
-            @Override
-            public void parse(ReportsAPIOpensResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                reader.readOpens(jsonParser);
-            }
-        })
-        .build()
-    );
+            new MapFieldParserRegistry<ReportsAPIOpensResponse, ReportsAPIOpensResponseReader>(
+                    ImmutableMap.<String, FieldParser<ReportsAPIOpensResponseReader>>builder()
+                            .put("opens", new FieldParser<ReportsAPIOpensResponseReader>() {
+                                @Override
+                                public void parse(ReportsAPIOpensResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                    reader.readOpens(jsonParser);
+                                }
+                            })
+                            .build()
+            );
 
     private final StandardObjectDeserializer<ReportsAPIOpensResponse, ?> deserializer;
 

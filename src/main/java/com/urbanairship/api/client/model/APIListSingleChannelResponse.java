@@ -11,12 +11,12 @@ public final class APIListSingleChannelResponse {
 
     private final ChannelView channelObject;
 
-    public static Builder newBuilder(){
-        return new Builder();
-    }
-
     private APIListSingleChannelResponse(ChannelView channelObject) {
         this.channelObject = channelObject;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
     public ChannelView getChannelObject() {
@@ -51,7 +51,8 @@ public final class APIListSingleChannelResponse {
 
         private ChannelView channelObject;
 
-        private Builder() { }
+        private Builder() {
+        }
 
         public Builder setChannelObject(ChannelView value) {
             this.channelObject = value;

@@ -1,16 +1,17 @@
 package com.urbanairship.api.push.parse.notification.ios;
 
-import com.urbanairship.api.push.parse.*;
-import com.urbanairship.api.common.parse.*;
-import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
-import com.urbanairship.api.push.model.notification.ios.IOSBadgeData;
-import com.urbanairship.api.push.model.notification.ios.IOSAlertData;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.apache.commons.lang.RandomStringUtils;
-import org.junit.Test;
-import static org.junit.Assert.*;
-import java.util.Map;
 import com.google.common.collect.ImmutableList;
+import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.push.model.notification.ios.IOSAlertData;
+import com.urbanairship.api.push.model.notification.ios.IOSBadgeData;
+import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
+import com.urbanairship.api.push.parse.PushObjectMapper;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.junit.Test;
+
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 public class PayloadDeserializerTest {
     private static final ObjectMapper mapper = PushObjectMapper.getInstance();
@@ -18,13 +19,13 @@ public class PayloadDeserializerTest {
     @Test
     public void testAlert() throws Exception {
         String json
-            = "{"
-            + "  \"alert\": \"iOS override\""
-            + "}";
+                = "{"
+                + "  \"alert\": \"iOS override\""
+                + "}";
 
         IOSDevicePayload expected = IOSDevicePayload.newBuilder()
-            .setAlert("iOS override")
-            .build();
+                .setAlert("iOS override")
+                .build();
 
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
         assertNotNull(payload);
@@ -40,31 +41,31 @@ public class PayloadDeserializerTest {
     @Test
     public void testCompoundAlert() throws Exception {
         String json
-            = "{"
-            + "  \"alert\": {"
-            + "    \"body\" : \"B\","
-            + "    \"action-loc-key\" : \"ALK\","
-            + "    \"loc-key\" : \"LK\","
-            + "    \"loc-args\" : ["
-            + "        \"arg1\", \"arg2\""
-            + "      ],"
-            + "    \"launch-image\" : \"LI\""
-            + "  }"
-            + "}";
+                = "{"
+                + "  \"alert\": {"
+                + "    \"body\" : \"B\","
+                + "    \"action-loc-key\" : \"ALK\","
+                + "    \"loc-key\" : \"LK\","
+                + "    \"loc-args\" : ["
+                + "        \"arg1\", \"arg2\""
+                + "      ],"
+                + "    \"launch-image\" : \"LI\""
+                + "  }"
+                + "}";
 
         IOSDevicePayload expected = IOSDevicePayload.newBuilder()
-            .setAlert(IOSAlertData.newBuilder()
-                      .setBody("B")
-                      .setActionLocKey("ALK")
-                      .setLocKey("LK")
-                      .setLocArgs(ImmutableList.of("arg1", "arg2"))
-                      .setLaunchImage("LI")
-                      .build())
-            .build();
+                .setAlert(IOSAlertData.newBuilder()
+                        .setBody("B")
+                        .setActionLocKey("ALK")
+                        .setLocKey("LK")
+                        .setLocArgs(ImmutableList.of("arg1", "arg2"))
+                        .setLaunchImage("LI")
+                        .build())
+                .build();
 
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
         assertTrue(String.format("Expected: '%s', Actual: '%s'", expected.toString(), payload.toString()),
-                   expected.equals(payload));
+                expected.equals(payload));
         assertEquals(expected.hashCode(), payload.hashCode());
         assertTrue(payload.getAlertData().isPresent());
         assertTrue(payload.getAlert().isPresent());
@@ -82,12 +83,12 @@ public class PayloadDeserializerTest {
     @Test
     public void testAlertDataEquality() {
         IOSAlertData d1 = IOSAlertData.newBuilder()
-            .setBody("A")
-            .build();
+                .setBody("A")
+                .build();
         IOSAlertData d2 = IOSAlertData.newBuilder()
-            .setActionLocKey("A")
-            .setLaunchImage("L")
-            .build();
+                .setActionLocKey("A")
+                .setLaunchImage("L")
+                .build();
         assertEquals(d1, d1);
         assertEquals(d2, d2);
         assertFalse(d1.equals(d2));
@@ -97,13 +98,13 @@ public class PayloadDeserializerTest {
     @Test
     public void testSound() throws Exception {
         String json
-            = "{"
-            + "  \"sound\": \"cat.wav\""
-            + "}";
+                = "{"
+                + "  \"sound\": \"cat.wav\""
+                + "}";
 
         IOSDevicePayload expected = IOSDevicePayload.newBuilder()
-            .setSound("cat.wav")
-            .build();
+                .setSound("cat.wav")
+                .build();
 
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
         assertNotNull(payload);
@@ -118,9 +119,9 @@ public class PayloadDeserializerTest {
     @Test
     public void testBadgeIntValue() throws Exception {
         String json
-            = "{"
-            + "  \"badge\": 37"
-            + "}";
+                = "{"
+                + "  \"badge\": 37"
+                + "}";
 
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
         assertNotNull(payload);
@@ -160,12 +161,12 @@ public class PayloadDeserializerTest {
         assertEquals(37, payload.getBadge().get().getValue().get().intValue());
     }
 
-    @Test(expected=APIParsingException.class)
+    @Test(expected = APIParsingException.class)
     public void testBadgeBadAutoValue() throws Exception {
         mapper.readValue("{ \"badge\": \"foo\" }", IOSDevicePayload.class);
     }
 
-    @Test(expected=APIParsingException.class)
+    @Test(expected = APIParsingException.class)
     public void testBadgeBadNumber() throws Exception {
         mapper.readValue("{ \"badge\": 3.14159 }", IOSDevicePayload.class);
     }
@@ -173,13 +174,13 @@ public class PayloadDeserializerTest {
     @Test
     public void testContentAvailable() throws Exception {
         String json
-            = "{"
-            + "  \"content-available\": true"
-            + "}";
+                = "{"
+                + "  \"content-available\": true"
+                + "}";
 
         IOSDevicePayload expected = IOSDevicePayload.newBuilder()
-            .setContentAvailable(true)
-            .build();
+                .setContentAvailable(true)
+                .build();
 
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
         assertNotNull(payload);
@@ -192,17 +193,17 @@ public class PayloadDeserializerTest {
     @Test
     public void testExtra() throws Exception {
         String json
-            = "{"
-            + "  \"extra\": {"
-            + "    \"k1\" : \"v1\","
-            + "    \"k2\" : \"v2\""
-            + "  }"
-            + "}";
+                = "{"
+                + "  \"extra\": {"
+                + "    \"k1\" : \"v1\","
+                + "    \"k2\" : \"v2\""
+                + "  }"
+                + "}";
 
         IOSDevicePayload expected = IOSDevicePayload.newBuilder()
-            .addExtraEntry("k1", "v1")
-            .addExtraEntry("k2", "v2")
-            .build();
+                .addExtraEntry("k1", "v1")
+                .addExtraEntry("k2", "v2")
+                .build();
 
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
         assertNotNull(payload);
@@ -217,7 +218,7 @@ public class PayloadDeserializerTest {
         assertEquals(expected, payload);
     }
 
-    public void testValidate_Empty() throws Exception  {
+    public void testValidate_Empty() throws Exception {
         IOSDevicePayload payload = mapper.readValue("{}", IOSDevicePayload.class);
         assertNotNull(payload);
         assertFalse(payload.getAlert().isPresent());

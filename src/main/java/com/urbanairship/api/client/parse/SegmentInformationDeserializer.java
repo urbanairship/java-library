@@ -56,7 +56,7 @@ public final class SegmentInformationDeserializer extends JsonDeserializer<Segme
             );
     private final StandardObjectDeserializer<SegmentInformation, ?> deserializer;
 
-    public SegmentInformationDeserializer(){
+    public SegmentInformationDeserializer() {
         this.deserializer = new StandardObjectDeserializer<SegmentInformation, SegmentInformationReader>(
                 FIELD_PARSER,
                 new Supplier<SegmentInformationReader>() {
@@ -67,6 +67,7 @@ public final class SegmentInformationDeserializer extends JsonDeserializer<Segme
                 }
         );
     }
+
     @Override
     public SegmentInformation deserialize(JsonParser jsonParser, DeserializationContext
             deserializationContext)

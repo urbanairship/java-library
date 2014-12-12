@@ -39,7 +39,7 @@ public final class OpensReader implements JsonObjectReader<Opens> {
         try {
             return builder.build();
         } catch (Exception e) {
-            throw  new APIParsingException(e.getMessage());
+            throw new APIParsingException(e.getMessage());
         }
     }
 }

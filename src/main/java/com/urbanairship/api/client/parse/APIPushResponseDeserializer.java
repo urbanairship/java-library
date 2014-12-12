@@ -28,26 +28,26 @@ public final class APIPushResponseDeserializer extends JsonDeserializer<APIPushR
 
     private static final FieldParserRegistry<APIPushResponse, APIPushResponseReader> FIELD_PARSERS =
             new MapFieldParserRegistry<APIPushResponse, APIPushResponseReader>(
-            ImmutableMap.<String, FieldParser <APIPushResponseReader>>builder()
-            .put("operation_id", new FieldParser<APIPushResponseReader>() {
-                @Override
-                public void parse(APIPushResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readOperationId(jsonParser);
-                }
-            })
-            .put("push_ids", new FieldParser<APIPushResponseReader>() {
-                @Override
-                public void parse(APIPushResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readPushIds(jsonParser);
-                }
-            })
-            .build()
-    );
+                    ImmutableMap.<String, FieldParser<APIPushResponseReader>>builder()
+                            .put("operation_id", new FieldParser<APIPushResponseReader>() {
+                                @Override
+                                public void parse(APIPushResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                    reader.readOperationId(jsonParser);
+                                }
+                            })
+                            .put("push_ids", new FieldParser<APIPushResponseReader>() {
+                                @Override
+                                public void parse(APIPushResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                    reader.readPushIds(jsonParser);
+                                }
+                            })
+                            .build()
+            );
 
     private final StandardObjectDeserializer<APIPushResponse, ?> deserializer;
 
     // See Google Guava for Supplier details
-    public APIPushResponseDeserializer(){
+    public APIPushResponseDeserializer() {
         deserializer = new StandardObjectDeserializer<APIPushResponse, APIPushResponseReader>(
                 FIELD_PARSERS,
                 new Supplier<APIPushResponseReader>() {

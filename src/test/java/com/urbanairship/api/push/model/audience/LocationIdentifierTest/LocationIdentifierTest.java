@@ -4,20 +4,22 @@ package com.urbanairship.api.push.model.audience.LocationIdentifierTest;
 import com.urbanairship.api.push.model.audience.location.LocationAlias;
 import com.urbanairship.api.push.model.audience.location.LocationIdentifier;
 import org.junit.Test;
-import static org.junit.Assert.assertTrue;
+
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 public class LocationIdentifierTest {
 
     @Test
-    public void testEquals(){
-        LocationIdentifier l1= LocationIdentifier.newBuilder()
+    public void testEquals() {
+        LocationIdentifier l1 = LocationIdentifier.newBuilder()
                 .setId("ID")
                 .build();
 
         LocationIdentifier l2 = LocationIdentifier.newBuilder()
                 .setId("ID")
                 .build();
-        assertTrue("Equals should return true",l1.equals(l2));
+        assertTrue("Equals should return true", l1.equals(l2));
         LocationIdentifier l3 = LocationIdentifier.newBuilder()
                 .setId("foo")
                 .build();

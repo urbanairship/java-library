@@ -6,12 +6,12 @@ package com.urbanairship.api.channel.information.parse;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
+import com.urbanairship.api.channel.information.model.ChannelView;
+import com.urbanairship.api.channel.information.util.Constants;
 import com.urbanairship.api.common.parse.FieldParser;
 import com.urbanairship.api.common.parse.FieldParserRegistry;
 import com.urbanairship.api.common.parse.MapFieldParserRegistry;
 import com.urbanairship.api.common.parse.StandardObjectDeserializer;
-import com.urbanairship.api.channel.information.model.ChannelView;
-import com.urbanairship.api.channel.information.util.Constants;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;

@@ -5,8 +5,8 @@
 package com.urbanairship.api.client.parse;
 
 import com.urbanairship.api.client.APIErrorDetails;
-import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.JsonObjectReader;
 import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
@@ -19,7 +19,7 @@ public class StreamLocationReader implements JsonObjectReader<APIErrorDetails.Lo
 
     private final APIErrorDetails.Location.Builder builder;
 
-    public StreamLocationReader(){
+    public StreamLocationReader() {
         this.builder = APIErrorDetails.Location.newBuilder();
     }
 
@@ -34,8 +34,7 @@ public class StreamLocationReader implements JsonObjectReader<APIErrorDetails.Lo
     public APIErrorDetails.Location validateAndBuild() throws IOException {
         try {
             return builder.build();
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             // TODO log errors
             throw new APIParsingException(ex.getMessage());
         }

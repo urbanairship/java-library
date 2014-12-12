@@ -58,7 +58,8 @@ public final class APIListAllSegmentsResponse {
         private String nextPage;
         private ImmutableList.Builder<SegmentInformation> segments = ImmutableList.builder();
 
-        private Builder() { }
+        private Builder() {
+        }
 
         public Builder setNextPage(String value) {
             this.nextPage = value;

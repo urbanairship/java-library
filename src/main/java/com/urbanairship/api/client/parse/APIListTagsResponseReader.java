@@ -18,16 +18,20 @@ public final class APIListTagsResponseReader implements JsonObjectReader<APIList
 
     private final APIListTagsResponse.Builder builder;
 
-    public APIListTagsResponseReader() { this.builder = APIListTagsResponse.newBuilder(); }
+    public APIListTagsResponseReader() {
+        this.builder = APIListTagsResponse.newBuilder();
+    }
 
-    public void readTags(JsonParser jsonParser) throws IOException { builder.allAllTags((List<String>) jsonParser.readValueAs(new TypeReference<List<String>>() {})); }
+    public void readTags(JsonParser jsonParser) throws IOException {
+        builder.allAllTags((List<String>) jsonParser.readValueAs(new TypeReference<List<String>>() {
+        }));
+    }
 
     @Override
     public APIListTagsResponse validateAndBuild() throws IOException {
-        try{
+        try {
             return builder.build();
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             throw new APIParsingException(ex.getMessage());
         }
     }

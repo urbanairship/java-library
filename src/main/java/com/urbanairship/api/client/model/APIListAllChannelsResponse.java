@@ -14,17 +14,22 @@ public final class APIListAllChannelsResponse {
     private final Optional<String> nextPage;
     private final ImmutableList<ChannelView> channelObjects;
 
-    public static Builder newBuilder(){
-        return new Builder();
-    }
-
     private APIListAllChannelsResponse(String nextPage, ImmutableList<ChannelView> channelObjects) {
         this.nextPage = Optional.fromNullable(nextPage);
         this.channelObjects = channelObjects;
     }
 
-    public Optional<String> getNextPage() { return nextPage; }
-    public ImmutableList<ChannelView> getChannelObjects() { return channelObjects; }
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public Optional<String> getNextPage() {
+        return nextPage;
+    }
+
+    public ImmutableList<ChannelView> getChannelObjects() {
+        return channelObjects;
+    }
 
     @Override
     public String toString() {
@@ -56,7 +61,8 @@ public final class APIListAllChannelsResponse {
         private String nextPage;
         private ImmutableList.Builder<ChannelView> channelObjects = ImmutableList.builder();
 
-        private Builder() { }
+        private Builder() {
+        }
 
         public Builder setNextPage(String value) {
             this.nextPage = value;

@@ -16,10 +16,6 @@ public final class AddRemoveDeviceFromTagPayload extends PushModelObject {
     private final Optional<AddRemoveSet> devicePins;
     private final Optional<AddRemoveSet> apids;
 
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     private AddRemoveDeviceFromTagPayload(Optional<AddRemoveSet> iosChannels,
                                           Optional<AddRemoveSet> deviceTokens,
                                           Optional<AddRemoveSet> devicePins,
@@ -28,6 +24,10 @@ public final class AddRemoveDeviceFromTagPayload extends PushModelObject {
         this.deviceTokens = deviceTokens;
         this.devicePins = devicePins;
         this.apids = apids;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
     public Optional<AddRemoveSet> getIOSChannels() {
@@ -80,7 +80,8 @@ public final class AddRemoveDeviceFromTagPayload extends PushModelObject {
         private AddRemoveSet device_pins = null;
         private AddRemoveSet apids = null;
 
-        private Builder() { }
+        private Builder() {
+        }
 
         public Builder setIOSChannels(AddRemoveSet value) {
             this.ios_channels = value;

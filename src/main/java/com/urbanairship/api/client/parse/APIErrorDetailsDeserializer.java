@@ -25,39 +25,39 @@ the boilerplate necessary for Jackson stream parsing, which is essentially what
  If you're using Intellij, be sure and toggle open the code that's
  been collapsed.
  */
-public final class APIErrorDetailsDeserializer extends JsonDeserializer<APIErrorDetails>{
+public final class APIErrorDetailsDeserializer extends JsonDeserializer<APIErrorDetails> {
 
     private static final FieldParserRegistry<APIErrorDetails, APIErrorDetailsReader> FIELD_PARSERS =
             new MapFieldParserRegistry<APIErrorDetails, APIErrorDetailsReader>(
-                    ImmutableMap.<String, FieldParser< APIErrorDetailsReader >> builder()
-                    .put("path", new FieldParser<APIErrorDetailsReader>() {
-                        @Override
-                        public void parse(APIErrorDetailsReader reader, JsonParser jsonParser,
-                                          DeserializationContext deserializationContext) throws IOException{
-                            reader.readPath(jsonParser);
-                        }
-                    })
-                    .put("error", new FieldParser<APIErrorDetailsReader>() {
-                        @Override
-                        public void parse(APIErrorDetailsReader reader, JsonParser jsonParser,
-                                          DeserializationContext deserializationContext) throws IOException {
-                            reader.readError(jsonParser);
-                        }
-                    })
-                    .put("location", new FieldParser<APIErrorDetailsReader>() {
-                        @Override
-                        public void parse(APIErrorDetailsReader reader, JsonParser jsonParser,
-                                          DeserializationContext deserializationContext) throws IOException {
-                            reader.readLocation(jsonParser);
-                        }
-                    })
-            .build()
+                    ImmutableMap.<String, FieldParser<APIErrorDetailsReader>>builder()
+                            .put("path", new FieldParser<APIErrorDetailsReader>() {
+                                @Override
+                                public void parse(APIErrorDetailsReader reader, JsonParser jsonParser,
+                                                  DeserializationContext deserializationContext) throws IOException {
+                                    reader.readPath(jsonParser);
+                                }
+                            })
+                            .put("error", new FieldParser<APIErrorDetailsReader>() {
+                                @Override
+                                public void parse(APIErrorDetailsReader reader, JsonParser jsonParser,
+                                                  DeserializationContext deserializationContext) throws IOException {
+                                    reader.readError(jsonParser);
+                                }
+                            })
+                            .put("location", new FieldParser<APIErrorDetailsReader>() {
+                                @Override
+                                public void parse(APIErrorDetailsReader reader, JsonParser jsonParser,
+                                                  DeserializationContext deserializationContext) throws IOException {
+                                    reader.readLocation(jsonParser);
+                                }
+                            })
+                            .build()
             );
 
     private final StandardObjectDeserializer<APIErrorDetails, ?> deserializer;
 
     // See Google Guava for Supplier details
-    public APIErrorDetailsDeserializer(){
+    public APIErrorDetailsDeserializer() {
         deserializer = new StandardObjectDeserializer<APIErrorDetails, APIErrorDetailsReader>(
                 FIELD_PARSERS,
                 new Supplier<APIErrorDetailsReader>() {

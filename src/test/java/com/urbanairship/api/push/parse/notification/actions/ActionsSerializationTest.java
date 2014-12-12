@@ -1,4 +1,3 @@
-
 package com.urbanairship.api.push.parse.notification.actions;
 
 import com.urbanairship.api.push.model.notification.actions.*;

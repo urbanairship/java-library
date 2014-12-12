@@ -8,7 +8,6 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 
-
 import java.io.IOException;
 
 public class LocationAPIResponseHandler implements ResponseHandler<APIClientResponse<APILocationResponse>> {

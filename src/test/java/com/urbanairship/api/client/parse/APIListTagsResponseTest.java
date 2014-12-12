@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 public class APIListTagsResponseTest {
 
     @Test
-    public void testAPIListTagsResponse(){
+    public void testAPIListTagsResponse() {
 
         String listtagresponse = "{\"tags\":[\"Puppies\",\"Kitties\",\"GrumpyCat\"]}";
 
@@ -26,7 +26,7 @@ public class APIListTagsResponseTest {
             assertEquals("Puppies", tags.get(0));
             assertEquals("Kitties", tags.get(1));
             assertEquals("GrumpyCat", tags.get(2));
-        } catch (Exception e){
+        } catch (Exception e) {
             fail("Exception " + e.getMessage());
         }
     }

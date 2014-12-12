@@ -12,7 +12,6 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 
-
 import java.io.IOException;
 
 public final class ListAllChannelsAPIResponseHandler implements ResponseHandler<APIClientResponse<APIListAllChannelsResponse>> {
@@ -32,8 +31,7 @@ public final class ListAllChannelsAPIResponseHandler implements ResponseHandler<
         }
     }
 
-    private APIClientResponse<APIListAllChannelsResponse> handleSuccessfulRequest(HttpResponse response) throws IOException
-    {
+    private APIClientResponse<APIListAllChannelsResponse> handleSuccessfulRequest(HttpResponse response) throws IOException {
 
         builder.setHttpResponse(response);
 

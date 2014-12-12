@@ -27,7 +27,7 @@ public final class ScheduleAPIResponseHandler implements ResponseHandler<APIClie
 
         int statusCode = response.getStatusLine().getStatusCode();
 
-        switch (statusCode){
+        switch (statusCode) {
             case HttpStatus.SC_CREATED:
                 return handleSuccessfulSchedule(response);
 

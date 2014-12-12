@@ -35,8 +35,12 @@ public final class Base64ByteArray {
     // Does not use Guava::Objects, gives inconsistent results with byte array
     @Override
     public boolean equals(Object o) {
-        if (this == o) {return true; }
-        if (o == null || getClass() != o.getClass()) { return false; }
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Base64ByteArray that = (Base64ByteArray) o;
 

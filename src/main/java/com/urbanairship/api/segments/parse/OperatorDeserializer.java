@@ -12,7 +12,6 @@ import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
 
-
 import java.io.IOException;
 
 public class OperatorDeserializer extends JsonDeserializer<Operator> {
@@ -80,6 +79,10 @@ public class OperatorDeserializer extends JsonDeserializer<Operator> {
         return builder.build();
     }
 
+    private static interface OperatorChildrenDeserializer {
+        void deserializeOperatorChildren(JsonParser jp, DeserializationContext ctxt, Operator.Builder builder, int depth) throws IOException;
+    }
+
     private static class OperatorChildrenDeserializerRegistry {
 
         private final NotOperatorChildDeserializer notOperatorChildDeserializer;
@@ -94,10 +97,6 @@ public class OperatorDeserializer extends JsonDeserializer<Operator> {
             return (operatorType == OperatorType.NOT ? notOperatorChildDeserializer : standardOperatorChildrenDeserializer);
         }
 
-    }
-
-    private static interface OperatorChildrenDeserializer {
-        void deserializeOperatorChildren(JsonParser jp, DeserializationContext ctxt, Operator.Builder builder, int depth) throws IOException;
     }
 
     private static class StandardOperatorChildrenDeserializer implements OperatorChildrenDeserializer {
@@ -139,8 +138,7 @@ public class OperatorDeserializer extends JsonDeserializer<Operator> {
                 String constraintType = jp.getText();
                 if (operatorDeserializer.isValidOperatorKey(constraintType)) {
                     builder.addOperator(operatorDeserializer.parseOperator(jp, ctxt, depth + 1));
-                }
-                else {
+                } else {
                     builder.addPredicate(predicateDeserializer.deserialize(jp, ctxt));
                 }
 
@@ -181,8 +179,7 @@ public class OperatorDeserializer extends JsonDeserializer<Operator> {
                     throw new InvalidAudienceSegmentException(DOUBLE_NEGATIVE_OPERATOR);
                 }
                 builder.addOperator(operatorDeserializer.parseOperator(jp, ctxt, depth + 1));
-            }
-            else {
+            } else {
                 builder.addPredicate(predicateDeserializer.deserialize(jp, ctxt));
             }
         }

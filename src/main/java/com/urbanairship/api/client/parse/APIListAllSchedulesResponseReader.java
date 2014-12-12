@@ -19,19 +19,32 @@ public final class APIListAllSchedulesResponseReader implements JsonObjectReader
 
     private final APIListAllSchedulesResponse.Builder builder;
 
-    public APIListAllSchedulesResponseReader() { this.builder = APIListAllSchedulesResponse.newBuilder(); }
+    public APIListAllSchedulesResponseReader() {
+        this.builder = APIListAllSchedulesResponse.newBuilder();
+    }
 
-    public void readCount(JsonParser jsonParser) throws IOException { builder.setCount(jsonParser.readValueAs(Number.class).intValue()); }
-    public void readTotalCount(JsonParser jsonParser) throws IOException { builder.setTotalCount(jsonParser.readValueAs(Number.class).intValue()); }
-    public void readNextPage(JsonParser jsonParser) throws IOException { builder.setNextPage(jsonParser.readValueAs(String.class)); }
-    public void readListScheduleResponse(JsonParser jsonParser) throws IOException { builder.addAllSchedule((List<SchedulePayload>) jsonParser.readValueAs(new TypeReference<List<SchedulePayload>>() { })); }
+    public void readCount(JsonParser jsonParser) throws IOException {
+        builder.setCount(jsonParser.readValueAs(Number.class).intValue());
+    }
+
+    public void readTotalCount(JsonParser jsonParser) throws IOException {
+        builder.setTotalCount(jsonParser.readValueAs(Number.class).intValue());
+    }
+
+    public void readNextPage(JsonParser jsonParser) throws IOException {
+        builder.setNextPage(jsonParser.readValueAs(String.class));
+    }
+
+    public void readListScheduleResponse(JsonParser jsonParser) throws IOException {
+        builder.addAllSchedule((List<SchedulePayload>) jsonParser.readValueAs(new TypeReference<List<SchedulePayload>>() {
+        }));
+    }
 
     @Override
     public APIListAllSchedulesResponse validateAndBuild() throws IOException {
-        try{
+        try {
             return builder.build();
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             throw new APIParsingException(ex.getMessage());
         }
     }

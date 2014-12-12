@@ -19,18 +19,24 @@ public final class APIListAllChannelsResponseReader implements JsonObjectReader<
 
     private final APIListAllChannelsResponse.Builder builder;
 
-    public APIListAllChannelsResponseReader() { this.builder = APIListAllChannelsResponse.newBuilder(); }
+    public APIListAllChannelsResponseReader() {
+        this.builder = APIListAllChannelsResponse.newBuilder();
+    }
 
-    public void readNextPage(JsonParser jsonParser) throws IOException { builder.setNextPage(jsonParser.readValueAs(String.class)); }
-    public void readChannelObjects(JsonParser jsonParser) throws IOException { builder.addAllChannels((List<ChannelView>) jsonParser.readValueAs(new TypeReference<List<ChannelView>>() {
-    })); }
+    public void readNextPage(JsonParser jsonParser) throws IOException {
+        builder.setNextPage(jsonParser.readValueAs(String.class));
+    }
+
+    public void readChannelObjects(JsonParser jsonParser) throws IOException {
+        builder.addAllChannels((List<ChannelView>) jsonParser.readValueAs(new TypeReference<List<ChannelView>>() {
+        }));
+    }
 
     @Override
     public APIListAllChannelsResponse validateAndBuild() throws IOException {
-        try{
+        try {
             return builder.build();
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             throw new APIParsingException(ex.getMessage());
         }
     }

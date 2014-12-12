@@ -13,7 +13,8 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class AppStatsDeserializerTest {
 
@@ -92,7 +93,8 @@ public class AppStatsDeserializerTest {
                 "    }\n" +
                 "]";
 
-        List<AppStats> listOfAppStats = mapper.readValue(json, new TypeReference<List<AppStats>>() { });
+        List<AppStats> listOfAppStats = mapper.readValue(json, new TypeReference<List<AppStats>>() {
+        });
         assertNotNull(listOfAppStats);
 
         assertEquals(4, listOfAppStats.size());

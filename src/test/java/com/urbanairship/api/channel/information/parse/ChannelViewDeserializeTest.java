@@ -1,17 +1,15 @@
 package com.urbanairship.api.channel.information.parse;
 
 import com.google.common.collect.Sets;
-import com.urbanairship.api.client.parse.APIResponseObjectMapper;
-import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.channel.information.model.ChannelView;
 import com.urbanairship.api.channel.information.model.DeviceType;
+import com.urbanairship.api.client.parse.APIResponseObjectMapper;
+import com.urbanairship.api.common.parse.APIParsingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.junit.Test;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.*;
 
 public class ChannelViewDeserializeTest {
 
@@ -29,7 +27,8 @@ public class ChannelViewDeserializeTest {
                         "\"created\" : 12345" +
                         "}";
 
-        ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {});
+        ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {
+        });
         assertFalse(channel.isOptedIn());
         assertFalse(channel.getBackground().isPresent());
         assertEquals(DeviceType.IOS, channel.getDeviceType());
@@ -57,7 +56,8 @@ public class ChannelViewDeserializeTest {
                         "\"push_address\" : \"TWERK\"" +
                         "}";
 
-        ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {});
+        ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {
+        });
         assertTrue(channel.isOptedIn());
         assertTrue(channel.getBackground().isPresent());
         assertTrue(channel.getBackground().get());
@@ -80,13 +80,14 @@ public class ChannelViewDeserializeTest {
                         "\"tags\" : []" +
                         "}";
 
-        ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {});
+        ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {
+        });
         assertTrue(channel.getTags().isEmpty());
     }
 
     @Test
     public void testValidChannelDevices() throws Exception {
-        for (DeviceType deviceType: DeviceType.values()) {
+        for (DeviceType deviceType : DeviceType.values()) {
             String json =
                     "{" +
                             "\"channel_id\" : \"abcdef\"," +
@@ -96,7 +97,8 @@ public class ChannelViewDeserializeTest {
                             "\"opt_in\" : false" +
                             "}";
 
-            ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {});
+            ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {
+            });
             assertFalse(channel.isOptedIn());
             assertEquals(deviceType, channel.getDeviceType());
             assertFalse(channel.getAlias().isPresent());
@@ -116,10 +118,11 @@ public class ChannelViewDeserializeTest {
                         "\"badkey\" : \"nonsense\"" +
                         "}";
 
-        ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {});
+        ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {
+        });
     }
 
-    @Test(expected=APIParsingException.class)
+    @Test(expected = APIParsingException.class)
     public void testDeviceTypesInvalid() throws Exception {
         String json =
                 "{" +
@@ -127,26 +130,29 @@ public class ChannelViewDeserializeTest {
                         "\"opt_in\" : false" +
                         "}";
 
-        ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {});
+        ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {
+        });
     }
 
-    @Test(expected=APIParsingException.class)
+    @Test(expected = APIParsingException.class)
     public void testDeviceTypesMissing() throws Exception {
         String json =
                 "{" +
                         "\"opt_in\" : false" +
                         "}";
 
-        ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {});
+        ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {
+        });
     }
 
-    @Test(expected=APIParsingException.class)
+    @Test(expected = APIParsingException.class)
     public void testOptInMissing() throws Exception {
         String json =
                 "{" +
                         "\"device_type\" : \"ios\"" +
                         "}";
 
-        ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {});
+        ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {
+        });
     }
 }

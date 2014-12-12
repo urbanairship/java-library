@@ -6,7 +6,6 @@ package com.urbanairship.api.segments.parse;
 
 import com.urbanairship.api.segments.model.DateRange;
 import com.urbanairship.api.segments.model.LocationPredicate;
-import com.urbanairship.api.segments.model.PresenceTimeframe;
 import com.urbanairship.api.segments.model.RecentDateRange;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
@@ -17,11 +16,9 @@ import java.io.IOException;
 public class LocationPredicateSerializer extends JsonSerializer<LocationPredicate> {
 
     public static final LocationPredicateSerializer INSTANCE = new LocationPredicateSerializer(LocationIdentifierSerializer.INSTANCE);
-
-    private final LocationIdentifierSerializer locationIdentifierSerializer;
-
     private static final DateRangeSerializer DATE_RANGE_SERIALIZER = new DateRangeSerializer();
     private static final RecentDateRangeSerializer RECENT_DATE_RANGE_SERIALIZER = new RecentDateRangeSerializer();
+    private final LocationIdentifierSerializer locationIdentifierSerializer;
 
     private LocationPredicateSerializer(LocationIdentifierSerializer locationIdentifierSerializer) {
         this.locationIdentifierSerializer = locationIdentifierSerializer;

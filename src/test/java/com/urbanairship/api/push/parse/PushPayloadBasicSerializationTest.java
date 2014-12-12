@@ -42,7 +42,8 @@ public class PushPayloadBasicSerializationTest {
                 + "    \"notification\" : { \"alert\" : \"derp\" }"
                 + "  }"
                 + "]";
-        List<PushPayload> pushes = mapper.readValue(json, new TypeReference<List<PushPayload>>() {});
+        List<PushPayload> pushes = mapper.readValue(json, new TypeReference<List<PushPayload>>() {
+        });
         assertNotNull(pushes);
         assertEquals(2, pushes.size());
     }
@@ -55,7 +56,8 @@ public class PushPayloadBasicSerializationTest {
                 + "  \"device_types\" : [ \"ios\" ],"
                 + "  \"notification\" : { \"alert\" : \"wat\" }"
                 + "}";
-        List<PushPayload> pushes = mapper.readValue(json, new TypeReference<List<PushPayload>>() {});
+        List<PushPayload> pushes = mapper.readValue(json, new TypeReference<List<PushPayload>>() {
+        });
         assertNotNull(pushes);
         assertEquals(1, pushes.size());
     }
@@ -118,7 +120,7 @@ public class PushPayloadBasicSerializationTest {
         assertTrue(deviceTypes.contains(DeviceType.AMAZON));
     }
 
-    @Test(expected=APIParsingException.class)
+    @Test(expected = APIParsingException.class)
     public void testDeviceTypesInvalidString() throws Exception {
         String json
                 = "{"
@@ -129,7 +131,7 @@ public class PushPayloadBasicSerializationTest {
         mapper.readValue(json, PushPayload.class);
     }
 
-    @Test(expected=APIParsingException.class)
+    @Test(expected = APIParsingException.class)
     public void testDeviceTypesAllInList() throws Exception {
         String json
                 = "{"
@@ -236,7 +238,7 @@ public class PushPayloadBasicSerializationTest {
         String serial = mapper.writeValueAsString(expected);
         PushPayload parsed = mapper.readValue(serial, PushPayload.class);
 
-        assertEquals(expected,  parsed);
+        assertEquals(expected, parsed);
 
         expected = PushPayload.newBuilder()
                 .setAudience(Selectors.tags("this", "that"))
@@ -252,7 +254,7 @@ public class PushPayloadBasicSerializationTest {
         serial = mapper.writeValueAsString(expected);
         parsed = mapper.readValue(serial, PushPayload.class);
 
-        assertEquals(expected,  parsed);
+        assertEquals(expected, parsed);
 
         expected = PushPayload.newBuilder()
                 .setAudience(Selectors.or(Selectors.alias("alpern"), Selectors.tag("wat")))
@@ -267,7 +269,7 @@ public class PushPayloadBasicSerializationTest {
         serial = mapper.writeValueAsString(expected);
         parsed = mapper.readValue(serial, PushPayload.class);
 
-        assertEquals(expected,  parsed);
+        assertEquals(expected, parsed);
 
         expected = PushPayload.newBuilder()
                 .setAudience(Selectors.and(Selectors.tag("Beyonce"), Selectors.tag("GreenDay")))
@@ -282,7 +284,7 @@ public class PushPayloadBasicSerializationTest {
         serial = mapper.writeValueAsString(expected);
         parsed = mapper.readValue(serial, PushPayload.class);
 
-        assertEquals(expected,  parsed);
+        assertEquals(expected, parsed);
     }
 
     @Test(expected = APIParsingException.class)

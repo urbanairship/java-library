@@ -1,6 +1,6 @@
 package com.urbanairship.api.push.parse;
 
-import com.urbanairship.api.common.parse.*;
+import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.notification.Notification;
 import org.apache.commons.lang.RandomStringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -15,8 +15,8 @@ public class NotificationBasicSerializationTest {
     @Test
     public void testRoundTrip() throws Exception {
         Notification notification = Notification.newBuilder()
-            .setAlert(RandomStringUtils.randomAlphabetic(20))
-            .build();
+                .setAlert(RandomStringUtils.randomAlphabetic(20))
+                .build();
 
         String json = mapper.writeValueAsString(notification);
         Notification parsed = mapper.readValue(json, Notification.class);

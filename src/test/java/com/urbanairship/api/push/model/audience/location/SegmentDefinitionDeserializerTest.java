@@ -1,14 +1,15 @@
 package com.urbanairship.api.push.model.audience.location;
 
-import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.SelectorType;
 import com.urbanairship.api.push.model.audience.ValueSelector;
-import org.apache.commons.lang.ObjectUtils;
+import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class SegmentDefinitionDeserializerTest {
 
@@ -28,10 +29,10 @@ public class SegmentDefinitionDeserializerTest {
         Selector s = def.getCriteria();
         assertNotNull(s);
         assertEquals(SelectorType.TAG, s.getType());
-        assertEquals("foo", ((ValueSelector)s).getValue());
+        assertEquals("foo", ((ValueSelector) s).getValue());
     }
 
-    @Test(expected=APIParsingException.class)
+    @Test(expected = APIParsingException.class)
     public void testBadCriteria() throws Exception {
         String json
                 = "{"
@@ -43,7 +44,7 @@ public class SegmentDefinitionDeserializerTest {
         mapper.readValue(json, SegmentDefinition.class);
     }
 
-    @Test(expected=NullPointerException.class)
+    @Test(expected = NullPointerException.class)
     public void testMissingCriteria() throws Exception {
         String json
                 = "{"
@@ -52,7 +53,6 @@ public class SegmentDefinitionDeserializerTest {
                 + "}";
         mapper.readValue(json, SegmentDefinition.class);
     }
-
 
 
 }

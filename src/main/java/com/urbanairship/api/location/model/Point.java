@@ -9,13 +9,13 @@ public final class Point {
     private final double latitude;
     private final double longitude;
 
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     private Point(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
     public double getLatitude() {
@@ -75,7 +75,8 @@ public final class Point {
         private double latitude;
         private double longitude;
 
-        private Builder() { }
+        private Builder() {
+        }
 
         public Builder setLatitude(double value) {
             this.latitude = value;

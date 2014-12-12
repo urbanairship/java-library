@@ -44,7 +44,8 @@ public class SchedulePayloadDeserializerTest {
         assertEquals(payload.getName(), Optional.of(name));
         assertEquals(payload.getSchedule().getScheduledTimestamp(), DateFormats.DATE_PARSER.parseDateTime("2013-05-05 00:00:01"));
 
-        List<SchedulePayload> payloadList = MAPPER.readValue(json, new TypeReference<List<SchedulePayload>>() {});
+        List<SchedulePayload> payloadList = MAPPER.readValue(json, new TypeReference<List<SchedulePayload>>() {
+        });
 
         assertNotNull(payloadList);
         assertEquals(payloadList.size(), 1);

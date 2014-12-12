@@ -39,7 +39,7 @@ public final class TimeInAppReader implements JsonObjectReader<TimeInApp> {
         try {
             return builder.build();
         } catch (Exception e) {
-            throw  new APIParsingException(e.getMessage());
+            throw new APIParsingException(e.getMessage());
         }
     }
 }

@@ -52,7 +52,8 @@ public final class ReportsAPIOpensResponse {
     public static class Builder {
         private List<Opens> object;
 
-        private Builder() { }
+        private Builder() {
+        }
 
         public Builder setObject(List<Opens> value) {
             this.object = value;

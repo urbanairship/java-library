@@ -8,16 +8,13 @@ import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.Point;
-import com.urbanairship.api.push.model.*;
+import com.urbanairship.api.push.model.DeviceType;
+import com.urbanairship.api.push.model.DeviceTypeData;
+import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import com.urbanairship.api.reports.model.AppStats;
-import com.urbanairship.api.reports.model.PerPushDetailResponse;
-import com.urbanairship.api.reports.model.PerPushSeriesResponse;
-import com.urbanairship.api.reports.model.SinglePushInfoResponse;
-import com.urbanairship.api.reports.model.ReportsAPIOpensResponse;
-import com.urbanairship.api.reports.model.ReportsAPITimeInAppResponse;
+import com.urbanairship.api.reports.model.*;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.segments.model.AudienceSegment;
@@ -49,8 +46,6 @@ import static org.junit.Assert.*;
 
 public class APIClientTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(APIClientTest.class);
-
     public final static String CONTENT_TYPE_KEY = "Content-type";
     public final static String APP_JSON = "application/json";
 
@@ -58,25 +53,26 @@ public class APIClientTest {
         BasicConfigurator.configure();
     }
 
+    private static final Logger logger = LoggerFactory.getLogger(APIClientTest.class);
     @ClassRule
     @Rule
     public static WireMockClassRule wireMockClassRule = new WireMockClassRule();
 
 
     @Test(expected = NullPointerException.class)
-    public void testAPIClientThrowsForNoAppKey(){
+    public void testAPIClientThrowsForNoAppKey() {
         @SuppressWarnings("UnusedAssignment") APIClient apiClient = APIClient.newBuilder().setKey("foo")
                 .build();
     }
 
     @Test(expected = NullPointerException.class)
-    public void testAPIClientThrowsForNoAppSecret(){
+    public void testAPIClientThrowsForNoAppSecret() {
         @SuppressWarnings("UnusedAssignment") APIClient apiClient = APIClient.newBuilder().setSecret("foo")
-                                       .build();
+                .build();
     }
 
     @Test
-    public void testAPIClientBuilder(){
+    public void testAPIClientBuilder() {
         APIClient client = APIClient.newBuilder()
                 .setKey("key")
                 .setSecret("secret")
@@ -86,7 +82,7 @@ public class APIClientTest {
     }
 
     @Test
-    public void testGetUserAgent(){
+    public void testGetUserAgent() {
         APIClient client = APIClient.newBuilder()
                 .setKey("key")
                 .setSecret("secret")
@@ -110,7 +106,7 @@ public class APIClientTest {
      */
     @Test
     @SuppressWarnings("unchecked")
-    public void testPush(){
+    public void testPush() {
 
         // Setup a client and a push payload
         APIClient client = APIClient.newBuilder()
@@ -128,10 +124,10 @@ public class APIClientTest {
         // Setup a stubbed response for the server
         String pushJSON = "{\"ok\" : true,\"operation_id\" : \"df6a6b50\", \"push_ids\":[\"PushID\"]}";
         stubFor(post(urlEqualTo("/api/push/"))
-                        .willReturn(aResponse()
-                                            .withHeader(CONTENT_TYPE_KEY, "application/json")
-                                            .withBody(pushJSON)
-                                            .withStatus(201)));
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withBody(pushJSON)
+                        .withStatus(201)));
 
 
         try {
@@ -139,7 +135,7 @@ public class APIClientTest {
 
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/push/"))
-                           .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(postRequestedFor(
                     urlEqualTo("/api/push/")));
             // There should only be one request
@@ -150,25 +146,25 @@ public class APIClientTest {
             ObjectMapper mapper = PushObjectMapper.getInstance();
             Map<String, Object> result =
                     mapper.readValue(requestPayload,
-                                     new TypeReference<Map<String,Object>>(){});
+                            new TypeReference<Map<String, Object>>() {
+                            });
             // Audience
-            String audience = (String)result.get("audience");
+            String audience = (String) result.get("audience");
             assertTrue(audience.equals("ALL"));
 
             // DeviceType
-            List<String> deviceTypeData = (List<String>)result.get("device_types");
+            List<String> deviceTypeData = (List<String>) result.get("device_types");
             assertTrue(deviceTypeData.get(0).equals("ios"));
             assertEquals(DeviceType.find(deviceTypeData.get(0)).get(), DeviceType.IOS);
 
             // Notification
             Map<String, String> notification =
-                    (Map<String,String>)result.get("notification");
+                    (Map<String, String>) result.get("notification");
             assertTrue(notification.get("alert").equals("Foo"));
 
             // The response is tested elsewhere, just check that it exists
             assertNotNull(response);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
     }
@@ -194,10 +190,10 @@ public class APIClientTest {
                 "h_ids\":[\"b217a321-922f-4aee-b239-ca1b58c6b652\"]}]}";
 
         stubFor(get(urlEqualTo("/api/schedules/"))
-                        .willReturn(aResponse()
-                                            .withHeader(CONTENT_TYPE_KEY, "application/json")
-                                            .withBody(listscheduleresponse)
-                                            .withStatus(201)));
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withBody(listscheduleresponse)
+                        .withStatus(201)));
 
         try {
             APIClientResponse<APIListAllSchedulesResponse> response = client.listAllSchedules();
@@ -217,8 +213,7 @@ public class APIClientTest {
             assertNotNull(response.getApiResponse().getCount());
             assertNotNull(response.getApiResponse().getTotal_Count());
             assertNotNull(response.getApiResponse().getSchedules());
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
     }
@@ -256,8 +251,7 @@ public class APIClientTest {
             assertNotNull(response);
             assertNotNull(response.getApiResponse());
             assertNotNull(response.getHttpResponse());
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
     }
@@ -306,8 +300,7 @@ public class APIClientTest {
             assertNotNull(response.getApiResponse().getCount());
             assertNotNull(response.getApiResponse().getTotal_Count());
             assertNotNull(response.getApiResponse().getSchedules());
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
     }
@@ -356,69 +349,68 @@ public class APIClientTest {
             assertNotNull(response.getApiResponse().getCount());
             assertNotNull(response.getApiResponse().getTotal_Count());
             assertNotNull(response.getApiResponse().getSchedules());
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testSchedule(){
+    public void testSchedule() {
 
         // Setup a client and a schedule payload
         APIClient client = APIClient.newBuilder()
-                                    .setBaseURI("http://localhost:8080")
-                                    .setKey("key")
-                                    .setSecret("secret")
-                                    .build();
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
 
         PushPayload pushPayload = PushPayload.newBuilder()
-                                         .setAudience(Selectors.all())
-                                         .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-                                         .setNotification(Notifications.alert("Foo"))
-                                         .build();
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setNotification(Notifications.alert("Foo"))
+                .build();
 
         DateTime dateTime = DateTime.now(DateTimeZone.UTC).plusSeconds(60);
         Schedule schedule = Schedule.newBuilder()
                 //To test local schedule time instead build
                 //                  .setLocalScheduledTimestamp(dateTime)
-                                    .setScheduledTimestamp(dateTime)
-                                    .build();
+                .setScheduledTimestamp(dateTime)
+                .build();
 
         SchedulePayload schedulePayload = SchedulePayload.newBuilder()
-                                                         .setName("Test")
-                                                         .setPushPayload(pushPayload)
-                                                         .setSchedule(schedule)
-                                                         .build();
+                .setName("Test")
+                .setPushPayload(pushPayload)
+                .setSchedule(schedule)
+                .build();
 
         // Stub out endpoint
         // Setup a stubbed response for the server
         String pushJSON = "{\"ok\" : true,\"operation_id\" : \"OpID\", \"schedule_urls\":[\"ScheduleURL\"]}";
         stubFor(post(urlEqualTo("/api/schedules/"))
-                        .willReturn(aResponse()
-                                            .withHeader(CONTENT_TYPE_KEY, APP_JSON)
-                                            .withBody(pushJSON)
-                                            .withStatus(201)));
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, APP_JSON)
+                        .withBody(pushJSON)
+                        .withStatus(201)));
 
         try {
             APIClientResponse<APIScheduleResponse> response = client.schedule(schedulePayload);
 
             // Verify components of the underlying request
             verify(postRequestedFor(urlEqualTo("/api/schedules/"))
-                           .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(postRequestedFor(urlEqualTo("/api/schedules/")));
             assertEquals(requests.size(), 1);
             String receivedBody = requests.get(0).getBodyAsString();
             ObjectMapper mapper = PushObjectMapper.getInstance();
             Map<String, Object> result =
                     mapper.readValue(receivedBody,
-                                     new TypeReference<Map<String, Object>>() {
-                                     });
-            String name = (String)result.get("name");
+                            new TypeReference<Map<String, Object>>() {
+                            });
+            String name = (String) result.get("name");
             assertTrue(name.equals("Test"));
             Map<String, String> scheduleMap =
-                    (Map<String,String>)result.get("schedule");
+                    (Map<String, String>) result.get("schedule");
             //When testing local schedule test instead use
             //String dateTimeString = scheduleMap.get("local_scheduled_time");
             String dateTimeString = scheduleMap.get("scheduled_time");
@@ -428,8 +420,7 @@ public class APIClientTest {
             // Server truncates milliseconds off request
             assertEquals(receivedDateTime.getMillis(), dateTime.getMillis(), 1000);
 
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception " + ex);
         }
     }
@@ -483,14 +474,13 @@ public class APIClientTest {
             assertNotNull(response.getApiResponse());
             assertNotNull(response.getHttpResponse());
 
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception " + ex);
         }
     }
 
     @Test
-    public void testDeleteSpecificSchedule(){
+    public void testDeleteSpecificSchedule() {
         // Setup a client
         APIClient client = APIClient.newBuilder()
                 .setBaseURI("http://localhost:8080")
@@ -516,55 +506,54 @@ public class APIClientTest {
             // The response is tested elsewhere, just check that it exists
             assertNotNull(response);
             assertEquals(204, response.getStatusLine().getStatusCode());
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
     }
-//
+
+    //
 //    /*
 //    Validate is the exact workflow as push, with the exception of the URL,
 //    so focus test on that.
 //     */
     @Test
-    public void testValidate(){
+    public void testValidate() {
 
         // Setup a client and a push payload
         APIClient client = APIClient.newBuilder()
-                                    .setBaseURI("http://localhost:8080")
-                                    .setKey("key")
-                                    .setSecret("secret")
-                                    .build();
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
 
         PushPayload payload = PushPayload.newBuilder()
-                                         .setAudience(Selectors.all())
-                                         .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-                                         .setNotification(Notifications.alert("Foo"))
-                                         .build();
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setNotification(Notifications.alert("Foo"))
+                .build();
 
         // Setup a stubbed response for the server
         String pushJSON = "{\"ok\" : true,\"operation_id\" : \"df6a6b50\", \"push_ids\":[\"PushID\"]}";
         stubFor(post(urlEqualTo("/api/push/validate/"))
-                        .willReturn(aResponse()
-                                            .withHeader(CONTENT_TYPE_KEY, "application/json")
-                                            .withBody(pushJSON)
-                                            .withStatus(201)));
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withBody(pushJSON)
+                        .withStatus(201)));
         try {
             APIClientResponse<APIPushResponse> response = client.validate(payload);
 
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/push/validate/"))
-                           .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             assertNotNull(response);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
 
     }
 
     @Test
-    public void testListTags(){
+    public void testListTags() {
         // Setup a client
         APIClient client = APIClient.newBuilder()
                 .setBaseURI("http://localhost:8080")
@@ -596,14 +585,13 @@ public class APIClientTest {
             assertNotNull(response);
             assertNotNull(response.getApiResponse());
             assertNotNull(response.getHttpResponse());
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
     }
 
     @Test
-    public void testCreateTag(){
+    public void testCreateTag() {
         // Setup a client
         APIClient client = APIClient.newBuilder()
                 .setBaseURI("http://localhost:8080")
@@ -629,14 +617,13 @@ public class APIClientTest {
             // The response is tested elsewhere, just check that it exists
             assertNotNull(response);
             assertEquals(201, response.getStatusLine().getStatusCode());
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
     }
 
     @Test
-    public void testDeleteTag(){
+    public void testDeleteTag() {
         // Setup a client
         APIClient client = APIClient.newBuilder()
                 .setBaseURI("http://localhost:8080")
@@ -662,14 +649,13 @@ public class APIClientTest {
             // The response is tested elsewhere, just check that it exists
             assertNotNull(response);
             assertEquals(204, response.getStatusLine().getStatusCode());
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
     }
 
     @Test
-    public void testAddRemoveDevicesFromTag(){
+    public void testAddRemoveDevicesFromTag() {
         // Setup a client
         APIClient client = APIClient.newBuilder()
                 .setBaseURI("http://localhost:8080")
@@ -695,14 +681,13 @@ public class APIClientTest {
             // The response is tested elsewhere, just check that it exists
             assertNotNull(response);
             assertEquals(200, response.getStatusLine().getStatusCode());
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
     }
 
     @Test
-    public void testBatchModificationofTags(){
+    public void testBatchModificationofTags() {
         // Setup a client
         APIClient client = APIClient.newBuilder()
                 .setBaseURI("http://localhost:8080")
@@ -732,8 +717,7 @@ public class APIClientTest {
             // The response is tested elsewhere, just check that it exists
             assertNotNull(response);
             assertEquals(200, response.getStatusLine().getStatusCode());
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
     }
@@ -819,8 +803,7 @@ public class APIClientTest {
             assertNotNull(response.getApiResponse());
             assertNotNull(response.getHttpResponse());
 
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception " + ex);
         }
     }
@@ -906,8 +889,7 @@ public class APIClientTest {
             assertNotNull(response.getApiResponse());
             assertNotNull(response.getHttpResponse());
 
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception " + ex);
         }
     }
@@ -998,8 +980,7 @@ public class APIClientTest {
             assertNotNull(response.getApiResponse());
             assertNotNull(response.getHttpResponse());
 
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception " + ex);
         }
     }
@@ -1090,8 +1071,7 @@ public class APIClientTest {
             assertNotNull(response.getApiResponse());
             assertNotNull(response.getHttpResponse());
 
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception " + ex);
         }
     }
@@ -1185,8 +1165,7 @@ public class APIClientTest {
             assertNotNull(response.getApiResponse());
             assertNotNull(response.getHttpResponse());
 
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception " + ex);
         }
     }
@@ -1280,8 +1259,7 @@ public class APIClientTest {
             assertNotNull(response.getApiResponse());
             assertNotNull(response.getHttpResponse());
 
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception " + ex);
         }
     }
@@ -1334,8 +1312,7 @@ public class APIClientTest {
             assertNotNull(response.getApiResponse().getNextPage());
             assertNotNull(response.getApiResponse().getSegments());
 
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
     }
@@ -1390,8 +1367,7 @@ public class APIClientTest {
             assertNotNull(response.getApiResponse().getNextPage());
             assertNotNull(response.getApiResponse().getSegments());
 
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
     }
@@ -1444,8 +1420,7 @@ public class APIClientTest {
             assertNotNull(response.getApiResponse().getNextPage());
             assertNotNull(response.getApiResponse().getSegments());
 
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
     }
@@ -1547,8 +1522,7 @@ public class APIClientTest {
             assertNotNull(response.getApiResponse());
             assertNotNull(response.getHttpResponse());
             assertNotNull(response.getApiResponse().getDisplayName());
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
     }
@@ -1570,11 +1544,11 @@ public class APIClientTest {
         try {
             HttpResponse response = client.createSegment(
                     AudienceSegment.newBuilder()
-                        .setDisplayName("hi")
-                        .setRootPredicate(TagPredicateBuilder.newInstance()
-                                .setTag("tag")
-                                .build())
-                        .build()
+                            .setDisplayName("hi")
+                            .setRootPredicate(TagPredicateBuilder.newInstance()
+                                    .setTag("tag")
+                                    .build())
+                            .build()
             );
 
             // Verify components of the underlying HttpRequest
@@ -1589,8 +1563,7 @@ public class APIClientTest {
 
             // The response is tested elsewhere, just check that it exists
             assertNotNull(response);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
     }
@@ -1631,8 +1604,7 @@ public class APIClientTest {
 
             // The response is tested elsewhere, just check that it exists
             assertNotNull(response);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
     }
@@ -1666,14 +1638,13 @@ public class APIClientTest {
 
             // The response is tested elsewhere, just check that it exists
             assertNotNull(response);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
     }
 
     @Test
-    public void testListAllChannels(){
+    public void testListAllChannels() {
 
         String fiveresponse = "{\n" +
                 "  \"ok\": true,\n" +
@@ -1957,8 +1928,7 @@ public class APIClientTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testListPushStatisticsStartAfterEnd() throws IOException, URISyntaxException, IllegalArgumentException
-    {
+    public void testListPushStatisticsStartAfterEnd() throws IOException, URISyntaxException, IllegalArgumentException {
         // Setup a client
         APIClient client = APIClient.newBuilder()
                 .setBaseURI("http://localhost:8080")
@@ -2024,8 +1994,7 @@ public class APIClientTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testListPushStatisticsStartAfterEndCSV() throws IOException, URISyntaxException, IllegalArgumentException
-    {
+    public void testListPushStatisticsStartAfterEndCSV() throws IOException, URISyntaxException, IllegalArgumentException {
         // Setup a client
         APIClient client = APIClient.newBuilder()
                 .setBaseURI("http://localhost:8080")
@@ -2293,9 +2262,9 @@ public class APIClientTest {
                 "}";
 
         stubFor(get(urlEqualTo(queryPathString))
-            .willReturn(aResponse()
-            .withBody(json)
-            .withStatus(200)));
+                .willReturn(aResponse()
+                        .withBody(json)
+                        .withStatus(200)));
 
         APIClientResponse<PerPushDetailResponse> response = client.listPerPushDetail("push_id");
         assertNotNull(response);

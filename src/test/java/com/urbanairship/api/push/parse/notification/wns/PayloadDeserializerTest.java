@@ -1,14 +1,14 @@
 package com.urbanairship.api.push.parse.notification.wns;
 
-import com.urbanairship.api.push.parse.*;
-import com.urbanairship.api.common.parse.*;
+import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.push.model.notification.wns.WNSBinding;
 import com.urbanairship.api.push.model.notification.wns.WNSDevicePayload;
 import com.urbanairship.api.push.model.notification.wns.WNSPush;
 import com.urbanairship.api.push.model.notification.wns.WNSToastData;
-import com.urbanairship.api.push.model.notification.wns.WNSBinding;
+import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class PayloadDeserializerTest {
@@ -17,17 +17,17 @@ public class PayloadDeserializerTest {
     @Test
     public void testSimpleToast() throws Exception {
         String json
-            = "{"
-            + "  \"toast\": {"
-            + "    \"binding\": { \"template\": \"ToastText03\" }"
-            + "  }"
-            + "}";
+                = "{"
+                + "  \"toast\": {"
+                + "    \"binding\": { \"template\": \"ToastText03\" }"
+                + "  }"
+                + "}";
 
         WNSToastData expectedToast = WNSToastData.newBuilder()
-            .setBinding(WNSBinding.newBuilder()
+                .setBinding(WNSBinding.newBuilder()
                         .setTemplate("ToastText03")
                         .build())
-            .build();
+                .build();
 
         WNSDevicePayload payload = mapper.readValue(json, WNSDevicePayload.class);
         assertNotNull(payload.getBody());
@@ -40,8 +40,8 @@ public class PayloadDeserializerTest {
         assertEquals(expectedToast, body.getToast().get());
     }
 
-    @Test(expected=APIParsingException.class)
-    public void testValidate_Empty() throws Exception  {
+    @Test(expected = APIParsingException.class)
+    public void testValidate_Empty() throws Exception {
         mapper.readValue("{}", WNSDevicePayload.class);
     }
 }

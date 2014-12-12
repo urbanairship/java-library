@@ -39,8 +39,7 @@ public class APIListAllSegmentsResponseTest {
             assertEquals("00c0d899-a595-4c66-9071-bc59374bbe6b", si.getId());
             assertEquals(1346248822221L, (long) si.getModificationDate());
 
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception " + ex.getMessage());
         }
     }

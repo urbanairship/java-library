@@ -16,10 +16,11 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.util.UUID;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class PerPushDetailResponseDeserializerTest {
 
@@ -57,12 +58,12 @@ public class PerPushDetailResponseDeserializerTest {
         assertNotNull(obj);
 
         assertEquals("some_app_key", obj.getAppKey());
-        assertEquals(UUID.fromString("57ef3728-79dc-46b1-a6b9-20081e561f97"),obj.getPushID());
+        assertEquals(UUID.fromString("57ef3728-79dc-46b1-a6b9-20081e561f97"), obj.getPushID());
         assertEquals(new DateTime(2013, 7, 31, 22, 5, 53), obj.getCreated().get());
 
         assertEquals("PEJhc2U2NC1lbmNvZGVkIHN0cmluZz4=", obj.getPushBody().get().getBase64EncodedString());
         assertEquals("<Base64-encoded string>", new String(obj.getPushBody().get().getByteArray()));
-        assertEquals("<Base64-encoded string>",obj.getPushBody().get().toString());
+        assertEquals("<Base64-encoded string>", obj.getPushBody().get().toString());
 
         assertEquals(1, obj.getRichDeletions());
         assertEquals(2, obj.getRichResponses());
@@ -123,7 +124,7 @@ public class PerPushDetailResponseDeserializerTest {
         assertNotNull(obj);
 
         assertEquals("some_app_key", obj.getAppKey());
-        assertEquals(UUID.fromString("57ef3728-79dc-46b1-a6b9-20081e561f97"),obj.getPushID());
+        assertEquals(UUID.fromString("57ef3728-79dc-46b1-a6b9-20081e561f97"), obj.getPushID());
         assertEquals(Optional.<DateTime>absent(), obj.getCreated());
 
         assertEquals(Optional.<Base64ByteArray>absent(), obj.getPushBody());
@@ -173,7 +174,7 @@ public class PerPushDetailResponseDeserializerTest {
         assertNotNull(obj);
 
         assertEquals("some_app_key", obj.getAppKey());
-        assertEquals(UUID.fromString("57ef3728-79dc-46b1-a6b9-20081e561f97"),obj.getPushID());
+        assertEquals(UUID.fromString("57ef3728-79dc-46b1-a6b9-20081e561f97"), obj.getPushID());
         assertEquals(Optional.<DateTime>absent(), obj.getCreated());
 
         assertEquals(Optional.<Base64ByteArray>absent(), obj.getPushBody());

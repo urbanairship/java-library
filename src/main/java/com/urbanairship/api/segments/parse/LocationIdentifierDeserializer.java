@@ -22,7 +22,8 @@ public class LocationIdentifierDeserializer extends JsonDeserializer<LocationIde
     private static final String INVALID_LOCATION_IDENTIFIER_VALUE = "Location identifier values must be strings or numbers";
     private static final String INVALID_LOCATION_IDENTIFIER_VALUE_BLANK = "Location identifier values cannot be blank";
 
-    private LocationIdentifierDeserializer() { }
+    private LocationIdentifierDeserializer() {
+    }
 
     @Override
     public LocationIdentifier deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {

@@ -3,12 +3,12 @@ package com.urbanairship.api.push.model;
 import org.joda.time.DateTime;
 import org.joda.time.Minutes;
 import org.junit.Test;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
 public class PushExpiryTest {
-
 
 
     @Test

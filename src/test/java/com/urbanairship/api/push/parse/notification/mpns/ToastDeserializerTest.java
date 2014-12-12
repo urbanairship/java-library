@@ -1,11 +1,13 @@
 package com.urbanairship.api.push.parse.notification.mpns;
 
+import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.notification.mpns.MPNSToastData;
-import com.urbanairship.api.push.parse.*;
-import com.urbanairship.api.common.parse.*;
+import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ToastDeserializerTest {
     private static final ObjectMapper mapper = PushObjectMapper.getInstance();
@@ -13,11 +15,11 @@ public class ToastDeserializerTest {
     @Test
     public void testDeserialize() throws Exception {
         String json
-            = "{"
-            + "\"text1\": \"First bit\","
-            + "\"text2\": \"Second bit\","
-            + "\"param\": \"/page1.xaml\""
-            + "}";
+                = "{"
+                + "\"text1\": \"First bit\","
+                + "\"text2\": \"Second bit\","
+                + "\"param\": \"/page1.xaml\""
+                + "}";
 
         MPNSToastData parsed = mapper.readValue(json, MPNSToastData.class);
         assertTrue(parsed.getText1().isPresent());
@@ -28,12 +30,12 @@ public class ToastDeserializerTest {
         assertEquals("/page1.xaml", parsed.getParam().get());
     }
 
-    @Test(expected=APIParsingException.class)
+    @Test(expected = APIParsingException.class)
     public void testDeserializeEmpty() throws Exception {
         mapper.readValue("{}", MPNSToastData.class);
     }
 
-    @Test(expected=APIParsingException.class)
+    @Test(expected = APIParsingException.class)
     public void testDeserializeMissingText() throws Exception {
         String json = "{ \"param\": \"/page1.xaml\" }";
         mapper.readValue(json, MPNSToastData.class);

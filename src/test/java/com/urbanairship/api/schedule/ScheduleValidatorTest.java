@@ -17,7 +17,7 @@ public class ScheduleValidatorTest {
         validator.validate(Schedule.newBuilder().setScheduledTimestamp(DateTime.now().plusDays(1)).build());
     }
 
-    @Test(expected=APIParsingException.class)
+    @Test(expected = APIParsingException.class)
     public void testPastDateTime() throws Exception {
         validator.validate(Schedule.newBuilder().setScheduledTimestamp(DateTime.now().minusDays(1)).build());
     }
@@ -27,7 +27,7 @@ public class ScheduleValidatorTest {
         validator.validate(Schedule.newBuilder().setLocalScheduledTimestamp(DateTime.now().plusDays(1)).build());
     }
 
-    @Test(expected=APIParsingException.class)
+    @Test(expected = APIParsingException.class)
     public void testPastLocalDateTime() throws Exception {
         validator.validate(Schedule.newBuilder().setLocalScheduledTimestamp(DateTime.now().minusDays(1)).build());
     }

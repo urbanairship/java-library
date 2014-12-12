@@ -6,7 +6,10 @@ package com.urbanairship.api.reports.parse;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
-import com.urbanairship.api.common.parse.*;
+import com.urbanairship.api.common.parse.FieldParser;
+import com.urbanairship.api.common.parse.FieldParserRegistry;
+import com.urbanairship.api.common.parse.MapFieldParserRegistry;
+import com.urbanairship.api.common.parse.StandardObjectDeserializer;
 import com.urbanairship.api.reports.model.PerPushSeriesResponse;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
@@ -18,44 +21,44 @@ public class PerPushSeriesResponseDeserializer extends JsonDeserializer<PerPushS
 
     private static final FieldParserRegistry<PerPushSeriesResponse, PerPushSeriesResponseReader> FIELD_PARSERS =
             new MapFieldParserRegistry<PerPushSeriesResponse, PerPushSeriesResponseReader>(ImmutableMap.<String, FieldParser<PerPushSeriesResponseReader>>builder()
-            .put("app_key", new FieldParser<PerPushSeriesResponseReader>() {
-                @Override
-                public void parse(PerPushSeriesResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readAppKey(jsonParser);
-                }
-            })
-            .put("push_id", new FieldParser<PerPushSeriesResponseReader>() {
-                @Override
-                public void parse(PerPushSeriesResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readPushID(jsonParser);
-                }
-            })
-            .put("start", new FieldParser<PerPushSeriesResponseReader>() {
-                @Override
-                public void parse(PerPushSeriesResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readStart(jsonParser);
-                }
-            })
-            .put("end", new FieldParser<PerPushSeriesResponseReader>() {
-                @Override
-                public void parse(PerPushSeriesResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readEnd(jsonParser);
-                }
-            })
-            .put("precision", new FieldParser<PerPushSeriesResponseReader>() {
-                @Override
-                public void parse(PerPushSeriesResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readPrecision(jsonParser);
-                }
-            })
-            .put("counts", new FieldParser<PerPushSeriesResponseReader>() {
-                @Override
-                public void parse(PerPushSeriesResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readCounts(jsonParser);
-                }
-            })
-            .build()
-    );
+                    .put("app_key", new FieldParser<PerPushSeriesResponseReader>() {
+                        @Override
+                        public void parse(PerPushSeriesResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readAppKey(jsonParser);
+                        }
+                    })
+                    .put("push_id", new FieldParser<PerPushSeriesResponseReader>() {
+                        @Override
+                        public void parse(PerPushSeriesResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readPushID(jsonParser);
+                        }
+                    })
+                    .put("start", new FieldParser<PerPushSeriesResponseReader>() {
+                        @Override
+                        public void parse(PerPushSeriesResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readStart(jsonParser);
+                        }
+                    })
+                    .put("end", new FieldParser<PerPushSeriesResponseReader>() {
+                        @Override
+                        public void parse(PerPushSeriesResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readEnd(jsonParser);
+                        }
+                    })
+                    .put("precision", new FieldParser<PerPushSeriesResponseReader>() {
+                        @Override
+                        public void parse(PerPushSeriesResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readPrecision(jsonParser);
+                        }
+                    })
+                    .put("counts", new FieldParser<PerPushSeriesResponseReader>() {
+                        @Override
+                        public void parse(PerPushSeriesResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readCounts(jsonParser);
+                        }
+                    })
+                    .build()
+            );
 
     private final StandardObjectDeserializer<PerPushSeriesResponse, ?> deserializer;
 

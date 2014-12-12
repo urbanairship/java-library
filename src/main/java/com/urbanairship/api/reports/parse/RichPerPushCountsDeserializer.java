@@ -6,7 +6,10 @@ package com.urbanairship.api.reports.parse;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
-import com.urbanairship.api.common.parse.*;
+import com.urbanairship.api.common.parse.FieldParser;
+import com.urbanairship.api.common.parse.FieldParserRegistry;
+import com.urbanairship.api.common.parse.MapFieldParserRegistry;
+import com.urbanairship.api.common.parse.StandardObjectDeserializer;
 import com.urbanairship.api.reports.model.RichPerPushCounts;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
@@ -18,20 +21,20 @@ public final class RichPerPushCountsDeserializer extends JsonDeserializer<RichPe
 
     private static final FieldParserRegistry<RichPerPushCounts, RichPerPushCountsReader> FIELD_PARSERS =
             new MapFieldParserRegistry<RichPerPushCounts, RichPerPushCountsReader>(ImmutableMap.<String, FieldParser<RichPerPushCountsReader>>builder()
-            .put("responses", new FieldParser<RichPerPushCountsReader>() {
-                @Override
-                public void parse(RichPerPushCountsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readRespones(jsonParser);
-                }
-            })
-            .put("sends", new FieldParser<RichPerPushCountsReader>() {
-                @Override
-                public void parse(RichPerPushCountsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readSends(jsonParser);
-                }
-            })
-            .build()
-    );
+                    .put("responses", new FieldParser<RichPerPushCountsReader>() {
+                        @Override
+                        public void parse(RichPerPushCountsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readRespones(jsonParser);
+                        }
+                    })
+                    .put("sends", new FieldParser<RichPerPushCountsReader>() {
+                        @Override
+                        public void parse(RichPerPushCountsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readSends(jsonParser);
+                        }
+                    })
+                    .build()
+            );
 
     private final StandardObjectDeserializer<RichPerPushCounts, ?> deserializer;
 

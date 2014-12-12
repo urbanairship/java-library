@@ -31,8 +31,7 @@ public class ListReportsListingResponseHandler implements ResponseHandler<APICli
         }
     }
 
-    private APIClientResponse<APIReportsPushListingResponse> handleSuccessfulRequest(HttpResponse response) throws IOException
-    {
+    private APIClientResponse<APIReportsPushListingResponse> handleSuccessfulRequest(HttpResponse response) throws IOException {
 
         builder.setHttpResponse(response);
 

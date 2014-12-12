@@ -3,12 +3,12 @@ package com.urbanairship.api.push.parse;
 import com.urbanairship.api.push.model.*;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 public class PushOptionsTest {
 
@@ -26,12 +26,12 @@ public class PushOptionsTest {
                 .setAudience(Selectors.all())
                 .setDeviceTypes(DeviceTypeData.newBuilder().addDeviceType(DeviceType.IOS).build())
                 .setNotification(Notification.newBuilder().setAlert("wat").build())
-                        .build();
+                .build();
 
         assertFalse(pushPayload.getPushOptions().isPresent());
 
-      String json = mapper.writeValueAsString(pushPayload);
-      assertEquals(properJson, json);
+        String json = mapper.writeValueAsString(pushPayload);
+        assertEquals(properJson, json);
     }
 
     @Test
@@ -58,8 +58,8 @@ public class PushOptionsTest {
     @Test
     public void testEmptyOptions() throws Exception {
         String properJson
-               = "{"
-               + "}";
+                = "{"
+                + "}";
         PushOptions options = PushOptions.newBuilder().build();
         String json = mapper.writeValueAsString(options);
 
@@ -167,9 +167,6 @@ public class PushOptionsTest {
                 .setExpirySeconds(-100)
                 .build();
     }
-
-
-
 
 
 }

@@ -14,16 +14,16 @@ public final class PlatformCounts {
     private final ImmutableMap<PlatformType, RichPerPushCounts> richPushPlatforms;
     private final DateTime time;
 
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     private PlatformCounts(ImmutableMap<PlatformType, PerPushCounts> pushPlatforms,
                            ImmutableMap<PlatformType, RichPerPushCounts> richPushPlatforms,
                            DateTime time) {
         this.pushPlatforms = pushPlatforms;
         this.richPushPlatforms = richPushPlatforms;
         this.time = time;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
     public ImmutableMap<PlatformType, PerPushCounts> getPushPlatforms() {
@@ -69,7 +69,8 @@ public final class PlatformCounts {
         private ImmutableMap.Builder<PlatformType, RichPerPushCounts> richPushPlatforms = ImmutableMap.builder();
         private DateTime time;
 
-        private Builder() {  }
+        private Builder() {
+        }
 
         public Builder addPlatform(PlatformType type, PerPushCounts count) {
             this.pushPlatforms.put(type, count);

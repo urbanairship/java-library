@@ -5,7 +5,6 @@
 package com.urbanairship.api.segments.parse;
 
 import com.urbanairship.api.segments.model.AudienceSegment;
-
 import com.urbanairship.api.segments.model.Operator;
 import com.urbanairship.api.segments.model.Predicate;
 import org.apache.commons.lang.StringUtils;
@@ -54,17 +53,13 @@ public class AudienceSegmentDeserializer extends JsonDeserializer<AudienceSegmen
             if (tokenName.equals("id")) {
                 // Ignore, audience segments used to have ids but now we don't expose the ID on the segment object anymore.  So,
                 // we a segment that we receive that has an id field is valid, but we ignore the id
-            }
-            else if (tokenName.equals("display_name")) {
+            } else if (tokenName.equals("display_name")) {
                 displayName = parseString(jp);
-            }
-            else if (tokenName.equals("criteria")) {
+            } else if (tokenName.equals("criteria")) {
                 rootCriteria = parseRootCriteria(jp, ctxt);
-            }
-            else if (tokenName.equals("count")) {
+            } else if (tokenName.equals("count")) {
                 count = Long.parseLong(parseString(jp));
-            }
-            else {
+            } else {
                 throw new InvalidAudienceSegmentException(INVALID_SEGMENT);
             }
 
@@ -81,8 +76,7 @@ public class AudienceSegmentDeserializer extends JsonDeserializer<AudienceSegmen
         AudienceSegment.Builder builder = AudienceSegment.newBuilder().setDisplayName(displayName);
         if (rootCriteria.isOperator()) {
             builder.setRootOperator(rootCriteria.getOperator());
-        }
-        else if (rootCriteria.isPredicate()) {
+        } else if (rootCriteria.isPredicate()) {
             builder.setRootPredicate(rootCriteria.getPredicate());
         }
 

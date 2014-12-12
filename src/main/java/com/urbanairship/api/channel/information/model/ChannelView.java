@@ -25,10 +25,6 @@ public final class ChannelView {
     private final ImmutableSet<String> tags;
     private final Optional<IosSettings> iosSettings;
 
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     public ChannelView(String channelId,
                        DeviceType deviceType,
                        boolean installed,
@@ -51,6 +47,10 @@ public final class ChannelView {
         this.alias = alias;
         this.tags = tags;
         this.iosSettings = iosSettings;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
     public String getChannelId() {
@@ -132,6 +132,7 @@ public final class ChannelView {
     }
 
     public final static class Builder {
+        private final ImmutableSet.Builder<String> tags = ImmutableSet.builder();
         private String channelId = null;
         private DeviceType deviceType = null;
         private Boolean optedIn = null;
@@ -141,10 +142,10 @@ public final class ChannelView {
         private Long createdMillis = null;
         private Long lastRegistrationMillis = null;
         private String alias = null;
-        private final ImmutableSet.Builder<String> tags = ImmutableSet.builder();
         private IosSettings iosSettings = null;
 
-        private Builder() { }
+        private Builder() {
+        }
 
         public Builder setChannelId(String channelId) {
             this.channelId = channelId;

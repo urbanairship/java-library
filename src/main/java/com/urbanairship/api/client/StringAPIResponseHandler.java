@@ -9,7 +9,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.util.EntityUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +24,7 @@ public final class StringAPIResponseHandler implements ResponseHandler<APIClient
 
         int statusCode = response.getStatusLine().getStatusCode();
 
-        switch (statusCode){
+        switch (statusCode) {
             case HttpStatus.SC_ACCEPTED:
                 if (logger.isDebugEnabled()) {
                     logger.debug(String.format("Handling response code:%s", statusCode));
@@ -40,7 +39,7 @@ public final class StringAPIResponseHandler implements ResponseHandler<APIClient
                 break;
         }
 
-        if (statusCode >= 200 && statusCode < 300){
+        if (statusCode >= 200 && statusCode < 300) {
             return handleSuccessfulRequest(response);
         } else {
             throw APIRequestException.exceptionForResponse(response);
