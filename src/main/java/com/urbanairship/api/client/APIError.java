@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Urban Airship and Contributors
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.client;
@@ -21,15 +21,13 @@ import java.util.Map;
  * error. Optional values from Google Guava are used in place of values
  * that may not be present.
  */
-public class APIError {
+public final class APIError {
 
     /* Header keys, values */
     private final static String CONTENT_TYPE_KEY = "Content-type";
     private final static String CONTENT_TYPE_TEXT_HTML = "text/html";
     private final static String CONTENT_TYPE_JSON = "application/json";
-    private final static String UA_APPLICATION_JSON =
-            "application/vnd.urbanairship+json";
-
+    private final static String UA_APPLICATION_JSON = "application/vnd.urbanairship+json";
 
     private final Optional<String> operationId;
     private final String error;

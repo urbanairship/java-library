@@ -1,10 +1,11 @@
 /*
- * Copyright 2014 Urban Airship and Contributors
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.client.model;
 
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.schedule.model.SchedulePayload;
@@ -35,38 +36,31 @@ public final class APIListAllSchedulesResponse {
     public List<SchedulePayload> getSchedules() { return scheduleObjects; }
 
     @Override
+    public int hashCode() {
+        return Objects.hashCode(count, totalCount, nextPage, scheduleObjects);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final APIListAllSchedulesResponse other = (APIListAllSchedulesResponse) obj;
+        return Objects.equal(this.count, other.count) && Objects.equal(this.totalCount, other.totalCount) && Objects.equal(this.nextPage, other.nextPage) && Objects.equal(this.scheduleObjects, other.scheduleObjects);
+    }
+
+    @Override
     public String toString() {
+
         return "APIListScheduleResponse{" +
                 "count=" + count +
                 ", totalCount=" + totalCount +
                 ", nextPage=" + nextPage +
                 ", scheduleObjects=" + scheduleObjects +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) { return true; }
-        if (o == null || getClass() != o.getClass())  { return false; }
-
-        APIListAllSchedulesResponse that = (APIListAllSchedulesResponse) o;
-
-        if (count != that.count) { return false; }
-        if (totalCount != that.totalCount) { return false; }
-        if (nextPage != null ? !nextPage.equals(that.nextPage) : that.nextPage != null)  { return false; }
-        if (scheduleObjects != null ? !scheduleObjects.equals(that.scheduleObjects) : that.scheduleObjects != null) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = count;
-        result = 31 * result + totalCount;
-        result = 31 * result + (nextPage != null ? nextPage.hashCode() : 0);
-        result = 31 * result + (scheduleObjects != null ? scheduleObjects.hashCode() : 0);
-        return result;
     }
 
     /**

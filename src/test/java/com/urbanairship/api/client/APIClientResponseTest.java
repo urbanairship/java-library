@@ -1,6 +1,6 @@
 package com.urbanairship.api.client;
 
-import com.urbanairship.api.channel.registration.model.ChannelView;
+import com.urbanairship.api.channel.information.model.ChannelView;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.push.model.DeviceType;
@@ -12,8 +12,11 @@ import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.reports.model.ReportsAPIOpensResponse;
 import com.urbanairship.api.reports.model.ReportsAPITimeInAppResponse;
+import com.urbanairship.api.reports.model.SinglePushInfoResponse;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
+import com.urbanairship.api.segments.model.AudienceSegment;
+import com.urbanairship.api.segments.model.TagPredicateBuilder;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.message.BasicHttpResponse;
@@ -28,6 +31,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 
 public class APIClientResponseTest {
@@ -74,6 +78,91 @@ public class APIClientResponseTest {
                 testResponse.getApiResponse().equals(obj));
     }
 
+    @Test
+    public void testAPIReportsListingResponse() {
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP",1,1), 200, "OK"));
+
+        UUID one = UUID.randomUUID();
+        UUID two = UUID.randomUUID();
+
+        SinglePushInfoResponse spir = SinglePushInfoResponse.newBuilder()
+                .setPushUUID(one)
+                .setDirectResponses(4)
+                .setSends(5)
+                .setPushType(SinglePushInfoResponse.PushType.UNICAST_PUSH)
+                .setPushTime("2013-07-31 21:27:38")
+                .setGroupID(two)
+                .build();
+
+        APIReportsPushListingResponse obj = APIReportsPushListingResponse.newBuilder()
+                .setNextPage("123")
+                .addPushInfoResponse(spir)
+                .addPushInfoResponse(spir)
+                .addPushInfoResponse(spir)
+                .build();
+
+        APIClientResponse.Builder<APIReportsPushListingResponse> builder = APIClientResponse.newReportsListingResponseBuilder()
+                .setApiResponse(obj)
+                .setHttpResponse(httpResponse);
+
+        APIClientResponse<APIReportsPushListingResponse> testResponse = builder.build();
+
+        assertTrue("HTTP response not set properly",
+                testResponse.getHttpResponse().equals(httpResponse));
+
+        assertTrue("APIResponse not set properly",
+                testResponse.getApiResponse().equals(obj));
+
+    }
+
+    @Test
+    public void testListIndividualPushAPIResponse() {
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP",1,1), 200, "OK"));
+
+        UUID one = UUID.randomUUID();
+        UUID two = UUID.randomUUID();
+
+        SinglePushInfoResponse obj = SinglePushInfoResponse.newBuilder()
+                .setPushUUID(one)
+                .setDirectResponses(4)
+                .setSends(5)
+                .setPushType(SinglePushInfoResponse.PushType.UNICAST_PUSH)
+                .setPushTime("2013-07-31 21:27:38")
+                .setGroupID(two)
+                .build();
+
+        APIClientResponse.Builder<SinglePushInfoResponse> builder = APIClientResponse.newSinglePushInfoResponseBuilder()
+                .setApiResponse(obj)
+                .setHttpResponse(httpResponse);
+
+        APIClientResponse<SinglePushInfoResponse> testResponse = builder.build();
+
+        assertTrue("HTTP response not set properly",
+                testResponse.getHttpResponse().equals(httpResponse));
+
+        assertTrue("APIResponse not set properly",
+                testResponse.getApiResponse().equals(obj));
+    }
+
+    @Test
+    public void testAPILocationResponse(){
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP",1,1), 200, "OK"));
+        APILocationResponse locationResponse = APILocationResponse.newBuilder()
+                .build();
+        APIClientResponse.Builder<APILocationResponse> builder =
+                APIClientResponse.newLocationResponseBuilder()
+                        .setApiResponse(locationResponse)
+                        .setHttpResponse(httpResponse);
+        APIClientResponse<APILocationResponse> testResponse = builder.build();
+        assertTrue("HTTP response not set properly",
+                testResponse.getHttpResponse().equals(httpResponse));
+
+        assertTrue("APIResponse not set properly",
+                testResponse.getApiResponse().equals(locationResponse));
+    }
     @Test
     public void testListOfAppStatsAPIResponse(){
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
@@ -154,6 +243,27 @@ public class APIClientResponseTest {
                         .setHttpResponse(httpResponse);
 
         APIClientResponse<APIListAllSegmentsResponse> testResponse = builder.build();
+
+        assertEquals("HTTP response not set properly", httpResponse, testResponse.getHttpResponse());
+        assertEquals("APIResponse not set properly", segmentsResponse, testResponse.getApiResponse());
+    }
+
+    @Test
+    public void testAudienceSegmentResponse() {
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP",1,1), 200, "OK"));
+
+        AudienceSegment segmentsResponse = AudienceSegment.newBuilder()
+                .setDisplayName("hello")
+                .setRootPredicate(TagPredicateBuilder.newInstance().setTag("tag").build())
+                .build();
+
+        APIClientResponse.Builder<AudienceSegment> builder =
+                APIClientResponse.newAudienceSegmentResponseBuilder()
+                        .setApiResponse(segmentsResponse)
+                        .setHttpResponse(httpResponse);
+
+        APIClientResponse<AudienceSegment> testResponse = builder.build();
 
         assertEquals("HTTP response not set properly", httpResponse, testResponse.getHttpResponse());
         assertEquals("APIResponse not set properly", segmentsResponse, testResponse.getApiResponse());
@@ -252,6 +362,40 @@ public class APIClientResponseTest {
     }
 
     @Test
+    public void testAPIChannelViewResponse(){
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP",1,1), 200, "OK"));
+
+        APIListSingleChannelResponse response =
+                APIListSingleChannelResponse.newBuilder()
+                        .setChannelObject(ChannelView.newBuilder()
+                        .setAlias("Alias")
+                        .setBackground(true)
+                        .setChannelId("channelID")
+                        .setCreatedMillis(12345L)
+                        .setDeviceType(com.urbanairship.api.channel.information.model.DeviceType.ANDROID)
+                        .setInstalled(true)
+                        .setLastRegistrationMillis(12345L)
+                        .setOptedIn(true)
+                        .setPushAddress("PUSH")
+                        .build())
+                .build();
+
+        APIClientResponse.Builder<APIListSingleChannelResponse> builder =
+                APIClientResponse.newSingleChannelResponseBuilder()
+                        .setApiResponse(response)
+                        .setHttpResponse(httpResponse);
+
+        APIClientResponse<APIListSingleChannelResponse> testResponse = builder.build();
+
+        assertTrue("HTTP response not set properly",
+                testResponse.getHttpResponse().equals(httpResponse));
+
+        assertTrue("APIResponse not set properly",
+                testResponse.getApiResponse().equals(response));
+    }
+
+    @Test
     public void testAPIListAllChannelsResponse(){
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP",1,1), 200, "OK"));
@@ -263,7 +407,7 @@ public class APIClientResponseTest {
                         .setBackground(true)
                         .setChannelId("channelID")
                         .setCreatedMillis(12345L)
-                        .setDeviceType(com.urbanairship.api.channel.registration.model.DeviceType.ANDROID)
+                        .setDeviceType(com.urbanairship.api.channel.information.model.DeviceType.ANDROID)
                         .setInstalled(true)
                         .setLastRegistrationMillis(12345L)
                         .setOptedIn(true)

@@ -1,18 +1,22 @@
 /*
- * Copyright 2013 Urban Airship and Contributors
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.client;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 import com.urbanairship.api.client.model.*;
+import com.urbanairship.api.location.model.BoundedBox;
+import com.urbanairship.api.location.model.Point;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.reports.model.ReportsAPIOpensResponse;
 import com.urbanairship.api.reports.model.ReportsAPITimeInAppResponse;
+import com.urbanairship.api.reports.model.SinglePushInfoResponse;
 import com.urbanairship.api.schedule.model.SchedulePayload;
-
+import com.urbanairship.api.segments.model.AudienceSegment;
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
 import com.urbanairship.api.tag.model.BatchModificationPayload;
 import org.apache.commons.lang.StringUtils;
@@ -54,9 +58,11 @@ public class APIClient {
     private final static String API_SCHEDULE_PATH = "/api/schedules/";
     private final static String API_TAGS_PATH = "/api/tags/";
     private final static String API_TAGS_BATCH_PATH = "/api/tags/batch/";
+    private final static String API_LOCATION_PATH = "/api/location/";
     private final static String API_SEGMENTS_PATH = "/api/segments/";
     private final static String API_DEVICE_CHANNELS_PATH = "/api/channels/";
     private final static String API_STATISTICS_PATH = "/api/push/stats/";
+    private final static String API_REPORTS_PUSH_RESPONSE_PATH="/api/reports/responses/";
     private final static String API_REPORTS_APPS_OPEN_PATH = "/api/reports/opens/";
     private final static String API_REPORTS_TIME_IN_APP_PATH = "/api/reports/timeinapp/";
 
@@ -98,9 +104,8 @@ public class APIClient {
         return String.format("%s version=%s;", UA_APPLICATION_JSON, version.toString());
     }
 
-    /*
-    Retrieves Java Client API Version
-    */
+    /* Retrieves Java Client API Version */
+
     public String getUserAgent() {
         InputStream stream = getClass().getResourceAsStream("/client.properties");
 
@@ -292,6 +297,124 @@ public class APIClient {
         return provisionExecutor().execute(req).returnResponse();
     }
 
+    /* Location API */
+
+    public APIClientResponse<APILocationResponse> queryLocationInformation(String query) throws IOException {
+        Preconditions.checkArgument(StringUtils.isNotBlank(query), "Query text cannot be blank");
+
+        URIBuilder builder = new URIBuilder(baseURI.resolve(API_LOCATION_PATH));
+        builder.addParameter("q", query);
+
+        Request req = provisionRequest(Request.Get(builder.toString()));
+
+        req.removeHeaders(ACCEPT_KEY);      // Workaround for v3 routing bug
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing query location information without type request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new LocationAPIResponseHandler());
+    }
+
+    public APIClientResponse<APILocationResponse> queryLocationInformation(String query, String type) throws IOException {
+        Preconditions.checkArgument(StringUtils.isNotBlank(query), "Query text cannot be blank");
+
+        URIBuilder builder = new URIBuilder(baseURI.resolve(API_LOCATION_PATH));
+        builder.addParameter("q", query);
+        builder.addParameter("type", type);
+
+        Request req = provisionRequest(Request.Get(builder.toString()));
+
+        req.removeHeaders(ACCEPT_KEY);      // Workaround for v3 routing bug
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing query location information without type request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new LocationAPIResponseHandler());
+    }
+
+    public APIClientResponse<APILocationResponse> queryLocationInformation(Point point) throws IOException {
+        Preconditions.checkNotNull(point, "Point must not be null");
+        Preconditions.checkArgument(point.isValid(), "Point must be a valid coordinate");
+
+        URIBuilder builder = new URIBuilder(baseURI.resolve(API_LOCATION_PATH + point.getLatitude() + "," + point.getLongitude()));
+
+        Request req = provisionRequest(Request.Get(builder.toString()));
+
+        req.removeHeaders(ACCEPT_KEY);      // Workaround for v3 routing bug
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing query location information without type request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new LocationAPIResponseHandler());
+    }
+
+    public APIClientResponse<APILocationResponse> queryLocationInformation(Point point, String type) throws IOException {
+        Preconditions.checkNotNull(point, "Point must not be null");
+        Preconditions.checkArgument(point.isValid(), "Point must be a valid coordinate");
+
+        URIBuilder builder = new URIBuilder(baseURI.resolve(API_LOCATION_PATH + point.getLatitude() + "," + point.getLongitude()));
+        builder.addParameter("type", type);
+
+        Request req = provisionRequest(Request.Get(builder.toString()));
+
+        req.removeHeaders(ACCEPT_KEY);      // Workaround for v3 routing bug
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing query location information without type request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new LocationAPIResponseHandler());
+    }
+
+    public APIClientResponse<APILocationResponse> queryLocationInformation(BoundedBox box) throws IOException {
+        Preconditions.checkNotNull(box, "Box must not be null");
+        Preconditions.checkArgument(box.isValid(), "Box must be a valid coordinate");
+
+        URIBuilder builder = new URIBuilder(baseURI.resolve(API_LOCATION_PATH +
+                        box.getCornerOne().getLatitude() + "," +
+                        box.getCornerOne().getLongitude() + "," +
+                        box.getCornerTwo().getLatitude() + "," +
+                        box.getCornerTwo().getLongitude()
+        ));
+
+        Request req = provisionRequest(Request.Get(builder.toString()));
+
+        req.removeHeaders(ACCEPT_KEY);      // Workaround for v3 routing bug
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing query location information without type request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new LocationAPIResponseHandler());
+    }
+
+    public APIClientResponse<APILocationResponse> queryLocationInformation(BoundedBox box, String type) throws IOException {
+        Preconditions.checkNotNull(box, "Box must not be null");
+        Preconditions.checkArgument(box.isValid(), "Box must be a valid coordinate");
+
+        URIBuilder builder = new URIBuilder(baseURI.resolve(API_LOCATION_PATH +
+                box.getCornerOne().getLatitude() + "," +
+                box.getCornerOne().getLongitude() + "," +
+                box.getCornerTwo().getLatitude() + "," +
+                box.getCornerTwo().getLongitude()
+        ));
+
+        builder.addParameter("type", type);
+
+        Request req = provisionRequest(Request.Get(builder.toString()));
+
+        req.removeHeaders(ACCEPT_KEY);      // Workaround for v3 routing bug
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing query location information without type request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new LocationAPIResponseHandler());
+    }
+
     /* Segments API */
 
     public APIClientResponse<APIListAllSegmentsResponse> listAllSegments() throws IOException {
@@ -326,7 +449,76 @@ public class APIClient {
         return provisionExecutor().execute(req).handleResponse(new ListAllSegmentsAPIResponseHandler());
     }
 
+    public APIClientResponse<AudienceSegment> listSegment(String segmentID) throws IOException, URISyntaxException {
+        Preconditions.checkArgument(StringUtils.isNotBlank(segmentID), "segmentID is required when listing segment");
+
+        String path = API_SEGMENTS_PATH + segmentID;
+        Request req = provisionRequest(Request.Get(baseURI.resolve(path)));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list all segments request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new AudienceSegmentAPIResponseHandler());
+    }
+
+    public HttpResponse createSegment(AudienceSegment payload) throws IOException {
+        Preconditions.checkNotNull(payload, "Payload is required when creating segment");
+        Request req = provisionRequest(Request.Post(baseURI.resolve(API_SEGMENTS_PATH)));
+
+
+        req.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing create segment request %s", req));
+        }
+
+        return provisionExecutor().execute(req).returnResponse();
+    }
+
+    public HttpResponse changeSegment(String segmentID, AudienceSegment payload) throws IOException {
+        Preconditions.checkArgument(StringUtils.isNotBlank(segmentID), "segmentID is required when updating segment");
+        Preconditions.checkNotNull(payload, "Payload is required when updating segment");
+
+        String path = API_SEGMENTS_PATH + segmentID;
+        Request req = provisionRequest(Request.Put(baseURI.resolve(path)));
+
+
+        req.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing change segment request %s", req));
+        }
+
+        return provisionExecutor().execute(req).returnResponse();
+    }
+
+    public HttpResponse deleteSegment(String segmentID) throws IOException, URISyntaxException {
+        Preconditions.checkArgument(StringUtils.isNotBlank(segmentID), "segmentID is required when deleting segment");
+
+        String path = API_SEGMENTS_PATH + segmentID;
+        Request req = provisionRequest(Request.Delete(baseURI.resolve(path)));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing delete segment request %s", req));
+        }
+
+        return provisionExecutor().execute(req).returnResponse();
+    }
+
     /* Device Information API */
+
+    public APIClientResponse<APIListSingleChannelResponse> listChannel(String channel) throws IOException, URISyntaxException {
+
+        String path = API_DEVICE_CHANNELS_PATH + channel;
+        Request req = provisionRequest(Request.Get(baseURI.resolve(path)));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing get single channels request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ListSingleChannelAPIResponseHandler());
+    }
 
     public APIClientResponse<APIListAllChannelsResponse> listAllChannels() throws IOException {
         Request req = provisionRequest(Request.Get(baseURI.resolve(API_DEVICE_CHANNELS_PATH)));
@@ -340,6 +532,47 @@ public class APIClient {
 
     /* Reports API */
 
+    public APIClientResponse<SinglePushInfoResponse> listIndividualPushResponseStatistics(String id) throws IOException {
+        Preconditions.checkNotNull(id, "Push id is required when performing listing of individual push response statistics.");
+
+        URIBuilder builder = new URIBuilder(baseURI.resolve(API_REPORTS_PUSH_RESPONSE_PATH + id));
+
+        Request req = provisionRequest(Request.Get(builder.toString()));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list Statistics in CSV String format request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ListIndividualPushAPIResponseHandler());
+    }
+
+    public APIClientResponse<APIReportsPushListingResponse> listReportsResponseListing(DateTime start,
+                                                                                   DateTime end,
+                                                                                   Optional<Integer> limit,
+                                                                                   Optional<String> pushIDStart)
+    throws IOException {
+
+        Preconditions.checkNotNull(start, "Start time is required when performing listing of push statistics");
+        Preconditions.checkNotNull(end, "End time is required when performing listing of push statistics");
+        Preconditions.checkArgument(start.isBefore(end), "Start time must be before End time");
+
+        URIBuilder builder = new URIBuilder(baseURI.resolve(API_REPORTS_PUSH_RESPONSE_PATH + "list"));
+
+        builder.addParameter("start", start.toLocalDateTime().toString());
+        builder.addParameter("end", end.toLocalDateTime().toString());
+
+        if (limit.isPresent()) { builder.addParameter("limit", limit.get().toString()); }
+        if (pushIDStart.isPresent()) { builder.addParameter("push_id_start", pushIDStart.get()); }
+
+        Request req = provisionRequest(Request.Get(builder.toString()));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list Statistics in CSV String format request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ListReportsListingResponseHandler());
+
+    }
     public APIClientResponse<ReportsAPIOpensResponse> listAppsOpenReport(DateTime start, DateTime end, String precision) throws IOException {
 
         Preconditions.checkArgument(precision.toUpperCase().equals("HOURLY") ||

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Urban Airship and Contributors
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.schedule.parse;
@@ -15,7 +15,7 @@ import org.codehaus.jackson.type.TypeReference;
 import java.io.IOException;
 import java.util.List;
 
-public class SchedulePayloadReader implements JsonObjectReader<SchedulePayload> {
+public final class SchedulePayloadReader implements JsonObjectReader<SchedulePayload> {
 
     private final SchedulePayload.Builder builder;
 
