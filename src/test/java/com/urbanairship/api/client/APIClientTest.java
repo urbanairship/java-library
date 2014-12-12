@@ -13,6 +13,8 @@ import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
+import com.urbanairship.api.segments.model.AudienceSegment;
+import com.urbanairship.api.segments.model.TagPredicateBuilder;
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
 import com.urbanairship.api.tag.model.AddRemoveSet;
 import com.urbanairship.api.tag.model.BatchModificationPayload;
@@ -1435,6 +1437,228 @@ public class APIClientTest {
             assertNotNull(response.getApiResponse().getNextPage());
             assertNotNull(response.getApiResponse().getSegments());
 
+        }
+        catch (Exception ex){
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testListSegment() {
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        String testresponse = "{  \n" +
+                "  \"display_name\":\"2014-11-07T14:26:56.749-08:00\",\n" +
+                "  \"criteria\":{  \n" +
+                "    \"and\":[  \n" +
+                "      {  \n" +
+                "        \"location\":{  \n" +
+                "          \"us_state\":\"OR\",\n" +
+                "          \"date\":{  \n" +
+                "            \"days\":{  \n" +
+                "              \"start\":\"2014-11-02\",\n" +
+                "              \"end\":\"2014-11-07\"\n" +
+                "            }\n" +
+                "          }\n" +
+                "        }\n" +
+                "      },\n" +
+                "      {  \n" +
+                "        \"location\":{  \n" +
+                "          \"us_state\":\"CA\",\n" +
+                "          \"date\":{  \n" +
+                "            \"recent\":{  \n" +
+                "              \"months\":3\n" +
+                "            }\n" +
+                "          }\n" +
+                "        }\n" +
+                "      },\n" +
+                "      {  \n" +
+                "        \"or\":[  \n" +
+                "          {  \n" +
+                "            \"tag\":\"tag1\"\n" +
+                "          },\n" +
+                "          {  \n" +
+                "            \"tag\":\"tag2\"\n" +
+                "          }\n" +
+                "        ]\n" +
+                "      },\n" +
+                "      {  \n" +
+                "        \"not\":{  \n" +
+                "          \"tag\":\"not-tag\"\n" +
+                "        }\n" +
+                "      },\n" +
+                "      {  \n" +
+                "        \"not\":{  \n" +
+                "          \"and\":[  \n" +
+                "            {  \n" +
+                "              \"location\":{  \n" +
+                "                \"us_state\":\"WA\",\n" +
+                "                \"date\":{  \n" +
+                "                  \"months\":{  \n" +
+                "                    \"start\":\"2011-05\",\n" +
+                "                    \"end\":\"2012-02\"\n" +
+                "                  }\n" +
+                "                }\n" +
+                "              }\n" +
+                "            },\n" +
+                "            {  \n" +
+                "              \"tag\":\"woot\"\n" +
+                "            }\n" +
+                "          ]\n" +
+                "        }\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  }\n" +
+                "}";
+
+        stubFor(get(urlEqualTo("/api/segments/abc"))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withBody(testresponse)
+                        .withStatus(200)));
+
+        try {
+            APIClientResponse<AudienceSegment> response = client.listSegment("abc");
+
+            // Verify components of the underlying HttpRequest
+            verify(getRequestedFor(urlEqualTo("/api/segments/abc"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+
+            List<LoggedRequest> requests = findAll(getRequestedFor(
+                    urlEqualTo("/api/segments/abc")));
+
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+            assertNotNull(response.getApiResponse());
+            assertNotNull(response.getHttpResponse());
+            assertNotNull(response.getApiResponse().getDisplayName());
+        }
+        catch (Exception ex){
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testCreateSegment() {
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        stubFor(post(urlEqualTo("/api/segments/"))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withStatus(200)));
+
+        try {
+            HttpResponse response = client.createSegment(
+                    AudienceSegment.newBuilder()
+                        .setDisplayName("hi")
+                        .setRootPredicate(TagPredicateBuilder.newInstance()
+                                .setTag("tag")
+                                .build())
+                        .build()
+            );
+
+            // Verify components of the underlying HttpRequest
+            verify(postRequestedFor(urlEqualTo("/api/segments/"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+
+            List<LoggedRequest> requests = findAll(postRequestedFor(
+                    urlEqualTo("/api/segments/")));
+
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+        }
+        catch (Exception ex){
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testChangeSegment() {
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        stubFor(put(urlEqualTo("/api/segments/abc"))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withStatus(200)));
+
+        try {
+            HttpResponse response = client.changeSegment("abc",
+                    AudienceSegment.newBuilder()
+                            .setDisplayName("hi")
+                            .setRootPredicate(TagPredicateBuilder.newInstance()
+                                    .setTag("tag")
+                                    .build())
+                            .build()
+            );
+
+            // Verify components of the underlying HttpRequest
+            verify(putRequestedFor(urlEqualTo("/api/segments/abc"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+
+            List<LoggedRequest> requests = findAll(putRequestedFor(
+                    urlEqualTo("/api/segments/abc")));
+
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+        }
+        catch (Exception ex){
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testDeleteSegment() {
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        stubFor(delete(urlEqualTo("/api/segments/abc"))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withStatus(200)));
+
+        try {
+            HttpResponse response = client.deleteSegment("abc");
+
+            // Verify components of the underlying HttpRequest
+            verify(deleteRequestedFor(urlEqualTo("/api/segments/abc"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+
+            List<LoggedRequest> requests = findAll(deleteRequestedFor(
+                    urlEqualTo("/api/segments/abc")));
+
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
         }
         catch (Exception ex){
             fail("Exception thrown " + ex);

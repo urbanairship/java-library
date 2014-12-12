@@ -12,6 +12,8 @@ import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
+import com.urbanairship.api.segments.model.AudienceSegment;
+import com.urbanairship.api.segments.model.TagPredicateBuilder;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.message.BasicHttpResponse;
@@ -127,6 +129,27 @@ public class APIClientResponseTest {
                         .setHttpResponse(httpResponse);
 
         APIClientResponse<APIListAllSegmentsResponse> testResponse = builder.build();
+
+        assertEquals("HTTP response not set properly", httpResponse, testResponse.getHttpResponse());
+        assertEquals("APIResponse not set properly", segmentsResponse, testResponse.getApiResponse());
+    }
+
+    @Test
+    public void testAudienceSegmentResponse() {
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP",1,1), 200, "OK"));
+
+        AudienceSegment segmentsResponse = AudienceSegment.newBuilder()
+                .setDisplayName("hello")
+                .setRootPredicate(TagPredicateBuilder.newInstance().setTag("tag").build())
+                .build();
+
+        APIClientResponse.Builder<AudienceSegment> builder =
+                APIClientResponse.newAudienceSegmentResponseBuilder()
+                        .setApiResponse(segmentsResponse)
+                        .setHttpResponse(httpResponse);
+
+        APIClientResponse<AudienceSegment> testResponse = builder.build();
 
         assertEquals("HTTP response not set properly", httpResponse, testResponse.getHttpResponse());
         assertEquals("APIResponse not set properly", segmentsResponse, testResponse.getApiResponse());
