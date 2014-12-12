@@ -9,8 +9,7 @@ Urban Airship Java Client
 Introduction
 ************
 
-This is a Java library for using the :doc:`Urban Airship web Service API
-</api/overview>` web service API for push notifications.
+This is a Java library for using the `Urban Airship API v3 <http://docs.urbanairship.com/api/ua.html>`__ for push notifications.
 
 Installation
 ============
@@ -66,7 +65,7 @@ Simply add the log handler of your choice. Again, with log4j:
 Development
 ===========
 
-Source code is available on Github.
+Source code is available on `Github <https://github.com/urbanairship/java-library/>`__.
 Tests are located in the standard test directory and use JUnit
 
 
@@ -1299,7 +1298,7 @@ The ``APIErrorDetails`` object contains information on errors for requests
 that are syntactically valid but are otherwise malformed. For example,
 setting the platform value for a ``PushPayload`` to include both
 ``DeviceType.IOS and DeviceType.ANDROID but only providing a single
-IOSDevicePayload for the notification would result in an error.
+IOSDevicePayload for the notification would result in an error.``
 
 
 .. code-block:: json
