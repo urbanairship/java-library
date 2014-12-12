@@ -4,7 +4,7 @@
 
 package com.urbanairship.api.client.parse;
 
-import com.urbanairship.api.channel.registration.model.ChannelView;
+import com.urbanairship.api.channel.information.model.ChannelView;
 import com.urbanairship.api.client.model.APIListAllChannelsResponse;
 import com.urbanairship.api.client.model.APIListSingleChannelResponse;
 import com.urbanairship.api.common.parse.APIParsingException;

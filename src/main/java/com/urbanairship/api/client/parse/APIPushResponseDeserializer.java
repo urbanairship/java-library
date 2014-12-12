@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Urban Airship and Contributors
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.client.parse;
@@ -24,7 +24,7 @@ the boilerplate necessary for Jackson stream parsing, which is essentially what
  If you're using Intellij, be sure and toggle open the code that's
  been collapsed.
  */
-class APIPushResponseDeserializer extends JsonDeserializer<APIPushResponse> {
+public final class APIPushResponseDeserializer extends JsonDeserializer<APIPushResponse> {
 
     private static final FieldParserRegistry<APIPushResponse, APIPushResponseReader> FIELD_PARSERS =
             new MapFieldParserRegistry<APIPushResponse, APIPushResponseReader>(

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Urban Airship and Contributors
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.schedule.parse;
@@ -17,7 +17,7 @@ import org.codehaus.jackson.map.JsonDeserializer;
 
 import java.io.IOException;
 
-public class ScheduleDeserializer extends JsonDeserializer<Schedule> {
+public final class ScheduleDeserializer extends JsonDeserializer<Schedule> {
 
     private static final FieldParserRegistry<Schedule, ScheduleReader> FIELD_PARSERS = new MapFieldParserRegistry<Schedule, ScheduleReader>(
         ImmutableMap.<String, FieldParser<ScheduleReader>>builder()

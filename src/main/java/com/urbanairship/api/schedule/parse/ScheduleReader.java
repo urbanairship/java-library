@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Urban Airship and Contributors
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.schedule.parse;
@@ -12,7 +12,7 @@ import org.joda.time.DateTime;
 
 import java.io.IOException;
 
-public class ScheduleReader implements JsonObjectReader<Schedule> {
+public final class ScheduleReader implements JsonObjectReader<Schedule> {
 
     private final Schedule.Builder builder;
 

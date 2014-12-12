@@ -1,5 +1,11 @@
-package com.urbanairship.api.channel.registration.model.ios;
+/*
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ */
 
+package com.urbanairship.api.channel.information.model.ios;
+
+
+import com.google.common.base.Objects;
 
 public final class QuietTime {
     public static final QuietTime NULL_INSTANCE = new QuietTime(null, null);
@@ -25,31 +31,28 @@ public final class QuietTime {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        QuietTime quietTime = (QuietTime) o;
-
-        if (!end.equals(quietTime.end)) return false;
-        if (!start.equals(quietTime.start)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = start.hashCode();
-        result = 31 * result + end.hashCode();
-        return result;
-    }
-
-    @Override
     public String toString() {
         return "QuietTime{" +
                 "start='" + start + '\'' +
                 ", end='" + end + '\'' +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(start, end);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final QuietTime other = (QuietTime) obj;
+        return Objects.equal(this.start, other.start) && Objects.equal(this.end, other.end);
     }
 
     public final static class Builder {

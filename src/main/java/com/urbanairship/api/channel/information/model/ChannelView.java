@@ -1,10 +1,14 @@
-package com.urbanairship.api.channel.registration.model;
+/*
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ */
 
+package com.urbanairship.api.channel.information.model;
+
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
-import com.urbanairship.api.channel.registration.model.DeviceType;
-import com.urbanairship.api.channel.registration.model.ios.IosSettings;
+import com.urbanairship.api.channel.information.model.ios.IosSettings;
 import org.apache.commons.lang.StringUtils;
 
 public final class ChannelView {
@@ -94,70 +98,6 @@ public final class ChannelView {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        ChannelView that = (ChannelView) o;
-
-        if (createdMillis != that.createdMillis) {
-            return false;
-        }
-        if (installed != that.installed) {
-            return false;
-        }
-        if (optedIn != that.optedIn) {
-            return false;
-        }
-        if (!background.equals(that.background)) {
-            return false;
-        }
-        if (!alias.equals(that.alias)) {
-            return false;
-        }
-        if (!channelId.equals(that.channelId)) {
-            return false;
-        }
-        if (deviceType != that.deviceType) {
-            return false;
-        }
-        if (!iosSettings.equals(that.iosSettings)) {
-            return false;
-        }
-        if (!lastRegistrationMillis.equals(that.lastRegistrationMillis)) {
-            return false;
-        }
-        if (!pushAddress.equals(that.pushAddress)) {
-            return false;
-        }
-        if (!tags.equals(that.tags)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = channelId.hashCode();
-        result = 31 * result + deviceType.hashCode();
-        result = 31 * result + (installed ? 1 : 0);
-        result = 31 * result + (optedIn ? 1 : 0);
-        result = 31 * result + background.hashCode();
-        result = 31 * result + pushAddress.hashCode();
-        result = 31 * result + (int) (createdMillis ^ (createdMillis >>> 32));
-        result = 31 * result + lastRegistrationMillis.hashCode();
-        result = 31 * result + alias.hashCode();
-        result = 31 * result + tags.hashCode();
-        result = 31 * result + iosSettings.hashCode();
-        return result;
-    }
-
-    @Override
     public String toString() {
         return "ChannelView{" +
                 "channelId='" + channelId + '\'' +
@@ -172,6 +112,23 @@ public final class ChannelView {
                 ", tags=" + tags +
                 ", iosSettings=" + iosSettings +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(channelId, deviceType, installed, optedIn, background, pushAddress, createdMillis, lastRegistrationMillis, alias, tags, iosSettings);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final ChannelView other = (ChannelView) obj;
+        return Objects.equal(this.channelId, other.channelId) && Objects.equal(this.deviceType, other.deviceType) && Objects.equal(this.installed, other.installed) && Objects.equal(this.optedIn, other.optedIn) && Objects.equal(this.background, other.background) && Objects.equal(this.pushAddress, other.pushAddress) && Objects.equal(this.createdMillis, other.createdMillis) && Objects.equal(this.lastRegistrationMillis, other.lastRegistrationMillis) && Objects.equal(this.alias, other.alias) && Objects.equal(this.tags, other.tags) && Objects.equal(this.iosSettings, other.iosSettings);
     }
 
     public final static class Builder {

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ */
+
 package com.urbanairship.api.reports.parse;
 
 import com.google.common.base.Supplier;
@@ -10,7 +14,7 @@ import org.codehaus.jackson.map.JsonDeserializer;
 
 import java.io.IOException;
 
-public class AppStatsDeserializer extends JsonDeserializer<AppStats> {
+public final class AppStatsDeserializer extends JsonDeserializer<AppStats> {
 
     private static final FieldParserRegistry<AppStats, AppStatsReader> FIELD_PARSERS =
             new MapFieldParserRegistry<AppStats, AppStatsReader>(ImmutableMap.<String, FieldParser<AppStatsReader>>builder()

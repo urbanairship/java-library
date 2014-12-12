@@ -1,4 +1,9 @@
+/*
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ */
+
 package com.urbanairship.api.push.parse.audience;
+
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.ValueSelector;
 import com.urbanairship.api.push.model.audience.CompoundSelector;

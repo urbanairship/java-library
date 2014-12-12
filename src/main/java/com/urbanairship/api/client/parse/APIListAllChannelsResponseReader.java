@@ -1,11 +1,11 @@
 /*
- * Copyright 2014 Urban Airship and Contributors
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.client.parse;
 
 
-import com.urbanairship.api.channel.registration.model.ChannelView;
+import com.urbanairship.api.channel.information.model.ChannelView;
 import com.urbanairship.api.client.model.APIListAllChannelsResponse;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
@@ -15,7 +15,7 @@ import org.codehaus.jackson.type.TypeReference;
 import java.io.IOException;
 import java.util.List;
 
-public class APIListAllChannelsResponseReader implements JsonObjectReader<APIListAllChannelsResponse> {
+public final class APIListAllChannelsResponseReader implements JsonObjectReader<APIListAllChannelsResponse> {
 
     private final APIListAllChannelsResponse.Builder builder;
 

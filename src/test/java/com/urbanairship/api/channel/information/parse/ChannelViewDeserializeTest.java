@@ -1,10 +1,10 @@
-package com.urbanairship.api.channel.registration.parse;
+package com.urbanairship.api.channel.information.parse;
 
 import com.google.common.collect.Sets;
 import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
-import com.urbanairship.api.channel.registration.model.ChannelView;
-import com.urbanairship.api.channel.registration.model.DeviceType;
+import com.urbanairship.api.channel.information.model.ChannelView;
+import com.urbanairship.api.channel.information.model.DeviceType;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.junit.Test;
