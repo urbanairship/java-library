@@ -57,7 +57,7 @@ public final class APIListAllSchedulesResponseDeserializer extends JsonDeseriali
 
     private final StandardObjectDeserializer<APIListAllSchedulesResponse, ?> deserializer;
 
-    public APIListAllSchedulesResponseDeserializer(){
+    public APIListAllSchedulesResponseDeserializer() {
         this.deserializer = new StandardObjectDeserializer<APIListAllSchedulesResponse, APIListAllSchedulesResponseReader>(
                 FIELD_PARSER,
                 new Supplier<APIListAllSchedulesResponseReader>() {

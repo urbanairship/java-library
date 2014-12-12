@@ -1,78 +1,76 @@
 package com.urbanairship.api.push.model.notification.mpns;
 
 import org.junit.Test;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 
 public class FlipTileDataTest extends MpnsTest {
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testEmpty() {
         MPNSFlipTileData.newBuilder()
-            .build();
+                .build();
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testInvalidTitle() {
         MPNSFlipTileData.newBuilder()
-            .setTitle(valueTooLong)
-            .build();
+                .setTitle(valueTooLong)
+                .build();
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testInvalidBackContent() {
         MPNSFlipTileData.newBuilder()
-            .setBackContent(valueTooLong)
-            .build();
+                .setBackContent(valueTooLong)
+                .build();
     }
 
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testInvalidBackTitle() {
         MPNSFlipTileData.newBuilder()
-            .setBackTitle(valueTooLong)
-            .build();
+                .setBackTitle(valueTooLong)
+                .build();
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testInvalidWideBackContent() {
         MPNSFlipTileData.newBuilder()
-            .setWideBackContent(valueTooLong)
-            .build();
+                .setWideBackContent(valueTooLong)
+                .build();
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testInvalidBackBackground() {
         MPNSFlipTileData.newBuilder()
-            .setBackBackgroundImage(uriTooLong)
-            .build();
+                .setBackBackgroundImage(uriTooLong)
+                .build();
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testInvalidBackground() {
         MPNSFlipTileData.newBuilder()
-            .setBackgroundImage(uriTooLong)
-            .build();
+                .setBackgroundImage(uriTooLong)
+                .build();
     }
 
     @Test
     public void testBuild() {
         MPNSFlipTileData tile = MPNSFlipTileData.newBuilder()
-            .setId("/tile")
-            .setTitle("T")
-            .setCount(99)
-            .setBackBackgroundImage("/BBI")
-            .setBackContent("BC")
-            .setBackgroundImage("/BI")
-            .setBackTitle("BT")
-            .setSmallBackgroundImage("/SBI")
-            .setWideBackBackgroundImage("/WBBI")
-            .setWideBackContent("WBC")
-            .setWideBackgroundImage("/WBI")
-            .build();
+                .setId("/tile")
+                .setTitle("T")
+                .setCount(99)
+                .setBackBackgroundImage("/BBI")
+                .setBackContent("BC")
+                .setBackgroundImage("/BI")
+                .setBackTitle("BT")
+                .setSmallBackgroundImage("/SBI")
+                .setWideBackBackgroundImage("/WBBI")
+                .setWideBackContent("WBC")
+                .setWideBackgroundImage("/WBI")
+                .build();
 
         assertTrue(tile.getId().isPresent());
         assertEquals("/tile", tile.getId().get());

@@ -6,11 +6,11 @@ package com.urbanairship.api.reports.parse;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
-import com.urbanairship.api.reports.model.SinglePushInfoResponse;
 import com.urbanairship.api.common.parse.FieldParser;
 import com.urbanairship.api.common.parse.FieldParserRegistry;
 import com.urbanairship.api.common.parse.MapFieldParserRegistry;
 import com.urbanairship.api.common.parse.StandardObjectDeserializer;
+import com.urbanairship.api.reports.model.SinglePushInfoResponse;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
@@ -75,7 +75,7 @@ public final class SinglePushInfoResponseDeserializer extends JsonDeserializer<S
 
     private final StandardObjectDeserializer<SinglePushInfoResponse, ?> deserializer;
 
-    public SinglePushInfoResponseDeserializer(){
+    public SinglePushInfoResponseDeserializer() {
         this.deserializer = new StandardObjectDeserializer<SinglePushInfoResponse, SinglePushInfoResponseReader>(
                 FIELD_PARSER,
                 new Supplier<SinglePushInfoResponseReader>() {
@@ -86,6 +86,7 @@ public final class SinglePushInfoResponseDeserializer extends JsonDeserializer<S
                 }
         );
     }
+
     @Override
     public SinglePushInfoResponse deserialize(JsonParser jsonParser, DeserializationContext
             deserializationContext)

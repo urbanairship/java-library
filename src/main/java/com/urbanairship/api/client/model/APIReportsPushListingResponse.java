@@ -15,14 +15,14 @@ public final class APIReportsPushListingResponse {
     private final Optional<String> nextPage;
     private final ImmutableList<SinglePushInfoResponse> singlePushInfoResponseObjects;
 
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     private APIReportsPushListingResponse(String nextPage,
                                           ImmutableList<SinglePushInfoResponse> singlePushInfoResponseObjects) {
         this.nextPage = Optional.fromNullable(nextPage);
         this.singlePushInfoResponseObjects = singlePushInfoResponseObjects;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
     public Optional<String> getNextPage() {
@@ -63,7 +63,8 @@ public final class APIReportsPushListingResponse {
         private String nextPage;
         private ImmutableList.Builder<SinglePushInfoResponse> singlePushInfoResponseBuilder = ImmutableList.builder();
 
-        private Builder() {  }
+        private Builder() {
+        }
 
         public Builder setNextPage(String value) {
             this.nextPage = value;

@@ -12,7 +12,8 @@ import com.urbanairship.api.channel.information.parse.ChannelViewDeserializer;
 import com.urbanairship.api.channel.information.parse.DeviceTypeDeserializer;
 import com.urbanairship.api.channel.information.parse.ios.IosSettingsDeserializer;
 import com.urbanairship.api.channel.information.parse.ios.QuietTimeDeserializer;
-import com.urbanairship.api.client.*;
+import com.urbanairship.api.client.APIError;
+import com.urbanairship.api.client.APIErrorDetails;
 import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.location.model.Location;
 import com.urbanairship.api.location.parse.LocationDeserializer;
@@ -21,17 +22,14 @@ import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.push.parse.PushPayloadDeserializer;
 import com.urbanairship.api.reports.model.*;
 import com.urbanairship.api.reports.parse.*;
-import com.urbanairship.api.reports.model.AppStats;
-import com.urbanairship.api.reports.model.SinglePushInfoResponse;
-import com.urbanairship.api.reports.parse.AppStatsDeserializer;
-import com.urbanairship.api.reports.parse.SinglePushInfoResponseDeserializer;
-import com.urbanairship.api.reports.model.*;
-import com.urbanairship.api.reports.parse.*;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.schedule.parse.ScheduleDeserializer;
 import com.urbanairship.api.schedule.parse.SchedulePayloadDeserializer;
-import com.urbanairship.api.segments.model.*;
+import com.urbanairship.api.segments.model.AudienceSegment;
+import com.urbanairship.api.segments.model.LocationPredicate;
+import com.urbanairship.api.segments.model.Operator;
+import com.urbanairship.api.segments.model.Predicate;
 import com.urbanairship.api.segments.parse.*;
 import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -44,7 +42,7 @@ Jackson to enable object parsing.
 public final class APIResponseObjectMapper {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    private static final SimpleModule MODULE = new SimpleModule("Urban Airship API Client Module", new Version(1,0,0,null));
+    private static final SimpleModule MODULE = new SimpleModule("Urban Airship API Client Module", new Version(1, 0, 0, null));
 
     static {
         MODULE.addDeserializer(APIPushResponse.class, new APIPushResponseDeserializer());
@@ -91,13 +89,15 @@ public final class APIResponseObjectMapper {
         MAPPER.registerModule(MODULE);
     }
 
-    public static SimpleModule getModule(){
+    private APIResponseObjectMapper() {
+    }
+
+    public static SimpleModule getModule() {
         return MODULE;
     }
 
-    public static ObjectMapper getInstance(){
+    public static ObjectMapper getInstance() {
         return MAPPER;
     }
-    private APIResponseObjectMapper (){}
 
 }

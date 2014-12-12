@@ -19,7 +19,8 @@ public class APILocationResponseReader implements JsonObjectReader<APILocationRe
     }
 
     public void readFeatures(JsonParser jsonParser) throws IOException {
-        builder.addAllFeatures( (List<Location>) jsonParser.readValueAs(new TypeReference<List<Location>>() {  }));
+        builder.addAllFeatures((List<Location>) jsonParser.readValueAs(new TypeReference<List<Location>>() {
+        }));
     }
 
     @Override

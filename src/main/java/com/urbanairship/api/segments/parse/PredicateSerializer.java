@@ -20,24 +20,25 @@ public class PredicateSerializer {
     public static final PredicateSerializer INSTANCE = new PredicateSerializer();
 
     private static final Map<Class<? extends Predicate>, JsonSerializer<? extends Predicate>> SERIALIZERS = Maps.newHashMap();
+
     static {
         register(TagPredicate.class, TagPredicateSerializer.INSTANCE);
         register(LocationPredicate.class, LocationPredicateSerializer.INSTANCE);
+    }
+
+    private PredicateSerializer() {
     }
 
     private static <T extends Predicate> void register(Class<T> clazz, JsonSerializer<T> serializer) {
         SERIALIZERS.put(clazz, serializer);
     }
 
-    private PredicateSerializer() { }
-
     public <T extends Predicate> void serialize(T value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         @SuppressWarnings("unchecked")  // Safe because we enforce when additions made to the map
-        JsonSerializer<T> jsonSerializer = (JsonSerializer<T>) SERIALIZERS.get(value.getClass());
+                JsonSerializer<T> jsonSerializer = (JsonSerializer<T>) SERIALIZERS.get(value.getClass());
         if (jsonSerializer == null) {
             throw new InvalidAudienceSegmentException("Unknown Predicate class " + value.getClass());
-        }
-        else {
+        } else {
             jsonSerializer.serialize(value, jgen, provider);
         }
     }

@@ -5,8 +5,8 @@
 package com.urbanairship.api.client.parse;
 
 import com.urbanairship.api.client.model.APIPushResponse;
-import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.JsonObjectReader;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.type.TypeReference;
 
@@ -17,11 +17,11 @@ import java.util.List;
 Readers are the part of the deserialization process that actually builds and
 return an object.
  */
-public final class APIPushResponseReader implements JsonObjectReader<APIPushResponse>{
+public final class APIPushResponseReader implements JsonObjectReader<APIPushResponse> {
 
     private final APIPushResponse.Builder builder;
 
-    public APIPushResponseReader(){
+    public APIPushResponseReader() {
         this.builder = APIPushResponse.newBuilder();
     }
 
@@ -31,7 +31,8 @@ public final class APIPushResponseReader implements JsonObjectReader<APIPushResp
 
     public void readPushIds(JsonParser jsonParser) throws IOException {
         List<String> list =
-                jsonParser.readValueAs(new TypeReference<List<String>>(){});
+                jsonParser.readValueAs(new TypeReference<List<String>>() {
+                });
         builder.addAllPushIds(list);
     }
 
@@ -39,8 +40,7 @@ public final class APIPushResponseReader implements JsonObjectReader<APIPushResp
     public APIPushResponse validateAndBuild() throws IOException {
         try {
             return builder.build();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new APIParsingException(e.getMessage());
         }
     }

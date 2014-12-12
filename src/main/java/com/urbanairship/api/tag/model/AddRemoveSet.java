@@ -14,14 +14,14 @@ public final class AddRemoveSet {
     private final Optional<ImmutableSet<String>> add;
     private final Optional<ImmutableSet<String>> remove;
 
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     private AddRemoveSet(Optional<ImmutableSet<String>> add,
                          Optional<ImmutableSet<String>> remove) {
         this.add = add;
         this.remove = remove;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
     public Optional<ImmutableSet<String>> getAdd() {
@@ -62,16 +62,21 @@ public final class AddRemoveSet {
         private ImmutableSet.Builder<String> add = null;
         private ImmutableSet.Builder<String> remove = null;
 
-        private Builder() { }
+        private Builder() {
+        }
 
         public Builder add(String value) {
-            if (add == null) { add = ImmutableSet.builder(); }
+            if (add == null) {
+                add = ImmutableSet.builder();
+            }
             this.add.add(value);
             return this;
         }
 
         public Builder remove(String value) {
-            if (remove == null) { remove = ImmutableSet.builder(); }
+            if (remove == null) {
+                remove = ImmutableSet.builder();
+            }
             remove.add(value);
             return this;
         }
@@ -79,7 +84,7 @@ public final class AddRemoveSet {
         public AddRemoveSet build() {
             Preconditions.checkArgument(!(add == null && remove == null), "There must be something to add and/or remove");
             return new AddRemoveSet(add != null ? Optional.fromNullable(add.build()) : null,
-                                    remove != null ? Optional.fromNullable(remove.build()) : null);
+                    remove != null ? Optional.fromNullable(remove.build()) : null);
         }
     }
 }

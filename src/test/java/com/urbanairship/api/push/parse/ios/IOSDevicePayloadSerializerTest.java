@@ -9,7 +9,6 @@ import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 public class IOSDevicePayloadSerializerTest {
@@ -66,7 +65,7 @@ public class IOSDevicePayloadSerializerTest {
 
 
         String expected
-               = "{\"alert\":\"B\"}";
+                = "{\"alert\":\"B\"}";
 
         assertEquals(expected, json);
     }

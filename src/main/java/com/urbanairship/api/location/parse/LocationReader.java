@@ -19,11 +19,13 @@ public class LocationReader implements JsonObjectReader<Location> {
     }
 
     public void readBounds(JsonParser jsonParser) throws IOException {
-        builder.setBounds( (List<Double>) jsonParser.readValueAs(new TypeReference<List<Double>>() { }));
+        builder.setBounds((List<Double>) jsonParser.readValueAs(new TypeReference<List<Double>>() {
+        }));
     }
 
     public void readCentroid(JsonParser jsonParser) throws IOException {
-        builder.setCentroid( (List<Double>) jsonParser.readValueAs(new TypeReference<List<Double>>() { }));
+        builder.setCentroid((List<Double>) jsonParser.readValueAs(new TypeReference<List<Double>>() {
+        }));
     }
 
     public void readId(JsonParser jsonParser) throws IOException {

@@ -1,7 +1,7 @@
 package com.urbanairship.api.push.parse;
 
-import com.urbanairship.api.common.parse.*;
 import com.google.common.collect.Iterables;
+import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.DeviceType;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -19,7 +19,8 @@ public class DeviceTypeDeserializerTest {
     public void testDeserialize() throws Exception {
         String json = "[\"" + DeviceType.WNS.getIdentifier() + "\"]";
 
-        Set<DeviceType> parsed = mapper.readValue(json, new TypeReference<Set<DeviceType>>() {});
+        Set<DeviceType> parsed = mapper.readValue(json, new TypeReference<Set<DeviceType>>() {
+        });
 
         assertEquals(1, parsed.size());
         assertEquals(DeviceType.WNS, Iterables.getOnlyElement(parsed));
@@ -29,14 +30,16 @@ public class DeviceTypeDeserializerTest {
     public void testInvalidPlatform() throws Exception {
         String json = "[\"foo\"]";
 
-        mapper.readValue(json, new TypeReference<Set<DeviceType>>() {});
+        mapper.readValue(json, new TypeReference<Set<DeviceType>>() {
+        });
     }
 
     @Test
     public void testDeserializeAndroid() throws Exception {
         String json = "[\"android\"]";
 
-        Set<DeviceType> parsed = mapper.readValue(json, new TypeReference<Set<DeviceType>>() {});
+        Set<DeviceType> parsed = mapper.readValue(json, new TypeReference<Set<DeviceType>>() {
+        });
 
         assertEquals(1, parsed.size());
         assertEquals(DeviceType.ANDROID, Iterables.getOnlyElement(parsed));
@@ -46,7 +49,8 @@ public class DeviceTypeDeserializerTest {
     public void testDeserializeBlackberry() throws Exception {
         String json = "[\"blackberry\"]";
 
-        Set<DeviceType> parsed = mapper.readValue(json, new TypeReference<Set<DeviceType>>() {});
+        Set<DeviceType> parsed = mapper.readValue(json, new TypeReference<Set<DeviceType>>() {
+        });
 
         assertEquals(1, parsed.size());
         assertEquals(DeviceType.BLACKBERRY, Iterables.getOnlyElement(parsed));

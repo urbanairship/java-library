@@ -16,10 +16,6 @@ public final class Location {
     private final Optional<Point> centroid;
     private final Optional<BoundedBox> bounds;
 
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     public Location(String locationId,
                     String locationType,
                     JsonNode propertiesJsonNode,
@@ -30,6 +26,10 @@ public final class Location {
         this.propertiesJsonNode = propertiesJsonNode;
         this.centroid = centroid;
         this.bounds = bounds;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
     public String getLocationId() {
@@ -92,7 +92,8 @@ public final class Location {
         private Point centroid = null;
         private BoundedBox bounds = null;
 
-        private Builder() { }
+        private Builder() {
+        }
 
         public Builder setLocationId(String locationId) {
             this.locationId = locationId;

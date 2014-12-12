@@ -34,10 +34,10 @@ public final class APIError {
     private final Optional<Number> errorCode;
     private final Optional<APIErrorDetails> details;
 
-    private APIError (Optional<String> operationId, String error, Optional<Number> errorCode,
-                      Optional<APIErrorDetails> details){
+    private APIError(Optional<String> operationId, String error, Optional<Number> errorCode,
+                     Optional<APIErrorDetails> details) {
         this.operationId = operationId;
-        if(error == null || error.isEmpty()){
+        if (error == null || error.isEmpty()) {
             throw new IllegalArgumentException("Error cannot be null or empty");
         }
         this.error = error;
@@ -46,62 +46,11 @@ public final class APIError {
     }
 
     /**
-     * Returns the operation id for the error. This value is useful for debugging
-     * errors within the Urban Airship system, and should be sent to UA support
-     * in cases where there is an issue. This value may be absent.
-     * @return Optional Operation ID
-     */
-    public Optional<String> getOperationId() {
-        return operationId;
-    }
-
-    /**
-     * Returns a description of the error
-     * @return Optional error description.
-     */
-    public String getError() {
-        return error;
-    }
-
-    /**
-     * Returns an error code specific to the Urban Airship. This value may
-     * be absent.
-     * @return Optional error code
-     */
-    public Optional<Number> getErrorCode() {
-        return errorCode;
-    }
-
-    /**
-     * Returns the details of this error if error details are available from the
-     * API. Currently errors from requests that are syntactically valid but
-     * otherwise malformed, (missing fields, incompatible parameters, etc) should
-     * return details to help identify the issue.
-     * @return Optional details object
-     */
-    public Optional<APIErrorDetails> getDetails() {
-        return details;
-    }
-
-    @Override
-    public String toString(){
-       StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("APIError:");
-        stringBuilder.append(getError());
-        stringBuilder.append("\nCode:");
-        stringBuilder.append(getErrorCode());
-        if (details.isPresent()){
-            stringBuilder.append("\nDetails:");
-            stringBuilder.append(details.get().toString());
-        }
-        return stringBuilder.toString();
-    }
-
-    /**
      * Create an APIError from the response if it conforms to the API v3
      * Currently, three types of error bodies are returned, text/html strings,
      * basic JSON errors {"error":"message"} and the v3 error spec. This method
      * parses between three, and returns a best effort response.
+     *
      * @param response HttpResponse for the request that caused the exception
      * @return APIError
      * @throws IOException
@@ -109,11 +58,11 @@ public final class APIError {
     public static APIError errorFromResponse(HttpResponse response) throws IOException {
 
         HeaderElement[] headerElements = response.getFirstHeader(CONTENT_TYPE_KEY)
-                                                 .getElements();
+                .getElements();
         String contentType = headerElements[0].getName();
 
         // Text/html
-        if (contentType.equalsIgnoreCase(CONTENT_TYPE_TEXT_HTML)){
+        if (contentType.equalsIgnoreCase(CONTENT_TYPE_TEXT_HTML)) {
             return nonJSONError(response);
         }
 
@@ -123,7 +72,7 @@ public final class APIError {
         }
 
         // v3 JSON parsing
-        else if (contentType.equalsIgnoreCase(UA_APPLICATION_JSON)){
+        else if (contentType.equalsIgnoreCase(UA_APPLICATION_JSON)) {
             String responseBody = EntityUtils.toString(response.getEntity());
             ObjectMapper mapper = APIResponseObjectMapper.getInstance();
             return mapper.readValue(responseBody, APIError.class);
@@ -143,12 +92,12 @@ public final class APIError {
      */
     @Deprecated
     private static APIError nonJSONError(HttpResponse response) throws
-            IOException{
+            IOException {
         String responseBody = EntityUtils.toString(response.getEntity());
         EntityUtils.consumeQuietly(response.getEntity());
         return APIError.newBuilder()
-                       .setError(responseBody)
-                       .build();
+                .setError(responseBody)
+                .build();
     }
 
     /*
@@ -157,26 +106,84 @@ public final class APIError {
      */
     @Deprecated
     private static APIError nonV3JSONError(HttpResponse response) throws
-            IOException{
+            IOException {
         String responseBody = EntityUtils.toString(response.getEntity());
         EntityUtils.consume(response.getEntity());
         ObjectMapper mapper = APIResponseObjectMapper.getInstance();
 
         Map<String, String> errorMsg =
                 mapper.readValue(responseBody,
-                                 new TypeReference<Map<String, String>>(){});
+                        new TypeReference<Map<String, String>>() {
+                        });
 
         return APIError.newBuilder()
-                       .setError(errorMsg.get("message"))
-                       .build();
+                .setError(errorMsg.get("message"))
+                .build();
     }
 
     /**
      * Returns a APIError Builder
+     *
      * @return Builder
      */
-    public static Builder newBuilder(){
+    public static Builder newBuilder() {
         return new Builder();
+    }
+
+    /**
+     * Returns the operation id for the error. This value is useful for debugging
+     * errors within the Urban Airship system, and should be sent to UA support
+     * in cases where there is an issue. This value may be absent.
+     *
+     * @return Optional Operation ID
+     */
+    public Optional<String> getOperationId() {
+        return operationId;
+    }
+
+    /**
+     * Returns a description of the error
+     *
+     * @return Optional error description.
+     */
+    public String getError() {
+        return error;
+    }
+
+    /**
+     * Returns an error code specific to the Urban Airship. This value may
+     * be absent.
+     *
+     * @return Optional error code
+     */
+    public Optional<Number> getErrorCode() {
+        return errorCode;
+    }
+
+    /**
+     * Returns the details of this error if error details are available from the
+     * API. Currently errors from requests that are syntactically valid but
+     * otherwise malformed, (missing fields, incompatible parameters, etc) should
+     * return details to help identify the issue.
+     *
+     * @return Optional details object
+     */
+    public Optional<APIErrorDetails> getDetails() {
+        return details;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("APIError:");
+        stringBuilder.append(getError());
+        stringBuilder.append("\nCode:");
+        stringBuilder.append(getErrorCode());
+        if (details.isPresent()) {
+            stringBuilder.append("\nDetails:");
+            stringBuilder.append(details.get().toString());
+        }
+        return stringBuilder.toString();
     }
 
     /**
@@ -191,6 +198,7 @@ public final class APIError {
 
         /**
          * Set the operation id. This is optional
+         *
          * @param operationId Operation id
          * @return This Builder
          */
@@ -201,6 +209,7 @@ public final class APIError {
 
         /**
          * Set a description for the error. This is required.
+         *
          * @param error Human readable error description
          * @return This Builder
          */
@@ -219,11 +228,11 @@ public final class APIError {
             return this;
         }
 
-        public APIError build(){
+        public APIError build() {
             return new APIError(Optional.fromNullable(operationId),
-                                error,
-                                Optional.fromNullable(errorCode),
-                                Optional.fromNullable(details));
+                    error,
+                    Optional.fromNullable(errorCode),
+                    Optional.fromNullable(details));
         }
     }
 }

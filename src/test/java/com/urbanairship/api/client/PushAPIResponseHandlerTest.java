@@ -8,13 +8,12 @@ import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
-
 import org.junit.Test;
 
-import static org.junit.Assert.fail;
-import static org.junit.Assert.assertTrue;
-
 import java.io.ByteArrayInputStream;
+
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 
 public class PushAPIResponseHandlerTest {
@@ -31,7 +30,7 @@ public class PushAPIResponseHandlerTest {
     retained
      */
     @Test
-    public void testHandleSuccess(){
+    public void testHandleSuccess() {
         String pushJSON = "{\n" +
                 "    \"ok\" : true,\n" +
                 "    \"operation_id\" : \"df6a6b50\",\n" +
@@ -41,23 +40,22 @@ public class PushAPIResponseHandlerTest {
                 "    ]\n" +
                 "}";
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-                new ProtocolVersion("HTTP",1,1), 200, "OK"));
+                new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
         InputStreamEntity inputStreamEntity = new InputStreamEntity(
                 new ByteArrayInputStream(pushJSON.getBytes()),
                 pushJSON.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
         PushAPIResponseHandler handler = new PushAPIResponseHandler();
-        try{
+        try {
             APIClientResponse<APIPushResponse> response =
-                handler.handleResponse(httpResponse);
+                    handler.handleResponse(httpResponse);
             assertTrue("HttpResponse incorrect",
-                       httpResponse.equals(response.getHttpResponse()));
+                    httpResponse.equals(response.getHttpResponse()));
             String operationId = response.getApiResponse().getOperationId().get();
             assertTrue("APIPushResponse incorrectly configured",
-                       "df6a6b50".equals(operationId));
+                    "df6a6b50".equals(operationId));
 
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Failed with exception " + ex.getMessage());
         }
     }
@@ -70,7 +68,7 @@ public class PushAPIResponseHandlerTest {
     exception
      */
     @Test
-    public void testAPIV3Error(){
+    public void testAPIV3Error() {
 
         /* Build a BasicHttpResponse */
         String pushJSON = "{\"ok\" : false,\"operation_id\" : \"OpID\"," +
@@ -79,7 +77,7 @@ public class PushAPIResponseHandlerTest {
                 "\"details\" : {\"error\" : \"Unexpected token '#'\"," +
                 "\"location\" : {\"line\" : 10,\"column\" : 3}}}";
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-                new ProtocolVersion("HTTP",1,1), 400, "Unauthorized"));
+                new ProtocolVersion("HTTP", 1, 1), 400, "Unauthorized"));
         InputStreamEntity inputStreamEntity = new InputStreamEntity(
                 new ByteArrayInputStream(pushJSON.getBytes()),
                 pushJSON.getBytes().length);
@@ -88,24 +86,21 @@ public class PushAPIResponseHandlerTest {
 
         /* Test handling */
         PushAPIResponseHandler handler = new PushAPIResponseHandler();
-        try{
+        try {
             handler.handleResponse(httpResponse);
-        }
-        catch (APIRequestException ex){
+        } catch (APIRequestException ex) {
             System.out.println("Exception " + ex.getMessage());
             APIError error = ex.getError().get();
             System.out.println("Error " + error);
             assertTrue("Operation ID is incorrect",
-                       error.getOperationId().get().equals("OpID"));
+                    error.getOperationId().get().equals("OpID"));
             assertTrue("Error code is incorrect",
-                       error.getErrorCode().get().equals(40000));
+                    error.getErrorCode().get().equals(40000));
             APIErrorDetails details = error.getDetails().get();
             APIErrorDetails.Location errorLocation = details.getLocation().get();
             assertTrue("Location not setup properly",
-                       errorLocation.getLine().equals(10));
-        }
-
-        catch (Exception ex){
+                    errorLocation.getLine().equals(10));
+        } catch (Exception ex) {
             fail("Failed with incorrect exception " + ex.getMessage());
         }
 
@@ -117,11 +112,11 @@ public class PushAPIResponseHandlerTest {
     {"message":"description"}
      */
     @Test
-    public void testDeprecatedJSONError(){
+    public void testDeprecatedJSONError() {
         /* Build a BasicHttpResponse */
         String pushJSON = "{\"message\":\"Unauthorized\"}";
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-                new ProtocolVersion("HTTP",1,1), 400, "Unauthorized"));
+                new ProtocolVersion("HTTP", 1, 1), 400, "Unauthorized"));
         InputStreamEntity inputStreamEntity = new InputStreamEntity(
                 new ByteArrayInputStream(pushJSON.getBytes()),
                 pushJSON.getBytes().length);
@@ -131,15 +126,13 @@ public class PushAPIResponseHandlerTest {
 
         try {
             handler.handleResponse(httpResponse);
-        }
-        catch (APIRequestException ex){
+        } catch (APIRequestException ex) {
 
             APIError error = ex.getError().get();
             String errorMessage = error.getError();
             assertTrue("Error message incorrect", errorMessage.equals("Unauthorized"));
             return;
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Failed with incorrect exception " + ex);
         }
         fail("Test should have succeeded by now");
@@ -149,30 +142,28 @@ public class PushAPIResponseHandlerTest {
     Test the deprecated API response where only a string is returned.
      */
     @Test
-    public void testDeprecatedStringError(){
+    public void testDeprecatedStringError() {
         /* Build a BasicHttpResponse */
         String errorString = "Unauthorized";
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-                new ProtocolVersion("HTTP",1,1), 400, "Unauthorized"));
+                new ProtocolVersion("HTTP", 1, 1), 400, "Unauthorized"));
         InputStreamEntity inputStreamEntity = new InputStreamEntity(
                 new ByteArrayInputStream(errorString.getBytes()),
                 errorString.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
-                                               CONTENT_TYPE_TEXT_HTML));
+                CONTENT_TYPE_TEXT_HTML));
 
         PushAPIResponseHandler handler = new PushAPIResponseHandler();
 
-        try{
+        try {
             handler.handleResponse(httpResponse);
-        }
-        catch (APIRequestException ex){
+        } catch (APIRequestException ex) {
             APIError error = ex.getError().get();
             assertTrue("String error message is incorrect",
-                       error.getError().equals("Unauthorized"));
+                    error.getError().equals("Unauthorized"));
             return;
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Failed with incorrect exception " + ex);
         }
         fail("Test should have succeeded by now");

@@ -14,15 +14,17 @@ public final class APIListTagsResponse {
 
     private final ImmutableList<String> tags;
 
-    public static Builder newBuilder(){
-        return new Builder();
-    }
-
-    private APIListTagsResponse(ImmutableList<String> tags){
+    private APIListTagsResponse(ImmutableList<String> tags) {
         this.tags = tags;
     }
 
-    public List<String> getTags() { return tags; }
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
 
     @Override
     public String toString() {
@@ -54,7 +56,8 @@ public final class APIListTagsResponse {
     public static class Builder {
         private ImmutableList.Builder<String> tags = ImmutableList.builder();
 
-        private Builder() { }
+        private Builder() {
+        }
 
         public Builder addTag(String tag) {
             this.tags.add(tag);

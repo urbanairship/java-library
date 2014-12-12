@@ -15,19 +15,31 @@ public final class SegmentInformationReader implements JsonObjectReader<SegmentI
 
     private final SegmentInformation.Builder builder;
 
-    public SegmentInformationReader() { this.builder = SegmentInformation.newBuilder(); }
+    public SegmentInformationReader() {
+        this.builder = SegmentInformation.newBuilder();
+    }
 
-    public void readCreationDate(JsonParser jsonParser) throws IOException { builder.setCreationDate(jsonParser.readValueAs(Number.class).longValue()); }
-    public void readDisplayName(JsonParser jsonParser) throws IOException { builder.setDisplayName(jsonParser.readValueAs(String.class)); }
-    public void readId(JsonParser jsonParser) throws IOException { builder.setId(jsonParser.readValueAs(String.class)); }
-    public void readModificationDate(JsonParser jsonParser) throws IOException { builder.setModificationDate(jsonParser.readValueAs(Number.class).longValue()); }
+    public void readCreationDate(JsonParser jsonParser) throws IOException {
+        builder.setCreationDate(jsonParser.readValueAs(Number.class).longValue());
+    }
+
+    public void readDisplayName(JsonParser jsonParser) throws IOException {
+        builder.setDisplayName(jsonParser.readValueAs(String.class));
+    }
+
+    public void readId(JsonParser jsonParser) throws IOException {
+        builder.setId(jsonParser.readValueAs(String.class));
+    }
+
+    public void readModificationDate(JsonParser jsonParser) throws IOException {
+        builder.setModificationDate(jsonParser.readValueAs(Number.class).longValue());
+    }
 
     @Override
     public SegmentInformation validateAndBuild() throws IOException {
-        try{
+        try {
             return builder.build();
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             throw new APIParsingException(ex.getMessage());
         }
     }

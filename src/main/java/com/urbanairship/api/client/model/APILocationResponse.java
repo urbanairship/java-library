@@ -16,7 +16,7 @@ public final class APILocationResponse {
     public static Builder newBuilder() {
         return new Builder();
     }
-    
+
     public Optional<ImmutableList<Location>> getFeatures() {
         return features;
     }
@@ -48,7 +48,8 @@ public final class APILocationResponse {
     public static class Builder {
         private ImmutableList.Builder<Location> features = ImmutableList.builder();
 
-        private Builder() { }
+        private Builder() {
+        }
 
         public Builder addAllFeatures(Iterable<? extends Location> value) {
             this.features.addAll(value);

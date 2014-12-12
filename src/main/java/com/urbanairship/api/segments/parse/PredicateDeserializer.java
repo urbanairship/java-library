@@ -6,7 +6,6 @@ package com.urbanairship.api.segments.parse;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableMap;
-
 import com.urbanairship.api.segments.model.Predicate;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
@@ -21,17 +20,18 @@ public class PredicateDeserializer extends JsonDeserializer<Predicate> {
     public static final PredicateDeserializer INSTANCE = new PredicateDeserializer();
 
     private static final Map<String, JsonDeserializer<? extends Predicate>> PREDICATE_DESERIALIZERS =
-        ImmutableMap.of(
-            "tag", TagPredicateDeserializer.INSTANCE,
-            "tag_class", TagPredicateDeserializer.INSTANCE,
-            "location", LocationPredicateDeserializer.INSTANCE
-        );
+            ImmutableMap.of(
+                    "tag", TagPredicateDeserializer.INSTANCE,
+                    "tag_class", TagPredicateDeserializer.INSTANCE,
+                    "location", LocationPredicateDeserializer.INSTANCE
+            );
 
     private static final String INVALID_PREDICATE = "Segment criteria predicates must be simple key value pair objects";
     private static final String UNRECOGNIZED_PREDICATE_TYPE = "Unrecognized predicate type.  Valid predicate types are - " +
             Joiner.on(", ").join(PREDICATE_DESERIALIZERS.keySet()) + ".";
 
-    private PredicateDeserializer() { }
+    private PredicateDeserializer() {
+    }
 
     @Override
     public Predicate deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
@@ -52,11 +52,11 @@ public class PredicateDeserializer extends JsonDeserializer<Predicate> {
         jp.nextToken();
         Predicate predicate = predicateDeserializer.deserialize(jp, ctxt);
         JsonToken currentToken = jp.getCurrentToken();
-        if (currentToken.equals(JsonToken.END_OBJECT)){
+        if (currentToken.equals(JsonToken.END_OBJECT)) {
             return predicate;
-        } else if(jp.nextToken().equals(JsonToken.END_OBJECT)){
+        } else if (jp.nextToken().equals(JsonToken.END_OBJECT)) {
             return predicate;
-        }else {
+        } else {
             throw new InvalidAudienceSegmentException(INVALID_PREDICATE);
         }
     }

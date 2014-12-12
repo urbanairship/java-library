@@ -20,7 +20,7 @@ public class APIRequestException extends RuntimeException {
     private APIRequestException(String message,
                                 HttpResponse httpResponse,
                                 Optional<APIError> error,
-                                Throwable cause){
+                                Throwable cause) {
         super(message, cause);
         this.httpResponse = httpResponse;
         this.error = error;
@@ -28,47 +28,17 @@ public class APIRequestException extends RuntimeException {
 
     /**
      * New Builder for an APIRequestException
+     *
      * @return Builder
      */
-    public static Builder newBuilder(){
+    public static Builder newBuilder() {
         return new Builder();
-    }
-
-    /**
-     * Get the raw Apache HttpResponse for this exception
-     * @return HttpResponse
-     */
-    public HttpResponse getHttpResponse() {
-        return httpResponse;
-    }
-
-    /**
-     * Get the APIError for this exception. This is optional.
-     * @return APIError
-     */
-    public Optional<APIError> getError() {
-        return error;
-    }
-
-    /**
-     * Get the raw HTTP Status Code from the HttpResponse
-     * @return HTTP Status Code
-     */
-    public int httpResponseStatusCode(){
-        return httpResponse.getStatusLine().getStatusCode();
-    }
-
-    /**
-     * Get the reason phrase from the HttpResponse StatusLine
-     * @return Status message for the HttpResponse
-     */
-    public String httpResponseStatusMessage(){
-        return httpResponse.getStatusLine().getReasonPhrase();
     }
 
     /**
      * Create an APIRequestException from the given response. Will attempt to
      * create an APIError that represents the underlying issue.
+     *
      * @param response The HttpResponse that caused the exception
      * @return APIRequestException
      * @throws IOException
@@ -78,24 +48,60 @@ public class APIRequestException extends RuntimeException {
 
         APIError apiError = APIError.errorFromResponse(response);
         return APIRequestException.newBuilder()
-                           .setMessage(response.getStatusLine().getReasonPhrase())
-                           .setApiError(apiError)
-                           .setHttpResponse(response)
-                           .build();
+                .setMessage(response.getStatusLine().getReasonPhrase())
+                .setApiError(apiError)
+                .setHttpResponse(response)
+                .build();
+    }
+
+    /**
+     * Get the raw Apache HttpResponse for this exception
+     *
+     * @return HttpResponse
+     */
+    public HttpResponse getHttpResponse() {
+        return httpResponse;
+    }
+
+    /**
+     * Get the APIError for this exception. This is optional.
+     *
+     * @return APIError
+     */
+    public Optional<APIError> getError() {
+        return error;
+    }
+
+    /**
+     * Get the raw HTTP Status Code from the HttpResponse
+     *
+     * @return HTTP Status Code
+     */
+    public int httpResponseStatusCode() {
+        return httpResponse.getStatusLine().getStatusCode();
+    }
+
+    /**
+     * Get the reason phrase from the HttpResponse StatusLine
+     *
+     * @return Status message for the HttpResponse
+     */
+    public String httpResponseStatusMessage() {
+        return httpResponse.getStatusLine().getReasonPhrase();
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("\nAPIRequestException:");
         stringBuilder.append(String.format("\nMessage:%s", getMessage()));
         stringBuilder.append(String.format("\nHttpResponse:%s", httpResponse.toString()));
-        if (error.isPresent()){
+        if (error.isPresent()) {
             stringBuilder.append(String.format("\nError:%s", error.get()));
         }
-        if (getCause() != null){
+        if (getCause() != null) {
             stringBuilder.append(String.format("\nCause:%s",
-                                               getCause().getMessage()));
+                    getCause().getMessage()));
         }
         return stringBuilder.toString();
     }
@@ -109,30 +115,31 @@ public class APIRequestException extends RuntimeException {
         private APIError apiError;
         private Throwable cause;
 
-        public Builder setMessage(String message){
+        public Builder setMessage(String message) {
             this.message = message;
             return this;
         }
 
-        public Builder setHttpResponse(HttpResponse httpResponse){
+        public Builder setHttpResponse(HttpResponse httpResponse) {
             this.httpResponse = httpResponse;
             return this;
         }
-        public Builder setApiError(APIError apiError){
+
+        public Builder setApiError(APIError apiError) {
             this.apiError = apiError;
             return this;
         }
 
-        public Builder setCause(Throwable cause){
+        public Builder setCause(Throwable cause) {
             this.cause = cause;
             return this;
         }
 
-        public APIRequestException build(){
+        public APIRequestException build() {
             return new APIRequestException(message,
-                                    httpResponse,
-                                    Optional.fromNullable(apiError),
-                                    cause);
+                    httpResponse,
+                    Optional.fromNullable(apiError),
+                    cause);
         }
     }
 }

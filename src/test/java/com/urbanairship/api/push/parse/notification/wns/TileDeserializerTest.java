@@ -1,11 +1,10 @@
 package com.urbanairship.api.push.parse.notification.wns;
 
 import com.urbanairship.api.push.model.notification.wns.WNSTileData;
-import com.urbanairship.api.push.parse.*;
-import com.urbanairship.api.common.parse.*;
+import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 
 public class TileDeserializerTest {
@@ -14,18 +13,18 @@ public class TileDeserializerTest {
     @Test
     public void testDeserialize() throws Exception {
         String json
-            = "{"
-            + "  \"binding\": ["
-            + "      {"
-            + "        \"template\": \"TileText01\","
-            + "        \"lang\": \"en-US\""
-            + "      },"
-            + "      {"
-            + "        \"template\": \"TileText02\","
-            + "        \"lang\": \"en-UK\""
-            + "      }"
-            + "    ]"
-            + "}";
+                = "{"
+                + "  \"binding\": ["
+                + "      {"
+                + "        \"template\": \"TileText01\","
+                + "        \"lang\": \"en-US\""
+                + "      },"
+                + "      {"
+                + "        \"template\": \"TileText02\","
+                + "        \"lang\": \"en-UK\""
+                + "      }"
+                + "    ]"
+                + "}";
 
         WNSTileData parsed = mapper.readValue(json, WNSTileData.class);
 

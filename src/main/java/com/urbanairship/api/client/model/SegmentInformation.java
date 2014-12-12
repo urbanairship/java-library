@@ -74,7 +74,8 @@ public final class SegmentInformation {
         private String id;
         private Long modificationDate;
 
-        private Builder() { }
+        private Builder() {
+        }
 
         public Builder setCreationDate(Long value) {
             this.creationDate = value;

@@ -4,7 +4,6 @@
 
 package com.urbanairship.api.reports.parse;
 
-import com.google.common.base.Optional;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.reports.model.PerPushCounts;
@@ -30,7 +29,8 @@ public class PlatformCountsReader implements JsonObjectReader<PlatformCounts> {
     }
 
     public void readPlatformCounts(JsonParser jsonParser) throws IOException {
-        Map<String, PerPushCounts> obj = jsonParser.readValueAs(new TypeReference<Map<String, PerPushCounts>>() { });
+        Map<String, PerPushCounts> obj = jsonParser.readValueAs(new TypeReference<Map<String, PerPushCounts>>() {
+        });
 
         for (String s : obj.keySet()) {
             PlatformType type = PlatformType.find(s).get();
@@ -39,7 +39,8 @@ public class PlatformCountsReader implements JsonObjectReader<PlatformCounts> {
     }
 
     public void readRichPlatformCounts(JsonParser jsonParser) throws IOException {
-        Map<String, RichPerPushCounts> obj = jsonParser.readValueAs(new TypeReference<Map<String, RichPerPushCounts>>() { });
+        Map<String, RichPerPushCounts> obj = jsonParser.readValueAs(new TypeReference<Map<String, RichPerPushCounts>>() {
+        });
 
         for (String s : obj.keySet()) {
             PlatformType type = PlatformType.find(s).get();

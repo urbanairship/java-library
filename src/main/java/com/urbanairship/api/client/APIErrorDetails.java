@@ -18,14 +18,19 @@ public final class APIErrorDetails {
     private final Optional<Location> location;
 
 
-    private APIErrorDetails(String path, String error, Optional<Location> location){
+    private APIErrorDetails(String path, String error, Optional<Location> location) {
         this.path = path;
         this.error = error;
         this.location = location;
     }
 
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
     /**
      * Simple string describing the details of this error.
+     *
      * @return The error
      */
     public String getError() {
@@ -34,6 +39,7 @@ public final class APIErrorDetails {
 
     /**
      * Location of the error in the error object.
+     *
      * @return Path to error.
      */
     public String getPath() {
@@ -42,6 +48,7 @@ public final class APIErrorDetails {
 
     /**
      * Returns the location object that may be present for this error.
+     *
      * @return Location
      */
     public Optional<Location> getLocation() {
@@ -49,11 +56,11 @@ public final class APIErrorDetails {
     }
 
     @Override
-    public boolean equals(Object o){
-        if (this == o){
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if (o == null || this.getClass() != o.getClass()){
+        if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
 
@@ -64,23 +71,19 @@ public final class APIErrorDetails {
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return String.format("path:%s:error:%s:location:%s",
-                             path, error, location).hashCode();
+                path, error, location).hashCode();
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("\nAPIErrorDetails:");
         stringBuilder.append(String.format("\nPath:%s", path));
         stringBuilder.append(String.format("\nError:%s", error));
         stringBuilder.append(String.format("\nOptional Location:%s", location));
         return stringBuilder.toString();
-    }
-
-    public static Builder newBuilder(){
-        return new Builder();
     }
 
     /**
@@ -107,9 +110,9 @@ public final class APIErrorDetails {
             return this;
         }
 
-        public APIErrorDetails build(){
+        public APIErrorDetails build() {
             return new APIErrorDetails(path, error,
-                                       Optional.fromNullable(location));
+                    Optional.fromNullable(location));
         }
     }
 
@@ -122,9 +125,13 @@ public final class APIErrorDetails {
         private final Number line;
         private final Number column;
 
-        private Location(Number line, Number column){
+        private Location(Number line, Number column) {
             this.line = line;
             this.column = column;
+        }
+
+        public static Builder newBuilder() {
+            return new Builder();
         }
 
         public Number getLine() {
@@ -136,16 +143,16 @@ public final class APIErrorDetails {
         }
 
         @Override
-        public int hashCode(){
+        public int hashCode() {
             return String.format("line:%s:column:%s", line, column).hashCode();
         }
 
         @Override
-        public boolean equals(Object o){
-            if (this == o){
+        public boolean equals(Object o) {
+            if (this == o) {
                 return true;
             }
-            if (o == null || this.getClass() != o.getClass()){
+            if (o == null || this.getClass() != o.getClass()) {
                 return false;
             }
 
@@ -154,13 +161,8 @@ public final class APIErrorDetails {
         }
 
         @Override
-        public String toString(){
+        public String toString() {
             return String.format("Location:\nLine:%s\nColumn:%s", line, column);
-        }
-
-
-        public static Builder newBuilder(){
-            return new Builder();
         }
 
         /**
@@ -170,19 +172,20 @@ public final class APIErrorDetails {
             private Number line;
             private Number column;
 
-            private Builder(){}
+            private Builder() {
+            }
 
-            public Builder setLine(Number line){
+            public Builder setLine(Number line) {
                 this.line = line;
                 return this;
             }
 
-            public Builder setColumn(Number column){
+            public Builder setColumn(Number column) {
                 this.column = column;
                 return this;
             }
 
-            public Location build(){
+            public Location build() {
                 return new Location(line, column);
             }
         }

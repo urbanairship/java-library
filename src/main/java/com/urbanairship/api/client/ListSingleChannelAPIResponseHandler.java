@@ -31,8 +31,7 @@ public final class ListSingleChannelAPIResponseHandler implements ResponseHandle
         }
     }
 
-    private APIClientResponse<APIListSingleChannelResponse> handleSuccessfulRequest(HttpResponse response) throws IOException
-    {
+    private APIClientResponse<APIListSingleChannelResponse> handleSuccessfulRequest(HttpResponse response) throws IOException {
 
         builder.setHttpResponse(response);
 

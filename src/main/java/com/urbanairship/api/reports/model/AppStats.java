@@ -18,10 +18,6 @@ public final class AppStats {
     private final int windows8;
     private final int windowsPhone8;
 
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     private AppStats(DateTime start, int iOS, int blackBerry, int c2dm, int gcm, int windows8, int windowsPhone8) {
         this.start = start;
         this.iOS = iOS;
@@ -30,6 +26,10 @@ public final class AppStats {
         this.gcm = gcm;
         this.windows8 = windows8;
         this.windowsPhone8 = windowsPhone8;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
     public DateTime getStart() {
@@ -101,7 +101,8 @@ public final class AppStats {
         private int windows8;
         private int windowsPhone8;
 
-        private Builder() { }
+        private Builder() {
+        }
 
         public Builder setStartTime(DateTime value) {
             this.start = value;

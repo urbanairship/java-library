@@ -14,14 +14,14 @@ public final class TimeInApp {
     private final float ios;
     private final DateTime date;
 
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     private TimeInApp(float android, float ios, DateTime date) {
         this.android = android;
         this.ios = ios;
         this.date = date;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
     public float getAndroid() {
@@ -68,7 +68,8 @@ public final class TimeInApp {
         private float ios;
         private DateTime date;
 
-        private Builder() { }
+        private Builder() {
+        }
 
         public Builder setAndroid(float value) {
             this.android = value;

@@ -3,7 +3,6 @@ package com.urbanairship.api.push.model.notification;
 import com.urbanairship.api.push.model.notification.actions.Actions;
 import com.urbanairship.api.push.model.notification.actions.AddTagAction;
 import com.urbanairship.api.push.model.notification.actions.TagActionData;
-
 import org.junit.Test;
 
 import java.io.IOException;

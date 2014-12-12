@@ -23,7 +23,8 @@ public class ReportsAPITimeInAppResponseReader implements JsonObjectReader<Repor
     }
 
     public void readTimeInApp(JsonParser jsonParser) throws IOException {
-        builder.setObject((List<TimeInApp>) jsonParser.readValueAs(new TypeReference<List<TimeInApp>>() { }));
+        builder.setObject((List<TimeInApp>) jsonParser.readValueAs(new TypeReference<List<TimeInApp>>() {
+        }));
     }
 
     @Override
@@ -31,7 +32,7 @@ public class ReportsAPITimeInAppResponseReader implements JsonObjectReader<Repor
         try {
             return builder.build();
         } catch (Exception e) {
-            throw  new APIParsingException(e.getMessage());
+            throw new APIParsingException(e.getMessage());
         }
     }
 }

@@ -14,15 +14,15 @@ public final class AudienceSegment extends APIResponseModelObject {
     private final Predicate rootPredicate;
     private final Long count;
 
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     private AudienceSegment(String displayName, Operator rootOperator, Predicate rootPredicate, Long count) {
         this.displayName = displayName;
         this.rootOperator = rootOperator;
         this.rootPredicate = rootPredicate;
         this.count = count;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
     public String getDisplayName() {
@@ -100,10 +100,11 @@ public final class AudienceSegment extends APIResponseModelObject {
 
         private String displayName = null;
         private Operator rootOperator = null;
-        private Predicate rootPredicate =  null;
+        private Predicate rootPredicate = null;
         private Long count = null;
 
-        private Builder() {}
+        private Builder() {
+        }
 
         public Builder setDisplayName(String displayName) {
             this.displayName = displayName;
@@ -128,9 +129,9 @@ public final class AudienceSegment extends APIResponseModelObject {
         public AudienceSegment build() {
             Preconditions.checkNotNull(displayName);
             Preconditions.checkArgument(
-                (rootOperator == null && rootPredicate != null) ||
-                (rootOperator != null && rootPredicate == null),
-                "Must specify either a root operator or a root predicate"
+                    (rootOperator == null && rootPredicate != null) ||
+                            (rootOperator != null && rootPredicate == null),
+                    "Must specify either a root operator or a root predicate"
             );
 
             return new AudienceSegment(displayName, rootOperator, rootPredicate, count);

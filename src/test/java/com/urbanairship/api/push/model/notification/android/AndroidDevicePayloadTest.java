@@ -1,14 +1,14 @@
 package com.urbanairship.api.push.model.notification.android;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
-import java.util.Map;
-import java.util.HashMap;
 import com.urbanairship.api.push.model.PushExpiry;
+import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AndroidDevicePayloadTest {
 
-    @Test (expected = Exception.class)
+    @Test(expected = Exception.class)
     public void testNullExtraValues1() {
         Map<String, String> values = new HashMap<String, String>();
         values.put("this", null);

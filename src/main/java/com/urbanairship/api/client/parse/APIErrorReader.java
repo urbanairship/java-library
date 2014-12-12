@@ -7,8 +7,8 @@ package com.urbanairship.api.client.parse;
 
 import com.urbanairship.api.client.APIError;
 import com.urbanairship.api.client.APIErrorDetails;
-import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.JsonObjectReader;
 import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
@@ -21,7 +21,7 @@ public final class APIErrorReader implements JsonObjectReader<APIError> {
 
     private final APIError.Builder builder;
 
-    public APIErrorReader(){
+    public APIErrorReader() {
         this.builder = APIError.newBuilder();
     }
 
@@ -45,8 +45,7 @@ public final class APIErrorReader implements JsonObjectReader<APIError> {
     public APIError validateAndBuild() throws IOException {
         try {
             return builder.build();
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             throw new APIParsingException(ex.getMessage());
         }
     }

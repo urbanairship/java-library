@@ -20,10 +20,6 @@ public enum PlatformType {
         this.identifier = identifier;
     }
 
-    public String getIdentifier() {
-        return identifier;
-    }
-
     public static Optional<PlatformType> find(String identifier) {
         for (PlatformType deviceType : values()) {
             if (deviceType.getIdentifier().equals(identifier)) {
@@ -32,6 +28,10 @@ public enum PlatformType {
         }
 
         return Optional.absent();
+    }
+
+    public String getIdentifier() {
+        return identifier;
     }
 
 }

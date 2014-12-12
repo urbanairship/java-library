@@ -12,13 +12,13 @@ public final class RichPerPushCounts {
     private long responses;
     private long sends;
 
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     private RichPerPushCounts(long responses, long sends) {
         this.responses = responses;
         this.sends = sends;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
     public long getResponses() {
@@ -58,7 +58,8 @@ public final class RichPerPushCounts {
         private long responses;
         private long sends;
 
-        private Builder() { }
+        private Builder() {
+        }
 
         public Builder setResponses(long value) {
             this.responses = value;

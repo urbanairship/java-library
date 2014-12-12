@@ -1,16 +1,19 @@
 package com.urbanairship.api.push.parse.audience;
 
+import com.google.common.collect.Iterables;
+import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.audience.*;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import com.urbanairship.api.common.parse.APIParsingException;
-import com.google.common.collect.Iterables;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
 import java.util.Iterator;
 import java.util.UUID;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class SelectorDeserializerTest {
     private static final ObjectMapper mapper = PushObjectMapper.getInstance();
@@ -65,13 +68,13 @@ public class SelectorDeserializerTest {
     @Test
     public void testTagClass() throws Exception {
         String json = "{\n"
-            + "  \"tag\" : \"1\",\n"
-            + "  \"tag_class\" : \"autogroup\"\n"
-            + "}";
+                + "  \"tag\" : \"1\",\n"
+                + "  \"tag_class\" : \"autogroup\"\n"
+                + "}";
         Selector value = mapper.readValue(json, Selector.class);
         assertTrue(value.getType() == SelectorType.TAG);
         assertTrue(value instanceof ValueSelector);
-        ValueSelector vs = (ValueSelector)value;
+        ValueSelector vs = (ValueSelector) value;
         assertTrue(vs.getAttributes().isPresent());
         assertEquals(1, vs.getAttributes().get().size());
         assertEquals("autogroup", vs.getAttributes().get().get("tag_class"));
@@ -91,29 +94,29 @@ public class SelectorDeserializerTest {
     @Test
     public void testCompoundSelector() throws Exception {
         String json = "{\n"
-            + "  \"and\" : [\n"
-            + "    { \"tag\" : \"herp\" }, \n"
-            + "    { \"tag\" : \"derp\" } \n"
-            + "  ]\n"
-            + "}";
+                + "  \"and\" : [\n"
+                + "    { \"tag\" : \"herp\" }, \n"
+                + "    { \"tag\" : \"derp\" } \n"
+                + "  ]\n"
+                + "}";
         Selector s = mapper.readValue(json, Selector.class);
         assertTrue(s instanceof CompoundSelector);
         assertEquals(SelectorType.AND, s.getType());
 
-        CompoundSelector cs = (CompoundSelector)s;
+        CompoundSelector cs = (CompoundSelector) s;
         assertEquals(2, Iterables.size(cs.getChildren()));
 
         Iterator<Selector> i = cs.getChildren().iterator();
 
         Selector c = i.next();
         assertTrue(c instanceof ValueSelector);
-        ValueSelector vs = (ValueSelector)c;
+        ValueSelector vs = (ValueSelector) c;
         assertEquals(SelectorType.TAG, c.getType());
         assertEquals("herp", vs.getValue());
 
         c = i.next();
         assertTrue(c instanceof ValueSelector);
-        vs = (ValueSelector)c;
+        vs = (ValueSelector) c;
         assertEquals(SelectorType.TAG, c.getType());
         assertEquals("derp", vs.getValue());
     }
@@ -121,34 +124,34 @@ public class SelectorDeserializerTest {
     @Test
     public void testNOT() throws Exception {
         String json = "{"
-            + "  \"not\" : {"
-            + "    \"tag\" : \"derp\""
-            + "  }"
-            + "}";
+                + "  \"not\" : {"
+                + "    \"tag\" : \"derp\""
+                + "  }"
+                + "}";
 
         Selector s = mapper.readValue(json, Selector.class);
         assertTrue(s instanceof CompoundSelector);
         assertEquals(SelectorType.NOT, s.getType());
-        CompoundSelector cs = (CompoundSelector)s;
+        CompoundSelector cs = (CompoundSelector) s;
         assertEquals(1, Iterables.size(cs.getChildren()));
     }
 
     @Test
     public void testImplicitOR() throws Exception {
         String json = "{\n"
-            + "  \"tag\": [\n"
-            + "    \"Joy\",\n"
-            + "    \"Division\",\n"
-            + "    \"New\",\n"
-            + "    \"Order\"\n"
-            + "  ]\n"
-            + "}";
+                + "  \"tag\": [\n"
+                + "    \"Joy\",\n"
+                + "    \"Division\",\n"
+                + "    \"New\",\n"
+                + "    \"Order\"\n"
+                + "  ]\n"
+                + "}";
 
         Selector s = mapper.readValue(json, Selector.class);
         assertTrue(s instanceof CompoundSelector);
         assertEquals(SelectorType.OR, s.getType());
 
-        CompoundSelector cs = (CompoundSelector)s;
+        CompoundSelector cs = (CompoundSelector) s;
         assertEquals(4, Iterables.size(cs.getChildren()));
 
         Iterator<Selector> i = cs.getChildren().iterator();
@@ -156,22 +159,22 @@ public class SelectorDeserializerTest {
         s = i.next();
         assertTrue(s instanceof ValueSelector);
         assertEquals(SelectorType.TAG, s.getType());
-        assertEquals("Joy", ((ValueSelector)s).getValue());
+        assertEquals("Joy", ((ValueSelector) s).getValue());
 
         s = i.next();
         assertTrue(s instanceof ValueSelector);
         assertEquals(SelectorType.TAG, s.getType());
-        assertEquals("Division", ((ValueSelector)s).getValue());
+        assertEquals("Division", ((ValueSelector) s).getValue());
 
         s = i.next();
         assertTrue(s instanceof ValueSelector);
         assertEquals(SelectorType.TAG, s.getType());
-        assertEquals("New", ((ValueSelector)s).getValue());
+        assertEquals("New", ((ValueSelector) s).getValue());
 
         s = i.next();
         assertTrue(s instanceof ValueSelector);
         assertEquals(SelectorType.TAG, s.getType());
-        assertEquals("Order", ((ValueSelector)s).getValue());
+        assertEquals("Order", ((ValueSelector) s).getValue());
     }
 
     @Test
@@ -181,8 +184,8 @@ public class SelectorDeserializerTest {
 
         String json = "{\n"
                 + "  \"apid\": [\n"
-                + "    \""+apid1+"\",\n"
-                + "    \""+apid2+"\"\n"
+                + "    \"" + apid1 + "\",\n"
+                + "    \"" + apid2 + "\"\n"
                 + "  ]\n"
                 + "}";
 
@@ -190,7 +193,7 @@ public class SelectorDeserializerTest {
         assertTrue(s instanceof CompoundSelector);
         assertEquals(SelectorType.OR, s.getType());
 
-        CompoundSelector cs = (CompoundSelector)s;
+        CompoundSelector cs = (CompoundSelector) s;
         assertEquals(2, Iterables.size(cs.getChildren()));
 
         Iterator<Selector> i = cs.getChildren().iterator();
@@ -198,39 +201,39 @@ public class SelectorDeserializerTest {
         s = i.next();
         assertTrue(s instanceof ValueSelector);
         assertEquals(SelectorType.APID, s.getType());
-        assertEquals(apid1, ((ValueSelector)s).getValue());
+        assertEquals(apid1, ((ValueSelector) s).getValue());
 
         s = i.next();
         assertTrue(s instanceof ValueSelector);
         assertEquals(SelectorType.APID, s.getType());
-        assertEquals(apid2, ((ValueSelector)s).getValue());
+        assertEquals(apid2, ((ValueSelector) s).getValue());
 
     }
 
     @Test
     public void testNestedCompound() throws Exception {
         String json = "{\n"
-            + "  \"and\" : [\n"
-            + "    { \"or\" : [\n"
-            + "        { \"alias\" : \"s1\" },\n"
-            + "        { \"alias\" : \"s2\" }\n"
-            + "      ] },\n"
-            + "    { \"or\" : [\n"
-            + "        { \"tag\" : \"t1\" },\n"
-            + "        { \"tag\" : \"t2\" }\n"
-            + "      ] }\n"
-            + "  ]\n"
-            + "}";
+                + "  \"and\" : [\n"
+                + "    { \"or\" : [\n"
+                + "        { \"alias\" : \"s1\" },\n"
+                + "        { \"alias\" : \"s2\" }\n"
+                + "      ] },\n"
+                + "    { \"or\" : [\n"
+                + "        { \"tag\" : \"t1\" },\n"
+                + "        { \"tag\" : \"t2\" }\n"
+                + "      ] }\n"
+                + "  ]\n"
+                + "}";
         Selector s = mapper.readValue(json, Selector.class);
         assertEquals(SelectorType.AND, s.getType());
 
-        assertEquals(2, Iterables.size(((CompoundSelector)s).getChildren()));
+        assertEquals(2, Iterables.size(((CompoundSelector) s).getChildren()));
 
-        Iterator<Selector> i = ((CompoundSelector)s).getChildren().iterator();
+        Iterator<Selector> i = ((CompoundSelector) s).getChildren().iterator();
         Selector c = i.next();
         assertTrue(c instanceof CompoundSelector);
         assertEquals(SelectorType.OR, c.getType());
-        assertEquals(SelectorType.ALIAS, ((CompoundSelector)c).getChildren().iterator().next().getType());
+        assertEquals(SelectorType.ALIAS, ((CompoundSelector) c).getChildren().iterator().next().getType());
     }
 
     @Test
@@ -253,75 +256,75 @@ public class SelectorDeserializerTest {
      * Illegal expressions
      */
 
-    @Test(expected=APIParsingException.class)
+    @Test(expected = APIParsingException.class)
     public void testInvalidAtomicSelector() throws Exception {
         mapper.readValue("\"derped\"", Selector.class);
     }
 
-    @Test(expected=APIParsingException.class)
+    @Test(expected = APIParsingException.class)
     public void testAtomicWithArgument() throws Exception {
         mapper.readValue("{ \"all\" : \"some\" }", Selector.class);
     }
 
-    @Test(expected=APIParsingException.class)
+    @Test(expected = APIParsingException.class)
     public void testBadTagValue() throws Exception {
         mapper.readValue("{ \"tag\" : 10 }", Selector.class);
     }
 
-    @Test(expected=APIParsingException.class)
+    @Test(expected = APIParsingException.class)
     public void testUnknownSelectorType() throws Exception {
         mapper.readValue("{ \"derp\" : \"value\" }", Selector.class);
     }
 
-    @Test(expected=APIParsingException.class)
+    @Test(expected = APIParsingException.class)
     public void testAtomicNestedInCompound() throws Exception {
         String json = "{\n"
-            + "  \"or\" : [\n"
-            + "    \"all\",\n"
-            + "    \"triggered\"\n"
-            + "  ]\n"
-            + "}";
+                + "  \"or\" : [\n"
+                + "    \"all\",\n"
+                + "    \"triggered\"\n"
+                + "  ]\n"
+                + "}";
         mapper.readValue(json, Selector.class);
     }
 
-    @Test(expected=APIParsingException.class)
+    @Test(expected = APIParsingException.class)
     public void testEmptyCompoundExpression() throws Exception {
         mapper.readValue("{ \"OR\" : [ ] }", Selector.class);
     }
 
-    @Test(expected=APIParsingException.class)
+    @Test(expected = APIParsingException.class)
     public void testTooManyArgumentsToNOT() throws Exception {
         String json = "{\n"
-            + "  \"not\" : [\n"
-            + "    { \"tag\" : \"wat\" },\n"
-            + "    { \"tag\" : \"derp\" }\n"
-            + "  ]\n"
-            + "}";
+                + "  \"not\" : [\n"
+                + "    { \"tag\" : \"wat\" },\n"
+                + "    { \"tag\" : \"derp\" }\n"
+                + "  ]\n"
+                + "}";
         mapper.readValue(json, Selector.class);
     }
 
-    @Test(expected=APIParsingException.class)
+    @Test(expected = APIParsingException.class)
     public void testBadImplicitOR() throws Exception {
         String json = "{\n"
-            + "  \"alias\" : [\n"
-            + "    \"seg1\",\n"
-            + "    { \"tag\" : \"whoops\" }\n"
-            + "  ]\n"
-            + "}";
+                + "  \"alias\" : [\n"
+                + "    \"seg1\",\n"
+                + "    { \"tag\" : \"whoops\" }\n"
+                + "  ]\n"
+                + "}";
         mapper.readValue(json, Selector.class);
     }
 
-    @Test(expected=APIParsingException.class)
+    @Test(expected = APIParsingException.class)
     public void testCompoundValidation_AND1() throws Exception {
         mapper.readValue("{\"and\" : \"foo\"}", Selector.class);
     }
 
-    @Test(expected=APIParsingException.class)
+    @Test(expected = APIParsingException.class)
     public void testCompoundValidation_NOT() throws Exception {
         mapper.readValue("{\"not\" : [ { \"tag\" : \"foo\" }, { \"tag\" : \"bar\" } ] }", Selector.class);
     }
 
-    @Test(expected=APIParsingException.class)
+    @Test(expected = APIParsingException.class)
     public void testCompoundValidation_ContainsAtomic() throws Exception {
         mapper.readValue("{\"or\" : [ \"all\", \"triggered\" ] }", Selector.class);
     }

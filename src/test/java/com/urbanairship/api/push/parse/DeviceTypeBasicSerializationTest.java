@@ -19,7 +19,8 @@ public class DeviceTypeBasicSerializationTest {
         Set<DeviceType> deviceType = EnumSet.allOf(DeviceType.class);
 
         String json = mapper.writeValueAsString(deviceType);
-        Set<DeviceType> parsed = mapper.readValue(json, new TypeReference<Set<DeviceType>>() {});
+        Set<DeviceType> parsed = mapper.readValue(json, new TypeReference<Set<DeviceType>>() {
+        });
 
         assertEquals(deviceType, parsed);
     }

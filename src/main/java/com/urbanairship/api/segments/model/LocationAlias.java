@@ -17,6 +17,10 @@ public final class LocationAlias {
         this.aliasValue = aliasValue;
     }
 
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
     public String getAliasValue() {
         return aliasValue;
     }
@@ -61,16 +65,13 @@ public final class LocationAlias {
                 '}';
     }
 
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     public static class Builder {
 
         private String aliasType;
         private String aliasValue;
 
-        private Builder() { }
+        private Builder() {
+        }
 
         public Builder setAliasValue(String aliasValue) {
             this.aliasValue = aliasValue;

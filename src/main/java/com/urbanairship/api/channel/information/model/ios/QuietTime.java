@@ -13,13 +13,13 @@ public final class QuietTime {
     private final String start;
     private final String end;
 
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     private QuietTime(String start, String end) {
         this.start = start;
         this.end = end;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
     public String getStart() {
@@ -59,14 +59,15 @@ public final class QuietTime {
         private String start = null;
         private String end = null;
 
-        private Builder() { }
+        private Builder() {
+        }
 
-        public Builder setStart(String start){
+        public Builder setStart(String start) {
             this.start = start;
             return this;
         }
 
-        public Builder setEnd(String end){
+        public Builder setEnd(String end) {
             this.end = end;
             return this;
         }

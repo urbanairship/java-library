@@ -26,50 +26,50 @@ public class OperatorDeserializerTest {
     @Test
     public void testSimpleOperators() throws Exception {
         String json =
-            "{\"or\": [" +
-                "{\"tag\": \"tag1\"}," +
-                "{\"tag\": \"tag2\"}," +
-                "{\"tag\": \"tag3\"}" +
-            "]}";
+                "{\"or\": [" +
+                        "{\"tag\": \"tag1\"}," +
+                        "{\"tag\": \"tag2\"}," +
+                        "{\"tag\": \"tag3\"}" +
+                        "]}";
 
         Operator expected = Operator.newBuilder(OperatorType.OR)
-            .addPredicate(buildTagPredicate("tag1"))
-            .addPredicate(buildTagPredicate("tag2"))
-            .addPredicate(buildTagPredicate("tag3"))
-            .build();
-
-        Assert.assertEquals(expected, parse(json));
-
-        json =
-            "{\"and\": [" +
-                "{\"tag\": \"tag1\"}," +
-                "{\"tag\": \"tag2\"}," +
-                "{\"tag\": \"tag3\"}" +
-            "]}";
-
-        expected = Operator.newBuilder(OperatorType.AND)
-            .addPredicate(buildTagPredicate("tag1"))
-            .addPredicate(buildTagPredicate("tag2"))
-            .addPredicate(buildTagPredicate("tag3"))
-            .build();
-
-        Assert.assertEquals(expected, parse(json));
-
-        json =
-            "{\"not\": {\"and\" : [" +
-                "{\"tag\": \"tag1\"}," +
-                "{\"tag\": \"tag2\"}," +
-                "{\"tag\": \"tag3\"}" +
-            "]}}";
-
-        expected = Operator.newBuilder(OperatorType.NOT)
-            .addOperator(Operator.newBuilder(OperatorType.AND)
                 .addPredicate(buildTagPredicate("tag1"))
                 .addPredicate(buildTagPredicate("tag2"))
                 .addPredicate(buildTagPredicate("tag3"))
-                .build()
-            )
-            .build();
+                .build();
+
+        Assert.assertEquals(expected, parse(json));
+
+        json =
+                "{\"and\": [" +
+                        "{\"tag\": \"tag1\"}," +
+                        "{\"tag\": \"tag2\"}," +
+                        "{\"tag\": \"tag3\"}" +
+                        "]}";
+
+        expected = Operator.newBuilder(OperatorType.AND)
+                .addPredicate(buildTagPredicate("tag1"))
+                .addPredicate(buildTagPredicate("tag2"))
+                .addPredicate(buildTagPredicate("tag3"))
+                .build();
+
+        Assert.assertEquals(expected, parse(json));
+
+        json =
+                "{\"not\": {\"and\" : [" +
+                        "{\"tag\": \"tag1\"}," +
+                        "{\"tag\": \"tag2\"}," +
+                        "{\"tag\": \"tag3\"}" +
+                        "]}}";
+
+        expected = Operator.newBuilder(OperatorType.NOT)
+                .addOperator(Operator.newBuilder(OperatorType.AND)
+                                .addPredicate(buildTagPredicate("tag1"))
+                                .addPredicate(buildTagPredicate("tag2"))
+                                .addPredicate(buildTagPredicate("tag3"))
+                                .build()
+                )
+                .build();
 
         Assert.assertEquals(expected, parse(json));
     }
@@ -81,25 +81,25 @@ public class OperatorDeserializerTest {
     @Test
     public void testNestedOperators() throws Exception {
         String json =
-            "{\"or\": [" +
-                "{\"and\": [" +
-                    "{\"tag\": \"tag1\"}," +
-                    "{\"tag\": \"tag2\"}," +
-                    "{\"tag\": \"tag3\"}" +
-                "]}," +
-                "{\"location\": {\"id\": \"blah\", \"date\": {\"recent\": {\"days\": 3}}}}" +
-            "]}";
+                "{\"or\": [" +
+                        "{\"and\": [" +
+                        "{\"tag\": \"tag1\"}," +
+                        "{\"tag\": \"tag2\"}," +
+                        "{\"tag\": \"tag3\"}" +
+                        "]}," +
+                        "{\"location\": {\"id\": \"blah\", \"date\": {\"recent\": {\"days\": 3}}}}" +
+                        "]}";
 
         Operator expected = Operator.newBuilder(OperatorType.OR)
-            .addOperator(Operator.newBuilder(OperatorType.AND)
-                    .addPredicate(buildTagPredicate("tag1"))
-                    .addPredicate(buildTagPredicate("tag2"))
-                    .addPredicate(buildTagPredicate("tag3"))
-                    .build()
-            )
-            .addPredicate(new LocationPredicate(new LocationIdentifier("blah"), new RecentDateRange(
-                    DateRangeUnit.DAYS, 3), PresenceTimeframe.ANYTIME))
-            .build();
+                .addOperator(Operator.newBuilder(OperatorType.AND)
+                                .addPredicate(buildTagPredicate("tag1"))
+                                .addPredicate(buildTagPredicate("tag2"))
+                                .addPredicate(buildTagPredicate("tag3"))
+                                .build()
+                )
+                .addPredicate(new LocationPredicate(new LocationIdentifier("blah"), new RecentDateRange(
+                        DateRangeUnit.DAYS, 3), PresenceTimeframe.ANYTIME))
+                .build();
 
         Assert.assertEquals(expected, parse(json));
     }
@@ -137,25 +137,25 @@ public class OperatorDeserializerTest {
     @Test(expected = InvalidAudienceSegmentException.class)
     public void testOperatorsMaxDepthExceeded() throws Exception {
         String json =
-            "{\"and\" : [" +
-                "{\"or\": [" +
-                    "{\"and\": [" +
+                "{\"and\" : [" +
+                        "{\"or\": [" +
+                        "{\"and\": [" +
                         "{\"not\": {\"or\": [" +
-                            "{\"and\": [" +
-                                "{\"not\": {\"or\": [" +
-                                    "{\"and\": [" +
-                                        "{\"not\": {\"or\": [" +
-                                            "{\"and\": [" +
-                                                "{\"tag\": \"bleh\"}" +
-                                            "]}" +
-                                        "]}}" +
-                                    "]}" +
-                                "]}}" +
-                            "]}" +
+                        "{\"and\": [" +
+                        "{\"not\": {\"or\": [" +
+                        "{\"and\": [" +
+                        "{\"not\": {\"or\": [" +
+                        "{\"and\": [" +
+                        "{\"tag\": \"bleh\"}" +
+                        "]}" +
                         "]}}" +
-                    "]}" +
-                "]}" +
-            "]}";
+                        "]}" +
+                        "]}}" +
+                        "]}" +
+                        "]}}" +
+                        "]}" +
+                        "]}" +
+                        "]}";
 
         parse(json);
     }
@@ -163,9 +163,9 @@ public class OperatorDeserializerTest {
     @Test(expected = InvalidAudienceSegmentException.class)
     public void testDoubleNegativeInvalid() throws Exception {
         String json =
-            "{\"not\": {\"not\" : {" +
-                "{\"tag\": \"tag1\"}," +
-            "}}}";
+                "{\"not\": {\"not\" : {" +
+                        "{\"tag\": \"tag1\"}," +
+                        "}}}";
 
         parse(json);
     }

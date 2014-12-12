@@ -33,7 +33,7 @@ public class APIListSingleChannelResponseDeserializer extends JsonDeserializer<A
 
     private final StandardObjectDeserializer<APIListSingleChannelResponse, ?> deserializer;
 
-    public APIListSingleChannelResponseDeserializer(){
+    public APIListSingleChannelResponseDeserializer() {
         this.deserializer = new StandardObjectDeserializer<APIListSingleChannelResponse, APIListSingleChannelResponseReader>(
                 FIELD_PARSER,
                 new Supplier<APIListSingleChannelResponseReader>() {

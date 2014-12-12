@@ -51,7 +51,8 @@ public class ReportsAPITimeInAppResponse {
     public static class Builder {
         private List<TimeInApp> object;
 
-        private Builder() { }
+        private Builder() {
+        }
 
         public Builder setObject(List<TimeInApp> value) {
             this.object = value;

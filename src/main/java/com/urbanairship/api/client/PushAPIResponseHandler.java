@@ -7,13 +7,11 @@ package com.urbanairship.api.client;
 import com.urbanairship.api.client.model.APIClientResponse;
 import com.urbanairship.api.client.model.APIPushResponse;
 import com.urbanairship.api.client.parse.APIResponseObjectMapper;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +29,7 @@ public final class PushAPIResponseHandler implements ResponseHandler<APIClientRe
 
         int statusCode = response.getStatusLine().getStatusCode();
 
-        switch (statusCode){
+        switch (statusCode) {
             case HttpStatus.SC_ACCEPTED:
                 if (logger.isDebugEnabled()) {
                     logger.debug(String.format("Handling response code:%s", statusCode));
@@ -46,7 +44,7 @@ public final class PushAPIResponseHandler implements ResponseHandler<APIClientRe
                 break;
         }
 
-        if (statusCode >= 200 && statusCode < 300){
+        if (statusCode >= 200 && statusCode < 300) {
             return handleSuccessfulPush(response);
         } else {
             throw APIRequestException.exceptionForResponse(response);
