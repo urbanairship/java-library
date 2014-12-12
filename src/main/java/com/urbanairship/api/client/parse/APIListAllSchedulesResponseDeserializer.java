@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Urban Airship and Contributors
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.client.parse;
@@ -17,8 +17,7 @@ import org.codehaus.jackson.map.JsonDeserializer;
 
 import java.io.IOException;
 
-// No Unit Tests for this Class
-public class APIListAllSchedulesResponseDeserializer extends JsonDeserializer<APIListAllSchedulesResponse> {
+public final class APIListAllSchedulesResponseDeserializer extends JsonDeserializer<APIListAllSchedulesResponse> {
 
     private static final FieldParserRegistry<APIListAllSchedulesResponse, APIListAllSchedulesResponseReader> FIELD_PARSER =
             new MapFieldParserRegistry<APIListAllSchedulesResponse, APIListAllSchedulesResponseReader>(

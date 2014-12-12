@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Urban Airship and Contributors
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.client.parse;
@@ -21,7 +21,7 @@ the boilerplate necessary for Jackson stream parsing, which is essentially what
  If you're using Intellij, be sure and toggle open the code that's
  been collapsed.
  */
-class APIErrorDeserializer extends JsonDeserializer<APIError> {
+public final class APIErrorDeserializer extends JsonDeserializer<APIError> {
 
     private static final FieldParserRegistry<APIError, APIErrorReader> FIELD_PARSERS =
             new MapFieldParserRegistry<APIError, APIErrorReader>(

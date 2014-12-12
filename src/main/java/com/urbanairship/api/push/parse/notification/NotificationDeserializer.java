@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ */
+
 package com.urbanairship.api.push.parse.notification;
 
 import com.google.common.base.Supplier;
