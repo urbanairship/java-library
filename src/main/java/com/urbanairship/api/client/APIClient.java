@@ -14,6 +14,8 @@ import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.reports.model.PerPushDetailResponse;
 import com.urbanairship.api.reports.model.PerPushSeriesResponse;
+import com.urbanairship.api.reports.model.ReportsAPIOpensResponse;
+import com.urbanairship.api.reports.model.ReportsAPITimeInAppResponse;
 import com.urbanairship.api.reports.model.SinglePushInfoResponse;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.segments.model.AudienceSegment;
@@ -71,6 +73,8 @@ public class APIClient {
     private final static String API_REPORTS_PER_PUSH_DETAIL_PATH = "/api/reports/perpush/detail/";
     private final static String API_REPORTS_PER_PUSH_SERIES_PATH = "/api/reports/perpush/series/";
     private final static String API_REPORTS_PUSH_RESPONSE_PATH="/api/reports/responses/";
+    private final static String API_REPORTS_APPS_OPEN_PATH = "/api/reports/opens/";
+    private final static String API_REPORTS_TIME_IN_APP_PATH = "/api/reports/timeinapp/";
 
     /* User auth */
     private final String appKey;
@@ -649,6 +653,57 @@ public class APIClient {
 
         return provisionExecutor().execute(req).handleResponse(new ListReportsListingResponseHandler());
 
+    }
+    public APIClientResponse<ReportsAPIOpensResponse> listAppsOpenReport(DateTime start, DateTime end, String precision) throws IOException {
+
+        Preconditions.checkArgument(precision.toUpperCase().equals("HOURLY") ||
+                        precision.toUpperCase().equals("DAILY") ||
+                        precision.toUpperCase().equals("MONTHLY"),
+                "Precision must be specified as HOURLY, DAILY or MONTHLY");
+
+        Preconditions.checkNotNull(start, "Start time is required when performing listing of apps open");
+        Preconditions.checkNotNull(end, "End time is required when performing listing of apps open");
+        Preconditions.checkArgument(start.isBefore(end), "Start time must be before End time");
+
+        URIBuilder builder = new URIBuilder(baseURI.resolve(API_REPORTS_APPS_OPEN_PATH));
+
+        builder.addParameter("precision", precision.toUpperCase());
+        builder.addParameter("start", start.toLocalDateTime().toString());
+        builder.addParameter("end", end.toLocalDateTime().toString());
+
+        Request req = provisionRequest(Request.Get(builder.toString()));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list apps open report request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new AppsOpenReportAPIResponseHandler());
+    }
+
+    public APIClientResponse<ReportsAPITimeInAppResponse> listTimeInAppReport(DateTime start, DateTime end, String precision) throws IOException {
+
+        Preconditions.checkArgument(precision.toUpperCase().equals("HOURLY") ||
+                        precision.toUpperCase().equals("DAILY") ||
+                        precision.toUpperCase().equals("MONTHLY"),
+                "Precision must be specified as HOURLY, DAILY or MONTHLY");
+
+        Preconditions.checkNotNull(start, "Start time is required when performing listing of time in app");
+        Preconditions.checkNotNull(end, "End time is required when performing listing of time in app");
+        Preconditions.checkArgument(start.isBefore(end), "Start time must be before End time");
+
+        URIBuilder builder = new URIBuilder(baseURI.resolve(API_REPORTS_TIME_IN_APP_PATH));
+
+        builder.addParameter("precision", precision.toUpperCase());
+        builder.addParameter("start", start.toLocalDateTime().toString());
+        builder.addParameter("end", end.toLocalDateTime().toString());
+
+        Request req = provisionRequest(Request.Get(builder.toString()));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list time in app report request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new TimeInAppReportAPIResponseHandler());
     }
 
     /**

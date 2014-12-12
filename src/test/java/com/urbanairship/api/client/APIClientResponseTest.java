@@ -12,6 +12,8 @@ import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.reports.model.PerPushDetailResponse;
 import com.urbanairship.api.reports.model.PerPushSeriesResponse;
+import com.urbanairship.api.reports.model.ReportsAPIOpensResponse;
+import com.urbanairship.api.reports.model.ReportsAPITimeInAppResponse;
 import com.urbanairship.api.reports.model.SinglePushInfoResponse;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
@@ -72,6 +74,48 @@ public class APIClientResponseTest {
                 .setHttpResponse(httpResponse);
 
         APIClientResponse<PerPushDetailResponse> testResponse = builder.build();
+
+        assertTrue("HTTP response not set properly",
+                testResponse.getHttpResponse().equals(httpResponse));
+
+        assertTrue("APIResponse not set properly",
+                testResponse.getApiResponse().equals(obj));
+    }
+
+    @Test
+    public void testTimeInAppReportAPIResponse(){
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP",1,1), 200, "OK"));
+
+        ReportsAPITimeInAppResponse obj = ReportsAPITimeInAppResponse.newBuilder().build();
+
+        APIClientResponse.Builder<ReportsAPITimeInAppResponse> builder =
+                APIClientResponse.newTimeInAppReportResponseBuilder()
+                        .setApiResponse(obj)
+                        .setHttpResponse(httpResponse);
+
+        APIClientResponse<ReportsAPITimeInAppResponse> testResponse = builder.build();
+
+        assertTrue("HTTP response not set properly",
+                testResponse.getHttpResponse().equals(httpResponse));
+
+        assertTrue("APIResponse not set properly",
+                testResponse.getApiResponse().equals(obj));
+    }
+
+    @Test
+    public void testAppsOpenReportAPIResponse(){
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP",1,1), 200, "OK"));
+
+        ReportsAPIOpensResponse obj = ReportsAPIOpensResponse.newBuilder().build();
+
+        APIClientResponse.Builder<ReportsAPIOpensResponse> builder =
+                APIClientResponse.newAppsOpenReportResponseBuilder()
+                        .setApiResponse(obj)
+                        .setHttpResponse(httpResponse);
+
+        APIClientResponse<ReportsAPIOpensResponse> testResponse = builder.build();
 
         assertTrue("HTTP response not set properly",
                 testResponse.getHttpResponse().equals(httpResponse));
