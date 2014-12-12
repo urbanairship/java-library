@@ -18,17 +18,16 @@ import com.urbanairship.api.location.model.Location;
 import com.urbanairship.api.location.parse.LocationDeserializer;
 import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.push.model.PushPayload;
-
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.push.parse.PushPayloadDeserializer;
 import com.urbanairship.api.reports.model.AppStats;
+import com.urbanairship.api.reports.model.SinglePushInfoResponse;
 import com.urbanairship.api.reports.parse.AppStatsDeserializer;
+import com.urbanairship.api.reports.parse.SinglePushInfoResponseDeserializer;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.schedule.parse.ScheduleDeserializer;
 import com.urbanairship.api.schedule.parse.SchedulePayloadDeserializer;
-
-
 import com.urbanairship.api.segments.model.*;
 import com.urbanairship.api.segments.parse.*;
 import org.codehaus.jackson.Version;
@@ -55,7 +54,6 @@ public final class APIResponseObjectMapper {
         MODULE.addDeserializer(SchedulePayload.class, SchedulePayloadDeserializer.INSTANCE);
         MODULE.addDeserializer(PushPayload.class, new PushPayloadDeserializer());
         MODULE.addDeserializer(APIListTagsResponse.class, new APIListTagsResponseDeserializer());
-
         MODULE.addDeserializer(SegmentInformation.class, new SegmentInformationDeserializer());
         MODULE.addDeserializer(APIListAllSegmentsResponse.class, new APIListAllSegmentsResponseDeserializer());
         MODULE.addDeserializer(AudienceSegment.class, AudienceSegmentDeserializer.INSTANCE);
@@ -65,9 +63,6 @@ public final class APIResponseObjectMapper {
         MODULE.addDeserializer(Operator.class, OperatorDeserializer.INSTANCE);
         MODULE.addSerializer(Operator.class, OperatorSerializer.INSTANCE);
         MODULE.addDeserializer(Predicate.class, PredicateDeserializer.INSTANCE);
-
-
-
         MODULE.addDeserializer(IosSettings.class, new IosSettingsDeserializer());
         MODULE.addDeserializer(QuietTime.class, new QuietTimeDeserializer());
         MODULE.addDeserializer(ChannelView.class, new ChannelViewDeserializer());
@@ -75,6 +70,8 @@ public final class APIResponseObjectMapper {
         MODULE.addDeserializer(APIListSingleChannelResponse.class, new APIListSingleChannelResponseDeserializer());
         MODULE.addDeserializer(APIListAllChannelsResponse.class, new APIListAllChannelsResponseDeserializer());
         MODULE.addDeserializer(AppStats.class, new AppStatsDeserializer());
+        MODULE.addDeserializer(SinglePushInfoResponse.class, new SinglePushInfoResponseDeserializer());
+        MODULE.addDeserializer(APIReportsPushListingResponse.class, new APIReportsListingResponseDeserializer());
         MODULE.addDeserializer(Location.class, new LocationDeserializer());
         MODULE.addDeserializer(APILocationResponse.class, new APILocationResponseDeserializer());
 

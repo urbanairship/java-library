@@ -7,14 +7,13 @@ package com.urbanairship.api.client;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
-import com.urbanairship.api.channel.information.model.ChannelView;
 import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.Point;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.reports.model.AppStats;
+import com.urbanairship.api.reports.model.SinglePushInfoResponse;
 import com.urbanairship.api.schedule.model.SchedulePayload;
-
 import com.urbanairship.api.segments.model.AudienceSegment;
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
 import com.urbanairship.api.tag.model.BatchModificationPayload;
@@ -61,6 +60,7 @@ public class APIClient {
     private final static String API_SEGMENTS_PATH = "/api/segments/";
     private final static String API_DEVICE_CHANNELS_PATH = "/api/channels/";
     private final static String API_STATISTICS_PATH = "/api/push/stats/";
+    private final static String API_REPORTS_PUSH_RESPONSE_PATH="/api/reports/responses/";
 
     /* User auth */
     private final String appKey;
@@ -527,6 +527,48 @@ public class APIClient {
     }
 
     /* Reports API */
+
+    public APIClientResponse<SinglePushInfoResponse> listIndividualPushResponseStatistics(String id) throws IOException {
+        Preconditions.checkNotNull(id, "Push id is required when performing listing of individual push response statistics.");
+
+        URIBuilder builder = new URIBuilder(baseURI.resolve(API_REPORTS_PUSH_RESPONSE_PATH + id));
+
+        Request req = provisionRequest(Request.Get(builder.toString()));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list Statistics in CSV String format request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ListIndividualPushAPIResponseHandler());
+    }
+
+    public APIClientResponse<APIReportsPushListingResponse> listReportsResponseListing(DateTime start,
+                                                                                   DateTime end,
+                                                                                   Optional<Integer> limit,
+                                                                                   Optional<String> pushIDStart)
+    throws IOException {
+
+        Preconditions.checkNotNull(start, "Start time is required when performing listing of push statistics");
+        Preconditions.checkNotNull(end, "End time is required when performing listing of push statistics");
+        Preconditions.checkArgument(start.isBefore(end), "Start time must be before End time");
+
+        URIBuilder builder = new URIBuilder(baseURI.resolve(API_REPORTS_PUSH_RESPONSE_PATH + "list"));
+
+        builder.addParameter("start", start.toLocalDateTime().toString());
+        builder.addParameter("end", end.toLocalDateTime().toString());
+
+        if (limit.isPresent()) { builder.addParameter("limit", limit.get().toString()); }
+        if (pushIDStart.isPresent()) { builder.addParameter("push_id_start", pushIDStart.get()); }
+
+        Request req = provisionRequest(Request.Get(builder.toString()));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list Statistics in CSV String format request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ListReportsListingResponseHandler());
+
+    }
 
     /**
      * Returns hourly counts for pushes sent for this application.

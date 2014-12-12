@@ -8,6 +8,7 @@ package com.urbanairship.api.client.model;
 import com.google.common.base.Objects;
 import com.urbanairship.api.channel.information.model.ChannelView;
 import com.urbanairship.api.reports.model.AppStats;
+import com.urbanairship.api.reports.model.SinglePushInfoResponse;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.segments.model.AudienceSegment;
 import org.apache.http.HttpResponse;
@@ -69,6 +70,22 @@ public class APIClientResponse<T> {
      */
     public static Builder<APIListTagsResponse> newListTagsResponseBuilder(){
         return new Builder<APIListTagsResponse>();
+    }
+
+    /**
+     * Return a Builder for a SinglePushInfoResponse
+     * @return Builder
+     */
+    public static Builder<SinglePushInfoResponse> newSinglePushInfoResponseBuilder(){
+        return new Builder<SinglePushInfoResponse>();
+    }
+
+    /**
+     * Return a Builder for a APIReportsListingResponse
+     * @return Builder
+     */
+    public static Builder<APIReportsPushListingResponse> newReportsListingResponseBuilder(){
+        return new Builder<APIReportsPushListingResponse>();
     }
 
     /**
