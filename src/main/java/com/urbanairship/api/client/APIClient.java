@@ -43,6 +43,11 @@ import java.util.UUID;
 
 public class APIClient {
 
+    /* Static Strings */
+    private final static String HOURLY = "HOURLY";
+    private final static String MONTHLY = "MONTHLY";
+    private final static String DAILY = "DAILY";
+
     /* Header keys/values */
     private final static String CONTENT_TYPE_KEY = "Content-type";
     private final static String CONTENT_TYPE_VALUE = "application/json";
@@ -366,9 +371,9 @@ public class APIClient {
     }
 
     public APIClientResponse<PerPushSeriesResponse> listPerPushSeries(String pushID, String precision) throws IOException {
-        Preconditions.checkArgument(precision.toUpperCase().equals("HOURLY") ||
-                                    precision.toUpperCase().equals("DAILY") ||
-                                    precision.toUpperCase().equals("MONTHLY"),
+        Preconditions.checkArgument(HOURLY.equals(precision) ||
+                                    DAILY.equals(precision)  ||
+                                    MONTHLY.equals(precision),
         "Precision must be specified as HOURLY, DAILY or MONTHLY");
 
         URIBuilder builder = new URIBuilder(baseURI.resolve(API_REPORTS_PER_PUSH_SERIES_PATH + pushID));
@@ -388,10 +393,10 @@ public class APIClient {
                                                                       String precision,
                                                                       DateTime start,
                                                                       DateTime end) throws IOException {
-        Preconditions.checkArgument(precision.toUpperCase().equals("HOURLY") ||
-                        precision.toUpperCase().equals("DAILY") ||
-                        precision.toUpperCase().equals("MONTHLY"),
-                "Precision must be specified as HOURLY, DAILY or MONTHLY");
+        Preconditions.checkArgument(HOURLY.equals(precision) ||
+                                    DAILY.equals(precision)  ||
+                                    MONTHLY.equals(precision),
+        "Precision must be specified as HOURLY, DAILY or MONTHLY");
 
         Preconditions.checkNotNull(start, "Start time is required when performing listing of per push series");
         Preconditions.checkNotNull(end, "End time is required when performing listing of per push series");
