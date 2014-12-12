@@ -12,6 +12,7 @@ import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.reports.model.PerPushDetailResponse;
 import com.urbanairship.api.reports.model.PerPushSeriesResponse;
+import com.urbanairship.api.reports.model.SinglePushInfoResponse;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.segments.model.AudienceSegment;
@@ -30,6 +31,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 
 public class APIClientResponseTest {
@@ -70,6 +72,74 @@ public class APIClientResponseTest {
                 .setHttpResponse(httpResponse);
 
         APIClientResponse<PerPushDetailResponse> testResponse = builder.build();
+
+        assertTrue("HTTP response not set properly",
+                testResponse.getHttpResponse().equals(httpResponse));
+
+        assertTrue("APIResponse not set properly",
+                testResponse.getApiResponse().equals(obj));
+    }
+
+    @Test
+    public void testAPIReportsListingResponse() {
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP",1,1), 200, "OK"));
+
+        UUID one = UUID.randomUUID();
+        UUID two = UUID.randomUUID();
+
+        SinglePushInfoResponse spir = SinglePushInfoResponse.newBuilder()
+                .setPushUUID(one)
+                .setDirectResponses(4)
+                .setSends(5)
+                .setPushType(SinglePushInfoResponse.PushType.UNICAST_PUSH)
+                .setPushTime("2013-07-31 21:27:38")
+                .setGroupID(two)
+                .build();
+
+        APIReportsPushListingResponse obj = APIReportsPushListingResponse.newBuilder()
+                .setNextPage("123")
+                .addPushInfoResponse(spir)
+                .addPushInfoResponse(spir)
+                .addPushInfoResponse(spir)
+                .build();
+
+        APIClientResponse.Builder<APIReportsPushListingResponse> builder = APIClientResponse.newReportsListingResponseBuilder()
+                .setApiResponse(obj)
+                .setHttpResponse(httpResponse);
+
+        APIClientResponse<APIReportsPushListingResponse> testResponse = builder.build();
+
+        assertTrue("HTTP response not set properly",
+                testResponse.getHttpResponse().equals(httpResponse));
+
+        assertTrue("APIResponse not set properly",
+                testResponse.getApiResponse().equals(obj));
+
+    }
+
+    @Test
+    public void testListIndividualPushAPIResponse() {
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP",1,1), 200, "OK"));
+
+        UUID one = UUID.randomUUID();
+        UUID two = UUID.randomUUID();
+
+        SinglePushInfoResponse obj = SinglePushInfoResponse.newBuilder()
+                .setPushUUID(one)
+                .setDirectResponses(4)
+                .setSends(5)
+                .setPushType(SinglePushInfoResponse.PushType.UNICAST_PUSH)
+                .setPushTime("2013-07-31 21:27:38")
+                .setGroupID(two)
+                .build();
+
+        APIClientResponse.Builder<SinglePushInfoResponse> builder = APIClientResponse.newSinglePushInfoResponseBuilder()
+                .setApiResponse(obj)
+                .setHttpResponse(httpResponse);
+
+        APIClientResponse<SinglePushInfoResponse> testResponse = builder.build();
 
         assertTrue("HTTP response not set properly",
                 testResponse.getHttpResponse().equals(httpResponse));
