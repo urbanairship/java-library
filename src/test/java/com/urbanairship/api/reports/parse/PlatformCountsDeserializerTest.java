@@ -8,11 +8,10 @@ package com.urbanairship.api.reports.parse;
 import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import com.urbanairship.api.reports.model.PerPushCounts;
 import org.codehaus.jackson.map.ObjectMapper;
-
 import org.junit.Test;
 
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class PlatformCountsDeserializerTest {
 

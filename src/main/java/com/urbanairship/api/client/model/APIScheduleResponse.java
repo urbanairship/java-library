@@ -19,24 +19,26 @@ public final class APIScheduleResponse {
     private final ImmutableList<String> scheduleUrls;
     private final ImmutableList<SchedulePayload> schedulePayloads;
 
-    /**
-     * New APIScheduleResponse builder
-     * @return Builder
-     */
-    public static Builder newBuilder(){
-        return new Builder();
-    }
-
-    private APIScheduleResponse(String operationId, ImmutableList<String> scheduleUrls, ImmutableList<SchedulePayload> schedulePayloads){
+    private APIScheduleResponse(String operationId, ImmutableList<String> scheduleUrls, ImmutableList<SchedulePayload> schedulePayloads) {
         this.operationId = operationId;
         this.scheduleUrls = scheduleUrls;
         this.schedulePayloads = schedulePayloads;
     }
 
     /**
+     * New APIScheduleResponse builder
+     *
+     * @return Builder
+     */
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    /**
      * Get the operation id for this response. This is used by Urban Airship
      * to track an operation through our system, and should be used when support
      * is needed.
+     *
      * @return Operation id for this API request
      */
     public String getOperationId() {
@@ -47,6 +49,7 @@ public final class APIScheduleResponse {
      * List of schedule urls, one for every scheduled push message that moves through
      * the API. This is useful for tracking an individual message as part of
      * an operation, and can be used when support is needed.
+     *
      * @return List of schedule urls.
      */
     public ImmutableList<String> getScheduleUrls() {
@@ -92,9 +95,10 @@ public final class APIScheduleResponse {
         private ImmutableList.Builder<String> scheduleUrls = ImmutableList.builder();
         private ImmutableList.Builder<SchedulePayload> schedulePayloads = ImmutableList.builder();
 
-        private Builder() {}
+        private Builder() {
+        }
 
-        public Builder setOperationId(String operationId){
+        public Builder setOperationId(String operationId) {
             this.operationId = operationId;
             return this;
         }
@@ -104,7 +108,7 @@ public final class APIScheduleResponse {
             return this;
         }
 
-        public Builder addAllScheduleUrls(Iterable<? extends String> scheduleUrls){
+        public Builder addAllScheduleUrls(Iterable<? extends String> scheduleUrls) {
             this.scheduleUrls.addAll(scheduleUrls);
             return this;
         }
@@ -119,7 +123,7 @@ public final class APIScheduleResponse {
             return this;
         }
 
-        public APIScheduleResponse build(){
+        public APIScheduleResponse build() {
             Preconditions.checkNotNull(operationId, "Operation ID must be set in order to build APIScheduleResponse");
             Preconditions.checkNotNull(scheduleUrls, "ScheduleUrls must be set in order to build APIScheduleResponse");
             Preconditions.checkNotNull(schedulePayloads, "SchedulePayloads must be set in order to build APIScheduleResponse");

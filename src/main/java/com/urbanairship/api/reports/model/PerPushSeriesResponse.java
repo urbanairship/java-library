@@ -20,10 +20,6 @@ public final class PerPushSeriesResponse {
     private final String precision;
     private final List<PlatformCounts> counts;
 
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     private PerPushSeriesResponse(String appKey,
                                   UUID pushID,
                                   DateTime start,
@@ -36,6 +32,10 @@ public final class PerPushSeriesResponse {
         this.end = end;
         this.precision = precision;
         this.counts = counts;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
     public String getAppKey() {
@@ -99,7 +99,8 @@ public final class PerPushSeriesResponse {
         private String precision;
         private List<PlatformCounts> counts = new ArrayList<PlatformCounts>();
 
-        private Builder() {  }
+        private Builder() {
+        }
 
         public Builder setAppKey(String value) {
             this.appKey = value;

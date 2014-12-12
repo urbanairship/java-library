@@ -23,7 +23,8 @@ public class ReportsAPIOpensResponseReader implements JsonObjectReader<ReportsAP
     }
 
     public void readOpens(JsonParser jsonParser) throws IOException {
-        builder.setObject((List<Opens>) jsonParser.readValueAs(new TypeReference<List<Opens>>() { }));
+        builder.setObject((List<Opens>) jsonParser.readValueAs(new TypeReference<List<Opens>>() {
+        }));
     }
 
     @Override
@@ -31,7 +32,7 @@ public class ReportsAPIOpensResponseReader implements JsonObjectReader<ReportsAP
         try {
             return builder.build();
         } catch (Exception e) {
-            throw  new APIParsingException(e.getMessage());
+            throw new APIParsingException(e.getMessage());
         }
     }
 }

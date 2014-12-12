@@ -34,8 +34,7 @@ public class AudienceSegmentSerializer extends JsonSerializer<AudienceSegment> {
         jgen.writeFieldName("criteria");
         if (value.isOperatorRoot()) {
             operatorSerializer.serialize(value.getRootOperator(), jgen, provider);
-        }
-        else if (value.isPredicateRoot()) {
+        } else if (value.isPredicateRoot()) {
             predicateSerializer.serialize(value.getRootPredicate(), jgen, provider);
         }
 

@@ -4,7 +4,6 @@
 
 package com.urbanairship.api.client;
 
-import com.urbanairship.api.channel.information.model.ChannelView;
 import com.urbanairship.api.client.model.APIClientResponse;
 import com.urbanairship.api.client.model.APIListSingleChannelResponse;
 import org.apache.http.HttpResponse;
@@ -17,9 +16,7 @@ import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 
 public class ListSingleChannelAPIResponseHandlerTest {
@@ -32,7 +29,7 @@ public class ListSingleChannelAPIResponseHandlerTest {
             "application/vnd.urbanairship+json; version=3; charset=utf8;";
 
     @Test
-    public void testHandleSuccess(){
+    public void testHandleSuccess() {
 
         String response = "{  \n" +
                 "  \"channel\":{  \n" +
@@ -51,7 +48,7 @@ public class ListSingleChannelAPIResponseHandlerTest {
                 "}";
 
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-                new ProtocolVersion("HTTP",1,1), 200, "OK"));
+                new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
         InputStreamEntity inputStreamEntity = new InputStreamEntity(
                 new ByteArrayInputStream(response.getBytes()),
                 response.getBytes().length);
@@ -63,8 +60,7 @@ public class ListSingleChannelAPIResponseHandlerTest {
                     handler.handleResponse(httpResponse);
             assertNotNull(res);
             assertTrue(httpResponse.getStatusLine().toString().equals("HTTP/1.1 200 OK"));
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             fail("Exception " + ex);
         }
@@ -72,14 +68,14 @@ public class ListSingleChannelAPIResponseHandlerTest {
     }
 
     @Test
-    public void testAPIV3Error(){
+    public void testAPIV3Error() {
         String errorJson = "{\"ok\" : false,\"operation_id\" : \"OpID\"," +
                 "\"error\" : \"Could not parse request body\"," +
                 "\"error_code\" : 40000," +
                 "\"details\" : {\"error\" : \"Unexpected token '#'\"," +
                 "\"location\" : {\"line\" : 10,\"column\" : 3}}}";
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-                new ProtocolVersion("HTTP",1,1), 400, "Bad Request"));
+                new ProtocolVersion("HTTP", 1, 1), 400, "Bad Request"));
         InputStreamEntity inputStreamEntity = new InputStreamEntity(
                 new ByteArrayInputStream(errorJson.getBytes()),
                 errorJson.getBytes().length);
@@ -89,27 +85,25 @@ public class ListSingleChannelAPIResponseHandlerTest {
 
         ListSingleChannelAPIResponseHandler handler = new ListSingleChannelAPIResponseHandler();
 
-        try{
+        try {
             handler.handleResponse(httpResponse);
-        }
-        catch (APIRequestException ex){
+        } catch (APIRequestException ex) {
             APIErrorDetails details = ex.getError().get().getDetails().get();
             assertTrue("Incorrect error details", details.getError().equals("Unexpected token '#'"));
             assertTrue("HttpResponse set incorrectly", ex.getHttpResponse().equals(httpResponse));
             return;
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Incorrect exception thrown " + ex);
         }
         fail("Test should have succeeded by now");
     }
 
     @Test
-    public void testDeprecatedJSONError(){
+    public void testDeprecatedJSONError() {
         /* Build a BasicHttpResponse */
         String pushJSON = "{\"message\":\"Unauthorized\"}";
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-                new ProtocolVersion("HTTP",1,1), 400, "Unauthorized"));
+                new ProtocolVersion("HTTP", 1, 1), 400, "Unauthorized"));
         InputStreamEntity inputStreamEntity = new InputStreamEntity(
                 new ByteArrayInputStream(pushJSON.getBytes()),
                 pushJSON.getBytes().length);
@@ -120,29 +114,27 @@ public class ListSingleChannelAPIResponseHandlerTest {
 
         try {
             handler.handleResponse(httpResponse);
-        }
-        catch (APIRequestException ex){
+        } catch (APIRequestException ex) {
 
             APIError error = ex.getError().get();
             String errorMessage = error.getError();
             assertTrue("Error message incorrect", errorMessage.equals("Unauthorized"));
             return;
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Failed with incorrect exception " + ex);
         }
         fail("Test should have succeeded by now");
     }
 
     /**
-     Test the deprecated API response where only a string is returned.
+     * Test the deprecated API response where only a string is returned.
      */
     @Test
-    public void testDeprecatedStringError(){
+    public void testDeprecatedStringError() {
         // Build a BasicHttpResponse
         String errorString = "Unauthorized";
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-                new ProtocolVersion("HTTP",1,1), 400, "Unauthorized"));
+                new ProtocolVersion("HTTP", 1, 1), 400, "Unauthorized"));
         InputStreamEntity inputStreamEntity = new InputStreamEntity(
                 new ByteArrayInputStream(errorString.getBytes()),
                 errorString.getBytes().length);
@@ -152,16 +144,14 @@ public class ListSingleChannelAPIResponseHandlerTest {
 
         ListSingleChannelAPIResponseHandler handler = new ListSingleChannelAPIResponseHandler();
 
-        try{
+        try {
             handler.handleResponse(httpResponse);
-        }
-        catch (APIRequestException ex){
+        } catch (APIRequestException ex) {
             APIError error = ex.getError().get();
             assertTrue("String error message is incorrect",
                     error.getError().equals("Unauthorized"));
             return;
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Failed with incorrect exception " + ex);
         }
         fail("Test should have succeeded by now");

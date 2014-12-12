@@ -22,8 +22,7 @@ public final class AddRemoveDeviceFromTagPayloadSerializer extends JsonSerialize
 
             if (payload.getIOSChannels().get().getAdd() != null) {
                 jgen.writeArrayFieldStart("add");
-                for (String s : payload.getIOSChannels().get().getAdd().get())
-                {
+                for (String s : payload.getIOSChannels().get().getAdd().get()) {
                     jgen.writeString(s);
                 }
                 jgen.writeEndArray();
@@ -32,8 +31,7 @@ public final class AddRemoveDeviceFromTagPayloadSerializer extends JsonSerialize
 
             if (payload.getIOSChannels().get().getRemove() != null) {
                 jgen.writeArrayFieldStart("remove");
-                for (String s : payload.getIOSChannels().get().getRemove().get())
-                {
+                for (String s : payload.getIOSChannels().get().getRemove().get()) {
                     jgen.writeString(s);
                 }
                 jgen.writeEndArray();
@@ -46,8 +44,7 @@ public final class AddRemoveDeviceFromTagPayloadSerializer extends JsonSerialize
 
             if (payload.getDeviceTokens().get().getAdd() != null) {
                 jgen.writeArrayFieldStart("add");
-                for (String s : payload.getDeviceTokens().get().getAdd().get())
-                {
+                for (String s : payload.getDeviceTokens().get().getAdd().get()) {
                     jgen.writeString(s);
                 }
                 jgen.writeEndArray();
@@ -56,8 +53,7 @@ public final class AddRemoveDeviceFromTagPayloadSerializer extends JsonSerialize
 
             if (payload.getDeviceTokens().get().getRemove() != null) {
                 jgen.writeArrayFieldStart("remove");
-                for (String s : payload.getDeviceTokens().get().getRemove().get())
-                {
+                for (String s : payload.getDeviceTokens().get().getRemove().get()) {
                     jgen.writeString(s);
                 }
                 jgen.writeEndArray();
@@ -70,8 +66,7 @@ public final class AddRemoveDeviceFromTagPayloadSerializer extends JsonSerialize
 
             if (payload.getDevicePins().get().getAdd() != null) {
                 jgen.writeArrayFieldStart("add");
-                for (String s : payload.getDevicePins().get().getAdd().get())
-                {
+                for (String s : payload.getDevicePins().get().getAdd().get()) {
                     jgen.writeString(s);
                 }
                 jgen.writeEndArray();
@@ -80,8 +75,7 @@ public final class AddRemoveDeviceFromTagPayloadSerializer extends JsonSerialize
 
             if (payload.getDevicePins().get().getRemove() != null) {
                 jgen.writeArrayFieldStart("remove");
-                for (String s : payload.getDevicePins().get().getRemove().get())
-                {
+                for (String s : payload.getDevicePins().get().getRemove().get()) {
                     jgen.writeString(s);
                 }
                 jgen.writeEndArray();
@@ -94,8 +88,7 @@ public final class AddRemoveDeviceFromTagPayloadSerializer extends JsonSerialize
 
             if (payload.getApids().get().getAdd() != null) {
                 jgen.writeArrayFieldStart("add");
-                for (String s : payload.getApids().get().getAdd().get())
-                {
+                for (String s : payload.getApids().get().getAdd().get()) {
                     jgen.writeString(s);
                 }
                 jgen.writeEndArray();
@@ -104,8 +97,7 @@ public final class AddRemoveDeviceFromTagPayloadSerializer extends JsonSerialize
 
             if (payload.getApids().get().getRemove() != null) {
                 jgen.writeArrayFieldStart("remove");
-                for (String s : payload.getApids().get().getRemove().get())
-                {
+                for (String s : payload.getApids().get().getRemove().get()) {
                     jgen.writeString(s);
                 }
                 jgen.writeEndArray();

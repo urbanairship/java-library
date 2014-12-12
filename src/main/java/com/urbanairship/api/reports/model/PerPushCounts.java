@@ -12,14 +12,14 @@ public final class PerPushCounts {
     private long influencedResponses;
     private long sends;
 
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     private PerPushCounts(long directResponses, long influencedResponses, long sends) {
         this.directResponses = directResponses;
         this.influencedResponses = influencedResponses;
         this.sends = sends;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
     public long getDirectResponses() {
@@ -65,7 +65,8 @@ public final class PerPushCounts {
         private long influencedResponses;
         private long sends;
 
-        private Builder() { }
+        private Builder() {
+        }
 
         public Builder setDirectResponses(long value) {
             this.directResponses = value;

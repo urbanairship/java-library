@@ -1,9 +1,9 @@
 package com.urbanairship.api.push.parse.notification.android;
 
+import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import com.urbanairship.api.common.parse.APIParsingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
@@ -17,13 +17,13 @@ public class PayloadDeserializerTest {
     @Test
     public void testAlert() throws Exception {
         String json
-            = "{"
-            + "  \"alert\": \"android override\""
-            + "}";
+                = "{"
+                + "  \"alert\": \"android override\""
+                + "}";
 
         AndroidDevicePayload expected = AndroidDevicePayload.newBuilder()
-            .setAlert("android override")
-            .build();
+                .setAlert("android override")
+                .build();
 
         AndroidDevicePayload payload = mapper.readValue(json, AndroidDevicePayload.class);
         assertNotNull(payload);
@@ -37,13 +37,13 @@ public class PayloadDeserializerTest {
     @Test
     public void testCollapseKey() throws Exception {
         String json
-            = "{"
-            + "  \"collapse_key\": \"1234\""
-            + "}";
+                = "{"
+                + "  \"collapse_key\": \"1234\""
+                + "}";
 
         AndroidDevicePayload expected = AndroidDevicePayload.newBuilder()
-            .setCollapseKey("1234")
-            .build();
+                .setCollapseKey("1234")
+                .build();
 
         AndroidDevicePayload payload = mapper.readValue(json, AndroidDevicePayload.class);
         assertNotNull(payload);
@@ -58,15 +58,15 @@ public class PayloadDeserializerTest {
     @Test
     public void testTimeToLive() throws Exception {
         String json
-            = "{"
-            + "  \"time_to_live\": 1234"
-            + "}";
+                = "{"
+                + "  \"time_to_live\": 1234"
+                + "}";
 
         AndroidDevicePayload expected = AndroidDevicePayload.newBuilder()
-            .setTimeToLive(PushExpiry.newBuilder()
-                            .setExpirySeconds((long) 1234)
-                            .build())
-            .build();
+                .setTimeToLive(PushExpiry.newBuilder()
+                        .setExpirySeconds((long) 1234)
+                        .build())
+                .build();
 
         AndroidDevicePayload payload = mapper.readValue(json, AndroidDevicePayload.class);
         assertEquals(expected, payload);
@@ -74,25 +74,25 @@ public class PayloadDeserializerTest {
         assertEquals(1234, payload.getTimeToLive().get().getExpirySeconds().get().intValue());
     }
 
-    @Test(expected=APIParsingException.class)
+    @Test(expected = APIParsingException.class)
     public void testTimeToLiveBadFormat() throws Exception {
         String json
-            = "{"
-            + "  \"time_to_live\": true"
-            + "}";
+                = "{"
+                + "  \"time_to_live\": true"
+                + "}";
         mapper.readValue(json, AndroidDevicePayload.class);
     }
 
     @Test
     public void testDelayWhileIdle() throws Exception {
         String json
-            = "{"
-            + "  \"delay_while_idle\": true"
-            + "}";
+                = "{"
+                + "  \"delay_while_idle\": true"
+                + "}";
 
         AndroidDevicePayload expected = AndroidDevicePayload.newBuilder()
-            .setDelayWhileIdle(true)
-            .build();
+                .setDelayWhileIdle(true)
+                .build();
 
         AndroidDevicePayload payload = mapper.readValue(json, AndroidDevicePayload.class);
         assertEquals(expected, payload);
@@ -100,29 +100,29 @@ public class PayloadDeserializerTest {
         assertEquals(true, payload.getDelayWhileIdle().get());
     }
 
-    @Test(expected=APIParsingException.class)
+    @Test(expected = APIParsingException.class)
     public void testDelayWhileIdleBadFormat() throws Exception {
         String json
-            = "{"
-            + "  \"delay_while_idle\": 1010"
-            + "}";
+                = "{"
+                + "  \"delay_while_idle\": 1010"
+                + "}";
         mapper.readValue(json, AndroidDevicePayload.class);
     }
 
     @Test
     public void testExtra() throws Exception {
         String json
-            = "{"
-            + "  \"extra\": {"
-            + "    \"k1\" : \"v1\","
-            + "    \"k2\" : \"v2\""
-            + "  }"
-            + "}";
+                = "{"
+                + "  \"extra\": {"
+                + "    \"k1\" : \"v1\","
+                + "    \"k2\" : \"v2\""
+                + "  }"
+                + "}";
 
         AndroidDevicePayload expected = AndroidDevicePayload.newBuilder()
-            .addExtraEntry("k1", "v1")
-            .addExtraEntry("k2", "v2")
-            .build();
+                .addExtraEntry("k1", "v1")
+                .addExtraEntry("k2", "v2")
+                .build();
 
         AndroidDevicePayload payload = mapper.readValue(json, AndroidDevicePayload.class);
         assertNotNull(payload);
@@ -138,7 +138,7 @@ public class PayloadDeserializerTest {
         assertEquals(expected, payload);
     }
 
-    public void testValidate_Empty() throws Exception  {
+    public void testValidate_Empty() throws Exception {
         AndroidDevicePayload payload = mapper.readValue("{}", AndroidDevicePayload.class);
         assertNotNull(payload);
         assertFalse(payload.getAlert().isPresent());

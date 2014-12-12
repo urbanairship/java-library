@@ -27,7 +27,7 @@ public class LocationPredicateDeserializerTest {
     public void testMissingDateRangeSpecifier() throws Exception {
         // Valid id value
         String json = "{\"id\": \"woot\"}";
-         parse(json);
+        parse(json);
     }
 
     @Test(expected = InvalidAudienceSegmentException.class)

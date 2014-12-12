@@ -13,9 +13,10 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class ReportsAPIOpensTimeInAppResponseDeserializerTest {
 

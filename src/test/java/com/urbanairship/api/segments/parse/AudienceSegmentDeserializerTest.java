@@ -27,32 +27,32 @@ public class AudienceSegmentDeserializerTest {
     @Test
     public void testParseAudienceSegmentWithOperatorCriteria() throws Exception {
         String json =
-            "{" +
-            "\"display_name\": \"displayit\"," +
-            "\"criteria\": {\"or\": [" +
-                "{\"and\": [" +
-                    "{\"tag\": \"tag1\"}," +
-                    "{\"tag\": \"tag2\"}," +
-                    "{\"tag\": \"tag3\"}" +
-                "]}," +
-                "{\"location\": {\"id\": \"blah\", \"date\": {\"recent\": {\"days\": 3}}}}" +
-            "]}" +
-            "}";
+                "{" +
+                        "\"display_name\": \"displayit\"," +
+                        "\"criteria\": {\"or\": [" +
+                        "{\"and\": [" +
+                        "{\"tag\": \"tag1\"}," +
+                        "{\"tag\": \"tag2\"}," +
+                        "{\"tag\": \"tag3\"}" +
+                        "]}," +
+                        "{\"location\": {\"id\": \"blah\", \"date\": {\"recent\": {\"days\": 3}}}}" +
+                        "]}" +
+                        "}";
 
         Operator op = Operator.newBuilder(OperatorType.OR)
-            .addOperator(Operator.newBuilder(OperatorType.AND)
-                    .addPredicate(buildTagPredicate("tag1"))
-                    .addPredicate(buildTagPredicate("tag2"))
-                    .addPredicate(buildTagPredicate("tag3"))
-                    .build())
-            .addPredicate(new LocationPredicate(new LocationIdentifier("blah"),
-                    new RecentDateRange(DateRangeUnit.DAYS, 3), PresenceTimeframe.ANYTIME))
-            .build();
+                .addOperator(Operator.newBuilder(OperatorType.AND)
+                        .addPredicate(buildTagPredicate("tag1"))
+                        .addPredicate(buildTagPredicate("tag2"))
+                        .addPredicate(buildTagPredicate("tag3"))
+                        .build())
+                .addPredicate(new LocationPredicate(new LocationIdentifier("blah"),
+                        new RecentDateRange(DateRangeUnit.DAYS, 3), PresenceTimeframe.ANYTIME))
+                .build();
 
         AudienceSegment expected = AudienceSegment.newBuilder()
-            .setDisplayName("displayit")
-            .setRootOperator(op)
-            .build();
+                .setDisplayName("displayit")
+                .setRootOperator(op)
+                .build();
 
         Assert.assertEquals(expected, parse(json));
     }
@@ -69,9 +69,9 @@ public class AudienceSegmentDeserializerTest {
     public void testParseAudienceSegmentWithTagCriteria() throws Exception {
         String json =
                 "{" +
-                    "\"display_name\": \"displayit\"," +
-                    "\"criteria\": {\"tag\": \"tag3\"}" +
-                "}";
+                        "\"display_name\": \"displayit\"," +
+                        "\"criteria\": {\"tag\": \"tag3\"}" +
+                        "}";
 
         AudienceSegment expected = AudienceSegment.newBuilder()
                 .setDisplayName("displayit")
@@ -85,9 +85,9 @@ public class AudienceSegmentDeserializerTest {
     public void testParseAudienceSegmentWithLocationCriteria() throws Exception {
         String json =
                 "{" +
-                    "\"display_name\": \"displayit\"," +
-                    "\"criteria\": {\"location\": {\"id\": \"blah\", \"date\": {\"recent\": {\"days\": 3}}}}" +
-                "}";
+                        "\"display_name\": \"displayit\"," +
+                        "\"criteria\": {\"location\": {\"id\": \"blah\", \"date\": {\"recent\": {\"days\": 3}}}}" +
+                        "}";
 
         AudienceSegment expected = AudienceSegment.newBuilder()
                 .setDisplayName("displayit")
@@ -120,11 +120,11 @@ public class AudienceSegmentDeserializerTest {
     @Test
     public void testSegmentWithIdIsValidAndIdIsIgnored() throws Exception {
         String json =
-            "{" +
-                "\"id\":\"ignore_me_please\"," +
-                "\"display_name\": \"displayit\"," +
-                "\"criteria\": {\"tag\": \"tag3\"}" +
-            "}";
+                "{" +
+                        "\"id\":\"ignore_me_please\"," +
+                        "\"display_name\": \"displayit\"," +
+                        "\"criteria\": {\"tag\": \"tag3\"}" +
+                        "}";
 
         AudienceSegment result = parse(json);
 
@@ -138,7 +138,7 @@ public class AudienceSegmentDeserializerTest {
 
     @Test
     public void testSegmentWithTagClassesAndLocation() throws Exception {
-        String json ="{\n" +
+        String json = "{\n" +
                 "        \"display_name\": \"Foo Segment\",\n" +
                 "        \"criteria\": {\n" +
                 "                \"and\" : [\n" +
@@ -175,11 +175,11 @@ public class AudienceSegmentDeserializerTest {
         AudienceSegment result = parse(json);
         Operator op = Operator.newBuilder(OperatorType.AND)
                 .addOperator(Operator.newBuilder(OperatorType.OR)
-                            .addOperator(Operator.newBuilder(OperatorType.AND)
-                                    .addPredicate(buildTagPredicate("tag1"))
-                                    .addPredicate(buildTagPredicate("tag2"))
-                                    .addPredicate(buildTagPredicate("tag3")).build())
-                            .addOperator(Operator.newBuilder(OperatorType.AND)
+                        .addOperator(Operator.newBuilder(OperatorType.AND)
+                                .addPredicate(buildTagPredicate("tag1"))
+                                .addPredicate(buildTagPredicate("tag2"))
+                                .addPredicate(buildTagPredicate("tag3")).build())
+                        .addOperator(Operator.newBuilder(OperatorType.AND)
                                 .addPredicate(buildTagPredicate("tag1", "USER"))
                                 .addPredicate(buildTagPredicate("tag2", "USER"))
                                 .addPredicate(buildTagPredicate("tag3", "USER")).build())

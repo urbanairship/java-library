@@ -20,7 +20,8 @@ public class TagPredicateDeserializer extends JsonDeserializer<TagPredicate> {
 
     private static final String INVALID_TAG_PREDICATE = "Invalid tag predicate";
 
-    private TagPredicateDeserializer() { }
+    private TagPredicateDeserializer() {
+    }
 
     @Override
     public TagPredicate deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
@@ -30,16 +31,16 @@ public class TagPredicateDeserializer extends JsonDeserializer<TagPredicate> {
         }
         String tag = null;
         String tagClass = TagPredicate.DEFAULT_TAG_CLASS;
-        if(jp.getCurrentName().equals("tag")){
+        if (jp.getCurrentName().equals("tag")) {
             tag = jp.getText();
-        }else if(jp.getCurrentName().equals("tag_class")){
+        } else if (jp.getCurrentName().equals("tag_class")) {
             tagClass = jp.getText();
         }
-        if(!jp.nextToken().equals(JsonToken.END_OBJECT)){
-            if(jp.getCurrentName().equals("tag")){
+        if (!jp.nextToken().equals(JsonToken.END_OBJECT)) {
+            if (jp.getCurrentName().equals("tag")) {
                 jp.nextToken();
                 tag = jp.getText();
-            }else if(jp.getCurrentName().equals("tag_class")){
+            } else if (jp.getCurrentName().equals("tag_class")) {
                 jp.nextToken();
                 tagClass = jp.getText();
             }

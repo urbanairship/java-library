@@ -19,21 +19,32 @@ public final class APIListAllSchedulesResponse {
     private final String nextPage;
     private final ImmutableList<SchedulePayload> scheduleObjects;
 
-    public static Builder newBuilder(){
-        return new Builder();
-    }
-
-    private APIListAllSchedulesResponse(int count, int totalCount, String nextPage, ImmutableList<SchedulePayload> response){
+    private APIListAllSchedulesResponse(int count, int totalCount, String nextPage, ImmutableList<SchedulePayload> response) {
         this.count = count;
         this.totalCount = totalCount;
         this.nextPage = nextPage;
         this.scheduleObjects = response;
     }
 
-    public int getCount() { return count; }
-    public int getTotal_Count() { return totalCount; }
-    public String getNext_Page() { return nextPage; }
-    public List<SchedulePayload> getSchedules() { return scheduleObjects; }
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public int getTotal_Count() {
+        return totalCount;
+    }
+
+    public String getNext_Page() {
+        return nextPage;
+    }
+
+    public List<SchedulePayload> getSchedules() {
+        return scheduleObjects;
+    }
 
     @Override
     public int hashCode() {
@@ -73,19 +84,20 @@ public final class APIListAllSchedulesResponse {
         private String next_page;
         private ImmutableList.Builder<SchedulePayload> scheduleresponse = ImmutableList.builder();
 
-        private Builder() { }
+        private Builder() {
+        }
 
-        public Builder setCount(int count){
+        public Builder setCount(int count) {
             this.count = count;
             return this;
         }
 
-        public Builder setTotalCount(int total_count){
+        public Builder setTotalCount(int total_count) {
             this.total_count = total_count;
             return this;
         }
 
-        public Builder setNextPage(String next_page){
+        public Builder setNextPage(String next_page) {
             this.next_page = next_page;
             return this;
         }
@@ -100,7 +112,7 @@ public final class APIListAllSchedulesResponse {
             return this;
         }
 
-        public APIListAllSchedulesResponse build(){
+        public APIListAllSchedulesResponse build() {
             Preconditions.checkNotNull(count, "count must be set to build APIListScheduleResponse");
             Preconditions.checkNotNull(total_count, "total count must be set to build APIListScheduleResponse");
             Preconditions.checkNotNull(scheduleresponse, "sch must be set to build APIListScheduleResponse");

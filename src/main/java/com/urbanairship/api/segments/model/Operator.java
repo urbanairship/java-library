@@ -14,13 +14,13 @@ public final class Operator {
     private final OperatorType type;
     private final List<OperatorChild> children;
 
-    public static Builder newBuilder(OperatorType type) {
-        return new Builder(type);
-    }
-
     private Operator(OperatorType type, List<OperatorChild> children) {
         this.type = type;
         this.children = children;
+    }
+
+    public static Builder newBuilder(OperatorType type) {
+        return new Builder(type);
     }
 
     public OperatorType getType() {
@@ -90,8 +90,8 @@ public final class Operator {
         public Operator build() {
             Preconditions.checkArgument(!children.isEmpty(), "Operator must contain at least one predicate or operator child");
             Preconditions.checkArgument(
-                (type != OperatorType.NOT || children.size() == 1),
-                "A \"not\" operator can have only a single child being either another operator or a predicate"
+                    (type != OperatorType.NOT || children.size() == 1),
+                    "A \"not\" operator can have only a single child being either another operator or a predicate"
             );
 
             return new Operator(type, children);

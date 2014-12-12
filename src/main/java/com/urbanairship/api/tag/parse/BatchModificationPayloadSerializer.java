@@ -21,8 +21,7 @@ public final class BatchModificationPayloadSerializer extends JsonSerializer<Bat
         for (BatchTagSet bts : payload.getBatchObjects()) {
             jgen.writeStartObject();
 
-            switch(bts.getIdType())
-            {
+            switch (bts.getIdType()) {
                 case IOS_CHANNEL:
                     jgen.writeStringField("ios_channel", bts.getDeviceID());
                     break;

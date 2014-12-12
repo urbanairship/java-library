@@ -26,10 +26,6 @@ public final class PerPushDetailResponse {
     private final long influencedResponses;
     private final ImmutableMap<PlatformType, PerPushCounts> platforms;
 
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     private PerPushDetailResponse(String appKey,
                                   UUID pushID,
                                   Optional<DateTime> created,
@@ -52,6 +48,10 @@ public final class PerPushDetailResponse {
         this.directResponses = directResponses;
         this.influencedResponses = influencedResponses;
         this.platforms = platforms;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
     public String getAppKey() {
@@ -146,7 +146,8 @@ public final class PerPushDetailResponse {
         private long influencedResponses;
         private ImmutableMap.Builder<PlatformType, PerPushCounts> platforms = ImmutableMap.builder();
 
-        private Builder() {  }
+        private Builder() {
+        }
 
         public Builder setAppKey(String value) {
             this.appKey = value;
@@ -202,6 +203,7 @@ public final class PerPushDetailResponse {
             this.platforms.put(type, counts);
             return this;
         }
+
         public Builder addAllPlatforms(ImmutableMap<PlatformType, PerPushCounts> value) {
             this.platforms.putAll(value);
             return this;

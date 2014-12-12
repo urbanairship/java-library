@@ -48,6 +48,7 @@ public class APIClient {
 
     /* Header keys/values */
     private final static String CONTENT_TYPE_KEY = "Content-type";
+    private final static String CONTENT_TYPE_VALUE = "application/json";
     private final static String ACCEPT_KEY = "Accept";
     private final static String UA_APPLICATION_JSON = "application/vnd.urbanairship+json;";
 
@@ -63,22 +64,21 @@ public class APIClient {
     private final static String API_STATISTICS_PATH = "/api/push/stats/";
     private final static String API_REPORTS_PER_PUSH_DETAIL_PATH = "/api/reports/perpush/detail/";
     private final static String API_REPORTS_PER_PUSH_SERIES_PATH = "/api/reports/perpush/series/";
-    private final static String API_REPORTS_PUSH_RESPONSE_PATH="/api/reports/responses/";
+    private final static String API_REPORTS_PUSH_RESPONSE_PATH = "/api/reports/responses/";
     private final static String API_REPORTS_APPS_OPEN_PATH = "/api/reports/opens/";
     private final static String API_REPORTS_TIME_IN_APP_PATH = "/api/reports/timeinapp/";
-
+    private final static Logger logger = LoggerFactory.getLogger("com.urbanairship.api");
     /* User auth */
     private final String appKey;
     private final String appSecret;
-
     /* URI, version */
     private final URI baseURI;
     private final Number version;
-
     /* HTTP */
     private final HttpHost uaHost;
     private final Optional<ProxyInfo> proxyInfo;
 
+    private APIClient(String appKey, String appSecret, String baseURI, Number version) {
     private final static Logger logger = LoggerFactory.getLogger("com.urbanairship.api");
 
     public static Builder newBuilder(){
@@ -98,13 +98,24 @@ public class APIClient {
         this.proxyInfo = proxyInfoOptional;
     }
 
+    public static Builder newBuilder() {
+        return new Builder();
+    }
     public String getAppSecret() { return appSecret; }
     public String getAppKey() { return appKey; }
     public Optional<ProxyInfo> getProxyInfo() { return proxyInfo; }
 
+    public String getAppSecret() {
+        return appSecret;
+    }
+
+    public String getAppKey() {
+        return appKey;
+    }
+
     /* Add the version number to the default version header */
 
-    private String versionedAcceptHeader(Number version){
+    private String versionedAcceptHeader(Number version) {
         return String.format("%s version=%s;", UA_APPLICATION_JSON, version.toString());
     }
 
@@ -113,7 +124,9 @@ public class APIClient {
     public String getUserAgent() {
         InputStream stream = getClass().getResourceAsStream("/client.properties");
 
-        if (stream == null) { return "UNKNOWN"; }
+        if (stream == null) {
+            return "UNKNOWN";
+        }
 
         Properties props = new Properties();
 
@@ -207,7 +220,7 @@ public class APIClient {
     }
 
     public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules(String start, int limit, String order) throws IOException {
-        String path = "/api/schedules" + "?" + "start=" + start + "&limit=" + limit +"&order=" + order;
+        String path = "/api/schedules" + "?" + "start=" + start + "&limit=" + limit + "&order=" + order;
         Request request = provisionRequest(Request.Get(baseURI.resolve(path)));
 
         if (logger.isDebugEnabled()) {
@@ -415,10 +428,10 @@ public class APIClient {
         Preconditions.checkArgument(box.isValid(), "Box must be a valid coordinate");
 
         URIBuilder builder = new URIBuilder(baseURI.resolve(API_LOCATION_PATH +
-                box.getCornerOne().getLatitude() + "," +
-                box.getCornerOne().getLongitude() + "," +
-                box.getCornerTwo().getLatitude() + "," +
-                box.getCornerTwo().getLongitude()
+                        box.getCornerOne().getLatitude() + "," +
+                        box.getCornerOne().getLongitude() + "," +
+                        box.getCornerTwo().getLatitude() + "," +
+                        box.getCornerTwo().getLongitude()
         ));
 
         builder.addParameter("type", type);
@@ -458,7 +471,7 @@ public class APIClient {
     }
 
     public APIClientResponse<APIListAllSegmentsResponse> listAllSegments(String start, int limit, String order) throws IOException, URISyntaxException {
-        String path = "/api/segments" + "?" + "start=" + start + "&limit=" + limit +"&order=" + order;
+        String path = "/api/segments" + "?" + "start=" + start + "&limit=" + limit + "&order=" + order;
         Request req = provisionRequest(Request.Get(baseURI.resolve(path)));
 
         if (logger.isDebugEnabled()) {
@@ -577,9 +590,9 @@ public class APIClient {
 
     public APIClientResponse<PerPushSeriesResponse> listPerPushSeries(String pushID, String precision) throws IOException {
         Preconditions.checkArgument(HOURLY.equals(precision) ||
-                                    DAILY.equals(precision)  ||
-                                    MONTHLY.equals(precision),
-        "Precision must be specified as HOURLY, DAILY or MONTHLY");
+                        DAILY.equals(precision) ||
+                        MONTHLY.equals(precision),
+                "Precision must be specified as HOURLY, DAILY or MONTHLY");
 
         URIBuilder builder = new URIBuilder(baseURI.resolve(API_REPORTS_PER_PUSH_SERIES_PATH + pushID));
 
@@ -599,9 +612,9 @@ public class APIClient {
                                                                       DateTime start,
                                                                       DateTime end) throws IOException {
         Preconditions.checkArgument(HOURLY.equals(precision) ||
-                                    DAILY.equals(precision)  ||
-                                    MONTHLY.equals(precision),
-        "Precision must be specified as HOURLY, DAILY or MONTHLY");
+                        DAILY.equals(precision) ||
+                        MONTHLY.equals(precision),
+                "Precision must be specified as HOURLY, DAILY or MONTHLY");
 
         Preconditions.checkNotNull(start, "Start time is required when performing listing of per push series");
         Preconditions.checkNotNull(end, "End time is required when performing listing of per push series");
@@ -637,10 +650,10 @@ public class APIClient {
     }
 
     public APIClientResponse<APIReportsPushListingResponse> listReportsResponseListing(DateTime start,
-                                                                                   DateTime end,
-                                                                                   Optional<Integer> limit,
-                                                                                   Optional<String> pushIDStart)
-    throws IOException {
+                                                                                       DateTime end,
+                                                                                       Optional<Integer> limit,
+                                                                                       Optional<String> pushIDStart)
+            throws IOException {
 
         Preconditions.checkNotNull(start, "Start time is required when performing listing of push statistics");
         Preconditions.checkNotNull(end, "End time is required when performing listing of push statistics");
@@ -651,8 +664,12 @@ public class APIClient {
         builder.addParameter("start", start.toLocalDateTime().toString());
         builder.addParameter("end", end.toLocalDateTime().toString());
 
-        if (limit.isPresent()) { builder.addParameter("limit", limit.get().toString()); }
-        if (pushIDStart.isPresent()) { builder.addParameter("push_id_start", pushIDStart.get()); }
+        if (limit.isPresent()) {
+            builder.addParameter("limit", limit.get().toString());
+        }
+        if (pushIDStart.isPresent()) {
+            builder.addParameter("push_id_start", pushIDStart.get());
+        }
 
         Request req = provisionRequest(Request.Get(builder.toString()));
 
@@ -663,6 +680,7 @@ public class APIClient {
         return provisionExecutor().execute(req).handleResponse(new ListReportsListingResponseHandler());
 
     }
+
     public APIClientResponse<ReportsAPIOpensResponse> listAppsOpenReport(DateTime start, DateTime end, String precision) throws IOException {
 
         Preconditions.checkArgument(precision.toUpperCase().equals("HOURLY") ||
@@ -720,7 +738,7 @@ public class APIClient {
      * JSON format
      *
      * @param start Start Time
-     * @param end Hours
+     * @param end   Hours
      * @return APIClientResponse of List of AppStats in JSON. Times are in UTC, and data is provided for each push platform.
      * @throws IOException
      */
@@ -799,14 +817,7 @@ public class APIClient {
 
     @Override
     public String toString() {
-        return "APIClient{" +
-                "appKey='" + appKey + '\'' +
-                ", appSecret='" + appSecret + '\'' +
-                ", baseURI=" + baseURI +
-                ", version=" + version +
-                ", uaHost=" + uaHost +
-                ", proxyInfo=" + proxyInfo +
-                '}';
+        return "APIClient\nAppKey:"+ appKey +"\nAppSecret:" + appSecret + "\n";
     }
 
     /* Builder for APIClient */
@@ -819,7 +830,7 @@ public class APIClient {
         private Number version;
         private ProxyInfo proxyInfoOptional;
 
-        private Builder(){
+        private Builder() {
             baseURI = "https://go.urbanairship.com";
             version = 3;
         }
@@ -834,12 +845,12 @@ public class APIClient {
             return this;
         }
 
-        public Builder setBaseURI(String URI){
+        public Builder setBaseURI(String URI) {
             this.baseURI = URI;
             return this;
         }
 
-        public Builder setVersion(Number version){
+        public Builder setVersion(Number version) {
             this.version = version;
             return this;
         }

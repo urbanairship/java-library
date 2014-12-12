@@ -4,7 +4,6 @@
 
 package com.urbanairship.api.reports.parse;
 
-import com.google.common.base.Optional;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.reports.model.PerPushSeriesResponse;
@@ -51,7 +50,8 @@ public class PerPushSeriesResponseReader implements JsonObjectReader<PerPushSeri
     }
 
     public void readCounts(JsonParser jsonParser) throws IOException {
-        List<PlatformCounts> counts = jsonParser.readValueAs(new TypeReference<List<PlatformCounts>>() {});
+        List<PlatformCounts> counts = jsonParser.readValueAs(new TypeReference<List<PlatformCounts>>() {
+        });
         builder.addAllPlatformCounts(counts);
     }
 

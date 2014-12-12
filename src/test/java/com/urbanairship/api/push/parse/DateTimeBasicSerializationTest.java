@@ -1,7 +1,7 @@
 package com.urbanairship.api.push.parse;
 
-import com.urbanairship.api.common.parse.*;
 import com.google.common.collect.Sets;
+import com.urbanairship.api.common.parse.CommonObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.DateTime;
@@ -23,7 +23,8 @@ public class DateTimeBasicSerializationTest {
         Set<DateTime> set = Sets.newHashSet(date);
 
         String json = mapper.writeValueAsString(set);
-        Set<DateTime> parsed = mapper.readValue(json, new TypeReference<Set<DateTime>>() {});
+        Set<DateTime> parsed = mapper.readValue(json, new TypeReference<Set<DateTime>>() {
+        });
 
         assertEquals(set, parsed);
     }

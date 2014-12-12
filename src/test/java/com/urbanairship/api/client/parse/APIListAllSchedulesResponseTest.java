@@ -17,7 +17,7 @@ import static org.junit.Assert.fail;
 public class APIListAllSchedulesResponseTest {
 
     @Test
-    public void testAPIScheduleResponse(){
+    public void testAPIScheduleResponse() {
 
         String listscheduleresponse = "{\"ok\":true,\"count\":5,\"total_count\":6,\"schedules\":" +
                 "[{\"url\":\"https://go.urbanairship.com/api/schedules/5a60e0a6-9aa7-449f-a038-6806e572baf3\",\"" +
@@ -31,7 +31,7 @@ public class APIListAllSchedulesResponseTest {
 
         ObjectMapper mapper = APIResponseObjectMapper.getInstance();
 
-        try{
+        try {
             APIListAllSchedulesResponse response = mapper.readValue(listscheduleresponse, APIListAllSchedulesResponse.class);
             assertTrue(response.getCount() == 5);
             assertTrue(response.getTotal_Count() == 6);
@@ -63,14 +63,13 @@ public class APIListAllSchedulesResponseTest {
             assertTrue(secondpush.getDeviceTypes().getDeviceTypes().get().contains(DeviceType.ANDROID));
             assertTrue(secondpush.getNotification().get().getAlert().get().equals("Happy New Year 2016!"));
 
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception " + ex.getMessage());
         }
     }
 
     @Test
-    public void testAPIScheduleResponseWithNextPage(){
+    public void testAPIScheduleResponseWithNextPage() {
 
         String listscheduleresponse = "{\"ok\":true,\"count\":5,\"total_count\":6,\"next_page\":\"puppies\",\"schedules\":" +
                 "[{\"url\":\"https://go.urbanairship.com/api/schedules/5a60e0a6-9aa7-449f-a038-6806e572baf3\",\"" +
@@ -84,7 +83,7 @@ public class APIListAllSchedulesResponseTest {
 
         ObjectMapper mapper = APIResponseObjectMapper.getInstance();
 
-        try{
+        try {
             APIListAllSchedulesResponse response = mapper.readValue(listscheduleresponse, APIListAllSchedulesResponse.class);
             assertTrue(response.getCount() == 5);
             assertTrue(response.getTotal_Count() == 6);
@@ -115,8 +114,7 @@ public class APIListAllSchedulesResponseTest {
             assertTrue(secondpush.getDeviceTypes().getDeviceTypes().get().contains(DeviceType.IOS));
             assertTrue(secondpush.getDeviceTypes().getDeviceTypes().get().contains(DeviceType.ANDROID));
             assertTrue(secondpush.getNotification().get().getAlert().get().equals("Happy New Year 2016!"));
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception " + ex.getMessage());
         }
     }

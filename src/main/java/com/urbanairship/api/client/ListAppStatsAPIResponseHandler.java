@@ -13,7 +13,6 @@ import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
-
 import java.io.IOException;
 import java.util.List;
 
@@ -40,7 +39,8 @@ public final class ListAppStatsAPIResponseHandler implements ResponseHandler<API
 
         try {
             String jsonPayload = EntityUtils.toString(response.getEntity());
-            List<AppStats> listOfAppStats = mapper.readValue(jsonPayload, new TypeReference<List<AppStats>>() { });
+            List<AppStats> listOfAppStats = mapper.readValue(jsonPayload, new TypeReference<List<AppStats>>() {
+            });
             builder.setApiResponse(listOfAppStats);
         } finally {
             EntityUtils.consumeQuietly(response.getEntity());

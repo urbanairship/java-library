@@ -16,7 +16,8 @@ public final class LocationIdentifierSerializer extends JsonSerializer<LocationI
 
     public static final LocationIdentifierSerializer INSTANCE = new LocationIdentifierSerializer();
 
-    private LocationIdentifierSerializer() { }
+    private LocationIdentifierSerializer() {
+    }
 
     @Override
     public void serialize(LocationIdentifier value, JsonGenerator jgen, SerializerProvider provider) throws IOException {

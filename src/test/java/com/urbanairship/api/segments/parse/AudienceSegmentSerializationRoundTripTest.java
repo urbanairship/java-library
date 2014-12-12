@@ -26,22 +26,22 @@ public class AudienceSegmentSerializationRoundTripTest {
         String startString = DateTimeFormats.DAYS_FORMAT.print(start);
 
         Operator op = Operator.newBuilder(OperatorType.AND)
-            .addPredicate(new LocationPredicate(new LocationIdentifier(LocationAlias.newBuilder()
-                    .setAliasType("us_state")
-                    .setAliasValue("OR")
-                    .build()),
-                    new DateRange(DateRangeUnit.DAYS, startString, endString), PresenceTimeframe.ANYTIME))
-            .addPredicate(new LocationPredicate(
-                    new LocationIdentifier(LocationAlias.newBuilder()
-                            .setAliasType("us_congressional_district")
-                            .setAliasValue("1234")
-                            .build()),
-                    new RecentDateRange(DateRangeUnit.MONTHS, 3), PresenceTimeframe.ANYTIME))
-            .addOperator(Operator.newBuilder(OperatorType.OR)
-                    .addPredicate(buildTagPredicate("tag1"))
-                    .addPredicate(buildTagPredicate("tag2"))
-                    .build())
-            .build();
+                .addPredicate(new LocationPredicate(new LocationIdentifier(LocationAlias.newBuilder()
+                        .setAliasType("us_state")
+                        .setAliasValue("OR")
+                        .build()),
+                        new DateRange(DateRangeUnit.DAYS, startString, endString), PresenceTimeframe.ANYTIME))
+                .addPredicate(new LocationPredicate(
+                        new LocationIdentifier(LocationAlias.newBuilder()
+                                .setAliasType("us_congressional_district")
+                                .setAliasValue("1234")
+                                .build()),
+                        new RecentDateRange(DateRangeUnit.MONTHS, 3), PresenceTimeframe.ANYTIME))
+                .addOperator(Operator.newBuilder(OperatorType.OR)
+                        .addPredicate(buildTagPredicate("tag1"))
+                        .addPredicate(buildTagPredicate("tag2"))
+                        .build())
+                .build();
 
         AudienceSegment segment = AudienceSegment.newBuilder()
                 .setDisplayName("Test display name")
@@ -148,18 +148,18 @@ public class AudienceSegmentSerializationRoundTripTest {
                         .addPredicate(buildTagPredicate("tag2"))
                         .build())
                 .addOperator(Operator.newBuilder(OperatorType.NOT)
-                        .addPredicate(buildTagPredicate("not-tag", "fooClass"))
-                        .build()
+                                .addPredicate(buildTagPredicate("not-tag", "fooClass"))
+                                .build()
                 )
                 .addOperator(Operator.newBuilder(OperatorType.NOT)
-                        .addOperator(Operator.newBuilder(OperatorType.AND)
-                                .addPredicate(
-                                        new LocationPredicate(new LocationIdentifier("blah"), new DateRange(DateRangeUnit.MONTHS, "2011-05", "2012-02"),
-                                                PresenceTimeframe.ANYTIME))
-                                .addPredicate(buildTagPredicate("woot"))
+                                .addOperator(Operator.newBuilder(OperatorType.AND)
+                                                .addPredicate(
+                                                        new LocationPredicate(new LocationIdentifier("blah"), new DateRange(DateRangeUnit.MONTHS, "2011-05", "2012-02"),
+                                                                PresenceTimeframe.ANYTIME))
+                                                .addPredicate(buildTagPredicate("woot"))
+                                                .build()
+                                )
                                 .build()
-                        )
-                        .build()
                 )
                 .build();
 

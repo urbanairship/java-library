@@ -6,7 +6,10 @@ package com.urbanairship.api.reports.parse;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
-import com.urbanairship.api.common.parse.*;
+import com.urbanairship.api.common.parse.FieldParser;
+import com.urbanairship.api.common.parse.FieldParserRegistry;
+import com.urbanairship.api.common.parse.MapFieldParserRegistry;
+import com.urbanairship.api.common.parse.StandardObjectDeserializer;
 import com.urbanairship.api.reports.model.Opens;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
@@ -18,26 +21,26 @@ public final class OpensDeserializer extends JsonDeserializer<Opens> {
 
     private static final FieldParserRegistry<Opens, OpensReader> FIELD_PARSERS =
             new MapFieldParserRegistry<Opens, OpensReader>(ImmutableMap.<String, FieldParser<OpensReader>>builder()
-            .put("android", new FieldParser<OpensReader>() {
-                @Override
-                public void parse(OpensReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readAndroid(jsonParser);
-                }
-            })
-            .put("date", new FieldParser<OpensReader>() {
-                @Override
-                public void parse(OpensReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readDate(jsonParser);
-                }
-            })
-            .put("ios", new FieldParser<OpensReader>() {
-                @Override
-                public void parse(OpensReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readIOS(jsonParser);
-                }
-            })
-            .build()
-    );
+                    .put("android", new FieldParser<OpensReader>() {
+                        @Override
+                        public void parse(OpensReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readAndroid(jsonParser);
+                        }
+                    })
+                    .put("date", new FieldParser<OpensReader>() {
+                        @Override
+                        public void parse(OpensReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readDate(jsonParser);
+                        }
+                    })
+                    .put("ios", new FieldParser<OpensReader>() {
+                        @Override
+                        public void parse(OpensReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readIOS(jsonParser);
+                        }
+                    })
+                    .build()
+            );
 
     private final StandardObjectDeserializer<Opens, ?> deserializer;
 

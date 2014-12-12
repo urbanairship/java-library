@@ -14,12 +14,12 @@ public final class BatchModificationPayload extends PushModelObject {
 
     private final ImmutableSet<BatchTagSet> batchObject;
 
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     private BatchModificationPayload(ImmutableSet<BatchTagSet> set) {
         this.batchObject = set;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
     public ImmutableSet<BatchTagSet> getBatchObjects() {
@@ -53,10 +53,13 @@ public final class BatchModificationPayload extends PushModelObject {
     public static class Builder {
         private ImmutableSet.Builder<BatchTagSet> batch_object = null;
 
-        private Builder() { }
+        private Builder() {
+        }
 
         public Builder addBatchObject(BatchTagSet value) {
-            if (batch_object == null) { batch_object = ImmutableSet.builder(); }
+            if (batch_object == null) {
+                batch_object = ImmutableSet.builder();
+            }
             batch_object.add(value);
             return this;
         }

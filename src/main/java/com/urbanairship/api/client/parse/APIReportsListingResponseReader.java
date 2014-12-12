@@ -18,22 +18,27 @@ public final class APIReportsListingResponseReader implements JsonObjectReader<A
 
     private final APIReportsPushListingResponse.Builder builder;
 
-    public APIReportsListingResponseReader() { this.builder = APIReportsPushListingResponse.newBuilder(); }
+    public APIReportsListingResponseReader() {
+        this.builder = APIReportsPushListingResponse.newBuilder();
+    }
 
-    public void readNextPage(JsonParser jsonParser) throws IOException { builder.setNextPage(jsonParser.readValueAs(String.class)); }
+    public void readNextPage(JsonParser jsonParser) throws IOException {
+        builder.setNextPage(jsonParser.readValueAs(String.class));
+    }
+
     public void readPushInfoResponses(JsonParser jsonParser) throws IOException {
         builder.addAllPushInfoResponses(
                 (List<SinglePushInfoResponse>) jsonParser.readValueAs(
-                        new TypeReference<List<SinglePushInfoResponse>>() { })
+                        new TypeReference<List<SinglePushInfoResponse>>() {
+                        })
         );
     }
 
     @Override
     public APIReportsPushListingResponse validateAndBuild() throws IOException {
-        try{
+        try {
             return builder.build();
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             throw new APIParsingException(ex.getMessage());
         }
     }

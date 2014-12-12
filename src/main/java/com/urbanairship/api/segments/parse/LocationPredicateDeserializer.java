@@ -35,6 +35,24 @@ public class LocationPredicateDeserializer extends JsonDeserializer<LocationPred
         this.locationIdentifierDeserializer = locationIdentifierDeserializer;
     }
 
+    private static DateRangeUnit parseDateRangeUnit(JsonParser jp) throws IOException {
+        JsonToken token = jp.getCurrentToken();
+        if (token == JsonToken.START_OBJECT) {
+            token = jp.nextToken();
+        }
+
+        if (token != JsonToken.FIELD_NAME) {
+            throw new InvalidAudienceSegmentException(INVALID_DATE_RANGE_UNIT);
+        }
+
+        DateRangeUnit unit = DateRangeUnit.getUnitForIdentifier(jp.getCurrentName());
+        if (unit == null) {
+            throw new InvalidAudienceSegmentException(INVALID_DATE_RANGE_UNIT);
+        }
+
+        return unit;
+    }
+
     @Override
     public LocationPredicate deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         JsonToken token = jp.getCurrentToken();
@@ -110,24 +128,6 @@ public class LocationPredicateDeserializer extends JsonDeserializer<LocationPred
         }
 
         return dateValue;
-    }
-
-    private static DateRangeUnit parseDateRangeUnit(JsonParser jp) throws IOException {
-        JsonToken token = jp.getCurrentToken();
-        if (token == JsonToken.START_OBJECT) {
-            token = jp.nextToken();
-        }
-
-        if (token != JsonToken.FIELD_NAME) {
-            throw new InvalidAudienceSegmentException(INVALID_DATE_RANGE_UNIT);
-        }
-
-        DateRangeUnit unit = DateRangeUnit.getUnitForIdentifier(jp.getCurrentName());
-        if (unit == null) {
-            throw new InvalidAudienceSegmentException(INVALID_DATE_RANGE_UNIT);
-        }
-
-        return unit;
     }
 
     private static class RecentDateRangeDeserializer extends JsonDeserializer<RecentDateRange> {

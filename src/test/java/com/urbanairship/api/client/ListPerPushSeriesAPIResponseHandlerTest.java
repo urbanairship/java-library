@@ -29,7 +29,7 @@ public class ListPerPushSeriesAPIResponseHandlerTest {
             "application/vnd.urbanairship+json; version=3; charset=utf8;";
 
     @Test
-    public void testHandleSuccess(){
+    public void testHandleSuccess() {
 
         String responseString = "{  \n" +
                 "  \"app_key\":\"some_app_key\",\n" +
@@ -120,7 +120,7 @@ public class ListPerPushSeriesAPIResponseHandlerTest {
                 "}";
 
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-                new ProtocolVersion("HTTP",1,1), 200, "OK"));
+                new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
         InputStreamEntity inputStreamEntity = new InputStreamEntity(
                 new ByteArrayInputStream(responseString.getBytes()),
                 responseString.getBytes().length);
@@ -146,14 +146,14 @@ public class ListPerPushSeriesAPIResponseHandlerTest {
     exception
      */
     @Test
-    public void testAPIV3Error(){
+    public void testAPIV3Error() {
         String errorJson = "{\"ok\" : false,\"operation_id\" : \"OpID\"," +
                 "\"error\" : \"Could not parse request body\"," +
                 "\"error_code\" : 40000," +
                 "\"details\" : {\"error\" : \"Unexpected token '#'\"," +
                 "\"location\" : {\"line\" : 10,\"column\" : 3}}}";
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-                new ProtocolVersion("HTTP",1,1), 400, "Bad Request"));
+                new ProtocolVersion("HTTP", 1, 1), 400, "Bad Request"));
         InputStreamEntity inputStreamEntity = new InputStreamEntity(
                 new ByteArrayInputStream(errorJson.getBytes()),
                 errorJson.getBytes().length);
@@ -163,7 +163,7 @@ public class ListPerPushSeriesAPIResponseHandlerTest {
 
         ListPerPushSeriesResponseHandler handler = new ListPerPushSeriesResponseHandler();
 
-        try{
+        try {
             handler.handleResponse(httpResponse);
         } catch (APIRequestException ex) {
             APIErrorDetails details = ex.getError().get().getDetails().get();
@@ -182,11 +182,11 @@ public class ListPerPushSeriesAPIResponseHandlerTest {
      {"message":"description"}
      */
     @Test
-    public void testDeprecatedJSONError(){
+    public void testDeprecatedJSONError() {
         /* Build a BasicHttpResponse */
         String pushJSON = "{\"message\":\"Unauthorized\"}";
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-                new ProtocolVersion("HTTP",1,1), 400, "Unauthorized"));
+                new ProtocolVersion("HTTP", 1, 1), 400, "Unauthorized"));
         InputStreamEntity inputStreamEntity = new InputStreamEntity(
                 new ByteArrayInputStream(pushJSON.getBytes()),
                 pushJSON.getBytes().length);
@@ -210,14 +210,14 @@ public class ListPerPushSeriesAPIResponseHandlerTest {
     }
 
     /**
-     Test the deprecated API response where only a string is returned.
+     * Test the deprecated API response where only a string is returned.
      */
     @Test
-    public void testDeprecatedStringError(){
+    public void testDeprecatedStringError() {
         // Build a BasicHttpResponse
         String errorString = "Unauthorized";
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-                new ProtocolVersion("HTTP",1,1), 400, "Unauthorized"));
+                new ProtocolVersion("HTTP", 1, 1), 400, "Unauthorized"));
         InputStreamEntity inputStreamEntity = new InputStreamEntity(
                 new ByteArrayInputStream(errorString.getBytes()),
                 errorString.getBytes().length);
@@ -227,7 +227,7 @@ public class ListPerPushSeriesAPIResponseHandlerTest {
 
         ListPerPushSeriesResponseHandler handler = new ListPerPushSeriesResponseHandler();
 
-        try{
+        try {
             handler.handleResponse(httpResponse);
         } catch (APIRequestException ex) {
             APIError error = ex.getError().get();

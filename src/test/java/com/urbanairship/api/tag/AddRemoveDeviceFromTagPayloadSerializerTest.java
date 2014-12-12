@@ -16,17 +16,17 @@ public class AddRemoveDeviceFromTagPayloadSerializerTest {
     public void testSerialization() throws Exception {
 
         AddRemoveSet ar = AddRemoveSet.newBuilder()
-                                    .add("device1")
-                                    .add("device2")
-                                    .remove("device3")
-                                    .build();
+                .add("device1")
+                .add("device2")
+                .remove("device3")
+                .build();
 
         AddRemoveDeviceFromTagPayload ardftp = AddRemoveDeviceFromTagPayload.newBuilder()
-                                               .setApids(ar)
-                                               .setDevicePins(ar)
-                                               .setDeviceTokens(ar)
-                                               .setIOSChannels(ar)
-                                               .build();
+                .setApids(ar)
+                .setDevicePins(ar)
+                .setDeviceTokens(ar)
+                .setIOSChannels(ar)
+                .build();
 
         String json = MAPPER.writeValueAsString(ardftp);
         String expectedJson = "{\"ios_tokens\":{\"add\":[\"device1\",\"device2\"],\"remove\":[\"device3\"]},\"device_tokens\":{\"add\":[\"device1\",\"device2\"],\"remove\":[\"device3\"]},\"device_pins\":{\"add\":[\"device1\",\"device2\"],\"remove\":[\"device3\"]},\"apids\":{\"add\":[\"device1\",\"device2\"],\"remove\":[\"device3\"]}}";

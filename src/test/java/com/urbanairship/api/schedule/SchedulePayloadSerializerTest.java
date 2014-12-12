@@ -14,9 +14,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class SchedulePayloadSerializerTest {
 
@@ -33,8 +31,8 @@ public class SchedulePayloadSerializerTest {
                 .build();
         SchedulePayload schedulePayload = SchedulePayload.newBuilder()
                 .setSchedule(Schedule.newBuilder()
-                                     .setScheduledTimestamp(new DateTime("2013-05-05T00:00:01", DateTimeZone.UTC))
-                                     .build())
+                        .setScheduledTimestamp(new DateTime("2013-05-05T00:00:01", DateTimeZone.UTC))
+                        .build())
                 .setPushPayload(pushPayload)
                 .build();
 
@@ -45,7 +43,7 @@ public class SchedulePayloadSerializerTest {
         assertEquals(json, properJson);
     }
 
-    @Test (expected = Exception.class)
+    @Test(expected = Exception.class)
     public void testNoSchedule() throws Exception {
 
         PushPayload pushPayload = PushPayload.newBuilder()

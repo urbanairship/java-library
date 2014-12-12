@@ -5,8 +5,8 @@
 package com.urbanairship.api.client.parse;
 
 import com.urbanairship.api.client.model.APIScheduleResponse;
-import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.type.TypeReference;
@@ -18,11 +18,11 @@ import java.util.List;
 Readers are the part of the deserialization process that actually builds and
 return an object.
  */
-public final class APIScheduleResponseReader implements JsonObjectReader <APIScheduleResponse> {
+public final class APIScheduleResponseReader implements JsonObjectReader<APIScheduleResponse> {
 
     private final APIScheduleResponse.Builder builder;
 
-    public APIScheduleResponseReader (){
+    public APIScheduleResponseReader() {
         this.builder = APIScheduleResponse.newBuilder();
     }
 
@@ -32,7 +32,8 @@ public final class APIScheduleResponseReader implements JsonObjectReader <APISch
 
     public void readScheduleIds(JsonParser jsonParser) throws IOException {
         List<String> list =
-                jsonParser.readValueAs(new TypeReference<List<String>>(){});
+                jsonParser.readValueAs(new TypeReference<List<String>>() {
+                });
         builder.addAllScheduleUrls(list);
     }
 
@@ -43,10 +44,9 @@ public final class APIScheduleResponseReader implements JsonObjectReader <APISch
 
     @Override
     public APIScheduleResponse validateAndBuild() throws IOException {
-        try{
+        try {
             return builder.build();
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             throw new APIParsingException(ex.getMessage());
         }
     }

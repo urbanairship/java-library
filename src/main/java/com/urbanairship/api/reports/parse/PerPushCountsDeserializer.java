@@ -6,7 +6,10 @@ package com.urbanairship.api.reports.parse;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
-import com.urbanairship.api.common.parse.*;
+import com.urbanairship.api.common.parse.FieldParser;
+import com.urbanairship.api.common.parse.FieldParserRegistry;
+import com.urbanairship.api.common.parse.MapFieldParserRegistry;
+import com.urbanairship.api.common.parse.StandardObjectDeserializer;
 import com.urbanairship.api.reports.model.PerPushCounts;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
@@ -18,26 +21,26 @@ public final class PerPushCountsDeserializer extends JsonDeserializer<PerPushCou
 
     private static final FieldParserRegistry<PerPushCounts, PerPushCountsReader> FIELD_PARSERS =
             new MapFieldParserRegistry<PerPushCounts, PerPushCountsReader>(ImmutableMap.<String, FieldParser<PerPushCountsReader>>builder()
-            .put("direct_responses", new FieldParser<PerPushCountsReader>() {
-                @Override
-                public void parse(PerPushCountsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readDirectResponses(jsonParser);
-                }
-            })
-            .put("influenced_responses", new FieldParser<PerPushCountsReader>() {
-                @Override
-                public void parse(PerPushCountsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readInfluencedResponses(jsonParser);
-                }
-            })
-            .put("sends", new FieldParser<PerPushCountsReader>() {
-                @Override
-                public void parse(PerPushCountsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readSends(jsonParser);
-                }
-            })
-            .build()
-    );
+                    .put("direct_responses", new FieldParser<PerPushCountsReader>() {
+                        @Override
+                        public void parse(PerPushCountsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readDirectResponses(jsonParser);
+                        }
+                    })
+                    .put("influenced_responses", new FieldParser<PerPushCountsReader>() {
+                        @Override
+                        public void parse(PerPushCountsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readInfluencedResponses(jsonParser);
+                        }
+                    })
+                    .put("sends", new FieldParser<PerPushCountsReader>() {
+                        @Override
+                        public void parse(PerPushCountsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readSends(jsonParser);
+                        }
+                    })
+                    .build()
+            );
 
     private final StandardObjectDeserializer<PerPushCounts, ?> deserializer;
 

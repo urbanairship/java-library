@@ -4,17 +4,17 @@ import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
-
 import org.junit.Test;
+
 import static org.junit.Assert.assertTrue;
 
 public class APIRequestExceptionTest {
 
     @Test
     @SuppressWarnings({"ThrowableResultOfMethodCallIgnored", "ThrowableInstanceNeverThrown"})
-    public void testAPIException(){
+    public void testAPIException() {
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-                new ProtocolVersion("HTTP",1,1), 404, "Not Found"));
+                new ProtocolVersion("HTTP", 1, 1), 404, "Not Found"));
         String testMsg = "Test Message";
         APIError apiError = APIError.newBuilder()
                 .setError("TEST")
@@ -33,17 +33,17 @@ public class APIRequestExceptionTest {
                 .build();
 
         assertTrue("HttpMessage set improperly",
-                   testException.getHttpResponse().equals(httpResponse));
+                testException.getHttpResponse().equals(httpResponse));
         assertTrue("HTTP response code incorrect",
-                   testException.httpResponseStatusCode() == 404);
+                testException.httpResponseStatusCode() == 404);
         assertTrue("APIError incorrect",
-                   testException.getError().get().equals(apiError));
+                testException.getError().get().equals(apiError));
         assertTrue("Status message incorrect",
-                   testException.httpResponseStatusMessage().equals("Not Found"));
+                testException.httpResponseStatusMessage().equals("Not Found"));
         assertTrue("Throwable cause incorrect",
-                   testException.getCause().equals(runtimeException));
+                testException.getCause().equals(runtimeException));
         assertTrue("Exception message incorrect",
-                   testException.getMessage().equals(testMsg));
+                testException.getMessage().equals(testMsg));
 
     }
 }

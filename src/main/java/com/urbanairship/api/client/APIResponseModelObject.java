@@ -13,7 +13,7 @@ public class APIResponseModelObject extends APIModelObject {
     public String toJSON() {
         try {
             return APIResponseObjectMapper.getInstance().writeValueAsString(this);
-        } catch ( Exception e ) {
+        } catch (Exception e) {
             return toJSON(e);
         }
     }

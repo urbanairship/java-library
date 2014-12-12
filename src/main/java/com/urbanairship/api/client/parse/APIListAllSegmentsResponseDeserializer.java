@@ -43,7 +43,7 @@ public final class APIListAllSegmentsResponseDeserializer extends JsonDeserializ
 
     private final StandardObjectDeserializer<APIListAllSegmentsResponse, ?> deserializer;
 
-    public APIListAllSegmentsResponseDeserializer(){
+    public APIListAllSegmentsResponseDeserializer() {
         this.deserializer = new StandardObjectDeserializer<APIListAllSegmentsResponse, APIListAllSegmentsResponseReader>(
                 FIELD_PARSER,
                 new Supplier<APIListAllSegmentsResponseReader>() {
@@ -54,6 +54,7 @@ public final class APIListAllSegmentsResponseDeserializer extends JsonDeserializ
                 }
         );
     }
+
     @Override
     public APIListAllSegmentsResponse deserialize(JsonParser jsonParser, DeserializationContext
             deserializationContext)

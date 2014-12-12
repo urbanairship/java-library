@@ -6,7 +6,7 @@ package com.urbanairship.api.segments.model;
 
 /**
  * Represents a segments predicate that identifies a location with a date range.
- *
+ * <p/>
  * Note the date range may be specified via a "recent" date range or a static date range.  Use the {@link #isRecentDateRangeBounded()} method
  * to determine which is used for an instance of a LocationPredicate.  If {@link #isRecentDateRangeBounded()} returns true, then the {@link #getRecentDateRange()}
  * method is valid and should be used.  If {@link #isRecentDateRangeBounded()} returns false, then the {@link #getDateRange()} method is valid

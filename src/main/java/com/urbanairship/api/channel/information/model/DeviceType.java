@@ -19,10 +19,6 @@ public enum DeviceType {
         this.identifier = identifier;
     }
 
-    public String getIdentifier() {
-        return identifier;
-    }
-
     public static Optional<DeviceType> find(String identifier) {
         for (DeviceType deviceType : values()) {
             if (deviceType.getIdentifier().equals(identifier)) {
@@ -31,6 +27,10 @@ public enum DeviceType {
         }
 
         return Optional.absent();
+    }
+
+    public String getIdentifier() {
+        return identifier;
     }
 
 }

@@ -13,14 +13,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.util.UUID;
 
-public final class SinglePushInfoResponse  {
-
-    public static enum PushType {
-        UNICAST_PUSH,
-        BROADCAST_PUSH,
-        TAG_PUSH,
-        SCHEDULED_PUSH
-    }
+public final class SinglePushInfoResponse {
 
     private final UUID pushUUID;
     private final int directResponses;
@@ -28,7 +21,6 @@ public final class SinglePushInfoResponse  {
     private final PushType pushType;
     private final DateTime pushTime;
     private final Optional<UUID> groupID;
-
     private SinglePushInfoResponse(UUID pushUUID,
                                    int directResponses,
                                    int sends,
@@ -100,6 +92,13 @@ public final class SinglePushInfoResponse  {
         return Objects.equal(this.pushUUID, other.pushUUID) && Objects.equal(this.directResponses, other.directResponses) && Objects.equal(this.sends, other.sends) && Objects.equal(this.pushType, other.pushType) && Objects.equal(this.pushTime, other.pushTime) && Objects.equal(this.groupID, other.groupID);
     }
 
+    public static enum PushType {
+        UNICAST_PUSH,
+        BROADCAST_PUSH,
+        TAG_PUSH,
+        SCHEDULED_PUSH
+    }
+
     public static class Builder {
         private UUID pushUUID;
         private int directResponses;
@@ -108,7 +107,8 @@ public final class SinglePushInfoResponse  {
         private DateTime pushTime;
         private UUID groupID;
 
-        private Builder() { }
+        private Builder() {
+        }
 
         public Builder setPushUUID(UUID value) {
             this.pushUUID = value;
@@ -119,6 +119,7 @@ public final class SinglePushInfoResponse  {
             this.directResponses = value;
             return this;
         }
+
         public Builder setSends(int value) {
             this.sends = value;
             return this;

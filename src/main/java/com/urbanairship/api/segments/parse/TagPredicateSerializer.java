@@ -16,7 +16,8 @@ public class TagPredicateSerializer extends JsonSerializer<TagPredicate> {
 
     public static final TagPredicateSerializer INSTANCE = new TagPredicateSerializer();
 
-    private TagPredicateSerializer() { }
+    private TagPredicateSerializer() {
+    }
 
     @Override
     public void serialize(TagPredicate value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
@@ -24,7 +25,7 @@ public class TagPredicateSerializer extends JsonSerializer<TagPredicate> {
 
         jgen.writeFieldName("tag");
         jgen.writeString(value.getTag());
-        if(!value.isDefaultClass()){
+        if (!value.isDefaultClass()) {
             jgen.writeFieldName("tag_class");
             jgen.writeString(value.getTagClass());
         }
