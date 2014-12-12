@@ -7,7 +7,6 @@ package com.urbanairship.api.client;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
-import com.urbanairship.api.channel.information.model.ChannelView;
 import com.urbanairship.api.client.model.*;
 import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.Point;
