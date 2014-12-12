@@ -52,16 +52,7 @@ public class LocationPredicateSerializer extends JsonSerializer<LocationPredicat
             DATE_RANGE_SERIALIZER.serialize(value.getDateRange(), jgen, provider);
         }
 
-        if (value.getPresenceTimeframe() == PresenceTimeframe.LAST_SEEN) {
-            writeLastSeenFlag(jgen);
-        }
-
         jgen.writeEndObject();
-    }
-
-    private void writeLastSeenFlag(JsonGenerator jgen) throws IOException {
-        jgen.writeFieldName("last_seen");
-        jgen.writeBoolean(true);
     }
 
     private static class DateRangeSerializer extends JsonSerializer<DateRange> {

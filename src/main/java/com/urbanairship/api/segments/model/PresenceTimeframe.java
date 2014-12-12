@@ -6,6 +6,6 @@ package com.urbanairship.api.segments.model;
 
 public enum PresenceTimeframe {
 
-    LAST_SEEN, ANYTIME
+    ANYTIME
 
 }

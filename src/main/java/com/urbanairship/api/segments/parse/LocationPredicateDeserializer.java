@@ -89,26 +89,12 @@ public class LocationPredicateDeserializer extends JsonDeserializer<LocationPred
             }
 
             String key = jp.getCurrentName();
-            if ("last_seen".equals(key)) {
-                presenceTimeframe = parseLastSeen(jp);
-            }
-            else {
-                dateValue = parseDateValue(key, jp, ctxt);
-            }
+            dateValue = parseDateValue(key, jp, ctxt);
 
             token = jp.nextToken();
         }
 
         return new DateSpecifier(presenceTimeframe, dateValue);
-    }
-
-    private PresenceTimeframe parseLastSeen(JsonParser jp) throws IOException {
-        JsonToken token = jp.nextToken();
-        if (token != JsonToken.VALUE_TRUE) {
-            throw new InvalidAudienceSegmentException("Last seen flag when specified must have a boolean value of true");
-        }
-
-        return PresenceTimeframe.LAST_SEEN;
     }
 
     private DateValue parseDateValue(String key, JsonParser jp, DeserializationContext ctxt) throws IOException {

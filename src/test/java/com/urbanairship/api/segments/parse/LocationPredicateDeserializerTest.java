@@ -49,28 +49,10 @@ public class LocationPredicateDeserializerTest {
         Assert.assertEquals(expected, parse(json));
     }
 
-    @Test
-    public void testValidMinutesDateRangeWithLastSeen() throws Exception {
-        String json = "{\"id\": \"blah\", \"date\": {\"minutes\": {\"start\": \"2012-10-15 12:30\", \"end\": \"2012-10-15 12:59\"}, \"last_seen\": true}}";
-        LocationPredicate expected = new LocationPredicate(new LocationIdentifier("blah"),
-                new DateRange(DateRangeUnit.MINUTES, "2012-10-15 12:30", "2012-10-15 12:59"), PresenceTimeframe.LAST_SEEN);
-
-        Assert.assertEquals(expected, parse(json));
-    }
-
     @Test(expected = InvalidAudienceSegmentException.class)
     public void testInvalidLastSeenValue() throws Exception {
         String json = "{\"id\": \"blah\", \"date\": {\"minutes\": {\"start\": \"2012-10-15 12:30\", \"end\": \"2012-10-15 12:59\"}, \"last_seen\": \"yes\"}}";
         parse(json);
-    }
-
-    @Test(expected = InvalidAudienceSegmentException.class)
-    public void testDateRangeWithLastSeenNotInsideDateSpecifier() throws Exception {
-        String json = "{\"id\": \"blah\", \"date\": {\"minutes\": {\"start\": \"2012-10-15 12:30\", \"end\": \"2012-10-15 12:59\"}}, \"last_seen\": true}";
-        LocationPredicate expected = new LocationPredicate(new LocationIdentifier("blah"),
-                new DateRange(DateRangeUnit.MINUTES, "2012-10-15 12:30", "2012-10-15 12:59"), PresenceTimeframe.LAST_SEEN);
-
-        Assert.assertEquals(expected, parse(json));
     }
 
     @Test(expected = InvalidAudienceSegmentException.class)
