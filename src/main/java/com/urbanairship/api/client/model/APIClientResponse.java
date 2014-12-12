@@ -9,6 +9,8 @@ import com.google.common.base.Objects;
 import com.urbanairship.api.channel.information.model.ChannelView;
 import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.reports.model.SinglePushInfoResponse;
+import com.urbanairship.api.reports.model.ReportsAPIOpensResponse;
+import com.urbanairship.api.reports.model.ReportsAPITimeInAppResponse;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.segments.model.AudienceSegment;
 import org.apache.http.HttpResponse;
@@ -94,6 +96,22 @@ public class APIClientResponse<T> {
      */
     public static Builder<List<AppStats>> newListAppStatsBuilder(){
         return new Builder<List<AppStats>>();
+    }
+
+    /**
+     * Return a Builder for a ReportsAPIOpensResponse
+     * @return Builder
+     */
+    public static Builder<ReportsAPIOpensResponse> newAppsOpenReportResponseBuilder(){
+        return new Builder<ReportsAPIOpensResponse>();
+    }
+
+    /**
+     * Return a Builder for a ReportsAPITimeInAppResponse
+     * @return Builder
+     */
+    public static Builder<ReportsAPITimeInAppResponse> newTimeInAppReportResponseBuilder(){
+        return new Builder<ReportsAPITimeInAppResponse>();
     }
 
     /**
