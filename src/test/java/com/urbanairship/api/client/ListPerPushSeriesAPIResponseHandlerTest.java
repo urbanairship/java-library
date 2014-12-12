@@ -132,8 +132,7 @@ public class ListPerPushSeriesAPIResponseHandlerTest {
                     handler.handleResponse(httpResponse);
             assertTrue("HttpResponse is incorrect",
                     httpResponse.equals(httpResponse));
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Exception " + ex);
         }
 
@@ -166,14 +165,12 @@ public class ListPerPushSeriesAPIResponseHandlerTest {
 
         try{
             handler.handleResponse(httpResponse);
-        }
-        catch (APIRequestException ex){
+        } catch (APIRequestException ex) {
             APIErrorDetails details = ex.getError().get().getDetails().get();
             assertTrue("Incorrect error details", details.getError().equals("Unexpected token '#'"));
             assertTrue("HttpResponse set incorrectly", ex.getHttpResponse().equals(httpResponse));
             return;
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Incorrect exception thrown " + ex);
         }
         fail("Test should have succeeded by now");
@@ -200,15 +197,13 @@ public class ListPerPushSeriesAPIResponseHandlerTest {
 
         try {
             handler.handleResponse(httpResponse);
-        }
-        catch (APIRequestException ex){
+        } catch (APIRequestException ex) {
 
             APIError error = ex.getError().get();
             String errorMessage = error.getError();
             assertTrue("Error message incorrect", errorMessage.equals("Unauthorized"));
             return;
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Failed with incorrect exception " + ex);
         }
         fail("Test should have succeeded by now");
@@ -234,14 +229,12 @@ public class ListPerPushSeriesAPIResponseHandlerTest {
 
         try{
             handler.handleResponse(httpResponse);
-        }
-        catch (APIRequestException ex){
+        } catch (APIRequestException ex) {
             APIError error = ex.getError().get();
             assertTrue("String error message is incorrect",
                     error.getError().equals("Unauthorized"));
             return;
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             fail("Failed with incorrect exception " + ex);
         }
         fail("Test should have succeeded by now");

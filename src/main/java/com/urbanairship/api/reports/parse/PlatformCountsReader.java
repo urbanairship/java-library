@@ -21,6 +21,8 @@ import java.util.Map;
 
 public class PlatformCountsReader implements JsonObjectReader<PlatformCounts> {
 
+    private static final String datePattern = "yyyy-MM-dd HH:mm:ss";
+
     private final PlatformCounts.Builder builder;
 
     public PlatformCountsReader() {
@@ -47,8 +49,7 @@ public class PlatformCountsReader implements JsonObjectReader<PlatformCounts> {
 
     public void readTime(JsonParser jsonParser) throws IOException {
         String created = jsonParser.readValueAs(String.class);
-        String pattern = "yyyy-MM-dd HH:mm:ss";
-        builder.setTime(DateTime.parse(created, DateTimeFormat.forPattern(pattern)));
+        builder.setTime(DateTime.parse(created, DateTimeFormat.forPattern(datePattern)));
     }
 
     @Override

@@ -20,6 +20,8 @@ import java.util.UUID;
 
 public class PerPushSeriesResponseReader implements JsonObjectReader<PerPushSeriesResponse> {
 
+    private static final String datePattern = "yyyy-MM-dd HH:mm:ss";
+
     private final PerPushSeriesResponse.Builder builder;
 
     public PerPushSeriesResponseReader() {
@@ -36,14 +38,12 @@ public class PerPushSeriesResponseReader implements JsonObjectReader<PerPushSeri
 
     public void readStart(JsonParser jsonParser) throws IOException {
         String created = jsonParser.readValueAs(String.class);
-        String pattern = "yyyy-MM-dd HH:mm:ss";
-        builder.setStart(DateTime.parse(created, DateTimeFormat.forPattern(pattern)));
+        builder.setStart(DateTime.parse(created, DateTimeFormat.forPattern(datePattern)));
     }
 
     public void readEnd(JsonParser jsonParser) throws IOException {
         String created = jsonParser.readValueAs(String.class);
-        String pattern = "yyyy-MM-dd HH:mm:ss";
-        builder.setEnd(DateTime.parse(created, DateTimeFormat.forPattern(pattern)));
+        builder.setEnd(DateTime.parse(created, DateTimeFormat.forPattern(datePattern)));
     }
 
     public void readPrecision(JsonParser jsonParser) throws IOException {

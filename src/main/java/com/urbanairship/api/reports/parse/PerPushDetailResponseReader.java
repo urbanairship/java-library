@@ -22,6 +22,8 @@ import java.util.UUID;
 
 public class PerPushDetailResponseReader implements JsonObjectReader<PerPushDetailResponse> {
 
+    private static final String datePattern = "yyyy-MM-dd HH:mm:ss";
+
     private final PerPushDetailResponse.Builder builder;
 
     public PerPushDetailResponseReader() {
@@ -41,8 +43,7 @@ public class PerPushDetailResponseReader implements JsonObjectReader<PerPushDeta
         if (created.equals("0")) {
             builder.setCreated(Optional.<DateTime>absent());
         } else {
-            String pattern = "yyyy-MM-dd HH:mm:ss";
-            builder.setCreated(Optional.of(DateTime.parse(created, DateTimeFormat.forPattern(pattern))));
+            builder.setCreated(Optional.of(DateTime.parse(created, DateTimeFormat.forPattern(datePattern))));
         }
     }
 
