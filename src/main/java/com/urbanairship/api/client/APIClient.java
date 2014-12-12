@@ -12,6 +12,8 @@ import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.Point;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.reports.model.AppStats;
+import com.urbanairship.api.reports.model.PerPushDetailResponse;
+import com.urbanairship.api.reports.model.PerPushSeriesResponse;
 import com.urbanairship.api.reports.model.ReportsAPIOpensResponse;
 import com.urbanairship.api.reports.model.ReportsAPITimeInAppResponse;
 import com.urbanairship.api.reports.model.SinglePushInfoResponse;
@@ -39,12 +41,18 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Properties;
+import java.util.UUID;
 
 /**
  * The APIClient class handles HTTP requests to the Urban Airship API
  */
 
 public class APIClient {
+
+    /* Static Strings */
+    private final static String HOURLY = "HOURLY";
+    private final static String MONTHLY = "MONTHLY";
+    private final static String DAILY = "DAILY";
 
     /* Header keys/values */
     private final static String CONTENT_TYPE_KEY = "Content-type";
@@ -62,6 +70,8 @@ public class APIClient {
     private final static String API_SEGMENTS_PATH = "/api/segments/";
     private final static String API_DEVICE_CHANNELS_PATH = "/api/channels/";
     private final static String API_STATISTICS_PATH = "/api/push/stats/";
+    private final static String API_REPORTS_PER_PUSH_DETAIL_PATH = "/api/reports/perpush/detail/";
+    private final static String API_REPORTS_PER_PUSH_SERIES_PATH = "/api/reports/perpush/series/";
     private final static String API_REPORTS_PUSH_RESPONSE_PATH="/api/reports/responses/";
     private final static String API_REPORTS_APPS_OPEN_PATH = "/api/reports/opens/";
     private final static String API_REPORTS_TIME_IN_APP_PATH = "/api/reports/timeinapp/";
@@ -531,6 +541,77 @@ public class APIClient {
     }
 
     /* Reports API */
+
+    public APIClientResponse<PerPushDetailResponse> listPerPushDetail(String pushID) throws IOException {
+        URIBuilder builder = new URIBuilder(baseURI.resolve(API_REPORTS_PER_PUSH_DETAIL_PATH + pushID));
+
+        Request req = provisionRequest(Request.Get(builder.toString()));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list per push detail request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ListPerPushDetailAPIResponseHandler());
+    }
+
+    public APIClientResponse<PerPushSeriesResponse> listPerPushSeries(String pushID) throws IOException {
+        URIBuilder builder = new URIBuilder(baseURI.resolve(API_REPORTS_PER_PUSH_SERIES_PATH + pushID));
+
+        Request req = provisionRequest(Request.Get(builder.toString()));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list per push series request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ListPerPushSeriesResponseHandler());
+    }
+
+    public APIClientResponse<PerPushSeriesResponse> listPerPushSeries(String pushID, String precision) throws IOException {
+        Preconditions.checkArgument(HOURLY.equals(precision) ||
+                                    DAILY.equals(precision)  ||
+                                    MONTHLY.equals(precision),
+        "Precision must be specified as HOURLY, DAILY or MONTHLY");
+
+        URIBuilder builder = new URIBuilder(baseURI.resolve(API_REPORTS_PER_PUSH_SERIES_PATH + pushID));
+
+        builder.addParameter("precision", precision.toUpperCase());
+
+        Request req = provisionRequest(Request.Get(builder.toString()));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list per push series with precision request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ListPerPushSeriesResponseHandler());
+    }
+
+    public APIClientResponse<PerPushSeriesResponse> listPerPushSeries(String pushID,
+                                                                      String precision,
+                                                                      DateTime start,
+                                                                      DateTime end) throws IOException {
+        Preconditions.checkArgument(HOURLY.equals(precision) ||
+                                    DAILY.equals(precision)  ||
+                                    MONTHLY.equals(precision),
+        "Precision must be specified as HOURLY, DAILY or MONTHLY");
+
+        Preconditions.checkNotNull(start, "Start time is required when performing listing of per push series");
+        Preconditions.checkNotNull(end, "End time is required when performing listing of per push series");
+        Preconditions.checkArgument(start.isBefore(end), "Start time must be before End time");
+
+        URIBuilder builder = new URIBuilder(baseURI.resolve(API_REPORTS_PER_PUSH_SERIES_PATH + pushID));
+
+        builder.addParameter("precision", precision.toUpperCase());
+        builder.addParameter("start", start.toLocalDateTime().toString());
+        builder.addParameter("end", end.toLocalDateTime().toString());
+
+        Request req = provisionRequest(Request.Get(builder.toString()));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list per push series with precision and range request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ListPerPushSeriesResponseHandler());
+    }
 
     public APIClientResponse<SinglePushInfoResponse> listIndividualPushResponseStatistics(String id) throws IOException {
         Preconditions.checkNotNull(id, "Push id is required when performing listing of individual push response statistics.");

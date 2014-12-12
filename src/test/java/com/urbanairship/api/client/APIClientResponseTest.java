@@ -10,6 +10,8 @@ import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.reports.model.AppStats;
+import com.urbanairship.api.reports.model.PerPushDetailResponse;
+import com.urbanairship.api.reports.model.PerPushSeriesResponse;
 import com.urbanairship.api.reports.model.ReportsAPIOpensResponse;
 import com.urbanairship.api.reports.model.ReportsAPITimeInAppResponse;
 import com.urbanairship.api.reports.model.SinglePushInfoResponse;
@@ -35,6 +37,50 @@ import java.util.UUID;
 
 
 public class APIClientResponseTest {
+
+    @Test
+    public void testListPerPushSeriesAPIResponseHandlerTest() {
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP",1,1), 200, "OK"));
+
+        PerPushSeriesResponse obj = PerPushSeriesResponse.newBuilder()
+                .setAppKey("blah")
+                .build();
+
+        APIClientResponse.Builder<PerPushSeriesResponse> builder = APIClientResponse.newListPerPushSeriesBuilder()
+                .setApiResponse(obj)
+                .setHttpResponse(httpResponse);
+
+        APIClientResponse<PerPushSeriesResponse> testResponse = builder.build();
+
+        assertTrue("HTTP response not set properly",
+                testResponse.getHttpResponse().equals(httpResponse));
+
+        assertTrue("APIResponse not set properly",
+                testResponse.getApiResponse().equals(obj));
+    }
+
+    @Test
+    public void testListPerPushDetailAPIResponseHandlerTest() {
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP",1,1), 200, "OK"));
+
+        PerPushDetailResponse obj = PerPushDetailResponse.newBuilder()
+                .setAppKey("blah")
+                .build();
+
+        APIClientResponse.Builder<PerPushDetailResponse> builder = APIClientResponse.newListPerPushDetailBuilder()
+                .setApiResponse(obj)
+                .setHttpResponse(httpResponse);
+
+        APIClientResponse<PerPushDetailResponse> testResponse = builder.build();
+
+        assertTrue("HTTP response not set properly",
+                testResponse.getHttpResponse().equals(httpResponse));
+
+        assertTrue("APIResponse not set properly",
+                testResponse.getApiResponse().equals(obj));
+    }
 
     @Test
     public void testTimeInAppReportAPIResponse(){

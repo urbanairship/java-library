@@ -8,6 +8,8 @@ package com.urbanairship.api.client.model;
 import com.google.common.base.Objects;
 import com.urbanairship.api.channel.information.model.ChannelView;
 import com.urbanairship.api.reports.model.AppStats;
+import com.urbanairship.api.reports.model.PerPushDetailResponse;
+import com.urbanairship.api.reports.model.PerPushSeriesResponse;
 import com.urbanairship.api.reports.model.SinglePushInfoResponse;
 import com.urbanairship.api.reports.model.ReportsAPIOpensResponse;
 import com.urbanairship.api.reports.model.ReportsAPITimeInAppResponse;
@@ -112,6 +114,22 @@ public class APIClientResponse<T> {
      */
     public static Builder<ReportsAPITimeInAppResponse> newTimeInAppReportResponseBuilder(){
         return new Builder<ReportsAPITimeInAppResponse>();
+    }
+
+    /**
+     * Return a Builder for a PerPushDetailResponse
+     * @return Builder
+     */
+    public static Builder<PerPushDetailResponse> newListPerPushDetailBuilder(){
+        return new Builder<PerPushDetailResponse>();
+    }
+
+    /**
+     * Return a Builder for a PerPushSeriesResponse
+     * @return Builder
+     */
+    public static Builder<PerPushSeriesResponse> newListPerPushSeriesBuilder(){
+        return new Builder<PerPushSeriesResponse>();
     }
 
     /**

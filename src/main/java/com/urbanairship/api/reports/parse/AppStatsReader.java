@@ -15,6 +15,8 @@ import java.io.IOException;
 
 public final class AppStatsReader implements JsonObjectReader<AppStats> {
 
+    private static final String datePattern = "yyyy-MM-dd HH:mm:ss";
+
     private final AppStats.Builder builder;
 
     public AppStatsReader() {
@@ -22,8 +24,7 @@ public final class AppStatsReader implements JsonObjectReader<AppStats> {
     }
 
     public void readStartTime(JsonParser jsonParser) throws IOException {
-        String pattern = "yyyy-MM-dd HH:mm:ss";
-        builder.setStartTime(DateTime.parse(jsonParser.readValueAs(String.class), DateTimeFormat.forPattern(pattern)));
+        builder.setStartTime(DateTime.parse(jsonParser.readValueAs(String.class), DateTimeFormat.forPattern(datePattern)));
     }
 
     public void readiOSCount(JsonParser jsonParser) throws IOException {
