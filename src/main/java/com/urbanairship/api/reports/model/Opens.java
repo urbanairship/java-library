@@ -10,15 +10,15 @@ import org.joda.time.DateTime;
 
 public final class Opens {
 
-    private final long android;
-    private final long ios;
+    private final Long android;
+    private final Long ios;
     private final DateTime date;
 
     public static Builder newBuilder() {
         return new Builder();
     }
 
-    private Opens(long android, long ios, DateTime date) {
+    private Opens(Long android, Long ios, DateTime date) {
         this.android = android;
         this.ios = ios;
         this.date = date;
@@ -64,18 +64,18 @@ public final class Opens {
 
     public static class Builder {
 
-        private long android;
-        private long ios;
+        private Long android;
+        private Long ios;
         private DateTime date;
 
         private Builder() { }
 
-        public Builder setAndroid(long value) {
+        public Builder setAndroid(Long value) {
             this.android = value;
             return this;
         }
 
-        public Builder setIOS(long value) {
+        public Builder setIOS(Long value) {
             this.ios = value;
             return this;
         }
