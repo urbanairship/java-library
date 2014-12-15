@@ -45,8 +45,7 @@ Documentation
 =============
 
 General documentation can be found here: http://docs.urbanairship.com/
-Jave client library documentation can be found here:
-  http://docs.urbanairship.com/reference/libraries/java/index.html
+Java client library documentation can be found here: http://docs.urbanairship.com/reference/libraries/java/index.html
 
 Installation
 ====================
