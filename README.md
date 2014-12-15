@@ -45,8 +45,7 @@ Documentation
 =============
 
 General documentation can be found here: http://docs.urbanairship.com/
-Jave client library documentation can be found here:
-  http://docs.urbanairship.com/reference/libraries/java/index.html
+Java client library documentation can be found here: http://docs.urbanairship.com/reference/libraries/java/index.html
 
 Installation
 ====================
@@ -77,7 +76,7 @@ Add the following to your pom.xml
     <dependency>
         <groupId>com.urbanairship</groupId>
         <artifactId>java-client</artifactId>
-        <version>0.1.VERSION</version> 
+        <version>0.2.VERSION</version>
         <!-- Replace VERSION with the version you want to use -->
     </dependency>
 ```

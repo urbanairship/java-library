@@ -1,9 +1,27 @@
 
 -------------------------
+0.3 15DEC14
+-------------------------
+Lots of new things:
+- Amazon support
+- Channels support
+- Expiry/time to live
+- Scheduled push to local time
+- Tag API
+- iOS background push
+- List, update, and delete scheduled pushes
+- Actions
+- Several Reports API, Segments API, and Location API endpoints
+- Now allows UA Client Access Control URLs in addition to the regular UA API URLs
+- Proxy support
+- Lots more documentation
+- A few bugfixes and refactors (see commits)
+
+-------------------------
 0.2.1 16SEP13
 -------------------------
-- fixed issue with validate URL
-- update APIResponse to handle validate responses as well as
+- Fixed issue with validate URL
+- Update APIResponse to handle validate responses as well as
   push responses. This will require changes only if the APIResponse
   object is being used outside of the UA code
 
@@ -16,4 +34,4 @@
   other libraries
 
 - Updates -
-- example code logging fix
+- Example code logging fix
