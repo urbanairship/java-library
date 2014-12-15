@@ -21,7 +21,7 @@ Add the dependency to your pom.xml.
         <dependency>
             <groupId>com.urbanairship</groupId>
             <artifactId>java-client</artifactId>
-            <version>0.1.VERSION</version>
+            <version>0.2.VERSION</version>
             <!-- Replace VERSION with the version you want to use -->
         </dependency>
 
