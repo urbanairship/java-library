@@ -29,6 +29,12 @@ public class IOSDevicePayloadSerializerTest {
         String json = mapper.writeValueAsString(payload.getAlert().get());
 
         assertEquals(expected, json);
+
+        String expectedPayloadJson = "{\"alert\":\"iOS override\"}";
+
+        String payloadJson = mapper.writeValueAsString(payload);
+
+        assertEquals(expectedPayloadJson, payloadJson);
     }
 
 
@@ -63,9 +69,7 @@ public class IOSDevicePayloadSerializerTest {
 
         String json = mapper.writeValueAsString(payload);
 
-
-        String expected
-                = "{\"alert\":\"B\"}";
+        String expected = "{\"alert\":{\"body\":\"B\",\"action-loc-key\":\"ALK\",\"loc-key\":\"LK\",\"loc-args\":[\"arg1\",\"arg2\"],\"launch-image\":\"LI\"}}";
 
         assertEquals(expected, json);
     }
