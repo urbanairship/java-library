@@ -32,7 +32,7 @@ public class IOSDevicePayloadTest {
         IOSDevicePayload m = IOSDevicePayload.newBuilder()
                 .setSound("this is a sound")
                 .setContentAvailable(true)
-                .setAlert(IOSAlertData.newBuilder().build())
+                .setAlert(IOSAlertData.newBuilder().setBody("this is a body").build())
                 .setBadge(IOSBadgeData.newBuilder().setType(IOSBadgeData.Type.VALUE).setValue(1).build())
                 .setExpiry(PushExpiry.newBuilder().setExpirySeconds(600).build())
                 .setPriority(10)

@@ -40,6 +40,10 @@ public final class IOSAlertData extends PushModelObject {
             || launchImage.isPresent();
     }
 
+    public boolean isNotEmpty() {
+        return isCompound() || body.isPresent();
+    }
+
     public Optional<String> getBody() {
         return body;
     }
