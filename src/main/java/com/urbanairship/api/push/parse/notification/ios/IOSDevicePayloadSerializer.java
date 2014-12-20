@@ -16,8 +16,8 @@ public class IOSDevicePayloadSerializer extends JsonSerializer<IOSDevicePayload>
     public void serialize(IOSDevicePayload payload, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         jgen.writeStartObject();
 
-        if (payload.getAlert().isPresent()) {
-            jgen.writeStringField("alert", payload.getAlert().get());
+        if (payload.getAlertData().isPresent()) {
+            jgen.writeObjectField("alert", payload.getAlertData().get());
         }
 
         if (payload.getSound().isPresent()) {
