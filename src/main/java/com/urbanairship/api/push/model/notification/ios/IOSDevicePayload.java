@@ -72,7 +72,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
      * @return IOSAlertData
      */
     public Optional<IOSAlertData> getAlertData() {
-        return alert;
+        return alert.isPresent() && alert.get().isNotEmpty() ? alert : Optional.<IOSAlertData>absent();
     }
 
     /**
