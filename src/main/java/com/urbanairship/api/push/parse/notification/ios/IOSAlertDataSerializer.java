@@ -16,7 +16,7 @@ public class IOSAlertDataSerializer extends JsonSerializer<IOSAlertData> {
     public void serialize(IOSAlertData alert, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         if (!alert.isCompound() && alert.getBody().isPresent()) {
             jgen.writeString(alert.getBody().get());
-        } else if (alert.isCompound()) {
+        } else {
             jgen.writeStartObject();
             if (alert.getBody().isPresent()) {
                 jgen.writeStringField("body", alert.getBody().get());

@@ -43,7 +43,7 @@ public class IOSDevicePayloadSerializerTest {
 
 
         String expected
-                = "{\"badge\":1}";
+                = "{\"alert\":{},\"badge\":1}";
 
         assertEquals(expected, json);
     }
@@ -65,7 +65,7 @@ public class IOSDevicePayloadSerializerTest {
 
 
         String expected
-                = "{\"alert\":\"B\"}";
+            = "{\"alert\":{\"body\":\"B\",\"action-loc-key\":\"ALK\",\"loc-key\":\"LK\",\"loc-args\":[\"arg1\",\"arg2\"],\"launch-image\":\"LI\"}}";
 
         assertEquals(expected, json);
     }
