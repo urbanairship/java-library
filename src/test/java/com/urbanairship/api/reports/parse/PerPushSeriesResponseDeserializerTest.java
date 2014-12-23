@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import com.urbanairship.api.reports.model.*;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.joda.time.DateTime;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -118,13 +119,13 @@ public class PerPushSeriesResponseDeserializerTest {
 
         assertEquals("some_app_key", obj.getAppKey());
         assertEquals(UUID.fromString("57ef3728-79dc-46b1-a6b9-20081e561f97"), obj.getPushID());
-        assertEquals("2013-07-25T23:00:00.000-07:00", obj.getStart().toString());
-        assertEquals("2013-07-26T11:00:00.000-07:00", obj.getEnd().toString());
+        assertEquals(new DateTime(2013, 7, 25, 23, 0, 0, 0), obj.getStart());
+        assertEquals(new DateTime(2013, 7, 26, 11, 0, 0, 0), obj.getEnd());
         assertEquals("HOURLY", obj.getPrecision());
 
         List<PlatformCounts> listCounts = obj.getCounts();
         PlatformCounts one = listCounts.get(0);
-        assertEquals("2013-07-25T23:00:00.000-07:00", one.getTime().toString());
+        assertEquals(new DateTime(2013, 7, 25, 23, 0, 0, 0), one.getTime());
 
         ImmutableMap<PlatformType, PerPushCounts> onePush = one.getPushPlatforms();
 
@@ -150,7 +151,7 @@ public class PerPushSeriesResponseDeserializerTest {
         assertEquals(8, oneRichAll.getSends());
 
         PlatformCounts two = listCounts.get(1);
-        assertEquals("2013-07-26T00:00:00.000-07:00", two.getTime().toString());
+        assertEquals(new DateTime(2013, 7, 26, 0, 0, 0, 0), two.getTime());
 
         ImmutableMap<PlatformType, PerPushCounts> twoPush = two.getPushPlatforms();
 
@@ -176,7 +177,7 @@ public class PerPushSeriesResponseDeserializerTest {
         assertEquals(19, twoRichAll.getSends());
 
         PlatformCounts three = listCounts.get(2);
-        assertEquals("2013-07-26T01:00:00.000-07:00", three.getTime().toString());
+        assertEquals(new DateTime(2013, 7, 26, 1, 0, 0, 0), three.getTime());
 
         ImmutableMap<PlatformType, PerPushCounts> threePush = three.getPushPlatforms();
 
