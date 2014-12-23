@@ -49,7 +49,9 @@ import static org.junit.Assert.*;
 public class APIClientTest {
 
     public final static String CONTENT_TYPE_KEY = "Content-type";
+    public final static String ACCEPT_KEY = "Accept";
     public final static String APP_JSON = "application/vnd.urbanairship+json; version=3;";
+    public final static String ACCEPT_HEADER_VALUE = APP_JSON;
 
     static {
         BasicConfigurator.configure();
@@ -2810,5 +2812,75 @@ public class APIClientTest {
         APIClientResponse<ReportsAPITimeInAppResponse> response = client.listTimeInAppReport(start, end, "monthly");
         assertNotNull(response);
 
+    }
+
+    @Test
+    public void testCreateDeviceToken() {
+        String testToken = "TESTTOKENEE7211BLABLA0C0674B818BLABLAE6441B477E635B460CC1ABLABLA";
+        String requestPath = "/api/device_tokens/" + testToken;
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        stubFor(put(urlEqualTo(requestPath))
+                .willReturn(aResponse()
+                        .withStatus(201)));
+
+        try {
+            HttpResponse response = client.createDeviceToken(testToken);
+
+            // Verify components of the underlying HttpRequest
+            verify(putRequestedFor(urlEqualTo(requestPath))
+                    .withoutHeader(CONTENT_TYPE_KEY)
+                    .withHeader(ACCEPT_KEY, equalTo(ACCEPT_HEADER_VALUE)));
+            List<LoggedRequest> requests = findAll(putRequestedFor(
+                    urlEqualTo(requestPath)));
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+            assertEquals(201, response.getStatusLine().getStatusCode());
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testDeleteDeviceToken() {
+        String testToken = "TESTTOKENEE7211BLABLA0C0674B818BLABLAE6441B477E635B460CC1ABLABLA";
+        String requestPath = "/api/device_tokens/" + testToken;
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        stubFor(delete(urlEqualTo(requestPath))
+                .willReturn(aResponse()
+                        .withStatus(204)));
+
+        try {
+            HttpResponse response = client.deleteDeviceToken(testToken);
+
+            // Verify components of the underlying HttpRequest
+            verify(deleteRequestedFor(urlEqualTo(requestPath))
+                    .withoutHeader(CONTENT_TYPE_KEY)
+                    .withHeader(ACCEPT_KEY, equalTo(ACCEPT_HEADER_VALUE)));
+            List<LoggedRequest> requests = findAll(deleteRequestedFor(
+                    urlEqualTo(requestPath)));
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+            assertEquals(204, response.getStatusLine().getStatusCode());
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
     }
 }

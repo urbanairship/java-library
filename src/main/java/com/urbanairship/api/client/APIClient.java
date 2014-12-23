@@ -66,6 +66,7 @@ public class APIClient {
     private final static String API_REPORTS_PUSH_RESPONSE_PATH = "/api/reports/responses/";
     private final static String API_REPORTS_APPS_OPEN_PATH = "/api/reports/opens/";
     private final static String API_REPORTS_TIME_IN_APP_PATH = "/api/reports/timeinapp/";
+    private final static String API_DEVICE_TOKENS_PATH = "/api/device_tokens/";
     private final static Logger logger = LoggerFactory.getLogger("com.urbanairship.api");
     /* User auth */
     private final String appKey;
@@ -138,6 +139,17 @@ public class APIClient {
     private Request provisionRequest(Request object) {
         object.config(CoreProtocolPNames.USER_AGENT, getUserAgent())
                 .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
+                .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
+
+        if (proxyInfo.isPresent()) {
+            object.viaProxy(proxyInfo.get().getProxyHost());
+        }
+
+        return object;
+    }
+
+    private Request provisionRequestWithoutContentType(Request object) {
+        object.config(CoreProtocolPNames.USER_AGENT, getUserAgent())
                 .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
 
         if (proxyInfo.isPresent()) {
@@ -790,6 +802,28 @@ public class APIClient {
         }
 
         return provisionExecutor().execute(req).handleResponse(new StringAPIResponseHandler());
+    }
+
+    /* Device Tokens API http://docs.urbanairship.com/api/ua.html#device-token-registration */
+
+    public HttpResponse createDeviceToken(String deviceToken) throws IOException {
+        Request req = provisionRequestWithoutContentType(Request.Put(baseURI.resolve(API_DEVICE_TOKENS_PATH + deviceToken)));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing create device token request %s", req));
+        }
+
+        return provisionExecutor().execute(req).returnResponse();
+    }
+
+    public HttpResponse deleteDeviceToken(String deviceToken) throws IOException {
+        Request req = provisionRequestWithoutContentType(Request.Delete(baseURI.resolve(API_DEVICE_TOKENS_PATH + deviceToken)));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing delete device token request %s", req));
+        }
+
+        return provisionExecutor().execute(req).returnResponse();
     }
 
     /* Object methods */
