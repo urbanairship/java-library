@@ -7,6 +7,7 @@ package com.urbanairship.api.reports.parse;
 
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.client.parse.APIResponseObjectMapper;
+import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.reports.model.*;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
@@ -119,13 +120,13 @@ public class PerPushSeriesResponseDeserializerTest {
 
         assertEquals("some_app_key", obj.getAppKey());
         assertEquals(UUID.fromString("57ef3728-79dc-46b1-a6b9-20081e561f97"), obj.getPushID());
-        assertEquals(new DateTime(2013, 7, 25, 23, 0, 0, 0), obj.getStart());
-        assertEquals(new DateTime(2013, 7, 26, 11, 0, 0, 0), obj.getEnd());
+        assertEquals(DateFormats.DATE_PARSER.parseDateTime("2013-07-25 23:00:00"), obj.getStart());
+        assertEquals(DateFormats.DATE_PARSER.parseDateTime("2013-07-26 11:00:00"), obj.getEnd());
         assertEquals("HOURLY", obj.getPrecision());
 
         List<PlatformCounts> listCounts = obj.getCounts();
         PlatformCounts one = listCounts.get(0);
-        assertEquals(new DateTime(2013, 7, 25, 23, 0, 0, 0), one.getTime());
+        assertEquals(DateFormats.DATE_PARSER.parseDateTime("2013-07-25 23:00:00"), one.getTime());
 
         ImmutableMap<PlatformType, PerPushCounts> onePush = one.getPushPlatforms();
 
@@ -151,7 +152,7 @@ public class PerPushSeriesResponseDeserializerTest {
         assertEquals(8, oneRichAll.getSends());
 
         PlatformCounts two = listCounts.get(1);
-        assertEquals(new DateTime(2013, 7, 26, 0, 0, 0, 0), two.getTime());
+        assertEquals(DateFormats.DATE_PARSER.parseDateTime("2013-07-26 00:00:00"), two.getTime());
 
         ImmutableMap<PlatformType, PerPushCounts> twoPush = two.getPushPlatforms();
 
@@ -177,7 +178,7 @@ public class PerPushSeriesResponseDeserializerTest {
         assertEquals(19, twoRichAll.getSends());
 
         PlatformCounts three = listCounts.get(2);
-        assertEquals(new DateTime(2013, 7, 26, 1, 0, 0, 0), three.getTime());
+        assertEquals(DateFormats.DATE_PARSER.parseDateTime("2013-07-26 01:00:00"), three.getTime());
 
         ImmutableMap<PlatformType, PerPushCounts> threePush = three.getPushPlatforms();
 

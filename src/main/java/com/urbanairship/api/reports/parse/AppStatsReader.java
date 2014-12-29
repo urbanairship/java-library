@@ -5,17 +5,14 @@
 package com.urbanairship.api.reports.parse;
 
 import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.reports.model.AppStats;
 import org.codehaus.jackson.JsonParser;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 
 import java.io.IOException;
 
 public final class AppStatsReader implements JsonObjectReader<AppStats> {
-
-    private static final String datePattern = "yyyy-MM-dd HH:mm:ss";
 
     private final AppStats.Builder builder;
 
@@ -24,7 +21,8 @@ public final class AppStatsReader implements JsonObjectReader<AppStats> {
     }
 
     public void readStartTime(JsonParser jsonParser) throws IOException {
-        builder.setStartTime(DateTime.parse(jsonParser.readValueAs(String.class), DateTimeFormat.forPattern(datePattern)));
+        String created = jsonParser.readValueAs(String.class);
+        builder.setStartTime(DateFormats.DATE_PARSER.parseDateTime(created));
     }
 
     public void readiOSCount(JsonParser jsonParser) throws IOException {

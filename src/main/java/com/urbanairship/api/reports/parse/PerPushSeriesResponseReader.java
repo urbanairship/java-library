@@ -5,21 +5,18 @@
 package com.urbanairship.api.reports.parse;
 
 import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.reports.model.PerPushSeriesResponse;
 import com.urbanairship.api.reports.model.PlatformCounts;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.type.TypeReference;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
 public class PerPushSeriesResponseReader implements JsonObjectReader<PerPushSeriesResponse> {
-
-    private static final String datePattern = "yyyy-MM-dd HH:mm:ss";
 
     private final PerPushSeriesResponse.Builder builder;
 
@@ -37,12 +34,12 @@ public class PerPushSeriesResponseReader implements JsonObjectReader<PerPushSeri
 
     public void readStart(JsonParser jsonParser) throws IOException {
         String created = jsonParser.readValueAs(String.class);
-        builder.setStart(DateTime.parse(created, DateTimeFormat.forPattern(datePattern)));
+        builder.setStart(DateFormats.DATE_PARSER.parseDateTime(created));
     }
 
     public void readEnd(JsonParser jsonParser) throws IOException {
         String created = jsonParser.readValueAs(String.class);
-        builder.setEnd(DateTime.parse(created, DateTimeFormat.forPattern(datePattern)));
+        builder.setEnd(DateFormats.DATE_PARSER.parseDateTime(created));
     }
 
     public void readPrecision(JsonParser jsonParser) throws IOException {

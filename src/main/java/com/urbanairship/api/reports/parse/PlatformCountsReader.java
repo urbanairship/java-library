@@ -5,6 +5,7 @@
 package com.urbanairship.api.reports.parse;
 
 import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.reports.model.PerPushCounts;
 import com.urbanairship.api.reports.model.PlatformCounts;
@@ -12,15 +13,11 @@ import com.urbanairship.api.reports.model.PlatformType;
 import com.urbanairship.api.reports.model.RichPerPushCounts;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.type.TypeReference;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 
 import java.io.IOException;
 import java.util.Map;
 
 public class PlatformCountsReader implements JsonObjectReader<PlatformCounts> {
-
-    private static final String datePattern = "yyyy-MM-dd HH:mm:ss";
 
     private final PlatformCounts.Builder builder;
 
@@ -50,7 +47,7 @@ public class PlatformCountsReader implements JsonObjectReader<PlatformCounts> {
 
     public void readTime(JsonParser jsonParser) throws IOException {
         String created = jsonParser.readValueAs(String.class);
-        builder.setTime(DateTime.parse(created, DateTimeFormat.forPattern(datePattern)));
+        builder.setTime(DateFormats.DATE_PARSER.parseDateTime(created));
     }
 
     @Override

@@ -6,6 +6,7 @@ package com.urbanairship.api.reports.parse;
 
 import com.google.common.base.Optional;
 import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.reports.Base64ByteArray;
 import com.urbanairship.api.reports.model.PerPushCounts;
@@ -14,15 +15,12 @@ import com.urbanairship.api.reports.model.PlatformType;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 
 import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 
 public class PerPushDetailResponseReader implements JsonObjectReader<PerPushDetailResponse> {
-
-    private static final String datePattern = "yyyy-MM-dd HH:mm:ss";
 
     private final PerPushDetailResponse.Builder builder;
 
@@ -43,7 +41,7 @@ public class PerPushDetailResponseReader implements JsonObjectReader<PerPushDeta
         if (created.equals("0")) {
             builder.setCreated(Optional.<DateTime>absent());
         } else {
-            builder.setCreated(Optional.of(DateTime.parse(created, DateTimeFormat.forPattern(datePattern))));
+            builder.setCreated(Optional.of(DateFormats.DATE_PARSER.parseDateTime(created)));
         }
     }
 
