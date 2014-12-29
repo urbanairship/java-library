@@ -23,7 +23,7 @@ public class MPNSToastSerializer extends JsonSerializer<MPNSToastData> {
             jgen.writeStringField("text2", toast.getText2().get());
         }
         if (toast.getParam().isPresent()) {
-            jgen.writeStringField("params", toast.getParam().get());
+            jgen.writeStringField("param", toast.getParam().get());
         }
 
         jgen.writeEndObject();
