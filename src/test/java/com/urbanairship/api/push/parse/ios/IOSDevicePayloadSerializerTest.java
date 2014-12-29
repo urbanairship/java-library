@@ -70,4 +70,24 @@ public class IOSDevicePayloadSerializerTest {
         assertEquals(expected, json);
     }
 
+    @Test
+    public void testAlertSansBody() throws Exception {
+        IOSDevicePayload payload = IOSDevicePayload.newBuilder()
+            .setAlert(IOSAlertData.newBuilder()
+                .setActionLocKey("ALK")
+                .setLocKey("LK")
+                .setLocArgs(ImmutableList.of("arg1", "arg2"))
+                .setLaunchImage("LI")
+                .build())
+            .build();
+
+        String json = mapper.writeValueAsString(payload);
+
+        String expected
+
+            = "{\"alert\":{\"action-loc-key\":\"ALK\",\"loc-key\":\"LK\",\"loc-args\":[\"arg1\",\"arg2\"],\"launch-image\":\"LI\"}}";
+
+        assertEquals(expected, json);
+    }
+
 }
