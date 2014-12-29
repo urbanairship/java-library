@@ -5,11 +5,10 @@
 package com.urbanairship.api.reports.parse;
 
 import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.reports.model.TimeInApp;
 import org.codehaus.jackson.JsonParser;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 
 import java.io.IOException;
 
@@ -30,8 +29,7 @@ public final class TimeInAppReader implements JsonObjectReader<TimeInApp> {
     }
 
     public void readDate(JsonParser jsonParser) throws IOException {
-        String pattern = "yyyy-MM-dd HH:mm:ss";
-        builder.setDate(DateTime.parse(jsonParser.readValueAs(String.class), DateTimeFormat.forPattern(pattern)));
+        builder.setDate(DateFormats.DATE_PARSER.parseDateTime(jsonParser.readValueAs(String.class)));
     }
 
     @Override

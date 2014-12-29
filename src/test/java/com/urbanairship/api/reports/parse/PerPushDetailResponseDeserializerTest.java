@@ -8,6 +8,7 @@ package com.urbanairship.api.reports.parse;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.client.parse.APIResponseObjectMapper;
+import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.reports.Base64ByteArray;
 import com.urbanairship.api.reports.model.PerPushCounts;
 import com.urbanairship.api.reports.model.PerPushDetailResponse;
@@ -59,7 +60,7 @@ public class PerPushDetailResponseDeserializerTest {
 
         assertEquals("some_app_key", obj.getAppKey());
         assertEquals(UUID.fromString("57ef3728-79dc-46b1-a6b9-20081e561f97"), obj.getPushID());
-        assertEquals(new DateTime(2013, 7, 31, 22, 5, 53), obj.getCreated().get());
+        assertEquals(DateFormats.DATE_PARSER.parseDateTime("2013-07-31 22:05:53"), obj.getCreated().get());
 
         assertEquals("PEJhc2U2NC1lbmNvZGVkIHN0cmluZz4=", obj.getPushBody().get().getBase64EncodedString());
         assertEquals("<Base64-encoded string>", new String(obj.getPushBody().get().getByteArray()));

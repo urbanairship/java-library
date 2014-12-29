@@ -3,12 +3,12 @@ package com.urbanairship.api.reports.parse;
 
 import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.reports.model.AppStats;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
-import org.joda.time.DateTime;
 import org.junit.Test;
 
 import java.util.List;
@@ -38,7 +38,7 @@ public class AppStatsDeserializerTest {
         AppStats obj = mapper.readValue(json, AppStats.class);
         assertNotNull(obj);
 
-        assertEquals(new DateTime(2014, 6, 22, 0, 0, 0, 0), obj.getStart());
+        assertEquals(DateFormats.DATE_PARSER.parseDateTime("2014-06-22 00:00:00"), obj.getStart());
         assertEquals(1, obj.getC2DMCount());
         assertEquals(2, obj.getGCMCount());
         assertEquals(3, obj.getiOSCount());

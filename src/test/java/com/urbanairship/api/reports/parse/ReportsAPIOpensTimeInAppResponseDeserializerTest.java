@@ -5,12 +5,12 @@
 package com.urbanairship.api.reports.parse;
 
 import com.urbanairship.api.client.parse.APIResponseObjectMapper;
+import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.reports.model.Opens;
 import com.urbanairship.api.reports.model.ReportsAPIOpensResponse;
 import com.urbanairship.api.reports.model.ReportsAPITimeInAppResponse;
 import com.urbanairship.api.reports.model.TimeInApp;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.joda.time.DateTime;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -49,13 +49,13 @@ public class ReportsAPIOpensTimeInAppResponseDeserializerTest {
 
         assertEquals(458, opens1.getAndroid());
         assertEquals(1470, opens1.getIos());
-        assertEquals(new DateTime(2013, 7, 1, 0, 0, 0, 0), opens1.getDate());
+        assertEquals(DateFormats.DATE_PARSER.parseDateTime("2013-07-01 00:00:00"), opens1.getDate());
 
         Opens opens2 = obj.getObject().get(1);
 
         assertEquals(523, opens2.getAndroid());
         assertEquals(1662, opens2.getIos());
-        assertEquals(new DateTime(2013, 8, 1, 0, 0, 0, 0), opens2.getDate());
+        assertEquals(DateFormats.DATE_PARSER.parseDateTime("2013-08-01 00:00:00"), opens2.getDate());
     }
 
     @Test
@@ -84,11 +84,11 @@ public class ReportsAPIOpensTimeInAppResponseDeserializerTest {
         TimeInApp tia1 = obj.getObject().get(0);
         assertEquals(193246.86, tia1.getAndroid(), 0.01);
         assertEquals(145436.4375, tia1.getIos(), 0.01);
-        assertEquals(new DateTime(2013, 7, 1, 0, 0, 0, 0), tia1.getDate());
+        assertEquals(DateFormats.DATE_PARSER.parseDateTime("2013-07-01 00:00:00"), tia1.getDate());
 
         TimeInApp tia2 = obj.getObject().get(1);
         assertEquals(100203.02, tia2.getAndroid(), 0.01);
         assertEquals(45608.027, tia2.getIos(), 0.01);
-        assertEquals(new DateTime(2013, 8, 1, 0, 0, 0, 0), tia2.getDate());
+        assertEquals(DateFormats.DATE_PARSER.parseDateTime("2013-08-01 00:00:00"), tia2.getDate());
     }
 }
