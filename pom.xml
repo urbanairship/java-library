@@ -39,6 +39,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <jersey.version>1.9.1</jersey.version>
         <jackson.version>1.9.8</jackson.version>
+        <local.gpg.passphrase></local.gpg.passphrase>
     </properties>
 
     <build>
@@ -57,6 +58,7 @@
                 <version>2.5</version>
                 <configuration>
                     <pushChanges>false</pushChanges>
+                    <arguments>-Dgpg.passphrase=${local.gpg.passphrase}</arguments>
                 </configuration>
             </plugin>
 
