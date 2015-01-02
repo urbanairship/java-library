@@ -7,8 +7,8 @@
 docs/_build
 docs/_extensions
 docs/_templates
-docs/_themes
 docs/com
+docs/packages.rst
 \#*#
 /example/target
 /example/.idea
