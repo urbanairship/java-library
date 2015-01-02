@@ -2,9 +2,6 @@
 Urban Airship Java Client
 #########################
 
-.. toctree::
-  :maxdepth: 2
-
 ************
 Introduction
 ************
@@ -14,16 +11,17 @@ This is a Java library for using the `Urban Airship API v3 <http://docs.urbanair
 Installation
 ============
 
-Add the dependency to your pom.xml.
+Add the dependency to your pom.xml:
 
-.. code-block:: xml
+.. parsed-literal::
 
         <dependency>
             <groupId>com.urbanairship</groupId>
             <artifactId>java-client</artifactId>
-            <version>0.2.VERSION</version>
-            <!-- Replace VERSION with the version you want to use -->
+            <version>VERSION</version>
         </dependency>
+
+Replace VERSION with |release| or another version you want to use.
 
 Alternatively, you can build a jar with  ``mvn package``  and add the
 jar to your classpath.
@@ -1386,5 +1384,3 @@ In the context of this library, IOExceptions are thrown by the Apache
 HttpComponents library, usually in response to a problem with the HTTP connection.
 See the `Apache documentation <https://hc.apache.org>`__ for more
 details.
-
-
