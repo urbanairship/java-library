@@ -69,7 +69,7 @@ Tests are located in the standard test directory and use JUnit
 
 
 Basic Workflow
-===============
+==============
 
 The Urban Airship Java client streamlines API requests. API
 interactions all follow the same basic workflow.
@@ -220,9 +220,9 @@ produces the output
 
    {
     "audience": {
-        "and": [
+        "or": [
             {
-                "or": [
+                "and": [
                     {
                         "tag": "puppies"
                     },
@@ -263,12 +263,12 @@ Here's an example of an iOS notification with an alert, a badge, and extra key/v
 
 .. code-block:: java
 
-   // Setup badge data, can be a value, increment,
-   //decrement, etc.
-   IOSBadgeData badgeData = IOSBadgeData.newBuilder()
-                                        .setValue(5)
-                                        .setType(IOSBadgeData.Type.VALUE)
-                                        .build();
+    // Setup badge data, can be a value, increment,
+    //decrement, etc.
+    IOSBadgeData badgeData = IOSBadgeData.newBuilder()
+                                         .setValue(5)
+                                         .setType(IOSBadgeData.Type.VALUE)
+                                         .build();
                   
     IOSDevicePayload iosPayload = IOSDevicePayload.newBuilder()
                                                   .setAlert("iOS Alert")
@@ -278,7 +278,7 @@ Here's an example of an iOS notification with an alert, a badge, and extra key/v
     Notification notification = Notifications.notification(iosPayload);
 
     PushPayload payload = PushPayload.newBuilder()
-                                     .setAudience(Selectors.deviceToken(deviceToken))
+                                     .setAudience(Selectors.all())
                                      .setNotification(notification)      
                                      .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
                                      .build();
