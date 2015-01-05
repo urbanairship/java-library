@@ -262,7 +262,7 @@ Here's an example of an iOS notification with an alert, a badge, and an extra ke
 
 .. code-block:: java
 
-    // Set up badge data, can be a value, increment, decrement, etc.
+    // Set up badge data, which can be a value, increment, decrement, etc.
     IOSBadgeData badgeData = IOSBadgeData.newBuilder()
                                          .setValue(5)
                                          .setType(IOSBadgeData.Type.VALUE)
