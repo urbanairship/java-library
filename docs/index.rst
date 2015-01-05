@@ -6,7 +6,7 @@ Urban Airship Java Client
 Introduction
 ************
 
-This is a Java library for using the `Urban Airship API v3 <http://docs.urbanairship.com/api/ua.html>`__ for push notifications.
+This is a Java library for using the `Urban Airship API v3 <http://docs.urbanairship.com/api/ua.html>`__.
 
 Installation
 ============
@@ -65,14 +65,14 @@ Development
 ===========
 
 Source code is available on `Github <https://github.com/urbanairship/java-library/>`__.
-Tests are located in the standard test directory and use JUnit
+Tests are located in the standard test directory and use JUnit.
 
 
 Basic Workflow
 ==============
 
-The Urban Airship Java client streamlines API requests. API
-interactions all follow the same basic workflow.
+The Urban Airship Java client library streamlines API requests.
+API interactions all follow the same basic workflow.
 
 #. Configure a payload using appropriate Java model classes.
 #. Configure an APIClient to authenticate, send, and return a
@@ -122,17 +122,17 @@ audience.
                                          .setNotification(Notifications.alert("API v3"))
                                          .setDeviceType(DeviceTypeData.of(DeviceType.IOS))
                                          .build();
-        // Try/Catch for any issues, any non 200 response, or non library
-        // related exceptions
+
+        // Try/Catch for any issues, any non-200 response, or non-library-related exceptions
         try {
             APIClientResponse<APIPushResponse> response = apiClient.push(payload);
             logger.debug(String.format("Response %s", response.toString()));
         }
-        catch (APIRequestException ex){
+        catch (APIRequestException ex) {
             logger.error(String.format("APIRequestException " + ex));
             logger.error("Something wrong with the request " + ex.toString());
         }
-        catch (IOException e){
+        catch (IOException e) {
             logger.error("IOException in API request " + e.getMessage());
         }
 
@@ -147,9 +147,9 @@ APIClient
 .. code-block:: java
 
    APIClient apiClient = APIClient.newBuilder()
-         .setKey(appKey)
-         .setSecret(appSecret)
-         .build();
+       .setKey(appKey)
+       .setSecret(appSecret)
+       .build();
 
 The ``APIClient`` handles the interaction between the client and the API. The client will throw an
 exception if there is an issue with the request, or if it is improperly configured.
@@ -165,7 +165,7 @@ Optionally, a client can be created with proxy server support.
    APIClient proxyClient = APIClient.newBuilder()
        .setKey(appKey)
        .setSecret(appSecret)
-           .setProxyInfo(ProxyInfo.newBuilder()
+       .setProxyInfo(ProxyInfo.newBuilder()
            .setProxyHost(new HttpHost("host"))
            .setProxyCredentials(new UsernamePasswordCredentials("user", "password"))
            .build())
@@ -181,8 +181,8 @@ PushPayload
 
 The ``PushPayload`` is comprised of three pieces:
 
-  - Audience and Selectors
-  - Notifications
+  - ``Audience and Selectors``
+  - ``Notifications``
   - ``DeviceTypes``
 
 The first is the Audience. The audience
@@ -193,8 +193,7 @@ Audience and Selectors
 ======================
 
 The Selectors and DeviceType classes provide factory methods that can be used together
-to create an Audience Selector. To send to all users with the tag
-"kittens".
+to create an Audience Selector. To send to all users with the tag "kittens".
 
 .. code-block:: java
 
@@ -259,12 +258,11 @@ send a message to. A Notification for an iOS device contains options
 for ``alert``, ``badge``, ``sound``, ``content_available``, or ``extra``. Other platforms,
 e.g., Android, may offer different configurations based on available features. 
 
-Here's an example of an iOS notification with an alert, a badge, and extra key/value pairs:
+Here's an example of an iOS notification with an alert, a badge, and an extra key/value pair:
 
 .. code-block:: java
 
-    // Setup badge data, can be a value, increment,
-    //decrement, etc.
+    // Set up badge data, which can be a value, increment, decrement, etc.
     IOSBadgeData badgeData = IOSBadgeData.newBuilder()
                                          .setValue(5)
                                          .setType(IOSBadgeData.Type.VALUE)
@@ -275,6 +273,7 @@ Here's an example of an iOS notification with an alert, a badge, and extra key/v
                                                   .setBadge(badgeData)
                                                   .addExtraEntry("Key", "Value")
                                                   .build();
+
     Notification notification = Notifications.notification(iosPayload);
 
     PushPayload payload = PushPayload.newBuilder()
@@ -341,12 +340,12 @@ Accepts the same range of push payloads as the Push API, but parses and validate
     PushPayload payload = PushPayload.newBuilder()
         .setAudience(Selectors.all())
         .setNotification(Notification.newBuilder()
-                .addDeviceTypeOverride(DeviceType.IOS, IOSDevicePayload.newBuilder()
-                        .setAlert("Background Push Priority 5")
-                        .setContentAvailable(true)
-                        .setPriority(5)
-                        .build())
+            .addDeviceTypeOverride(DeviceType.IOS, IOSDevicePayload.newBuilder()
+                .setAlert("Background Push Priority 5")
+                .setContentAvailable(true)
+                .setPriority(5)
                 .build())
+            .build())
         .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
         .build();
 
@@ -376,14 +375,14 @@ example is scheduled for delivery at current time plus 60 seconds.
 
     // Add it to a SchedulePayload
     Schedule schedule = Schedule.newBuilder()
-                               .setScheduledTimestamp(DateTime.now().plusSeconds(60))
-                               .build();
+                                .setScheduledTimestamp(DateTime.now().plusSeconds(60))
+                                .build();
 
     SchedulePayload schedulePayload = SchedulePayload.newBuilder()
-                                                    .setName("v3 Scheduled Push Test")
-                                                    .setPushPayload(payload)
-                                                    .setSchedule(schedule)
-                                                    .build();
+                                                     .setName("v3 Scheduled Push Test")
+                                                     .setPushPayload(payload)
+                                                     .setSchedule(schedule)
+                                                     .build();
 
     APIClientResponse<APIScheduleResponse> response = apiClient.schedule(schedulePayload);
 
@@ -402,8 +401,8 @@ This is done by calling a different method when building your Schedule object.
 .. code-block:: java 
 
     Schedule schedule = Schedule.newBuilder()
-                             .setLocalScheduledTimestamp(DateTime.now().plusSeconds(60))
-                             .build();
+                                .setLocalScheduledTimestamp(DateTime.now().plusSeconds(60))
+                                .build();
 
 Dates and times are handled by the `Joda-Time
 <http://joda-time.sourceforge.net>`_ library. Scheduled pushes require
@@ -545,14 +544,14 @@ Add or remove one or more devices to a particular tag.
     String tag = "California";
 
     AddRemoveDeviceFromTagPayload payload = AddRemoveDeviceFromTagPayload.newBuilder()
-            .setIOSChannels(AddRemoveSet.newBuilder()
-                    .add("01234567-890a-bcde-f012-34567890abc0")
-                    .add("01234567-890a-bcde-f012-34567890abc1")
-                    .add("01234567-890a-bcde-f012-34567890abc3")
-                    .add("01234567-890a-bcde-f012-34567890abc5")
-                    .add("01234567-890a-bcde-f012-34567890abc7")
-                    .build())
-            .build();
+        .setIOSChannels(AddRemoveSet.newBuilder()
+            .add("01234567-890a-bcde-f012-34567890abc0")
+            .add("01234567-890a-bcde-f012-34567890abc1")
+            .add("01234567-890a-bcde-f012-34567890abc3")
+            .add("01234567-890a-bcde-f012-34567890abc5")
+            .add("01234567-890a-bcde-f012-34567890abc7")
+            .build())
+        .build();
 
     HttpResponse response = apiClient.addRemoveDevicesFromTag(tag, payload);
 
@@ -582,11 +581,11 @@ Modify the tags for a number of devices.
 .. code-block:: java
     
     BatchTagSet bts = BatchTagSet.newBuilder()
-            .setDevice(BatchTagSet.DEVICEIDTYPES.IOS_CHANNEL, "ios_channel_to_tag_2")
-            .addTag("GrumpyCat")
-            .addTag("Kitties")
-            .addTag("Puppies")
-            .build();
+        .setDevice(BatchTagSet.DEVICEIDTYPES.IOS_CHANNEL, "ios_channel_to_tag_2")
+        .addTag("GrumpyCat")
+        .addTag("Kitties")
+        .addTag("Puppies")
+        .build();
 
     HttpResponse response = apiClient.batchModificationOfTags(BatchModificationPayload.newBuilder()
         .addBatchObject(bts)
@@ -901,7 +900,7 @@ Get all the analytics detail for a specific push ID over time.
     // Get IOS rich platform sends
     long iosRichSends = iosRichCounts.getSends();
 
-    // Get IOS rich platofrm responses
+    // Get IOS rich platform responses
     long iosRichResponses = iosRichCounts.getResponses();
 
 
@@ -1075,11 +1074,11 @@ The following helper methods are useful in reducing the verboseness of creating 
 .. code-block:: java
 
     private TagPredicate buildTagPredicate(String tag) {
-      return TagPredicateBuilder.newInstance().setTag(tag).build();
+         return TagPredicateBuilder.newInstance().setTag(tag).build();
     }
 
     private TagPredicate buildTagPredicate(String tag, String tagClass) {
-      return TagPredicateBuilder.newInstance().setTag(tag).setTagClass(tagClass).build();
+         return TagPredicateBuilder.newInstance().setTag(tag).setTagClass(tagClass).build();
     }
 
 Operator Construction
@@ -1095,38 +1094,38 @@ The following is an example of how to build a complex operator
     String startString = DateTimeFormats.DAYS_FORMAT.print(start);
 
     Operator op = Operator.newBuilder(OperatorType.AND)
-            .addPredicate(new LocationPredicate(new com.urbanairship.api.segments.model.LocationIdentifier(LocationAlias.newBuilder()
-                    .setAliasType("us_state")
-                    .setAliasValue("OR")
-                    .build()),
-                    new com.urbanairship.api.segments.model.DateRange(DateRangeUnit.DAYS, startString, endString), PresenceTimeframe.ANYTIME))
-            .addPredicate(new LocationPredicate(new com.urbanairship.api.segments.model.LocationIdentifier(LocationAlias.newBuilder()
-                    .setAliasType("us_state")
-                    .setAliasValue("CA")
-                    .build()),
-                    new RecentDateRange(DateRangeUnit.MONTHS, 3), PresenceTimeframe.ANYTIME))
-            .addOperator(Operator.newBuilder(OperatorType.OR)
-                    .addPredicate(buildTagPredicate("tag1"))
-                    .addPredicate(buildTagPredicate("tag2"))
-                    .build())
-            .addOperator(Operator.newBuilder(OperatorType.NOT)
-                            .addPredicate(buildTagPredicate("not-tag"))
-                            .build()
+        .addPredicate(new LocationPredicate(new com.urbanairship.api.segments.model.LocationIdentifier(LocationAlias.newBuilder()
+            .setAliasType("us_state")
+            .setAliasValue("OR")
+            .build()),
+            new com.urbanairship.api.segments.model.DateRange(DateRangeUnit.DAYS, startString, endString), PresenceTimeframe.ANYTIME))
+        .addPredicate(new LocationPredicate(new com.urbanairship.api.segments.model.LocationIdentifier(LocationAlias.newBuilder()
+            .setAliasType("us_state")
+            .setAliasValue("CA")
+            .build()),
+            new RecentDateRange(DateRangeUnit.MONTHS, 3), PresenceTimeframe.ANYTIME))
+        .addOperator(Operator.newBuilder(OperatorType.OR)
+            .addPredicate(buildTagPredicate("tag1"))
+            .addPredicate(buildTagPredicate("tag2"))
+            .build())
+        .addOperator(Operator.newBuilder(OperatorType.NOT)
+            .addPredicate(buildTagPredicate("not-tag"))
+            .build()
+        )
+        .addOperator(Operator.newBuilder(OperatorType.NOT)
+            .addOperator(Operator.newBuilder(OperatorType.AND)
+                 .addPredicate(
+                      new LocationPredicate(new com.urbanairship.api.segments.model.LocationIdentifier(LocationAlias.newBuilder()
+                           .setAliasType("us_state")
+                           .setAliasValue("WA")
+                           .build()), new com.urbanairship.api.segments.model.DateRange(DateRangeUnit.MONTHS, "2011-05", "2012-02"),
+                           PresenceTimeframe.ANYTIME))
+                 .addPredicate(buildTagPredicate("woot"))
+                 .build()
             )
-            .addOperator(Operator.newBuilder(OperatorType.NOT)
-                            .addOperator(Operator.newBuilder(OperatorType.AND)
-                                            .addPredicate(
-                                                    new LocationPredicate(new com.urbanairship.api.segments.model.LocationIdentifier(LocationAlias.newBuilder()
-                                                            .setAliasType("us_state")
-                                                            .setAliasValue("WA")
-                                                            .build()), new com.urbanairship.api.segments.model.DateRange(DateRangeUnit.MONTHS, "2011-05", "2012-02"),
-                                                            PresenceTimeframe.ANYTIME))
-                                            .addPredicate(buildTagPredicate("woot"))
-                                            .build()
-                            )
-                            .build()
-            )
-            .build();
+            .build()
+        )
+        .build();
 
 Creating the Segment Object
 ---------------------------
@@ -1134,9 +1133,9 @@ Creating the Segment Object
 .. code-block:: java
 
     AudienceSegment segment = AudienceSegment.newBuilder()
-            .setDisplayName(DateTime.now().toString())
-            .setRootOperator(op)
-            .build();
+        .setDisplayName(DateTime.now().toString())
+        .setRootOperator(op)
+        .build();
 
 Making the Request
 ------------------
@@ -1171,7 +1170,7 @@ Change the definition fo the segment.
 Delete Segment
 ==============
 
-Remove the segement.
+Remove the segment.
 
 .. code-block:: java
 
@@ -1212,9 +1211,9 @@ Search for a location and return its information.
 
     // Search for a location by bounded box
     BoundedBox california = new BoundedBox(Point.newBuilder()
-    .setLatitude(32.5343)
-    .setLongitude(-124.4096)
-    .build(), Point.newBuilder()
+        .setLatitude(32.5343)
+        .setLongitude(-124.4096)
+        .build(), Point.newBuilder()
             .setLatitude(42.0095)
             .setLongitude(-114.1308)
             .build());
@@ -1254,8 +1253,7 @@ Search for a location and return its information.
 Exceptions
 **********
 
-These are the primary exceptions that are possible in the client
-library.
+These are the primary exceptions that are possible in the client library.
 
 
 APIRequestException
@@ -1276,7 +1274,7 @@ response.
         logger.debug(String.format("Response %s", response.toString()));
     }
     catch (APIRequestException ex){
-        // Exeption thrown here
+        // Exception thrown here
     }
 
 The code above will throw an ``APIResponseException``
@@ -1320,21 +1318,21 @@ errors.
 .. code-block:: java
 
     try {
-      APIClientResponse<APIPushResponse> response = apiClient.push(payload);
-      logger.debug(String.format("Response %s", response.toString()));
+         APIClientResponse<APIPushResponse> response = apiClient.push(payload);
+         logger.debug(String.format("Response %s", response.toString()));
     }
-    catch (APIRequestException ex){
-      logger.error(String.format("APIRequestException " + ex));
-      logger.error("Exception " + ex.toString());
+    catch (APIRequestException ex) {
+         logger.error(String.format("APIRequestException " + ex));
+         logger.error("Exception " + ex.toString());
 
-      APIError apiError = ex.getError().get();
-      APIErrorDetails apiErrorDetails = apiError.getDetails().get();
-      logger.error("Error " + apiError.getError());
-      logger.error("Error details " + apiErrorDetails.getError());
+         APIError apiError = ex.getError().get();
+         APIErrorDetails apiErrorDetails = apiError.getDetails().get();
+         logger.error("Error " + apiError.getError());
+         logger.error("Error details " + apiErrorDetails.getError());
 
     }
-    catch (IOException e){
-      logger.error("IOException in API request " + e.getMessage());
+    catch (IOException e) {
+         logger.error("IOException in API request " + e.getMessage());
     }
 
 
