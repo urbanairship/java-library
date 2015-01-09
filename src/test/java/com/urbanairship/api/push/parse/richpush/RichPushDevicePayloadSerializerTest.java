@@ -29,7 +29,7 @@ public class RichPushDevicePayloadSerializerTest {
                 + "\"body\":\"B\","
                 + "\"content_type\":\"text/html\","
                 + "\"content_encoding\":\"utf8\","
-                + "\"expiry\":{\"expirySeconds\":3600}"
+                + "\"expiry\":3600"
                 + "}";
         assertEquals(json, pushJson);
     }
