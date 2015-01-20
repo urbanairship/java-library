@@ -32,6 +32,10 @@ public class NotificationSerializer extends JsonSerializer<Notification> {
             jsonGenerator.writeObjectField("actions", notification.getActions().get());
         }
 
+        if(notification.getInteractive().isPresent()) {
+            jsonGenerator.writeObjectField("interactive", notification.getInteractive().get());
+        }
+
         jsonGenerator.writeEndObject();
     }
 }

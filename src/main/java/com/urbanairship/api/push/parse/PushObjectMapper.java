@@ -28,6 +28,8 @@ import com.urbanairship.api.push.model.notification.mpns.MPNSDevicePayload;
 import com.urbanairship.api.push.model.notification.mpns.MPNSPush;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
 import com.urbanairship.api.push.parse.notification.actions.*;
+import com.urbanairship.api.push.model.notification.interactive.Interactive;
+import com.urbanairship.api.push.parse.notification.interactive.InteractiveSerializer;
 import com.urbanairship.api.push.parse.notification.android.AndroidDevicePayloadDeserializer;
 import com.urbanairship.api.push.parse.notification.android.AndroidDevicePayloadSerializer;
 import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
@@ -197,7 +199,10 @@ public class PushObjectMapper {
                 .addSerializer(BatchModificationPayload.class, new BatchModificationPayloadSerializer())
 
             /* Segments */
-                .addDeserializer(SegmentDefinition.class, new SegmentDefinitionDeserializer());
+                .addDeserializer(SegmentDefinition.class, new SegmentDefinitionDeserializer())
+
+            /* Interactive */
+                .addSerializer(Interactive.class, new InteractiveSerializer());
 
 
         MAPPER.registerModule(MODULE);
