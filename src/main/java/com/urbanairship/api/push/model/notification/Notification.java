@@ -13,6 +13,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.urbanairship.api.push.model.notification.actions.*;
+import com.urbanairship.api.push.model.notification.interactive.Interactive;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 
 import java.util.Iterator;
@@ -23,13 +24,15 @@ public final class Notification extends PushModelObject {
     private final Optional<String> alert;
     private final ImmutableMap<NotificationPayloadOverrideKey, ? extends DevicePayloadOverride> deviceTypePayloadOverrides;
     private final Optional<Actions> actions;
+    private final Optional<Interactive> interactive;
 
     private Notification(Optional<String> alert,
-                        ImmutableMap<NotificationPayloadOverrideKey, ? extends DevicePayloadOverride> deviceTypePayloadOverrides,
-                        Optional<Actions> actions) {
+                         ImmutableMap<NotificationPayloadOverrideKey, ? extends DevicePayloadOverride> deviceTypePayloadOverrides,
+                         Optional<Actions> actions, Optional<Interactive> interactive) {
         this.alert = alert;
         this.deviceTypePayloadOverrides = deviceTypePayloadOverrides;
         this.actions = actions;
+        this.interactive = interactive;
     }
 
     public static Builder newBuilder() {
@@ -75,6 +78,9 @@ public final class Notification extends PushModelObject {
         return this.actions;
     }
 
+    public Optional<Interactive> getInteractive() {
+        return this.interactive;
+    }
 
 
     @Override
@@ -89,13 +95,14 @@ public final class Notification extends PushModelObject {
         Notification that = (Notification) o;
 
         return Objects.equal(alert, that.alert)
-                && Objects.equal(deviceTypePayloadOverrides, that.deviceTypePayloadOverrides)
-                && Objects.equal(actions, that.actions);
+            && Objects.equal(deviceTypePayloadOverrides, that.deviceTypePayloadOverrides)
+            && Objects.equal(actions, that.actions)
+            && Objects.equal(interactive, that.interactive);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(alert, deviceTypePayloadOverrides, actions);
+        return Objects.hashCode(alert, deviceTypePayloadOverrides, actions, interactive);
     }
 
     @Override
@@ -104,6 +111,7 @@ public final class Notification extends PushModelObject {
                 .add("alert", alert)
                 .add("deviceTypePayloadOverrides", deviceTypePayloadOverrides)
                 .add("actions", actions)
+                .add("interactive", interactive)
                 .toString();
     }
 
@@ -113,6 +121,7 @@ public final class Notification extends PushModelObject {
         private final ActionNameRegistry registry;
         private String alert = null;
         private Actions actions = null;
+        private Interactive interactive = null;
 
         private Builder(ActionNameRegistry registry) {
             this.registry = registry;
@@ -124,6 +133,9 @@ public final class Notification extends PushModelObject {
             }
             if (other.getActions().isPresent()) {
                 setActions(other.getActions().get());
+            }
+            if (other.getInteractive().isPresent()) {
+                setInteractive(other.getInteractive().get());
             }
             this.deviceTypePayloadOverridesBuilder.putAll(other.deviceTypePayloadOverrides);
             return this;
@@ -141,6 +153,11 @@ public final class Notification extends PushModelObject {
 
         public Builder setActions(Actions actions) {
             this.actions = actions;
+            return this;
+        }
+
+        public Builder setInteractive(Interactive interactive) {
+            this.interactive = interactive;
             return this;
         }
 
@@ -178,7 +195,8 @@ public final class Notification extends PushModelObject {
             return new Notification(
                     Optional.fromNullable(alert),
                     overrides,
-                    Optional.fromNullable(actions)
+                    Optional.fromNullable(actions),
+                    Optional.fromNullable(interactive)
             );
         }
     }
