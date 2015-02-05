@@ -5,6 +5,7 @@
 package com.urbanairship.api.push.parse;
 
 import com.urbanairship.api.common.parse.JsonObjectReader;
+import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.PushOptions;
 import org.codehaus.jackson.JsonParser;
 
@@ -16,6 +17,10 @@ public class PushOptionsReader implements JsonObjectReader<PushOptions> {
 
     public PushOptionsReader() {
         this.builder = PushOptions.newBuilder();
+    }
+
+    public void readExpiry(JsonParser parser) throws IOException {
+        builder.setExpiry(parser.readValueAs(PushExpiry.class));
     }
 
     @Override

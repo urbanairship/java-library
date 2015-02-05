@@ -4,12 +4,10 @@
 
 package com.urbanairship.api.push.parse;
 
-import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.push.model.PushOptions;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
-import java.util.Map;
 import java.io.IOException;
 
 public class PushOptionsSerializer extends JsonSerializer<PushOptions> {

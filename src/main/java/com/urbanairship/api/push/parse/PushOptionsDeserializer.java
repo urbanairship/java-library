@@ -19,7 +19,14 @@ import java.io.IOException;
 
 public class PushOptionsDeserializer extends JsonDeserializer<PushOptions> {
 
-    private static final FieldParserRegistry<PushOptions, PushOptionsReader> FIELD_PARSERS = new MapFieldParserRegistry<PushOptions, PushOptionsReader>(ImmutableMap.<String, FieldParser<PushOptionsReader>>builder().build());
+    private static final FieldParserRegistry<PushOptions, PushOptionsReader> FIELD_PARSERS = new MapFieldParserRegistry<PushOptions, PushOptionsReader>(ImmutableMap.<String, FieldParser<PushOptionsReader>>builder()
+        .put("expiry", new FieldParser<PushOptionsReader>() {
+            @Override
+            public void parse(PushOptionsReader reader, JsonParser parser, DeserializationContext context) throws IOException {
+                reader.readExpiry(parser);
+            }
+        })
+        .build());
 
     private final StandardObjectDeserializer<PushOptions, ?> deserializer;
 

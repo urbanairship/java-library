@@ -41,7 +41,7 @@ public class PushOptionsTest {
                 + "\"audience\":\"ALL\","
                 + "\"device_types\":[\"ios\"],"
                 + "\"notification\":{\"alert\":\"wat\"},"
-                + "\"options\":{\"present\":true}"
+                + "\"options\":{}"
                 + "}";
         PushPayload push = PushPayload.newBuilder()
                 .setAudience(Selectors.all())
@@ -70,9 +70,7 @@ public class PushOptionsTest {
     @Test
     public void testParseExpiry() throws Exception {
         String json
-                = "{"
-                + "\"expirySeconds\":600" /* expire in 10 minutes */
-                + "}";
+                = "600"; /* expire in 10 minutes */
         PushOptions options = PushOptions.newBuilder().setExpiry(PushExpiry.newBuilder().setExpirySeconds(600L).build()).build();
         assertTrue(options.getExpiry().isPresent());
         PushExpiry expiry = options.getExpiry().get();
@@ -124,7 +122,7 @@ public class PushOptionsTest {
 
         String properJson
                 = "{"
-                + "\"expiry\":{\"expirySeconds\":3600}"
+                + "\"expiry\":3600"
                 + "}";
 
         assertEquals(properJson, json);
@@ -140,7 +138,7 @@ public class PushOptionsTest {
 
         String properJson
                 = "{"
-                + "\"expiry\":{\"expiryTimestamp\":\"2014-07-08T12:00:00\"}"
+                + "\"expiry\":\"2014-07-08T12:00:00\""
                 + "}";
 
         assertEquals(properJson, json);
