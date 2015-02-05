@@ -8,6 +8,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
+import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.common.parse.*;
 import com.urbanairship.api.push.model.notification.actions.Actions;
@@ -25,6 +26,7 @@ public class NotificationReader implements JsonObjectReader<Notification> {
 
     private String alert = null;
     private Optional<Actions> optActions = Optional.absent();
+    private Optional<Interactive> interactive = Optional.absent();
 
     public NotificationReader(Map<DeviceType, JsonDeserializer<? extends DevicePayloadOverride>> payloadOverridesDeserializerRegistry) {
         this.payloadOverridesDeserializerRegistry = payloadOverridesDeserializerRegistry;
@@ -47,6 +49,10 @@ public class NotificationReader implements JsonObjectReader<Notification> {
         optActions = Optional.of(parser.readValueAs(Actions.class));
     }
 
+    public void readInteractive(JsonParser parser) throws IOException {
+        interactive = Optional.of(parser.readValueAs(Interactive.class));
+    }
+
     @Override
     public Notification validateAndBuild() throws IOException {
         if (alert == null && payloadOverrides.isEmpty()) {
@@ -62,8 +68,12 @@ public class NotificationReader implements JsonObjectReader<Notification> {
             builder.addDeviceTypeOverride(overrideEntry.getKey(), overrideEntry.getValue());
         }
 
-        if(optActions.isPresent()) {
+        if (optActions.isPresent()) {
             builder.setActions(optActions.get());
+        }
+
+        if (interactive.isPresent()) {
+            builder.setInteractive(interactive.get());
         }
 
         try {
