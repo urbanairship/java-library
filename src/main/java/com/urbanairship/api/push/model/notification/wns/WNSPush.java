@@ -5,6 +5,8 @@
 package com.urbanairship.api.push.model.notification.wns;
 
 import com.google.common.base.Optional;
+import com.urbanairship.api.push.model.PushExpiry;
+
 import static com.google.common.base.Preconditions.checkArgument;
 
 public class WNSPush
@@ -58,7 +60,7 @@ public class WNSPush
     private final Optional<WNSTileData> tile;
     private final Optional<WNSBadgeData> badge;
     private final Optional<String> tag;
-    private final Optional<Integer> ttl;
+    private final Optional<PushExpiry> ttl;
     private final Optional<CachePolicy> cachePolicy;
 
     private WNSPush(Type type,
@@ -66,7 +68,7 @@ public class WNSPush
                     Optional<WNSTileData> tile,
                     Optional<WNSBadgeData> badge,
                     Optional<String> tag,
-                    Optional<Integer> ttl,
+                    Optional<PushExpiry> ttl,
                     Optional<CachePolicy> cachePolicy)
     {
         this.type = type;
@@ -102,7 +104,7 @@ public class WNSPush
         return this.tag;
     }
 
-    public Optional<Integer> getTtl() {
+    public Optional<PushExpiry> getTtl() {
         return this.ttl;
     }
 
@@ -163,7 +165,7 @@ public class WNSPush
         private WNSTileData tile;
         private WNSBadgeData badge;
         private String tag;
-        private Integer ttl;
+        private PushExpiry ttl;
         private CachePolicy cachePolicy;
 
         private Builder() { }
@@ -193,7 +195,7 @@ public class WNSPush
             return this;
         }
 
-        public Builder setTtl(Integer value) {
+        public Builder setTtl(PushExpiry value) {
             this.ttl = value;
             return this;
         }
@@ -212,8 +214,8 @@ public class WNSPush
             } else if (type == Type.BADGE) {
                 checkArgument(badge != null, "Must supply a value for 'badge'");
             }
-            if (ttl != null && ttl < 1) {
-                throw new IllegalArgumentException(String.format("TTL value must be a positive integer, not %d", ttl.intValue()));
+            if (ttl != null && ttl.getExpirySeconds().get() < 1) {
+                throw new IllegalArgumentException(String.format("TTL value must be a positive integer, not %d", ttl.getExpirySeconds().get()));
             }
             return new WNSPush(type,
                                Optional.fromNullable(toast),

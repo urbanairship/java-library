@@ -17,7 +17,7 @@ public class RichPushDevicePayloadSerializerTest {
         RichPushMessage message = RichPushMessage.newBuilder()
                 .setTitle("T")
                 .setBody("B")
-                .setExpiry(PushExpiry.newBuilder().setExpirySeconds(3600L).build())
+                .setExpiry(PushExpiry.newBuilder().setExpirySeconds(3600).build())
                 .build();
 
         assertTrue(message.getExpiry().isPresent());

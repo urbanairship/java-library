@@ -71,11 +71,11 @@ public class PushOptionsTest {
     public void testParseExpiry() throws Exception {
         String json
                 = "600"; /* expire in 10 minutes */
-        PushOptions options = PushOptions.newBuilder().setExpiry(PushExpiry.newBuilder().setExpirySeconds(600L).build()).build();
+        PushOptions options = PushOptions.newBuilder().setExpiry(PushExpiry.newBuilder().setExpirySeconds(600).build()).build();
         assertTrue(options.getExpiry().isPresent());
         PushExpiry expiry = options.getExpiry().get();
         assertFalse(expiry.getExpiryTimeStamp().isPresent());
-        Long exp = 600L;
+        Integer exp = 600;
         assertEquals(exp, expiry.getExpirySeconds().get());
         String actualJSON = mapper.writeValueAsString(expiry);
         assertEquals(json, actualJSON);
@@ -115,7 +115,7 @@ public class PushOptionsTest {
     @Test
     public void testSerializationExpirySeconds() throws Exception {
         PushOptions pushOptions = PushOptions.newBuilder()
-                .setExpiry(PushExpiry.newBuilder().setExpirySeconds(3600L).build())
+                .setExpiry(PushExpiry.newBuilder().setExpirySeconds(3600).build())
                 .build();
 
         String json = mapper.writeValueAsString(pushOptions);
