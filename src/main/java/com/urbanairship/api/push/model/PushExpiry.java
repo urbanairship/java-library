@@ -5,6 +5,8 @@
 package com.urbanairship.api.push.model;
 
 import com.google.common.base.Optional;
+import com.urbanairship.api.common.APIException;
+import com.urbanairship.api.common.parse.APIParsingException;
 import org.joda.time.DateTime;
 
 
@@ -111,6 +113,15 @@ public class PushExpiry extends PushModelObject {
         }
 
         public PushExpiry build() {
+            if (expiryTimeStamp == null && expirySeconds == null) {
+                throw new APIParsingException("Expiry time can not be null");
+            }
+            if (expiryTimeStamp != null && expirySeconds != null) {
+                throw new APIParsingException("Expiry time may contain a relative offset or an absolute time, but not both");
+            }
+            if (expirySeconds != null && expirySeconds.intValue() < 0) {
+                throw new APIParsingException("Expiry time may not be negative");
+            }
             return new PushExpiry(Optional.fromNullable(expirySeconds),
                                   Optional.fromNullable(expiryTimeStamp));
         }

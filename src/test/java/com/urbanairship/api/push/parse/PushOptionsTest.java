@@ -1,5 +1,6 @@
 package com.urbanairship.api.push.parse;
 
+import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.*;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
@@ -145,13 +146,13 @@ public class PushOptionsTest {
     }
 
 
-    @Test
+    @Test(expected=APIParsingException.class)
     public void testEmptyValidation() throws Exception {
         PushExpiry.newBuilder()
                 .build();
     }
 
-    @Test
+    @Test(expected=APIParsingException.class)
     public void testDoubleValidation() throws Exception {
         PushExpiry.newBuilder()
                 .setExpirySeconds(100)
@@ -159,7 +160,7 @@ public class PushOptionsTest {
                 .build();
     }
 
-    @Test
+    @Test(expected=APIParsingException.class)
     public void testNegativeValidation() throws Exception {
         PushExpiry.newBuilder()
                 .setExpirySeconds(-100)

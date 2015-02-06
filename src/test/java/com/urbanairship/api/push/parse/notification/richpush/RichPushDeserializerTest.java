@@ -1,8 +1,11 @@
 package com.urbanairship.api.push.parse.notification.richpush;
 
+import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -39,6 +42,7 @@ public class RichPushDeserializerTest {
                 + "  \"body\": \"B\","
                 + "  \"content-type\": \"A/B\","
                 + "  \"content-encoding\": \"utf8\","
+                + "  \"expiry\" : \"2018-01-01T00:00:00\","
                 + "  \"extra\": {"
                 + "    \"foo\" : \"bar\""
                 + "  }"
@@ -49,6 +53,7 @@ public class RichPushDeserializerTest {
                 .setBody("B")
                 .setContentType("A/B")
                 .setContentEncoding("utf8")
+                .setExpiry(PushExpiry.newBuilder().setExpiryTimeStamp(new DateTime(2018, 01, 01, 0, 0, 0, DateTimeZone.UTC)).build())
                 .addExtraEntry("foo", "bar")
                 .build();
 
