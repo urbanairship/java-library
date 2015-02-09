@@ -23,11 +23,11 @@ public class NotificationDeserializer extends JsonDeserializer<Notification> {
         new MapFieldParserRegistry<Notification, NotificationReader>(
             ImmutableMap.<String, FieldParser<NotificationReader>>builder()
             .put("alert", new FieldParser<NotificationReader>() {
-                @Override
-                public void parse(NotificationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readAlert(jsonParser);
-                }
-            })
+                    @Override
+                    public void parse(NotificationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                        reader.readAlert(jsonParser);
+                    }
+                })
             .put("wns", new FieldParser<NotificationReader>() {
                     @Override
                     public void parse(NotificationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
@@ -65,17 +65,17 @@ public class NotificationDeserializer extends JsonDeserializer<Notification> {
                     }
                 })
             .put("actions", new FieldParser<NotificationReader>() {
-                @Override
-                public void parse(NotificationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readActions(jsonParser);
-                }
-            })
+                    @Override
+                    public void parse(NotificationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                        reader.readActions(jsonParser);
+                    }
+                })
             .put("interactive", new FieldParser<NotificationReader>() {
-                @Override
-                public void parse(NotificationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readInteractive(jsonParser);
-                }
-            })
+                    @Override
+                    public void parse(NotificationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                        reader.readInteractive(jsonParser);
+                    }
+                })
             .build());
 
     private final StandardObjectDeserializer<Notification, ?> deserializer;

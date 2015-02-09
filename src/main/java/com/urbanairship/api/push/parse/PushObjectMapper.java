@@ -111,7 +111,7 @@ public class PushObjectMapper {
                 .addSerializer(DeviceTypeData.class, new DeviceTypeDataSerializer())
                 .addDeserializer(DeviceTypeData.class, new PlatformDataDeserializer())
                 .addDeserializer(DateRange.class, new DateRangeDeserializer())
-                .addSerializer(PushExpiry.class, new PushExpirySerializer())
+                .addSerializer(PushExpiry.class, PushExpirySerializer.INSTANCE)
 
             /* IOS */
                 .addSerializer(IOSDevicePayload.class, new IOSDevicePayloadSerializer())

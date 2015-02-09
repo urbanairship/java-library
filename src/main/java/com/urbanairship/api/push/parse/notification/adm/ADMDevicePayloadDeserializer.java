@@ -39,6 +39,11 @@ public class ADMDevicePayloadDeserializer extends JsonDeserializer<ADMDevicePayl
                         reader.readExtra(json, context);
                     }
                 })
+            .put("interactive", new FieldParser<ADMDevicePayloadReader>() {
+                    public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                        reader.readInteractive(json, context);
+                    }
+                })
             .build()
             );
 

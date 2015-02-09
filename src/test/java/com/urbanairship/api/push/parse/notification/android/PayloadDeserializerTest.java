@@ -1,7 +1,11 @@
 package com.urbanairship.api.push.parse.notification.android;
 
+import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.PushExpiry;
+import com.urbanairship.api.push.model.notification.Interactive;
+import com.urbanairship.api.push.model.notification.actions.Actions;
+import com.urbanairship.api.push.model.notification.actions.ShareAction;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -138,6 +142,7 @@ public class PayloadDeserializerTest {
         assertEquals(expected, payload);
     }
 
+    @Test
     public void testValidate_Empty() throws Exception {
         AndroidDevicePayload payload = mapper.readValue("{}", AndroidDevicePayload.class);
         assertNotNull(payload);
@@ -146,4 +151,36 @@ public class PayloadDeserializerTest {
         assertFalse(payload.getCollapseKey().isPresent());
     }
 
+    @Test
+    public void testInteractiveNotificationActions() throws Exception {
+        String json
+            = "{"
+            + "  \"interactive\": {"
+            + "    \"type\" : \"ua_yes_no_foreground\","
+            + "    \"button_actions\" : {"
+            + "      \"yes\" : {"
+            + "        \"share\" : \"foo\""
+            + "      }"
+            + "    }"
+            + "  }"
+            + "}";
+        AndroidDevicePayload payload = mapper.readValue(json, AndroidDevicePayload.class);
+
+        Interactive interactive = Interactive.newBuilder()
+            .setType("ua_yes_no_foreground")
+            .setButtonActions(
+                ImmutableMap.of(
+                    "yes",
+                    Actions.newBuilder()
+                        .setShare(new ShareAction("foo"))
+                        .build()))
+            .build();
+        AndroidDevicePayload expected = AndroidDevicePayload.newBuilder()
+            .setInteractive(interactive)
+            .build();
+
+        assertEquals(expected, payload);
+        Interactive returned = payload.getInteractive().get();
+        assertEquals(interactive, returned);
+    }
 }

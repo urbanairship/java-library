@@ -4,10 +4,12 @@
 
 package com.urbanairship.api.push.parse.notification.ios;
 
+import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 import com.urbanairship.api.common.parse.*;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
+import sun.security.krb5.internal.crypto.Des;
 
 import java.io.IOException;
 
@@ -37,6 +39,14 @@ public class IOSDevicePayloadReader implements JsonObjectReader<IOSDevicePayload
 
     public void readExtra(JsonParser parser, DeserializationContext context) throws IOException {
         builder.addAllExtraEntries(MapOfStringsDeserializer.INSTANCE.deserialize(parser, "extra"));
+    }
+
+    public void readCategory(JsonParser parser, DeserializationContext context) throws IOException {
+        builder.setCategory(StringFieldDeserializer.INSTANCE.deserialize(parser, "category"));
+    }
+
+    public void readInteractive(JsonParser parser, DeserializationContext context) throws IOException {
+        builder.setInteractive(parser.readValueAs(Interactive.class));
     }
 
     @Override

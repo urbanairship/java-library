@@ -8,7 +8,6 @@ import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
-import java.util.Map;
 import java.io.IOException;
 
 public class IOSDevicePayloadSerializer extends JsonSerializer<IOSDevicePayload> {
@@ -41,6 +40,14 @@ public class IOSDevicePayloadSerializer extends JsonSerializer<IOSDevicePayload>
         }
         if (payload.getPriority().isPresent()) {
             jgen.writeNumberField("priority", payload.getPriority().get());
+        }
+
+        if (payload.getCategory().isPresent()) {
+            jgen.writeStringField("category", payload.getCategory().get());
+        }
+
+        if (payload.getInteractive().isPresent()) {
+            jgen.writeObjectField("interactive", payload.getInteractive().get());
         }
 
         jgen.writeEndObject();

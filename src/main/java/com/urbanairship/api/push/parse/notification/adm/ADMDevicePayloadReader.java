@@ -4,6 +4,7 @@
 
 package com.urbanairship.api.push.parse.notification.adm;
 
+import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
 import com.urbanairship.api.push.parse.*;
 import com.urbanairship.api.common.parse.*;
@@ -33,6 +34,10 @@ public class ADMDevicePayloadReader implements JsonObjectReader<ADMDevicePayload
 
     public void readExtra(JsonParser parser, DeserializationContext context) throws IOException {
         builder.addAllExtraEntries(MapOfStringsDeserializer.INSTANCE.deserialize(parser, "extra"));
+    }
+
+    public void readInteractive(JsonParser parser, DeserializationContext context) throws IOException {
+        builder.setInteractive(parser.readValueAs(Interactive.class));
     }
 
     @Override
