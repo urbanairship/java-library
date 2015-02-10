@@ -130,9 +130,9 @@ public class InteractiveDeserializerTest {
 
         try {
             mapper.readValue(json, Interactive.class);
-            fail("PushPayloadException expected.");
+            fail("APIParsingException expected.");
         } catch (APIParsingException exc) {
-//            assertEquals(PushPayloadError.INT_WRONG_BUTTON_IDS.subCode, exc.getErrorCode() - 40000);
+            assertEquals("button_actions keys do not match predefined button IDs for predefined interactive notification", exc.getMessage());
         }
     }
 
@@ -156,9 +156,9 @@ public class InteractiveDeserializerTest {
 
         try {
             mapper.readValue(json, Interactive.class);
-            fail("PushPayloadException expected.");
+            fail("APIParsingException expected.");
         } catch (APIParsingException exc) {
-//            assertEquals(PushPayloadError.INT_WRONG_BUTTON_IDS.subCode, exc.getErrorCode() - 40000);
+            assertEquals("button_actions keys do not match predefined button IDs for predefined interactive notification", exc.getMessage());
         }
     }
 
@@ -179,9 +179,9 @@ public class InteractiveDeserializerTest {
 
         try {
             mapper.readValue(json, Interactive.class);
-            fail("PushPayloadException expected.");
+            fail("APIParsingException expected.");
         } catch (APIParsingException exc) {
-//            assertEquals(PushPayloadError.INT_MISSING_PREDEFINED.subCode, exc.getErrorCode() - 40000);
+            assertEquals(String.format("Predefined interactive notification type '%s' not found", "ua_what_me_worry"), exc.getMessage());
         }
     }
 
@@ -194,9 +194,9 @@ public class InteractiveDeserializerTest {
 
         try {
             mapper.readValue(json, Interactive.class);
-            fail("PushPayloadException expected.");
+            fail("APIParsingException expected.");
         } catch (APIParsingException exc) {
-//            assertEquals(PushPayloadError.INT_MISSING_PREDEFINED.subCode, exc.getErrorCode() - 40000);
+            assertEquals(String.format("Predefined interactive notification type '%s' not found", "ua_what_me_worry"), exc.getMessage());
         }
     }
 
@@ -216,9 +216,9 @@ public class InteractiveDeserializerTest {
 
         try {
             mapper.readValue(json, Interactive.class);
-            fail("PushPayloadException expected.");
+            fail("APIParsingException expected.");
         } catch (APIParsingException exc) {
-//            assertEquals(PushPayloadError.INT_MISSING_FIELD.subCode, exc.getErrorCode() - 40000);
+            assertEquals("interactive payload requires a 'type' field", exc.getMessage());
         }
     }
 
@@ -230,9 +230,9 @@ public class InteractiveDeserializerTest {
 
         try {
             mapper.readValue(json, Interactive.class);
-            fail("PushPayloadException expected.");
+            fail("APIParsingException expected.");
         } catch (APIParsingException exc) {
-//            assertEquals(PushPayloadError.INT_MISSING_FIELD.subCode, exc.getErrorCode() - 40000);
+            assertEquals("interactive payload requires a 'type' field", exc.getMessage());
         }
     }
 
@@ -319,9 +319,9 @@ public class InteractiveDeserializerTest {
             + "}";
         try {
             mapper.readValue(json, Interactive.class);
-            fail("PushPayloadException expected.");
+            fail("APIParsingException expected.");
         } catch (APIParsingException exc) {
-//            assertEquals(PushPayloadError.INT_TOO_MANY_BUTTON_IDS.subCode, exc.getErrorCode() - 40000);
+            assertEquals("button_actions must specify no more than 5 actions", exc.getMessage());
         }
     }
 
