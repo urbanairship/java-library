@@ -69,17 +69,11 @@ public class PushOptionsTest {
     }
 
     @Test
-    public void testParseExpiry() throws Exception {
-        String json
-                = "600"; /* expire in 10 minutes */
-        PushOptions options = PushOptions.newBuilder().setExpiry(PushExpiry.newBuilder().setExpirySeconds(600).build()).build();
-        assertTrue(options.getExpiry().isPresent());
-        PushExpiry expiry = options.getExpiry().get();
-        assertFalse(expiry.getExpiryTimeStamp().isPresent());
-        Integer exp = 600;
-        assertEquals(exp, expiry.getExpirySeconds().get());
-        String actualJSON = mapper.writeValueAsString(expiry);
-        assertEquals(json, actualJSON);
+    public void testParseExpiryRoundTrip() throws Exception {
+        PushExpiry expiry1 = PushExpiry.newBuilder().setExpirySeconds(600).build();
+        String json = mapper.writeValueAsString(expiry1);
+        PushExpiry expiry2 = mapper.readValue(json, PushExpiry.class);
+        assertEquals(expiry1, expiry2);
     }
 
     /* Equality */
@@ -114,37 +108,42 @@ public class PushOptionsTest {
 
 
     @Test
-    public void testSerializationExpirySeconds() throws Exception {
-        PushOptions pushOptions = PushOptions.newBuilder()
-                .setExpiry(PushExpiry.newBuilder().setExpirySeconds(3600).build())
-                .build();
-
-        String json = mapper.writeValueAsString(pushOptions);
-
-        String properJson
+    public void testParsingExpirySeconds() throws Exception {
+        String json
                 = "{"
                 + "\"expiry\":3600"
                 + "}";
 
-        assertEquals(properJson, json);
+        PushOptions options = mapper.readValue(json, PushOptions.class);
+        Integer seconds = 3600;
+
+        assertTrue(options.getExpiry().isPresent());
+        PushExpiry expiry = options.getExpiry().get();
+        assertEquals(seconds, expiry.getExpirySeconds().get());
     }
 
     @Test
-    public void testSerializationExpiryTimeStamp() throws Exception {
-        PushOptions pushOptions = PushOptions.newBuilder()
-                .setExpiry(PushExpiry.newBuilder().setExpiryTimeStamp(new DateTime("2014-07-08T12:00:00", DateTimeZone.UTC)).build())
-                .build();
-
-        String json = mapper.writeValueAsString(pushOptions);
-
-        String properJson
+    public void testParsingExpiryTimeStamp() throws Exception {
+        String json
                 = "{"
                 + "\"expiry\":\"2014-07-08T12:00:00\""
                 + "}";
 
-        assertEquals(properJson, json);
+        PushOptions options = mapper.readValue(json, PushOptions.class);
+
+        assertTrue(options.getExpiry().isPresent());
+        PushExpiry expiry = options.getExpiry().get();
+        assertEquals(new DateTime(2014, 7, 8, 12, 0, 0, DateTimeZone.UTC), expiry.getExpiryTimeStamp().get());
     }
 
+    @Test(expected=APIParsingException.class)
+    public void testParseValidation() throws Exception {
+        String json
+            = "{"
+            + "  \"expiry\" : -10"
+            + "}";
+        mapper.readValue(json, PushOptions.class);
+    }
 
     @Test(expected=APIParsingException.class)
     public void testEmptyValidation() throws Exception {
