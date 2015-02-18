@@ -49,6 +49,7 @@ public class APIClient {
     /* Header keys/values */
     private final static String CONTENT_TYPE_KEY = "Content-type";
     private final static String ACCEPT_KEY = "Accept";
+    private final static String CONTENT_TYPE_JSON = "application/json";
     private final static String UA_APPLICATION_JSON = "application/vnd.urbanairship+json;";
 
     /* URI Paths */
@@ -137,7 +138,7 @@ public class APIClient {
 
     private Request provisionRequest(Request object) {
         object.config(CoreProtocolPNames.USER_AGENT, getUserAgent())
-                .addHeader(CONTENT_TYPE_KEY, versionedAcceptHeader(version))
+                .addHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_JSON)
                 .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
 
         if (proxyInfo.isPresent()) {
@@ -680,9 +681,9 @@ public class APIClient {
     public APIClientResponse<ReportsAPIOpensResponse> listAppsOpenReport(DateTime start, DateTime end, String precision) throws IOException {
 
         Preconditions.checkArgument(precision.toUpperCase().equals("HOURLY") ||
-                        precision.toUpperCase().equals("DAILY") ||
-                        precision.toUpperCase().equals("MONTHLY"),
-                "Precision must be specified as HOURLY, DAILY or MONTHLY");
+                precision.toUpperCase().equals("DAILY") ||
+                precision.toUpperCase().equals("MONTHLY"),
+            "Precision must be specified as HOURLY, DAILY or MONTHLY");
 
         Preconditions.checkNotNull(start, "Start time is required when performing listing of apps open");
         Preconditions.checkNotNull(end, "End time is required when performing listing of apps open");
@@ -706,9 +707,9 @@ public class APIClient {
     public APIClientResponse<ReportsAPITimeInAppResponse> listTimeInAppReport(DateTime start, DateTime end, String precision) throws IOException {
 
         Preconditions.checkArgument(precision.toUpperCase().equals("HOURLY") ||
-                        precision.toUpperCase().equals("DAILY") ||
-                        precision.toUpperCase().equals("MONTHLY"),
-                "Precision must be specified as HOURLY, DAILY or MONTHLY");
+                precision.toUpperCase().equals("DAILY") ||
+                precision.toUpperCase().equals("MONTHLY"),
+            "Precision must be specified as HOURLY, DAILY or MONTHLY");
 
         Preconditions.checkNotNull(start, "Start time is required when performing listing of time in app");
         Preconditions.checkNotNull(end, "End time is required when performing listing of time in app");
