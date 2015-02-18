@@ -48,6 +48,8 @@ public class ListAllSchedulesAPIResponseHandlerTest {
         try {
             APIClientResponse<APIListAllSchedulesResponse> response =
                     handler.handleResponse(httpResponse);
+            assertTrue("APIPushResponse incorrectly configured",
+                    response.getApiResponse().getOk().equals(true));
             assertTrue("Count incorrect",
                     response.getApiResponse().getCount() == 5);
             assertTrue(httpResponse.getStatusLine().toString().equals("HTTP/1.1 200 OK"));

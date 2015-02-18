@@ -15,11 +15,13 @@ import com.urbanairship.api.schedule.model.SchedulePayload;
  */
 public final class APIScheduleResponse {
 
+    private final Boolean ok;
     private final String operationId;
     private final ImmutableList<String> scheduleUrls;
     private final ImmutableList<SchedulePayload> schedulePayloads;
 
-    private APIScheduleResponse(String operationId, ImmutableList<String> scheduleUrls, ImmutableList<SchedulePayload> schedulePayloads) {
+    private APIScheduleResponse(Boolean ok, String operationId, ImmutableList<String> scheduleUrls, ImmutableList<SchedulePayload> schedulePayloads) {
+        this.ok = ok;
         this.operationId = operationId;
         this.scheduleUrls = scheduleUrls;
         this.schedulePayloads = schedulePayloads;
@@ -32,6 +34,14 @@ public final class APIScheduleResponse {
      */
     public static Builder newBuilder() {
         return new Builder();
+    }
+
+    /**
+     * Get the response status as a boolean
+     * @return response status
+     */
+    public Boolean getOk() {
+        return ok;
     }
 
     /**
@@ -63,6 +73,7 @@ public final class APIScheduleResponse {
     @Override
     public String toString() {
         return "APIScheduleResponse{" +
+                "ok=" + ok +
                 "operationId='" + operationId + '\'' +
                 ", scheduleUrls=" + scheduleUrls +
                 ", schedulePayloads=" + schedulePayloads +
@@ -71,7 +82,7 @@ public final class APIScheduleResponse {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(operationId, scheduleUrls, schedulePayloads);
+        return Objects.hashCode(ok, operationId, scheduleUrls, schedulePayloads);
     }
 
     @Override
@@ -83,7 +94,7 @@ public final class APIScheduleResponse {
             return false;
         }
         final APIScheduleResponse other = (APIScheduleResponse) obj;
-        return Objects.equal(this.operationId, other.operationId) && Objects.equal(this.scheduleUrls, other.scheduleUrls) && Objects.equal(this.schedulePayloads, other.schedulePayloads);
+        return  Objects.equal(this.ok, other.ok) && Objects.equal(this.operationId, other.operationId) && Objects.equal(this.scheduleUrls, other.scheduleUrls) && Objects.equal(this.schedulePayloads, other.schedulePayloads);
     }
 
     /**
@@ -91,11 +102,17 @@ public final class APIScheduleResponse {
      */
     public static class Builder {
 
+        private Boolean ok = false;
         private String operationId;
         private ImmutableList.Builder<String> scheduleUrls = ImmutableList.builder();
         private ImmutableList.Builder<SchedulePayload> schedulePayloads = ImmutableList.builder();
 
         private Builder() {
+        }
+
+        public Builder setOk(Boolean ok) {
+            this.ok = ok;
+            return this;
         }
 
         public Builder setOperationId(String operationId) {
@@ -127,7 +144,7 @@ public final class APIScheduleResponse {
             Preconditions.checkNotNull(operationId, "Operation ID must be set in order to build APIScheduleResponse");
             Preconditions.checkNotNull(scheduleUrls, "ScheduleUrls must be set in order to build APIScheduleResponse");
             Preconditions.checkNotNull(schedulePayloads, "SchedulePayloads must be set in order to build APIScheduleResponse");
-            return new APIScheduleResponse(operationId, scheduleUrls.build(), schedulePayloads.build());
+            return new APIScheduleResponse(ok, operationId, scheduleUrls.build(), schedulePayloads.build());
         }
     }
 }

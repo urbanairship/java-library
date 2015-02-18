@@ -51,6 +51,8 @@ public class PushAPIResponseHandlerTest {
                     handler.handleResponse(httpResponse);
             assertTrue("HttpResponse incorrect",
                     httpResponse.equals(response.getHttpResponse()));
+            Boolean ok = response.getApiResponse().getOk();
+            assertTrue("APIPushResponse incorrectly configured", ok.equals(true));
             String operationId = response.getApiResponse().getOperationId().get();
             assertTrue("APIPushResponse incorrectly configured",
                     "df6a6b50".equals(operationId));

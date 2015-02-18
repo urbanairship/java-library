@@ -41,6 +41,12 @@ public final class APIPushResponseDeserializer extends JsonDeserializer<APIPushR
                                     reader.readPushIds(jsonParser);
                                 }
                             })
+                            .put("ok", new FieldParser<APIPushResponseReader>() {
+                                @Override
+                                public void parse(APIPushResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                    reader.readOk(jsonParser);
+                                }
+                            })
                             .build()
             );
 

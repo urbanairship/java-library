@@ -29,6 +29,12 @@ public final class APIErrorDeserializer extends JsonDeserializer<APIError> {
     private static final FieldParserRegistry<APIError, APIErrorReader> FIELD_PARSERS =
             new MapFieldParserRegistry<APIError, APIErrorReader>(
                     ImmutableMap.<String, FieldParser<APIErrorReader>>builder()
+                            .put("ok", new FieldParser<APIErrorReader>() {
+                                @Override
+                                public void parse(APIErrorReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                    reader.readOk(jsonParser);
+                                }
+                            })
                             .put("operation_id", new FieldParser<APIErrorReader>() {
                                 @Override
                                 public void parse(APIErrorReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {

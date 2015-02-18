@@ -33,6 +33,7 @@ public class APIListAllSchedulesResponseTest {
 
         try {
             APIListAllSchedulesResponse response = mapper.readValue(listscheduleresponse, APIListAllSchedulesResponse.class);
+            assertTrue(response.getOk());
             assertTrue(response.getCount() == 5);
             assertTrue(response.getTotal_Count() == 6);
             assertTrue(response.getNext_Page() == null);
@@ -85,6 +86,7 @@ public class APIListAllSchedulesResponseTest {
 
         try {
             APIListAllSchedulesResponse response = mapper.readValue(listscheduleresponse, APIListAllSchedulesResponse.class);
+            assertTrue(response.getOk());
             assertTrue(response.getCount() == 5);
             assertTrue(response.getTotal_Count() == 6);
             assertTrue(response.getNext_Page().equals("puppies"));

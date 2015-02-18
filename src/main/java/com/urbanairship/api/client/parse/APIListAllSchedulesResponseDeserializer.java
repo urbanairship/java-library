@@ -22,6 +22,14 @@ public final class APIListAllSchedulesResponseDeserializer extends JsonDeseriali
     private static final FieldParserRegistry<APIListAllSchedulesResponse, APIListAllSchedulesResponseReader> FIELD_PARSER =
             new MapFieldParserRegistry<APIListAllSchedulesResponse, APIListAllSchedulesResponseReader>(
                     ImmutableMap.<String, FieldParser<APIListAllSchedulesResponseReader>>builder()
+                            .put("ok", new FieldParser<APIListAllSchedulesResponseReader>() {
+                                @Override
+                                public void parse(APIListAllSchedulesResponseReader reader,
+                                                  JsonParser jsonParser,
+                                                  DeserializationContext deserializationContext) throws IOException {
+                                    reader.readOk(jsonParser);
+                                }
+                            })
                             .put("count", new FieldParser<APIListAllSchedulesResponseReader>() {
                                 @Override
                                 public void parse(APIListAllSchedulesResponseReader reader,
