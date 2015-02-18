@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class PushExpiryDeserializer extends JsonDeserializer<PushExpiry> {
 
-    private static final DateTimeDeserializer DT = new DateTimeDeserializer();
+    private static final DateTimeDeserializer DATE_TIME_DESERIALIZER = new DateTimeDeserializer();
 
     @Override
     public PushExpiry deserialize(JsonParser parser, DeserializationContext context) throws IOException {
@@ -20,7 +20,7 @@ public class PushExpiryDeserializer extends JsonDeserializer<PushExpiry> {
 
                 case VALUE_STRING:
                     return PushExpiry.newBuilder()
-                        .setExpiryTimeStamp(DT.deserialize(parser, context))
+                        .setExpiryTimeStamp(DATE_TIME_DESERIALIZER.deserialize(parser, context))
                         .build();
 
                 case VALUE_NUMBER_INT:
