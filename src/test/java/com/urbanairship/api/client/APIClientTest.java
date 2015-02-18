@@ -49,7 +49,7 @@ import static org.junit.Assert.*;
 public class APIClientTest {
 
     public final static String CONTENT_TYPE_KEY = "Content-type";
-    public final static String APP_JSON = "application/vnd.urbanairship+json; version=3;";
+    public final static String APP_JSON = "application/json";
 
     static {
         BasicConfigurator.configure();
