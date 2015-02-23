@@ -243,7 +243,8 @@ public final class APIError {
         }
 
         public APIError build() {
-            return new APIError(ok, Optional.fromNullable(operationId),
+            return new APIError(ok,
+                    Optional.fromNullable(operationId),
                     error,
                     Optional.fromNullable(errorCode),
                     Optional.fromNullable(details));
