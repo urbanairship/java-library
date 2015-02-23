@@ -30,7 +30,7 @@ public class PushPayloadSerializer extends JsonSerializer<PushPayload> {
             jgen.writeObjectField("message", payload.getMessage().get());
         }
         if (payload.getPushOptions().isPresent()) {
-            jgen.writeObjectField("options", payload.getPushOptions());
+            jgen.writeObjectField("options", payload.getPushOptions().get());
         }
 
         jgen.writeEndObject();

@@ -10,13 +10,13 @@ public class IOSDevicePayloadTest {
     @Test
     public void testExpiryEquality() {
         IOSDevicePayload p1 = IOSDevicePayload.newBuilder()
-                .setExpiry(PushExpiry.newBuilder().setExpirySeconds(3600L).build())
+                .setExpiry(PushExpiry.newBuilder().setExpirySeconds(3600).build())
                 .build();
         IOSDevicePayload p2 = IOSDevicePayload.newBuilder()
-                .setExpiry(PushExpiry.newBuilder().setExpirySeconds(3600L).build())
+                .setExpiry(PushExpiry.newBuilder().setExpirySeconds(3600).build())
                 .build();
         IOSDevicePayload p3 = IOSDevicePayload.newBuilder()
-                .setExpiry(PushExpiry.newBuilder().setExpirySeconds(3600L).build())
+                .setExpiry(PushExpiry.newBuilder().setExpirySeconds(3600).build())
                 .build();
 
         assertEquals(p1, p2);
@@ -43,7 +43,7 @@ public class IOSDevicePayloadTest {
         assertTrue(m.getExtra().get().containsKey("this"));
         assertEquals("that", m.getExtra().get().get("this"));
         assertTrue(m.getExpiry().isPresent());
-        Long t = 600L;
+        Integer t = 600;
         assertEquals(t, m.getExpiry().get().getExpirySeconds().get());
         assertTrue(m.getAlertData().isPresent());
         assertTrue(m.getBadge().isPresent());

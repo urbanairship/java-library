@@ -17,7 +17,7 @@ public class RichPushDevicePayloadSerializerTest {
         RichPushMessage message = RichPushMessage.newBuilder()
                 .setTitle("T")
                 .setBody("B")
-                .setExpiry(PushExpiry.newBuilder().setExpirySeconds(3600L).build())
+                .setExpiry(PushExpiry.newBuilder().setExpirySeconds(3600).build())
                 .build();
 
         assertTrue(message.getExpiry().isPresent());
@@ -29,7 +29,7 @@ public class RichPushDevicePayloadSerializerTest {
                 + "\"body\":\"B\","
                 + "\"content_type\":\"text/html\","
                 + "\"content_encoding\":\"utf8\","
-                + "\"expiry\":{\"expirySeconds\":3600}"
+                + "\"expiry\":3600"
                 + "}";
         assertEquals(json, pushJson);
     }

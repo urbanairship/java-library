@@ -4,6 +4,7 @@
 
 package com.urbanairship.api.push.parse.notification.richpush;
 
+import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import com.urbanairship.api.push.parse.*;
 import com.urbanairship.api.common.parse.*;
@@ -37,6 +38,10 @@ public class RichPushMessageReader implements JsonObjectReader<RichPushMessage> 
 
     public void readExtra(JsonParser parser, DeserializationContext context) throws IOException {
         builder.addAllExtraEntries(MapOfStringsDeserializer.INSTANCE.deserialize(parser, "extra"));
+    }
+
+    public void readExpiry(JsonParser parser, DeserializationContext context) throws IOException {
+        builder.setExpiry(parser.readValueAs(PushExpiry.class));
     }
 
     @Override

@@ -25,7 +25,7 @@ public class ADMDevicePayloadSerializer extends JsonSerializer<ADMDevicePayload>
         }
 
         if (payload.getExpiresAfter().isPresent()) {
-            jgen.writeNumberField("expires_after", payload.getExpiresAfter().get());
+            jgen.writeObjectField("expires_after", payload.getExpiresAfter().get());
         }
 
         if (payload.getExtra().isPresent()) {
