@@ -1,5 +1,6 @@
 package com.urbanairship.api.push.model;
 
+import com.urbanairship.api.common.parse.APIParsingException;
 import org.joda.time.DateTime;
 import org.joda.time.Minutes;
 import org.junit.Test;
@@ -11,12 +12,12 @@ import static org.junit.Assert.assertTrue;
 public class PushExpiryTest {
 
 
-    @Test
+    @Test(expected= APIParsingException.class)
     public void testValidateEmpty() throws Exception {
         PushExpiry.newBuilder().build();
     }
 
-    @Test
+    @Test(expected= APIParsingException.class)
     public void testValidateBoth() throws Exception {
         PushExpiry.newBuilder()
                 .setExpirySeconds(1000)

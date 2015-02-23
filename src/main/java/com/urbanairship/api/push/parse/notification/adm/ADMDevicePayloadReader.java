@@ -4,6 +4,7 @@
 
 package com.urbanairship.api.push.parse.notification.adm;
 
+import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
 import com.urbanairship.api.push.parse.*;
 import com.urbanairship.api.common.parse.*;
@@ -28,7 +29,7 @@ public class ADMDevicePayloadReader implements JsonObjectReader<ADMDevicePayload
     }
 
     public void readExpiresAfter(JsonParser parser, DeserializationContext context) throws IOException {
-        builder.setExpiresAfter(IntFieldDeserializer.INSTANCE.deserialize(parser, "expires_after"));
+        builder.setExpiresAfter(parser.readValueAs(PushExpiry.class));
     }
 
     public void readExtra(JsonParser parser, DeserializationContext context) throws IOException {
