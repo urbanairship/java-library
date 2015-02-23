@@ -32,6 +32,7 @@ public class ListSingleChannelAPIResponseHandlerTest {
     public void testHandleSuccess() {
 
         String response = "{  \n" +
+                "  \"ok\": true, \n" +
                 "  \"channel\":{  \n" +
                 "    \"channel_id\":\"01234567-890a-bcde-f012-34567890abc0\",\n" +
                 "    \"device_type\":\"android\",\n" +
@@ -60,6 +61,7 @@ public class ListSingleChannelAPIResponseHandlerTest {
                     handler.handleResponse(httpResponse);
             assertNotNull(res);
             assertTrue(httpResponse.getStatusLine().toString().equals("HTTP/1.1 200 OK"));
+            assertTrue(res.getApiResponse().getOk());
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Exception " + ex);
@@ -89,6 +91,7 @@ public class ListSingleChannelAPIResponseHandlerTest {
             handler.handleResponse(httpResponse);
         } catch (APIRequestException ex) {
             APIErrorDetails details = ex.getError().get().getDetails().get();
+            assertFalse(ex.getError().get().getOk());
             assertTrue("Incorrect error details", details.getError().equals("Unexpected token '#'"));
             assertTrue("HttpResponse set incorrectly", ex.getHttpResponse().equals(httpResponse));
             return;

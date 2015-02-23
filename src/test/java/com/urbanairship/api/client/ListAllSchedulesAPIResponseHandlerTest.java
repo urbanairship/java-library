@@ -52,6 +52,7 @@ public class ListAllSchedulesAPIResponseHandlerTest {
                     response.getApiResponse().getOk().equals(true));
             assertTrue("Count incorrect",
                     response.getApiResponse().getCount() == 5);
+            assertTrue(response.getApiResponse().getOk());
             assertTrue(httpResponse.getStatusLine().toString().equals("HTTP/1.1 200 OK"));
         } catch (Exception ex) {
             fail("Exception " + ex);

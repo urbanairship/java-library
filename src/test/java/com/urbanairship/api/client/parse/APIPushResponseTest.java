@@ -33,7 +33,7 @@ public class APIPushResponseTest {
             assertTrue("Error in response pushIds",
                     response.getPushIds().get().get(1).equals("id2"));
             assertTrue("Error in response status",
-                    response.getOk().equals(true));
+                    response.getOk());
         } catch (IOException ex) {
             fail("Exception in APIPushResponseTest Message: " + ex.getMessage());
         }

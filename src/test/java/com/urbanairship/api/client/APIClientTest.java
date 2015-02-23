@@ -324,6 +324,7 @@ public class APIClientTest {
             assertNotNull(response);
             assertNotNull(response.getApiResponse());
             assertNotNull(response.getHttpResponse());
+            assertNotNull(response.getApiResponse().getOk());
             assertNotNull(response.getApiResponse().getCount());
             assertNotNull(response.getApiResponse().getTotal_Count());
             assertNotNull(response.getApiResponse().getSchedules());
@@ -411,6 +412,7 @@ public class APIClientTest {
             assertNotNull(response);
             assertNotNull(response.getApiResponse());
             assertNotNull(response.getHttpResponse());
+            assertNotNull(response.getApiResponse().getOk());
             assertNotNull(response.getApiResponse().getCount());
             assertNotNull(response.getApiResponse().getTotal_Count());
             assertNotNull(response.getApiResponse().getSchedules());
@@ -460,6 +462,7 @@ public class APIClientTest {
             assertNotNull(response);
             assertNotNull(response.getApiResponse());
             assertNotNull(response.getHttpResponse());
+            assertNotNull(response.getApiResponse().getOk());
             assertNotNull(response.getApiResponse().getCount());
             assertNotNull(response.getApiResponse().getTotal_Count());
             assertNotNull(response.getApiResponse().getSchedules());
@@ -500,7 +503,7 @@ public class APIClientTest {
 
         // Stub out endpoint
         // Setup a stubbed response for the server
-        String pushJSON = "{\"ok\" : true,\"operation_id\" : \"OpID\", \"schedule_urls\":[\"ScheduleURL\"]}";
+        String pushJSON = "{\"operation_id\" : \"OpID\", \"schedule_urls\":[\"ScheduleURL\"]}";
         stubFor(post(urlEqualTo("/api/schedules/"))
                 .willReturn(aResponse()
                         .withHeader(CONTENT_TYPE_KEY, APP_JSON)
@@ -568,7 +571,7 @@ public class APIClientTest {
 
         // Stub out endpoint
         // Setup a stubbed response for the server
-        String responseJson = "{\"ok\" : true,\"operation_id\" : \"OpID\" }";
+        String responseJson = "{\"operation_id\" : \"OpID\" }";
         stubFor(put(urlEqualTo("/api/schedules/id"))
                 .willReturn(aResponse()
                         .withHeader(CONTENT_TYPE_KEY, APP_JSON)

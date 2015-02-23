@@ -30,7 +30,7 @@ public class ScheduleAPIResponseHandlerTest {
      */
     @Test
     public void testHandleSuccess() {
-        String successJSON = "{\"ok\" : true, \"operation_id\" : \"OpID\", " +
+        String successJSON = "{\"operation_id\" : \"OpID\", " +
                 "\"schedule_urls\" : [\"ScheduleURL\"],    \"schedules\" : [\n" +
                 "      {\n" +
                 "         \"url\" : \"http://go.urbanairship/api/schedules/2d69320c-3c91-5241-fac4-248269eed109\",\n" +
@@ -52,8 +52,6 @@ public class ScheduleAPIResponseHandlerTest {
         try {
             APIClientResponse<APIScheduleResponse> response =
                     handler.handleResponse(httpResponse);
-            assertTrue("APIPushResponse incorrectly configured",
-                    response.getApiResponse().getOk().equals(true));
             assertTrue("Operation ID incorrect",
                     response.getApiResponse().getOperationId().equals("OpID"));
             assertTrue("HttpResponse is incorrect",

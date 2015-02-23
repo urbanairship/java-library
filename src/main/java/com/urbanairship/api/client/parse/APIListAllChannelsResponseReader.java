@@ -23,6 +23,10 @@ public final class APIListAllChannelsResponseReader implements JsonObjectReader<
         this.builder = APIListAllChannelsResponse.newBuilder();
     }
 
+    public void readOk(JsonParser jsonParser) throws IOException {
+        builder.setOk(jsonParser.readValueAs(Boolean.class));
+    }
+
     public void readNextPage(JsonParser jsonParser) throws IOException {
         builder.setNextPage(jsonParser.readValueAs(String.class));
     }
