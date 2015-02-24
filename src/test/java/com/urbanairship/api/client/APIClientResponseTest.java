@@ -436,8 +436,8 @@ public class APIClientResponseTest {
                 new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
 
         APIListAllChannelsResponse response = APIListAllChannelsResponse.newBuilder()
-            .setOk(true)
-            .setNextPage("nextPage")
+                .setOk(true)
+                .setNextPage("nextPage")
                 .addChannel(ChannelView.newBuilder()
                         .setAlias("Alias")
                         .setBackground(true)
