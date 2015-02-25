@@ -181,9 +181,9 @@ public final class APIError {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("ok");
+        stringBuilder.append("ok:");
         stringBuilder.append(getOk());
-        stringBuilder.append("APIError:");
+        stringBuilder.append("\nAPIError:");
         stringBuilder.append(getError());
         stringBuilder.append("\nCode:");
         stringBuilder.append(getErrorCode());

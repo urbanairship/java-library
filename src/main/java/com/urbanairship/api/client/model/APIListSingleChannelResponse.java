@@ -50,7 +50,7 @@ public final class APIListSingleChannelResponse {
     public String toString() {
         return "APIListSingleChannelResponse{" +
                 "ok=" + ok +
-                "channelObject=" + channelObject +
+                ", channelObject=" + channelObject +
                 '}';
     }
 

@@ -41,7 +41,7 @@ public final class APIListAllChannelsResponse {
     public String toString() {
         return "APIListAllChannelsResponse{" +
                 "ok=" + ok +
-                "nextPage='" + nextPage + '\'' +
+                ", nextPage='" + nextPage + '\'' +
                 ", channelObjects=" + channelObjects +
                 '}';
     }

@@ -74,7 +74,7 @@ public final class APIListAllSchedulesResponse {
 
         return "APIListScheduleResponse{" +
                 "ok=" + ok +
-                "count=" + count +
+                ", count=" + count +
                 ", totalCount=" + totalCount +
                 ", nextPage=" + nextPage +
                 ", scheduleObjects=" + scheduleObjects +

@@ -75,7 +75,7 @@ public final class APIScheduleResponse {
     public String toString() {
         return "APIScheduleResponse{" +
                 "ok=" + ok +
-                "operationId='" + operationId + '\'' +
+                ", operationId='" + operationId + '\'' +
                 ", scheduleUrls=" + scheduleUrls +
                 ", schedulePayloads=" + schedulePayloads +
                 '}';
