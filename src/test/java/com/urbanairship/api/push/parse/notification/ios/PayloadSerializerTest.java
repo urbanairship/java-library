@@ -1,4 +1,4 @@
-package com.urbanairship.api.push.parse.ios;
+package com.urbanairship.api.push.parse.notification.ios;
 
 
 import com.google.common.collect.ImmutableList;
@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class IOSDevicePayloadSerializerTest {
+public class PayloadSerializerTest {
 
     private static final ObjectMapper mapper = PushObjectMapper.getInstance();
 

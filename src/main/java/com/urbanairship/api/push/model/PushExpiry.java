@@ -5,6 +5,8 @@
 package com.urbanairship.api.push.model;
 
 import com.google.common.base.Optional;
+import com.urbanairship.api.common.APIException;
+import com.urbanairship.api.common.parse.APIParsingException;
 import org.joda.time.DateTime;
 
 
@@ -14,10 +16,10 @@ import org.joda.time.DateTime;
 
 public class PushExpiry extends PushModelObject {
 
-    private final Optional<Long> expirySeconds;
+    private final Optional<Integer> expirySeconds;
     private final Optional<DateTime> expiryTimeStamp;
 
-    private PushExpiry(Optional<Long> expirySeconds,
+    private PushExpiry(Optional<Integer> expirySeconds,
                        Optional<DateTime> expiryTimeStamp) {
         this.expirySeconds = expirySeconds;
         this.expiryTimeStamp = expiryTimeStamp;
@@ -35,7 +37,7 @@ public class PushExpiry extends PushModelObject {
      * Get the expiry (TTL) as a long.  This is optional.
      * @return Optional<<T>ExpirySeconds</T>>
      */
-    public Optional<Long> getExpirySeconds() {
+    public Optional<Integer> getExpirySeconds() {
         return expirySeconds;
     }
 
@@ -85,7 +87,7 @@ public class PushExpiry extends PushModelObject {
     }
 
     public static class Builder {
-        private Long expirySeconds = null;
+        private Integer expirySeconds = null;
         private DateTime expiryTimeStamp = null;
 
         private Builder() { }
@@ -95,7 +97,7 @@ public class PushExpiry extends PushModelObject {
          * @param value Long
          * @return Long
          **/
-        public Builder setExpirySeconds(long value) {
+        public Builder setExpirySeconds(int value) {
             this.expirySeconds = value;
             return this;
         }
@@ -111,6 +113,15 @@ public class PushExpiry extends PushModelObject {
         }
 
         public PushExpiry build() {
+            if (expiryTimeStamp == null && expirySeconds == null) {
+                throw new APIParsingException("Expiry time can not be null");
+            }
+            if (expiryTimeStamp != null && expirySeconds != null) {
+                throw new APIParsingException("Expiry time may contain a relative offset or an absolute time, but not both");
+            }
+            if (expirySeconds != null && expirySeconds.intValue() < 0) {
+                throw new APIParsingException("Expiry time may not be negative");
+            }
             return new PushExpiry(Optional.fromNullable(expirySeconds),
                                   Optional.fromNullable(expiryTimeStamp));
         }

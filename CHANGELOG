@@ -16,6 +16,7 @@ Lots of new things:
 - Proxy support
 - Lots more documentation
 - A few bugfixes and refactors (see commits)
+- Fixed a bug that was sending incorrect content-type headers
 
 -------------------------
 0.2.1 16SEP13

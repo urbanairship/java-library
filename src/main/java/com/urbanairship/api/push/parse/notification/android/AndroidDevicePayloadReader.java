@@ -30,9 +30,7 @@ public class AndroidDevicePayloadReader implements JsonObjectReader<AndroidDevic
     }
 
     public void readTimeToLive(JsonParser parser, DeserializationContext context) throws IOException {
-        builder.setTimeToLive(PushExpiry.newBuilder()
-                                    .setExpirySeconds((long) IntFieldDeserializer.INSTANCE.deserialize(parser, "time_to_live"))
-                                    .build());
+        builder.setTimeToLive(parser.readValueAs(PushExpiry.class));
     }
 
     public void readDelayWhileIdle(JsonParser parser, DeserializationContext context) throws IOException {

@@ -68,7 +68,7 @@ public class PayloadDeserializerTest {
 
         AndroidDevicePayload expected = AndroidDevicePayload.newBuilder()
                 .setTimeToLive(PushExpiry.newBuilder()
-                        .setExpirySeconds((long) 1234)
+                        .setExpirySeconds(1234)
                         .build())
                 .build();
 

@@ -7,6 +7,7 @@ package com.urbanairship.api.push.model.notification.adm;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.DeviceType;
+import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.urbanairship.api.push.model.notification.Interactive;
@@ -16,13 +17,13 @@ import java.util.Map;
 public final class ADMDevicePayload extends PushModelObject implements DevicePayloadOverride {
     private final Optional<String> alert;
     private final Optional<String> consolidationKey;
-    private final Optional<Integer> expiresAfter;
+    private final Optional<PushExpiry> expiresAfter;
     private final Optional<ImmutableMap<String, String>> extra;
     private final Optional<Interactive> interactive;
 
     private ADMDevicePayload(Optional<String> alert,
                              Optional<String> consolidationKey,
-                             Optional<Integer> expiresAfter,
+                             Optional<PushExpiry> expiresAfter,
                              Optional<ImmutableMap<String, String>> extra,
                              Optional<Interactive> interactive) {
         this.alert = alert;
@@ -50,7 +51,7 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
         return consolidationKey;
     }
 
-    public Optional<Integer> getExpiresAfter() {
+    public Optional<PushExpiry> getExpiresAfter() {
         return expiresAfter;
     }
 
@@ -103,7 +104,7 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
     public static class Builder {
         private String alert = null;
         private String consolidationKey = null;
-        private Integer expiresAfter = null;
+        private PushExpiry expiresAfter = null;
         private ImmutableMap.Builder<String, String> extra = null;
         private Interactive interactive = null;
 
@@ -119,7 +120,7 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
             return this;
         }
 
-        public Builder setExpiresAfter(int value) {
+        public Builder setExpiresAfter(PushExpiry value) {
             this.expiresAfter = value;
             return this;
         }

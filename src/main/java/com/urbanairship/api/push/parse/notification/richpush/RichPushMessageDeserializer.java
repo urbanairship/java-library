@@ -54,6 +54,11 @@ public class RichPushMessageDeserializer extends JsonDeserializer<RichPushMessag
                         reader.readExtra(json, context);
                     }
                 })
+            .put("expiry", new FieldParser<RichPushMessageReader>() {
+                    public void parse(RichPushMessageReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                        reader.readExpiry(json, context);
+                    }
+            })
             .build()
             );
 

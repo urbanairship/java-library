@@ -5,12 +5,10 @@
 package com.urbanairship.api.push.parse.notification.ios;
 
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
-import com.urbanairship.api.push.parse.*;
 import com.urbanairship.api.common.parse.*;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
 import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
 import java.io.IOException;
@@ -59,6 +57,11 @@ public class IOSDevicePayloadDeserializer extends JsonDeserializer<IOSDevicePayl
                         reader.readInteractive(json, context);
                     }
                 })
+            .put("expiry", new FieldParser<IOSDevicePayloadReader>() {
+                    public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                    reader.readExpiry(json, context);
+                    }
+            })
             .build()
             );
 
