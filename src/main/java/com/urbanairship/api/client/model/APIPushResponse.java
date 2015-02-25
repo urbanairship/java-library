@@ -16,9 +16,9 @@ public final class APIPushResponse {
 
     private final Optional<String> operationId;
     private final Optional<ImmutableList<String>> pushIds;
-    private final Boolean ok;
+    private final boolean ok;
 
-    public APIPushResponse(String operationId, ImmutableList<String> pushIds, Boolean ok) {
+    public APIPushResponse(String operationId, ImmutableList<String> pushIds, boolean ok) {
         this.operationId = Optional.fromNullable(operationId);
         this.pushIds = Optional.fromNullable(pushIds);
         this.ok = ok;
@@ -54,7 +54,7 @@ public final class APIPushResponse {
      * Get the response status as a boolean
      * @return Response status
      */
-    public Boolean getOk() {
+    public boolean getOk() {
         return ok;
     }
 
@@ -90,7 +90,7 @@ public final class APIPushResponse {
     public static class Builder {
         private String operationId;
         private ImmutableList.Builder<String> pushIds = ImmutableList.builder();
-        private Boolean ok = false;
+        private boolean ok = false;
 
         private Builder() {
         }
@@ -110,7 +110,7 @@ public final class APIPushResponse {
             return this;
         }
 
-        public Builder setOk(Boolean ok) {
+        public Builder setOk(boolean ok) {
             this.ok = ok;
             return this;
         }

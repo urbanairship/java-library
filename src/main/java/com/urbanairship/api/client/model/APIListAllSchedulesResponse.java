@@ -14,13 +14,13 @@ import java.util.List;
 
 public final class APIListAllSchedulesResponse {
 
-    private final Boolean ok;
+    private final boolean ok;
     private final int count;
     private final int totalCount;
     private final String nextPage;
     private final ImmutableList<SchedulePayload> scheduleObjects;
 
-    private APIListAllSchedulesResponse(Boolean ok, int count, int totalCount, String nextPage, ImmutableList<SchedulePayload> response) {
+    private APIListAllSchedulesResponse(boolean ok, int count, int totalCount, String nextPage, ImmutableList<SchedulePayload> response) {
         this.ok = ok;
         this.count = count;
         this.totalCount = totalCount;
@@ -32,7 +32,7 @@ public final class APIListAllSchedulesResponse {
         return new Builder();
     }
 
-    public Boolean getOk() {
+    public boolean getOk() {
         return ok;
     }
 
@@ -86,7 +86,7 @@ public final class APIListAllSchedulesResponse {
      */
     public static class Builder {
 
-        private Boolean ok = false;
+        private boolean ok = false;
         private int count;
         private int total_count;
         private String next_page;
@@ -95,7 +95,7 @@ public final class APIListAllSchedulesResponse {
         private Builder() {
         }
 
-        public Builder setOk(Boolean ok) {
+        public Builder setOk(boolean ok) {
             this.ok = ok;
             return this;
         }

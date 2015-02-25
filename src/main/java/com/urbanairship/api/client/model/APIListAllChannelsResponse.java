@@ -11,11 +11,11 @@ import com.urbanairship.api.channel.information.model.ChannelView;
 
 public final class APIListAllChannelsResponse {
 
-    private final Boolean ok;
+    private final boolean ok;
     private final Optional<String> nextPage;
     private final ImmutableList<ChannelView> channelObjects;
 
-    private APIListAllChannelsResponse(Boolean ok, String nextPage, ImmutableList<ChannelView> channelObjects) {
+    private APIListAllChannelsResponse(boolean ok, String nextPage, ImmutableList<ChannelView> channelObjects) {
         this.ok = ok;
         this.nextPage = Optional.fromNullable(nextPage);
         this.channelObjects = channelObjects;
@@ -25,7 +25,7 @@ public final class APIListAllChannelsResponse {
         return new Builder();
     }
 
-    public Boolean getOk() {
+    public boolean getOk() {
         return ok;
     }
 
@@ -65,14 +65,14 @@ public final class APIListAllChannelsResponse {
 
     public static class Builder {
 
-        private Boolean ok;
+        private boolean ok;
         private String nextPage;
         private ImmutableList.Builder<ChannelView> channelObjects = ImmutableList.builder();
 
         private Builder() {
         }
 
-        public Builder setOk(Boolean value) {
+        public Builder setOk(boolean value) {
             this.ok = value;
             return this;
         }

@@ -15,12 +15,12 @@ import com.urbanairship.api.schedule.model.SchedulePayload;
  */
 public final class APIScheduleResponse {
 
-    private final Boolean ok;
+    private final boolean ok;
     private final String operationId;
     private final ImmutableList<String> scheduleUrls;
     private final ImmutableList<SchedulePayload> schedulePayloads;
 
-    private APIScheduleResponse(Boolean ok, String operationId, ImmutableList<String> scheduleUrls, ImmutableList<SchedulePayload> schedulePayloads) {
+    private APIScheduleResponse(boolean ok, String operationId, ImmutableList<String> scheduleUrls, ImmutableList<SchedulePayload> schedulePayloads) {
         this.ok = ok;
         this.operationId = operationId;
         this.scheduleUrls = scheduleUrls;
@@ -41,7 +41,7 @@ public final class APIScheduleResponse {
      *
      * @return Response status.
      */
-    public Boolean getOk() {
+    public boolean getOk() {
         return ok;
     }
 
@@ -103,7 +103,7 @@ public final class APIScheduleResponse {
      */
     public static class Builder {
 
-        private Boolean ok;
+        private boolean ok;
         private String operationId;
         private ImmutableList.Builder<String> scheduleUrls = ImmutableList.builder();
         private ImmutableList.Builder<SchedulePayload> schedulePayloads = ImmutableList.builder();
@@ -111,7 +111,7 @@ public final class APIScheduleResponse {
         private Builder() {
         }
 
-        public Builder setOk(Boolean ok) {
+        public Builder setOk(boolean ok) {
             this.ok = ok;
             return this;
         }

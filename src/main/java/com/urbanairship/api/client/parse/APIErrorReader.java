@@ -26,7 +26,7 @@ public final class APIErrorReader implements JsonObjectReader<APIError> {
     }
 
     public void readOk(JsonParser parser) throws IOException {
-        builder.setOk(parser.readValueAs(Boolean.class));
+        builder.setOk(parser.getBooleanValue());
     }
 
     public void readOperationId(JsonParser parser) throws IOException {

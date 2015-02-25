@@ -9,10 +9,10 @@ import com.urbanairship.api.channel.information.model.ChannelView;
 
 public final class APIListSingleChannelResponse {
 
-    private final Boolean ok;
+    private final boolean ok;
     private final ChannelView channelObject;
 
-    private APIListSingleChannelResponse(Boolean ok, ChannelView channelObject) {
+    private APIListSingleChannelResponse(boolean ok, ChannelView channelObject) {
         this.ok = ok;
         this.channelObject = channelObject;
     }
@@ -21,7 +21,7 @@ public final class APIListSingleChannelResponse {
         return new Builder();
     }
 
-    public Boolean getOk() {
+    public boolean getOk() {
         return ok;
     }
 
@@ -56,13 +56,13 @@ public final class APIListSingleChannelResponse {
 
     public static class Builder {
 
-        private Boolean ok;
+        private boolean ok;
         private ChannelView channelObject;
 
         private Builder() {
         }
 
-        public Builder setOk(Boolean value) {
+        public Builder setOk(boolean value) {
             this.ok = value;
             return this;
         }

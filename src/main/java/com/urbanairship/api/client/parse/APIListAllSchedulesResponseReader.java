@@ -24,7 +24,7 @@ public final class APIListAllSchedulesResponseReader implements JsonObjectReader
     }
 
     public void readOk(JsonParser jsonParser) throws IOException {
-        builder.setOk(jsonParser.readValueAs(Boolean.class));
+        builder.setOk(jsonParser.getBooleanValue());
     }
 
     public void readCount(JsonParser jsonParser) throws IOException {

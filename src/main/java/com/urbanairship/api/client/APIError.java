@@ -29,13 +29,13 @@ public final class APIError {
     private final static String CONTENT_TYPE_JSON = "application/json";
     private final static String UA_APPLICATION_JSON = "application/vnd.urbanairship+json";
 
-    private final Boolean ok;
+    private final boolean ok;
     private final Optional<String> operationId;
     private final String error;
     private final Optional<Number> errorCode;
     private final Optional<APIErrorDetails> details;
 
-    private APIError(Boolean ok, Optional<String> operationId, String error, Optional<Number> errorCode,
+    private APIError(boolean ok, Optional<String> operationId, String error, Optional<Number> errorCode,
                      Optional<APIErrorDetails> details) {
         this.ok = ok;
         this.operationId = operationId;
@@ -132,7 +132,7 @@ public final class APIError {
         return new Builder();
     }
 
-    public Boolean getOk() {
+    public boolean getOk() {
         return ok;
     }
 
@@ -199,13 +199,13 @@ public final class APIError {
      */
     public static class Builder {
 
-        private Boolean ok;
+        private boolean ok;
         private String operationId;
         private String error;
         private Number errorCode;
         private APIErrorDetails details;
 
-        public Builder setOk(Boolean ok) {
+        public Builder setOk(boolean ok) {
             this.ok = ok;
             return this;
         }

@@ -21,7 +21,7 @@ public class APIListSingleChannelResponseReader implements JsonObjectReader<APIL
     }
 
     public void readOk(JsonParser jsonParser) throws IOException {
-        builder.setOk(jsonParser.readValueAs(Boolean.class));
+        builder.setOk(jsonParser.getBooleanValue());
     }
 
     public void readChannelObject(JsonParser jsonParser) throws IOException {

@@ -37,7 +37,7 @@ public final class APIPushResponseReader implements JsonObjectReader<APIPushResp
     }
 
     public void readOk(JsonParser jsonParser) throws IOException {
-        builder.setOk(jsonParser.readValueAs(Boolean.class));
+        builder.setOk(jsonParser.getBooleanValue());
     }
 
     @Override
