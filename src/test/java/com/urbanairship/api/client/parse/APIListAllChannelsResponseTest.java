@@ -111,6 +111,7 @@ public class APIListAllChannelsResponseTest {
 
         try {
             APIListAllChannelsResponse response = mapper.readValue(fiveresponse, APIListAllChannelsResponse.class);
+            assertTrue(response.getOk());
             assertEquals("https://go.urbanairship.com/api/channels?limit=5&start=0143e4d6-724c-4fc8-bbc6-ca647b8993bf", response.getNextPage().get());
             assertEquals(5, response.getChannelObjects().size());
 

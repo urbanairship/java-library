@@ -49,11 +49,10 @@ public class ChannelViewDeserializeTest {
                         "\"opt_in\" : true," +
                         "\"background\" : true," +
                         "\"ios\" : { }," +
-                        "\"tags\" : [\"derper\", \"derpest\"]," +
-                        "\"set_tags\" : true," +
-                        "\"alias\" : \"herp\"," +
+                        "\"tags\" : [\"tag1\", \"tag2\"]," +
+                        "\"alias\" : \"alias\"," +
                         "\"created\" : 12345," +
-                        "\"push_address\" : \"TWERK\"" +
+                        "\"push_address\" : \"address\"" +
                         "}";
 
         ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {
@@ -63,9 +62,9 @@ public class ChannelViewDeserializeTest {
         assertTrue(channel.getBackground().get());
         assertEquals(DeviceType.IOS, channel.getDeviceType());
         assertTrue(channel.getIosSettings().isPresent());
-        assertEquals("TWERK", channel.getPushAddress().get());
-        assertEquals("herp", channel.getAlias().get());
-        assertEquals(Sets.newHashSet("derper", "derpest"), channel.getTags());
+        assertEquals("address", channel.getPushAddress().get());
+        assertEquals("alias", channel.getAlias().get());
+        assertEquals(Sets.newHashSet("tag1", "tag2"), channel.getTags());
     }
 
     @Test

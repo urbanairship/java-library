@@ -22,6 +22,12 @@ public class APIListSingleChannelResponseDeserializer extends JsonDeserializer<A
     private static final FieldParserRegistry<APIListSingleChannelResponse, APIListSingleChannelResponseReader> FIELD_PARSER =
             new MapFieldParserRegistry<APIListSingleChannelResponse, APIListSingleChannelResponseReader>(
                     ImmutableMap.<String, FieldParser<APIListSingleChannelResponseReader>>builder()
+                            .put("ok", new FieldParser<APIListSingleChannelResponseReader>() {
+                                @Override
+                                public void parse(APIListSingleChannelResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                    reader.readOk(jsonParser);
+                                }
+                            })
                             .put("channel", new FieldParser<APIListSingleChannelResponseReader>() {
                                 @Override
                                 public void parse(APIListSingleChannelResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {

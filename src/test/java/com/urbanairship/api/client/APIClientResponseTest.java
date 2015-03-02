@@ -315,6 +315,7 @@ public class APIClientResponseTest {
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
         APIScheduleResponse scheduleResponse = APIScheduleResponse.newBuilder()
+                .setOk(true)
                 .addAllScheduleUrls(Arrays.asList("ID1", "ID2"))
                 .setOperationId("ID")
                 .build();
@@ -343,7 +344,7 @@ public class APIClientResponseTest {
                 .setPushPayload(PushPayload.newBuilder()
                         .setAudience(Selectors.all())
                         .setNotification(Notification.newBuilder()
-                                .setAlert("Derp")
+                                .setAlert("UA Push")
                                 .build())
                         .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
                         .build())
@@ -351,18 +352,10 @@ public class APIClientResponseTest {
                 .build();
 
         APIListAllSchedulesResponse listScheduleResponse = APIListAllSchedulesResponse.newBuilder()
+                .setOk(true)
                 .setCount(5)
                 .setTotalCount(6)
-                .addSchedule(SchedulePayload.newBuilder()
-                        .setSchedule(Schedule.newBuilder()
-                                .setScheduledTimestamp(DateTime.now())
-                                .build())
-                        .setPushPayload(PushPayload.newBuilder()
-                                .setAudience(Selectors.deviceToken("token"))
-                                .setNotification(Notifications.notification("UA Push"))
-                                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-                                .build())
-                        .build())
+                .addSchedule(sample)
                 .build();
 
         APIClientResponse.Builder<APIListAllSchedulesResponse> builder =
@@ -409,6 +402,7 @@ public class APIClientResponseTest {
 
         APIListSingleChannelResponse response =
                 APIListSingleChannelResponse.newBuilder()
+                        .setOk(true)
                         .setChannelObject(ChannelView.newBuilder()
                                 .setAlias("Alias")
                                 .setBackground(true)
@@ -442,6 +436,7 @@ public class APIClientResponseTest {
                 new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
 
         APIListAllChannelsResponse response = APIListAllChannelsResponse.newBuilder()
+                .setOk(true)
                 .setNextPage("nextPage")
                 .addChannel(ChannelView.newBuilder()
                         .setAlias("Alias")
@@ -475,6 +470,7 @@ public class APIClientResponseTest {
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
         APIPushResponse pushResponse = APIPushResponse.newBuilder()
+                .setOk(true)
                 .addAllPushIds(Arrays.asList("ID1", "ID2"))
                 .setOperationId("OpID")
                 .build();

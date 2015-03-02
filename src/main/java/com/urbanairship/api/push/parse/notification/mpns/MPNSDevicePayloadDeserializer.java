@@ -35,6 +35,11 @@ public class MPNSDevicePayloadDeserializer extends JsonDeserializer<MPNSDevicePa
                         reader.readTile(json, context);
                     }
                 })
+            .put("batching_interval", new FieldParser<MPNSDevicePayloadReader>() {
+                public void parse(MPNSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                    reader.readBatchingInterval(json, context);
+                }
+            })
             .build()
             );
 

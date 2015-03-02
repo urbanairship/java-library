@@ -32,6 +32,8 @@ public class APIPushResponseTest {
                     response.getPushIds().get().get(0).equals("id1"));
             assertTrue("Error in response pushIds",
                     response.getPushIds().get().get(1).equals("id2"));
+            assertTrue("Error in response status",
+                    response.getOk());
         } catch (IOException ex) {
             fail("Exception in APIPushResponseTest Message: " + ex.getMessage());
         }

@@ -36,6 +36,10 @@ public final class APIPushResponseReader implements JsonObjectReader<APIPushResp
         builder.addAllPushIds(list);
     }
 
+    public void readOk(JsonParser jsonParser) throws IOException {
+        builder.setOk(jsonParser.getBooleanValue());
+    }
+
     @Override
     public APIPushResponse validateAndBuild() throws IOException {
         try {

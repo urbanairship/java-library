@@ -23,6 +23,10 @@ public final class APIListAllSchedulesResponseReader implements JsonObjectReader
         this.builder = APIListAllSchedulesResponse.newBuilder();
     }
 
+    public void readOk(JsonParser jsonParser) throws IOException {
+        builder.setOk(jsonParser.getBooleanValue());
+    }
+
     public void readCount(JsonParser jsonParser) throws IOException {
         builder.setCount(jsonParser.readValueAs(Number.class).intValue());
     }

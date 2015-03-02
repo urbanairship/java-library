@@ -4,6 +4,7 @@ import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -66,6 +67,7 @@ public class APIErrorTest {
 
         try {
             APIError error = mapper.readValue(errorJSON, APIError.class);
+            assertFalse("Error in ok", error.getOk());
             assertTrue("Error in operation id", error.getOperationId().get().equals("operation id"));
             assertTrue("Error in error code", error.getErrorCode().get().equals(40001));
             assertTrue("Error in error string", error.getError().equals("Invalid push content"));

@@ -34,7 +34,6 @@ public class ListAppStatsAPIResponseHandlerTest {
                 "        \"messages\": 2,\n" +
                 "        \"wns_messages\": 0,\n" +
                 "        \"start\": \"2014-06-22 00:00:00\",\n" +
-                "        \"android_messages\": 0,\n" +
                 "        \"mpns_messages\": 0,\n" +
                 "        \"bb_messages\": 0\n" +
                 "    },\n" +
@@ -44,7 +43,6 @@ public class ListAppStatsAPIResponseHandlerTest {
                 "        \"messages\": 0,\n" +
                 "        \"wns_messages\": 0,\n" +
                 "        \"start\": \"2014-06-22 01:00:00\",\n" +
-                "        \"android_messages\": 0,\n" +
                 "        \"mpns_messages\": 0,\n" +
                 "        \"bb_messages\": 0\n" +
                 "    },\n" +
@@ -55,7 +53,6 @@ public class ListAppStatsAPIResponseHandlerTest {
                 "        \"c2dm_messages\": 0,\n" +
                 "        \"wns_messages\": 0,\n" +
                 "        \"start\": \"2014-06-22 02:00:00\",\n" +
-                "        \"android_messages\": 0,\n" +
                 "        \"bb_messages\": 0\n" +
                 "    },\n" +
                 "    {\n" +
@@ -64,7 +61,6 @@ public class ListAppStatsAPIResponseHandlerTest {
                 "        \"messages\": 3,\n" +
                 "        \"wns_messages\": 0,\n" +
                 "        \"start\": \"2014-06-22 03:00:00\",\n" +
-                "        \"android_messages\": 0,\n" +
                 "        \"mpns_messages\": 0,\n" +
                 "        \"bb_messages\": 0\n" +
                 "    }\n" +
