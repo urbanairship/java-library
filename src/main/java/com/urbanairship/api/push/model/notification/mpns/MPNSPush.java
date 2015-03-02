@@ -11,8 +11,7 @@ public class MPNSPush
 {
     public enum Type {
         TOAST,
-        TILE,
-        RAW;
+        TILE;
 
         public static Type get(String value) {
             for (Type type : values()) {
