@@ -13,13 +13,6 @@ public class MPNSPushTest extends MpnsTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testRawNotSupported() {
-        MPNSPush.newBuilder()
-                .setType(MPNSPush.Type.RAW)
-                .build();
-    }
-
-    @Test(expected = IllegalArgumentException.class)
     public void testTileMissing() {
         MPNSPush.newBuilder()
                 .setType(MPNSPush.Type.TILE)

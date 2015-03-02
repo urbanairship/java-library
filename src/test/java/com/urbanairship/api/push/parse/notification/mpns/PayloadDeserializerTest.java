@@ -63,14 +63,4 @@ public class PayloadDeserializerTest {
         mapper.readValue("{\"alert\":\"wat\", \"toast\" : { \"text1\":\"foo\"}}",
                 MPNSDevicePayload.class);
     }
-
-    @Test(expected = APIParsingException.class)
-    public void testValidate_RawUnsupported() throws Exception {
-        mapper.readValue("{\"type\":\"raw\"}", MPNSDevicePayload.class);
-    }
-
-    @Test(expected = APIParsingException.class)
-    public void testValidate_ToastMismatch() throws Exception {
-        mapper.readValue("{\"type\":\"tile\", \"toast\" : {}}", MPNSDevicePayload.class);
-    }
 }
