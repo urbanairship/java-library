@@ -787,6 +787,7 @@ public class APIClientTest {
         try {
             HttpResponse response = client.addRemoveDevicesFromTag("puppies", AddRemoveDeviceFromTagPayload.newBuilder()
                     .setApids(AddRemoveSet.newBuilder().add("device1").build())
+                    .setIOSChannels(AddRemoveSet.newBuilder().remove("device2").build())
                     .build());
 
             // Verify components of the underlying HttpRequest
@@ -819,9 +820,14 @@ public class APIClientTest {
         try {
             HttpResponse response = client.batchModificationOfTags(BatchModificationPayload.newBuilder()
                     .addBatchObject(BatchTagSet.newBuilder()
-                            .setDevice(BatchTagSet.DEVICEIDTYPES.APID, "device1")
+                            .setDevice(BatchTagSet.DeviceIdTypes.APID, "device1")
                             .addTag("tag1")
                             .addTag("tag2")
+                            .build())
+                    .addBatchObject(BatchTagSet.newBuilder()
+                            .setDevice(BatchTagSet.DeviceIdTypes.ANDROID_CHANNEL, "device2")
+                            .addTag("tag3")
+                            .addTag("tag4")
                             .build())
                     .build());
 

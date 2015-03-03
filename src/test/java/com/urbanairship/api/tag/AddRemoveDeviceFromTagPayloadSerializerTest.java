@@ -25,11 +25,31 @@ public class AddRemoveDeviceFromTagPayloadSerializerTest {
                 .setApids(ar)
                 .setDevicePins(ar)
                 .setDeviceTokens(ar)
-                .setIOSChannels(ar)
                 .build();
 
         String json = MAPPER.writeValueAsString(ardftp);
-        String expectedJson = "{\"ios_tokens\":{\"add\":[\"device1\",\"device2\"],\"remove\":[\"device3\"]},\"device_tokens\":{\"add\":[\"device1\",\"device2\"],\"remove\":[\"device3\"]},\"device_pins\":{\"add\":[\"device1\",\"device2\"],\"remove\":[\"device3\"]},\"apids\":{\"add\":[\"device1\",\"device2\"],\"remove\":[\"device3\"]}}";
+        String expectedJson = "{\"device_tokens\":{\"add\":[\"device1\",\"device2\"],\"remove\":[\"device3\"]},\"device_pins\":{\"add\":[\"device1\",\"device2\"],\"remove\":[\"device3\"]},\"apids\":{\"add\":[\"device1\",\"device2\"],\"remove\":[\"device3\"]}}";
+
+        assertEquals(expectedJson, json);
+    }
+
+    @Test
+    public void testChannelsSerialization() throws Exception {
+
+        AddRemoveSet ar = AddRemoveSet.newBuilder()
+            .add("device1")
+            .add("device2")
+            .remove("device3")
+            .build();
+
+        AddRemoveDeviceFromTagPayload payload = AddRemoveDeviceFromTagPayload.newBuilder()
+            .setIOSChannels(ar)
+            .setAndroidChannels(ar)
+            .setAmazonChannels(ar)
+            .build();
+
+        String json = MAPPER.writeValueAsString(payload);
+        String expectedJson = "{\"ios_channels\":{\"add\":[\"device1\",\"device2\"],\"remove\":[\"device3\"]},\"android_channels\":{\"add\":[\"device1\",\"device2\"],\"remove\":[\"device3\"]},\"amazon_channels\":{\"add\":[\"device1\",\"device2\"],\"remove\":[\"device3\"]}}";
 
         assertEquals(expectedJson, json);
     }
