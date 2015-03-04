@@ -18,7 +18,7 @@ public final class AddRemoveDeviceFromTagPayloadSerializer extends JsonSerialize
         jgen.writeStartObject();
 
         if (payload.getIOSChannels().isPresent()) {
-            jgen.writeObjectFieldStart("ios_tokens");
+            jgen.writeObjectFieldStart("ios_channels");
 
             if (payload.getIOSChannels().get().getAdd() != null) {
                 jgen.writeArrayFieldStart("add");
@@ -32,6 +32,49 @@ public final class AddRemoveDeviceFromTagPayloadSerializer extends JsonSerialize
             if (payload.getIOSChannels().get().getRemove() != null) {
                 jgen.writeArrayFieldStart("remove");
                 for (String s : payload.getIOSChannels().get().getRemove().get()) {
+                    jgen.writeString(s);
+                }
+                jgen.writeEndArray();
+            }
+
+            jgen.writeEndObject();
+        }
+        if (payload.getAndroidChannels().isPresent()) {
+            jgen.writeObjectFieldStart("android_channels");
+
+            if (payload.getAndroidChannels().get().getAdd() != null) {
+                jgen.writeArrayFieldStart("add");
+                for (String s : payload.getAndroidChannels().get().getAdd().get()) {
+                    jgen.writeString(s);
+                }
+                jgen.writeEndArray();
+
+            }
+
+            if (payload.getAndroidChannels().get().getRemove() != null) {
+                jgen.writeArrayFieldStart("remove");
+                for (String s : payload.getAndroidChannels().get().getRemove().get()) {
+                    jgen.writeString(s);
+                }
+                jgen.writeEndArray();
+            }
+
+            jgen.writeEndObject();
+        }        if (payload.getAmazonChannels().isPresent()) {
+            jgen.writeObjectFieldStart("amazon_channels");
+
+            if (payload.getAmazonChannels().get().getAdd() != null) {
+                jgen.writeArrayFieldStart("add");
+                for (String s : payload.getAmazonChannels().get().getAdd().get()) {
+                    jgen.writeString(s);
+                }
+                jgen.writeEndArray();
+
+            }
+
+            if (payload.getAmazonChannels().get().getRemove() != null) {
+                jgen.writeArrayFieldStart("remove");
+                for (String s : payload.getAmazonChannels().get().getRemove().get()) {
                     jgen.writeString(s);
                 }
                 jgen.writeEndArray();

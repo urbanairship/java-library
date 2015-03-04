@@ -11,10 +11,10 @@ import com.google.common.collect.ImmutableSet;
 
 public final class BatchTagSet {
 
-    private final DEVICEIDTYPES idType;
+    private final DeviceIdTypes idType;
     private final String deviceID;
     private final ImmutableSet<String> tags;
-    private BatchTagSet(DEVICEIDTYPES idType, String deviceID, ImmutableSet<String> tags) {
+    private BatchTagSet(DeviceIdTypes idType, String deviceID, ImmutableSet<String> tags) {
         this.idType = idType;
         this.deviceID = deviceID;
         this.tags = tags;
@@ -24,7 +24,7 @@ public final class BatchTagSet {
         return new Builder();
     }
 
-    public DEVICEIDTYPES getIdType() {
+    public DeviceIdTypes getIdType() {
         return idType;
     }
 
@@ -59,20 +59,22 @@ public final class BatchTagSet {
             return false;
         }
         final BatchTagSet other = (BatchTagSet) obj;
-        return Objects.equal(this.idType, other.idType) && Objects.equal(this.deviceID, other.deviceID) && Objects.equal(this.tags, other.tags);
+        return Objects.equal(this.idType, other.idType)
+                && Objects.equal(this.deviceID, other.deviceID)
+                && Objects.equal(this.tags, other.tags);
     }
 
-    public enum DEVICEIDTYPES {IOS_CHANNEL, DEVICE_TOKEN, APID}
+    public enum DeviceIdTypes {IOS_CHANNEL, ANDROID_CHANNEL, AMAZON_CHANNEL, DEVICE_TOKEN, APID}
 
     public static class Builder {
-        private DEVICEIDTYPES id_type = null;
+        private DeviceIdTypes id_type = null;
         private String device_id = null;
         private ImmutableSet.Builder<String> tags = null;
 
         private Builder() {
         }
 
-        public Builder setDevice(DEVICEIDTYPES type, String id) {
+        public Builder setDevice(DeviceIdTypes type, String id) {
             this.id_type = type;
             this.device_id = id;
             return this;

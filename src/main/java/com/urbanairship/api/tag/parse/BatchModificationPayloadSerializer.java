@@ -25,6 +25,12 @@ public final class BatchModificationPayloadSerializer extends JsonSerializer<Bat
                 case IOS_CHANNEL:
                     jgen.writeStringField("ios_channel", bts.getDeviceID());
                     break;
+                case ANDROID_CHANNEL:
+                    jgen.writeStringField("android_channel", bts.getDeviceID());
+                    break;
+                case AMAZON_CHANNEL:
+                    jgen.writeStringField("amazon_channel", bts.getDeviceID());
+                    break;
                 case DEVICE_TOKEN:
                     jgen.writeStringField("device_token", bts.getDeviceID());
                     break;
