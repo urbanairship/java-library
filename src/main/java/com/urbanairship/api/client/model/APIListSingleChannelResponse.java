@@ -9,14 +9,20 @@ import com.urbanairship.api.channel.information.model.ChannelView;
 
 public final class APIListSingleChannelResponse {
 
+    private final boolean ok;
     private final ChannelView channelObject;
 
-    private APIListSingleChannelResponse(ChannelView channelObject) {
+    private APIListSingleChannelResponse(boolean ok, ChannelView channelObject) {
+        this.ok = ok;
         this.channelObject = channelObject;
     }
 
     public static Builder newBuilder() {
         return new Builder();
+    }
+
+    public boolean getOk() {
+        return ok;
     }
 
     public ChannelView getChannelObject() {
@@ -25,7 +31,7 @@ public final class APIListSingleChannelResponse {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(channelObject);
+        return Objects.hashCode(ok, channelObject);
     }
 
     @Override
@@ -37,21 +43,28 @@ public final class APIListSingleChannelResponse {
             return false;
         }
         final APIListSingleChannelResponse other = (APIListSingleChannelResponse) obj;
-        return Objects.equal(this.channelObject, other.channelObject);
+        return Objects.equal(this.ok, other.ok) && Objects.equal(this.channelObject, other.channelObject);
     }
 
     @Override
     public String toString() {
         return "APIListSingleChannelResponse{" +
-                "channelObject=" + channelObject +
+                "ok=" + ok +
+                ", channelObject=" + channelObject +
                 '}';
     }
 
     public static class Builder {
 
+        private boolean ok;
         private ChannelView channelObject;
 
         private Builder() {
+        }
+
+        public Builder setOk(boolean value) {
+            this.ok = value;
+            return this;
         }
 
         public Builder setChannelObject(ChannelView value) {
@@ -60,7 +73,7 @@ public final class APIListSingleChannelResponse {
         }
 
         public APIListSingleChannelResponse build() {
-            return new APIListSingleChannelResponse(channelObject);
+            return new APIListSingleChannelResponse(ok, channelObject);
         }
     }
 }

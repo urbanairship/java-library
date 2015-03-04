@@ -14,12 +14,14 @@ import java.util.List;
 
 public final class APIListAllSchedulesResponse {
 
+    private final boolean ok;
     private final int count;
     private final int totalCount;
     private final String nextPage;
     private final ImmutableList<SchedulePayload> scheduleObjects;
 
-    private APIListAllSchedulesResponse(int count, int totalCount, String nextPage, ImmutableList<SchedulePayload> response) {
+    private APIListAllSchedulesResponse(boolean ok, int count, int totalCount, String nextPage, ImmutableList<SchedulePayload> response) {
+        this.ok = ok;
         this.count = count;
         this.totalCount = totalCount;
         this.nextPage = nextPage;
@@ -28,6 +30,10 @@ public final class APIListAllSchedulesResponse {
 
     public static Builder newBuilder() {
         return new Builder();
+    }
+
+    public boolean getOk() {
+        return ok;
     }
 
     public int getCount() {
@@ -48,7 +54,7 @@ public final class APIListAllSchedulesResponse {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(count, totalCount, nextPage, scheduleObjects);
+        return Objects.hashCode(ok, count, totalCount, nextPage, scheduleObjects);
     }
 
     @Override
@@ -60,14 +66,15 @@ public final class APIListAllSchedulesResponse {
             return false;
         }
         final APIListAllSchedulesResponse other = (APIListAllSchedulesResponse) obj;
-        return Objects.equal(this.count, other.count) && Objects.equal(this.totalCount, other.totalCount) && Objects.equal(this.nextPage, other.nextPage) && Objects.equal(this.scheduleObjects, other.scheduleObjects);
+        return  Objects.equal(this.ok, other.ok) && Objects.equal(this.count, other.count) && Objects.equal(this.totalCount, other.totalCount) && Objects.equal(this.nextPage, other.nextPage) && Objects.equal(this.scheduleObjects, other.scheduleObjects);
     }
 
     @Override
     public String toString() {
 
         return "APIListScheduleResponse{" +
-                "count=" + count +
+                "ok=" + ok +
+                ", count=" + count +
                 ", totalCount=" + totalCount +
                 ", nextPage=" + nextPage +
                 ", scheduleObjects=" + scheduleObjects +
@@ -79,12 +86,18 @@ public final class APIListAllSchedulesResponse {
      */
     public static class Builder {
 
+        private boolean ok = false;
         private int count;
         private int total_count;
         private String next_page;
         private ImmutableList.Builder<SchedulePayload> scheduleresponse = ImmutableList.builder();
 
         private Builder() {
+        }
+
+        public Builder setOk(boolean ok) {
+            this.ok = ok;
+            return this;
         }
 
         public Builder setCount(int count) {
@@ -116,7 +129,7 @@ public final class APIListAllSchedulesResponse {
             Preconditions.checkNotNull(count, "count must be set to build APIListScheduleResponse");
             Preconditions.checkNotNull(total_count, "total count must be set to build APIListScheduleResponse");
             Preconditions.checkNotNull(scheduleresponse, "sch must be set to build APIListScheduleResponse");
-            return new APIListAllSchedulesResponse(count, total_count, next_page, scheduleresponse.build());
+            return new APIListAllSchedulesResponse(ok, count, total_count, next_page, scheduleresponse.build());
         }
     }
 }

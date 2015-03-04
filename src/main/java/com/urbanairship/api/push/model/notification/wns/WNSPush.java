@@ -14,8 +14,7 @@ public class WNSPush
     public enum Type {
         TOAST,
         TILE,
-        BADGE,
-        RAW;
+        BADGE;
 
         public String getIdentifier() {
             return name().toLowerCase();
@@ -206,7 +205,7 @@ public class WNSPush
         }
 
         public WNSPush build() {
-            checkArgument(type != null && (type != Type.RAW), "type must be one of 'toast', 'tile', or 'badge'");
+            checkArgument(type != null, "type must be one of 'toast', 'tile', or 'badge'");
             if (type == Type.TOAST) {
                 checkArgument(toast != null, "Must supply a value for 'toast'");
             } else if (type == Type.TILE) {

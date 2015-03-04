@@ -11,16 +11,22 @@ import com.urbanairship.api.channel.information.model.ChannelView;
 
 public final class APIListAllChannelsResponse {
 
+    private final boolean ok;
     private final Optional<String> nextPage;
     private final ImmutableList<ChannelView> channelObjects;
 
-    private APIListAllChannelsResponse(String nextPage, ImmutableList<ChannelView> channelObjects) {
+    private APIListAllChannelsResponse(boolean ok, String nextPage, ImmutableList<ChannelView> channelObjects) {
+        this.ok = ok;
         this.nextPage = Optional.fromNullable(nextPage);
         this.channelObjects = channelObjects;
     }
 
     public static Builder newBuilder() {
         return new Builder();
+    }
+
+    public boolean getOk() {
+        return ok;
     }
 
     public Optional<String> getNextPage() {
@@ -34,14 +40,15 @@ public final class APIListAllChannelsResponse {
     @Override
     public String toString() {
         return "APIListAllChannelsResponse{" +
-                "nextPage='" + nextPage + '\'' +
+                "ok=" + ok +
+                ", nextPage='" + nextPage + '\'' +
                 ", channelObjects=" + channelObjects +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(nextPage, channelObjects);
+        return Objects.hashCode(ok, nextPage, channelObjects);
     }
 
     @Override
@@ -53,15 +60,21 @@ public final class APIListAllChannelsResponse {
             return false;
         }
         final APIListAllChannelsResponse other = (APIListAllChannelsResponse) obj;
-        return Objects.equal(this.nextPage, other.nextPage) && Objects.equal(this.channelObjects, other.channelObjects);
+        return Objects.equal(this.ok, other.ok) && Objects.equal(this.nextPage, other.nextPage) && Objects.equal(this.channelObjects, other.channelObjects);
     }
 
     public static class Builder {
 
+        private boolean ok;
         private String nextPage;
         private ImmutableList.Builder<ChannelView> channelObjects = ImmutableList.builder();
 
         private Builder() {
+        }
+
+        public Builder setOk(boolean value) {
+            this.ok = value;
+            return this;
         }
 
         public Builder setNextPage(String value) {
@@ -80,7 +93,7 @@ public final class APIListAllChannelsResponse {
         }
 
         public APIListAllChannelsResponse build() {
-            return new APIListAllChannelsResponse(nextPage, channelObjects.build());
+            return new APIListAllChannelsResponse(ok, nextPage, channelObjects.build());
         }
     }
 }

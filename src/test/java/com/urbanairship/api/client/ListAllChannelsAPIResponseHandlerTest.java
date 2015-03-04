@@ -131,6 +131,7 @@ public class ListAllChannelsAPIResponseHandlerTest {
         try {
             APIClientResponse<APIListAllChannelsResponse> response =
                     handler.handleResponse(httpResponse);
+            assertTrue(response.getApiResponse().getOk());
             assertTrue("Count incorrect",
                     response.getApiResponse().getChannelObjects().size() == 5);
             assertTrue(httpResponse.getStatusLine().toString().equals("HTTP/1.1 200 OK"));

@@ -22,6 +22,12 @@ public final class APIListAllChannelsResponseDeserializer extends JsonDeserializ
     private static final FieldParserRegistry<APIListAllChannelsResponse, APIListAllChannelsResponseReader> FIELD_PARSER =
             new MapFieldParserRegistry<APIListAllChannelsResponse, APIListAllChannelsResponseReader>(
                     ImmutableMap.<String, FieldParser<APIListAllChannelsResponseReader>>builder()
+                            .put("ok", new FieldParser<APIListAllChannelsResponseReader>() {
+                                @Override
+                                public void parse(APIListAllChannelsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                    reader.readOk(jsonParser);
+                                }
+                            })
                             .put("next_page", new FieldParser<APIListAllChannelsResponseReader>() {
                                 @Override
                                 public void parse(APIListAllChannelsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {

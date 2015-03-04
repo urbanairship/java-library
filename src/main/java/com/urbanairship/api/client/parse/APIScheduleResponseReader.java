@@ -26,6 +26,10 @@ public final class APIScheduleResponseReader implements JsonObjectReader<APISche
         this.builder = APIScheduleResponse.newBuilder();
     }
 
+    public void readOk(JsonParser jsonParser) throws IOException {
+        builder.setOk(jsonParser.getBooleanValue());
+    }
+
     public void readOperationId(JsonParser jsonParser) throws IOException {
         builder.setOperationId(jsonParser.readValueAs(String.class));
     }

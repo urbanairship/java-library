@@ -45,7 +45,8 @@ public class StandardObjectDeserializer<T, R extends JsonObjectReader<T>> {
                 fieldParser.get().parse(reader, jp, ctxt);
             }
             else {
-                jp.skipChildren();
+                APIParsingException.raise(String.format("The key '%s' is not allowed in this context", name), jp);
+
             }
 
             token = jp.nextToken();

@@ -29,13 +29,15 @@ public final class APIError {
     private final static String CONTENT_TYPE_JSON = "application/json";
     private final static String UA_APPLICATION_JSON = "application/vnd.urbanairship+json";
 
+    private final boolean ok;
     private final Optional<String> operationId;
     private final String error;
     private final Optional<Number> errorCode;
     private final Optional<APIErrorDetails> details;
 
-    private APIError(Optional<String> operationId, String error, Optional<Number> errorCode,
+    private APIError(boolean ok, Optional<String> operationId, String error, Optional<Number> errorCode,
                      Optional<APIErrorDetails> details) {
+        this.ok = ok;
         this.operationId = operationId;
         if (error == null || error.isEmpty()) {
             throw new IllegalArgumentException("Error cannot be null or empty");
@@ -130,6 +132,10 @@ public final class APIError {
         return new Builder();
     }
 
+    public boolean getOk() {
+        return ok;
+    }
+
     /**
      * Returns the operation id for the error. This value is useful for debugging
      * errors within the Urban Airship system, and should be sent to UA support
@@ -175,7 +181,9 @@ public final class APIError {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("APIError:");
+        stringBuilder.append("ok:");
+        stringBuilder.append(getOk());
+        stringBuilder.append("\nAPIError:");
         stringBuilder.append(getError());
         stringBuilder.append("\nCode:");
         stringBuilder.append(getErrorCode());
@@ -191,10 +199,16 @@ public final class APIError {
      */
     public static class Builder {
 
+        private boolean ok;
         private String operationId;
         private String error;
         private Number errorCode;
         private APIErrorDetails details;
+
+        public Builder setOk(boolean ok) {
+            this.ok = ok;
+            return this;
+        }
 
         /**
          * Set the operation id. This is optional
@@ -229,7 +243,8 @@ public final class APIError {
         }
 
         public APIError build() {
-            return new APIError(Optional.fromNullable(operationId),
+            return new APIError(ok,
+                    Optional.fromNullable(operationId),
                     error,
                     Optional.fromNullable(errorCode),
                     Optional.fromNullable(details));

@@ -30,7 +30,6 @@ public class AppStatsDeserializerTest {
                 "        \"messages\": 3,\n" +
                 "        \"wns_messages\": 4,\n" +
                 "        \"start\": \"2014-06-22 00:00:00\",\n" +
-                "        \"android_messages\": 5,\n" +
                 "        \"mpns_messages\": 6,\n" +
                 "        \"bb_messages\": 7\n" +
                 "    }";
@@ -57,7 +56,6 @@ public class AppStatsDeserializerTest {
                 "        \"messages\": 3,\n" +
                 "        \"wns_messages\": 4,\n" +
                 "        \"start\": \"2014-06-22 00:00:00\",\n" +
-                "        \"android_messages\": 5,\n" +
                 "        \"mpns_messages\": 6,\n" +
                 "        \"bb_messages\": 7\n" +
                 "    },\n" +
@@ -67,7 +65,6 @@ public class AppStatsDeserializerTest {
                 "        \"messages\": 10,\n" +
                 "        \"wns_messages\": 11,\n" +
                 "        \"start\": \"2014-06-22 01:00:00\",\n" +
-                "        \"android_messages\": 12,\n" +
                 "        \"mpns_messages\": 13,\n" +
                 "        \"bb_messages\": 14\n" +
                 "    },\n" +
@@ -78,7 +75,6 @@ public class AppStatsDeserializerTest {
                 "        \"c2dm_messages\": 0,\n" +
                 "        \"wns_messages\": 18,\n" +
                 "        \"start\": \"2014-06-22 02:00:00\",\n" +
-                "        \"android_messages\": 19,\n" +
                 "        \"bb_messages\": 20\n" +
                 "    },\n" +
                 "    {\n" +
@@ -87,7 +83,6 @@ public class AppStatsDeserializerTest {
                 "        \"messages\": 23,\n" +
                 "        \"wns_messages\": 24,\n" +
                 "        \"start\": \"2014-06-22 03:00:00\",\n" +
-                "        \"android_messages\": 25,\n" +
                 "        \"mpns_messages\": 26,\n" +
                 "        \"bb_messages\": 27\n" +
                 "    }\n" +
@@ -122,7 +117,6 @@ public class AppStatsDeserializerTest {
                 "        \"gcm_messages\": 2,\n" +
                 "        \"messages\": 3,\n" +
                 "        \"wns_messages\": 4,\n" +
-                "        \"android_messages\": 5,\n" +
                 "        \"mpns_messages\": 6,\n" +
                 "        \"bb_messages\": 7\n" +
                 "    }";
