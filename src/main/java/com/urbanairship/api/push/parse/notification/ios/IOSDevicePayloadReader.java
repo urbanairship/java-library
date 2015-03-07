@@ -53,6 +53,10 @@ public class IOSDevicePayloadReader implements JsonObjectReader<IOSDevicePayload
         builder.setExpiry(parser.readValueAs(PushExpiry.class));
     }
 
+    public void readPriority(JsonParser parser, DeserializationContext context) throws IOException {
+        builder.setPriority(parser.getIntValue());
+    }
+
     @Override
     public IOSDevicePayload validateAndBuild() throws IOException {
         try {

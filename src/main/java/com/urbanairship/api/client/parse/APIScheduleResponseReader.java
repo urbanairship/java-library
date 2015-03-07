@@ -34,11 +34,18 @@ public final class APIScheduleResponseReader implements JsonObjectReader<APISche
         builder.setOperationId(jsonParser.readValueAs(String.class));
     }
 
-    public void readScheduleIds(JsonParser jsonParser) throws IOException {
+    public void readScheduleUrls(JsonParser jsonParser) throws IOException {
         List<String> list =
                 jsonParser.readValueAs(new TypeReference<List<String>>() {
                 });
         builder.addAllScheduleUrls(list);
+    }
+
+    public void readScheduleIds(JsonParser jsonParser) throws IOException {
+        List<String> list =
+            jsonParser.readValueAs(new TypeReference<List<String>>() {
+            });
+        builder.addAllScheduleIds(list);
     }
 
     public void readSchedulePayloads(JsonParser jsonParser) throws IOException {

@@ -20,8 +20,10 @@ public class APIPushResponseTest {
                 "    \"push_ids\": [\n" +
                 "        \"id1\",\n" +
                 "        \"id2\"\n" +
-                "    ]\n" +
-                "}";
+                "    ],\n" +
+                "    \"message_ids\": [],\n" +
+                "    \"content_urls\" : []\n" +
+            "}";
 
         ObjectMapper mapper = APIResponseObjectMapper.getInstance();
         try {
@@ -34,6 +36,10 @@ public class APIPushResponseTest {
                     response.getPushIds().get().get(1).equals("id2"));
             assertTrue("Error in response status",
                     response.getOk());
+            assertTrue("Error in response messageIds",
+                response.getMessageIds().get().isEmpty());
+            assertTrue("Error in response contentUrls",
+                response.getContentUrls().get().isEmpty());
         } catch (IOException ex) {
             fail("Exception in APIPushResponseTest Message: " + ex.getMessage());
         }

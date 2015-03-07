@@ -241,12 +241,12 @@ public class PayloadDeserializerTest {
     }
 
     @Test
-    public void testCategoryNotPresent() throws Exception {
+    public void testPriority() throws Exception {
         String json
             = "{"
             + "  \"priority\": 5"
             + "}";
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
-        assertFalse(payload.getCategory().isPresent());
+        assertTrue(payload.getPriority().get().equals(5));
     }
 }

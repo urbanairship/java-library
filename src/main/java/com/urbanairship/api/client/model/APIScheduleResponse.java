@@ -18,12 +18,14 @@ public final class APIScheduleResponse {
     private final boolean ok;
     private final String operationId;
     private final ImmutableList<String> scheduleUrls;
+    private final ImmutableList<String> scheduleIds;
     private final ImmutableList<SchedulePayload> schedulePayloads;
 
-    private APIScheduleResponse(boolean ok, String operationId, ImmutableList<String> scheduleUrls, ImmutableList<SchedulePayload> schedulePayloads) {
+    private APIScheduleResponse(boolean ok, String operationId, ImmutableList<String> scheduleUrls, ImmutableList<String> scheduleIds, ImmutableList<SchedulePayload> schedulePayloads) {
         this.ok = ok;
         this.operationId = operationId;
         this.scheduleUrls = scheduleUrls;
+        this.scheduleIds = scheduleIds;
         this.schedulePayloads = schedulePayloads;
     }
 
@@ -67,6 +69,17 @@ public final class APIScheduleResponse {
         return scheduleUrls;
     }
 
+    /**
+     * List of schedule ids, one for every scheduled push message that moves through
+     * the API. This is useful for tracking an individual message as part of
+     * an operation, and can be used when support is needed.
+     *
+     * @return List of schedule ids.
+     */
+    public ImmutableList<String> getScheduleIds() {
+        return scheduleIds;
+    }
+
     public ImmutableList<SchedulePayload> getSchedulePayloads() {
         return schedulePayloads;
     }
@@ -77,13 +90,14 @@ public final class APIScheduleResponse {
                 "ok=" + ok +
                 ", operationId='" + operationId + '\'' +
                 ", scheduleUrls=" + scheduleUrls +
+                ", scheduleIds=" + scheduleIds +
                 ", schedulePayloads=" + schedulePayloads +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(ok, operationId, scheduleUrls, schedulePayloads);
+        return Objects.hashCode(ok, operationId, scheduleUrls, scheduleIds, schedulePayloads);
     }
 
     @Override
@@ -95,7 +109,7 @@ public final class APIScheduleResponse {
             return false;
         }
         final APIScheduleResponse other = (APIScheduleResponse) obj;
-        return Objects.equal(this.ok, other.ok) && Objects.equal(this.operationId, other.operationId) && Objects.equal(this.scheduleUrls, other.scheduleUrls) && Objects.equal(this.schedulePayloads, other.schedulePayloads);
+        return Objects.equal(this.ok, other.ok) && Objects.equal(this.operationId, other.operationId) && Objects.equal(this.scheduleUrls, other.scheduleUrls) && Objects.equal(this.scheduleIds, other.scheduleIds) && Objects.equal(this.schedulePayloads, other.schedulePayloads);
     }
 
     /**
@@ -106,6 +120,7 @@ public final class APIScheduleResponse {
         private boolean ok;
         private String operationId;
         private ImmutableList.Builder<String> scheduleUrls = ImmutableList.builder();
+        private ImmutableList.Builder<String> scheduleIds = ImmutableList.builder();
         private ImmutableList.Builder<SchedulePayload> schedulePayloads = ImmutableList.builder();
 
         private Builder() {
@@ -131,6 +146,16 @@ public final class APIScheduleResponse {
             return this;
         }
 
+        public Builder addScheduleId(String scheduleId) {
+            this.scheduleIds.add(scheduleId);
+            return this;
+        }
+
+        public Builder addAllScheduleIds(Iterable<? extends String> scheduleIds) {
+            this.scheduleIds.addAll(scheduleIds);
+            return this;
+        }
+
         public Builder addSchedulePayload(SchedulePayload schedulePayload) {
             this.schedulePayloads.add(schedulePayload);
             return this;
@@ -145,8 +170,9 @@ public final class APIScheduleResponse {
             Preconditions.checkNotNull(ok, "The ok attribute must be set in order to build APIScheduleResponse");
             Preconditions.checkNotNull(operationId, "Operation ID must be set in order to build APIScheduleResponse");
             Preconditions.checkNotNull(scheduleUrls, "ScheduleUrls must be set in order to build APIScheduleResponse");
+            Preconditions.checkNotNull(scheduleIds, "ScheduleIds must be set in order to build APIScheduleResponse");
             Preconditions.checkNotNull(schedulePayloads, "SchedulePayloads must be set in order to build APIScheduleResponse");
-            return new APIScheduleResponse(ok, operationId, scheduleUrls.build(), schedulePayloads.build());
+            return new APIScheduleResponse(ok, operationId, scheduleUrls.build(), scheduleIds.build(), schedulePayloads.build());
         }
     }
 }

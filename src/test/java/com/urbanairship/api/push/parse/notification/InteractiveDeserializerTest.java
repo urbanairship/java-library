@@ -258,8 +258,6 @@ public class InteractiveDeserializerTest {
         mapper.readValue(json2, Interactive.class);
     }
 
-    // TODO include this test in the following deserializer change RP
-    @Ignore
     @Test
     public void testDeserializeExtraField() throws Exception {
         String json
