@@ -187,7 +187,7 @@ The ``PushPayload`` is comprised of three pieces:
 
 The first is the Audience. The audience
 is composed of Selectors, which can be compound or atomic (not compound). Selectors
-provide logicial combinations of AND, OR, and NOT.
+provide logical combinations of AND, OR, and NOT.
 
 Audience and Selectors
 ======================
@@ -255,7 +255,7 @@ Notifications
 Notifications are the second part of the ``PushPayload``. Notifications
 are configured for each type of device you would like to
 send a message to. A Notification for an iOS device contains options
-for ``alert``, ``badge``, ``sound``, ``content_available``, or ``extra``. Other platforms,
+for ``alert``, ``badge``, ``sound``, ``content_available``, ``extra``, ``expiry``, ``priority``, ``category``, or ``interactive``. Other platforms,
 e.g., Android, may offer different configurations based on available features. 
 
 Here's an example of an iOS notification with an alert, a badge, and an extra key/value pair:
@@ -301,6 +301,63 @@ This will generate and send a payload similar to the following
           }
       }
   }
+
+Here's another example of an iOS notification implementing expiry and interactive notifications:
+
+.. code-block:: java
+
+    PushExpiry expiry = PushExpiry.newBuilder()
+        .setExpirySeconds(3600)
+        .build();
+
+    Interactive interactive = Interactive.newBuilder()
+        .setType("ua_yes_no_foreground")
+        .setButtonActions(
+            ImmutableMap.of(
+                "yes",
+                Actions.newBuilder()
+                    .setShare(new ShareAction("foo"))
+                    .build()))
+        .build();
+
+    IOSDevicePayload iosPayload = IOSDevicePayload.newBuilder()
+        .setAlert("test")
+        .setExpiry(expiry)
+        .setInteractive(interactive)
+        .build();
+
+    PushPayload payload = PushPayload.newBuilder()
+        .setAudience(Selectors.iosChannel(channel))
+        .setNotification(Notifications.notification(iosPayload))
+        .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+        .build();
+
+Which will generate the following JSON payload:
+
+  {
+      "audience": {
+          "ios_channel": "50614f67-498b-49df-b832-a046de0ec6ec"
+      },
+      "device_types": [
+          "ios"
+      ],
+      "notification": {
+          "ios": {
+              "alert": "test",
+              "expiry" :3600,
+              "interactive": {
+                  "type": "ua_yes_no_foreground",
+                  "button_actions": {
+                      "yes": {
+                          "share": "foo"
+                      }
+                  }
+              }
+          }
+      }
+  }
+
+.. code-block:: json
 
 DeviceTypes
 ===========

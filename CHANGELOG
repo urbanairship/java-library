@@ -17,6 +17,9 @@ Lots of new things:
 - Lots more documentation
 - A few bugfixes and refactors (see commits)
 - Fixed a bug that was sending incorrect content-type headers
+- Interactive notifications
+- Added Android and Amazon channel support for Tag API
+- Now throw exceptions when deserializng undefined JSON fields
 
 -------------------------
 0.2.1 16SEP13
