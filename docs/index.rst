@@ -246,8 +246,8 @@ produces the output
         "alert": "API v3"
     }
 
-which will send messages to users who have the tags "puppies" or
-"kittens" but not "fish".
+which will send messages to users who either have the tags "puppies" and
+"kittens" or don't have the tag "fish".
 
 Notifications
 =============
@@ -315,13 +315,17 @@ Here's another example of an iOS notification implementing expiry and interactiv
         .setButtonActions(
             ImmutableMap.of(
                 "yes",
-                Actions.newBuilder()
-                    .setShare(new ShareAction("foo"))
+                 Actions.newBuilder()
+                    .addTags(new AddTagAction(TagActionData.single("tag1")))
+                    .build(),
+                "no",
+                 Actions.newBuilder()
+                    .addTags(new AddTagAction(TagActionData.single("tag2")))
                     .build()))
         .build();
 
     IOSDevicePayload iosPayload = IOSDevicePayload.newBuilder()
-        .setAlert("test")
+        .setAlert("alert")
         .setExpiry(expiry)
         .setInteractive(interactive)
         .build();
@@ -343,13 +347,16 @@ Which will generate the following JSON payload:
       ],
       "notification": {
           "ios": {
-              "alert": "test",
+              "alert": "alert",
               "expiry" :3600,
               "interactive": {
                   "type": "ua_yes_no_foreground",
                   "button_actions": {
                       "yes": {
-                          "share": "foo"
+                          "add_tag": "tag1"
+                      },
+                      "no": {
+                          "add_tag": "tag2"
                       }
                   }
               }
