@@ -559,6 +559,17 @@ public class APIClient {
         return provisionExecutor().execute(req).handleResponse(new ListAllChannelsAPIResponseHandler());
     }
 
+    public APIClientResponse<APIListAllChannelsResponse> listAllChannels(String nextPage) throws IOException, URISyntaxException {
+        URI np = new URI(nextPage);
+        Request req = provisionRequest(Request.Get(baseURI.resolve(np.getPath() + "?" + np.getQuery())));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list all channels request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ListAllChannelsAPIResponseHandler());
+    }
+
     /* Reports API */
 
     public APIClientResponse<PerPushDetailResponse> listPerPushDetail(String pushID) throws IOException {
