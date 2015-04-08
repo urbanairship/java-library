@@ -43,6 +43,14 @@ public class IOSDevicePayloadSerializer extends JsonSerializer<IOSDevicePayload>
             jgen.writeNumberField("priority", payload.getPriority().get());
         }
 
+        if (payload.getCategory().isPresent()) {
+            jgen.writeStringField("category", payload.getCategory().get());
+        }
+
+        if (payload.getInteractive().isPresent()) {
+            jgen.writeObjectField("interactive", payload.getInteractive().get());
+        }
+
         jgen.writeEndObject();
     }
 }

@@ -2,6 +2,7 @@ package com.urbanairship.api.push.parse.notification.ios;
 
 
 import com.google.common.collect.ImmutableList;
+import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.notification.ios.IOSAlertData;
 import com.urbanairship.api.push.model.notification.ios.IOSBadgeData;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
@@ -88,6 +89,43 @@ public class PayloadSerializerTest {
             = "{\"alert\":{\"action-loc-key\":\"ALK\",\"loc-key\":\"LK\",\"loc-args\":[\"arg1\",\"arg2\"],\"launch-image\":\"LI\"}}";
 
         assertEquals(expected, json);
+    }
+
+    @Test
+    public void testCategory() throws Exception {
+        IOSDevicePayload expected = IOSDevicePayload.newBuilder()
+            .setAlert("alert")
+            .setCategory("CAT5")
+            .build();
+        String json = mapper.writeValueAsString(expected);
+        IOSDevicePayload parsed = mapper.readValue(json, IOSDevicePayload.class);
+        assertEquals(expected, parsed);
+        assertEquals("CAT5", parsed.getCategory().get());
+    }
+
+    @Test
+    public void testInteractiveNotificationActions() throws Exception {
+        String json
+            = "{"
+            + "  \"type\" : \"ua_yes_no_foreground\","
+            + "  \"button_actions\" : {"
+            + "    \"yes\" : {"
+            + "      \"share\" : \"foo\""
+            + "    }"
+            + "  }"
+            + "}";
+        Interactive interactive = mapper.readValue(json, Interactive.class);
+
+        IOSDevicePayload expected = IOSDevicePayload.newBuilder()
+            .setAlert("test alert")
+            .setInteractive(interactive)
+            .build();
+
+        String devicePayloadJSON = mapper.writeValueAsString(expected);
+        IOSDevicePayload parsed = mapper.readValue(devicePayloadJSON, IOSDevicePayload.class);
+        assertEquals(expected, parsed);
+        Interactive returned = parsed.getInteractive().get();
+        assertEquals(interactive, returned);
     }
 
 }

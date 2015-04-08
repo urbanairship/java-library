@@ -31,7 +31,9 @@ public class ScheduleAPIResponseHandlerTest {
     @Test
     public void testHandleSuccess() {
         String successJSON = "{\"ok\" : true, \"operation_id\" : \"OpID\", " +
-                "\"schedule_urls\" : [\"ScheduleURL\"],    \"schedules\" : [\n" +
+                "\"schedule_urls\" : [\"ScheduleURL\"], " +
+                "\"schedule_ids\" : [\"ScheduleID\"], " +
+                "\"schedules\" : [\n" +
                 "      {\n" +
                 "         \"url\" : \"http://go.urbanairship/api/schedules/2d69320c-3c91-5241-fac4-248269eed109\",\n" +
                 "         \"schedule\" : { \"scheduled_time\": \"2013-04-01T18:45:00\" },\n" +

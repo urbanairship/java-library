@@ -9,6 +9,7 @@ import com.urbanairship.api.common.parse.CommonObjectMapper;
 import com.urbanairship.api.push.model.*;
 import com.urbanairship.api.push.model.audience.location.*;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
+import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.notification.actions.*;
@@ -95,6 +96,8 @@ public class PushObjectMapper {
                 .addDeserializer(PushOptions.class, new PushOptionsDeserializer())
                 .addSerializer(Notification.class, new NotificationSerializer())
                 .addDeserializer(Notification.class, notificationDeserializer)
+                .addSerializer(Interactive.class, new InteractiveSerializer())
+                .addDeserializer(Interactive.class, new InteractiveDeserializer())
                 .addSerializer(DeviceType.class, new DeviceTypeSerializer())
                 .addDeserializer(DeviceType.class, new PlatformDeserializer())
                 .addSerializer(Selector.class, new SelectorSerializer())

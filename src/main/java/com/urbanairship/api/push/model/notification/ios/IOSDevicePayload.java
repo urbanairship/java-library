@@ -10,6 +10,8 @@ import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
+import com.urbanairship.api.push.model.notification.Interactive;
+
 import java.util.Map;
 
 /**
@@ -24,6 +26,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
     private final Optional<Boolean> contentAvailable;
     private final Optional<PushExpiry> expiry;
     private final Optional<Integer> priority;
+    private final Optional<String> category;
+    private final Optional<Interactive> interactive;
 
     private IOSDevicePayload(Optional<IOSAlertData> alert,
                              Optional<String> sound,
@@ -31,7 +35,9 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                              Optional<Boolean> contentAvailable,
                              Optional<PushExpiry> expiry,
                              Optional<Integer> priority,
-                             Optional<ImmutableMap<String, String>> extra) {
+                             Optional<ImmutableMap<String, String>> extra,
+                             Optional<String> category,
+                             Optional<Interactive> interactive) {
         this.alert = alert;
         this.sound = sound;
         this.badge = badge;
@@ -39,6 +45,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         this.extra = extra;
         this.expiry = expiry;
         this.priority = priority;
+        this.category = category;
+        this.interactive = interactive;
     }
 
     /**
@@ -123,6 +131,22 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         return priority;
     }
 
+    /**
+     * Get the category if present
+     * @return category
+     */
+    public Optional<String> getCategory() {
+        return category;
+    }
+
+    /**
+     * Get the Interactive data if present
+     * @return interactive
+     */
+    public Optional<Interactive> getInteractive() {
+        return interactive;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -154,6 +178,12 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         if (priority != null ? ! priority.equals(that.priority) : that.priority != null) {
             return false;
         }
+        if (category!= null ? ! category.equals(that.category) : that.category != null) {
+            return false;
+        }
+        if (interactive!= null ? ! interactive.equals(that.interactive) : that.interactive != null) {
+            return false;
+        }
         return true;
     }
 
@@ -166,19 +196,23 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         result = 31 * result + (contentAvailable != null ? contentAvailable.hashCode() : 0);
         result = 31 * result + ( expiry != null ?  expiry.hashCode() : 0);
         result = 31 * result + (priority != null ? priority.hashCode() : 0);
+        result = 31 * result + (category != null ? category.hashCode() : 0);
+        result = 31 * result + (interactive != null ? interactive.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "IOSDevicePayload{" +
-                "alert=" + alert +
-                ", extra=" + extra +
-                ", sound=" + sound +
-                ", badge=" + badge +
-                ", expiry=" +  expiry +
-                ", priority" + priority +
-                ", contentAvailable=" + contentAvailable +
+            "alert=" + alert +
+            ", extra=" + extra +
+            ", sound=" + sound +
+            ", badge=" + badge +
+            ", expiry=" + expiry +
+            ", priority" + priority +
+            ", contentAvailable=" + contentAvailable +
+            ", category=" + category +
+            ", interactive=" + interactive +
                 '}';
     }
 
@@ -190,6 +224,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         private ImmutableMap.Builder<String, String> extra = null;
         private PushExpiry expiry = null;
         private Integer priority = null;
+        private String category = null;
+        private Interactive interactive = null;
 
         private Builder() { }
 
@@ -269,7 +305,6 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
             return this;
         }
 
-
         /**
          * Add an extra key value pair to the notification payload. Maximum
          * payload is 2000 bytes.
@@ -299,6 +334,26 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         }
 
         /**
+         * Set the category
+         * @param value String
+         * @return String
+         */
+        public Builder setCategory(String value) {
+            this.category = value;
+            return this;
+        }
+
+        /**
+         * Set the Interactive object
+         * @param value Interactive
+         * @return Interactive
+         */
+        public Builder setInteractive(Interactive value) {
+            this.interactive = value;
+            return this;
+        }
+
+        /**
          * Build IOSDevicePayload
          * @return IOSDevicePayload
          */
@@ -310,7 +365,9 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                     Optional.fromNullable(contentAvailable),
                     Optional.fromNullable(expiry),
                     Optional.fromNullable(priority),
-                    extra == null ? Optional.<ImmutableMap<String,String>>absent() : Optional.fromNullable(extra.build()));
+                    extra == null ? Optional.<ImmutableMap<String,String>>absent() : Optional.fromNullable(extra.build()),
+                    Optional.fromNullable(category),
+                    Optional.fromNullable(interactive));
 
         }
     }

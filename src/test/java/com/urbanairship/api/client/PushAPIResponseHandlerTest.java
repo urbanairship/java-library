@@ -37,7 +37,9 @@ public class PushAPIResponseHandlerTest {
                 "    \"push_ids\": [\n" +
                 "        \"id1\",\n" +
                 "        \"id2\"\n" +
-                "    ]\n" +
+                "    ],\n" +
+                "    \"message_ids\": [],\n" +
+                "    \"content_urls\" : []\n" +
                 "}";
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP", 1, 1), 200, "OK"));

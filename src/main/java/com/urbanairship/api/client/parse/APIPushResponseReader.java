@@ -40,6 +40,20 @@ public final class APIPushResponseReader implements JsonObjectReader<APIPushResp
         builder.setOk(jsonParser.getBooleanValue());
     }
 
+    public void readMessageIds(JsonParser jsonParser) throws IOException {
+        List<String> list =
+            jsonParser.readValueAs(new TypeReference<List<String>>() {
+            });
+        builder.addAllMessageIds(list);
+    }
+
+    public void readContentUrls(JsonParser jsonParser) throws IOException {
+        List<String> list =
+            jsonParser.readValueAs(new TypeReference<List<String>>() {
+            });
+        builder.addAllContentUrls(list);
+    }
+
     @Override
     public APIPushResponse validateAndBuild() throws IOException {
         try {

@@ -218,6 +218,7 @@ public class PayloadDeserializerTest {
         assertEquals(expected, payload);
     }
 
+    @Test
     public void testValidate_Empty() throws Exception {
         IOSDevicePayload payload = mapper.readValue("{}", IOSDevicePayload.class);
         assertNotNull(payload);
@@ -226,5 +227,26 @@ public class PayloadDeserializerTest {
         assertFalse(payload.getBadge().isPresent());
         assertFalse(payload.getSound().isPresent());
         assertFalse(payload.getContentAvailable().isPresent());
+    }
+
+    @Test
+    public void testCategory() throws Exception {
+        String json
+            = "{"
+            + "  \"category\": \"CAT1\""
+            + "}";
+        IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
+        assertTrue(payload.getCategory().isPresent());
+        assertEquals("CAT1", payload.getCategory().get());
+    }
+
+    @Test
+    public void testPriority() throws Exception {
+        String json
+            = "{"
+            + "  \"priority\": 5"
+            + "}";
+        IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
+        assertTrue(payload.getPriority().get().equals(5));
     }
 }

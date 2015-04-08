@@ -17,11 +17,15 @@ public final class APIPushResponse {
     private final Optional<String> operationId;
     private final Optional<ImmutableList<String>> pushIds;
     private final boolean ok;
+    private final Optional<ImmutableList<String>> messageIds;
+    private final Optional<ImmutableList<String>> contentUrls;
 
-    public APIPushResponse(String operationId, ImmutableList<String> pushIds, boolean ok) {
+    public APIPushResponse(String operationId, ImmutableList<String> pushIds, boolean ok, ImmutableList<String> messageIds, ImmutableList<String> contentUrls) {
         this.operationId = Optional.fromNullable(operationId);
         this.pushIds = Optional.fromNullable(pushIds);
         this.ok = ok;
+        this.messageIds = Optional.fromNullable(messageIds);
+        this.contentUrls = Optional.fromNullable(contentUrls);
     }
 
     public static Builder newBuilder() {
@@ -58,18 +62,28 @@ public final class APIPushResponse {
         return ok;
     }
 
+    public Optional<ImmutableList<String>> getMessageIds() {
+        return messageIds;
+    }
+
+    public Optional<ImmutableList<String>> getContentUrls() {
+        return contentUrls;
+    }
+
     @Override
     public String toString() {
         return "APIPushResponse{" +
                 "operationId=" + operationId +
                 ", pushIds=" + pushIds +
                 ", ok=" + ok +
+                ", messagesIds=" + messageIds +
+                ", contentUrls=" + contentUrls +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(operationId, pushIds, ok);
+        return Objects.hashCode(operationId, pushIds, ok, messageIds, contentUrls);
     }
 
     @Override
@@ -81,7 +95,7 @@ public final class APIPushResponse {
             return false;
         }
         final APIPushResponse other = (APIPushResponse) obj;
-        return Objects.equal(this.operationId, other.operationId) && Objects.equal(this.pushIds, other.pushIds) && Objects.equal(this.ok, other.ok);
+        return Objects.equal(this.operationId, other.operationId) && Objects.equal(this.pushIds, other.pushIds) && Objects.equal(this.ok, other.ok) && Objects.equal(this.messageIds, other.messageIds) && Objects.equal(this.contentUrls, other.contentUrls);
     }
 
     /**
@@ -91,6 +105,8 @@ public final class APIPushResponse {
         private String operationId;
         private ImmutableList.Builder<String> pushIds = ImmutableList.builder();
         private boolean ok = false;
+        private ImmutableList.Builder<String> messageIds = ImmutableList.builder();
+        private ImmutableList.Builder<String> contentUrls = ImmutableList.builder();
 
         private Builder() {
         }
@@ -100,8 +116,8 @@ public final class APIPushResponse {
             return this;
         }
 
-        public Builder addPushId(String pushid) {
-            this.pushIds.add(pushid);
+        public Builder addPushId(String pushId) {
+            this.pushIds.add(pushId);
             return this;
         }
 
@@ -115,8 +131,28 @@ public final class APIPushResponse {
             return this;
         }
 
+        public Builder addMessageId(String messageId) {
+            this.messageIds.add(messageId);
+            return this;
+        }
+
+        public Builder addAllMessageIds(Iterable<? extends String> messageIds) {
+            this.messageIds.addAll(messageIds);
+            return this;
+        }
+
+        public Builder addContentUrl(String contentUrl) {
+            this.contentUrls.add(contentUrl);
+            return this;
+        }
+
+        public Builder addAllContentUrls(Iterable<? extends String> contentUrls) {
+            this.contentUrls.addAll(contentUrls);
+            return this;
+        }
+
         public APIPushResponse build() {
-            return new APIPushResponse(operationId, pushIds.build(), ok);
+            return new APIPushResponse(operationId, pushIds.build(), ok, messageIds.build(), contentUrls.build());
 
         }
     }

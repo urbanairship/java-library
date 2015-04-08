@@ -4,6 +4,7 @@
 
 package com.urbanairship.api.push.parse.notification.ios;
 
+import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 import com.urbanairship.api.common.parse.*;
@@ -40,8 +41,20 @@ public class IOSDevicePayloadReader implements JsonObjectReader<IOSDevicePayload
         builder.addAllExtraEntries(MapOfStringsDeserializer.INSTANCE.deserialize(parser, "extra"));
     }
 
+    public void readCategory(JsonParser parser, DeserializationContext context) throws IOException {
+        builder.setCategory(StringFieldDeserializer.INSTANCE.deserialize(parser, "category"));
+    }
+
+    public void readInteractive(JsonParser parser, DeserializationContext context) throws IOException {
+        builder.setInteractive(parser.readValueAs(Interactive.class));
+    }
+
     public void readExpiry(JsonParser parser, DeserializationContext context) throws IOException {
         builder.setExpiry(parser.readValueAs(PushExpiry.class));
+    }
+
+    public void readPriority(JsonParser parser, DeserializationContext context) throws IOException {
+        builder.setPriority(parser.getIntValue());
     }
 
     @Override

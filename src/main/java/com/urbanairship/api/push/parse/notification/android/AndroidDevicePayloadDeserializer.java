@@ -44,6 +44,11 @@ public class AndroidDevicePayloadDeserializer extends JsonDeserializer<AndroidDe
                         reader.readExtra(json, context);
                     }
                 })
+            .put("interactive", new FieldParser<AndroidDevicePayloadReader>() {
+                    public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                        reader.readInteractive(json, context);
+                    }
+                })
             .build()
             );
 

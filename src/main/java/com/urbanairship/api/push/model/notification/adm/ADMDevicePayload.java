@@ -10,6 +10,8 @@ import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
+import com.urbanairship.api.push.model.notification.Interactive;
+
 import java.util.Map;
 
 public final class ADMDevicePayload extends PushModelObject implements DevicePayloadOverride {
@@ -17,15 +19,18 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
     private final Optional<String> consolidationKey;
     private final Optional<PushExpiry> expiresAfter;
     private final Optional<ImmutableMap<String, String>> extra;
+    private final Optional<Interactive> interactive;
 
     private ADMDevicePayload(Optional<String> alert,
                              Optional<String> consolidationKey,
                              Optional<PushExpiry> expiresAfter,
-                             Optional<ImmutableMap<String, String>> extra) {
+                             Optional<ImmutableMap<String, String>> extra,
+                             Optional<Interactive> interactive) {
         this.alert = alert;
         this.consolidationKey = consolidationKey;
         this.expiresAfter = expiresAfter;
         this.extra = extra;
+        this.interactive = interactive;
     }
 
     public static Builder newBuilder() {
@@ -54,6 +59,10 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
         return extra;
     }
 
+    public Optional<Interactive> getInteractive() {
+        return interactive;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -76,6 +85,9 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
         if (extra != null ? !extra.equals(that.extra) : that.extra != null) {
             return false;
         }
+        if (interactive != null ? !interactive.equals(that.interactive) : that.extra != null) {
+            return false;
+        }
         return true;
     }
 
@@ -85,6 +97,7 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
         result = 31 * result + (consolidationKey != null ? consolidationKey.hashCode() : 0);
         result = 31 * result + (expiresAfter != null ? expiresAfter.hashCode() : 0);
         result = 31 * result + (extra != null ? extra.hashCode() : 0);
+        result = 31 * result + (interactive != null ? interactive.hashCode() : 0);
         return result;
     }
 
@@ -93,6 +106,7 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
         private String consolidationKey = null;
         private PushExpiry expiresAfter = null;
         private ImmutableMap.Builder<String, String> extra = null;
+        private Interactive interactive = null;
 
         private Builder() { }
 
@@ -127,11 +141,17 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
             return this;
         }
 
+        public Builder setInteractive(Interactive value) {
+            this.interactive = value;
+            return this;
+        }
+
         public ADMDevicePayload build() {
             return new ADMDevicePayload(Optional.fromNullable(alert),
                                         Optional.fromNullable(consolidationKey),
                                         Optional.fromNullable(expiresAfter),
-                                        extra == null ? Optional.<ImmutableMap<String,String>>absent() : Optional.fromNullable(extra.build()));
+                                        extra == null ? Optional.<ImmutableMap<String,String>>absent() : Optional.fromNullable(extra.build()),
+                                        Optional.fromNullable(interactive));
         }
     }
 }

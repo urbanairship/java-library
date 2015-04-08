@@ -17,6 +17,9 @@ public class NotificationTest {
                 .setActions(Actions.newBuilder()
                         .addTags(new AddTagAction(TagActionData.single("foo")))
                         .build())
+                .setInteractive(Interactive.newBuilder()
+                        .setType("acme_interact")
+                        .build())
                 .build();
         Notification notification1 = notification.toBuilder().build();
         assertEquals(notification, notification1);
