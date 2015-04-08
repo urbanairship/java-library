@@ -103,10 +103,10 @@ public final class APIPushResponse {
      */
     public static class Builder {
         private String operationId;
-        private ImmutableList<String> pushIds = null;
+        private ImmutableList.Builder<String> pushIds = ImmutableList.builder();
         private boolean ok = false;
-        private ImmutableList<String> messageIds = null;
-        private ImmutableList<String> contentUrls = null;
+        private ImmutableList.Builder<String> messageIds = ImmutableList.builder();
+        private ImmutableList.Builder<String> contentUrls = ImmutableList.builder();
 
         private Builder() {
         }
@@ -116,13 +116,13 @@ public final class APIPushResponse {
             return this;
         }
 
-        public Builder addPushId(String pushid) {
-            this.pushIds.add(pushid);
+        public Builder addPushId(String pushId) {
+            this.pushIds.add(pushId);
             return this;
         }
 
         public Builder addAllPushIds(Iterable<? extends String> pushIds) {
-            this.pushIds = ImmutableList.<String>builder().addAll(pushIds).build();
+            this.pushIds.addAll(pushIds);
             return this;
         }
 
@@ -131,18 +131,28 @@ public final class APIPushResponse {
             return this;
         }
 
-        public Builder addMessageIds(Iterable<? extends String> messageIds) {
-            this.messageIds = ImmutableList.<String>builder().addAll(messageIds).build();
+        public Builder addMessageId(String messageId) {
+            this.messageIds.add(messageId);
             return this;
         }
 
-        public Builder addContentUrls(Iterable<? extends String> contentUrls) {
-            this.contentUrls = ImmutableList.<String>builder().addAll(contentUrls).build();
+        public Builder addAllMessageIds(Iterable<? extends String> messageIds) {
+            this.messageIds.addAll(messageIds);
+            return this;
+        }
+
+        public Builder addContentUrl(String contentUrl) {
+            this.contentUrls.add(contentUrl);
+            return this;
+        }
+
+        public Builder addAllContentUrls(Iterable<? extends String> contentUrls) {
+            this.contentUrls.addAll(contentUrls);
             return this;
         }
 
         public APIPushResponse build() {
-            return new APIPushResponse(operationId, pushIds, ok, messageIds, contentUrls);
+            return new APIPushResponse(operationId, pushIds.build(), ok, messageIds.build(), contentUrls.build());
 
         }
     }

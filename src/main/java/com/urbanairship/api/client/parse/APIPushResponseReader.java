@@ -44,14 +44,14 @@ public final class APIPushResponseReader implements JsonObjectReader<APIPushResp
         List<String> list =
             jsonParser.readValueAs(new TypeReference<List<String>>() {
             });
-        builder.addMessageIds(list);
+        builder.addAllMessageIds(list);
     }
 
     public void readContentUrls(JsonParser jsonParser) throws IOException {
         List<String> list =
             jsonParser.readValueAs(new TypeReference<List<String>>() {
             });
-        builder.addContentUrls(list);
+        builder.addAllContentUrls(list);
     }
 
     @Override

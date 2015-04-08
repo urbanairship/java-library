@@ -338,6 +338,8 @@ Here's another example of an iOS notification implementing expiry and interactiv
 
 Which will generate the following JSON payload:
 
+.. code-block:: json
+
   {
       "audience": {
           "ios_channel": "50614f67-498b-49df-b832-a046de0ec6ec"
@@ -364,7 +366,6 @@ Which will generate the following JSON payload:
       }
   }
 
-.. code-block:: json
 
 DeviceTypes
 ===========

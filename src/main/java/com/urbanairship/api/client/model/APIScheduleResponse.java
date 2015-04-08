@@ -169,9 +169,6 @@ public final class APIScheduleResponse {
         public APIScheduleResponse build() {
             Preconditions.checkNotNull(ok, "The ok attribute must be set in order to build APIScheduleResponse");
             Preconditions.checkNotNull(operationId, "Operation ID must be set in order to build APIScheduleResponse");
-            Preconditions.checkNotNull(scheduleUrls, "ScheduleUrls must be set in order to build APIScheduleResponse");
-            Preconditions.checkNotNull(scheduleIds, "ScheduleIds must be set in order to build APIScheduleResponse");
-            Preconditions.checkNotNull(schedulePayloads, "SchedulePayloads must be set in order to build APIScheduleResponse");
             return new APIScheduleResponse(ok, operationId, scheduleUrls.build(), scheduleIds.build(), schedulePayloads.build());
         }
     }

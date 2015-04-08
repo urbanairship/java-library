@@ -10,7 +10,6 @@ import com.urbanairship.api.push.model.notification.actions.OpenLandingPageWithC
 import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -57,54 +56,6 @@ public class InteractiveDeserializerTest {
     }
 
     @Test
-    public void testDeserializeCustom() throws Exception {
-        String json
-            = "{"
-            + "  \"type\" : \"acme_this_that\","
-            + "  \"button_actions\" : {"
-            + "    \"this\" : {"
-            + "      \"add_tag\" : \"foo\""
-            + "    },"
-            + "    \"that\" : {"
-            + "      \"add_tag\" : \"bar\""
-            + "    }"
-            + "  }"
-            + "}";
-
-        Interactive interactive = mapper.readValue(json, Interactive.class);
-        assertEquals("acme_this_that", interactive.getType());
-        ImmutableMap<String, Actions> actionsMap = interactive.getButtonActions();
-        assertEquals(2, actionsMap.size());
-
-        Actions thisActions = actionsMap.get("this");
-        Optional<AddTagAction> thisAddTagAction = thisActions.getAddTags();
-        assertTrue(thisAddTagAction.isPresent());
-        assertTrue(thisAddTagAction.get().getValue().isSingle());
-        assertEquals("foo", thisAddTagAction.get().getValue().getSingleTag());
-
-        Actions thatActions = actionsMap.get("that");
-        Optional<AddTagAction> thatAddTagAction = thatActions.getAddTags();
-        assertTrue(thatAddTagAction.isPresent());
-        assertTrue(thatAddTagAction.get().getValue().isSingle());
-        assertEquals("bar", thatAddTagAction.get().getValue().getSingleTag());
-    }
-
-    @Test
-    public void testDeserializeSubsetOfButtons() throws Exception {
-        String json
-            = "{"
-            + "  \"type\" : \"ua_yes_no_foreground\","
-            + "  \"button_actions\" : {"
-            + "    \"yes\" : {"
-            + "      \"add_tag\" : \"foo\""
-            + "    }"
-            + "  }"
-            + "}";
-
-        mapper.readValue(json, Interactive.class);
-    }
-
-    @Test
     public void testDeserializeEmptyButtonActions() throws Exception {
         String json
             = "{"
@@ -114,93 +65,6 @@ public class InteractiveDeserializerTest {
             + "}";
 
         mapper.readValue(json, Interactive.class);
-    }
-
-    @Test
-    public void testDeserializeWrongButtons() throws Exception {
-        String json
-            = "{"
-            + "  \"type\" : \"ua_yes_no_foreground\","
-            + "  \"button_actions\" : {"
-            + "    \"yes\" : {"
-            + "      \"add_tag\" : \"foo\""
-            + "    },"
-            + "    \"wrong_button_id\" : {"
-            + "      \"add_tag\" : \"bar\""
-            + "    }"
-            + "  }"
-            + "}";
-
-        try {
-            mapper.readValue(json, Interactive.class);
-            fail("APIParsingException expected.");
-        } catch (APIParsingException exc) {
-            assertEquals("button_actions keys do not match predefined button IDs for predefined interactive notification", exc.getMessage());
-        }
-    }
-
-    @Test
-    public void testDeserializeExtraButtons() throws Exception {
-        String json
-            = "{"
-            + "  \"type\" : \"ua_yes_no_foreground\","
-            + "  \"button_actions\" : {"
-            + "    \"yes\" : {"
-            + "      \"add_tag\" : \"foo\""
-            + "    },"
-            + "    \"no\" : {"
-            + "      \"add_tag\" : \"qux\""
-            + "    },"
-            + "    \"wrong_button_id\" : {"
-            + "      \"add_tag\" : \"bar\""
-            + "    }"
-            + "  }"
-            + "}";
-
-        try {
-            mapper.readValue(json, Interactive.class);
-            fail("APIParsingException expected.");
-        } catch (APIParsingException exc) {
-            assertEquals("button_actions keys do not match predefined button IDs for predefined interactive notification", exc.getMessage());
-        }
-    }
-
-    @Test
-    public void testDeserializeUnknownPredefined() throws Exception {
-        String json
-            = "{"
-            + "  \"type\" : \"ua_what_me_worry\","
-            + "  \"button_actions\" : {"
-            + "    \"yes\" : {"
-            + "      \"add_tag\" : \"foo\""
-            + "    },"
-            + "    \"no\" : {"
-            + "      \"add_tag\" : \"bar\""
-            + "    }"
-            + "  }"
-            + "}";
-
-        try {
-            mapper.readValue(json, Interactive.class);
-            fail("APIParsingException expected.");
-        } catch (APIParsingException exc) {
-            assertEquals(String.format("Predefined interactive notification type '%s' not found", "ua_what_me_worry"), exc.getMessage());
-        }
-    }
-
-    @Test
-    public void testDeserializeUnknownPredefinedNoAction() throws Exception {
-        String json
-            = "{"
-            + "  \"type\" : \"ua_what_me_worry\""
-            + "}";
-
-        try {
-            mapper.readValue(json, Interactive.class);
-            fail("APIParsingException expected.");
-        } catch (APIParsingException exc) {
-            assertEquals(String.format("Predefined interactive notification type '%s' not found", "ua_what_me_worry"), exc.getMessage());
-        }
     }
 
     @Test
@@ -248,14 +112,6 @@ public class InteractiveDeserializerTest {
 
         // "button_actions" is optional, so this is valid
         mapper.readValue(json, Interactive.class);
-
-        String json2
-            = "{"
-            + "  \"type\" : \"some_custom_type\""
-            + "}";
-
-        // should be OK for custom types, too
-        mapper.readValue(json2, Interactive.class);
     }
 
     @Test
@@ -278,51 +134,6 @@ public class InteractiveDeserializerTest {
             fail("APIParsingException expected.");
         } catch (APIParsingException exc) {
             assertEquals("The key 'extra' is not allowed in this context", exc.getMessage());
-        }
-    }
-
-    @Test
-    public void testDeserializeCustomNoButtonActions() throws Exception {
-        String json
-            = "{"
-            + "  \"type\" : \"acme_interactive\","
-            + "  \"button_actions\" : {"
-            + "  }"
-            + "}";
-        mapper.readValue(json, Interactive.class);
-    }
-
-    @Test
-    public void testDeserializeCustomTooManyButtonActions() throws Exception {
-        String json
-            = "{"
-            + "  \"type\" : \"acme_interactive\","
-            + "  \"button_actions\" : {"
-            + "    \"yes\" : {"
-            + "      \"add_tag\" : \"foo\""
-            + "    },"
-            + "    \"no\" : {"
-            + "      \"add_tag\" : \"bar\""
-            + "    },"
-            + "    \"maybe\" : {"
-            + "      \"add_tag\" : \"wut\""
-            + "    },"
-            + "    \"perhaps\" : {"
-            + "      \"add_tag\" : \"why\""
-            + "    },"
-            + "    \"vague\" : {"
-            + "      \"add_tag\" : \"nope\""
-            + "    },"
-            + "    \"never\" : {"
-            + "      \"add_tag\" : \"stop\""
-            + "    }"
-            + "  }"
-            + "}";
-        try {
-            mapper.readValue(json, Interactive.class);
-            fail("APIParsingException expected.");
-        } catch (APIParsingException exc) {
-            assertEquals("button_actions must specify no more than 5 actions", exc.getMessage());
         }
     }
 
