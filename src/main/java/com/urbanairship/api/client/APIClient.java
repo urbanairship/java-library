@@ -285,6 +285,8 @@ public class APIClient {
     public HttpResponse createTag(String tag) throws IOException {
         Request req = provisionRequest(Request.Put(baseURI.resolve(API_TAGS_PATH + tag)));
 
+        req.removeHeaders(CONTENT_TYPE_KEY);
+
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("Executing create tag request %s", req));
         }
