@@ -39,6 +39,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
@@ -131,6 +132,46 @@ public class APIClientTest {
         assertFalse(userAgent.equals("UAJavaLib/"));
         assertFalse(userAgent.endsWith("/"));
         assertTrue(userAgent.startsWith("UAJavaLib/"));
+    }
+
+    @Test
+    public void testBaseUriResolutionWithPath() throws URISyntaxException {
+        String base = "https://test.com/big/fun/path/";
+        String relative = "/api/push/";
+
+        URI uriBase = new URI(base);
+        URI uriNuResolved = APIClient.baseURIResolution(uriBase, relative);
+        assertEquals(uriNuResolved.toString(), base + relative.substring(1));
+    }
+
+    @Test
+    public void testBaseUriResolutionWithPathWithoutSlash() throws URISyntaxException {
+        String base = "https://test.com/big/fun/path";
+        String relative = "/api/push/";
+
+        URI uriBase = new URI(base);
+        URI uriNuResolved = APIClient.baseURIResolution(uriBase, relative);
+        assertEquals(uriNuResolved.toString(), base + relative);
+    }
+
+    @Test
+    public void testBaseUriResolutionWithoutPath() throws URISyntaxException {
+        String base = "https://test.com/";
+        String relative = "/api/push/";
+
+        URI uriBase = new URI(base);
+        URI uriNuResolved = APIClient.baseURIResolution(uriBase, relative);
+        assertEquals(uriNuResolved.toString(), base + relative.substring(1));
+    }
+
+    @Test
+    public void testBaseUriResolutionWithoutSlash() throws URISyntaxException {
+        String base = "https://test.com";
+        String relative = "/api/push/";
+
+        URI uriBase = new URI(base);
+        URI uriNuResolved = APIClient.baseURIResolution(uriBase, relative);
+        assertEquals(uriNuResolved.toString(), base + relative);
     }
 
     /* Test the following attributes of the push method on the APIClient object
@@ -724,8 +765,7 @@ public class APIClientTest {
             HttpResponse response = client.createTag("puppies");
 
             // Verify components of the underlying HttpRequest
-            verify(putRequestedFor(urlEqualTo("/api/tags/puppies"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+            verify(putRequestedFor(urlEqualTo("/api/tags/puppies")));
             List<LoggedRequest> requests = findAll(putRequestedFor(
                     urlEqualTo("/api/tags/puppies")));
             // There should only be one request
@@ -2179,7 +2219,7 @@ public class APIClientTest {
     }
 
     @Test
-    public void testListIndividualPushResponseStatistics() throws IOException {
+    public void testListIndividualPushResponseStatistics() throws IOException, URISyntaxException {
 
         // Setup a client
         APIClient client = APIClient.newBuilder()
@@ -2210,7 +2250,7 @@ public class APIClientTest {
     }
 
     @Test
-    public void testListReportsListingResponse() throws IOException {
+    public void testListReportsListingResponse() throws IOException, URISyntaxException {
 
         // Setup a client
         APIClient client = APIClient.newBuilder()
@@ -2276,7 +2316,7 @@ public class APIClientTest {
     }
 
     @Test
-    public void testListReportsListingResponseWithOptionalParameters() throws IOException {
+    public void testListReportsListingResponseWithOptionalParameters() throws IOException, URISyntaxException {
 
         // Setup a client
         APIClient client = APIClient.newBuilder()
@@ -2342,7 +2382,7 @@ public class APIClientTest {
     }
 
     @Test
-    public void testListPerPushDetail() throws IOException {
+    public void testListPerPushDetail() throws IOException, URISyntaxException {
 
         ObjectMapper mapper = APIResponseObjectMapper.getInstance();
 
@@ -2393,7 +2433,7 @@ public class APIClientTest {
     }
 
     @Test
-    public void testListPerPushSeries() throws IOException {
+    public void testListPerPushSeries() throws IOException, URISyntaxException {
 
         ObjectMapper mapper = APIResponseObjectMapper.getInstance();
 
@@ -2507,7 +2547,7 @@ public class APIClientTest {
     }
 
     @Test
-    public void testListPerPushSeriesWithPrecision() throws IOException {
+    public void testListPerPushSeriesWithPrecision() throws IOException, URISyntaxException {
 
         ObjectMapper mapper = APIResponseObjectMapper.getInstance();
 
@@ -2621,7 +2661,7 @@ public class APIClientTest {
     }
 
     @Test
-    public void testListPerPushSeriesWithPrecisionWithRange() throws IOException {
+    public void testListPerPushSeriesWithPrecisionWithRange() throws IOException, URISyntaxException {
 
         ObjectMapper mapper = APIResponseObjectMapper.getInstance();
 
@@ -2738,7 +2778,7 @@ public class APIClientTest {
     }
 
     @Test
-    public void testListAppsOpenReport() throws IOException {
+    public void testListAppsOpenReport() throws IOException, URISyntaxException {
 
         // Setup a client
         APIClient client = APIClient.newBuilder()
@@ -2778,7 +2818,7 @@ public class APIClientTest {
     }
 
     @Test
-    public void testListTimeInAppReport() throws IOException {
+    public void testListTimeInAppReport() throws IOException, URISyntaxException {
 
         // Setup a client
         APIClient client = APIClient.newBuilder()
