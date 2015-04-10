@@ -41,7 +41,7 @@ public class PushOptionsTest {
                 + "\"audience\":\"ALL\","
                 + "\"device_types\":[\"ios\"],"
                 + "\"notification\":{\"alert\":\"wat\"},"
-                + "\"options\":{\"present\":true}"
+                + "\"options\":{}"
                 + "}";
         PushPayload push = PushPayload.newBuilder()
                 .setAudience(Selectors.all())
