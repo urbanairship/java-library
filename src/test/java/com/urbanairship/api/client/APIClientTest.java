@@ -26,6 +26,8 @@ import com.urbanairship.api.tag.model.BatchTagSet;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.CoreConnectionPNames;
 import org.apache.log4j.BasicConfigurator;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -131,6 +133,28 @@ public class APIClientTest {
         assertFalse(userAgent.equals("UAJavaLib/"));
         assertFalse(userAgent.endsWith("/"));
         assertTrue(userAgent.startsWith("UAJavaLib/"));
+    }
+
+    @Test
+    public void testAPIClientBuilderWithBasicHttpParams() {
+        BasicHttpParams httpParams = new BasicHttpParams();
+        httpParams.setParameter(CoreConnectionPNames.SO_TIMEOUT, 10);
+        httpParams.setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 20);
+
+        APIClient client = APIClient.newBuilder()
+                .setKey("key")
+                .setSecret("secret")
+                .setHttpParams(httpParams)
+                .build();
+
+        String socketTimeoutName = "http.socket.timeout";
+        String connectionTimeoutName = "http.connection.timeout";
+        BasicHttpParams retrievedParams = client.getHttpParams().get();
+
+        assertTrue(retrievedParams.getNames().contains(socketTimeoutName));
+        assertTrue(retrievedParams.getNames().contains(connectionTimeoutName));
+        assertTrue(retrievedParams.getParameter(socketTimeoutName).equals(10));
+        assertTrue(retrievedParams.getParameter(connectionTimeoutName).equals(20));
     }
 
     /* Test the following attributes of the push method on the APIClient object
