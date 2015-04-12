@@ -422,10 +422,10 @@ public class APIClient {
         Preconditions.checkArgument(box.isValid(), "Box must be a valid coordinate");
 
         URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_LOCATION_PATH +
-                    box.getCornerOne().getLatitude() + "," +
-                    box.getCornerOne().getLongitude() + "," +
-                    box.getCornerTwo().getLatitude() + "," +
-                    box.getCornerTwo().getLongitude()
+                        box.getCornerOne().getLatitude() + "," +
+                        box.getCornerOne().getLongitude() + "," +
+                        box.getCornerTwo().getLatitude() + "," +
+                        box.getCornerTwo().getLongitude()
         ));
 
         Request req = provisionRequest(Request.Get(builder.toString()));
