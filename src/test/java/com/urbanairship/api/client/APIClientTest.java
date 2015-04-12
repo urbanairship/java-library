@@ -138,40 +138,44 @@ public class APIClientTest {
     public void testBaseUriResolutionWithPath() throws URISyntaxException {
         String base = "https://test.com/big/fun/path/";
         String relative = "/api/push/";
+        String expected = "https://test.com/big/fun/path/api/push/";
 
         URI uriBase = new URI(base);
         URI uriNuResolved = APIClient.baseURIResolution(uriBase, relative);
-        assertEquals(uriNuResolved.toString(), base + relative.substring(1));
+        assertEquals(expected, uriNuResolved.toString());
     }
 
     @Test
     public void testBaseUriResolutionWithPathWithoutSlash() throws URISyntaxException {
         String base = "https://test.com/big/fun/path";
         String relative = "/api/push/";
+        String expected = "https://test.com/big/fun/path/api/push/";
 
         URI uriBase = new URI(base);
         URI uriNuResolved = APIClient.baseURIResolution(uriBase, relative);
-        assertEquals(uriNuResolved.toString(), base + relative);
+        assertEquals(expected, uriNuResolved.toString());
     }
 
     @Test
     public void testBaseUriResolutionWithoutPath() throws URISyntaxException {
         String base = "https://test.com/";
         String relative = "/api/push/";
+        String expected = "https://test.com/api/push/";
 
         URI uriBase = new URI(base);
         URI uriNuResolved = APIClient.baseURIResolution(uriBase, relative);
-        assertEquals(uriNuResolved.toString(), base + relative.substring(1));
+        assertEquals(expected, uriNuResolved.toString());
     }
 
     @Test
     public void testBaseUriResolutionWithoutSlash() throws URISyntaxException {
         String base = "https://test.com";
         String relative = "/api/push/";
+        String expected = "https://test.com/api/push/";
 
         URI uriBase = new URI(base);
         URI uriNuResolved = APIClient.baseURIResolution(uriBase, relative);
-        assertEquals(uriNuResolved.toString(), base + relative);
+        assertEquals(expected, uriNuResolved.toString());
     }
 
     /* Test the following attributes of the push method on the APIClient object
