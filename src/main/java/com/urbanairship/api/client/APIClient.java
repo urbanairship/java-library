@@ -812,7 +812,7 @@ public class APIClient {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(appKey, appSecret, baseURI, version, uaHost, proxyInfo);
+        return Objects.hashCode(appKey, appSecret, baseURI, version, uaHost, proxyInfo, httpParams);
     }
 
     @Override
@@ -824,12 +824,26 @@ public class APIClient {
             return false;
         }
         final APIClient other = (APIClient) obj;
-        return Objects.equal(this.appKey, other.appKey) && Objects.equal(this.appSecret, other.appSecret) && Objects.equal(this.baseURI, other.baseURI) && Objects.equal(this.version, other.version) && Objects.equal(this.uaHost, other.uaHost) && Objects.equal(this.proxyInfo, other.proxyInfo);
+        return Objects.equal(this.appKey, other.appKey)
+            && Objects.equal(this.appSecret, other.appSecret)
+            && Objects.equal(this.baseURI, other.baseURI)
+            && Objects.equal(this.version, other.version)
+            && Objects.equal(this.uaHost, other.uaHost)
+            && Objects.equal(this.proxyInfo, other.proxyInfo)
+            && Objects.equal(this.httpParams, other.httpParams);
     }
 
     @Override
     public String toString() {
-        return "APIClient\nAppKey:" + appKey + "\nAppSecret:" + appSecret + "\n";
+        return "APIClient{ +" +
+            "appKey=" + appKey +
+            ", appSecret=" + appSecret +
+            ", baseURI=" + baseURI +
+            ", version=" + version +
+            ", uaHost=" + uaHost +
+            ", proxyInfo=" + proxyInfo +
+            ", httpParams=" + httpParams +
+            '}';
     }
 
     /* Builder for APIClient */
