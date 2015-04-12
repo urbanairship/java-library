@@ -233,7 +233,7 @@ public class APIClient {
         return provisionExecutor().execute(request).handleResponse(new ListAllSchedulesAPIResponseHandler());
     }
 
-    public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules(String start, int limit, String order) throws IOException{
+    public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules(String start, int limit, String order) throws IOException {
         String path = "/api/schedules" + "?" + "start=" + start + "&limit=" + limit + "&order=" + order;
         Request request = provisionRequest(Request.Get(baseURIResolution(baseURI, path)));
 
@@ -422,10 +422,10 @@ public class APIClient {
         Preconditions.checkArgument(box.isValid(), "Box must be a valid coordinate");
 
         URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_LOCATION_PATH +
-                box.getCornerOne().getLatitude() + "," +
-                box.getCornerOne().getLongitude() + "," +
-                box.getCornerTwo().getLatitude() + "," +
-                box.getCornerTwo().getLongitude()
+                    box.getCornerOne().getLatitude() + "," +
+                    box.getCornerOne().getLongitude() + "," +
+                    box.getCornerTwo().getLatitude() + "," +
+                    box.getCornerTwo().getLongitude()
         ));
 
         Request req = provisionRequest(Request.Get(builder.toString()));
@@ -475,7 +475,7 @@ public class APIClient {
         return provisionExecutor().execute(req).handleResponse(new ListAllSegmentsAPIResponseHandler());
     }
 
-    public APIClientResponse<APIListAllSegmentsResponse> listAllSegments(String nextPage) throws IOException, URISyntaxException  {
+    public APIClientResponse<APIListAllSegmentsResponse> listAllSegments(String nextPage) throws IOException, URISyntaxException {
         URI np = new URI(nextPage);
         Request req = provisionRequest(Request.Get(baseURIResolution(baseURI, np.getPath() + "?" + np.getQuery())));
 

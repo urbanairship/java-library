@@ -2091,7 +2091,7 @@ public class APIClientTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testListPushStatisticsStartAfterEnd() throws IOException, URISyntaxException, IllegalArgumentException {
+    public void testListPushStatisticsStartAfterEnd() throws IOException, IllegalArgumentException {
         // Setup a client
         APIClient client = APIClient.newBuilder()
                 .setBaseURI("http://localhost:8080")
@@ -2157,7 +2157,7 @@ public class APIClientTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testListPushStatisticsStartAfterEndCSV() throws IOException, URISyntaxException, IllegalArgumentException {
+    public void testListPushStatisticsStartAfterEndCSV() throws IOException, IllegalArgumentException {
         // Setup a client
         APIClient client = APIClient.newBuilder()
                 .setBaseURI("http://localhost:8080")
@@ -2223,7 +2223,7 @@ public class APIClientTest {
     }
 
     @Test
-    public void testListIndividualPushResponseStatistics() throws IOException, URISyntaxException {
+    public void testListIndividualPushResponseStatistics() throws IOException {
 
         // Setup a client
         APIClient client = APIClient.newBuilder()
@@ -2254,7 +2254,7 @@ public class APIClientTest {
     }
 
     @Test
-    public void testListReportsListingResponse() throws IOException, URISyntaxException {
+    public void testListReportsListingResponse() throws IOException {
 
         // Setup a client
         APIClient client = APIClient.newBuilder()
@@ -2320,7 +2320,7 @@ public class APIClientTest {
     }
 
     @Test
-    public void testListReportsListingResponseWithOptionalParameters() throws IOException, URISyntaxException {
+    public void testListReportsListingResponseWithOptionalParameters() throws IOException {
 
         // Setup a client
         APIClient client = APIClient.newBuilder()
@@ -2386,7 +2386,7 @@ public class APIClientTest {
     }
 
     @Test
-    public void testListPerPushDetail() throws IOException, URISyntaxException {
+    public void testListPerPushDetail() throws IOException {
 
         ObjectMapper mapper = APIResponseObjectMapper.getInstance();
 
@@ -2437,7 +2437,7 @@ public class APIClientTest {
     }
 
     @Test
-    public void testListPerPushSeries() throws IOException, URISyntaxException {
+    public void testListPerPushSeries() throws IOException {
 
         ObjectMapper mapper = APIResponseObjectMapper.getInstance();
 
@@ -2551,7 +2551,7 @@ public class APIClientTest {
     }
 
     @Test
-    public void testListPerPushSeriesWithPrecision() throws IOException, URISyntaxException {
+    public void testListPerPushSeriesWithPrecision() throws IOException {
 
         ObjectMapper mapper = APIResponseObjectMapper.getInstance();
 
@@ -2665,7 +2665,7 @@ public class APIClientTest {
     }
 
     @Test
-    public void testListPerPushSeriesWithPrecisionWithRange() throws IOException, URISyntaxException {
+    public void testListPerPushSeriesWithPrecisionWithRange() throws IOException {
 
         ObjectMapper mapper = APIResponseObjectMapper.getInstance();
 
@@ -2782,7 +2782,7 @@ public class APIClientTest {
     }
 
     @Test
-    public void testListAppsOpenReport() throws IOException, URISyntaxException {
+    public void testListAppsOpenReport() throws IOException {
 
         // Setup a client
         APIClient client = APIClient.newBuilder()
@@ -2822,7 +2822,7 @@ public class APIClientTest {
     }
 
     @Test
-    public void testListTimeInAppReport() throws IOException, URISyntaxException {
+    public void testListTimeInAppReport() throws IOException {
 
         // Setup a client
         APIClient client = APIClient.newBuilder()
