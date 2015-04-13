@@ -23,6 +23,7 @@ import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
+import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreProtocolPNames;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -77,9 +78,10 @@ public class APIClient {
     /* HTTP */
     private final HttpHost uaHost;
     private final Optional<ProxyInfo> proxyInfo;
+    private final Optional<BasicHttpParams> httpParams;
 
 
-    private APIClient(String appKey, String appSecret, String baseURI, Number version, Optional<ProxyInfo> proxyInfoOptional) {
+    private APIClient(String appKey, String appSecret, String baseURI, Number version, Optional<ProxyInfo> proxyInfoOptional, Optional<BasicHttpParams> httpParams) {
         Preconditions.checkArgument(StringUtils.isNotBlank(appKey),
                 "App key must be provided.");
         Preconditions.checkArgument(StringUtils.isNotBlank(appSecret),
@@ -90,6 +92,7 @@ public class APIClient {
         this.version = version;
         this.uaHost = new HttpHost(URI.create(baseURI).getHost(), 443, "https");
         this.proxyInfo = proxyInfoOptional;
+        this.httpParams = httpParams;
     }
 
     public static Builder newBuilder() {
@@ -106,6 +109,10 @@ public class APIClient {
 
     public String getAppKey() {
         return appKey;
+    }
+
+    public Optional<BasicHttpParams> getHttpParams() {
+        return httpParams;
     }
 
     /* Add the version number to the default version header */
@@ -140,6 +147,12 @@ public class APIClient {
         object.config(CoreProtocolPNames.USER_AGENT, getUserAgent())
                 .addHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_JSON)
                 .addHeader(ACCEPT_KEY, versionedAcceptHeader(version));
+
+        if (httpParams.isPresent()) {
+            for (String name : httpParams.get().getNames()) {
+                object.config(name, httpParams.get().getParameter(name));
+            }
+        }
 
         if (proxyInfo.isPresent()) {
             object.viaProxy(proxyInfo.get().getProxyHost());
@@ -816,7 +829,7 @@ public class APIClient {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(appKey, appSecret, baseURI, version, uaHost, proxyInfo);
+        return Objects.hashCode(appKey, appSecret, baseURI, version, uaHost, proxyInfo, httpParams);
     }
 
     @Override
@@ -828,12 +841,26 @@ public class APIClient {
             return false;
         }
         final APIClient other = (APIClient) obj;
-        return Objects.equal(this.appKey, other.appKey) && Objects.equal(this.appSecret, other.appSecret) && Objects.equal(this.baseURI, other.baseURI) && Objects.equal(this.version, other.version) && Objects.equal(this.uaHost, other.uaHost) && Objects.equal(this.proxyInfo, other.proxyInfo);
+        return Objects.equal(this.appKey, other.appKey)
+            && Objects.equal(this.appSecret, other.appSecret)
+            && Objects.equal(this.baseURI, other.baseURI)
+            && Objects.equal(this.version, other.version)
+            && Objects.equal(this.uaHost, other.uaHost)
+            && Objects.equal(this.proxyInfo, other.proxyInfo)
+            && Objects.equal(this.httpParams, other.httpParams);
     }
 
     @Override
     public String toString() {
-        return "APIClient\nAppKey:" + appKey + "\nAppSecret:" + appSecret + "\n";
+        return "APIClient{ +" +
+            "appKey=" + appKey +
+            ", appSecret=" + appSecret +
+            ", baseURI=" + baseURI +
+            ", version=" + version +
+            ", uaHost=" + uaHost +
+            ", proxyInfo=" + proxyInfo +
+            ", httpParams=" + httpParams +
+            '}';
     }
 
     /* Builder for APIClient */
@@ -845,6 +872,7 @@ public class APIClient {
         private String baseURI;
         private Number version;
         private ProxyInfo proxyInfoOptional;
+        private BasicHttpParams httpParams;
 
         private Builder() {
             baseURI = "https://go.urbanairship.com";
@@ -876,13 +904,18 @@ public class APIClient {
             return this;
         }
 
+        public Builder setHttpParams(BasicHttpParams httpParams) {
+            this.httpParams = httpParams;
+            return this;
+        }
+
         public APIClient build() {
             Preconditions.checkNotNull(key, "app key needed to build APIClient");
             Preconditions.checkNotNull(secret, "app secret needed to build APIClient");
             Preconditions.checkNotNull(baseURI, "base URI needed to build APIClient");
             Preconditions.checkNotNull(version, "version needed to build APIClient");
 
-            return new APIClient(key, secret, baseURI, version, Optional.fromNullable(proxyInfoOptional));
+            return new APIClient(key, secret, baseURI, version, Optional.fromNullable(proxyInfoOptional), Optional.fromNullable(httpParams));
         }
 
     }
