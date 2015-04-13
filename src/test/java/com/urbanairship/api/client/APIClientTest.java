@@ -41,6 +41,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
@@ -155,6 +156,50 @@ public class APIClientTest {
         assertTrue(retrievedParams.getNames().contains(connectionTimeoutName));
         assertTrue(retrievedParams.getParameter(socketTimeoutName).equals(10));
         assertTrue(retrievedParams.getParameter(connectionTimeoutName).equals(20));
+    }
+
+    @Test
+    public void testBaseUriResolutionWithPath() throws URISyntaxException {
+        String base = "https://test.com/big/fun/path/";
+        String relative = "/api/push/";
+        String expected = "https://test.com/big/fun/path/api/push/";
+
+        URI uriBase = new URI(base);
+        URI uriNuResolved = APIClient.baseURIResolution(uriBase, relative);
+        assertEquals(expected, uriNuResolved.toString());
+    }
+
+    @Test
+    public void testBaseUriResolutionWithPathWithoutSlash() throws URISyntaxException {
+        String base = "https://test.com/big/fun/path";
+        String relative = "/api/push/";
+        String expected = "https://test.com/big/fun/path/api/push/";
+
+        URI uriBase = new URI(base);
+        URI uriNuResolved = APIClient.baseURIResolution(uriBase, relative);
+        assertEquals(expected, uriNuResolved.toString());
+    }
+
+    @Test
+    public void testBaseUriResolutionWithoutPath() throws URISyntaxException {
+        String base = "https://test.com/";
+        String relative = "/api/push/";
+        String expected = "https://test.com/api/push/";
+
+        URI uriBase = new URI(base);
+        URI uriNuResolved = APIClient.baseURIResolution(uriBase, relative);
+        assertEquals(expected, uriNuResolved.toString());
+    }
+
+    @Test
+    public void testBaseUriResolutionWithoutSlash() throws URISyntaxException {
+        String base = "https://test.com";
+        String relative = "/api/push/";
+        String expected = "https://test.com/api/push/";
+
+        URI uriBase = new URI(base);
+        URI uriNuResolved = APIClient.baseURIResolution(uriBase, relative);
+        assertEquals(expected, uriNuResolved.toString());
     }
 
     /* Test the following attributes of the push method on the APIClient object
@@ -748,8 +793,7 @@ public class APIClientTest {
             HttpResponse response = client.createTag("puppies");
 
             // Verify components of the underlying HttpRequest
-            verify(putRequestedFor(urlEqualTo("/api/tags/puppies"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+            verify(putRequestedFor(urlEqualTo("/api/tags/puppies")));
             List<LoggedRequest> requests = findAll(putRequestedFor(
                     urlEqualTo("/api/tags/puppies")));
             // There should only be one request
@@ -2071,7 +2115,7 @@ public class APIClientTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testListPushStatisticsStartAfterEnd() throws IOException, URISyntaxException, IllegalArgumentException {
+    public void testListPushStatisticsStartAfterEnd() throws IOException, IllegalArgumentException {
         // Setup a client
         APIClient client = APIClient.newBuilder()
                 .setBaseURI("http://localhost:8080")
@@ -2137,7 +2181,7 @@ public class APIClientTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testListPushStatisticsStartAfterEndCSV() throws IOException, URISyntaxException, IllegalArgumentException {
+    public void testListPushStatisticsStartAfterEndCSV() throws IOException, IllegalArgumentException {
         // Setup a client
         APIClient client = APIClient.newBuilder()
                 .setBaseURI("http://localhost:8080")
