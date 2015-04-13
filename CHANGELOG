@@ -20,6 +20,7 @@ Lots of new things:
 - Interactive notifications
 - Added Android and Amazon channel support for Tag API
 - Now throw exceptions when deserializing undefined JSON fields
+- Client support for BasicHttpParams
 
 -------------------------
 0.2.1 16SEP13
