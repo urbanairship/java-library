@@ -166,11 +166,28 @@ public class APIClient {
         return executor;
     }
 
+    /* A method to resolve base URIs without excluding the original path */
+
+    public static URI baseURIResolution(URI baseURI, String path) {
+        if (!baseURI.getPath().endsWith("/")) {
+            try {
+                baseURI = new URI(baseURI.toString() + "/");
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if (path.startsWith("/"))  {
+            path = path.substring(1);
+        }
+
+        return baseURI.resolve(path);
+    }
+
     /* Push API */
 
     public APIClientResponse<APIPushResponse> push(PushPayload payload) throws IOException {
         Preconditions.checkNotNull(payload, "Payload required when executing a push operation");
-        Request request = provisionRequest(Request.Post(baseURI.resolve(API_PUSH_PATH)));
+        Request request = provisionRequest(Request.Post(baseURIResolution(baseURI, API_PUSH_PATH)));
         request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
 
         if (logger.isDebugEnabled()) {
@@ -182,7 +199,7 @@ public class APIClient {
 
     public APIClientResponse<APIPushResponse> validate(PushPayload payload) throws IOException {
         Preconditions.checkNotNull(payload, "Payload required when executing a validate push operation");
-        Request request = provisionRequest(Request.Post(baseURI.resolve(API_VALIDATE_PATH)));
+        Request request = provisionRequest(Request.Post(baseURIResolution(baseURI, API_VALIDATE_PATH)));
         request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
 
         if (logger.isDebugEnabled()) {
@@ -196,7 +213,7 @@ public class APIClient {
 
     public APIClientResponse<APIScheduleResponse> schedule(SchedulePayload payload) throws IOException {
         Preconditions.checkNotNull(payload, "Payload required when scheduling a push request");
-        Request request = provisionRequest(Request.Post(baseURI.resolve(API_SCHEDULE_PATH)));
+        Request request = provisionRequest(Request.Post(baseURIResolution(baseURI, API_SCHEDULE_PATH)));
         request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
 
         if (logger.isDebugEnabled()) {
@@ -207,7 +224,7 @@ public class APIClient {
     }
 
     public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules() throws IOException {
-        Request request = provisionRequest(Request.Get(baseURI.resolve(API_SCHEDULE_PATH)));
+        Request request = provisionRequest(Request.Get(baseURIResolution(baseURI, API_SCHEDULE_PATH)));
 
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("Executing list all schedules request %s", request));
@@ -218,7 +235,7 @@ public class APIClient {
 
     public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules(String start, int limit, String order) throws IOException {
         String path = "/api/schedules" + "?" + "start=" + start + "&limit=" + limit + "&order=" + order;
-        Request request = provisionRequest(Request.Get(baseURI.resolve(path)));
+        Request request = provisionRequest(Request.Get(baseURIResolution(baseURI, path)));
 
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("Executing list all schedules request %s", request));
@@ -229,7 +246,7 @@ public class APIClient {
 
     public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules(String next_page) throws IOException, URISyntaxException {
         URI np = new URI(next_page);
-        Request request = provisionRequest(Request.Get(baseURI.resolve(np.getPath() + "?" + np.getQuery())));
+        Request request = provisionRequest(Request.Get(baseURIResolution(baseURI, np.getPath() + "?" + np.getQuery())));
 
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("Executing list all schedules request %s", request));
@@ -239,7 +256,7 @@ public class APIClient {
     }
 
     public APIClientResponse<SchedulePayload> listSchedule(String id) throws IOException {
-        Request request = provisionRequest(Request.Get(baseURI.resolve(API_SCHEDULE_PATH + id)));
+        Request request = provisionRequest(Request.Get(baseURIResolution(baseURI, API_SCHEDULE_PATH + id)));
 
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("Executing list specific schedule request %s", request));
@@ -250,7 +267,7 @@ public class APIClient {
 
     public APIClientResponse<APIScheduleResponse> updateSchedule(SchedulePayload payload, String id) throws IOException {
         Preconditions.checkNotNull(payload, "Payload is required when updating schedule");
-        Request req = provisionRequest(Request.Put(baseURI.resolve(API_SCHEDULE_PATH + id)));
+        Request req = provisionRequest(Request.Put(baseURIResolution(baseURI, API_SCHEDULE_PATH + id)));
         req.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
 
         if (logger.isDebugEnabled()) {
@@ -261,7 +278,7 @@ public class APIClient {
     }
 
     public HttpResponse deleteSchedule(String id) throws IOException {
-        Request req = provisionRequest(Request.Delete(baseURI.resolve(API_SCHEDULE_PATH + id)));
+        Request req = provisionRequest(Request.Delete(baseURIResolution(baseURI, API_SCHEDULE_PATH + id)));
 
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("Executing delete schedule request %s", req));
@@ -273,7 +290,7 @@ public class APIClient {
     /* Tags API */
 
     public APIClientResponse<APIListTagsResponse> listTags() throws IOException {
-        Request req = provisionRequest(Request.Get(baseURI.resolve(API_TAGS_PATH)));
+        Request req = provisionRequest(Request.Get(baseURIResolution(baseURI, API_TAGS_PATH)));
 
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("Executing list tags request %s", req));
@@ -283,7 +300,7 @@ public class APIClient {
     }
 
     public HttpResponse createTag(String tag) throws IOException {
-        Request req = provisionRequest(Request.Put(baseURI.resolve(API_TAGS_PATH + tag)));
+        Request req = provisionRequest(Request.Put(baseURIResolution(baseURI, API_TAGS_PATH + tag)));
 
         req.removeHeaders(CONTENT_TYPE_KEY);
 
@@ -295,7 +312,7 @@ public class APIClient {
     }
 
     public HttpResponse deleteTag(String tag) throws IOException {
-        Request req = provisionRequest(Request.Delete(baseURI.resolve(API_TAGS_PATH + tag)));
+        Request req = provisionRequest(Request.Delete(baseURIResolution(baseURI, API_TAGS_PATH + tag)));
 
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("Executing delete tag request %s", req));
@@ -306,7 +323,7 @@ public class APIClient {
 
     public HttpResponse addRemoveDevicesFromTag(String tag, AddRemoveDeviceFromTagPayload payload) throws IOException {
         Preconditions.checkNotNull(payload, "Payload is required when adding and/or removing devices from a tag");
-        Request req = provisionRequest(Request.Post(baseURI.resolve(API_TAGS_PATH + tag)));
+        Request req = provisionRequest(Request.Post(baseURIResolution(baseURI, API_TAGS_PATH + tag)));
         req.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
 
         if (logger.isDebugEnabled()) {
@@ -318,7 +335,7 @@ public class APIClient {
 
     public HttpResponse batchModificationOfTags(BatchModificationPayload payload) throws IOException {
         Preconditions.checkNotNull(payload, "Payload is required when performing batch modification of tags");
-        Request req = provisionRequest(Request.Post(baseURI.resolve(API_TAGS_BATCH_PATH)));
+        Request req = provisionRequest(Request.Post(baseURIResolution(baseURI, API_TAGS_BATCH_PATH)));
         req.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
 
         if (logger.isDebugEnabled()) {
@@ -333,7 +350,7 @@ public class APIClient {
     public APIClientResponse<APILocationResponse> queryLocationInformation(String query) throws IOException {
         Preconditions.checkArgument(StringUtils.isNotBlank(query), "Query text cannot be blank");
 
-        URIBuilder builder = new URIBuilder(baseURI.resolve(API_LOCATION_PATH));
+        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_LOCATION_PATH));
         builder.addParameter("q", query);
 
         Request req = provisionRequest(Request.Get(builder.toString()));
@@ -350,7 +367,7 @@ public class APIClient {
     public APIClientResponse<APILocationResponse> queryLocationInformation(String query, String type) throws IOException {
         Preconditions.checkArgument(StringUtils.isNotBlank(query), "Query text cannot be blank");
 
-        URIBuilder builder = new URIBuilder(baseURI.resolve(API_LOCATION_PATH));
+        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_LOCATION_PATH));
         builder.addParameter("q", query);
         builder.addParameter("type", type);
 
@@ -369,7 +386,7 @@ public class APIClient {
         Preconditions.checkNotNull(point, "Point must not be null");
         Preconditions.checkArgument(point.isValid(), "Point must be a valid coordinate");
 
-        URIBuilder builder = new URIBuilder(baseURI.resolve(API_LOCATION_PATH + point.getLatitude() + "," + point.getLongitude()));
+        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_LOCATION_PATH + point.getLatitude() + "," + point.getLongitude()));
 
         Request req = provisionRequest(Request.Get(builder.toString()));
 
@@ -386,7 +403,7 @@ public class APIClient {
         Preconditions.checkNotNull(point, "Point must not be null");
         Preconditions.checkArgument(point.isValid(), "Point must be a valid coordinate");
 
-        URIBuilder builder = new URIBuilder(baseURI.resolve(API_LOCATION_PATH + point.getLatitude() + "," + point.getLongitude()));
+        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_LOCATION_PATH + point.getLatitude() + "," + point.getLongitude()));
         builder.addParameter("type", type);
 
         Request req = provisionRequest(Request.Get(builder.toString()));
@@ -404,7 +421,7 @@ public class APIClient {
         Preconditions.checkNotNull(box, "Box must not be null");
         Preconditions.checkArgument(box.isValid(), "Box must be a valid coordinate");
 
-        URIBuilder builder = new URIBuilder(baseURI.resolve(API_LOCATION_PATH +
+        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_LOCATION_PATH +
                         box.getCornerOne().getLatitude() + "," +
                         box.getCornerOne().getLongitude() + "," +
                         box.getCornerTwo().getLatitude() + "," +
@@ -426,7 +443,7 @@ public class APIClient {
         Preconditions.checkNotNull(box, "Box must not be null");
         Preconditions.checkArgument(box.isValid(), "Box must be a valid coordinate");
 
-        URIBuilder builder = new URIBuilder(baseURI.resolve(API_LOCATION_PATH +
+        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_LOCATION_PATH +
                         box.getCornerOne().getLatitude() + "," +
                         box.getCornerOne().getLongitude() + "," +
                         box.getCornerTwo().getLatitude() + "," +
@@ -449,7 +466,7 @@ public class APIClient {
     /* Segments API */
 
     public APIClientResponse<APIListAllSegmentsResponse> listAllSegments() throws IOException {
-        Request req = provisionRequest(Request.Get(baseURI.resolve(API_SEGMENTS_PATH)));
+        Request req = provisionRequest(Request.Get(baseURIResolution(baseURI, API_SEGMENTS_PATH)));
 
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("Executing list all segments request %s", req));
@@ -460,7 +477,7 @@ public class APIClient {
 
     public APIClientResponse<APIListAllSegmentsResponse> listAllSegments(String nextPage) throws IOException, URISyntaxException {
         URI np = new URI(nextPage);
-        Request req = provisionRequest(Request.Get(baseURI.resolve(np.getPath() + "?" + np.getQuery())));
+        Request req = provisionRequest(Request.Get(baseURIResolution(baseURI, np.getPath() + "?" + np.getQuery())));
 
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("Executing list all segments request %s", req));
@@ -469,9 +486,9 @@ public class APIClient {
         return provisionExecutor().execute(req).handleResponse(new ListAllSegmentsAPIResponseHandler());
     }
 
-    public APIClientResponse<APIListAllSegmentsResponse> listAllSegments(String start, int limit, String order) throws IOException, URISyntaxException {
+    public APIClientResponse<APIListAllSegmentsResponse> listAllSegments(String start, int limit, String order) throws IOException {
         String path = "/api/segments" + "?" + "start=" + start + "&limit=" + limit + "&order=" + order;
-        Request req = provisionRequest(Request.Get(baseURI.resolve(path)));
+        Request req = provisionRequest(Request.Get(baseURIResolution(baseURI, path)));
 
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("Executing list all segments request %s", req));
@@ -480,11 +497,11 @@ public class APIClient {
         return provisionExecutor().execute(req).handleResponse(new ListAllSegmentsAPIResponseHandler());
     }
 
-    public APIClientResponse<AudienceSegment> listSegment(String segmentID) throws IOException, URISyntaxException {
+    public APIClientResponse<AudienceSegment> listSegment(String segmentID) throws IOException {
         Preconditions.checkArgument(StringUtils.isNotBlank(segmentID), "segmentID is required when listing segment");
 
         String path = API_SEGMENTS_PATH + segmentID;
-        Request req = provisionRequest(Request.Get(baseURI.resolve(path)));
+        Request req = provisionRequest(Request.Get(baseURIResolution(baseURI, path)));
 
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("Executing list all segments request %s", req));
@@ -495,7 +512,7 @@ public class APIClient {
 
     public HttpResponse createSegment(AudienceSegment payload) throws IOException {
         Preconditions.checkNotNull(payload, "Payload is required when creating segment");
-        Request req = provisionRequest(Request.Post(baseURI.resolve(API_SEGMENTS_PATH)));
+        Request req = provisionRequest(Request.Post(baseURIResolution(baseURI, API_SEGMENTS_PATH)));
 
 
         req.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
@@ -512,7 +529,7 @@ public class APIClient {
         Preconditions.checkNotNull(payload, "Payload is required when updating segment");
 
         String path = API_SEGMENTS_PATH + segmentID;
-        Request req = provisionRequest(Request.Put(baseURI.resolve(path)));
+        Request req = provisionRequest(Request.Put(baseURIResolution(baseURI, path)));
 
 
         req.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
@@ -524,11 +541,11 @@ public class APIClient {
         return provisionExecutor().execute(req).returnResponse();
     }
 
-    public HttpResponse deleteSegment(String segmentID) throws IOException, URISyntaxException {
+    public HttpResponse deleteSegment(String segmentID) throws IOException {
         Preconditions.checkArgument(StringUtils.isNotBlank(segmentID), "segmentID is required when deleting segment");
 
         String path = API_SEGMENTS_PATH + segmentID;
-        Request req = provisionRequest(Request.Delete(baseURI.resolve(path)));
+        Request req = provisionRequest(Request.Delete(baseURIResolution(baseURI, path)));
 
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("Executing delete segment request %s", req));
@@ -539,10 +556,10 @@ public class APIClient {
 
     /* Device Information API */
 
-    public APIClientResponse<APIListSingleChannelResponse> listChannel(String channel) throws IOException, URISyntaxException {
+    public APIClientResponse<APIListSingleChannelResponse> listChannel(String channel) throws IOException {
 
         String path = API_DEVICE_CHANNELS_PATH + channel;
-        Request req = provisionRequest(Request.Get(baseURI.resolve(path)));
+        Request req = provisionRequest(Request.Get(baseURIResolution(baseURI, path)));
 
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("Executing get single channels request %s", req));
@@ -552,7 +569,7 @@ public class APIClient {
     }
 
     public APIClientResponse<APIListAllChannelsResponse> listAllChannels() throws IOException {
-        Request req = provisionRequest(Request.Get(baseURI.resolve(API_DEVICE_CHANNELS_PATH)));
+        Request req = provisionRequest(Request.Get(baseURIResolution(baseURI, API_DEVICE_CHANNELS_PATH)));
 
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("Executing list all channels request %s", req));
@@ -564,7 +581,7 @@ public class APIClient {
     /* Reports API */
 
     public APIClientResponse<PerPushDetailResponse> listPerPushDetail(String pushID) throws IOException {
-        URIBuilder builder = new URIBuilder(baseURI.resolve(API_REPORTS_PER_PUSH_DETAIL_PATH + pushID));
+        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_REPORTS_PER_PUSH_DETAIL_PATH + pushID));
 
         Request req = provisionRequest(Request.Get(builder.toString()));
 
@@ -576,7 +593,7 @@ public class APIClient {
     }
 
     public APIClientResponse<PerPushSeriesResponse> listPerPushSeries(String pushID) throws IOException {
-        URIBuilder builder = new URIBuilder(baseURI.resolve(API_REPORTS_PER_PUSH_SERIES_PATH + pushID));
+        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_REPORTS_PER_PUSH_SERIES_PATH + pushID));
 
         Request req = provisionRequest(Request.Get(builder.toString()));
 
@@ -593,7 +610,7 @@ public class APIClient {
                         MONTHLY.equals(precision),
                 "Precision must be specified as HOURLY, DAILY or MONTHLY");
 
-        URIBuilder builder = new URIBuilder(baseURI.resolve(API_REPORTS_PER_PUSH_SERIES_PATH + pushID));
+        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_REPORTS_PER_PUSH_SERIES_PATH + pushID));
 
         builder.addParameter("precision", precision.toUpperCase());
 
@@ -619,7 +636,7 @@ public class APIClient {
         Preconditions.checkNotNull(end, "End time is required when performing listing of per push series");
         Preconditions.checkArgument(start.isBefore(end), "Start time must be before End time");
 
-        URIBuilder builder = new URIBuilder(baseURI.resolve(API_REPORTS_PER_PUSH_SERIES_PATH + pushID));
+        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_REPORTS_PER_PUSH_SERIES_PATH + pushID));
 
         builder.addParameter("precision", precision.toUpperCase());
         builder.addParameter("start", start.toLocalDateTime().toString());
@@ -637,7 +654,7 @@ public class APIClient {
     public APIClientResponse<SinglePushInfoResponse> listIndividualPushResponseStatistics(String id) throws IOException {
         Preconditions.checkNotNull(id, "Push id is required when performing listing of individual push response statistics.");
 
-        URIBuilder builder = new URIBuilder(baseURI.resolve(API_REPORTS_PUSH_RESPONSE_PATH + id));
+        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_REPORTS_PUSH_RESPONSE_PATH + id));
 
         Request req = provisionRequest(Request.Get(builder.toString()));
 
@@ -658,7 +675,7 @@ public class APIClient {
         Preconditions.checkNotNull(end, "End time is required when performing listing of push statistics");
         Preconditions.checkArgument(start.isBefore(end), "Start time must be before End time");
 
-        URIBuilder builder = new URIBuilder(baseURI.resolve(API_REPORTS_PUSH_RESPONSE_PATH + "list"));
+        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_REPORTS_PUSH_RESPONSE_PATH + "list"));
 
         builder.addParameter("start", start.toLocalDateTime().toString());
         builder.addParameter("end", end.toLocalDateTime().toString());
@@ -691,7 +708,7 @@ public class APIClient {
         Preconditions.checkNotNull(end, "End time is required when performing listing of apps open");
         Preconditions.checkArgument(start.isBefore(end), "Start time must be before End time");
 
-        URIBuilder builder = new URIBuilder(baseURI.resolve(API_REPORTS_APPS_OPEN_PATH));
+        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_REPORTS_APPS_OPEN_PATH));
 
         builder.addParameter("precision", precision.toUpperCase());
         builder.addParameter("start", start.toLocalDateTime().toString());
@@ -717,7 +734,7 @@ public class APIClient {
         Preconditions.checkNotNull(end, "End time is required when performing listing of time in app");
         Preconditions.checkArgument(start.isBefore(end), "Start time must be before End time");
 
-        URIBuilder builder = new URIBuilder(baseURI.resolve(API_REPORTS_TIME_IN_APP_PATH));
+        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_REPORTS_TIME_IN_APP_PATH));
 
         builder.addParameter("precision", precision.toUpperCase());
         builder.addParameter("start", start.toLocalDateTime().toString());
@@ -741,12 +758,12 @@ public class APIClient {
      * @return APIClientResponse of List of AppStats in JSON. Times are in UTC, and data is provided for each push platform.
      * @throws IOException
      */
-    public APIClientResponse<List<AppStats>> listPushStatistics(DateTime start, DateTime end) throws IOException, URISyntaxException {
+    public APIClientResponse<List<AppStats>> listPushStatistics(DateTime start, DateTime end) throws IOException {
         Preconditions.checkNotNull(start, "Start time is required when performing listing of push statistics");
         Preconditions.checkNotNull(end, "End time is required when performing listing of push statistics");
         Preconditions.checkArgument(start.isBefore(end), "Start time must be before End time");
 
-        URIBuilder builder = new URIBuilder(baseURI.resolve(API_STATISTICS_PATH));
+        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_STATISTICS_PATH));
 
         builder.addParameter("start", start.toLocalDateTime().toString());
         builder.addParameter("end", end.toLocalDateTime().toString());
@@ -778,7 +795,7 @@ public class APIClient {
         Preconditions.checkNotNull(end, "End time is required when performing listing of push statistics");
         Preconditions.checkArgument(start.isBefore(end), "Start time must be before End time");
 
-        URIBuilder builder = new URIBuilder(baseURI.resolve(API_STATISTICS_PATH));
+        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_STATISTICS_PATH));
 
         builder.addParameter("start", start.toLocalDateTime().toString());
         builder.addParameter("end", end.toLocalDateTime().toString());
