@@ -7,6 +7,7 @@ Introduction
 ************
 
 This is a Java library for using the `Urban Airship API v3 <http://docs.urbanairship.com/api/ua.html>`__.
+For more examples using the Java library, please see `Example API Requests <http://docs.urbanairship.com/topic-guides/api-examples.html>`__.
 
 Installation
 ============
@@ -170,6 +171,27 @@ Optionally, a client can be created with proxy server support.
            .setProxyCredentials(new UsernamePasswordCredentials("user", "password"))
            .build())
        .build();
+
+
+BasicHttpParams Support
+=======================
+
+A client can also be created with the option to set any of the HTTP parameters configurable through the
+`Fluent API <http://hc.apache.org/httpcomponents-client-ga/fluent-hc/apidocs/org/apache/http/client/fluent/Request.html>`__,
+such as the protocol and connection parameters, by passing in a BasicHttpParams object.  In the example below, the socket and
+connection timeouts are set to be 500ms and 1000ms, respectively, thus overriding their default settings as infinite timeouts.
+
+.. code-block:: java
+
+    BasicHttpParams httpParams = new BasicHttpParams();
+        httpParams.setParameter(CoreConnectionPNames.SO_TIMEOUT, 500);
+        httpParams.setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 1000);
+
+    APIClient client = APIClient.newBuilder()
+        .setKey("key")
+        .setSecret("secret")
+        .setHttpParams(httpParams)
+        .build();
 
 
 ****
