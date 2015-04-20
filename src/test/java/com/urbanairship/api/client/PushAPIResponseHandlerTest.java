@@ -47,7 +47,8 @@ public class PushAPIResponseHandlerTest {
                 new ByteArrayInputStream(pushJSON.getBytes()),
                 pushJSON.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
-        PushAPIResponseHandler handler = new PushAPIResponseHandler();
+        APIClientResponseHandler<APIPushResponse> handler =
+                new APIClientResponseHandler<APIPushResponse>(APIPushResponse.class);
         try {
             APIClientResponse<APIPushResponse> response =
                     handler.handleResponse(httpResponse);
@@ -88,7 +89,8 @@ public class PushAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY, UA_JSON_RESPONSE));
 
         /* Test handling */
-        PushAPIResponseHandler handler = new PushAPIResponseHandler();
+        APIClientResponseHandler<APIPushResponse> handler =
+                new APIClientResponseHandler<APIPushResponse>(APIPushResponse.class);
         try {
             handler.handleResponse(httpResponse);
         } catch (APIRequestException ex) {
@@ -125,7 +127,8 @@ public class PushAPIResponseHandlerTest {
                 pushJSON.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_JSON));
-        PushAPIResponseHandler handler = new PushAPIResponseHandler();
+        APIClientResponseHandler<APIPushResponse> handler =
+                new APIClientResponseHandler<APIPushResponse>(APIPushResponse.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -157,7 +160,8 @@ public class PushAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 CONTENT_TYPE_TEXT_HTML));
 
-        PushAPIResponseHandler handler = new PushAPIResponseHandler();
+        APIClientResponseHandler<APIPushResponse> handler =
+                new APIClientResponseHandler<APIPushResponse>(APIPushResponse.class);
 
         try {
             handler.handleResponse(httpResponse);

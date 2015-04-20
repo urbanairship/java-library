@@ -51,7 +51,8 @@ public class AppsOpenReportAPIResponseHandlerTest {
                 new ByteArrayInputStream(responseString.getBytes()),
                 responseString.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
-        AppsOpenReportAPIResponseHandler handler = new AppsOpenReportAPIResponseHandler();
+        APIClientResponseHandler<ReportsAPIOpensResponse> handler =
+                new APIClientResponseHandler<ReportsAPIOpensResponse>(ReportsAPIOpensResponse.class);
 
         try {
             APIClientResponse<ReportsAPIOpensResponse> response = handler.handleResponse(httpResponse);
@@ -89,7 +90,8 @@ public class AppsOpenReportAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 UA_JSON_RESPONSE));
 
-        AppsOpenReportAPIResponseHandler handler = new AppsOpenReportAPIResponseHandler();
+        APIClientResponseHandler<ReportsAPIOpensResponse> handler =
+                new APIClientResponseHandler<ReportsAPIOpensResponse>(ReportsAPIOpensResponse.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -121,7 +123,8 @@ public class AppsOpenReportAPIResponseHandlerTest {
         httpResponse.setEntity(inputStreamEntity);
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_JSON));
 
-        AppsOpenReportAPIResponseHandler handler = new AppsOpenReportAPIResponseHandler();
+        APIClientResponseHandler<ReportsAPIOpensResponse> handler =
+                new APIClientResponseHandler<ReportsAPIOpensResponse>(ReportsAPIOpensResponse.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -153,7 +156,8 @@ public class AppsOpenReportAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 CONTENT_TYPE_TEXT_HTML));
 
-        AppsOpenReportAPIResponseHandler handler = new AppsOpenReportAPIResponseHandler();
+        APIClientResponseHandler<ReportsAPIOpensResponse> handler =
+                new APIClientResponseHandler<ReportsAPIOpensResponse>(ReportsAPIOpensResponse.class);
 
         try {
             handler.handleResponse(httpResponse);

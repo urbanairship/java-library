@@ -2035,7 +2035,7 @@ public class APIClientTest {
 
             assertEquals(200, response.getHttpResponse().getStatusLine().getStatusCode());
 
-            assertEquals(responseString, response.getApiResponse().toString());
+            assertEquals(responseString, response.getApiResponse());
 
         } catch (Exception ex) {
             fail("Exception thrown " + ex);

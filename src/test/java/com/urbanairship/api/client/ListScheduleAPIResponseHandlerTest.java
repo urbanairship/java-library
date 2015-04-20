@@ -35,7 +35,8 @@ public class ListScheduleAPIResponseHandlerTest {
                 new ByteArrayInputStream(listscheduleresponse.getBytes()),
                 listscheduleresponse.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
-        ListScheduleAPIResponseHandler handler = new ListScheduleAPIResponseHandler();
+        APIClientResponseHandler<SchedulePayload> handler =
+                new APIClientResponseHandler<SchedulePayload>(SchedulePayload.class);
 
         try {
             APIClientResponse<SchedulePayload> response =
@@ -65,7 +66,8 @@ public class ListScheduleAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 UA_JSON_RESPONSE));
 
-        ListScheduleAPIResponseHandler handler = new ListScheduleAPIResponseHandler();
+        APIClientResponseHandler<SchedulePayload> handler =
+                new APIClientResponseHandler<SchedulePayload>(SchedulePayload.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -92,7 +94,8 @@ public class ListScheduleAPIResponseHandlerTest {
         httpResponse.setEntity(inputStreamEntity);
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_JSON));
 
-        ListScheduleAPIResponseHandler handler = new ListScheduleAPIResponseHandler();
+        APIClientResponseHandler<SchedulePayload> handler =
+                new APIClientResponseHandler<SchedulePayload>(SchedulePayload.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -124,7 +127,8 @@ public class ListScheduleAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 CONTENT_TYPE_TEXT_HTML));
 
-        ListScheduleAPIResponseHandler handler = new ListScheduleAPIResponseHandler();
+        APIClientResponseHandler<SchedulePayload> handler =
+                new APIClientResponseHandler<SchedulePayload>(SchedulePayload.class);
 
         try {
             handler.handleResponse(httpResponse);

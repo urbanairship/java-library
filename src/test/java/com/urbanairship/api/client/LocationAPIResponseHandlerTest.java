@@ -60,7 +60,8 @@ public class LocationAPIResponseHandlerTest {
                 new ByteArrayInputStream(locationResponse.getBytes()),
                 locationResponse.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
-        LocationAPIResponseHandler handler = new LocationAPIResponseHandler();
+        APIClientResponseHandler<APILocationResponse> handler =
+                new APIClientResponseHandler<APILocationResponse>(APILocationResponse.class);
 
         try {
             APIClientResponse<APILocationResponse> response =
@@ -89,7 +90,8 @@ public class LocationAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 UA_JSON_RESPONSE));
 
-        LocationAPIResponseHandler handler = new LocationAPIResponseHandler();
+        APIClientResponseHandler<APILocationResponse> handler =
+                new APIClientResponseHandler<APILocationResponse>(APILocationResponse.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -116,7 +118,8 @@ public class LocationAPIResponseHandlerTest {
         httpResponse.setEntity(inputStreamEntity);
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_JSON));
 
-        LocationAPIResponseHandler handler = new LocationAPIResponseHandler();
+        APIClientResponseHandler<APILocationResponse> handler =
+                new APIClientResponseHandler<APILocationResponse>(APILocationResponse.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -148,7 +151,8 @@ public class LocationAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 CONTENT_TYPE_TEXT_HTML));
 
-        LocationAPIResponseHandler handler = new LocationAPIResponseHandler();
+        APIClientResponseHandler<APILocationResponse> handler =
+                new APIClientResponseHandler<APILocationResponse>(APILocationResponse.class);
 
         try {
             handler.handleResponse(httpResponse);

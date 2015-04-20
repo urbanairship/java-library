@@ -43,7 +43,10 @@ public class ListAllSchedulesAPIResponseHandlerTest {
                 new ByteArrayInputStream(listscheduleresponse.getBytes()),
                 listscheduleresponse.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
-        ListAllSchedulesAPIResponseHandler handler = new ListAllSchedulesAPIResponseHandler();
+
+        APIClientResponseHandler<APIListAllSchedulesResponse> handler =
+                new APIClientResponseHandler<APIListAllSchedulesResponse>(APIListAllSchedulesResponse.class);
+
 
         try {
             APIClientResponse<APIListAllSchedulesResponse> response =
@@ -74,7 +77,8 @@ public class ListAllSchedulesAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 UA_JSON_RESPONSE));
 
-        ListAllSchedulesAPIResponseHandler handler = new ListAllSchedulesAPIResponseHandler();
+        APIClientResponseHandler<APIListAllSchedulesResponse> handler =
+                new APIClientResponseHandler<APIListAllSchedulesResponse>(APIListAllSchedulesResponse.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -101,7 +105,8 @@ public class ListAllSchedulesAPIResponseHandlerTest {
         httpResponse.setEntity(inputStreamEntity);
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_JSON));
 
-        ListAllSchedulesAPIResponseHandler handler = new ListAllSchedulesAPIResponseHandler();
+        APIClientResponseHandler<APIListAllSchedulesResponse> handler =
+                new APIClientResponseHandler<APIListAllSchedulesResponse>(APIListAllSchedulesResponse.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -133,7 +138,8 @@ public class ListAllSchedulesAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 CONTENT_TYPE_TEXT_HTML));
 
-        ListAllSchedulesAPIResponseHandler handler = new ListAllSchedulesAPIResponseHandler();
+        APIClientResponseHandler<APIListAllSchedulesResponse> handler =
+                new APIClientResponseHandler<APIListAllSchedulesResponse>(APIListAllSchedulesResponse.class);
 
         try {
             handler.handleResponse(httpResponse);

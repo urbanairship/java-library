@@ -45,7 +45,8 @@ public class ListAllSegmentsAPIResponseHandlerTest {
                 new ByteArrayInputStream(testresponse.getBytes()),
                 testresponse.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
-        ListAllSegmentsAPIResponseHandler handler = new ListAllSegmentsAPIResponseHandler();
+        APIClientResponseHandler<APIListAllSegmentsResponse> handler =
+                new APIClientResponseHandler<APIListAllSegmentsResponse>(APIListAllSegmentsResponse.class);
 
         try {
             APIClientResponse<APIListAllSegmentsResponse> response =
@@ -74,7 +75,8 @@ public class ListAllSegmentsAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 UA_JSON_RESPONSE));
 
-        ListAllSegmentsAPIResponseHandler handler = new ListAllSegmentsAPIResponseHandler();
+        APIClientResponseHandler<APIListAllSegmentsResponse> handler =
+                new APIClientResponseHandler<APIListAllSegmentsResponse>(APIListAllSegmentsResponse.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -101,7 +103,8 @@ public class ListAllSegmentsAPIResponseHandlerTest {
         httpResponse.setEntity(inputStreamEntity);
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_JSON));
 
-        ListAllSegmentsAPIResponseHandler handler = new ListAllSegmentsAPIResponseHandler();
+        APIClientResponseHandler<APIListAllSegmentsResponse> handler =
+                new APIClientResponseHandler<APIListAllSegmentsResponse>(APIListAllSegmentsResponse.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -133,7 +136,8 @@ public class ListAllSegmentsAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 CONTENT_TYPE_TEXT_HTML));
 
-        ListAllSegmentsAPIResponseHandler handler = new ListAllSegmentsAPIResponseHandler();
+        APIClientResponseHandler<APIListAllSegmentsResponse> handler =
+                new APIClientResponseHandler<APIListAllSegmentsResponse>(APIListAllSegmentsResponse.class);
 
         try {
             handler.handleResponse(httpResponse);

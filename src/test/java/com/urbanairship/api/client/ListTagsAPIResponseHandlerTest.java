@@ -35,7 +35,8 @@ public class ListTagsAPIResponseHandlerTest {
                 new ByteArrayInputStream(listtagresponse.getBytes()),
                 listtagresponse.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
-        ListTagsAPIResponseHandler handler = new ListTagsAPIResponseHandler();
+        APIClientResponseHandler<APIListTagsResponse> handler =
+                new APIClientResponseHandler<APIListTagsResponse>(APIListTagsResponse.class);
 
         try {
             APIClientResponse<APIListTagsResponse> response =
@@ -67,7 +68,8 @@ public class ListTagsAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 UA_JSON_RESPONSE));
 
-        ListTagsAPIResponseHandler handler = new ListTagsAPIResponseHandler();
+        APIClientResponseHandler<APIListTagsResponse> handler =
+                new APIClientResponseHandler<APIListTagsResponse>(APIListTagsResponse.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -94,7 +96,8 @@ public class ListTagsAPIResponseHandlerTest {
         httpResponse.setEntity(inputStreamEntity);
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_JSON));
 
-        ListTagsAPIResponseHandler handler = new ListTagsAPIResponseHandler();
+        APIClientResponseHandler<APIListTagsResponse> handler =
+                new APIClientResponseHandler<APIListTagsResponse>(APIListTagsResponse.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -126,7 +129,8 @@ public class ListTagsAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 CONTENT_TYPE_TEXT_HTML));
 
-        ListTagsAPIResponseHandler handler = new ListTagsAPIResponseHandler();
+        APIClientResponseHandler<APIListTagsResponse> handler =
+                new APIClientResponseHandler<APIListTagsResponse>(APIListTagsResponse.class);
 
         try {
             handler.handleResponse(httpResponse);

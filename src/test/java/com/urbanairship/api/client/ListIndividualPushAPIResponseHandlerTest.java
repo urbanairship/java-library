@@ -16,7 +16,9 @@ import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class ListIndividualPushAPIResponseHandlerTest {
 
@@ -46,7 +48,8 @@ public class ListIndividualPushAPIResponseHandlerTest {
                 responseString.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
 
-        ListIndividualPushAPIResponseHandler handler = new ListIndividualPushAPIResponseHandler();
+        APIClientResponseHandler<SinglePushInfoResponse> handler =
+                new APIClientResponseHandler<SinglePushInfoResponse>(SinglePushInfoResponse.class);
 
         try {
             APIClientResponse<SinglePushInfoResponse> response = handler.handleResponse(httpResponse);
@@ -81,7 +84,8 @@ public class ListIndividualPushAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 UA_JSON_RESPONSE));
 
-        ListIndividualPushAPIResponseHandler handler = new ListIndividualPushAPIResponseHandler();
+        APIClientResponseHandler<SinglePushInfoResponse> handler =
+                new APIClientResponseHandler<SinglePushInfoResponse>(SinglePushInfoResponse.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -113,7 +117,8 @@ public class ListIndividualPushAPIResponseHandlerTest {
         httpResponse.setEntity(inputStreamEntity);
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_JSON));
 
-        ListIndividualPushAPIResponseHandler handler = new ListIndividualPushAPIResponseHandler();
+        APIClientResponseHandler<SinglePushInfoResponse> handler =
+                new APIClientResponseHandler<SinglePushInfoResponse>(SinglePushInfoResponse.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -145,7 +150,8 @@ public class ListIndividualPushAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 CONTENT_TYPE_TEXT_HTML));
 
-        ListIndividualPushAPIResponseHandler handler = new ListIndividualPushAPIResponseHandler();
+        APIClientResponseHandler<SinglePushInfoResponse> handler =
+                new APIClientResponseHandler<SinglePushInfoResponse>(SinglePushInfoResponse.class);
 
         try {
             handler.handleResponse(httpResponse);

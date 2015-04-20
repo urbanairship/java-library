@@ -51,10 +51,13 @@ public class TimeInAppReportAPIResponseHandlerTest {
                 new ByteArrayInputStream(responseString.getBytes()),
                 responseString.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
-        TimeInAppReportAPIResponseHandler handler = new TimeInAppReportAPIResponseHandler();
+        APIClientResponseHandler<ReportsAPITimeInAppResponse> handler =
+                new APIClientResponseHandler<ReportsAPITimeInAppResponse>(ReportsAPITimeInAppResponse.class);
 
         try {
+
             APIClientResponse<ReportsAPITimeInAppResponse> response = handler.handleResponse(httpResponse);
+
             assertTrue("HttpResponse is incorrect",
                     response.getHttpResponse().equals(httpResponse));
 
@@ -63,7 +66,6 @@ public class TimeInAppReportAPIResponseHandlerTest {
         } catch (Exception ex) {
             fail("Exception " + ex);
         }
-
     }
 
     /*
@@ -89,7 +91,8 @@ public class TimeInAppReportAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 UA_JSON_RESPONSE));
 
-        TimeInAppReportAPIResponseHandler handler = new TimeInAppReportAPIResponseHandler();
+        APIClientResponseHandler<ReportsAPITimeInAppResponse> handler =
+                new APIClientResponseHandler<ReportsAPITimeInAppResponse>(ReportsAPITimeInAppResponse.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -121,7 +124,8 @@ public class TimeInAppReportAPIResponseHandlerTest {
         httpResponse.setEntity(inputStreamEntity);
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_JSON));
 
-        TimeInAppReportAPIResponseHandler handler = new TimeInAppReportAPIResponseHandler();
+        APIClientResponseHandler<ReportsAPITimeInAppResponse> handler =
+                new APIClientResponseHandler<ReportsAPITimeInAppResponse>(ReportsAPITimeInAppResponse.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -153,7 +157,8 @@ public class TimeInAppReportAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 CONTENT_TYPE_TEXT_HTML));
 
-        TimeInAppReportAPIResponseHandler handler = new TimeInAppReportAPIResponseHandler();
+        APIClientResponseHandler<ReportsAPITimeInAppResponse> handler =
+                new APIClientResponseHandler<ReportsAPITimeInAppResponse>(ReportsAPITimeInAppResponse.class);
 
         try {
             handler.handleResponse(httpResponse);

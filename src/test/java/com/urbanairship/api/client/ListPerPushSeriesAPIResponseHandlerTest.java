@@ -125,7 +125,8 @@ public class ListPerPushSeriesAPIResponseHandlerTest {
                 new ByteArrayInputStream(responseString.getBytes()),
                 responseString.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
-        ListPerPushSeriesResponseHandler handler = new ListPerPushSeriesResponseHandler();
+        APIClientResponseHandler<PerPushSeriesResponse> handler =
+                new APIClientResponseHandler<PerPushSeriesResponse>(PerPushSeriesResponse.class);
 
         try {
             APIClientResponse<PerPushSeriesResponse> response =
@@ -161,7 +162,8 @@ public class ListPerPushSeriesAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 UA_JSON_RESPONSE));
 
-        ListPerPushSeriesResponseHandler handler = new ListPerPushSeriesResponseHandler();
+        APIClientResponseHandler<PerPushSeriesResponse> handler =
+                new APIClientResponseHandler<PerPushSeriesResponse>(PerPushSeriesResponse.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -193,7 +195,8 @@ public class ListPerPushSeriesAPIResponseHandlerTest {
         httpResponse.setEntity(inputStreamEntity);
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_JSON));
 
-        ListPerPushSeriesResponseHandler handler = new ListPerPushSeriesResponseHandler();
+        APIClientResponseHandler<PerPushSeriesResponse> handler =
+                new APIClientResponseHandler<PerPushSeriesResponse>(PerPushSeriesResponse.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -225,7 +228,8 @@ public class ListPerPushSeriesAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 CONTENT_TYPE_TEXT_HTML));
 
-        ListPerPushSeriesResponseHandler handler = new ListPerPushSeriesResponseHandler();
+        APIClientResponseHandler<PerPushSeriesResponse> handler =
+                new APIClientResponseHandler<PerPushSeriesResponse>(PerPushSeriesResponse.class);
 
         try {
             handler.handleResponse(httpResponse);

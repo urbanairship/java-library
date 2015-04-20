@@ -62,7 +62,8 @@ public class ListPerPushDetailAPIResponseHandlerTest {
                 new ByteArrayInputStream(responseString.getBytes()),
                 responseString.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
-        ListPerPushDetailAPIResponseHandler handler = new ListPerPushDetailAPIResponseHandler();
+        APIClientResponseHandler<PerPushDetailResponse> handler =
+                new APIClientResponseHandler<PerPushDetailResponse>(PerPushDetailResponse.class);
 
         try {
             APIClientResponse<PerPushDetailResponse> response =
@@ -98,7 +99,8 @@ public class ListPerPushDetailAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 UA_JSON_RESPONSE));
 
-        ListPerPushDetailAPIResponseHandler handler = new ListPerPushDetailAPIResponseHandler();
+        APIClientResponseHandler<PerPushDetailResponse> handler =
+                new APIClientResponseHandler<PerPushDetailResponse>(PerPushDetailResponse.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -130,7 +132,8 @@ public class ListPerPushDetailAPIResponseHandlerTest {
         httpResponse.setEntity(inputStreamEntity);
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_JSON));
 
-        ListPerPushDetailAPIResponseHandler handler = new ListPerPushDetailAPIResponseHandler();
+        APIClientResponseHandler<PerPushDetailResponse> handler =
+                new APIClientResponseHandler<PerPushDetailResponse>(PerPushDetailResponse.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -162,7 +165,8 @@ public class ListPerPushDetailAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 CONTENT_TYPE_TEXT_HTML));
 
-        ListPerPushDetailAPIResponseHandler handler = new ListPerPushDetailAPIResponseHandler();
+        APIClientResponseHandler<PerPushDetailResponse> handler =
+                new APIClientResponseHandler<PerPushDetailResponse>(PerPushDetailResponse.class);
 
         try {
             handler.handleResponse(httpResponse);

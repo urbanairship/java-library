@@ -78,7 +78,8 @@ public class ListReportsListingResponseHandlerTest {
                 new ByteArrayInputStream(fiveresponse.getBytes()),
                 fiveresponse.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
-        ListReportsListingResponseHandler handler = new ListReportsListingResponseHandler();
+        APIClientResponseHandler<APIReportsPushListingResponse> handler =
+                new APIClientResponseHandler<APIReportsPushListingResponse>(APIReportsPushListingResponse.class);
 
         try {
             APIClientResponse<APIReportsPushListingResponse> response =
@@ -108,7 +109,8 @@ public class ListReportsListingResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 UA_JSON_RESPONSE));
 
-        ListReportsListingResponseHandler handler = new ListReportsListingResponseHandler();
+        APIClientResponseHandler<APIReportsPushListingResponse> handler =
+                new APIClientResponseHandler<APIReportsPushListingResponse>(APIReportsPushListingResponse.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -135,7 +137,8 @@ public class ListReportsListingResponseHandlerTest {
         httpResponse.setEntity(inputStreamEntity);
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_JSON));
 
-        ListReportsListingResponseHandler handler = new ListReportsListingResponseHandler();
+        APIClientResponseHandler<APIReportsPushListingResponse> handler =
+                new APIClientResponseHandler<APIReportsPushListingResponse>(APIReportsPushListingResponse.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -167,7 +170,8 @@ public class ListReportsListingResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 CONTENT_TYPE_TEXT_HTML));
 
-        ListReportsListingResponseHandler handler = new ListReportsListingResponseHandler();
+        APIClientResponseHandler<APIReportsPushListingResponse> handler =
+                new APIClientResponseHandler<APIReportsPushListingResponse>(APIReportsPushListingResponse.class);
 
         try {
             handler.handleResponse(httpResponse);

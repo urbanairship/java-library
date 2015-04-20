@@ -54,7 +54,8 @@ public class ListSingleChannelAPIResponseHandlerTest {
                 new ByteArrayInputStream(response.getBytes()),
                 response.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
-        ListSingleChannelAPIResponseHandler handler = new ListSingleChannelAPIResponseHandler();
+        APIClientResponseHandler<APIListSingleChannelResponse> handler =
+                new APIClientResponseHandler<APIListSingleChannelResponse>(APIListSingleChannelResponse.class);
 
         try {
             APIClientResponse<APIListSingleChannelResponse> res =
@@ -85,7 +86,8 @@ public class ListSingleChannelAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 UA_JSON_RESPONSE));
 
-        ListSingleChannelAPIResponseHandler handler = new ListSingleChannelAPIResponseHandler();
+        APIClientResponseHandler<APIListSingleChannelResponse> handler =
+                new APIClientResponseHandler<APIListSingleChannelResponse>(APIListSingleChannelResponse.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -113,7 +115,8 @@ public class ListSingleChannelAPIResponseHandlerTest {
         httpResponse.setEntity(inputStreamEntity);
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_JSON));
 
-        ListSingleChannelAPIResponseHandler handler = new ListSingleChannelAPIResponseHandler();
+        APIClientResponseHandler<APIListSingleChannelResponse> handler =
+                new APIClientResponseHandler<APIListSingleChannelResponse>(APIListSingleChannelResponse.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -145,7 +148,8 @@ public class ListSingleChannelAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 CONTENT_TYPE_TEXT_HTML));
 
-        ListSingleChannelAPIResponseHandler handler = new ListSingleChannelAPIResponseHandler();
+        APIClientResponseHandler<APIListSingleChannelResponse> handler =
+                new APIClientResponseHandler<APIListSingleChannelResponse>(APIListSingleChannelResponse.class);
 
         try {
             handler.handleResponse(httpResponse);

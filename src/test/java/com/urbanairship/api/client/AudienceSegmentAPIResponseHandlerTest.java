@@ -16,7 +16,9 @@ import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class AudienceSegmentAPIResponseHandlerTest {
 
@@ -100,7 +102,8 @@ public class AudienceSegmentAPIResponseHandlerTest {
                 new ByteArrayInputStream(testresponse.getBytes()),
                 testresponse.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
-        AudienceSegmentAPIResponseHandler handler = new AudienceSegmentAPIResponseHandler();
+        APIClientResponseHandler<AudienceSegment> handler =
+                new APIClientResponseHandler<AudienceSegment>(AudienceSegment.class);
 
         try {
             APIClientResponse<AudienceSegment> response = handler.handleResponse(httpResponse);
@@ -128,7 +131,8 @@ public class AudienceSegmentAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 UA_JSON_RESPONSE));
 
-        AudienceSegmentAPIResponseHandler handler = new AudienceSegmentAPIResponseHandler();
+        APIClientResponseHandler<AudienceSegment> handler =
+                new APIClientResponseHandler<AudienceSegment>(AudienceSegment.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -155,7 +159,8 @@ public class AudienceSegmentAPIResponseHandlerTest {
         httpResponse.setEntity(inputStreamEntity);
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_JSON));
 
-        AudienceSegmentAPIResponseHandler handler = new AudienceSegmentAPIResponseHandler();
+        APIClientResponseHandler<AudienceSegment> handler =
+                new APIClientResponseHandler<AudienceSegment>(AudienceSegment.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -187,7 +192,8 @@ public class AudienceSegmentAPIResponseHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
                 CONTENT_TYPE_TEXT_HTML));
 
-        AudienceSegmentAPIResponseHandler handler = new AudienceSegmentAPIResponseHandler();
+        APIClientResponseHandler<AudienceSegment> handler =
+                new APIClientResponseHandler<AudienceSegment>(AudienceSegment.class);
 
         try {
             handler.handleResponse(httpResponse);
