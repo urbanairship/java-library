@@ -126,7 +126,7 @@ public final class LandingPageContent extends PushModelObject {
 
     public enum Encoding {
         UTF8,
-        Base64;
+        Base64
     }
 
     public static final class Builder {

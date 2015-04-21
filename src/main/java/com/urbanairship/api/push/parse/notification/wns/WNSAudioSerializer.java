@@ -5,8 +5,6 @@
 package com.urbanairship.api.push.parse.notification.wns;
 
 import com.urbanairship.api.push.model.notification.wns.WNSAudioData;
-import com.urbanairship.api.push.parse.*;
-import com.urbanairship.api.common.parse.*;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;

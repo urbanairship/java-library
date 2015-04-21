@@ -4,12 +4,13 @@
 
 package com.urbanairship.api.push.parse.notification.richpush;
 
+import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.JsonObjectReader;
+import com.urbanairship.api.common.parse.MapOfStringsDeserializer;
+import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
-import com.urbanairship.api.push.parse.*;
-import com.urbanairship.api.common.parse.*;
 import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.DeserializationContext;
 
 import java.io.IOException;
 
@@ -20,27 +21,27 @@ public class RichPushMessageReader implements JsonObjectReader<RichPushMessage> 
     public RichPushMessageReader() {
     }
 
-    public void readTitle(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readTitle(JsonParser parser) throws IOException {
         builder.setTitle(StringFieldDeserializer.INSTANCE.deserialize(parser, "title"));
     }
 
-    public void readBody(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readBody(JsonParser parser) throws IOException {
         builder.setBody(StringFieldDeserializer.INSTANCE.deserialize(parser, "body"));
     }
 
-    public void readContentType(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readContentType(JsonParser parser) throws IOException {
         builder.setContentType(StringFieldDeserializer.INSTANCE.deserialize(parser, "content_type"));
     }
 
-    public void readContentEncoding(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readContentEncoding(JsonParser parser) throws IOException {
         builder.setContentEncoding(StringFieldDeserializer.INSTANCE.deserialize(parser, "content_encoding"));
     }
 
-    public void readExtra(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readExtra(JsonParser parser) throws IOException {
         builder.addAllExtraEntries(MapOfStringsDeserializer.INSTANCE.deserialize(parser, "extra"));
     }
 
-    public void readExpiry(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readExpiry(JsonParser parser) throws IOException {
         builder.setExpiry(parser.readValueAs(PushExpiry.class));
     }
 

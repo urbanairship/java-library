@@ -37,8 +37,6 @@ import org.joda.time.Period;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
@@ -58,7 +56,6 @@ public class APIClientTest {
         BasicConfigurator.configure();
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(APIClientTest.class);
     @ClassRule
     @Rule
     public static WireMockClassRule wireMockClassRule = new WireMockClassRule();
@@ -606,6 +603,8 @@ public class APIClientTest {
             // Server truncates milliseconds off request
             assertEquals(receivedDateTime.getMillis(), dateTime.getMillis(), 1000);
 
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
         } catch (Exception ex) {
             fail("Exception " + ex);
         }

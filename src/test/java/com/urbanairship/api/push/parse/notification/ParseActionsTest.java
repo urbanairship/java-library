@@ -91,10 +91,6 @@ public class ParseActionsTest {
         }
     }
 
-    private Optional<? extends Action> getRemoveTags(Actions actions) {
-        return actions.getRemoveTags();
-    }
-
     @Test
     public void testAddTag() throws Exception {
         String tag = "foo";
@@ -227,7 +223,7 @@ public class ParseActionsTest {
                     .setEncoding(Optional.of(LandingPageContent.Encoding.Base64))
                     .build();
             OpenLandingPageWithContentAction reference = new OpenLandingPageWithContentAction(expected);
-            Actions actions = mapper.readValue(mapper.writeValueAsString(Actions.newBuilder()
+            mapper.readValue(mapper.writeValueAsString(Actions.newBuilder()
                     .setOpen(reference)
                     .build()), Actions.class);
             fail("Invalid Base64 content should have raised an exception.");

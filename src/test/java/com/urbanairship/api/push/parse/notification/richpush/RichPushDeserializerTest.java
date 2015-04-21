@@ -53,7 +53,7 @@ public class RichPushDeserializerTest {
                 .setBody("B")
                 .setContentType("A/B")
                 .setContentEncoding("utf8")
-                .setExpiry(PushExpiry.newBuilder().setExpiryTimeStamp(new DateTime(2018, 01, 01, 0, 0, 0, DateTimeZone.UTC)).build())
+                .setExpiry(PushExpiry.newBuilder().setExpiryTimeStamp(new DateTime(2018, 1, 1, 0, 0, 0, DateTimeZone.UTC)).build())
                 .addExtraEntry("foo", "bar")
                 .build();
 

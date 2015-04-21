@@ -25,35 +25,35 @@ public class IOSDevicePayloadReader implements JsonObjectReader<IOSDevicePayload
         builder.setAlert(alertDS.deserialize(parser, context));
     }
 
-    public void readSound(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readSound(JsonParser parser) throws IOException {
         builder.setSound(StringFieldDeserializer.INSTANCE.deserialize(parser, "sound"));
     }
 
-    public void readBadge(JsonParser parser, DeserializationContext context) throws IOException {
-        builder.setBadge(IOSBadgeDataDeserializer.INSTANCE.deserialize(parser, "badge"));
+    public void readBadge(JsonParser parser) throws IOException {
+        builder.setBadge(IOSBadgeDataDeserializer.INSTANCE.deserialize(parser));
     }
 
-    public void readContentAvailable(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readContentAvailable(JsonParser parser) throws IOException {
         builder.setContentAvailable(BooleanFieldDeserializer.INSTANCE.deserialize(parser, "content_available"));
     }
 
-    public void readExtra(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readExtra(JsonParser parser) throws IOException {
         builder.addAllExtraEntries(MapOfStringsDeserializer.INSTANCE.deserialize(parser, "extra"));
     }
 
-    public void readCategory(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readCategory(JsonParser parser) throws IOException {
         builder.setCategory(StringFieldDeserializer.INSTANCE.deserialize(parser, "category"));
     }
 
-    public void readInteractive(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readInteractive(JsonParser parser) throws IOException {
         builder.setInteractive(parser.readValueAs(Interactive.class));
     }
 
-    public void readExpiry(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readExpiry(JsonParser parser) throws IOException {
         builder.setExpiry(parser.readValueAs(PushExpiry.class));
     }
 
-    public void readPriority(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readPriority(JsonParser parser) throws IOException {
         builder.setPriority(parser.getIntValue());
     }
 

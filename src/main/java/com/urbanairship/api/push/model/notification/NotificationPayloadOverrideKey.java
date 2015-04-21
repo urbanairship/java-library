@@ -38,11 +38,9 @@ public class NotificationPayloadOverrideKey {
         if (clazz != null ? !clazz.equals(that.clazz) : that.clazz != null) {
             return false;
         }
-        if (deviceType != that.deviceType) {
-            return false;
-        }
 
-        return true;
+        return deviceType == that.deviceType;
+
     }
 
     @Override

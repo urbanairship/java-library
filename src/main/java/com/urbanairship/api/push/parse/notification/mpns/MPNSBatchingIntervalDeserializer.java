@@ -4,10 +4,8 @@
 
 package com.urbanairship.api.push.parse.notification.mpns;
 
+import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.notification.mpns.MPNSPush;
-import com.urbanairship.api.push.parse.*;
-import com.urbanairship.api.common.parse.*;
-import com.google.common.base.Optional;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;

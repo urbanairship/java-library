@@ -7,7 +7,6 @@ package com.urbanairship.api.push.parse.notification.android;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
-import com.urbanairship.api.push.parse.*;
 import com.urbanairship.api.common.parse.*;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
@@ -21,32 +20,32 @@ public class AndroidDevicePayloadDeserializer extends JsonDeserializer<AndroidDe
             ImmutableMap.<String, FieldParser<AndroidDevicePayloadReader>>builder()
             .put("alert", new FieldParser<AndroidDevicePayloadReader>() {
                     public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readAlert(json, context);
+                        reader.readAlert(json);
                     }
                 })
             .put("collapse_key", new FieldParser<AndroidDevicePayloadReader>() {
                     public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readCollapseKey(json, context);
+                        reader.readCollapseKey(json);
                     }
                 })
             .put("time_to_live", new FieldParser<AndroidDevicePayloadReader>() {
                     public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readTimeToLive(json, context);
+                        reader.readTimeToLive(json);
                     }
                 })
             .put("delay_while_idle", new FieldParser<AndroidDevicePayloadReader>() {
                     public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readDelayWhileIdle(json, context);
+                        reader.readDelayWhileIdle(json);
                     }
                 })
             .put("extra", new FieldParser<AndroidDevicePayloadReader>() {
                     public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readExtra(json, context);
+                        reader.readExtra(json);
                     }
                 })
             .put("interactive", new FieldParser<AndroidDevicePayloadReader>() {
                     public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readInteractive(json, context);
+                        reader.readInteractive(json);
                     }
                 })
             .build()

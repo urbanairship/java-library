@@ -9,7 +9,6 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
-import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import com.urbanairship.api.push.model.notification.actions.*;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.apache.commons.codec.binary.Base64;
@@ -18,7 +17,6 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.deser.std.StringDeserializer;
 import org.codehaus.jackson.node.ObjectNode;
 
 import java.io.IOException;
@@ -31,20 +29,20 @@ public final class ActionsReader implements JsonObjectReader<Actions> {
     private static final ObjectMapper MAPPER = PushObjectMapper.getInstance();
 
     private interface OpenActionReader {
-        public Action.OpenAction readOpen(JsonParser parser, JsonNode definition) throws IOException;
+        Action.OpenAction readOpen(JsonParser parser, JsonNode definition) throws IOException;
     }
 
     private final static Map<String, OpenActionReader> OPEN_ACTIONS = ImmutableMap.<String, OpenActionReader>builder()
             .put("url", new OpenActionReader() {
                 @Override
                 public Action.OpenAction readOpen(JsonParser parser, JsonNode definition) throws IOException {
-                    return getExternalURLData(parser, definition);
+                    return getExternalURLData(definition);
                 }
             })
             .put("landing_page", new OpenActionReader() {
                 @Override
                 public Action.OpenAction readOpen(JsonParser parser, JsonNode definition) {
-                    return getLandingPageData(parser, definition);
+                    return getLandingPageData(definition);
                 }
 
             })
@@ -63,7 +61,7 @@ public final class ActionsReader implements JsonObjectReader<Actions> {
     private Actions.Builder builder = new Actions.Builder();
 
 
-    private static JsonNode getContentEncoding(JsonNode content, JsonParser parser) {
+    private static JsonNode getContentEncoding(JsonNode content) {
         JsonNode c1 = content.path("content-encoding");
         JsonNode c2 = content.path("content_encoding");
         if(! c1.isMissingNode() && ! c2.isMissingNode()) {
@@ -73,7 +71,7 @@ public final class ActionsReader implements JsonObjectReader<Actions> {
         return c1.isMissingNode() ? c2 : c1;
     }
 
-    private static JsonNode getContentType(JsonNode content, JsonParser parser) {
+    private static JsonNode getContentType(JsonNode content) {
         JsonNode c1 = content.path("content-type");
         JsonNode c2 = content.path("content_type");
         if(! c1.isMissingNode() && ! c2.isMissingNode()) {
@@ -83,15 +81,15 @@ public final class ActionsReader implements JsonObjectReader<Actions> {
         return c1.isMissingNode() ? c2 : c1;
     }
 
-    private static Action.OpenAction getLandingPageData(JsonParser parser, JsonNode definition) {
+    private static Action.OpenAction getLandingPageData(JsonNode definition) {
         JsonNode content = definition.path("content");
         if (content.isMissingNode()) {
             throw new APIParsingException("The content attribute must be present.");
         }
 
         JsonNode body = content.path("body");
-        JsonNode contentType = getContentType(content, parser);
-        JsonNode contentEncoding = getContentEncoding(content, parser);
+        JsonNode contentType = getContentType(content);
+        JsonNode contentEncoding = getContentEncoding(content);
 
         if (body.isMissingNode() || !body.isTextual()) {
             throw new APIParsingException("The content object must have a body attribute, and it must be a string value.");
@@ -139,7 +137,7 @@ public final class ActionsReader implements JsonObjectReader<Actions> {
                 .build());
     }
 
-    private static Action.OpenAction getExternalURLData(JsonParser parser, JsonNode def) {
+    private static Action.OpenAction getExternalURLData(JsonNode def) {
         JsonNode content = def.path("content");
         if (content.isMissingNode() || !content.isTextual()) {
             throw new APIParsingException("The content attribute for an url action must be present and it must be a string.");

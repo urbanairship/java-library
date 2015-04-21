@@ -57,10 +57,7 @@ public final class DeviceTypeData extends PushModelObject {
         if (all != that.all) {
             return false;
         }
-        if (deviceTypes != null ? !deviceTypes.equals(that.deviceTypes) : that.deviceTypes != null) {
-            return false;
-        }
-        return true;
+        return !(deviceTypes != null ? !deviceTypes.equals(that.deviceTypes) : that.deviceTypes != null);
     }
 
     @Override

@@ -4,17 +4,14 @@
 
 package com.urbanairship.api.push.parse.audience.location;
 
-import com.google.common.base.Optional;
-import com.urbanairship.api.push.model.notification.Notification;
-import com.urbanairship.api.push.model.audience.location.RecentDateRange;
-import com.urbanairship.api.push.model.audience.location.PresenceTimeframe;
+import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.IntFieldDeserializer;
+import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.push.model.audience.location.DateRangeUnit;
-import com.urbanairship.api.common.parse.*;
+import com.urbanairship.api.push.model.audience.location.RecentDateRange;
 import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.type.TypeReference;
 
 import java.io.IOException;
-import org.joda.time.DateTime;
 
 public class RecentDateRangeReader implements JsonObjectReader<RecentDateRange.Builder> {
 
@@ -25,7 +22,7 @@ public class RecentDateRangeReader implements JsonObjectReader<RecentDateRange.B
     public void readValue(JsonParser parser) throws IOException {
         if (builder == null) {
             builder = RecentDateRange.newBuilder();
-        } else if ( builder != null ) {
+        } else {
             APIParsingException.raise("Only one date range is allowed on 'recent'", parser);
         }
         String type = parser.getCurrentName();

@@ -186,7 +186,7 @@ public class PayloadDeserializerTest {
         assertNotNull(payload);
         assertNotNull(payload.getSound());
         assertTrue(payload.getContentAvailable().isPresent());
-        assertEquals(true, payload.getContentAvailable().get().booleanValue());
+        assertEquals(true, payload.getContentAvailable().get());
         assertEquals(expected, payload);
     }
 

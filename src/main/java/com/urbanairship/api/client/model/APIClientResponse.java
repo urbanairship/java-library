@@ -84,12 +84,7 @@ public class APIClientResponse<T> {
     }
 
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("\nHttp:");
-        builder.append(httpResponse.toString());
-        builder.append("\nAPI:");
-        builder.append(apiResponse.toString());
-        return builder.toString();
+        return "\nHttp:" + httpResponse.toString() + "\nAPI:" + apiResponse.toString();
     }
 
     /**

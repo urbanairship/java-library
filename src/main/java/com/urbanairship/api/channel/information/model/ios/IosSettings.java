@@ -10,7 +10,6 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 public final class IosSettings {
-    private static final IosSettings DEFAULT_INSTANCE = newBuilder().build();
 
     private final int badge;
     private final Optional<QuietTime> quiettime;
@@ -20,10 +19,6 @@ public final class IosSettings {
         this.badge = badge;
         this.quiettime = quiettime;
         this.timezone = timezone;
-    }
-
-    public static IosSettings getDefaultInstance() {
-        return DEFAULT_INSTANCE;
     }
 
     public static Builder newBuilder() {

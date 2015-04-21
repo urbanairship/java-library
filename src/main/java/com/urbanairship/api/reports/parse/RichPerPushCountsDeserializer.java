@@ -24,7 +24,7 @@ public final class RichPerPushCountsDeserializer extends JsonDeserializer<RichPe
                     .put("responses", new FieldParser<RichPerPushCountsReader>() {
                         @Override
                         public void parse(RichPerPushCountsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readRespones(jsonParser);
+                            reader.readResponses(jsonParser);
                         }
                     })
                     .put("sends", new FieldParser<RichPerPushCountsReader>() {

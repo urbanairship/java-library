@@ -49,9 +49,9 @@ public final class Notification extends PushModelObject {
 
     public Optional<ImmutableSet<DeviceType>> getOverrideDeviceTypes() {
         if (deviceTypePayloadOverrides == null || deviceTypePayloadOverrides.size() == 0 ) {
-            return Optional.<ImmutableSet<DeviceType>>absent();
+            return Optional.absent();
         } else {
-            ImmutableSet.Builder<DeviceType> builder = ImmutableSet.<DeviceType>builder();
+            ImmutableSet.Builder<DeviceType> builder = ImmutableSet.builder();
             for (NotificationPayloadOverrideKey key : deviceTypePayloadOverrides.keySet()) {
                 builder.add(key.getDeviceType());
             }

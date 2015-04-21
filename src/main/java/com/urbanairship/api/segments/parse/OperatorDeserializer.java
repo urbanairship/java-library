@@ -79,7 +79,7 @@ public class OperatorDeserializer extends JsonDeserializer<Operator> {
         return builder.build();
     }
 
-    private static interface OperatorChildrenDeserializer {
+    private interface OperatorChildrenDeserializer {
         void deserializeOperatorChildren(JsonParser jp, DeserializationContext ctxt, Operator.Builder builder, int depth) throws IOException;
     }
 

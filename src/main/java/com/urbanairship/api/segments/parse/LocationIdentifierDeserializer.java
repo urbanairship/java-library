@@ -34,7 +34,7 @@ public class LocationIdentifierDeserializer extends JsonDeserializer<LocationIde
 
         String identifierType = jp.getText();
         token = jp.nextToken();
-        if (!isValidLocationIdentifierValueType(token)) {
+        if (!(token == JsonToken.VALUE_STRING || token == JsonToken.VALUE_NUMBER_INT)) {
             throw new InvalidAudienceSegmentException(INVALID_LOCATION_IDENTIFIER_VALUE);
         }
 
@@ -52,9 +52,5 @@ public class LocationIdentifierDeserializer extends JsonDeserializer<LocationIde
                 .setAliasValue(value)
                 .build()
         );
-    }
-
-    private boolean isValidLocationIdentifierValueType(JsonToken token) {
-        return token == JsonToken.VALUE_STRING || token == JsonToken.VALUE_NUMBER_INT;
     }
 }

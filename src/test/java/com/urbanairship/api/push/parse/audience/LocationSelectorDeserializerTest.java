@@ -3,8 +3,6 @@ package com.urbanairship.api.push.parse.audience;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.audience.location.*;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -16,7 +14,6 @@ import static org.junit.Assert.*;
 
 public class LocationSelectorDeserializerTest {
     private static final ObjectMapper mapper = PushObjectMapper.getInstance();
-    private static final Logger log = LogManager.getLogger(SelectorDeserializerTest.class);
 
     // -----------------------------------------------------------------------------
     // Absolute date range
@@ -49,8 +46,8 @@ public class LocationSelectorDeserializerTest {
         assertTrue(dr instanceof AbsoluteDateRange);
         assertEquals(PresenceTimeframe.ANYTIME, dr.getTimeframe());
 
-        assertEquals(new DateTime(2012, 01, 01, 0, 0, DateTimeZone.UTC), dr.getStart());
-        assertEquals(new DateTime(2012, 01, 31, 0, 0, DateTimeZone.UTC), dr.getEnd());
+        assertEquals(new DateTime(2012, 1, 1, 0, 0, DateTimeZone.UTC), dr.getStart());
+        assertEquals(new DateTime(2012, 1, 31, 0, 0, DateTimeZone.UTC), dr.getEnd());
     }
 
     @Test

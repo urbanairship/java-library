@@ -9,14 +9,11 @@ import com.google.common.base.Supplier;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.DeserializationContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 public class StandardObjectDeserializer<T, R extends JsonObjectReader<T>> {
 
-    private static final Logger log = LoggerFactory.getLogger("com.urbanairship.api");
     private final FieldParserRegistry<T, R> registry;
     private final Supplier<R> readerSupplier;
 

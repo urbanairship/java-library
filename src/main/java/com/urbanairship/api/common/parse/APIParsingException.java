@@ -61,13 +61,12 @@ public class APIParsingException extends APIException {
     }
 
     public static APIParsingException raise(String msg, JsonParser parser) throws APIParsingException {
-        String message = msg;
         try {
-            message = String.format("%s; at line %d, col %d, '%s'",
-                                    msg,
-                                    parser.getCurrentLocation().getLineNr(),
-                                    parser.getCurrentLocation().getColumnNr(),
-                                    getPath(parser));
+            String.format("%s; at line %d, col %d, '%s'",
+                    msg,
+                    parser.getCurrentLocation().getLineNr(),
+                    parser.getCurrentLocation().getColumnNr(),
+                    getPath(parser));
             if (log.isDebugEnabled()) {
                 log.debug(msg);
             }
@@ -87,9 +86,7 @@ public class APIParsingException extends APIException {
     }
 
     private static void doGetPath(JsonStreamContext context, StringBuffer sb) {
-        if (context.inRoot()) {
-            return;
-        } else {
+        if (!context.inRoot()) {
             doGetPath(context.getParent(), sb);
             if (context.inObject()) {
                 String name = context.getCurrentName();

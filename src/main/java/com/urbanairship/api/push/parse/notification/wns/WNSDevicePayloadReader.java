@@ -63,14 +63,6 @@ public class WNSDevicePayloadReader implements JsonObjectReader<WNSDevicePayload
         builder.setCachePolicy(WNSCachePolicyDeserializer.INSTANCE.deserialize(parser, context));
     }
 
-    // public void readTag(JsonParser parser) throws IOException {
-    //     builder.setTag(StringFieldDeserializer.INSTANCE.deserialize(parser, "tag"));
-    // }
-
-    // public void readTtl(JsonParser parser) throws IOException {
-    //     builder.setTtl(IntFieldDeserializer.INSTANCE.deserialize(parser, "ttl"));
-    // }
-
     @Override
     public WNSDevicePayload validateAndBuild() throws IOException {
         try {

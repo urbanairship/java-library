@@ -29,10 +29,6 @@ public class SegmentDefinitionReader implements JsonObjectReader<SegmentDefiniti
 
     @Override
     public SegmentDefinition validateAndBuild() throws IOException {
-        try {
-            return builder.build();
-        } catch (APIParsingException e) {
-            throw e;
-        }
+        return builder.build();
     }
 }

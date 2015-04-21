@@ -5,7 +5,6 @@
 package com.urbanairship.api.push.model.notification.wns;
 
 import com.google.common.base.Optional;
-import static com.google.common.base.Preconditions.checkArgument;
 
 public class WNSBadgeData {
     public enum Glyph {
@@ -78,10 +77,8 @@ public class WNSBadgeData {
         if (value != null ? !value.equals(that.value) : that.value != null) {
             return false;
         }
-        if (glyph != null ? !glyph.equals(that.glyph) : that.glyph != null) {
-            return false;
-        }
-        return true;
+
+        return !(glyph != null ? !glyph.equals(that.glyph) : that.glyph != null);
     }
 
     @Override
@@ -99,7 +96,7 @@ public class WNSBadgeData {
         private Builder() { }
 
         public Builder setValue(int value) {
-            this.value = new Integer(value);
+            this.value = value;
             return this;
         }
 

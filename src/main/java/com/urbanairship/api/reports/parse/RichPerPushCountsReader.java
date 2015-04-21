@@ -19,7 +19,7 @@ public final class RichPerPushCountsReader implements JsonObjectReader<RichPerPu
         this.builder = RichPerPushCounts.newBuilder();
     }
 
-    public void readRespones(JsonParser jsonParser) throws IOException {
+    public void readResponses(JsonParser jsonParser) throws IOException {
         builder.setResponses(jsonParser.readValueAs(long.class));
     }
 

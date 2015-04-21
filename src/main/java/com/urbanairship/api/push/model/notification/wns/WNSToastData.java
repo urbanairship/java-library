@@ -71,10 +71,8 @@ public class WNSToastData {
         if (duration != null ? !duration.equals(that.duration) : that.duration != null) {
             return false;
         }
-        if (audio != null ? !audio.equals(that.audio) : that.audio != null) {
-            return false;
-        }
-        return true;
+
+        return !(audio != null ? !audio.equals(that.audio) : that.audio != null);
     }
 
     @Override

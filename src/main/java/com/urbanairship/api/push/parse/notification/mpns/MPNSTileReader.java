@@ -12,7 +12,6 @@ import com.urbanairship.api.common.parse.*;
 import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
-import java.util.Set;
 
 
 /*
@@ -125,11 +124,11 @@ public class MPNSTileReader implements JsonObjectReader<MPNSTileData> {
     @Override
     public com.urbanairship.api.push.model.notification.mpns.MPNSTileData validateAndBuild() throws IOException {
         try {
-            if (template.equals(Constants.TILE_CYCLE)) {
+            if (template.equals("CycleTile")) {
                 return cycleBuilder.build();
-            } else if (template.equals(Constants.TILE_FLIP)) {
+            } else if (template.equals("FlipTile")) {
                   return flipBuilder.build();
-            } else if (template.equals(Constants.TILE_ICONIC)) {
+            } else if (template.equals("IconicTile")) {
                 return iconicBuilder.build();
             } else {
                   throw new APIParsingException(String.format("Invalid tile template '%s'", template));

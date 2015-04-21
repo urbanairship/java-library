@@ -5,9 +5,8 @@
 package com.urbanairship.api.common.parse;
 
 import org.codehaus.jackson.Version;
-import org.codehaus.jackson.map.JsonDeserializer;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.DeserializationConfig;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.module.SimpleModule;
 import org.joda.time.DateTime;
 

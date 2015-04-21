@@ -7,7 +7,6 @@ package com.urbanairship.api.push.parse.notification.richpush;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
-import com.urbanairship.api.push.parse.*;
 import com.urbanairship.api.common.parse.*;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
@@ -21,42 +20,42 @@ public class RichPushMessageDeserializer extends JsonDeserializer<RichPushMessag
             ImmutableMap.<String, FieldParser<RichPushMessageReader>>builder()
             .put("title", new FieldParser<RichPushMessageReader>() {
                     public void parse(RichPushMessageReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readTitle(json, context);
+                        reader.readTitle(json);
                     }
                 })
             .put("body", new FieldParser<RichPushMessageReader>() {
                     public void parse(RichPushMessageReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readBody(json, context);
+                        reader.readBody(json);
                     }
                 })
             .put("content-type", new FieldParser<RichPushMessageReader>() {
                     public void parse(RichPushMessageReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readContentType(json, context);
+                        reader.readContentType(json);
                     }
                 })
             .put("content_type", new FieldParser<RichPushMessageReader>() {
                     public void parse(RichPushMessageReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readContentType(json, context);
+                        reader.readContentType(json);
                     }
                 })
             .put("content-encoding", new FieldParser<RichPushMessageReader>() {
                     public void parse(RichPushMessageReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readContentEncoding(json, context);
+                        reader.readContentEncoding(json);
                     }
                 })
             .put("content_encoding", new FieldParser<RichPushMessageReader>() {
                     public void parse(RichPushMessageReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readContentEncoding(json, context);
+                        reader.readContentEncoding(json);
                     }
                 })
             .put("extra", new FieldParser<RichPushMessageReader>() {
                     public void parse(RichPushMessageReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readExtra(json, context);
+                        reader.readExtra(json);
                     }
                 })
             .put("expiry", new FieldParser<RichPushMessageReader>() {
                     public void parse(RichPushMessageReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readExpiry(json, context);
+                        reader.readExpiry(json);
                     }
             })
             .build()

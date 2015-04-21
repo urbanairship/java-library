@@ -8,7 +8,6 @@ import com.urbanairship.api.push.model.notification.ios.IOSAlertData;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
-import java.util.Map;
 import java.io.IOException;
 
 public class IOSAlertDataSerializer extends JsonSerializer<IOSAlertData> {

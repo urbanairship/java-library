@@ -79,7 +79,7 @@ public class ListAppStatsAPIResponseHandlerTest {
                     handler.handleResponse(httpResponse);
             assertEquals(4, response.getApiResponse().size());
             assertTrue("HttpResponse is incorrect",
-                    httpResponse.equals(httpResponse));
+                    httpResponse.equals(response.getHttpResponse()));
         } catch (Exception ex) {
             fail("Exception " + ex);
         }

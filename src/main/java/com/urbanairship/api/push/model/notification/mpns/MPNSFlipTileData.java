@@ -163,7 +163,7 @@ public class MPNSFlipTileData extends MPNSTileData
         }
 
         public Builder setCount(int value) {
-            this.count = new Integer(value);
+            this.count = value;
             return this;
         }
 

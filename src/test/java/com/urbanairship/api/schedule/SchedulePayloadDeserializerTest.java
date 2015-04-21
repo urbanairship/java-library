@@ -69,7 +69,7 @@ public class SchedulePayloadDeserializerTest {
         SchedulePayload payload = MAPPER.readValue(json, SchedulePayload.class);
 
         assertNotNull(payload);
-        assertEquals(payload.getName(), Optional.absent());
+        assertEquals(payload.getName(), Optional.<String>absent());
         assertEquals(payload.getSchedule().getScheduledTimestamp(), DateFormats.DATE_PARSER.parseDateTime("2013-05-05 00:00:01"));
     }
 
@@ -87,7 +87,7 @@ public class SchedulePayloadDeserializerTest {
                         "}" +
                         "}";
 
-        SchedulePayload payload = MAPPER.readValue(json, SchedulePayload.class);
+        MAPPER.readValue(json, SchedulePayload.class);
 
     }
 
@@ -109,7 +109,7 @@ public class SchedulePayloadDeserializerTest {
                         "}" +
                         "}";
 
-        SchedulePayload payload = MAPPER.readValue(json, SchedulePayload.class);
+        MAPPER.readValue(json, SchedulePayload.class);
 
     }
 }

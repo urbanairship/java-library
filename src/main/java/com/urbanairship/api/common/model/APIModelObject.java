@@ -17,13 +17,7 @@ public abstract class APIModelObject {
     }
 
     protected static String toJSON(Exception e) {
-        return new StringBuffer()
-            .append("{ \"exception\" : \"")
-            .append(e.getClass().getName())
-            .append("\", \"message\" : \"")
-            .append(e.getMessage())
-            .append("\" }")
-            .toString();
+        return "{ \"exception\" : \"" + e.getClass().getName() + "\", \"message\" : \"" + e.getMessage() + "\" }";
 
     }
 }

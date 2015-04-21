@@ -25,7 +25,7 @@ public class MPNSDevicePayloadReader implements JsonObjectReader<MPNSDevicePaylo
         this.tileDS = tileDS;
     }
 
-    public void readAlert(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readAlert(JsonParser parser) throws IOException {
         alert = Optional.fromNullable(StringFieldDeserializer.INSTANCE.deserialize(parser, "alert"));
     }
 

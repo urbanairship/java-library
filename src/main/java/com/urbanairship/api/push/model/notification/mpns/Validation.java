@@ -4,8 +4,9 @@
 
 package com.urbanairship.api.push.model.notification.mpns;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import org.apache.commons.lang.StringUtils;
+
+import static com.google.common.base.Preconditions.checkArgument;
 
 public class Validation
 {

@@ -5,7 +5,6 @@
 package com.urbanairship.api.push.model.notification.wns;
 
 import com.google.common.base.Optional;
-import com.urbanairship.api.push.model.PushExpiry;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -58,24 +57,18 @@ public class WNSPush
     private final Optional<WNSToastData> toast;
     private final Optional<WNSTileData> tile;
     private final Optional<WNSBadgeData> badge;
-    private final Optional<String> tag;
-    private final Optional<PushExpiry> ttl;
     private final Optional<CachePolicy> cachePolicy;
 
     private WNSPush(Type type,
                     Optional<WNSToastData> toast,
                     Optional<WNSTileData> tile,
                     Optional<WNSBadgeData> badge,
-                    Optional<String> tag,
-                    Optional<PushExpiry> ttl,
                     Optional<CachePolicy> cachePolicy)
     {
         this.type = type;
         this.toast = toast;
         this.tile = tile;
         this.badge = badge;
-        this.tag = tag;
-        this.ttl = ttl;
         this.cachePolicy = cachePolicy;
     }
 
@@ -97,14 +90,6 @@ public class WNSPush
 
     public Optional<WNSBadgeData> getBadge() {
         return this.badge;
-    }
-
-    public Optional<String> getTag() {
-        return this.tag;
-    }
-
-    public Optional<PushExpiry> getTtl() {
-        return this.ttl;
     }
 
     public Optional<CachePolicy> getCachePolicy() {
@@ -133,12 +118,6 @@ public class WNSPush
         if (badge != null ? !badge.equals(that.badge) : that.badge != null) {
             return false;
         }
-        if (tag != null ? !tag.equals(that.tag) : that.tag != null) {
-            return false;
-        }
-        if (ttl != null ? !ttl.equals(that.ttl) : that.ttl != null) {
-            return false;
-        }
         if (cachePolicy != null ? !cachePolicy.equals(that.cachePolicy) : that.cachePolicy != null) {
             return false;
         }
@@ -151,8 +130,6 @@ public class WNSPush
         result = 31 * result + (toast != null ? toast.hashCode() : 0);
         result = 31 * result + (tile != null ? tile.hashCode() : 0);
         result = 31 * result + (badge != null ? badge.hashCode() : 0);
-        result = 31 * result + (tag != null ? tag.hashCode() : 0);
-        result = 31 * result + (ttl != null ? ttl.hashCode() : 0);
         result = 31 * result + (cachePolicy != null ? cachePolicy.hashCode() : 0);
         return result;
     }
@@ -163,8 +140,6 @@ public class WNSPush
         private WNSToastData toast;
         private WNSTileData tile;
         private WNSBadgeData badge;
-        private String tag;
-        private PushExpiry ttl;
         private CachePolicy cachePolicy;
 
         private Builder() { }
@@ -189,16 +164,6 @@ public class WNSPush
             return this;
         }
 
-        public Builder setTag(String value) {
-            this.tag = value;
-            return this;
-        }
-
-        public Builder setTtl(PushExpiry value) {
-            this.ttl = value;
-            return this;
-        }
-
         public Builder setCachePolicy(CachePolicy value) {
             this.cachePolicy = value;
             return this;
@@ -213,15 +178,10 @@ public class WNSPush
             } else if (type == Type.BADGE) {
                 checkArgument(badge != null, "Must supply a value for 'badge'");
             }
-            if (ttl != null && ttl.getExpirySeconds().get() < 1) {
-                throw new IllegalArgumentException(String.format("TTL value must be a positive integer, not %d", ttl.getExpirySeconds().get()));
-            }
             return new WNSPush(type,
                                Optional.fromNullable(toast),
                                Optional.fromNullable(tile),
                                Optional.fromNullable(badge),
-                               Optional.fromNullable(tag),
-                               Optional.fromNullable(ttl),
                                Optional.fromNullable(cachePolicy));
         }
     }

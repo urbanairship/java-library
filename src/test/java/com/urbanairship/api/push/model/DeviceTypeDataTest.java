@@ -35,7 +35,7 @@ public class DeviceTypeDataTest {
         DeviceTypeData d = DeviceTypeData.all();
         assertEquals(d, d);
         assertSame(d, d);
-        assertFalse(d.equals(null));
+        assertFalse(d == null);
         DeviceTypeData d2 = DeviceTypeData.all();
         assertEquals(d, d2);
         assertNotSame(d, d2);

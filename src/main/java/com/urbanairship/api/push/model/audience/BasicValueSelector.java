@@ -4,10 +4,9 @@
 
 package com.urbanairship.api.push.model.audience;
 
-import com.google.common.base.Preconditions;
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.urbanairship.api.push.model.DeviceTypeData;
 
 import java.util.Map;

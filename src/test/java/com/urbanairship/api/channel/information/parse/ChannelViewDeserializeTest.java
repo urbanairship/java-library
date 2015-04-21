@@ -1,5 +1,6 @@
 package com.urbanairship.api.channel.information.parse;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.urbanairship.api.channel.information.model.ChannelView;
 import com.urbanairship.api.channel.information.model.DeviceType;
@@ -48,7 +49,14 @@ public class ChannelViewDeserializeTest {
                         "\"installed\" : true," +
                         "\"opt_in\" : true," +
                         "\"background\" : true," +
-                        "\"ios\" : { }," +
+                        "  \"ios\" : {" +
+                        "    \"badge\": 0," +
+                        "    \"quiettime\": {" +
+                        "      \"start\": \"22:00\"," +
+                        "      \"end\": \"06:00\"" +
+                        "    }," +
+                        "    \"tz\": \"America/Los_Angeles\"" +
+                        "  }," +
                         "\"tags\" : [\"tag1\", \"tag2\"]," +
                         "\"alias\" : \"alias\"," +
                         "\"created\" : 12345," +
@@ -62,9 +70,15 @@ public class ChannelViewDeserializeTest {
         assertTrue(channel.getBackground().get());
         assertEquals(DeviceType.IOS, channel.getDeviceType());
         assertTrue(channel.getIosSettings().isPresent());
+        assertEquals(0, channel.getIosSettings().get().getBadge());
+        assertEquals("22:00", channel.getIosSettings().get().getQuietTime().get().getStart());
+        assertEquals("06:00", channel.getIosSettings().get().getQuietTime().get().getEnd());
+        assertEquals("America/Los_Angeles", channel.getIosSettings().get().getTimezone().get());
         assertEquals("address", channel.getPushAddress().get());
         assertEquals("alias", channel.getAlias().get());
-        assertEquals(Sets.newHashSet("tag1", "tag2"), channel.getTags());
+        ImmutableSet<String> expectedTags = new ImmutableSet.Builder<String>()
+                .addAll(Sets.newHashSet("tag1", "tag2")).build();
+        assertEquals(expectedTags, channel.getTags());
     }
 
     @Test
@@ -117,8 +131,7 @@ public class ChannelViewDeserializeTest {
                         "\"badkey\" : \"nonsense\"" +
                         "}";
 
-        ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {
-        });
+        mapper.readValue(json, new TypeReference<ChannelView>() {});
     }
 
     @Test(expected = APIParsingException.class)
@@ -129,8 +142,7 @@ public class ChannelViewDeserializeTest {
                         "\"opt_in\" : false" +
                         "}";
 
-        ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {
-        });
+        mapper.readValue(json, new TypeReference<ChannelView>() {});
     }
 
     @Test(expected = APIParsingException.class)
@@ -140,8 +152,7 @@ public class ChannelViewDeserializeTest {
                         "\"opt_in\" : false" +
                         "}";
 
-        ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {
-        });
+        mapper.readValue(json, new TypeReference<ChannelView>() {});
     }
 
     @Test(expected = APIParsingException.class)
@@ -151,7 +162,6 @@ public class ChannelViewDeserializeTest {
                         "\"device_type\" : \"ios\"" +
                         "}";
 
-        ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {
-        });
+        mapper.readValue(json, new TypeReference<ChannelView>() {});
     }
 }

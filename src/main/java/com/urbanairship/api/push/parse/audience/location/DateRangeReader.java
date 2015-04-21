@@ -4,19 +4,13 @@
 
 package com.urbanairship.api.push.parse.audience.location;
 
-import com.google.common.base.Optional;
-import com.urbanairship.api.push.model.notification.Notification;
-import com.urbanairship.api.push.model.audience.location.DateRange;
-import com.urbanairship.api.push.model.audience.location.DateRangeUnit;
-import com.urbanairship.api.push.model.audience.location.AbsoluteDateRange;
-import com.urbanairship.api.push.model.audience.location.RecentDateRange;
-import com.urbanairship.api.push.model.audience.location.PresenceTimeframe;
-import com.urbanairship.api.common.parse.*;
+import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.BooleanFieldDeserializer;
+import com.urbanairship.api.common.parse.JsonObjectReader;
+import com.urbanairship.api.push.model.audience.location.*;
 import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.type.TypeReference;
 
 import java.io.IOException;
-import org.joda.time.DateTime;
 
 public class DateRangeReader implements JsonObjectReader<DateRange> {
 

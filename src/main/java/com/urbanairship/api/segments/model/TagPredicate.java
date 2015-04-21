@@ -46,11 +46,8 @@ public final class TagPredicate implements Predicate {
 
         TagPredicate that = (TagPredicate) o;
 
-        if (tag != null ? !tag.equals(that.tag) : that.tag != null) {
-            return false;
-        }
+        return !(tag != null ? !tag.equals(that.tag) : that.tag != null);
 
-        return true;
     }
 
     @Override

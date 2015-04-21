@@ -4,15 +4,17 @@
 
 package com.urbanairship.api.push.parse.notification.mpns;
 
-import com.urbanairship.api.push.model.notification.mpns.MPNSDevicePayload;
-import com.urbanairship.api.push.parse.*;
-import com.urbanairship.api.common.parse.*;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
+import com.urbanairship.api.common.parse.FieldParser;
+import com.urbanairship.api.common.parse.FieldParserRegistry;
+import com.urbanairship.api.common.parse.MapFieldParserRegistry;
+import com.urbanairship.api.common.parse.StandardObjectDeserializer;
+import com.urbanairship.api.push.model.notification.mpns.MPNSDevicePayload;
 import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
+
 import java.io.IOException;
 
 public class MPNSDevicePayloadDeserializer extends JsonDeserializer<MPNSDevicePayload> {
@@ -22,7 +24,7 @@ public class MPNSDevicePayloadDeserializer extends JsonDeserializer<MPNSDevicePa
 
             .put("alert", new FieldParser<MPNSDevicePayloadReader>() {
                     public void parse(MPNSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readAlert(json, context);
+                        reader.readAlert(json);
                     }
                 })
             .put("toast", new FieldParser<MPNSDevicePayloadReader>() {

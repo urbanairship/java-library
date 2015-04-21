@@ -75,10 +75,8 @@ public class WNSAudioData {
         if (sound != null ? !sound.equals(that.sound) : that.sound != null) {
             return false;
         }
-        if (loop != null ? !loop.equals(that.loop) : that.loop != null) {
-            return false;
-        }
-        return true;
+
+        return !(loop != null ? !loop.equals(that.loop) : that.loop != null);
     }
 
     @Override

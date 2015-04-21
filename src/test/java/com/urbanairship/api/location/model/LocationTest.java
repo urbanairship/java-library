@@ -106,7 +106,7 @@ public class LocationTest {
 
         node.put("hello", "kitty");
 
-        Location target = Location.newBuilder()
+        Location.newBuilder()
                 .setBounds(bounds)
                 .setCentroid(center)
                 .setLocationId("ID")
@@ -152,7 +152,7 @@ public class LocationTest {
 
         node.put("hello", "kitty");
 
-        Location target = Location.newBuilder()
+        Location.newBuilder()
                 .setBounds(bounds)
                 .setCentroid(center)
                 .setLocationId("ID")

@@ -117,12 +117,11 @@ public final class Location {
 
         public Builder setCentroid(List<Double> value) {
             Preconditions.checkArgument(value.size() == 2, "Need two values to set a point.");
-            Point p = Point.newBuilder()
+
+            this.centroid = Point.newBuilder()
                     .setLatitude(value.get(0))
                     .setLongitude(value.get(1))
                     .build();
-
-            this.centroid = p;
             return this;
         }
 

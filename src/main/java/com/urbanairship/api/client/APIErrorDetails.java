@@ -78,12 +78,7 @@ public final class APIErrorDetails {
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("\nAPIErrorDetails:");
-        stringBuilder.append(String.format("\nPath:%s", path));
-        stringBuilder.append(String.format("\nError:%s", error));
-        stringBuilder.append(String.format("\nOptional Location:%s", location));
-        return stringBuilder.toString();
+        return "\nAPIErrorDetails:" + String.format("\nPath:%s", path) + String.format("\nError:%s", error) + String.format("\nOptional Location:%s", location);
     }
 
     /**

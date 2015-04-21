@@ -5,9 +5,7 @@
 package com.urbanairship.api.push.parse.notification.wns;
 
 import com.urbanairship.api.push.model.notification.wns.WNSToastData;
-import com.urbanairship.api.push.parse.*;
 import com.urbanairship.api.common.parse.*;
-import com.google.common.base.Optional;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
 import org.codehaus.jackson.JsonParser;

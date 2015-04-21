@@ -26,7 +26,7 @@ public enum DeviceType {
 
     private final String identifier;
 
-    private DeviceType(String identifier) {
+    DeviceType(String identifier) {
         this.identifier = identifier;
     }
 

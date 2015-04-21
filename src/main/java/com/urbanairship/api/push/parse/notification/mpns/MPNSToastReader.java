@@ -9,7 +9,6 @@ import com.urbanairship.api.common.parse.*;
 import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
-import java.util.Set;
 
 public class MPNSToastReader implements JsonObjectReader<MPNSToastData> {
 

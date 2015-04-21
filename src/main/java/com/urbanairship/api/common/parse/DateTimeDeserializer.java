@@ -8,7 +8,6 @@ import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.io.IOException;
 

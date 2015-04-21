@@ -10,7 +10,6 @@ import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.reports.model.*;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.joda.time.DateTime;
 import org.junit.Test;
 
 import java.io.IOException;

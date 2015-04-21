@@ -5,9 +5,9 @@
 package com.urbanairship.api.segments.model;
 
 import com.google.common.base.Preconditions;
-import com.urbanairship.api.client.APIResponseModelObject;
+import com.urbanairship.api.push.model.PushModelObject;
 
-public final class AudienceSegment extends APIResponseModelObject {
+public final class AudienceSegment extends PushModelObject {
 
     private final String displayName;
     private final Operator rootOperator;

@@ -4,22 +4,19 @@
 
 package com.urbanairship.api.push.parse.audience;
 
-import com.urbanairship.api.push.model.audience.Selector;
-import com.urbanairship.api.push.model.audience.Selectors;
-import com.urbanairship.api.push.model.audience.SelectorType;
-import com.urbanairship.api.push.model.audience.SelectorCategory;
-import com.urbanairship.api.push.model.audience.CompoundSelector;
+import com.google.common.base.Supplier;
+import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.*;
+import com.urbanairship.api.push.model.audience.Selector;
+import com.urbanairship.api.push.model.audience.SelectorType;
+import com.urbanairship.api.push.model.audience.Selectors;
+import org.apache.commons.collections.map.CaseInsensitiveMap;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
-import org.apache.commons.collections.map.CaseInsensitiveMap;
-import com.google.common.base.Supplier;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
+
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class SelectorDeserializer extends JsonDeserializer<Selector> {
 
@@ -119,7 +116,7 @@ public class SelectorDeserializer extends JsonDeserializer<Selector> {
             .put("location", new FieldParser<SelectorReader>() {
                     @Override
                     public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                        reader.readLocationSelector(parser, context);
+                        reader.readLocationSelector(parser);
                     }
                 })
             .build()),
@@ -128,7 +125,7 @@ public class SelectorDeserializer extends JsonDeserializer<Selector> {
             new FieldParser<SelectorReader>() {
                     @Override
                     public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                        reader.readExtraField(parser, context);
+                        reader.readExtraField(parser);
                     }
             }
             );
@@ -155,7 +152,7 @@ public class SelectorDeserializer extends JsonDeserializer<Selector> {
         // log.debug("deserialize(): " + token.name());
 
         if (token == JsonToken.VALUE_STRING) {
-            return readAtomicSelector(parser, context);
+            return readAtomicSelector(parser);
         } else {
             return deserializer.deserialize(parser, context);
         }
@@ -168,7 +165,7 @@ public class SelectorDeserializer extends JsonDeserializer<Selector> {
      * "triggered" would be appropriate, NOT when parsing a list of
      * strings in an implicit-OR expression.
      */
-    private Selector readAtomicSelector(JsonParser parser, DeserializationContext context) throws IOException {
+    private Selector readAtomicSelector(JsonParser parser) throws IOException {
         String value = parser.getText();
         SelectorType type = SelectorType.getSelectorTypeFromIdentifier(value);
 

@@ -59,10 +59,8 @@ public final class WNSDevicePayload extends PushModelObject implements DevicePay
         if (body != null ? !body.equals(that.body) : that.body != null) {
             return false;
         }
-        if (alert != null ? !alert.equals(that.alert) : that.alert != null) {
-            return false;
-        }
-        return true;
+
+        return !(alert != null ? !alert.equals(that.alert) : that.alert != null);
     }
 
     @Override

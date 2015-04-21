@@ -4,7 +4,6 @@
 
 package com.urbanairship.api.segments.parse;
 
-import com.urbanairship.api.segments.model.LocationAlias;
 import com.urbanairship.api.segments.model.LocationIdentifier;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
@@ -21,18 +20,11 @@ public final class LocationIdentifierSerializer extends JsonSerializer<LocationI
 
     @Override
     public void serialize(LocationIdentifier value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
-        if (value.isAlias()) {
-            writeAlias(value.getAlias(), jgen);
-        } else {
-            jgen.writeFieldName("id");
-            jgen.writeString(value.getId());
-        }
 
+        String fieldName = value.isAlias() ? value.getAlias().getAliasType() : "id";
+        String valueString = value.isAlias() ? value.getAlias().getAliasValue() : value.getId();
+
+        jgen.writeFieldName(fieldName);
+        jgen.writeString(valueString);
     }
-
-    private void writeAlias(LocationAlias alias, JsonGenerator jgen) throws IOException {
-        jgen.writeFieldName(alias.getAliasType());
-        jgen.writeString(alias.getAliasValue());
-    }
-
 }
