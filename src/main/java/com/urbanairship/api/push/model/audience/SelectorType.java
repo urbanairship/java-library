@@ -12,6 +12,7 @@ public enum SelectorType {
     TAG("tag", SelectorCategory.VALUE),
     ALIAS("alias", SelectorCategory.VALUE),
     SEGMENT("segment", SelectorCategory.VALUE),
+    NAMED_USER("named_user", SelectorCategory.VALUE),
 
     DEVICE_TOKEN("device_token", SelectorCategory.VALUE, true, DeviceType.IOS),
     DEVICE_PIN("device_pin", SelectorCategory.VALUE, true, DeviceType.BLACKBERRY),

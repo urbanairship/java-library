@@ -59,6 +59,15 @@ public class SelectorDeserializerTest {
     }
 
     @Test
+    public void testNamedUserCase() throws Exception {
+        String namedUser = "FakeNamedUser";
+        String json = "{\"named_user\": \"" + namedUser + "\"}";
+        BasicValueSelector value = (BasicValueSelector) mapper.readValue(json, Selector.class);
+        assertTrue(value.getType() == SelectorType.NAMED_USER);
+        assertEquals(value.getValue(), namedUser);
+    }
+
+    @Test
     public void testDeserializeTag() throws Exception {
         Selector value = mapper.readValue("{ \"tag\" : \"derp\" }", Selector.class);
         assertTrue(value.getType() == SelectorType.TAG);

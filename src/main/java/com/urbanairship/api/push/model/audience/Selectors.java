@@ -122,6 +122,21 @@ public class Selectors {
         return compound(SelectorType.OR, SelectorType.ALIAS, aliases);
     }
 
+     /* Named User */
+
+    public static final Selector namedUser(String namedUser) {
+        return value(SelectorType.NAMED_USER, namedUser);
+    }
+
+    public static final Selector namedUsers(String ... namedUsers) {
+        return compound(SelectorType.OR, SelectorType.NAMED_USER, namedUsers);
+    }
+
+    public static final Selector namedUsers(Collection<String> namedUsers) {
+        return compound(SelectorType.OR, SelectorType.NAMED_USER, namedUsers);
+    }
+
+
     /* Segments */
 
     public static final Selector segment(String segment) {
@@ -156,11 +171,11 @@ public class Selectors {
         return value(SelectorType.IOS_CHANNEL, iosChannel);
     }
 
-    public static final Selector iosChannel(String ... iosChannels) {
+    public static final Selector iosChannels(String ... iosChannels) {
         return compound(SelectorType.OR, SelectorType.IOS_CHANNEL, iosChannels);
     }
 
-    public static final Selector iosChannel(Collection<String> iosChannels) {
+    public static final Selector iosChannels(Collection<String> iosChannels) {
         return compound(SelectorType.OR, SelectorType.IOS_CHANNEL, iosChannels);
     }
 
