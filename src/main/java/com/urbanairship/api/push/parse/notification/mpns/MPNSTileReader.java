@@ -13,16 +13,12 @@ import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
 
-
-/*
-Ugh, this is such a hack right now, because the fields can appear
-in any order, and we don't know which tile type it is until we read
-the "template" field (which could be anywhere because it's a streaming
-parser). I need a way to read the "template" field first - may have to
-resort to parsing a JsonNode tree structure and then traversing that.
- */
-
 public class MPNSTileReader implements JsonObjectReader<MPNSTileData> {
+
+    // Tile Constants
+    private final static String CYCLE_TILE = "CycleTile";
+    private final static String FLIP_TILE = "FlipTile";
+    private final static String ICONIC_TILE = "IconicTile";
 
     private final MPNSCycleTileData.Builder cycleBuilder;
     private final MPNSFlipTileData.Builder flipBuilder;
@@ -124,11 +120,11 @@ public class MPNSTileReader implements JsonObjectReader<MPNSTileData> {
     @Override
     public com.urbanairship.api.push.model.notification.mpns.MPNSTileData validateAndBuild() throws IOException {
         try {
-            if (template.equals("CycleTile")) {
+            if (template.equals(CYCLE_TILE)) {
                 return cycleBuilder.build();
-            } else if (template.equals("FlipTile")) {
+            } else if (template.equals(FLIP_TILE)) {
                   return flipBuilder.build();
-            } else if (template.equals("IconicTile")) {
+            } else if (template.equals(ICONIC_TILE)) {
                 return iconicBuilder.build();
             } else {
                   throw new APIParsingException(String.format("Invalid tile template '%s'", template));

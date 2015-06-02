@@ -13,6 +13,8 @@ import com.google.common.base.Optional;
  */
 public final class APIErrorDetails {
 
+    private final static String ERROR_FORMAT = "\nAPIErrorDetails: \nPath:%s\nError:%s\nOptional Location:%s";
+
     private final String path;
     private final String error;
     private final Optional<Location> location;
@@ -78,7 +80,7 @@ public final class APIErrorDetails {
 
     @Override
     public String toString() {
-        return "\nAPIErrorDetails:" + String.format("\nPath:%s", path) + String.format("\nError:%s", error) + String.format("\nOptional Location:%s", location);
+        return String.format(ERROR_FORMAT, path, error, location);
     }
 
     /**
