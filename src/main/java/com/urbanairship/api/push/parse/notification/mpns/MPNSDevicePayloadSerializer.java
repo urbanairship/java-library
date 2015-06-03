@@ -9,6 +9,7 @@ import com.urbanairship.api.push.model.notification.mpns.MPNSPush;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
+
 import java.io.IOException;
 
 public class MPNSDevicePayloadSerializer extends JsonSerializer<MPNSDevicePayload> {

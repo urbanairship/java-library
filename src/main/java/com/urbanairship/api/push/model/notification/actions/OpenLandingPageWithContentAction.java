@@ -4,9 +4,9 @@
 
 package com.urbanairship.api.push.model.notification.actions;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.PushModelObject;
-import com.google.common.base.Objects;
 
 public class OpenLandingPageWithContentAction extends PushModelObject implements Action.OpenAction<LandingPageContent> {
     private final LandingPageContent pageContent;

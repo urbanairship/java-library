@@ -4,9 +4,9 @@
 
 package com.urbanairship.api.push.model.audience.location;
 
-import com.urbanairship.api.push.model.PushModelObject;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.urbanairship.api.push.model.PushModelObject;
 
 /**
  * An identifier for a location definition, as seen in either an API

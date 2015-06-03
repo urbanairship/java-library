@@ -3,11 +3,13 @@
  */
 
 package com.urbanairship.api.push.parse;
+
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.push.model.PushExpiry;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
+
 import java.io.IOException;
 
 public class PushExpirySerializer extends JsonSerializer<PushExpiry> {

@@ -4,9 +4,9 @@
 
 package com.urbanairship.api.push.model.notification.ios;
 
-import com.urbanairship.api.push.model.PushModelObject;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.urbanairship.api.push.model.PushModelObject;
 
 public final class IOSBadgeData extends PushModelObject {
 

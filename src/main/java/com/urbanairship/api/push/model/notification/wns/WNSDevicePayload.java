@@ -4,10 +4,10 @@
 
 package com.urbanairship.api.push.model.notification.wns;
 
-import com.urbanairship.api.push.model.PushModelObject;
-import com.urbanairship.api.push.model.DeviceType;
-import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.google.common.base.Optional;
+import com.urbanairship.api.push.model.DeviceType;
+import com.urbanairship.api.push.model.PushModelObject;
+import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 
 public final class WNSDevicePayload extends PushModelObject implements DevicePayloadOverride {
 

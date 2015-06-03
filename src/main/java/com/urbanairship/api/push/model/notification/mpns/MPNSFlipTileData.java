@@ -5,6 +5,7 @@
 package com.urbanairship.api.push.model.notification.mpns;
 
 import com.google.common.base.Optional;
+
 import static com.google.common.base.Preconditions.checkArgument;
 
 public class MPNSFlipTileData extends MPNSTileData

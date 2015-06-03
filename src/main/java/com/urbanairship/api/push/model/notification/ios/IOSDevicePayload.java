@@ -4,12 +4,12 @@
 
 package com.urbanairship.api.push.model.notification.ios;
 
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
-import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.notification.Interactive;
 
 import java.util.Map;

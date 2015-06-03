@@ -7,11 +7,25 @@ package com.urbanairship.api.client;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.urbanairship.api.client.model.*;
+import com.urbanairship.api.client.model.APIClientResponse;
+import com.urbanairship.api.client.model.APIListAllChannelsResponse;
+import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
+import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
+import com.urbanairship.api.client.model.APIListSingleChannelResponse;
+import com.urbanairship.api.client.model.APIListTagsResponse;
+import com.urbanairship.api.client.model.APILocationResponse;
+import com.urbanairship.api.client.model.APIPushResponse;
+import com.urbanairship.api.client.model.APIReportsPushListingResponse;
+import com.urbanairship.api.client.model.APIScheduleResponse;
 import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.Point;
 import com.urbanairship.api.push.model.PushPayload;
-import com.urbanairship.api.reports.model.*;
+import com.urbanairship.api.reports.model.AppStats;
+import com.urbanairship.api.reports.model.PerPushDetailResponse;
+import com.urbanairship.api.reports.model.PerPushSeriesResponse;
+import com.urbanairship.api.reports.model.ReportsAPIOpensResponse;
+import com.urbanairship.api.reports.model.ReportsAPITimeInAppResponse;
+import com.urbanairship.api.reports.model.SinglePushInfoResponse;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.segments.model.AudienceSegment;
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
@@ -767,9 +781,9 @@ public class APIClient {
     public APIClientResponse<ReportsAPIOpensResponse> listAppsOpenReport(DateTime start, DateTime end, String precision) throws IOException {
 
         Preconditions.checkArgument(precision.toUpperCase().equals("HOURLY") ||
-                        precision.toUpperCase().equals("DAILY") ||
-                        precision.toUpperCase().equals("MONTHLY"),
-                "Precision must be specified as HOURLY, DAILY or MONTHLY");
+                precision.toUpperCase().equals("DAILY") ||
+                precision.toUpperCase().equals("MONTHLY"),
+            "Precision must be specified as HOURLY, DAILY or MONTHLY");
 
         Preconditions.checkNotNull(start, "Start time is required when performing listing of apps open");
         Preconditions.checkNotNull(end, "End time is required when performing listing of apps open");
@@ -795,9 +809,9 @@ public class APIClient {
     public APIClientResponse<ReportsAPITimeInAppResponse> listTimeInAppReport(DateTime start, DateTime end, String precision) throws IOException {
 
         Preconditions.checkArgument(precision.toUpperCase().equals("HOURLY") ||
-                        precision.toUpperCase().equals("DAILY") ||
-                        precision.toUpperCase().equals("MONTHLY"),
-                "Precision must be specified as HOURLY, DAILY or MONTHLY");
+                precision.toUpperCase().equals("DAILY") ||
+                precision.toUpperCase().equals("MONTHLY"),
+            "Precision must be specified as HOURLY, DAILY or MONTHLY");
 
         Preconditions.checkNotNull(start, "Start time is required when performing listing of time in app");
         Preconditions.checkNotNull(end, "End time is required when performing listing of time in app");

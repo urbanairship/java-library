@@ -5,6 +5,7 @@
 package com.urbanairship.api.common.model;
 
 import com.urbanairship.api.common.parse.CommonObjectMapper;
+
 import java.io.IOException;
 
 public abstract class APIModelObject {

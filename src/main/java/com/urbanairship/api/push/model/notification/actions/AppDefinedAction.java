@@ -4,9 +4,9 @@
 
 package com.urbanairship.api.push.model.notification.actions;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.PushModelObject;
-import com.google.common.base.Objects;
 import org.codehaus.jackson.node.ObjectNode;
 
 public final class AppDefinedAction extends PushModelObject implements Action<ObjectNode> {

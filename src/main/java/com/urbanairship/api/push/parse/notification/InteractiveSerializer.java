@@ -1,7 +1,7 @@
 package com.urbanairship.api.push.parse.notification;
 
-import com.urbanairship.api.push.model.notification.actions.Actions;
 import com.urbanairship.api.push.model.notification.Interactive;
+import com.urbanairship.api.push.model.notification.actions.Actions;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;

@@ -1,7 +1,14 @@
 package com.urbanairship.api.push.parse.audience;
 
 import com.urbanairship.api.common.parse.APIParsingException;
-import com.urbanairship.api.push.model.audience.location.*;
+import com.urbanairship.api.push.model.audience.location.AbsoluteDateRange;
+import com.urbanairship.api.push.model.audience.location.DateRange;
+import com.urbanairship.api.push.model.audience.location.DateRangeUnit;
+import com.urbanairship.api.push.model.audience.location.LocationAlias;
+import com.urbanairship.api.push.model.audience.location.LocationIdentifier;
+import com.urbanairship.api.push.model.audience.location.LocationSelector;
+import com.urbanairship.api.push.model.audience.location.PresenceTimeframe;
+import com.urbanairship.api.push.model.audience.location.RecentDateRange;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
@@ -10,7 +17,10 @@ import org.joda.time.Days;
 import org.joda.time.Hours;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class LocationSelectorDeserializerTest {
     private static final ObjectMapper mapper = PushObjectMapper.getInstance();

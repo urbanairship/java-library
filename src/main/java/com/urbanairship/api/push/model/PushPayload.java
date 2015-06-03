@@ -4,13 +4,12 @@
 
 package com.urbanairship.api.push.model;
 
-import com.urbanairship.api.push.model.notification.Notification;
-import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
-import com.urbanairship.api.push.model.audience.Selector;
-import com.urbanairship.api.push.model.audience.SelectorType;
-
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.urbanairship.api.push.model.audience.Selector;
+import com.urbanairship.api.push.model.audience.SelectorType;
+import com.urbanairship.api.push.model.notification.Notification;
+import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 
 /**
  * Represents a Push payload for the Urban Airship API

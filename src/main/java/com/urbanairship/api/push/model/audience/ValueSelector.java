@@ -5,6 +5,7 @@
 package com.urbanairship.api.push.model.audience;
 
 import com.google.common.base.Optional;
+
 import java.util.Map;
 
 /**

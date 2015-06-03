@@ -4,8 +4,8 @@
 
 package com.urbanairship.api.push.model.audience.location;
 
-import com.urbanairship.api.push.model.PushModelObject;
 import com.google.common.base.Preconditions;
+import com.urbanairship.api.push.model.PushModelObject;
 import org.joda.time.DateTime;
 
 public class RecentDateRange extends PushModelObject implements DateRange {

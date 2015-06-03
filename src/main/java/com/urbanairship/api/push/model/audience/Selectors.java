@@ -4,14 +4,14 @@
 
 package com.urbanairship.api.push.model.audience;
 
-import com.urbanairship.api.push.model.DeviceType;
+import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.push.model.audience.location.DateRange;
 import com.urbanairship.api.push.model.audience.location.DateRangeUnit;
-import com.urbanairship.api.push.model.audience.location.RecentDateRange;
-import com.urbanairship.api.push.model.audience.location.LocationSelector;
 import com.urbanairship.api.push.model.audience.location.LocationIdentifier;
+import com.urbanairship.api.push.model.audience.location.LocationSelector;
 import com.urbanairship.api.push.model.audience.location.PresenceTimeframe;
-import com.google.common.collect.ImmutableList;
+import com.urbanairship.api.push.model.audience.location.RecentDateRange;
+
 import java.util.Collection;
 
 /**

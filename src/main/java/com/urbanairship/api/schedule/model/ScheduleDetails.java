@@ -5,8 +5,8 @@
 package com.urbanairship.api.schedule.model;
 
 import com.google.common.base.Objects;
-import com.urbanairship.api.push.model.PushModelObject;
 import com.google.common.base.Preconditions;
+import com.urbanairship.api.push.model.PushModelObject;
 
 public final class ScheduleDetails extends PushModelObject {
 

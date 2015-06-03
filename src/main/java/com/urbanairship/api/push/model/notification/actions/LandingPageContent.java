@@ -4,11 +4,11 @@
 
 package com.urbanairship.api.push.model.notification.actions;
 
+import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.push.model.PushModelObject;
-import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 
 public final class LandingPageContent extends PushModelObject {
     private final Optional<Encoding> encoding;

@@ -4,8 +4,8 @@
 
 package com.urbanairship.api.push.model.notification;
 
-import com.urbanairship.api.push.model.DeviceType;
 import com.google.common.base.Optional;
+import com.urbanairship.api.push.model.DeviceType;
 
 public interface DevicePayloadOverride {
     DeviceType getDeviceType();

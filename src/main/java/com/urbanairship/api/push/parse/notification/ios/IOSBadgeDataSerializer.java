@@ -8,6 +8,7 @@ import com.urbanairship.api.push.model.notification.ios.IOSBadgeData;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
+
 import java.io.IOException;
 
 public class IOSBadgeDataSerializer extends JsonSerializer<IOSBadgeData> {

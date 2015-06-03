@@ -4,12 +4,13 @@
 
 package com.urbanairship.api.push.parse.audience.location;
 
-import com.urbanairship.api.push.model.audience.location.LocationSelector;
 import com.urbanairship.api.push.model.audience.location.LocationAlias;
 import com.urbanairship.api.push.model.audience.location.LocationIdentifier;
+import com.urbanairship.api.push.model.audience.location.LocationSelector;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
+
 import java.io.IOException;
 
 public class LocationSelectorSerializer extends JsonSerializer<LocationSelector> {

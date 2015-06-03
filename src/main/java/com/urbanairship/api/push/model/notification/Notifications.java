@@ -4,16 +4,16 @@
 
 package com.urbanairship.api.push.model.notification;
 
+import com.google.common.base.Optional;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
-import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
+import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
 import com.urbanairship.api.push.model.notification.blackberry.BlackberryDevicePayload;
-import com.urbanairship.api.push.model.notification.wns.WNSDevicePayload;
+import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 import com.urbanairship.api.push.model.notification.mpns.MPNSDevicePayload;
-import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
-import com.google.common.base.Optional;
+import com.urbanairship.api.push.model.notification.wns.WNSDevicePayload;
 
 public class Notifications {
 

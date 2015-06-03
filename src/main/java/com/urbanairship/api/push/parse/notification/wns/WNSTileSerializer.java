@@ -4,8 +4,8 @@
 
 package com.urbanairship.api.push.parse.notification.wns;
 
-import com.urbanairship.api.push.model.notification.wns.WNSTileData;
 import com.urbanairship.api.push.model.notification.wns.WNSBinding;
+import com.urbanairship.api.push.model.notification.wns.WNSTileData;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;

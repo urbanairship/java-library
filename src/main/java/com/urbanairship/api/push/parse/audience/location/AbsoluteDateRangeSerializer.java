@@ -9,6 +9,7 @@ import com.urbanairship.api.push.model.audience.location.PresenceTimeframe;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
+
 import java.io.IOException;
 
 public class AbsoluteDateRangeSerializer extends JsonSerializer<AbsoluteDateRange> {

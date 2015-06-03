@@ -9,9 +9,9 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.ImmutableClassToInstanceMap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.MutableClassToInstanceMap;
 import com.google.common.collect.Sets;
-import com.google.common.collect.Lists;
 import com.urbanairship.api.push.model.PushModelObject;
 
 import java.util.List;

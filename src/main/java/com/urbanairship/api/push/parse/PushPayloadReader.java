@@ -4,13 +4,14 @@
 
 package com.urbanairship.api.push.parse;
 
+import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.push.model.DeviceTypeData;
+import com.urbanairship.api.push.model.PushOptions;
+import com.urbanairship.api.push.model.PushPayload;
+import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
-import com.urbanairship.api.push.model.audience.Selector;
-import com.urbanairship.api.push.model.PushPayload;
-import com.urbanairship.api.push.model.PushOptions;
-import com.urbanairship.api.common.parse.*;
 import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
