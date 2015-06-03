@@ -66,14 +66,9 @@ public class WNSToastData {
         }
 
         WNSToastData that = (WNSToastData)o;
-        if (binding != null ? !binding.equals(that.binding) : that.binding != null) {
-            return false;
-        }
-        if (duration != null ? !duration.equals(that.duration) : that.duration != null) {
-            return false;
-        }
-
-        return !(audio != null ? !audio.equals(that.audio) : that.audio != null);
+        return (binding == null ? that.binding == null : binding.equals(that.binding)) &&
+            (duration == null ? that.duration == null : duration.equals(that.duration)) &&
+            (audio == null ? that.audio == null : audio.equals(that.audio));
     }
 
     @Override
