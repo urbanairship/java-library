@@ -59,18 +59,14 @@ public class APIParsingException extends APIException {
     }
 
     public static APIParsingException raise(String msg, JsonParser parser) throws APIParsingException {
-        String message;
-        try {
-            message = String.format("%s; at line %d, col %d, '%s'",
+        if (log.isDebugEnabled()) {
+            try {
+                log.debug(String.format("%s; at line %d, col %d, '%s'",
                     msg,
                     parser.getCurrentLocation().getLineNr(),
                     parser.getCurrentLocation().getColumnNr(),
-                    getPath(parser));
-            if (log.isDebugEnabled()) {
-                log.debug(message);
-            }
-        } catch ( Exception ex ) {
-            if (log.isDebugEnabled()) {
+                    getPath(parser)));
+            } catch (Exception ex) {
                 log.debug("Exception while formatting exception.", ex);
             }
         }
