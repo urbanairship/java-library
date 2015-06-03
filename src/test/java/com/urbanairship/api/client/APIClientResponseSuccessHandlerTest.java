@@ -279,15 +279,33 @@ public class APIClientResponseSuccessHandlerTest {
     @Test
     public void testListAllSchedulesHandleSuccess() {
 
-        String listscheduleresponse = "{\"ok\":true,\"count\":5,\"total_count\":6,\"schedules\":" +
-            "[{\"url\":\"https://go.urbanairship.com/api/schedules/5a60e0a6-9aa7-449f-a038-6806e572baf3\",\"" +
-            "schedule\":{\"scheduled_time\":\"2015-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device" +
-            "_types\":[\"android\",\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2015!\",\"android\"" +
-            ":{},\"ios\":{}}},\"push_ids\":[\"8430f2e0-ec07-4c1e-adc4-0c7c7978e648\"]},{\"url\":\"https://go" +
-            ".urbanairship.com/api/schedules/f53aa2bd-018a-4482-8d7d-691d13407973\",\"schedule\":{\"schedule" +
-            "d_time\":\"2016-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device_types\":[\"android\"," +
-            "\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2016!\",\"android\":{},\"ios\":{}}},\"pus" +
-            "h_ids\":[\"b217a321-922f-4aee-b239-ca1b58c6b652\"]}]}";
+        String listscheduleresponse = "{ \n" +
+            "  \"ok\":true, \n" +
+            "  \"count\":5, \n" +
+            "  \"total_count\":6, \n" +
+            "  \"schedules\": [ \n" +
+            "    { \n" +
+            "      \"url\":\"https://go.urbanairship.com/api/schedules/5a60e0a6-9aa7-449f-a038-6806e572baf3\", \n" +
+            "      \"schedule\":{ \n" +
+            "        \"scheduled_time\":\"2015-01-01T08:00:00\" \n" +
+            "      }, \n" +
+            "      \"push\":{\"audience\":\"ALL\", \n" +
+            "      \"device_types\":[\"android\",\"ios\"], \n" +
+            "      \"notification\":{\"alert\":\"Happy New Year 2015!\",\"android\":{},\"ios\":{}}}, \n" +
+            "      \"push_ids\":[\"8430f2e0-ec07-4c1e-adc4-0c7c7978e648\"] \n" +
+            "    }, \n" +
+            "    { \n" +
+            "      \"url\":\"https://go.urbanairship.com/api/schedules/f53aa2bd-018a-4482-8d7d-691d13407973\", \n" +
+            "      \"schedule\":{ \n" +
+            "        \"scheduled_time\":\"2016-01-01T08:00:00\" \n" +
+            "      }, \n" +
+            "      \"push\":{\"audience\":\"ALL\", \n" +
+            "      \"device_types\":[\"android\",\"ios\"], \n" +
+            "      \"notification\":{\"alert\":\"Happy New Year 2016!\",\"android\":{},\"ios\":{}}}, \n" +
+            "      \"push_ids\":[\"b217a321-922f-4aee-b239-ca1b58c6b652\"] \n" +
+            "    } \n" +
+            "  ] \n" +
+            "} \n";
 
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
             new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
@@ -607,7 +625,19 @@ public class APIClientResponseSuccessHandlerTest {
     @Test
     public void testListScheduleHandleSuccess() {
 
-        String listscheduleresponse = "{\"schedule\":{\"scheduled_time\":\"2015-08-07T22:10:44\"},\"name\":\"Special Scheduled Push 20\",\"push\":{\"audience\":\"ALL\",\"device_types\":\"all\",\"notification\":{\"alert\":\"Scheduled Push 20\"}},\"push_ids\":[\"274f9aa4-2d00-4911-a043-70129f29adf2\"]}";
+        String listscheduleresponse = "{ \n" +
+            "  \"schedule\":{ \n" +
+            "    \"scheduled_time\":\"2015-08-07T22:10:44\" \n" +
+            "  }, \n" +
+            "  \"name\":\"Special Scheduled Push 20\", \n" +
+            "  \"push\":{ \n" +
+            "    \"audience\":\"ALL\", \n" +
+            "    \"device_types\":\"all\", \n" +
+            "    \"notification\":{\"alert\":\"Scheduled Push 20\"} \n" +
+            "  }, \n" +
+            "  \"push_ids\":[\"274f9aa4-2d00-4911-a043-70129f29adf2\"] \n" +
+            "}";
+
 
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
             new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
