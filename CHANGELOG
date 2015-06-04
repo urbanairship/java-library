@@ -1,5 +1,11 @@
 
 -------------------------
+0.4 04JUN15
+-------------------------
+- Push to named users
+- Audience selector naming correction (iosChannel --> iosChannels for multiple input channels)
+
+-------------------------
 0.3 15DEC14
 -------------------------
 Lots of new things:

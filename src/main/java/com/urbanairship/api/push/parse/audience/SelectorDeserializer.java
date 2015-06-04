@@ -41,6 +41,12 @@ public class SelectorDeserializer extends JsonDeserializer<Selector> {
                         reader.readValueSelector(SelectorType.ALIAS, parser, context);
                     }
                 })
+            .put("named_user", new FieldParser<SelectorReader>() {
+                @Override
+                public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
+                    reader.readValueSelector(SelectorType.NAMED_USER, parser, context);
+                }
+            })
             .put("segment", new FieldParser<SelectorReader>() {
                     @Override
                     public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
