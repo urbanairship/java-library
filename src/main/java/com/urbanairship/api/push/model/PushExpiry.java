@@ -1,11 +1,10 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.model;
 
 import com.google.common.base.Optional;
-import com.urbanairship.api.common.APIException;
 import com.urbanairship.api.common.parse.APIParsingException;
 import org.joda.time.DateTime;
 
@@ -64,11 +63,8 @@ public class PushExpiry extends PushModelObject {
             return false;
         }
 
-        if (expiryTimeStamp != null ? !expiryTimeStamp.equals(that.expiryTimeStamp) : that.expiryTimeStamp != null) {
-            return false;
-        }
+        return !(expiryTimeStamp != null ? !expiryTimeStamp.equals(that.expiryTimeStamp) : that.expiryTimeStamp != null);
 
-        return true;
     }
 
     @Override
@@ -119,7 +115,7 @@ public class PushExpiry extends PushModelObject {
             if (expiryTimeStamp != null && expirySeconds != null) {
                 throw new APIParsingException("Expiry time may contain a relative offset or an absolute time, but not both");
             }
-            if (expirySeconds != null && expirySeconds.intValue() < 0) {
+            if (expirySeconds != null && expirySeconds < 0) {
                 throw new APIParsingException("Expiry time may not be negative");
             }
             return new PushExpiry(Optional.fromNullable(expirySeconds),

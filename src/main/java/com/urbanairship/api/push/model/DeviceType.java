@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.model;
@@ -26,7 +26,7 @@ public enum DeviceType {
 
     private final String identifier;
 
-    private DeviceType(String identifier) {
+    DeviceType(String identifier) {
         this.identifier = identifier;
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.notification.actions;
@@ -10,7 +10,6 @@ import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.notification.actions.TagActionData;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
 
@@ -24,7 +23,7 @@ public final class TagActionDataDeserializer extends JsonDeserializer<TagActionD
     }
 
     @Override
-    public TagActionData deserialize(JsonParser parser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+    public TagActionData deserialize(JsonParser parser, DeserializationContext deserializationContext) throws IOException {
         JsonNode jsonNode = parser.readValueAsTree();
         if(!jsonNode.isArray() && !jsonNode.isTextual()) {
             throw new APIParsingException("Tag must be a string or an array.");

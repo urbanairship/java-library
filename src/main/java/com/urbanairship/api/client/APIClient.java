@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.client;
@@ -7,11 +7,25 @@ package com.urbanairship.api.client;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.urbanairship.api.client.model.*;
+import com.urbanairship.api.client.model.APIClientResponse;
+import com.urbanairship.api.client.model.APIListAllChannelsResponse;
+import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
+import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
+import com.urbanairship.api.client.model.APIListSingleChannelResponse;
+import com.urbanairship.api.client.model.APIListTagsResponse;
+import com.urbanairship.api.client.model.APILocationResponse;
+import com.urbanairship.api.client.model.APIPushResponse;
+import com.urbanairship.api.client.model.APIReportsPushListingResponse;
+import com.urbanairship.api.client.model.APIScheduleResponse;
 import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.Point;
 import com.urbanairship.api.push.model.PushPayload;
-import com.urbanairship.api.reports.model.*;
+import com.urbanairship.api.reports.model.AppStats;
+import com.urbanairship.api.reports.model.PerPushDetailResponse;
+import com.urbanairship.api.reports.model.PerPushSeriesResponse;
+import com.urbanairship.api.reports.model.ReportsAPIOpensResponse;
+import com.urbanairship.api.reports.model.ReportsAPITimeInAppResponse;
+import com.urbanairship.api.reports.model.SinglePushInfoResponse;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.segments.model.AudienceSegment;
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
@@ -207,7 +221,9 @@ public class APIClient {
             logger.debug(String.format("Executing push request %s", request));
         }
 
-        return provisionExecutor().execute(request).handleResponse(new PushAPIResponseHandler());
+        return provisionExecutor()
+            .execute(request)
+            .handleResponse(new APIClientResponseHandler<APIPushResponse>(APIPushResponse.class));
     }
 
     public APIClientResponse<APIPushResponse> validate(PushPayload payload) throws IOException {
@@ -219,7 +235,9 @@ public class APIClient {
             logger.debug(String.format("Executing validate push request %s", request));
         }
 
-        return provisionExecutor().execute(request).handleResponse(new PushAPIResponseHandler());
+        return provisionExecutor()
+            .execute(request)
+            .handleResponse(new APIClientResponseHandler<APIPushResponse>(APIPushResponse.class));
     }
 
     /* Schedules API */
@@ -233,7 +251,9 @@ public class APIClient {
             logger.debug(String.format("Executing schedule request %s", request));
         }
 
-        return provisionExecutor().execute(request).handleResponse(new ScheduleAPIResponseHandler());
+        return provisionExecutor()
+            .execute(request)
+            .handleResponse(new APIClientResponseHandler<APIScheduleResponse>(APIScheduleResponse.class));
     }
 
     public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules() throws IOException {
@@ -243,7 +263,9 @@ public class APIClient {
             logger.debug(String.format("Executing list all schedules request %s", request));
         }
 
-        return provisionExecutor().execute(request).handleResponse(new ListAllSchedulesAPIResponseHandler());
+        return provisionExecutor()
+            .execute(request)
+            .handleResponse(new APIClientResponseHandler<APIListAllSchedulesResponse>(APIListAllSchedulesResponse.class));
     }
 
     public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules(String start, int limit, String order) throws IOException {
@@ -254,7 +276,9 @@ public class APIClient {
             logger.debug(String.format("Executing list all schedules request %s", request));
         }
 
-        return provisionExecutor().execute(request).handleResponse(new ListAllSchedulesAPIResponseHandler());
+        return provisionExecutor()
+            .execute(request)
+            .handleResponse(new APIClientResponseHandler<APIListAllSchedulesResponse>(APIListAllSchedulesResponse.class));
     }
 
     public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules(String next_page) throws IOException, URISyntaxException {
@@ -265,7 +289,9 @@ public class APIClient {
             logger.debug(String.format("Executing list all schedules request %s", request));
         }
 
-        return provisionExecutor().execute(request).handleResponse(new ListAllSchedulesAPIResponseHandler());
+        return provisionExecutor()
+            .execute(request)
+            .handleResponse(new APIClientResponseHandler<APIListAllSchedulesResponse>(APIListAllSchedulesResponse.class));
     }
 
     public APIClientResponse<SchedulePayload> listSchedule(String id) throws IOException {
@@ -275,7 +301,9 @@ public class APIClient {
             logger.debug(String.format("Executing list specific schedule request %s", request));
         }
 
-        return provisionExecutor().execute(request).handleResponse(new ListScheduleAPIResponseHandler());
+        return provisionExecutor()
+            .execute(request)
+            .handleResponse(new APIClientResponseHandler<SchedulePayload>(SchedulePayload.class));
     }
 
     public APIClientResponse<APIScheduleResponse> updateSchedule(SchedulePayload payload, String id) throws IOException {
@@ -287,7 +315,9 @@ public class APIClient {
             logger.debug(String.format("Executing update schedule request %s", req));
         }
 
-        return provisionExecutor().execute(req).handleResponse(new ScheduleAPIResponseHandler());
+        return provisionExecutor()
+            .execute(req)
+            .handleResponse(new APIClientResponseHandler<APIScheduleResponse>(APIScheduleResponse.class));
     }
 
     public HttpResponse deleteSchedule(String id) throws IOException {
@@ -309,7 +339,9 @@ public class APIClient {
             logger.debug(String.format("Executing list tags request %s", req));
         }
 
-        return provisionExecutor().execute(req).handleResponse(new ListTagsAPIResponseHandler());
+        return provisionExecutor()
+            .execute(req)
+            .handleResponse(new APIClientResponseHandler<APIListTagsResponse>(APIListTagsResponse.class));
     }
 
     public HttpResponse createTag(String tag) throws IOException {
@@ -374,7 +406,9 @@ public class APIClient {
             logger.debug(String.format("Executing query location information without type request %s", req));
         }
 
-        return provisionExecutor().execute(req).handleResponse(new LocationAPIResponseHandler());
+        return provisionExecutor()
+            .execute(req)
+            .handleResponse(new APIClientResponseHandler<APILocationResponse>(APILocationResponse.class));
     }
 
     public APIClientResponse<APILocationResponse> queryLocationInformation(String query, String type) throws IOException {
@@ -392,7 +426,9 @@ public class APIClient {
             logger.debug(String.format("Executing query location information without type request %s", req));
         }
 
-        return provisionExecutor().execute(req).handleResponse(new LocationAPIResponseHandler());
+        return provisionExecutor()
+            .execute(req)
+            .handleResponse(new APIClientResponseHandler<APILocationResponse>(APILocationResponse.class));
     }
 
     public APIClientResponse<APILocationResponse> queryLocationInformation(Point point) throws IOException {
@@ -409,7 +445,9 @@ public class APIClient {
             logger.debug(String.format("Executing query location information without type request %s", req));
         }
 
-        return provisionExecutor().execute(req).handleResponse(new LocationAPIResponseHandler());
+        return provisionExecutor()
+            .execute(req)
+            .handleResponse(new APIClientResponseHandler<APILocationResponse>(APILocationResponse.class));
     }
 
     public APIClientResponse<APILocationResponse> queryLocationInformation(Point point, String type) throws IOException {
@@ -427,7 +465,9 @@ public class APIClient {
             logger.debug(String.format("Executing query location information without type request %s", req));
         }
 
-        return provisionExecutor().execute(req).handleResponse(new LocationAPIResponseHandler());
+        return provisionExecutor()
+            .execute(req)
+            .handleResponse(new APIClientResponseHandler<APILocationResponse>(APILocationResponse.class));
     }
 
     public APIClientResponse<APILocationResponse> queryLocationInformation(BoundedBox box) throws IOException {
@@ -449,7 +489,9 @@ public class APIClient {
             logger.debug(String.format("Executing query location information without type request %s", req));
         }
 
-        return provisionExecutor().execute(req).handleResponse(new LocationAPIResponseHandler());
+        return provisionExecutor()
+            .execute(req)
+            .handleResponse(new APIClientResponseHandler<APILocationResponse>(APILocationResponse.class));
     }
 
     public APIClientResponse<APILocationResponse> queryLocationInformation(BoundedBox box, String type) throws IOException {
@@ -473,7 +515,9 @@ public class APIClient {
             logger.debug(String.format("Executing query location information without type request %s", req));
         }
 
-        return provisionExecutor().execute(req).handleResponse(new LocationAPIResponseHandler());
+        return provisionExecutor()
+            .execute(req)
+            .handleResponse(new APIClientResponseHandler<APILocationResponse>(APILocationResponse.class));
     }
 
     /* Segments API */
@@ -485,7 +529,9 @@ public class APIClient {
             logger.debug(String.format("Executing list all segments request %s", req));
         }
 
-        return provisionExecutor().execute(req).handleResponse(new ListAllSegmentsAPIResponseHandler());
+        return provisionExecutor()
+            .execute(req)
+            .handleResponse(new APIClientResponseHandler<APIListAllSegmentsResponse>(APIListAllSegmentsResponse.class));
     }
 
     public APIClientResponse<APIListAllSegmentsResponse> listAllSegments(String nextPage) throws IOException, URISyntaxException {
@@ -496,7 +542,9 @@ public class APIClient {
             logger.debug(String.format("Executing list all segments request %s", req));
         }
 
-        return provisionExecutor().execute(req).handleResponse(new ListAllSegmentsAPIResponseHandler());
+        return provisionExecutor()
+            .execute(req)
+            .handleResponse(new APIClientResponseHandler<APIListAllSegmentsResponse>(APIListAllSegmentsResponse.class));
     }
 
     public APIClientResponse<APIListAllSegmentsResponse> listAllSegments(String start, int limit, String order) throws IOException {
@@ -507,7 +555,9 @@ public class APIClient {
             logger.debug(String.format("Executing list all segments request %s", req));
         }
 
-        return provisionExecutor().execute(req).handleResponse(new ListAllSegmentsAPIResponseHandler());
+        return provisionExecutor()
+            .execute(req)
+            .handleResponse(new APIClientResponseHandler<APIListAllSegmentsResponse>(APIListAllSegmentsResponse.class));
     }
 
     public APIClientResponse<AudienceSegment> listSegment(String segmentID) throws IOException {
@@ -520,7 +570,9 @@ public class APIClient {
             logger.debug(String.format("Executing list all segments request %s", req));
         }
 
-        return provisionExecutor().execute(req).handleResponse(new AudienceSegmentAPIResponseHandler());
+        return provisionExecutor()
+            .execute(req)
+            .handleResponse(new APIClientResponseHandler<AudienceSegment>(AudienceSegment.class));
     }
 
     public HttpResponse createSegment(AudienceSegment payload) throws IOException {
@@ -578,7 +630,9 @@ public class APIClient {
             logger.debug(String.format("Executing get single channels request %s", req));
         }
 
-        return provisionExecutor().execute(req).handleResponse(new ListSingleChannelAPIResponseHandler());
+        return provisionExecutor()
+            .execute(req)
+            .handleResponse(new APIClientResponseHandler<APIListSingleChannelResponse>(APIListSingleChannelResponse.class));
     }
 
     public APIClientResponse<APIListAllChannelsResponse> listAllChannels() throws IOException {
@@ -588,7 +642,9 @@ public class APIClient {
             logger.debug(String.format("Executing list all channels request %s", req));
         }
 
-        return provisionExecutor().execute(req).handleResponse(new ListAllChannelsAPIResponseHandler());
+        return provisionExecutor()
+            .execute(req)
+            .handleResponse(new APIClientResponseHandler<APIListAllChannelsResponse>(APIListAllChannelsResponse.class));
     }
 
     /* Reports API */
@@ -602,7 +658,9 @@ public class APIClient {
             logger.debug(String.format("Executing list per push detail request %s", req));
         }
 
-        return provisionExecutor().execute(req).handleResponse(new ListPerPushDetailAPIResponseHandler());
+        return provisionExecutor()
+            .execute(req)
+            .handleResponse(new APIClientResponseHandler<PerPushDetailResponse>(PerPushDetailResponse.class));
     }
 
     public APIClientResponse<PerPushSeriesResponse> listPerPushSeries(String pushID) throws IOException {
@@ -614,7 +672,9 @@ public class APIClient {
             logger.debug(String.format("Executing list per push series request %s", req));
         }
 
-        return provisionExecutor().execute(req).handleResponse(new ListPerPushSeriesResponseHandler());
+        return provisionExecutor()
+            .execute(req)
+            .handleResponse(new APIClientResponseHandler<PerPushSeriesResponse>(PerPushSeriesResponse.class));
     }
 
     public APIClientResponse<PerPushSeriesResponse> listPerPushSeries(String pushID, String precision) throws IOException {
@@ -633,7 +693,9 @@ public class APIClient {
             logger.debug(String.format("Executing list per push series with precision request %s", req));
         }
 
-        return provisionExecutor().execute(req).handleResponse(new ListPerPushSeriesResponseHandler());
+        return provisionExecutor()
+            .execute(req)
+            .handleResponse(new APIClientResponseHandler<PerPushSeriesResponse>(PerPushSeriesResponse.class));
     }
 
     public APIClientResponse<PerPushSeriesResponse> listPerPushSeries(String pushID,
@@ -661,7 +723,9 @@ public class APIClient {
             logger.debug(String.format("Executing list per push series with precision and range request %s", req));
         }
 
-        return provisionExecutor().execute(req).handleResponse(new ListPerPushSeriesResponseHandler());
+        return provisionExecutor()
+            .execute(req)
+            .handleResponse(new APIClientResponseHandler<PerPushSeriesResponse>(PerPushSeriesResponse.class));
     }
 
     public APIClientResponse<SinglePushInfoResponse> listIndividualPushResponseStatistics(String id) throws IOException {
@@ -675,7 +739,9 @@ public class APIClient {
             logger.debug(String.format("Executing list Statistics in CSV String format request %s", req));
         }
 
-        return provisionExecutor().execute(req).handleResponse(new ListIndividualPushAPIResponseHandler());
+        return provisionExecutor()
+            .execute(req)
+            .handleResponse(new APIClientResponseHandler<SinglePushInfoResponse>(SinglePushInfoResponse.class));
     }
 
     public APIClientResponse<APIReportsPushListingResponse> listReportsResponseListing(DateTime start,
@@ -706,16 +772,18 @@ public class APIClient {
             logger.debug(String.format("Executing list Statistics in CSV String format request %s", req));
         }
 
-        return provisionExecutor().execute(req).handleResponse(new ListReportsListingResponseHandler());
+        return provisionExecutor()
+            .execute(req)
+            .handleResponse(new APIClientResponseHandler<APIReportsPushListingResponse>(APIReportsPushListingResponse.class));
 
     }
 
     public APIClientResponse<ReportsAPIOpensResponse> listAppsOpenReport(DateTime start, DateTime end, String precision) throws IOException {
 
         Preconditions.checkArgument(precision.toUpperCase().equals("HOURLY") ||
-                        precision.toUpperCase().equals("DAILY") ||
-                        precision.toUpperCase().equals("MONTHLY"),
-                "Precision must be specified as HOURLY, DAILY or MONTHLY");
+                precision.toUpperCase().equals("DAILY") ||
+                precision.toUpperCase().equals("MONTHLY"),
+            "Precision must be specified as HOURLY, DAILY or MONTHLY");
 
         Preconditions.checkNotNull(start, "Start time is required when performing listing of apps open");
         Preconditions.checkNotNull(end, "End time is required when performing listing of apps open");
@@ -733,15 +801,17 @@ public class APIClient {
             logger.debug(String.format("Executing list apps open report request %s", req));
         }
 
-        return provisionExecutor().execute(req).handleResponse(new AppsOpenReportAPIResponseHandler());
+        return provisionExecutor()
+            .execute(req)
+            .handleResponse(new APIClientResponseHandler<ReportsAPIOpensResponse>(ReportsAPIOpensResponse.class));
     }
 
     public APIClientResponse<ReportsAPITimeInAppResponse> listTimeInAppReport(DateTime start, DateTime end, String precision) throws IOException {
 
         Preconditions.checkArgument(precision.toUpperCase().equals("HOURLY") ||
-                        precision.toUpperCase().equals("DAILY") ||
-                        precision.toUpperCase().equals("MONTHLY"),
-                "Precision must be specified as HOURLY, DAILY or MONTHLY");
+                precision.toUpperCase().equals("DAILY") ||
+                precision.toUpperCase().equals("MONTHLY"),
+            "Precision must be specified as HOURLY, DAILY or MONTHLY");
 
         Preconditions.checkNotNull(start, "Start time is required when performing listing of time in app");
         Preconditions.checkNotNull(end, "End time is required when performing listing of time in app");
@@ -759,7 +829,9 @@ public class APIClient {
             logger.debug(String.format("Executing list time in app report request %s", req));
         }
 
-        return provisionExecutor().execute(req).handleResponse(new TimeInAppReportAPIResponseHandler());
+        return provisionExecutor()
+            .execute(req)
+            .handleResponse(new APIClientResponseHandler<ReportsAPITimeInAppResponse>(ReportsAPITimeInAppResponse.class));
     }
 
     /**

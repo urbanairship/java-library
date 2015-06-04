@@ -1,14 +1,14 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.model.notification.actions;
 
+import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.push.model.PushModelObject;
-import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 
 public final class LandingPageContent extends PushModelObject {
     private final Optional<Encoding> encoding;
@@ -126,7 +126,7 @@ public final class LandingPageContent extends PushModelObject {
 
     public enum Encoding {
         UTF8,
-        Base64;
+        Base64
     }
 
     public static final class Builder {

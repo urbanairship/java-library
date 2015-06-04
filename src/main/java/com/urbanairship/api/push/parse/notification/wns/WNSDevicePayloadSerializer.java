@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.notification.wns;
@@ -9,7 +9,6 @@ import com.urbanairship.api.push.model.notification.wns.WNSPush;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
-import com.google.common.base.Optional;
 
 import java.io.IOException;
 
@@ -42,14 +41,6 @@ public class WNSDevicePayloadSerializer extends JsonSerializer<WNSDevicePayload>
                 jgen.writeObjectField("cache_policy", body.getCachePolicy().get());
             }
         }
-
-        // if (body.getTag().isPresent()) {
-        //     jgen.writeStringField("tag", body.getTag().get());
-        // }
-
-        // if (body.getTtl().isPresent()) {
-        //     jgen.writeNumberField("ttl", body.getTtl().get());
-        // }
 
         jgen.writeEndObject();
     }

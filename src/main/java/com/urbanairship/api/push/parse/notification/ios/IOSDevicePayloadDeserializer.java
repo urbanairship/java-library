@@ -1,16 +1,20 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.notification.ios;
 
-import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
-import com.urbanairship.api.common.parse.*;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
+import com.urbanairship.api.common.parse.FieldParser;
+import com.urbanairship.api.common.parse.FieldParserRegistry;
+import com.urbanairship.api.common.parse.MapFieldParserRegistry;
+import com.urbanairship.api.common.parse.StandardObjectDeserializer;
+import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
+
 import java.io.IOException;
 
 public class IOSDevicePayloadDeserializer extends JsonDeserializer<IOSDevicePayload> {
@@ -24,47 +28,47 @@ public class IOSDevicePayloadDeserializer extends JsonDeserializer<IOSDevicePayl
                 })
             .put("sound", new FieldParser<IOSDevicePayloadReader>() {
                     public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readSound(json, context);
+                        reader.readSound(json);
                     }
                 })
             .put("badge", new FieldParser<IOSDevicePayloadReader>() {
                     public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readBadge(json, context);
+                        reader.readBadge(json);
                     }
                 })
             .put("content-available", new FieldParser<IOSDevicePayloadReader>() {
                     public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readContentAvailable(json, context);
+                        reader.readContentAvailable(json);
                     }
                 })
             .put("content_available", new FieldParser<IOSDevicePayloadReader>() {
                     public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readContentAvailable(json, context);
+                        reader.readContentAvailable(json);
                     }
                 })
             .put("extra", new FieldParser<IOSDevicePayloadReader>() {
                     public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readExtra(json, context);
+                        reader.readExtra(json);
                     }
                 })
             .put("category", new FieldParser<IOSDevicePayloadReader>() {
                     public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readCategory(json, context);
+                        reader.readCategory(json);
                     }
                 })
             .put("interactive", new FieldParser<IOSDevicePayloadReader>() {
                     public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readInteractive(json, context);
+                        reader.readInteractive(json);
                     }
                 })
             .put("expiry", new FieldParser<IOSDevicePayloadReader>() {
                     public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                    reader.readExpiry(json, context);
+                    reader.readExpiry(json);
                     }
             })
             .put("priority", new FieldParser<IOSDevicePayloadReader>() {
                     public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                    reader.readPriority(json, context);
+                    reader.readPriority(json);
                     }
             })
             .build()

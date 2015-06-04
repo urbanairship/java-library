@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.client;
@@ -12,6 +12,8 @@ import com.google.common.base.Optional;
  * API. These are available in some error cases, and can assist in debugging.
  */
 public final class APIErrorDetails {
+
+    private final static String ERROR_FORMAT = "\nAPIErrorDetails: \nPath:%s\nError:%s\nOptional Location:%s";
 
     private final String path;
     private final String error;
@@ -78,12 +80,7 @@ public final class APIErrorDetails {
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("\nAPIErrorDetails:");
-        stringBuilder.append(String.format("\nPath:%s", path));
-        stringBuilder.append(String.format("\nError:%s", error));
-        stringBuilder.append(String.format("\nOptional Location:%s", location));
-        return stringBuilder.toString();
+        return String.format(ERROR_FORMAT, path, error, location);
     }
 
     /**

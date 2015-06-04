@@ -1,13 +1,15 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.notification.ios;
 
+import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.JsonObjectReader;
+import com.urbanairship.api.common.parse.ListOfStringsDeserializer;
+import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import com.urbanairship.api.push.model.notification.ios.IOSAlertData;
-import com.urbanairship.api.common.parse.*;
 import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.DeserializationContext;
 
 import java.io.IOException;
 
@@ -18,23 +20,23 @@ public class IOSAlertDataReader implements JsonObjectReader<IOSAlertData> {
     public IOSAlertDataReader() {
     }
 
-    public void readBody(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readBody(JsonParser parser) throws IOException {
         builder.setBody(StringFieldDeserializer.INSTANCE.deserialize(parser, "body"));
     }
 
-    public void readActionLocKey(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readActionLocKey(JsonParser parser) throws IOException {
         builder.setActionLocKey(StringFieldDeserializer.INSTANCE.deserialize(parser, "action-loc-key"));
     }
 
-    public void readLocKey(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readLocKey(JsonParser parser) throws IOException {
         builder.setLocKey(StringFieldDeserializer.INSTANCE.deserialize(parser, "loc-key"));
     }
 
-    public void readLocArgs(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readLocArgs(JsonParser parser) throws IOException {
         builder.setLocArgs(ListOfStringsDeserializer.INSTANCE.deserialize(parser, "loc-args"));
     }
 
-    public void readLaunchImage(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readLaunchImage(JsonParser parser) throws IOException {
         builder.setLaunchImage(StringFieldDeserializer.INSTANCE.deserialize(parser, "launch-image"));
     }
 

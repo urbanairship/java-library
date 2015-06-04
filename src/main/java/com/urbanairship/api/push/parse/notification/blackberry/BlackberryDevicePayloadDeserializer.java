@@ -1,14 +1,16 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.notification.blackberry;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
+import com.urbanairship.api.common.parse.FieldParser;
+import com.urbanairship.api.common.parse.FieldParserRegistry;
+import com.urbanairship.api.common.parse.MapFieldParserRegistry;
+import com.urbanairship.api.common.parse.StandardObjectDeserializer;
 import com.urbanairship.api.push.model.notification.blackberry.BlackberryDevicePayload;
-import com.urbanairship.api.push.parse.*;
-import com.urbanairship.api.common.parse.*;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
@@ -21,22 +23,22 @@ public class BlackberryDevicePayloadDeserializer extends JsonDeserializer<Blackb
             ImmutableMap.<String, FieldParser<BlackberryDevicePayloadReader>>builder()
             .put("alert", new FieldParser<BlackberryDevicePayloadReader>() {
                     public void parse(BlackberryDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readAlert(json, context);
+                        reader.readAlert(json);
                     }
                 })
             .put("body", new FieldParser<BlackberryDevicePayloadReader>() {
                     public void parse(BlackberryDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readBody(json, context);
+                        reader.readBody(json);
                     }
                 })
             .put("content-type", new FieldParser<BlackberryDevicePayloadReader>() {
                     public void parse(BlackberryDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readContentType(json, context);
+                        reader.readContentType(json);
                     }
                 })
             .put("content_type", new FieldParser<BlackberryDevicePayloadReader>() {
                     public void parse(BlackberryDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readContentType(json, context);
+                        reader.readContentType(json);
                     }
                 })
             .build()

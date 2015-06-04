@@ -5,7 +5,18 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.urbanairship.api.common.parse.APIParsingException;
-import com.urbanairship.api.push.model.notification.actions.*;
+import com.urbanairship.api.push.model.notification.actions.Action;
+import com.urbanairship.api.push.model.notification.actions.ActionType;
+import com.urbanairship.api.push.model.notification.actions.Actions;
+import com.urbanairship.api.push.model.notification.actions.AddTagAction;
+import com.urbanairship.api.push.model.notification.actions.AppDefinedAction;
+import com.urbanairship.api.push.model.notification.actions.DeepLinkAction;
+import com.urbanairship.api.push.model.notification.actions.LandingPageContent;
+import com.urbanairship.api.push.model.notification.actions.OpenExternalURLAction;
+import com.urbanairship.api.push.model.notification.actions.OpenLandingPageWithContentAction;
+import com.urbanairship.api.push.model.notification.actions.RemoveTagAction;
+import com.urbanairship.api.push.model.notification.actions.ShareAction;
+import com.urbanairship.api.push.model.notification.actions.TagActionData;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.apache.commons.codec.binary.Base64;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -19,7 +30,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class ParseActionsTest {
 
@@ -89,10 +104,6 @@ public class ParseActionsTest {
         for (String tag : actualTags) {
             assertTrue("Tag " + tag + " not found in round-trip data", tags.contains(tag));
         }
-    }
-
-    private Optional<? extends Action> getRemoveTags(Actions actions) {
-        return actions.getRemoveTags();
     }
 
     @Test
@@ -227,7 +238,7 @@ public class ParseActionsTest {
                     .setEncoding(Optional.of(LandingPageContent.Encoding.Base64))
                     .build();
             OpenLandingPageWithContentAction reference = new OpenLandingPageWithContentAction(expected);
-            Actions actions = mapper.readValue(mapper.writeValueAsString(Actions.newBuilder()
+            mapper.readValue(mapper.writeValueAsString(Actions.newBuilder()
                     .setOpen(reference)
                     .build()), Actions.class);
             fail("Invalid Base64 content should have raised an exception.");

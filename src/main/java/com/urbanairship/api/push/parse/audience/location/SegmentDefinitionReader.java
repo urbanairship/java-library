@@ -1,12 +1,13 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.audience.location;
 
+import com.urbanairship.api.common.parse.JsonObjectReader;
+import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.location.SegmentDefinition;
-import com.urbanairship.api.common.parse.*;
 import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
@@ -29,10 +30,6 @@ public class SegmentDefinitionReader implements JsonObjectReader<SegmentDefiniti
 
     @Override
     public SegmentDefinition validateAndBuild() throws IOException {
-        try {
-            return builder.build();
-        } catch (APIParsingException e) {
-            throw e;
-        }
+        return builder.build();
     }
 }

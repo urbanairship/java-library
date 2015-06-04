@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.reports.model;
@@ -92,7 +92,7 @@ public final class SinglePushInfoResponse {
         return Objects.equal(this.pushUUID, other.pushUUID) && Objects.equal(this.directResponses, other.directResponses) && Objects.equal(this.sends, other.sends) && Objects.equal(this.pushType, other.pushType) && Objects.equal(this.pushTime, other.pushTime) && Objects.equal(this.groupID, other.groupID);
     }
 
-    public static enum PushType {
+    public enum PushType {
         UNICAST_PUSH,
         BROADCAST_PUSH,
         TAG_PUSH,
@@ -132,8 +132,7 @@ public final class SinglePushInfoResponse {
 
         public Builder setPushTime(String value) {
             DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-            DateTime dt = formatter.parseDateTime(value);
-            this.pushTime = dt;
+            this.pushTime = formatter.parseDateTime(value);
             return this;
         }
 

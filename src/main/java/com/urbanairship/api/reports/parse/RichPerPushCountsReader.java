@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.reports.parse;
@@ -19,7 +19,7 @@ public final class RichPerPushCountsReader implements JsonObjectReader<RichPerPu
         this.builder = RichPerPushCounts.newBuilder();
     }
 
-    public void readRespones(JsonParser jsonParser) throws IOException {
+    public void readResponses(JsonParser jsonParser) throws IOException {
         builder.setResponses(jsonParser.readValueAs(long.class));
     }
 

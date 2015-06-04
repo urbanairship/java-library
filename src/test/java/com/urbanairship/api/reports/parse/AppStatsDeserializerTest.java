@@ -5,8 +5,6 @@ import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.reports.model.AppStats;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.junit.Test;
@@ -19,7 +17,6 @@ import static org.junit.Assert.assertNotNull;
 public class AppStatsDeserializerTest {
 
     private static final ObjectMapper mapper = APIResponseObjectMapper.getInstance();
-    private static final Logger log = LogManager.getLogger(AppStatsDeserializerTest.class);
 
     @Test
     public void testAppStatsJsonDeSerialize() throws Exception {

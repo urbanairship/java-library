@@ -1,13 +1,17 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.notification.ios;
 
-import com.urbanairship.api.push.model.notification.Interactive;
+import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.BooleanFieldDeserializer;
+import com.urbanairship.api.common.parse.JsonObjectReader;
+import com.urbanairship.api.common.parse.MapOfStringsDeserializer;
+import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import com.urbanairship.api.push.model.PushExpiry;
+import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
-import com.urbanairship.api.common.parse.*;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
 
@@ -25,35 +29,35 @@ public class IOSDevicePayloadReader implements JsonObjectReader<IOSDevicePayload
         builder.setAlert(alertDS.deserialize(parser, context));
     }
 
-    public void readSound(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readSound(JsonParser parser) throws IOException {
         builder.setSound(StringFieldDeserializer.INSTANCE.deserialize(parser, "sound"));
     }
 
-    public void readBadge(JsonParser parser, DeserializationContext context) throws IOException {
-        builder.setBadge(IOSBadgeDataDeserializer.INSTANCE.deserialize(parser, "badge"));
+    public void readBadge(JsonParser parser) throws IOException {
+        builder.setBadge(IOSBadgeDataDeserializer.INSTANCE.deserialize(parser));
     }
 
-    public void readContentAvailable(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readContentAvailable(JsonParser parser) throws IOException {
         builder.setContentAvailable(BooleanFieldDeserializer.INSTANCE.deserialize(parser, "content_available"));
     }
 
-    public void readExtra(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readExtra(JsonParser parser) throws IOException {
         builder.addAllExtraEntries(MapOfStringsDeserializer.INSTANCE.deserialize(parser, "extra"));
     }
 
-    public void readCategory(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readCategory(JsonParser parser) throws IOException {
         builder.setCategory(StringFieldDeserializer.INSTANCE.deserialize(parser, "category"));
     }
 
-    public void readInteractive(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readInteractive(JsonParser parser) throws IOException {
         builder.setInteractive(parser.readValueAs(Interactive.class));
     }
 
-    public void readExpiry(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readExpiry(JsonParser parser) throws IOException {
         builder.setExpiry(parser.readValueAs(PushExpiry.class));
     }
 
-    public void readPriority(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readPriority(JsonParser parser) throws IOException {
         builder.setPriority(parser.getIntValue());
     }
 

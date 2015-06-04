@@ -1,11 +1,12 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.model.notification.mpns;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import org.apache.commons.lang.StringUtils;
+
+import static com.google.common.base.Preconditions.checkArgument;
 
 public class Validation
 {

@@ -2,10 +2,12 @@ package com.urbanairship.api.push.parse.audience;
 
 import com.google.common.collect.Iterables;
 import com.urbanairship.api.common.parse.APIParsingException;
-import com.urbanairship.api.push.model.audience.*;
+import com.urbanairship.api.push.model.audience.BasicValueSelector;
+import com.urbanairship.api.push.model.audience.CompoundSelector;
+import com.urbanairship.api.push.model.audience.Selector;
+import com.urbanairship.api.push.model.audience.SelectorType;
+import com.urbanairship.api.push.model.audience.ValueSelector;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
@@ -17,7 +19,6 @@ import static org.junit.Assert.assertTrue;
 
 public class SelectorDeserializerTest {
     private static final ObjectMapper mapper = PushObjectMapper.getInstance();
-    private static final Logger log = LogManager.getLogger(SelectorDeserializerTest.class);
 
     @Test
     public void testDeserializeBroadcast() throws Exception {

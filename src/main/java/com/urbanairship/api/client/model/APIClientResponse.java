@@ -1,13 +1,11 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.client.model;
 
 import com.google.common.base.Objects;
-import com.urbanairship.api.reports.model.*;
-import com.urbanairship.api.schedule.model.SchedulePayload;
-import com.urbanairship.api.segments.model.AudienceSegment;
+import com.urbanairship.api.reports.model.AppStats;
 import org.apache.http.HttpResponse;
 
 import java.util.List;
@@ -30,69 +28,6 @@ public class APIClientResponse<T> {
     }
 
     /**
-     * Return a Builder for an APIPushResponse
-     *
-     * @return Builder
-     */
-    public static Builder<APIPushResponse> newPushResponseBuilder() {
-        return new Builder<APIPushResponse>();
-    }
-
-    /**
-     * Return a Builder for an APIScheduleResponse
-     *
-     * @return Builder
-     */
-    public static Builder<APIScheduleResponse> newScheduleResponseBuilder() {
-        return new Builder<APIScheduleResponse>();
-    }
-
-    /**
-     * Return a Builder for an APIListAllSchedulesResponse
-     *
-     * @return Builder
-     */
-    public static Builder<APIListAllSchedulesResponse> newListAllSchedulesResponseBuilder() {
-        return new Builder<APIListAllSchedulesResponse>();
-    }
-
-    /**
-     * Return a Builder for an SchedulePayload
-     *
-     * @return Builder
-     */
-    public static Builder<SchedulePayload> newSchedulePayloadBuilder() {
-        return new Builder<SchedulePayload>();
-    }
-
-    /**
-     * Return a Builder for an APIListTagsResponse
-     *
-     * @return Builder
-     */
-    public static Builder<APIListTagsResponse> newListTagsResponseBuilder() {
-        return new Builder<APIListTagsResponse>();
-    }
-
-    /**
-     * Return a Builder for a SinglePushInfoResponse
-     *
-     * @return Builder
-     */
-    public static Builder<SinglePushInfoResponse> newSinglePushInfoResponseBuilder() {
-        return new Builder<SinglePushInfoResponse>();
-    }
-
-    /**
-     * Return a Builder for a APIReportsListingResponse
-     *
-     * @return Builder
-     */
-    public static Builder<APIReportsPushListingResponse> newReportsListingResponseBuilder() {
-        return new Builder<APIReportsPushListingResponse>();
-    }
-
-    /**
      * Return a Builder for a List of AppStats
      *
      * @return Builder
@@ -102,93 +37,12 @@ public class APIClientResponse<T> {
     }
 
     /**
-     * Return a Builder for a ReportsAPIOpensResponse
-     *
-     * @return Builder
-     */
-    public static Builder<ReportsAPIOpensResponse> newAppsOpenReportResponseBuilder() {
-        return new Builder<ReportsAPIOpensResponse>();
-    }
-
-    /**
-     * Return a Builder for a ReportsAPITimeInAppResponse
-     *
-     * @return Builder
-     */
-    public static Builder<ReportsAPITimeInAppResponse> newTimeInAppReportResponseBuilder() {
-        return new Builder<ReportsAPITimeInAppResponse>();
-    }
-
-    /**
-     * Return a Builder for a PerPushDetailResponse
-     *
-     * @return Builder
-     */
-    public static Builder<PerPushDetailResponse> newListPerPushDetailBuilder() {
-        return new Builder<PerPushDetailResponse>();
-    }
-
-    /**
-     * Return a Builder for a PerPushSeriesResponse
-     *
-     * @return Builder
-     */
-    public static Builder<PerPushSeriesResponse> newListPerPushSeriesBuilder() {
-        return new Builder<PerPushSeriesResponse>();
-    }
-
-    /**
      * Return a Builder for a String
      *
      * @return Builder
      */
     public static Builder<String> newStringResponseBuilder() {
         return new Builder<String>();
-    }
-
-    /**
-     * Return a Builder for an APIListSingleChannelResponse
-     *
-     * @return Builder
-     */
-    public static Builder<APIListSingleChannelResponse> newSingleChannelResponseBuilder() {
-        return new Builder<APIListSingleChannelResponse>();
-    }
-
-    /**
-     * Return a Builder for an APIListAllChannelsResponse
-     *
-     * @return Builder
-     */
-    public static Builder<APIListAllChannelsResponse> newListAllChannelsResponseBuilder() {
-        return new Builder<APIListAllChannelsResponse>();
-    }
-
-    /**
-     * Return a Builder for an APIListAllSegmentsResponse
-     *
-     * @return Builder
-     */
-    public static Builder<APIListAllSegmentsResponse> newListAllSegmentsResponseBuilder() {
-        return new Builder<APIListAllSegmentsResponse>();
-    }
-
-    /**
-     * Return a Builder for an AudienceSegment
-     *
-     * @return Builder
-     */
-    public static Builder<AudienceSegment> newAudienceSegmentResponseBuilder() {
-        return new Builder<AudienceSegment>();
-    }
-
-    /**
-     * Return a Builder for an APILocationResponse
-     *
-     * @return Builder
-     */
-    public static Builder<APILocationResponse> newLocationResponseBuilder() {
-        return new Builder<APILocationResponse>();
     }
 
     /**
@@ -230,12 +84,7 @@ public class APIClientResponse<T> {
     }
 
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("\nHttp:");
-        builder.append(httpResponse.toString());
-        builder.append("\nAPI:");
-        builder.append(apiResponse.toString());
-        return builder.toString();
+        return "\nHttp:" + httpResponse.toString() + "\nAPI:" + apiResponse.toString();
     }
 
     /**
@@ -246,7 +95,7 @@ public class APIClientResponse<T> {
         private T apiResponse;
         private HttpResponse httpResponse;
 
-        private Builder() {
+        public Builder() {
         }
 
         /**

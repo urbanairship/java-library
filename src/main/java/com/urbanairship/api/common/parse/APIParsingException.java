@@ -1,16 +1,14 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.common.parse;
 
-import com.urbanairship.api.common.APIException;
 import com.google.common.base.Optional;
-import org.codehaus.jackson.JsonParser;
+import com.urbanairship.api.common.APIException;
 import org.codehaus.jackson.JsonLocation;
+import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonStreamContext;
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,18 +59,14 @@ public class APIParsingException extends APIException {
     }
 
     public static APIParsingException raise(String msg, JsonParser parser) throws APIParsingException {
-        String message = msg;
-        try {
-            message = String.format("%s; at line %d, col %d, '%s'",
-                                    msg,
-                                    parser.getCurrentLocation().getLineNr(),
-                                    parser.getCurrentLocation().getColumnNr(),
-                                    getPath(parser));
-            if (log.isDebugEnabled()) {
-                log.debug(msg);
-            }
-        } catch ( Exception ex ) {
-            if (log.isDebugEnabled()) {
+        if (log.isDebugEnabled()) {
+            try {
+                log.debug(String.format("%s; at line %d, col %d, '%s'",
+                    msg,
+                    parser.getCurrentLocation().getLineNr(),
+                    parser.getCurrentLocation().getColumnNr(),
+                    getPath(parser)));
+            } catch (Exception ex) {
                 log.debug("Exception while formatting exception.", ex);
             }
         }
@@ -87,9 +81,7 @@ public class APIParsingException extends APIException {
     }
 
     private static void doGetPath(JsonStreamContext context, StringBuffer sb) {
-        if (context.inRoot()) {
-            return;
-        } else {
+        if (!context.inRoot()) {
             doGetPath(context.getParent(), sb);
             if (context.inObject()) {
                 String name = context.getCurrentName();

@@ -1,18 +1,16 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.audience.location;
 
-import com.google.common.base.Optional;
-import com.urbanairship.api.push.model.notification.Notification;
-import com.urbanairship.api.push.model.audience.location.LocationSelector;
-import com.urbanairship.api.push.model.audience.location.LocationIdentifier;
-import com.urbanairship.api.push.model.audience.location.LocationAlias;
+import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.push.model.audience.location.DateRange;
-import com.urbanairship.api.common.parse.*;
+import com.urbanairship.api.push.model.audience.location.LocationAlias;
+import com.urbanairship.api.push.model.audience.location.LocationIdentifier;
+import com.urbanairship.api.push.model.audience.location.LocationSelector;
 import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.type.TypeReference;
 
 import java.io.IOException;
 

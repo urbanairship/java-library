@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.common.parse;
@@ -8,7 +8,6 @@ import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.io.IOException;
 

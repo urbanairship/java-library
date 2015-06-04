@@ -2,7 +2,13 @@ package com.urbanairship.api.push.model.audience;
 
 import org.junit.Test;
 
-import static com.urbanairship.api.push.model.audience.Selectors.*;
+import static com.urbanairship.api.push.model.audience.Selectors.alias;
+import static com.urbanairship.api.push.model.audience.Selectors.and;
+import static com.urbanairship.api.push.model.audience.Selectors.apid;
+import static com.urbanairship.api.push.model.audience.Selectors.deviceToken;
+import static com.urbanairship.api.push.model.audience.Selectors.or;
+import static com.urbanairship.api.push.model.audience.Selectors.segment;
+import static com.urbanairship.api.push.model.audience.Selectors.tag;
 import static org.junit.Assert.assertEquals;
 
 public class SelectorVisitorTest {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.channel.information.model.ios;
@@ -10,7 +10,6 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 public final class IosSettings {
-    private static final IosSettings DEFAULT_INSTANCE = newBuilder().build();
 
     private final int badge;
     private final Optional<QuietTime> quiettime;
@@ -20,10 +19,6 @@ public final class IosSettings {
         this.badge = badge;
         this.quiettime = quiettime;
         this.timezone = timezone;
-    }
-
-    public static IosSettings getDefaultInstance() {
-        return DEFAULT_INSTANCE;
     }
 
     public static Builder newBuilder() {
