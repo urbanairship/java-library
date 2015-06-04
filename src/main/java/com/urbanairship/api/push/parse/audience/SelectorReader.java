@@ -1,28 +1,27 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.audience;
 
-import com.urbanairship.api.push.model.audience.Selector;
-import com.urbanairship.api.push.model.audience.Selectors;
-import com.urbanairship.api.push.model.audience.SelectorType;
-import com.urbanairship.api.push.model.audience.SelectorCategory;
-import com.urbanairship.api.push.model.audience.BasicSelector;
-import com.urbanairship.api.push.model.audience.BasicCompoundSelector;
-import com.urbanairship.api.push.model.audience.BasicValueSelector;
-import com.urbanairship.api.push.model.audience.location.LocationSelector;
-import com.urbanairship.api.common.parse.*;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.base.Optional;
+import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.JsonObjectReader;
+import com.urbanairship.api.push.model.audience.BasicCompoundSelector;
+import com.urbanairship.api.push.model.audience.BasicSelector;
+import com.urbanairship.api.push.model.audience.BasicValueSelector;
+import com.urbanairship.api.push.model.audience.Selector;
+import com.urbanairship.api.push.model.audience.SelectorCategory;
+import com.urbanairship.api.push.model.audience.SelectorType;
+import com.urbanairship.api.push.model.audience.Selectors;
+import com.urbanairship.api.push.model.audience.location.LocationSelector;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.DeserializationContext;
-import org.codehaus.jackson.map.JsonDeserializer;
-import java.util.Map;
-import java.util.List;
-import java.util.ArrayList;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SelectorReader implements JsonObjectReader<Selector> {
 
@@ -56,7 +55,7 @@ public class SelectorReader implements JsonObjectReader<Selector> {
             compound = BasicCompoundSelector.newBuilder()
                 .setType(SelectorType.OR);
 
-            List<String> values = readListOfStrings(parser, context);
+            List<String> values = readListOfStrings(parser);
             for (String value : values) {
                 Selector child = Selectors.value(type, value);
                 Validation.validate(child);
@@ -80,11 +79,11 @@ public class SelectorReader implements JsonObjectReader<Selector> {
         // log.debug("readCompoundSelector() end: " + parser.getCurrentToken());
     }
 
-    public void readLocationSelector(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readLocationSelector(JsonParser parser) throws IOException {
         location = parser.readValueAs(LocationSelector.class);
     }
 
-    public void readExtraField(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readExtraField(JsonParser parser) throws IOException {
         if (extra == null) {
             extra = ImmutableMap.builder();
         }
@@ -119,7 +118,7 @@ public class SelectorReader implements JsonObjectReader<Selector> {
         return selector;
     }
 
-    public List<String> readListOfStrings(JsonParser parser, DeserializationContext context) throws IOException {
+    public List<String> readListOfStrings(JsonParser parser) throws IOException {
         ArrayList<String> strings = new ArrayList();
         JsonToken token = parser.getCurrentToken();
         // log.debug("readListOfStrings() - " + token);

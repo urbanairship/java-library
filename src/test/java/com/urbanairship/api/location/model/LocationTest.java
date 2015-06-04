@@ -7,7 +7,9 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class LocationTest {
 
@@ -106,7 +108,7 @@ public class LocationTest {
 
         node.put("hello", "kitty");
 
-        Location target = Location.newBuilder()
+        Location.newBuilder()
                 .setBounds(bounds)
                 .setCentroid(center)
                 .setLocationId("ID")
@@ -152,7 +154,7 @@ public class LocationTest {
 
         node.put("hello", "kitty");
 
-        Location target = Location.newBuilder()
+        Location.newBuilder()
                 .setBounds(bounds)
                 .setCentroid(center)
                 .setLocationId("ID")

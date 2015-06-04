@@ -1,13 +1,15 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.notification.mpns;
 
+import com.google.common.base.Optional;
+import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.JsonObjectReader;
+import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import com.urbanairship.api.push.model.notification.mpns.MPNSDevicePayload;
 import com.urbanairship.api.push.model.notification.mpns.MPNSPush;
-import com.urbanairship.api.common.parse.*;
-import com.google.common.base.Optional;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
 
@@ -25,7 +27,7 @@ public class MPNSDevicePayloadReader implements JsonObjectReader<MPNSDevicePaylo
         this.tileDS = tileDS;
     }
 
-    public void readAlert(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readAlert(JsonParser parser) throws IOException {
         alert = Optional.fromNullable(StringFieldDeserializer.INSTANCE.deserialize(parser, "alert"));
     }
 

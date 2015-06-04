@@ -1,18 +1,22 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.model.notification;
 
-import com.urbanairship.api.push.model.PushModelObject;
-import com.urbanairship.api.push.model.DeviceType;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
-import com.urbanairship.api.push.model.notification.actions.*;
+import com.urbanairship.api.push.model.DeviceType;
+import com.urbanairship.api.push.model.PushModelObject;
+import com.urbanairship.api.push.model.notification.actions.Action;
+import com.urbanairship.api.push.model.notification.actions.ActionNameRegistry;
+import com.urbanairship.api.push.model.notification.actions.ActionType;
+import com.urbanairship.api.push.model.notification.actions.Actions;
+import com.urbanairship.api.push.model.notification.actions.AppDefinedAction;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 
 import java.util.Iterator;
@@ -49,9 +53,9 @@ public final class Notification extends PushModelObject {
 
     public Optional<ImmutableSet<DeviceType>> getOverrideDeviceTypes() {
         if (deviceTypePayloadOverrides == null || deviceTypePayloadOverrides.size() == 0 ) {
-            return Optional.<ImmutableSet<DeviceType>>absent();
+            return Optional.absent();
         } else {
-            ImmutableSet.Builder<DeviceType> builder = ImmutableSet.<DeviceType>builder();
+            ImmutableSet.Builder<DeviceType> builder = ImmutableSet.builder();
             for (NotificationPayloadOverrideKey key : deviceTypePayloadOverrides.keySet()) {
                 builder.add(key.getDeviceType());
             }

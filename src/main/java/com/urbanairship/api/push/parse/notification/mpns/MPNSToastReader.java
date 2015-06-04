@@ -1,15 +1,16 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.notification.mpns;
 
+import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.JsonObjectReader;
+import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import com.urbanairship.api.push.model.notification.mpns.MPNSToastData;
-import com.urbanairship.api.common.parse.*;
 import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
-import java.util.Set;
 
 public class MPNSToastReader implements JsonObjectReader<MPNSToastData> {
 

@@ -1,13 +1,13 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.model.notification.mpns;
 
-import com.urbanairship.api.push.model.PushModelObject;
-import com.urbanairship.api.push.model.DeviceType;
-import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.google.common.base.Optional;
+import com.urbanairship.api.push.model.DeviceType;
+import com.urbanairship.api.push.model.PushModelObject;
+import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 
 public final class MPNSDevicePayload extends PushModelObject implements DevicePayloadOverride {
 

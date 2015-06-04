@@ -1,16 +1,18 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.notification.android;
 
+import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.BooleanFieldDeserializer;
+import com.urbanairship.api.common.parse.JsonObjectReader;
+import com.urbanairship.api.common.parse.MapOfStringsDeserializer;
+import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
-import com.urbanairship.api.push.parse.*;
-import com.urbanairship.api.common.parse.*;
 import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.DeserializationContext;
 
 import java.io.IOException;
 
@@ -21,27 +23,27 @@ public class AndroidDevicePayloadReader implements JsonObjectReader<AndroidDevic
     public AndroidDevicePayloadReader() {
     }
 
-    public void readAlert(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readAlert(JsonParser parser) throws IOException {
         builder.setAlert(StringFieldDeserializer.INSTANCE.deserialize(parser, "alert"));
     }
 
-    public void readCollapseKey(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readCollapseKey(JsonParser parser) throws IOException {
         builder.setCollapseKey(StringFieldDeserializer.INSTANCE.deserialize(parser, "collapse_key"));
     }
 
-    public void readTimeToLive(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readTimeToLive(JsonParser parser) throws IOException {
         builder.setTimeToLive(parser.readValueAs(PushExpiry.class));
     }
 
-    public void readDelayWhileIdle(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readDelayWhileIdle(JsonParser parser) throws IOException {
         builder.setDelayWhileIdle(BooleanFieldDeserializer.INSTANCE.deserialize(parser, "delay_while_idle"));
     }
 
-    public void readExtra(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readExtra(JsonParser parser) throws IOException {
         builder.addAllExtraEntries(MapOfStringsDeserializer.INSTANCE.deserialize(parser, "extra"));
     }
 
-    public void readInteractive(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readInteractive(JsonParser parser) throws IOException {
         builder.setInteractive(parser.readValueAs(Interactive.class));
     }
 

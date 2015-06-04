@@ -1,19 +1,22 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.notification.ios;
 
-import com.urbanairship.api.push.model.notification.ios.IOSAlertData;
-import com.urbanairship.api.push.parse.*;
-import com.urbanairship.api.common.parse.*;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
+import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.FieldParser;
+import com.urbanairship.api.common.parse.FieldParserRegistry;
+import com.urbanairship.api.common.parse.MapFieldParserRegistry;
+import com.urbanairship.api.common.parse.StandardObjectDeserializer;
+import com.urbanairship.api.push.model.notification.ios.IOSAlertData;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
-import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
+
 import java.io.IOException;
 
 public class IOSAlertDataDeserializer extends JsonDeserializer<IOSAlertData> {
@@ -22,27 +25,27 @@ public class IOSAlertDataDeserializer extends JsonDeserializer<IOSAlertData> {
             ImmutableMap.<String, FieldParser<IOSAlertDataReader>>builder()
             .put("body", new FieldParser<IOSAlertDataReader>() {
                     public void parse(IOSAlertDataReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readBody(json, context);
+                        reader.readBody(json);
                     }
                 })
             .put("action-loc-key", new FieldParser<IOSAlertDataReader>() {
                     public void parse(IOSAlertDataReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readActionLocKey(json, context);
+                        reader.readActionLocKey(json);
                     }
                 })
             .put("loc-key", new FieldParser<IOSAlertDataReader>() {
                     public void parse(IOSAlertDataReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readLocKey(json, context);
+                        reader.readLocKey(json);
                     }
                 })
             .put("loc-args", new FieldParser<IOSAlertDataReader>() {
                     public void parse(IOSAlertDataReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readLocArgs(json, context);
+                        reader.readLocArgs(json);
                     }
                 })
             .put("launch-image", new FieldParser<IOSAlertDataReader>() {
                     public void parse(IOSAlertDataReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readLaunchImage(json, context);
+                        reader.readLaunchImage(json);
                     }
                 })
             .build()

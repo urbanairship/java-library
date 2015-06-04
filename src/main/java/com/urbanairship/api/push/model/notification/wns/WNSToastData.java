@@ -1,10 +1,11 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.model.notification.wns;
 
 import com.google.common.base.Optional;
+
 import static com.google.common.base.Preconditions.checkArgument;
 
 public class WNSToastData {
@@ -65,16 +66,9 @@ public class WNSToastData {
         }
 
         WNSToastData that = (WNSToastData)o;
-        if (binding != null ? !binding.equals(that.binding) : that.binding != null) {
-            return false;
-        }
-        if (duration != null ? !duration.equals(that.duration) : that.duration != null) {
-            return false;
-        }
-        if (audio != null ? !audio.equals(that.audio) : that.audio != null) {
-            return false;
-        }
-        return true;
+        return (binding == null ? that.binding == null : binding.equals(that.binding)) &&
+            (duration == null ? that.duration == null : duration.equals(that.duration)) &&
+            (audio == null ? that.audio == null : audio.equals(that.audio));
     }
 
     @Override

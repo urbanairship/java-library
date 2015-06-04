@@ -1,19 +1,10 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.model.audience.location;
 
 import com.urbanairship.api.common.parse.DateFormats;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.Minutes;
-import org.joda.time.Hours;
-import org.joda.time.Days;
-import org.joda.time.Weeks;
-import org.joda.time.Months;
-import org.joda.time.Years;
-import org.joda.time.ReadablePeriod;
 import org.joda.time.format.DateTimeFormatter;
 
 public enum DateRangeUnit {
@@ -28,7 +19,7 @@ public enum DateRangeUnit {
     private final String identifier;
     private final DateTimeFormatter formatter;
 
-    private DateRangeUnit(String identifier, DateTimeFormatter formatter) {
+    DateRangeUnit(String identifier, DateTimeFormatter formatter) {
         this.identifier = identifier;
         this.formatter = formatter;
     }

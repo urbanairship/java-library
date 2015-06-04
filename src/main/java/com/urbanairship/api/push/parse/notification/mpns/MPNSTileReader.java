@@ -1,29 +1,28 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.notification.mpns;
 
+import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.IntFieldDeserializer;
+import com.urbanairship.api.common.parse.JsonObjectReader;
+import com.urbanairship.api.common.parse.ListOfStringsDeserializer;
+import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import com.urbanairship.api.push.model.notification.mpns.MPNSCycleTileData;
 import com.urbanairship.api.push.model.notification.mpns.MPNSFlipTileData;
 import com.urbanairship.api.push.model.notification.mpns.MPNSIconicTileData;
 import com.urbanairship.api.push.model.notification.mpns.MPNSTileData;
-import com.urbanairship.api.common.parse.*;
 import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
-import java.util.Set;
-
-
-/*
-Ugh, this is such a hack right now, because the fields can appear
-in any order, and we don't know which tile type it is until we read
-the "template" field (which could be anywhere because it's a streaming
-parser). I need a way to read the "template" field first - may have to
-resort to parsing a JsonNode tree structure and then traversing that.
- */
 
 public class MPNSTileReader implements JsonObjectReader<MPNSTileData> {
+
+    // Tile Constants
+    private final static String CYCLE_TILE = "CycleTile";
+    private final static String FLIP_TILE = "FlipTile";
+    private final static String ICONIC_TILE = "IconicTile";
 
     private final MPNSCycleTileData.Builder cycleBuilder;
     private final MPNSFlipTileData.Builder flipBuilder;
@@ -125,11 +124,11 @@ public class MPNSTileReader implements JsonObjectReader<MPNSTileData> {
     @Override
     public com.urbanairship.api.push.model.notification.mpns.MPNSTileData validateAndBuild() throws IOException {
         try {
-            if (template.equals(Constants.TILE_CYCLE)) {
+            if (template.equals(CYCLE_TILE)) {
                 return cycleBuilder.build();
-            } else if (template.equals(Constants.TILE_FLIP)) {
+            } else if (template.equals(FLIP_TILE)) {
                   return flipBuilder.build();
-            } else if (template.equals(Constants.TILE_ICONIC)) {
+            } else if (template.equals(ICONIC_TILE)) {
                 return iconicBuilder.build();
             } else {
                   throw new APIParsingException(String.format("Invalid tile template '%s'", template));

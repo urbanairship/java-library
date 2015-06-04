@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.reports.parse;
@@ -24,7 +24,7 @@ public final class RichPerPushCountsDeserializer extends JsonDeserializer<RichPe
                     .put("responses", new FieldParser<RichPerPushCountsReader>() {
                         @Override
                         public void parse(RichPerPushCountsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readRespones(jsonParser);
+                            reader.readResponses(jsonParser);
                         }
                     })
                     .put("sends", new FieldParser<RichPerPushCountsReader>() {

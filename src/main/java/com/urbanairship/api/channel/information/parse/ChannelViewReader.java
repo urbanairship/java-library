@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.channel.information.parse;
@@ -8,7 +8,11 @@ import com.urbanairship.api.channel.information.model.ChannelView;
 import com.urbanairship.api.channel.information.model.DeviceType;
 import com.urbanairship.api.channel.information.model.ios.IosSettings;
 import com.urbanairship.api.channel.information.util.Constants;
-import com.urbanairship.api.common.parse.*;
+import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.BooleanFieldDeserializer;
+import com.urbanairship.api.common.parse.JsonObjectReader;
+import com.urbanairship.api.common.parse.ListOfStringsDeserializer;
+import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import org.codehaus.jackson.JsonParser;
 import org.joda.time.DateTime;
 

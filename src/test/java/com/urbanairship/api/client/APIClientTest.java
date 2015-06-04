@@ -3,7 +3,15 @@ package com.urbanairship.api.client;
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
 import com.google.common.base.Optional;
-import com.urbanairship.api.client.model.*;
+import com.urbanairship.api.client.model.APIClientResponse;
+import com.urbanairship.api.client.model.APIListAllChannelsResponse;
+import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
+import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
+import com.urbanairship.api.client.model.APIListTagsResponse;
+import com.urbanairship.api.client.model.APILocationResponse;
+import com.urbanairship.api.client.model.APIPushResponse;
+import com.urbanairship.api.client.model.APIReportsPushListingResponse;
+import com.urbanairship.api.client.model.APIScheduleResponse;
 import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.location.model.BoundedBox;
@@ -14,7 +22,12 @@ import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import com.urbanairship.api.reports.model.*;
+import com.urbanairship.api.reports.model.AppStats;
+import com.urbanairship.api.reports.model.PerPushDetailResponse;
+import com.urbanairship.api.reports.model.PerPushSeriesResponse;
+import com.urbanairship.api.reports.model.ReportsAPIOpensResponse;
+import com.urbanairship.api.reports.model.ReportsAPITimeInAppResponse;
+import com.urbanairship.api.reports.model.SinglePushInfoResponse;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.segments.model.AudienceSegment;
@@ -37,8 +50,6 @@ import org.joda.time.Period;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
@@ -46,8 +57,25 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.junit.Assert.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.delete;
+import static com.github.tomakehurst.wiremock.client.WireMock.deleteRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.findAll;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.put;
+import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.verify;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class APIClientTest {
 
@@ -58,7 +86,6 @@ public class APIClientTest {
         BasicConfigurator.configure();
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(APIClientTest.class);
     @ClassRule
     @Rule
     public static WireMockClassRule wireMockClassRule = new WireMockClassRule();
@@ -606,6 +633,8 @@ public class APIClientTest {
             // Server truncates milliseconds off request
             assertEquals(receivedDateTime.getMillis(), dateTime.getMillis(), 1000);
 
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
         } catch (Exception ex) {
             fail("Exception " + ex);
         }

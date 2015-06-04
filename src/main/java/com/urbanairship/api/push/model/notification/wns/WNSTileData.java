@@ -1,11 +1,10 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.model.notification.wns;
 
 import com.google.common.collect.ImmutableList;
-import static com.google.common.base.Preconditions.checkArgument;
 
 public class WNSTileData {
     private final ImmutableList<WNSBinding> bindings;
@@ -41,10 +40,8 @@ public class WNSTileData {
         }
 
         WNSTileData that = (WNSTileData)o;
-        if (bindings != null ? !bindings.equals(that.bindings) : that.bindings != null) {
-            return false;
-        }
-        return true;
+
+        return !(bindings != null ? !bindings.equals(that.bindings) : that.bindings != null);
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.model;
@@ -57,10 +57,7 @@ public final class DeviceTypeData extends PushModelObject {
         if (all != that.all) {
             return false;
         }
-        if (deviceTypes != null ? !deviceTypes.equals(that.deviceTypes) : that.deviceTypes != null) {
-            return false;
-        }
-        return true;
+        return !(deviceTypes != null ? !deviceTypes.equals(that.deviceTypes) : that.deviceTypes != null);
     }
 
     @Override

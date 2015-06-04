@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ */
+
 package com.urbanairship;
 
 import com.urbanairship.api.client.*;
@@ -21,9 +25,6 @@ import org.joda.time.DateTime;
 
 import java.io.IOException;
 
-/*
- * Copyright 2013 Urban Airship and Contributors
- */
 public class PushExample {
 
     private static final Logger logger = LoggerFactory.getLogger("com.urbanairship.api");

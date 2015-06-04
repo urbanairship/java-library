@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.tag.model;
@@ -87,6 +87,8 @@ public final class AddRemoveDeviceFromTagPayload extends PushModelObject {
         }
         final AddRemoveDeviceFromTagPayload other = (AddRemoveDeviceFromTagPayload) obj;
         return Objects.equal(this.iosChannels, other.iosChannels)
+                && Objects.equal(this.androidChannels, other.androidChannels)
+                && Objects.equal(this.amazonChannels, other.amazonChannels)
                 && Objects.equal(this.deviceTokens, other.deviceTokens)
                 && Objects.equal(this.devicePins, other.devicePins)
                 && Objects.equal(this.apids, other.apids);
