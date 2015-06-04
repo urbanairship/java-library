@@ -1,14 +1,14 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.notification.blackberry;
 
+import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.JsonObjectReader;
+import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import com.urbanairship.api.push.model.notification.blackberry.BlackberryDevicePayload;
-import com.urbanairship.api.push.parse.*;
-import com.urbanairship.api.common.parse.*;
 import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.DeserializationContext;
 
 import java.io.IOException;
 
@@ -19,15 +19,15 @@ public class BlackberryDevicePayloadReader implements JsonObjectReader<Blackberr
     public BlackberryDevicePayloadReader() {
     }
 
-    public void readAlert(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readAlert(JsonParser parser) throws IOException {
         builder.setAlert(StringFieldDeserializer.INSTANCE.deserialize(parser, "alert"));
     }
 
-    public void readBody(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readBody(JsonParser parser) throws IOException {
         builder.setBody(StringFieldDeserializer.INSTANCE.deserialize(parser, "body"));
     }
 
-    public void readContentType(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readContentType(JsonParser parser) throws IOException {
         builder.setContentType(StringFieldDeserializer.INSTANCE.deserialize(parser, "content_type"));
     }
 

@@ -8,7 +8,10 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class RichPushDeserializerTest {
     private static final ObjectMapper mapper = PushObjectMapper.getInstance();
@@ -53,7 +56,7 @@ public class RichPushDeserializerTest {
                 .setBody("B")
                 .setContentType("A/B")
                 .setContentEncoding("utf8")
-                .setExpiry(PushExpiry.newBuilder().setExpiryTimeStamp(new DateTime(2018, 01, 01, 0, 0, 0, DateTimeZone.UTC)).build())
+                .setExpiry(PushExpiry.newBuilder().setExpiryTimeStamp(new DateTime(2018, 1, 1, 0, 0, 0, DateTimeZone.UTC)).build())
                 .addExtraEntry("foo", "bar")
                 .build();
 

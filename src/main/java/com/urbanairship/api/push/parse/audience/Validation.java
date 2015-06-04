@@ -1,16 +1,14 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.audience;
 
-import com.urbanairship.api.push.model.audience.Selector;
-import com.urbanairship.api.push.model.audience.ValueSelector;
-import com.urbanairship.api.push.model.audience.CompoundSelector;
-import com.urbanairship.api.push.model.audience.Selectors;
-import com.urbanairship.api.push.model.audience.SelectorType;
-import com.urbanairship.api.push.model.audience.SelectorCategory;
 import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.push.model.audience.CompoundSelector;
+import com.urbanairship.api.push.model.audience.Selector;
+import com.urbanairship.api.push.model.audience.SelectorCategory;
+import com.urbanairship.api.push.model.audience.ValueSelector;
 
 public class Validation {
 

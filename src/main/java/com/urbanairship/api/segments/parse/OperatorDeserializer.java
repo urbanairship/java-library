@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.segments.parse;
@@ -79,7 +79,7 @@ public class OperatorDeserializer extends JsonDeserializer<Operator> {
         return builder.build();
     }
 
-    private static interface OperatorChildrenDeserializer {
+    private interface OperatorChildrenDeserializer {
         void deserializeOperatorChildren(JsonParser jp, DeserializationContext ctxt, Operator.Builder builder, int depth) throws IOException;
     }
 

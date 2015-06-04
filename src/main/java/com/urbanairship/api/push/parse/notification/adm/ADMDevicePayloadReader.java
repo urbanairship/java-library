@@ -1,15 +1,17 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.notification.adm;
 
-import com.urbanairship.api.push.model.notification.Interactive;
+import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.JsonObjectReader;
+import com.urbanairship.api.common.parse.MapOfStringsDeserializer;
+import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import com.urbanairship.api.push.model.PushExpiry;
+import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
-import com.urbanairship.api.common.parse.*;
 import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.DeserializationContext;
 
 import java.io.IOException;
 
@@ -20,23 +22,23 @@ public class ADMDevicePayloadReader implements JsonObjectReader<ADMDevicePayload
     public ADMDevicePayloadReader() {
     }
 
-    public void readAlert(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readAlert(JsonParser parser) throws IOException {
         builder.setAlert(StringFieldDeserializer.INSTANCE.deserialize(parser, "alert"));
     }
 
-    public void readConsolidationKey(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readConsolidationKey(JsonParser parser) throws IOException {
         builder.setConsolidationKey(StringFieldDeserializer.INSTANCE.deserialize(parser, "consolidation_key"));
     }
 
-    public void readExpiresAfter(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readExpiresAfter(JsonParser parser) throws IOException {
         builder.setExpiresAfter(parser.readValueAs(PushExpiry.class));
     }
 
-    public void readExtra(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readExtra(JsonParser parser) throws IOException {
         builder.addAllExtraEntries(MapOfStringsDeserializer.INSTANCE.deserialize(parser, "extra"));
     }
 
-    public void readInteractive(JsonParser parser, DeserializationContext context) throws IOException {
+    public void readInteractive(JsonParser parser) throws IOException {
         builder.setInteractive(parser.readValueAs(Interactive.class));
     }
 

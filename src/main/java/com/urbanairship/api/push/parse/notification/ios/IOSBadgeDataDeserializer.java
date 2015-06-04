@@ -1,20 +1,15 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.notification.ios;
 
+import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.notification.ios.IOSBadgeData;
-import com.urbanairship.api.push.parse.*;
-import com.urbanairship.api.common.parse.*;
-import com.google.common.base.Supplier;
-import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.map.DeserializationContext;
-import org.codehaus.jackson.map.JsonDeserializer;
+
 import java.io.IOException;
 
 public class IOSBadgeDataDeserializer {
@@ -25,7 +20,7 @@ public class IOSBadgeDataDeserializer {
 
     private static String[] INCREMENT_PREFIXES = { "+", "-" };
 
-    public IOSBadgeData deserialize(JsonParser parser, String fieldName) throws IOException {
+    public IOSBadgeData deserialize(JsonParser parser) throws IOException {
         try {
             JsonToken token = parser.getCurrentToken();
             switch (token) {

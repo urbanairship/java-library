@@ -3,8 +3,25 @@ package com.urbanairship.api.push.model;
 import com.google.common.collect.ImmutableSet;
 import org.junit.Test;
 
-import static com.urbanairship.api.push.model.audience.Selectors.*;
-import static org.junit.Assert.*;
+import static com.urbanairship.api.push.model.audience.Selectors.alias;
+import static com.urbanairship.api.push.model.audience.Selectors.all;
+import static com.urbanairship.api.push.model.audience.Selectors.and;
+import static com.urbanairship.api.push.model.audience.Selectors.androidChannel;
+import static com.urbanairship.api.push.model.audience.Selectors.apid;
+import static com.urbanairship.api.push.model.audience.Selectors.devicePin;
+import static com.urbanairship.api.push.model.audience.Selectors.deviceToken;
+import static com.urbanairship.api.push.model.audience.Selectors.iosChannel;
+import static com.urbanairship.api.push.model.audience.Selectors.mpns;
+import static com.urbanairship.api.push.model.audience.Selectors.not;
+import static com.urbanairship.api.push.model.audience.Selectors.or;
+import static com.urbanairship.api.push.model.audience.Selectors.tag;
+import static com.urbanairship.api.push.model.audience.Selectors.triggered;
+import static com.urbanairship.api.push.model.audience.Selectors.wns;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 public class DeviceTypeDataTest {
 
@@ -35,7 +52,7 @@ public class DeviceTypeDataTest {
         DeviceTypeData d = DeviceTypeData.all();
         assertEquals(d, d);
         assertSame(d, d);
-        assertFalse(d.equals(null));
+        assertFalse(d == null);
         DeviceTypeData d2 = DeviceTypeData.all();
         assertEquals(d, d2);
         assertNotSame(d, d2);

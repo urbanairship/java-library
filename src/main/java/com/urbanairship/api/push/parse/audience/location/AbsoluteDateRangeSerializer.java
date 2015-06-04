@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.audience.location;
@@ -9,6 +9,7 @@ import com.urbanairship.api.push.model.audience.location.PresenceTimeframe;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
+
 import java.io.IOException;
 
 public class AbsoluteDateRangeSerializer extends JsonSerializer<AbsoluteDateRange> {

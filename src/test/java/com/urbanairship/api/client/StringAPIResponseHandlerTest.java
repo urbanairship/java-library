@@ -41,7 +41,7 @@ public class StringAPIResponseHandlerTest {
             assertTrue(response.getApiResponse().getClass().equals(String.class));
             assertTrue(response.getApiResponse().equals(successCSV));
             assertTrue("HttpResponse is incorrect",
-                    httpResponse.equals(httpResponse));
+                    httpResponse.equals(response.getHttpResponse()));
         } catch (Exception ex) {
             fail("Exception " + ex);
         }

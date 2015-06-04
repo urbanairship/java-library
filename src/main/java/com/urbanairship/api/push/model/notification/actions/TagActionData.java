@@ -1,14 +1,14 @@
 
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.model.notification.actions;
 
-import com.google.common.base.Preconditions;
-import com.urbanairship.api.push.model.PushModelObject;
 import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
+import com.urbanairship.api.push.model.PushModelObject;
 
 import java.util.Set;
 
@@ -21,8 +21,8 @@ public abstract class TagActionData extends PushModelObject {
 
     /**
      * Represents a single tag.
-     * @param tag
-     * @return
+     * @param tag String tag
+     * @return TagActionData
      */
     public static TagActionData single(String tag) {
         Preconditions.checkNotNull(tag, "tag should not be null.");
@@ -31,8 +31,8 @@ public abstract class TagActionData extends PushModelObject {
 
     /**
      * Represents a set of tags.
-     * @param tags
-     * @return
+     * @param tags Set of tags
+     * @return TagActionData
      */
     public static TagActionData set(Set<String> tags) {
         Preconditions.checkNotNull(tags, "tags should not be null.");
@@ -42,21 +42,21 @@ public abstract class TagActionData extends PushModelObject {
     /**
      * When true, this object represents a single tag (and calling {@link TagActionData.getSingleTag} will succeed).
      * Otherwise, this represents a set of tags (and calling {@link TagActionData.getTagSet} will succeed).
-     * @return
+     * @return boolean
      */
     public abstract boolean isSingle();
 
     /**
      * Returns the tag represented, if this object was constructed
      * with {@link TagActionData.single}, otherwise throw an exception.
-     * @return
+     * @return String
      */
     public abstract String getSingleTag();
 
     /**
      * Returns the tags represented, if this object was constructed
      * with {@link TagActionData.set}, otherwise throw an exception.
-     * @return
+     * @return Set of tags
      */
     public abstract Set<String> getTagSet();
 

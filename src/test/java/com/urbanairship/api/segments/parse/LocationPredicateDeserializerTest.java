@@ -6,7 +6,11 @@ package com.urbanairship.api.segments.parse;
 
 import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import com.urbanairship.api.push.model.audience.location.DateRangeUnit;
-import com.urbanairship.api.segments.model.*;
+import com.urbanairship.api.segments.model.DateRange;
+import com.urbanairship.api.segments.model.LocationIdentifier;
+import com.urbanairship.api.segments.model.LocationPredicate;
+import com.urbanairship.api.segments.model.PresenceTimeframe;
+import com.urbanairship.api.segments.model.RecentDateRange;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Assert;
 import org.junit.BeforeClass;

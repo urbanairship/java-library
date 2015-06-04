@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.channel.information.model.ios;
@@ -8,7 +8,6 @@ package com.urbanairship.api.channel.information.model.ios;
 import com.google.common.base.Objects;
 
 public final class QuietTime {
-    public static final QuietTime NULL_INSTANCE = new QuietTime(null, null);
 
     private final String start;
     private final String end;

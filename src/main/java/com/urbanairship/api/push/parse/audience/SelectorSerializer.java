@@ -1,16 +1,16 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.audience;
 
+import com.urbanairship.api.push.model.audience.CompoundSelector;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.ValueSelector;
-import com.urbanairship.api.push.model.audience.CompoundSelector;
-import com.urbanairship.api.push.model.audience.SelectorType;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
+
 import java.io.IOException;
 import java.util.Map;
 

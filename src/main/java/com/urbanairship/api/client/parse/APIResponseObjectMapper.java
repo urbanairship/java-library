@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.client.parse;
@@ -14,14 +14,43 @@ import com.urbanairship.api.channel.information.parse.ios.IosSettingsDeserialize
 import com.urbanairship.api.channel.information.parse.ios.QuietTimeDeserializer;
 import com.urbanairship.api.client.APIError;
 import com.urbanairship.api.client.APIErrorDetails;
-import com.urbanairship.api.client.model.*;
+import com.urbanairship.api.client.model.APIListAllChannelsResponse;
+import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
+import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
+import com.urbanairship.api.client.model.APIListSingleChannelResponse;
+import com.urbanairship.api.client.model.APIListTagsResponse;
+import com.urbanairship.api.client.model.APILocationResponse;
+import com.urbanairship.api.client.model.APIPushResponse;
+import com.urbanairship.api.client.model.APIReportsPushListingResponse;
+import com.urbanairship.api.client.model.APIScheduleResponse;
+import com.urbanairship.api.client.model.SegmentInformation;
 import com.urbanairship.api.location.model.Location;
 import com.urbanairship.api.location.parse.LocationDeserializer;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.push.parse.PushPayloadDeserializer;
-import com.urbanairship.api.reports.model.*;
-import com.urbanairship.api.reports.parse.*;
+import com.urbanairship.api.reports.model.AppStats;
+import com.urbanairship.api.reports.model.Opens;
+import com.urbanairship.api.reports.model.PerPushCounts;
+import com.urbanairship.api.reports.model.PerPushDetailResponse;
+import com.urbanairship.api.reports.model.PerPushSeriesResponse;
+import com.urbanairship.api.reports.model.PlatformCounts;
+import com.urbanairship.api.reports.model.ReportsAPIOpensResponse;
+import com.urbanairship.api.reports.model.ReportsAPITimeInAppResponse;
+import com.urbanairship.api.reports.model.RichPerPushCounts;
+import com.urbanairship.api.reports.model.SinglePushInfoResponse;
+import com.urbanairship.api.reports.model.TimeInApp;
+import com.urbanairship.api.reports.parse.AppStatsDeserializer;
+import com.urbanairship.api.reports.parse.OpensDeserializer;
+import com.urbanairship.api.reports.parse.PerPushCountsDeserializer;
+import com.urbanairship.api.reports.parse.PerPushDetailResponseDeserializer;
+import com.urbanairship.api.reports.parse.PerPushSeriesResponseDeserializer;
+import com.urbanairship.api.reports.parse.PlatformCountsDeserializer;
+import com.urbanairship.api.reports.parse.ReportsAPIOpensResponseDeserializer;
+import com.urbanairship.api.reports.parse.ReportsAPITimeInAppResponseDeserializer;
+import com.urbanairship.api.reports.parse.RichPerPushCountsDeserializer;
+import com.urbanairship.api.reports.parse.SinglePushInfoResponseDeserializer;
+import com.urbanairship.api.reports.parse.TimeInAppDeserializer;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.schedule.parse.ScheduleDeserializer;
@@ -30,7 +59,13 @@ import com.urbanairship.api.segments.model.AudienceSegment;
 import com.urbanairship.api.segments.model.LocationPredicate;
 import com.urbanairship.api.segments.model.Operator;
 import com.urbanairship.api.segments.model.Predicate;
-import com.urbanairship.api.segments.parse.*;
+import com.urbanairship.api.segments.parse.AudienceSegmentDeserializer;
+import com.urbanairship.api.segments.parse.AudienceSegmentSerializer;
+import com.urbanairship.api.segments.parse.LocationPredicateDeserializer;
+import com.urbanairship.api.segments.parse.LocationPredicateSerializer;
+import com.urbanairship.api.segments.parse.OperatorDeserializer;
+import com.urbanairship.api.segments.parse.OperatorSerializer;
+import com.urbanairship.api.segments.parse.PredicateDeserializer;
 import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.module.SimpleModule;

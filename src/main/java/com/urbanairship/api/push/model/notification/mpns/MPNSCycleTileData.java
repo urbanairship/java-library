@@ -1,12 +1,11 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.model.notification.mpns;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
-import static com.google.common.base.Preconditions.checkArgument;
 
 public class MPNSCycleTileData extends MPNSTileData
 {
@@ -99,7 +98,7 @@ public class MPNSCycleTileData extends MPNSTileData
         }
 
         public Builder setCount(int value) {
-            this.count = new Integer(value);
+            this.count = value;
             return this;
         }
 

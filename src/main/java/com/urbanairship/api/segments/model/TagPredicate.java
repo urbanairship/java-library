@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.segments.model;
@@ -46,11 +46,8 @@ public final class TagPredicate implements Predicate {
 
         TagPredicate that = (TagPredicate) o;
 
-        if (tag != null ? !tag.equals(that.tag) : that.tag != null) {
-            return false;
-        }
+        return !(tag != null ? !tag.equals(that.tag) : that.tag != null);
 
-        return true;
     }
 
     @Override

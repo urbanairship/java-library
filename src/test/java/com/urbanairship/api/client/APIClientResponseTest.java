@@ -2,14 +2,28 @@ package com.urbanairship.api.client;
 
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.channel.information.model.ChannelView;
-import com.urbanairship.api.client.model.*;
+import com.urbanairship.api.client.model.APIClientResponse;
+import com.urbanairship.api.client.model.APIListAllChannelsResponse;
+import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
+import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
+import com.urbanairship.api.client.model.APIListSingleChannelResponse;
+import com.urbanairship.api.client.model.APIListTagsResponse;
+import com.urbanairship.api.client.model.APILocationResponse;
+import com.urbanairship.api.client.model.APIPushResponse;
+import com.urbanairship.api.client.model.APIReportsPushListingResponse;
+import com.urbanairship.api.client.model.APIScheduleResponse;
+import com.urbanairship.api.client.model.SegmentInformation;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
-import com.urbanairship.api.push.model.notification.Notifications;
-import com.urbanairship.api.reports.model.*;
+import com.urbanairship.api.reports.model.AppStats;
+import com.urbanairship.api.reports.model.PerPushDetailResponse;
+import com.urbanairship.api.reports.model.PerPushSeriesResponse;
+import com.urbanairship.api.reports.model.ReportsAPIOpensResponse;
+import com.urbanairship.api.reports.model.ReportsAPITimeInAppResponse;
+import com.urbanairship.api.reports.model.SinglePushInfoResponse;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.segments.model.AudienceSegment;
@@ -41,7 +55,7 @@ public class APIClientResponseTest {
                 .setAppKey("blah")
                 .build();
 
-        APIClientResponse.Builder<PerPushSeriesResponse> builder = APIClientResponse.newListPerPushSeriesBuilder()
+        APIClientResponse.Builder<PerPushSeriesResponse> builder = new APIClientResponse.Builder<PerPushSeriesResponse>()
                 .setApiResponse(obj)
                 .setHttpResponse(httpResponse);
 
@@ -63,7 +77,7 @@ public class APIClientResponseTest {
                 .setAppKey("blah")
                 .build();
 
-        APIClientResponse.Builder<PerPushDetailResponse> builder = APIClientResponse.newListPerPushDetailBuilder()
+        APIClientResponse.Builder<PerPushDetailResponse> builder = new APIClientResponse.Builder<PerPushDetailResponse>()
                 .setApiResponse(obj)
                 .setHttpResponse(httpResponse);
 
@@ -84,7 +98,7 @@ public class APIClientResponseTest {
         ReportsAPITimeInAppResponse obj = ReportsAPITimeInAppResponse.newBuilder().build();
 
         APIClientResponse.Builder<ReportsAPITimeInAppResponse> builder =
-                APIClientResponse.newTimeInAppReportResponseBuilder()
+                new APIClientResponse.Builder<ReportsAPITimeInAppResponse>()
                         .setApiResponse(obj)
                         .setHttpResponse(httpResponse);
 
@@ -105,7 +119,7 @@ public class APIClientResponseTest {
         ReportsAPIOpensResponse obj = ReportsAPIOpensResponse.newBuilder().build();
 
         APIClientResponse.Builder<ReportsAPIOpensResponse> builder =
-                APIClientResponse.newAppsOpenReportResponseBuilder()
+                new APIClientResponse.Builder<ReportsAPIOpensResponse>()
                         .setApiResponse(obj)
                         .setHttpResponse(httpResponse);
 
@@ -142,7 +156,7 @@ public class APIClientResponseTest {
                 .addPushInfoResponse(spir)
                 .build();
 
-        APIClientResponse.Builder<APIReportsPushListingResponse> builder = APIClientResponse.newReportsListingResponseBuilder()
+        APIClientResponse.Builder<APIReportsPushListingResponse> builder = new APIClientResponse.Builder<APIReportsPushListingResponse>()
                 .setApiResponse(obj)
                 .setHttpResponse(httpResponse);
 
@@ -173,7 +187,7 @@ public class APIClientResponseTest {
                 .setGroupID(two)
                 .build();
 
-        APIClientResponse.Builder<SinglePushInfoResponse> builder = APIClientResponse.newSinglePushInfoResponseBuilder()
+        APIClientResponse.Builder<SinglePushInfoResponse> builder = new APIClientResponse.Builder<SinglePushInfoResponse>()
                 .setApiResponse(obj)
                 .setHttpResponse(httpResponse);
 
@@ -193,7 +207,7 @@ public class APIClientResponseTest {
         APILocationResponse locationResponse = APILocationResponse.newBuilder()
                 .build();
         APIClientResponse.Builder<APILocationResponse> builder =
-                APIClientResponse.newLocationResponseBuilder()
+                new APIClientResponse.Builder<APILocationResponse>()
                         .setApiResponse(locationResponse)
                         .setHttpResponse(httpResponse);
         APIClientResponse<APILocationResponse> testResponse = builder.build();
@@ -279,7 +293,7 @@ public class APIClientResponseTest {
                 .build();
 
         APIClientResponse.Builder<APIListAllSegmentsResponse> builder =
-                APIClientResponse.newListAllSegmentsResponseBuilder()
+                new APIClientResponse.Builder<APIListAllSegmentsResponse>()
                         .setApiResponse(segmentsResponse)
                         .setHttpResponse(httpResponse);
 
@@ -300,7 +314,7 @@ public class APIClientResponseTest {
                 .build();
 
         APIClientResponse.Builder<AudienceSegment> builder =
-                APIClientResponse.newAudienceSegmentResponseBuilder()
+                new APIClientResponse.Builder<AudienceSegment>()
                         .setApiResponse(segmentsResponse)
                         .setHttpResponse(httpResponse);
 
@@ -320,7 +334,7 @@ public class APIClientResponseTest {
                 .setOperationId("ID")
                 .build();
         APIClientResponse.Builder<APIScheduleResponse> builder =
-                APIClientResponse.newScheduleResponseBuilder()
+                new APIClientResponse.Builder<APIScheduleResponse>()
                         .setApiResponse(scheduleResponse)
                         .setHttpResponse(httpResponse);
         APIClientResponse<APIScheduleResponse> testResponse = builder.build();
@@ -359,7 +373,7 @@ public class APIClientResponseTest {
                 .build();
 
         APIClientResponse.Builder<APIListAllSchedulesResponse> builder =
-                APIClientResponse.newListAllSchedulesResponseBuilder()
+                new APIClientResponse.Builder<APIListAllSchedulesResponse>()
                         .setApiResponse(listScheduleResponse)
                         .setHttpResponse(httpResponse);
         APIClientResponse<APIListAllSchedulesResponse> testResponse = builder.build();
@@ -384,7 +398,7 @@ public class APIClientResponseTest {
                 .allAllTags(listOTags)
                 .build();
         APIClientResponse.Builder<APIListTagsResponse> builder =
-                APIClientResponse.newListTagsResponseBuilder()
+                new APIClientResponse.Builder<APIListTagsResponse>()
                         .setApiResponse(listTagsResponse)
                         .setHttpResponse(httpResponse);
         APIClientResponse<APIListTagsResponse> testResponse = builder.build();
@@ -417,7 +431,7 @@ public class APIClientResponseTest {
                         .build();
 
         APIClientResponse.Builder<APIListSingleChannelResponse> builder =
-                APIClientResponse.newSingleChannelResponseBuilder()
+                new APIClientResponse.Builder<APIListSingleChannelResponse>()
                         .setApiResponse(response)
                         .setHttpResponse(httpResponse);
 
@@ -452,7 +466,7 @@ public class APIClientResponseTest {
                 .build();
 
         APIClientResponse.Builder<APIListAllChannelsResponse> builder =
-                APIClientResponse.newListAllChannelsResponseBuilder()
+                new APIClientResponse.Builder<APIListAllChannelsResponse>()
                         .setApiResponse(response)
                         .setHttpResponse(httpResponse);
 
@@ -475,7 +489,7 @@ public class APIClientResponseTest {
                 .setOperationId("OpID")
                 .build();
         APIClientResponse.Builder<APIPushResponse> builder =
-                APIClientResponse.newPushResponseBuilder()
+                new APIClientResponse.Builder<APIPushResponse>()
                         .setApiResponse(pushResponse)
                         .setHttpResponse(httpResponse);
         APIClientResponse<APIPushResponse> apiResponse = builder.build();
