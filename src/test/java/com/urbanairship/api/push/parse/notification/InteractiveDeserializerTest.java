@@ -115,29 +115,6 @@ public class InteractiveDeserializerTest {
     }
 
     @Test
-    public void testDeserializeExtraField() throws Exception {
-        String json
-            = "{"
-            + "  \"type\" : \"ua_yes_no_foreground\","
-            + "  \"button_actions\" : {"
-            + "    \"yes\" : {"
-            + "      \"add_tag\" : \"foo\""
-            + "    },"
-            + "    \"no\" : {"
-            + "      \"add_tag\" : \"bar\""
-            + "    }"
-            + "  },"
-            + "  \"extra\" : \"blar\""
-            + "}";
-        try {
-            mapper.readValue(json, Interactive.class);
-            fail("APIParsingException expected.");
-        } catch (APIParsingException exc) {
-            assertEquals("The key 'extra' is not allowed in this context", exc.getMessage());
-        }
-    }
-
-    @Test
     public void testDeserializeLandingPage() throws IOException {
         String json
             = "{"
