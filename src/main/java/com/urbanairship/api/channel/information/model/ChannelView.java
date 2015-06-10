@@ -7,9 +7,12 @@ package com.urbanairship.api.channel.information.model;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.channel.information.model.ios.IosSettings;
 import org.apache.commons.lang.StringUtils;
+
+import java.util.Map;
 
 public final class ChannelView {
 
@@ -23,6 +26,7 @@ public final class ChannelView {
     private final Optional<Long> lastRegistrationMillis;
     private final Optional<String> alias;
     private final ImmutableSet<String> tags;
+    private final ImmutableMap<String, ImmutableSet<String>> tagGroups;
     private final Optional<IosSettings> iosSettings;
 
     public ChannelView(String channelId,
@@ -35,6 +39,7 @@ public final class ChannelView {
                        Optional<Long> lastRegistrationMillis,
                        Optional<String> alias,
                        ImmutableSet<String> tags,
+                       ImmutableMap<String, ImmutableSet<String>> tagGroups,
                        Optional<IosSettings> iosSettings) {
         this.channelId = channelId;
         this.deviceType = deviceType;
@@ -46,6 +51,7 @@ public final class ChannelView {
         this.lastRegistrationMillis = lastRegistrationMillis;
         this.alias = alias;
         this.tags = tags;
+        this.tagGroups = tagGroups;
         this.iosSettings = iosSettings;
     }
 
@@ -93,6 +99,10 @@ public final class ChannelView {
         return tags;
     }
 
+    public ImmutableMap<String, ImmutableSet<String>> getTagGroups() {
+        return tagGroups;
+    }
+
     public Optional<IosSettings> getIosSettings() {
         return iosSettings;
     }
@@ -110,13 +120,14 @@ public final class ChannelView {
                 ", lastRegistrationMillis=" + lastRegistrationMillis +
                 ", alias=" + alias +
                 ", tags=" + tags +
+                ", tagGroups=" + tagGroups +
                 ", iosSettings=" + iosSettings +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(channelId, deviceType, installed, optedIn, background, pushAddress, createdMillis, lastRegistrationMillis, alias, tags, iosSettings);
+        return Objects.hashCode(channelId, deviceType, installed, optedIn, background, pushAddress, createdMillis, lastRegistrationMillis, alias, tags, tagGroups, iosSettings);
     }
 
     @Override
@@ -128,11 +139,24 @@ public final class ChannelView {
             return false;
         }
         final ChannelView other = (ChannelView) obj;
-        return Objects.equal(this.channelId, other.channelId) && Objects.equal(this.deviceType, other.deviceType) && Objects.equal(this.installed, other.installed) && Objects.equal(this.optedIn, other.optedIn) && Objects.equal(this.background, other.background) && Objects.equal(this.pushAddress, other.pushAddress) && Objects.equal(this.createdMillis, other.createdMillis) && Objects.equal(this.lastRegistrationMillis, other.lastRegistrationMillis) && Objects.equal(this.alias, other.alias) && Objects.equal(this.tags, other.tags) && Objects.equal(this.iosSettings, other.iosSettings);
+        return Objects.equal(
+            this.channelId, other.channelId) &&
+            Objects.equal(this.deviceType, other.deviceType) &&
+            Objects.equal(this.installed, other.installed) &&
+            Objects.equal(this.optedIn, other.optedIn) &&
+            Objects.equal(this.background, other.background) &&
+            Objects.equal(this.pushAddress, other.pushAddress) &&
+            Objects.equal(this.createdMillis, other.createdMillis) &&
+            Objects.equal(this.lastRegistrationMillis, other.lastRegistrationMillis) &&
+            Objects.equal(this.alias, other.alias) && Objects.equal(this.tags, other.tags) &&
+            Objects.equal(this.tagGroups, other.toString()) &&
+            Objects.equal(this.iosSettings, other.iosSettings
+            );
     }
 
     public final static class Builder {
         private final ImmutableSet.Builder<String> tags = ImmutableSet.builder();
+        private final ImmutableMap.Builder<String, ImmutableSet<String>> tagGroups = ImmutableMap.builder();
         private String channelId = null;
         private DeviceType deviceType = null;
         private Boolean optedIn = null;
@@ -209,6 +233,20 @@ public final class ChannelView {
             return this;
         }
 
+        public Builder addTagGroup(Map.Entry<String, ImmutableSet<String>> tagGroup) {
+            if (!tagGroup.getKey().isEmpty()) {
+                this.tagGroups.put(tagGroup);
+            }
+            return this;
+        }
+
+        public Builder addAllTagGroups(ImmutableMap<String, ImmutableSet<String>> tagGroups) {
+            if (!tagGroups.isEmpty()) {
+                this.tagGroups.putAll(tagGroups);
+            }
+            return this;
+        }
+
         public Builder setIosSettings(IosSettings iosSettings) {
             this.iosSettings = iosSettings;
             return this;
@@ -232,6 +270,7 @@ public final class ChannelView {
                     Optional.fromNullable(lastRegistrationMillis),
                     Optional.fromNullable(alias),
                     tags.build(),
+                    tagGroups.build(),
                     Optional.fromNullable(iosSettings)
             );
         }

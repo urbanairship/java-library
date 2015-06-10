@@ -4,6 +4,8 @@
 
 package com.urbanairship.api.channel.information.parse;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.channel.information.model.ChannelView;
 import com.urbanairship.api.channel.information.model.DeviceType;
 import com.urbanairship.api.channel.information.model.ios.IosSettings;
@@ -14,9 +16,12 @@ import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.common.parse.ListOfStringsDeserializer;
 import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.DateTime;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.Set;
 
 public final class ChannelViewReader implements JsonObjectReader<ChannelView> {
     private final ChannelView.Builder builder;
@@ -72,6 +77,12 @@ public final class ChannelViewReader implements JsonObjectReader<ChannelView> {
         builder.addAllTags(ListOfStringsDeserializer.INSTANCE.deserialize(jsonParser, Constants.TAGS));
     }
 
+    public void readTagGroups(JsonParser jsonParser) throws IOException {
+        Map<String, Set<String>> mutableTagGroups = jsonParser.readValueAs(new TypeReference<Map<String, Set<String>>>() {});
+        ImmutableMap<String, ImmutableSet<String>> tagGroups = immutableMapConverter(mutableTagGroups);
+        builder.addAllTagGroups(tagGroups);
+    }
+
     public void readIosSettings(JsonParser jsonParser) throws IOException {
         builder.setIosSettings(jsonParser.readValueAs(IosSettings.class));
     }
@@ -83,5 +94,14 @@ public final class ChannelViewReader implements JsonObjectReader<ChannelView> {
         } catch (Exception e) {
             throw new APIParsingException(e.getMessage());
         }
+    }
+
+
+    private static ImmutableMap<String, ImmutableSet<String>> immutableMapConverter(Map<String, Set<String>> map) {
+        ImmutableMap.Builder builder = ImmutableMap.<String, ImmutableSet<String>>builder();
+        for (Map.Entry<String, Set<String>> entry : map.entrySet()) {
+            builder.put(entry.getKey(), ImmutableSet.copyOf(entry.getValue()));
+        }
+        return builder.build();
     }
 }

@@ -1880,7 +1880,12 @@ public class APIClientTest {
                 "      \"alias\": null,\n" +
                 "      \"tags\": [\n" +
                 "        \"test01\"\n" +
-                "      ]\n" +
+                "      ]," +
+                "      \"tag_groups\": {\n" +
+                "        \"testGroup01\" : [\n" +
+                "          \"testGroup01Tag01\"\n" +
+                "        ]\n" +
+                "      }\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"channel_id\": \"00662346-9e39-4f5f-80e7-3f8fae58863c\",\n" +
@@ -1896,7 +1901,13 @@ public class APIClientTest {
                 "        \"aaron-tag\",\n" +
                 "        \"rhtgeg\",\n" +
                 "        \"tnrvrg\"\n" +
-                "      ]\n" +
+                "      ],\n" +
+                "      \"tag_groups\": {\n" +
+                "        \"testGroup02\" : [\n" +
+                "          \"testGroup02Tag01\",\n" +
+                "          \"testGroup02Tag02\"\n" +
+                "        ]\n" +
+                "      }\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"channel_id\": \"00d174cd-0a31-427e-95c9-52d5785bcd50\",\n" +
@@ -1911,6 +1922,7 @@ public class APIClientTest {
                 "      \"tags\": [\n" +
                 "        \"version_1.5.0\"\n" +
                 "      ],\n" +
+                "      \"tag_groups\": {},\n" +
                 "      \"ios\": {\n" +
                 "        \"badge\": 1,\n" +
                 "        \"quiettime\": {\n" +
@@ -1933,6 +1945,16 @@ public class APIClientTest {
                 "        \"kablam\",\n" +
                 "        \"version_1.3\"\n" +
                 "      ],\n" +
+                "      \"tag_groups\": {\n" +
+                "        \"testGroup03\": [\n" +
+                "          \"zach_is_cool\",\n" +
+                "          \"zach_is_cooler\",\n" +
+                "          \"zach_is_the_coolest\"\n" +
+                "        ],\n" +
+                "        \"testGroup04\": [\n" +
+                "          \"testGroup04Tag01\"\n" +
+                "        ]\n" +
+                "      },\n" +
                 "      \"ios\": {\n" +
                 "        \"badge\": 1,\n" +
                 "        \"quiettime\": {\n" +
@@ -1953,7 +1975,8 @@ public class APIClientTest {
                 "      \"alias\": null,\n" +
                 "      \"tags\": [\n" +
                 "        \n" +
-                "      ]\n" +
+                "      ],\n" +
+                "      \"tag_groups\": {}\n" +
                 "    }\n" +
                 "  ],\n" +
                 "  \"next_page\": \"https:\\/\\/go.urbanairship.com\\/api\\/channels?limit=5&start=0143e4d6-724c-4fc8-bbc6-ca647b8993bf\"\n" +
