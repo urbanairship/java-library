@@ -20,6 +20,9 @@ import java.util.Collection;
  */
 public class Selectors {
 
+    public static final String GROUP_ATTR = "group";
+    public static final String CLASS_ATTR = "tag_class";
+
     public static final Selector atomic(SelectorType type) {
         return BasicSelector.newBuilder()
             .setType(type)
@@ -92,11 +95,19 @@ public class Selectors {
         return compound(SelectorType.OR, SelectorType.TAG, tags);
     }
 
+    public static final Selector tagWithGroup(String tag, String group) {
+        return BasicValueSelector.newBuilder()
+            .setType(SelectorType.TAG)
+            .setValue(tag)
+            .addAttribute(GROUP_ATTR, group)
+            .build();
+    }
+
     public static final Selector tagWithClass(String tag, String tagClass) {
         return BasicValueSelector.newBuilder()
             .setType(SelectorType.TAG)
             .setValue(tag)
-            .addAttribute("tag_class", tagClass)
+            .addAttribute(CLASS_ATTR, tagClass)
             .build();
     }
 

@@ -90,6 +90,22 @@ public class SelectorDeserializerTest {
         assertEquals("autogroup", vs.getAttributes().get().get("tag_class"));
     }
 
+    @Test
+    public void testTagGroup() throws Exception {
+        String json = "{\n" +
+            "   \"tag\": \"tag1\",\n" +
+            "   \"group\": \"group1\"\n" +
+            "}";
+
+        Selector value = mapper.readValue(json, Selector.class);
+        assertTrue(value.getType() == SelectorType.TAG);
+        assertTrue(value instanceof ValueSelector);
+        ValueSelector vs = (ValueSelector) value;
+        assertTrue(vs.getAttributes().isPresent());
+        assertEquals(1, vs.getAttributes().get().size());
+        assertEquals("group1", vs.getAttributes().get().get("group"));
+    }
+
 
     @Test
     public void testAtomicCaseInsensitivity() throws Exception {
@@ -129,6 +145,45 @@ public class SelectorDeserializerTest {
         vs = (ValueSelector) c;
         assertEquals(SelectorType.TAG, c.getType());
         assertEquals("derp", vs.getValue());
+    }
+
+    @Test
+    public void testGroupCompoundSelector() throws Exception {
+        String json = "{\n"
+            + "  \"and\" : [\n"
+            + "    { \"tag\" : \"tag1\", \"group\" : \"group1\" }, \n"
+            + "    { \"tag\" : \"tag2\", \"group\" : \"group2\" }, \n"
+            + "    { \"tag\" : \"tag3\"}\n"
+            + "  ]\n"
+            + "}";
+        Selector s = mapper.readValue(json, Selector.class);
+        assertTrue(s instanceof CompoundSelector);
+        assertEquals(SelectorType.AND, s.getType());
+
+        CompoundSelector cs = (CompoundSelector) s;
+        assertEquals(3, Iterables.size(cs.getChildren()));
+
+        Iterator<Selector> i = cs.getChildren().iterator();
+
+        Selector c = i.next();
+        assertTrue(c instanceof ValueSelector);
+        ValueSelector vs = (ValueSelector) c;
+        assertEquals(SelectorType.TAG, c.getType());
+        assertEquals("group1", vs.getAttributes().get().get("group"));
+        assertEquals("tag1", vs.getValue());
+
+        c = i.next();
+        assertTrue(c instanceof ValueSelector);
+        vs = (ValueSelector) c;
+        assertEquals(SelectorType.TAG, c.getType());
+        assertEquals("group2", vs.getAttributes().get().get("group"));
+        assertEquals("tag2", vs.getValue());
+
+        c = i.next();
+        assertTrue(c instanceof ValueSelector);
+        vs = (ValueSelector) c;
+        assertEquals(SelectorType.TAG, c.getType());
+        assertEquals("tag3", vs.getValue());
     }
 
     @Test
