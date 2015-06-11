@@ -132,7 +132,6 @@ public class AudienceSegmentSerializationRoundTripTest {
                 .build();
 
         String serialized = mapper.writeValueAsString(segment);
-
         Assert.assertEquals(segment, mapper.readValue(serialized, AudienceSegment.class));
     }
 

@@ -39,6 +39,14 @@ public class PredicateDeserializerTest {
         Assert.assertEquals(expected, parse(json));
     }
 
+    @Test
+    public void testValidTagPredicateWithGroup() throws Exception {
+        String json = "{\"tag\": \"blah\", \"group\": \"blah group\"}";
+        Predicate expected = TagPredicateBuilder.newInstance().setTag("blah").setTagGroup("blah group").build();
+
+        Assert.assertEquals(expected, parse(json));
+    }
+
     @Test(expected = InvalidAudienceSegmentException.class)
     public void testInvalidPredicateKeyUnknown() throws Exception {
         parse("{\"constraint\": \"cake\"}");
@@ -52,6 +60,11 @@ public class PredicateDeserializerTest {
     @Test(expected = InvalidAudienceSegmentException.class)
     public void testInvalidPredicateMultipleKeys() throws Exception {
         parse("{\"tag\": \"fun\", \"cash\": \"money\"}");
+    }
+
+    @Test(expected = InvalidAudienceSegmentException.class)
+    public void testInvalidPredicate() throws Exception {
+        parse("{\"tag\": \"blah\", \"tag_class\": \"blah class\", \"group\": \"blah group\"}");
     }
 
     private Predicate parse(String json) throws IOException {

@@ -139,8 +139,7 @@ public final class ChannelView {
             return false;
         }
         final ChannelView other = (ChannelView) obj;
-        return Objects.equal(
-            this.channelId, other.channelId) &&
+        return Objects.equal(this.channelId, other.channelId) &&
             Objects.equal(this.deviceType, other.deviceType) &&
             Objects.equal(this.installed, other.installed) &&
             Objects.equal(this.optedIn, other.optedIn) &&
@@ -150,8 +149,7 @@ public final class ChannelView {
             Objects.equal(this.lastRegistrationMillis, other.lastRegistrationMillis) &&
             Objects.equal(this.alias, other.alias) && Objects.equal(this.tags, other.tags) &&
             Objects.equal(this.tagGroups, other.toString()) &&
-            Objects.equal(this.iosSettings, other.iosSettings
-            );
+            Objects.equal(this.iosSettings, other.iosSettings);
     }
 
     public final static class Builder {
