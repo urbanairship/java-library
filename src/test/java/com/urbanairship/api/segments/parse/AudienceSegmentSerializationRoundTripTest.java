@@ -101,7 +101,7 @@ public class AudienceSegmentSerializationRoundTripTest {
     }
 
     @Test
-    public void testRoundTripWithCountAndTagClass() throws Exception {
+    public void testRoundTripWithCountAndTagClassAndTagGroup() throws Exception {
         DateTime end = new DateTime(new Date());
         String endString = DateTimeFormats.DAYS_FORMAT.print(end);
         DateTime start = end.minusDays(5);
@@ -122,6 +122,7 @@ public class AudienceSegmentSerializationRoundTripTest {
                 .addOperator(Operator.newBuilder(OperatorType.OR)
                         .addPredicate(buildTagPredicate("tag1"))
                         .addPredicate(buildTagPredicate("tag2", "class2"))
+                        .addPredicate(buildTagPredicateWithGroup("tag3", "group3"))
                         .build())
                 .build();
 
@@ -189,6 +190,10 @@ public class AudienceSegmentSerializationRoundTripTest {
 
     private TagPredicate buildTagPredicate(String tag, String tagClass) {
         return TagPredicateBuilder.newInstance().setTag(tag).setTagClass(tagClass).build();
+    }
+
+    private TagPredicate buildTagPredicateWithGroup(String tag, String tagGroup) {
+        return TagPredicateBuilder.newInstance().setTag(tag).setTagGroup(tagGroup).build();
     }
 
     @Test

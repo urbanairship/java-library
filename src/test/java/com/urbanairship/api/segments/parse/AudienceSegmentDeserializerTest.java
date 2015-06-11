@@ -73,6 +73,10 @@ public class AudienceSegmentDeserializerTest {
         return TagPredicateBuilder.newInstance().setTagClass(tagClass).setTag(tag).build();
     }
 
+    private TagPredicate buildTagPredicateWithGroup(String tag, String tagGroup) {
+        return TagPredicateBuilder.newInstance().setTagGroup(tagGroup).setTag(tag).build();
+    }
+
     @Test
     public void testParseAudienceSegmentWithTagCriteria() throws Exception {
         String json =
@@ -145,7 +149,7 @@ public class AudienceSegmentDeserializerTest {
     }
 
     @Test
-    public void testSegmentWithTagClassesAndLocation() throws Exception {
+    public void testSegmentWithTagClassesAndTagGroupsAndLocation() throws Exception {
         String json = "{\n" +
                 "        \"display_name\": \"Foo Segment\",\n" +
                 "        \"criteria\": {\n" +
@@ -157,6 +161,13 @@ public class AudienceSegmentDeserializerTest {
                 "                                            {\"tag\": \"tag1\"},\n" +
                 "                                            {\"tag\": \"tag2\"},\n" +
                 "                                            {\"tag\": \"tag3\"}\n" +
+                "                                        ]\n" +
+                "                                },\n" +
+                "                                {\n" +
+                "                                    \"and\": [\n" +
+                "                                            {\"tag\": \"group1Tag1\", \"group\": \"group1\"},\n" +
+                "                                            {\"tag\": \"group1Tag2\", \"group\": \"group1\"},\n" +
+                "                                            {\"tag\": \"group2Tag1\", \"group\": \"group2\"}\n" +
                 "                                        ]\n" +
                 "                                },\n" +
                 "                                {\n" +
@@ -188,6 +199,10 @@ public class AudienceSegmentDeserializerTest {
                                 .addPredicate(buildTagPredicate("tag2"))
                                 .addPredicate(buildTagPredicate("tag3")).build())
                         .addOperator(Operator.newBuilder(OperatorType.AND)
+                                .addPredicate(buildTagPredicateWithGroup("group1Tag1", "group1"))
+                                .addPredicate(buildTagPredicateWithGroup("group1Tag2", "group1"))
+                                .addPredicate(buildTagPredicateWithGroup("group2Tag1", "group2")).build())
+                        .addOperator(Operator.newBuilder(OperatorType.AND)
                                 .addPredicate(buildTagPredicate("tag1", "USER"))
                                 .addPredicate(buildTagPredicate("tag2", "USER"))
                                 .addPredicate(buildTagPredicate("tag3", "USER")).build())
@@ -201,6 +216,11 @@ public class AudienceSegmentDeserializerTest {
                 .setRootOperator(op)
                 .build();
         Assert.assertEquals(expected, result);
+    }
+
+    @Test(expected = InvalidAudienceSegmentException.class)
+    public void testSegmentCriteriaWithGroupAndClass() throws Exception {
+        parse("{\"display_name\": \"displayit\",\"criteria\": {\"tag\": \"tag1\", \"group\": \"group1\", \"tag_class\": \"class1\"}}");
     }
 
     private AudienceSegment parse(String json) throws IOException {

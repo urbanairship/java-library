@@ -73,7 +73,7 @@ public final class TagPredicate implements Predicate {
     }
 
     public boolean isDefaultClass() {
-        return tagClass.isPresent() && StringUtils.isEmpty(tagClass.get()) || DEFAULT_TAG_CLASS.equals(tagClass.get());
+        return tagClass.isPresent() && (StringUtils.isEmpty(tagClass.get()) || DEFAULT_TAG_CLASS.equals(tagClass.get()));
     }
 
 }
