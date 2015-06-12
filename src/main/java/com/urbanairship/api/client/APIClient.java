@@ -7,6 +7,7 @@ package com.urbanairship.api.client;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.urbanairship.api.channel.information.model.TagMutationPayload;
 import com.urbanairship.api.client.model.APIClientResponse;
 import com.urbanairship.api.client.model.APIListAllChannelsResponse;
 import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
@@ -75,7 +76,7 @@ public class APIClient {
     private final static String API_TAGS_BATCH_PATH = "/api/tags/batch/";
     private final static String API_LOCATION_PATH = "/api/location/";
     private final static String API_SEGMENTS_PATH = "/api/segments/";
-    private final static String API_DEVICE_CHANNELS_PATH = "/api/channels/";
+    private final static String API_CHANNELS_PATH = "/api/channels/";
     private final static String API_STATISTICS_PATH = "/api/push/stats/";
     private final static String API_REPORTS_PER_PUSH_DETAIL_PATH = "/api/reports/perpush/detail/";
     private final static String API_REPORTS_PER_PUSH_SERIES_PATH = "/api/reports/perpush/series/";
@@ -619,11 +620,26 @@ public class APIClient {
         return provisionExecutor().execute(req).returnResponse();
     }
 
-    /* Device Information API */
+    /* Channel Registration API */
+
+    public HttpResponse channelsTagMutations(TagMutationPayload payload) throws IOException {
+
+        String path = API_CHANNELS_PATH + "tags/";
+        Request request = provisionRequest(Request.Post(baseURIResolution(baseURI, path)));
+        request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing tag mutation request %s", request));
+        }
+
+        return provisionExecutor().execute(request).returnResponse();
+    }
+
+    /* Channel Listing API */
 
     public APIClientResponse<APIListSingleChannelResponse> listChannel(String channel) throws IOException {
 
-        String path = API_DEVICE_CHANNELS_PATH + channel;
+        String path = API_CHANNELS_PATH + channel;
         Request req = provisionRequest(Request.Get(baseURIResolution(baseURI, path)));
 
         if (logger.isDebugEnabled()) {
@@ -636,7 +652,7 @@ public class APIClient {
     }
 
     public APIClientResponse<APIListAllChannelsResponse> listAllChannels() throws IOException {
-        Request req = provisionRequest(Request.Get(baseURIResolution(baseURI, API_DEVICE_CHANNELS_PATH)));
+        Request req = provisionRequest(Request.Get(baseURIResolution(baseURI, API_CHANNELS_PATH)));
 
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("Executing list all channels request %s", req));

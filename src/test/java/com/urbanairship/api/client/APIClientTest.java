@@ -3,6 +3,9 @@ package com.urbanairship.api.client;
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.urbanairship.api.channel.information.model.TagMutationPayload;
 import com.urbanairship.api.client.model.APIClientResponse;
 import com.urbanairship.api.client.model.APIListAllChannelsResponse;
 import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
@@ -56,6 +59,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
@@ -1858,6 +1862,53 @@ public class APIClientTest {
 
             // The response is tested elsewhere, just check that it exists
             assertNotNull(response);
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testChannelTagMutations() {
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+            .setBaseURI("http://localhost:8080")
+            .setKey("key")
+            .setSecret("secret")
+            .build();
+
+        stubFor(post(urlEqualTo("/api/channels/tags/"))
+            .willReturn(aResponse()
+                .withHeader(CONTENT_TYPE_KEY, "application/json")
+                .withStatus(200)));
+
+        ImmutableMap<String, ImmutableSet<String>> audience = ImmutableMap.<String, ImmutableSet<String>>builder()
+            .put("ios_channel", ImmutableSet.of(UUID.randomUUID().toString(), UUID.randomUUID().toString()))
+            .build();
+
+        Optional<ImmutableMap<String, ImmutableSet<String>>> addTags = Optional.of(ImmutableMap.<String, ImmutableSet<String>>builder()
+            .put("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
+            .put("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
+            .build());
+
+        Optional<ImmutableMap<String, ImmutableSet<String>>> removeTags = Optional.of(ImmutableMap.<String, ImmutableSet<String>>builder()
+            .put("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"))
+            .build());
+
+        TagMutationPayload payload = TagMutationPayload.newBuilder()
+            .setAudience(audience)
+            .setAddedTags(addTags.get())
+            .setRemovedTags(removeTags.get())
+            .build();
+
+        try {
+            HttpResponse response = client.channelsTagMutations(payload);
+
+            List<LoggedRequest> requests = findAll(postRequestedFor(urlEqualTo("/api/channels/tags/")));
+            assertEquals(1, requests.size());
+
+            assertNotNull(response);
+            assertEquals(200, response.getStatusLine().getStatusCode());
+
         } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
