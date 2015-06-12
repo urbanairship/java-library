@@ -1006,7 +1006,7 @@ Channel Tags
 ============
 
 Add, remove, and set tags from channels.  Tags can be added and removed in a single request, however there must be no
-overlap in operated on tags between the two.  A request to set tags must be independent of the other mutation types.
+overlap on tags being added and removed.
 
 .. code-block:: java
 
@@ -1031,8 +1031,24 @@ overlap in operated on tags between the two.  A request to set tags must be inde
             .setRemovedTags(removeTags.get())
             .build();
 
-A successful response will return an "ok" status as well as any warnings if the tag groups do not exist or are no
-longer activated.
+A request to set tags must be independent of the other mutation types.
+
+.. code-block:: java
+
+        ImmutableMap<String, ImmutableSet<String>> audience = ImmutableMap.<String, ImmutableSet<String>>builder()
+            .put("ios_channel", ImmutableSet.of(iosChannel))
+            .build();
+
+        Optional<ImmutableMap<String, ImmutableSet<String>>> addTags = Optional.of(ImmutableMap.<String, ImmutableSet<String>>builder()
+            .put("tag_group", ImmutableSet.of("tag1", "tag2", "tag3"))
+            .build());
+
+        TagMutationPayload payload = TagMutationPayload.newBuilder()
+            .setAudience(audience)
+            .setSetTags(setTags.get())
+            .build();
+
+A successful response will return an "ok" status as well as any warnings if a tag group does not exist or is inactive.
 
 Individual Channel Lookup
 =========================
