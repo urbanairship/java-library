@@ -22,17 +22,16 @@ public class TagMutationPayloadSerializerTest {
         String androidChannel = UUID.randomUUID().toString();
 
         String expected = "{" +
-            "\"audience\":" +
-                "{" +
-                    "\"ios_channel\":[\"" + iosChannel1+ "\",\"" + iosChannel2 +"\"]," +
-                    "\"android_channel\":[\"" + androidChannel + "\"]" +
-                "}," +
-            "\"add\":{" +
+              "\"audience\":{" +
+                "\"ios_channel\":[\"" + iosChannel1+ "\",\"" + iosChannel2 +"\"]," +
+                "\"android_channel\":[\"" + androidChannel + "\"]" +
+              "}," +
+              "\"add\":{" +
                 "\"tag_group1\":[\"tag1\",\"tag2\",\"tag3\"]," +
                 "\"tag_group2\":[\"tag1\",\"tag2\",\"tag3\"]," +
                 "\"tag_group3\":[\"tag1\",\"tag2\",\"tag3\"]" +
-            "}" +
-        "}";
+              "}" +
+            "}";
 
         ImmutableMap<String, ImmutableSet<String>> audience = ImmutableMap.<String, ImmutableSet<String>>builder()
             .put("ios_channel", ImmutableSet.of(iosChannel1, iosChannel2))
@@ -61,16 +60,15 @@ public class TagMutationPayloadSerializerTest {
         String androidChannel = UUID.randomUUID().toString();
 
         String expected = "{" +
-            "\"audience\":" +
-            "{" +
-            "\"ios_channel\":[\"" + iosChannel1+ "\",\"" + iosChannel2 +"\"]," +
-            "\"android_channel\":[\"" + androidChannel + "\"]" +
-            "}," +
-            "\"remove\":{" +
-            "\"tag_group1\":[\"tag1\",\"tag2\",\"tag3\"]," +
-            "\"tag_group2\":[\"tag1\",\"tag2\",\"tag3\"]," +
-            "\"tag_group3\":[\"tag1\",\"tag2\",\"tag3\"]" +
-            "}" +
+              "\"audience\":{" +
+                "\"ios_channel\":[\"" + iosChannel1+ "\",\"" + iosChannel2 +"\"]," +
+                "\"android_channel\":[\"" + androidChannel + "\"]" +
+              "}," +
+              "\"remove\":{" +
+                "\"tag_group1\":[\"tag1\",\"tag2\",\"tag3\"]," +
+                "\"tag_group2\":[\"tag1\",\"tag2\",\"tag3\"]," +
+                "\"tag_group3\":[\"tag1\",\"tag2\",\"tag3\"]" +
+              "}" +
             "}";
 
         ImmutableMap<String, ImmutableSet<String>> audience = ImmutableMap.<String, ImmutableSet<String>>builder()
@@ -100,16 +98,15 @@ public class TagMutationPayloadSerializerTest {
         String androidChannel = UUID.randomUUID().toString();
 
         String expected = "{" +
-            "\"audience\":" +
-            "{" +
-            "\"ios_channel\":[\"" + iosChannel1+ "\",\"" + iosChannel2 +"\"]," +
-            "\"android_channel\":[\"" + androidChannel + "\"]" +
-            "}," +
-            "\"set\":{" +
-            "\"tag_group1\":[\"tag1\",\"tag2\",\"tag3\"]," +
-            "\"tag_group2\":[\"tag1\",\"tag2\",\"tag3\"]," +
-            "\"tag_group3\":[\"tag1\",\"tag2\",\"tag3\"]" +
-            "}" +
+              "\"audience\":{" +
+                "\"ios_channel\":[\"" + iosChannel1+ "\",\"" + iosChannel2 +"\"]," +
+                "\"android_channel\":[\"" + androidChannel + "\"]" +
+              "}," +
+              "\"set\":{" +
+                "\"tag_group1\":[\"tag1\",\"tag2\",\"tag3\"]," +
+                "\"tag_group2\":[\"tag1\",\"tag2\",\"tag3\"]," +
+                "\"tag_group3\":[\"tag1\",\"tag2\",\"tag3\"]" +
+              "}" +
             "}";
 
         ImmutableMap<String, ImmutableSet<String>> audience = ImmutableMap.<String, ImmutableSet<String>>builder()
@@ -139,21 +136,20 @@ public class TagMutationPayloadSerializerTest {
         String androidChannel = UUID.randomUUID().toString();
 
         String expected = "{" +
-            "\"audience\":" +
-            "{" +
-            "\"ios_channel\":[\"" + iosChannel1+ "\",\"" + iosChannel2 +"\"]," +
-            "\"android_channel\":[\"" + androidChannel + "\"]" +
-            "}," +
-            "\"add\":{" +
-            "\"tag_group1\":[\"tag1\",\"tag2\",\"tag3\"]," +
-            "\"tag_group2\":[\"tag1\",\"tag2\",\"tag3\"]," +
-            "\"tag_group3\":[\"tag1\",\"tag2\",\"tag3\"]" +
-            "}," +
-            "\"remove\":{" +
-            "\"tag_group1\":[\"tag4\",\"tag5\",\"tag6\"]," +
-            "\"tag_group2\":[\"tag4\",\"tag5\",\"tag6\"]," +
-            "\"tag_group3\":[\"tag4\",\"tag5\",\"tag6\"]" +
-            "}" +
+              "\"audience\":{" +
+                "\"ios_channel\":[\"" + iosChannel1+ "\",\"" + iosChannel2 +"\"]," +
+                "\"android_channel\":[\"" + androidChannel + "\"]" +
+              "}," +
+              "\"add\":{" +
+                "\"tag_group1\":[\"tag1\",\"tag2\",\"tag3\"]," +
+                "\"tag_group2\":[\"tag1\",\"tag2\",\"tag3\"]," +
+                "\"tag_group3\":[\"tag1\",\"tag2\",\"tag3\"]" +
+              "}," +
+              "\"remove\":{" +
+                "\"tag_group1\":[\"tag4\",\"tag5\",\"tag6\"]," +
+                "\"tag_group2\":[\"tag4\",\"tag5\",\"tag6\"]," +
+                "\"tag_group3\":[\"tag4\",\"tag5\",\"tag6\"]" +
+              "}" +
             "}";
 
         ImmutableMap<String, ImmutableSet<String>> audience = ImmutableMap.<String, ImmutableSet<String>>builder()

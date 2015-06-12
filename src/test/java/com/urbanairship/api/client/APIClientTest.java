@@ -1998,9 +1998,9 @@ public class APIClientTest {
                 "      ],\n" +
                 "      \"tag_groups\": {\n" +
                 "        \"testGroup03\": [\n" +
-                "          \"zach_is_cool\",\n" +
-                "          \"zach_is_cooler\",\n" +
-                "          \"zach_is_the_coolest\"\n" +
+                "          \"testGroup03Tag01\",\n" +
+                "          \"testGroup03Tag02\",\n" +
+                "          \"testGroup03Tag03\"\n" +
                 "        ],\n" +
                 "        \"testGroup04\": [\n" +
                 "          \"testGroup04Tag01\"\n" +

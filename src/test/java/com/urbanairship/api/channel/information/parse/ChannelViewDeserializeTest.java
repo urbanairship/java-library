@@ -61,7 +61,16 @@ public class ChannelViewDeserializeTest {
                         "    \"tz\": \"America/Los_Angeles\"" +
                         "  }," +
                         "\"tags\" : [\"tag1\", \"tag2\"]," +
-                        "\"tag_groups\" : {\"group1\" : [\"tag1OfGroup1\", \"tag2OfGroup1\"], \"group2\" : [\"tag1OfGroup2\", \"tag2OfGroup2\"]}," +
+                        "\"tag_groups\" : {" +
+                        "  \"group1\" : [" +
+                        "    \"tag1OfGroup1\"," +
+                        "    \"tag2OfGroup1\"" +
+                        "  ]," +
+                        "  \"group2\" : [" +
+                        "    \"tag1OfGroup2\"," +
+                        "    \"tag2OfGroup2\"" +
+                        "  ]" +
+                        "}," +
                         "\"alias\" : \"alias\"," +
                         "\"created\" : 12345," +
                         "\"push_address\" : \"address\"" +
