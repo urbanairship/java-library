@@ -4,6 +4,8 @@
 -------------------------
 - Push to named users
 - Audience selector naming correction (iosChannel --> iosChannels for multiple input channels)
+- Tag groups support (channel listings, segments, push audience)
+- Channels API tag mutations
 
 -------------------------
 0.3 15DEC14

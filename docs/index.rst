@@ -221,7 +221,13 @@ to create an Audience Selector. To send to all users with the tag "kittens".
 
      Selectors.tag("kittens")
 
-Or users who like kittens and puppies
+Or to users with the tag "kittens" in your "crm" tag group
+
+ .. code-block:: java
+
+     Selectors.tagWithGroup("kittens", "crm")
+
+You can also send to multiple tags, such as "kittens" and "puppies"
 
 .. code-block:: java
 
@@ -991,12 +997,45 @@ Get all the analytics detail for a specific push ID over time.
     long iosRichResponses = iosRichCounts.getResponses();
 
 
-******************
-Device Information
-******************
+********
+Channels
+********
 
-Individual Device Lookup
-========================
+
+Channel Tags
+============
+
+Add, remove, and set tags from channels.  Tags can be added and removed in a single request, however there must be no
+overlap in operated on tags between the two.  A request to set tags must be independent of the other mutation types.
+
+.. code-block:: java
+
+        ImmutableMap<String, ImmutableSet<String>> audience = ImmutableMap.<String, ImmutableSet<String>>builder()
+            .put("ios_channel", ImmutableSet.of(iosChannel1, iosChannel2))
+            .put("android_channel", ImmutableSet.of(androidChannel))
+            .build();
+
+        Optional<ImmutableMap<String, ImmutableSet<String>>> addTags = Optional.of(ImmutableMap.<String, ImmutableSet<String>>builder()
+            .put("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
+            .put("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
+            .build());
+
+        Optional<ImmutableMap<String, ImmutableSet<String>>> removeTags = Optional.of(ImmutableMap.<String, ImmutableSet<String>>builder()
+            .put("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"))
+            .put("tag_group2", ImmutableSet.of("tag4", "tag5", "tag6"))
+            .build());
+
+        TagMutationPayload payload = TagMutationPayload.newBuilder()
+            .setAudience(audience)
+            .setAddedTags(addTags.get())
+            .setRemovedTags(removeTags.get())
+            .build();
+
+A successful response will return an "ok" status as well as any warnings if the tag groups do not exist or are no
+longer activated.
+
+Individual Channel Lookup
+=========================
 
 Get information on an individual channel.
 
@@ -1038,9 +1077,8 @@ Get information on an individual channel.
     IosSettings iosSettings = cv.getIosSettings().get();
 
 
-
-Device Listing
-==============
+Channel Listing
+===============
 
 Fetch channels registered to this application, along with associated metadata.
 
@@ -1067,7 +1105,10 @@ Fetch channels registered to this application, along with associated metadata.
     String deviceType = cv.getDeviceType().toString();
 
     // Get a set of tags associated with the channel
-    Set<String> tags = cv.getTags();
+    ImmutableSet<String> tags = cv.getTags();
+
+    // Get a mapping of tag groups and the corresponding sets of tags associated with the channel
+    ImmutableMap<String, ImmutableSet<String>> tagGroups = cv.getTagGroups;
 
     // Get the string representing the alias, if available
     String alias = cv.getAlias().get();
@@ -1168,6 +1209,10 @@ The following helper methods are useful in reducing the verboseness of creating 
          return TagPredicateBuilder.newInstance().setTag(tag).setTagClass(tagClass).build();
     }
 
+    private TagPredicate buildTagPredicateWithGroup(String tag, String tagGroup) {
+         return TagPredicateBuilder.newInstance().setTag(tag).setTagGroup(tagGroup).build();
+    }
+
 Operator Construction
 ---------------------
 
@@ -1192,8 +1237,9 @@ The following is an example of how to build a complex operator
             .build()),
             new RecentDateRange(DateRangeUnit.MONTHS, 3), PresenceTimeframe.ANYTIME))
         .addOperator(Operator.newBuilder(OperatorType.OR)
-            .addPredicate(buildTagPredicate("tag1"))
+            .addPredicate(buildTagPredicateWithGroup("tag1", "group1"))
             .addPredicate(buildTagPredicate("tag2"))
+            .addPredicate(buildTagPredicate("tag3"))
             .build())
         .addOperator(Operator.newBuilder(OperatorType.NOT)
             .addPredicate(buildTagPredicate("not-tag"))
