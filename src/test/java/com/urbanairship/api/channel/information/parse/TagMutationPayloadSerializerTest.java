@@ -1,6 +1,5 @@
 package com.urbanairship.api.channel.information.parse;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.channel.information.model.TagMutationPayload;
@@ -38,15 +37,11 @@ public class TagMutationPayloadSerializerTest {
             .put("android_channel", ImmutableSet.of(androidChannel))
             .build();
 
-        Optional<ImmutableMap<String, ImmutableSet<String>>> addTags = Optional.of(ImmutableMap.<String, ImmutableSet<String>>builder()
-            .put("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .put("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .put("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .build());
-
         TagMutationPayload payload = TagMutationPayload.newBuilder()
             .setAudience(audience)
-            .setAddedTags(addTags.get())
+            .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
+            .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
+            .addTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"))
             .build();
 
         String json = mapper.writeValueAsString(payload);
@@ -76,15 +71,11 @@ public class TagMutationPayloadSerializerTest {
             .put("android_channel", ImmutableSet.of(androidChannel))
             .build();
 
-        Optional<ImmutableMap<String, ImmutableSet<String>>> removeTags = Optional.of(ImmutableMap.<String, ImmutableSet<String>>builder()
-            .put("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .put("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .put("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .build());
-
         TagMutationPayload payload = TagMutationPayload.newBuilder()
             .setAudience(audience)
-            .setRemovedTags(removeTags.get())
+            .removeTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
+            .removeTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
+            .removeTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"))
             .build();
 
         String json = mapper.writeValueAsString(payload);
@@ -114,15 +105,11 @@ public class TagMutationPayloadSerializerTest {
             .put("android_channel", ImmutableSet.of(androidChannel))
             .build();
 
-        Optional<ImmutableMap<String, ImmutableSet<String>>> setTags = Optional.of(ImmutableMap.<String, ImmutableSet<String>>builder()
-            .put("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .put("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .put("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .build());
-
         TagMutationPayload payload = TagMutationPayload.newBuilder()
             .setAudience(audience)
-            .setSetTags(setTags.get())
+            .setTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
+            .setTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
+            .setTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"))
             .build();
 
         String json = mapper.writeValueAsString(payload);
@@ -157,22 +144,14 @@ public class TagMutationPayloadSerializerTest {
             .put("android_channel", ImmutableSet.of(androidChannel))
             .build();
 
-        Optional<ImmutableMap<String, ImmutableSet<String>>> addTags = Optional.of(ImmutableMap.<String, ImmutableSet<String>>builder()
-            .put("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .put("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .put("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .build());
-
-        Optional<ImmutableMap<String, ImmutableSet<String>>> removeTags = Optional.of(ImmutableMap.<String, ImmutableSet<String>>builder()
-            .put("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"))
-            .put("tag_group2", ImmutableSet.of("tag4", "tag5", "tag6"))
-            .put("tag_group3", ImmutableSet.of("tag4", "tag5", "tag6"))
-            .build());
-
         TagMutationPayload payload = TagMutationPayload.newBuilder()
             .setAudience(audience)
-            .setAddedTags(addTags.get())
-            .setRemovedTags(removeTags.get())
+            .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
+            .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
+            .addTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"))
+            .removeTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"))
+            .removeTags("tag_group2", ImmutableSet.of("tag4", "tag5", "tag6"))
+            .removeTags("tag_group3", ImmutableSet.of("tag4", "tag5", "tag6"))
             .build();
 
         String json = mapper.writeValueAsString(payload);
@@ -187,18 +166,10 @@ public class TagMutationPayloadSerializerTest {
             .put("ios_channel", ImmutableSet.of(iosChannel1))
             .build();
 
-        Optional<ImmutableMap<String, ImmutableSet<String>>> addTags = Optional.of(ImmutableMap.<String, ImmutableSet<String>>builder()
-            .put("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .build());
-
-        Optional<ImmutableMap<String, ImmutableSet<String>>> setTags = Optional.of(ImmutableMap.<String, ImmutableSet<String>>builder()
-            .put("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"))
-            .build());
-
         TagMutationPayload.newBuilder()
             .setAudience(audience)
-            .setAddedTags(addTags.get())
-            .setSetTags(setTags.get())
+            .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
+            .setTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"))
             .build();
     }
 
@@ -210,18 +181,10 @@ public class TagMutationPayloadSerializerTest {
             .put("ios_channel", ImmutableSet.of(iosChannel1))
             .build();
 
-        Optional<ImmutableMap<String, ImmutableSet<String>>> removeTags = Optional.of(ImmutableMap.<String, ImmutableSet<String>>builder()
-            .put("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .build());
-
-        Optional<ImmutableMap<String, ImmutableSet<String>>> setTags = Optional.of(ImmutableMap.<String, ImmutableSet<String>>builder()
-            .put("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"))
-            .build());
-
         TagMutationPayload.newBuilder()
             .setAudience(audience)
-            .setRemovedTags(removeTags.get())
-            .setSetTags(setTags.get())
+            .removeTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
+            .setTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"))
             .build();
     }
 

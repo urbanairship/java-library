@@ -1885,19 +1885,11 @@ public class APIClientTest {
             .put("ios_channel", ImmutableSet.of(UUID.randomUUID().toString(), UUID.randomUUID().toString()))
             .build();
 
-        Optional<ImmutableMap<String, ImmutableSet<String>>> addTags = Optional.of(ImmutableMap.<String, ImmutableSet<String>>builder()
-            .put("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .put("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .build());
-
-        Optional<ImmutableMap<String, ImmutableSet<String>>> removeTags = Optional.of(ImmutableMap.<String, ImmutableSet<String>>builder()
-            .put("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"))
-            .build());
-
         TagMutationPayload payload = TagMutationPayload.newBuilder()
             .setAudience(audience)
-            .setAddedTags(addTags.get())
-            .setRemovedTags(removeTags.get())
+            .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
+            .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
+            .removeTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"))
             .build();
 
         try {
