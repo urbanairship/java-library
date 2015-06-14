@@ -1,6 +1,5 @@
 package com.urbanairship.api.channel.information.parse;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.channel.information.model.TagMutationPayload;
 import com.urbanairship.api.push.parse.PushObjectMapper;
@@ -32,13 +31,12 @@ public class TagMutationPayloadSerializerTest {
               "}" +
             "}";
 
-        ImmutableMap<String, ImmutableSet<String>> audience = ImmutableMap.<String, ImmutableSet<String>>builder()
-            .put("ios_channel", ImmutableSet.of(iosChannel1, iosChannel2))
-            .put("android_channel", ImmutableSet.of(androidChannel))
-            .build();
+        ImmutableSet<String> iosChannels = ImmutableSet.of(iosChannel1, iosChannel2);
+        ImmutableSet<String> androidChannels = ImmutableSet.of(androidChannel);
 
         TagMutationPayload payload = TagMutationPayload.newBuilder()
-            .setAudience(audience)
+            .addIOSChannels(iosChannels)
+            .addAndroidChannel(androidChannels)
             .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
             .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
             .addTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"))
@@ -66,13 +64,12 @@ public class TagMutationPayloadSerializerTest {
               "}" +
             "}";
 
-        ImmutableMap<String, ImmutableSet<String>> audience = ImmutableMap.<String, ImmutableSet<String>>builder()
-            .put("ios_channel", ImmutableSet.of(iosChannel1, iosChannel2))
-            .put("android_channel", ImmutableSet.of(androidChannel))
-            .build();
+        ImmutableSet<String> iosChannels = ImmutableSet.of(iosChannel1, iosChannel2);
+        ImmutableSet<String> androidChannels = ImmutableSet.of(androidChannel);
 
         TagMutationPayload payload = TagMutationPayload.newBuilder()
-            .setAudience(audience)
+            .addIOSChannels(iosChannels)
+            .addAndroidChannel(androidChannels)
             .removeTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
             .removeTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
             .removeTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"))
@@ -100,13 +97,12 @@ public class TagMutationPayloadSerializerTest {
               "}" +
             "}";
 
-        ImmutableMap<String, ImmutableSet<String>> audience = ImmutableMap.<String, ImmutableSet<String>>builder()
-            .put("ios_channel", ImmutableSet.of(iosChannel1, iosChannel2))
-            .put("android_channel", ImmutableSet.of(androidChannel))
-            .build();
+        ImmutableSet<String> iosChannels = ImmutableSet.of(iosChannel1, iosChannel2);
+        ImmutableSet<String> androidChannels = ImmutableSet.of(androidChannel);
 
         TagMutationPayload payload = TagMutationPayload.newBuilder()
-            .setAudience(audience)
+            .addIOSChannels(iosChannels)
+            .addAndroidChannel(androidChannels)
             .setTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
             .setTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
             .setTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"))
@@ -139,13 +135,12 @@ public class TagMutationPayloadSerializerTest {
               "}" +
             "}";
 
-        ImmutableMap<String, ImmutableSet<String>> audience = ImmutableMap.<String, ImmutableSet<String>>builder()
-            .put("ios_channel", ImmutableSet.of(iosChannel1, iosChannel2))
-            .put("android_channel", ImmutableSet.of(androidChannel))
-            .build();
+        ImmutableSet<String> iosChannels = ImmutableSet.of(iosChannel1, iosChannel2);
+        ImmutableSet<String> androidChannels = ImmutableSet.of(androidChannel);
 
         TagMutationPayload payload = TagMutationPayload.newBuilder()
-            .setAudience(audience)
+            .addIOSChannels(iosChannels)
+            .addAndroidChannel(androidChannels)
             .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
             .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
             .addTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"))
@@ -160,14 +155,10 @@ public class TagMutationPayloadSerializerTest {
 
     @Test (expected = IllegalArgumentException.class)
     public void testAddAndSetTags() throws Exception {
-        String iosChannel1 = UUID.randomUUID().toString();
-
-        ImmutableMap<String, ImmutableSet<String>> audience = ImmutableMap.<String, ImmutableSet<String>>builder()
-            .put("ios_channel", ImmutableSet.of(iosChannel1))
-            .build();
+       ImmutableSet<String> iosChannels = ImmutableSet.of(UUID.randomUUID().toString());
 
         TagMutationPayload.newBuilder()
-            .setAudience(audience)
+            .addIOSChannels(iosChannels)
             .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
             .setTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"))
             .build();
@@ -175,14 +166,10 @@ public class TagMutationPayloadSerializerTest {
 
     @Test (expected = IllegalArgumentException.class)
     public void testRemoveAndSetTags() throws Exception {
-        String iosChannel1 = UUID.randomUUID().toString();
-
-        ImmutableMap<String, ImmutableSet<String>> audience = ImmutableMap.<String, ImmutableSet<String>>builder()
-            .put("ios_channel", ImmutableSet.of(iosChannel1))
-            .build();
+        ImmutableSet<String> iosChannels = ImmutableSet.of(UUID.randomUUID().toString());
 
         TagMutationPayload.newBuilder()
-            .setAudience(audience)
+            .addIOSChannels(iosChannels)
             .removeTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
             .setTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"))
             .build();
@@ -190,14 +177,10 @@ public class TagMutationPayloadSerializerTest {
 
     @Test (expected = IllegalArgumentException.class)
     public void testNoTagMutations() throws Exception {
-        String iosChannel1 = UUID.randomUUID().toString();
-
-        ImmutableMap<String, ImmutableSet<String>> audience = ImmutableMap.<String, ImmutableSet<String>>builder()
-            .put("ios_channel", ImmutableSet.of(iosChannel1))
-            .build();
+        ImmutableSet<String> iosChannels = ImmutableSet.of(UUID.randomUUID().toString());
 
         TagMutationPayload.newBuilder()
-            .setAudience(audience)
+            .addIOSChannels(iosChannels)
             .build();
     }
 }

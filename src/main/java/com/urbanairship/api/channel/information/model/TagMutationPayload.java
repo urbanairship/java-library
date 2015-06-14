@@ -73,7 +73,7 @@ public class TagMutationPayload extends PushModelObject {
 
 
     public static class Builder {
-        private ImmutableMap<String, ImmutableSet<String>> audience = null;
+        private ImmutableMap.Builder<String, ImmutableSet<String>> audience = ImmutableMap.builder();
         private ImmutableMap.Builder<String, ImmutableSet<String>> addTags = null;
         private ImmutableMap.Builder<String, ImmutableSet<String>> removeTags = null;
         private ImmutableMap.Builder<String, ImmutableSet<String>> setTags = null;
@@ -81,8 +81,18 @@ public class TagMutationPayload extends PushModelObject {
         private Builder() {
         }
 
-        public Builder setAudience(ImmutableMap<String, ImmutableSet<String>> value) {
-            this.audience = value;
+        public Builder addIOSChannels(ImmutableSet<String> channels) {
+            this.audience.put("ios_channel", channels);
+            return this;
+        }
+
+        public Builder addAndroidChannel(ImmutableSet<String> channels) {
+            this.audience.put("android_channel", channels);
+            return this;
+        }
+
+        public Builder addAmazonChannel(ImmutableSet<String> channels) {
+            this.audience.put("amazon_channel", channels);
             return this;
         }
 
@@ -111,11 +121,6 @@ public class TagMutationPayload extends PushModelObject {
         }
 
         public TagMutationPayload build() {
-            ImmutableSet channelTypes = ImmutableSet.builder().add("ios_channel", "android_channel", "amazon_channel").build();
-            for (String key : audience.keySet()) {
-                Preconditions.checkArgument(channelTypes.contains(key),
-                    "Audience must be a channel type");
-            }
             Preconditions.checkArgument(addTags != null || removeTags != null || setTags != null,
                 "Tag mutation action required");
             if (setTags != null) {
@@ -123,7 +128,7 @@ public class TagMutationPayload extends PushModelObject {
                     "Tag setting cannot coexist with tag removal or addition");
             }
 
-            return new TagMutationPayload(audience,
+            return new TagMutationPayload(audience.build(),
                 addTags == null ? Optional.<ImmutableMap<String,ImmutableSet<String>>>absent() : Optional.fromNullable(addTags.build()),
                 removeTags == null ? Optional.<ImmutableMap<String,ImmutableSet<String>>>absent() : Optional.fromNullable(removeTags.build()),
                 setTags == null ? Optional.<ImmutableMap<String,ImmutableSet<String>>>absent() : Optional.fromNullable(setTags.build()));

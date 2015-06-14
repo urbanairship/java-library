@@ -3,7 +3,6 @@ package com.urbanairship.api.client;
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.channel.information.model.TagMutationPayload;
 import com.urbanairship.api.client.model.APIClientResponse;
@@ -1881,12 +1880,10 @@ public class APIClientTest {
                 .withHeader(CONTENT_TYPE_KEY, "application/json")
                 .withStatus(200)));
 
-        ImmutableMap<String, ImmutableSet<String>> audience = ImmutableMap.<String, ImmutableSet<String>>builder()
-            .put("ios_channel", ImmutableSet.of(UUID.randomUUID().toString(), UUID.randomUUID().toString()))
-            .build();
+        ImmutableSet<String> iosChannels = ImmutableSet.of(UUID.randomUUID().toString(), UUID.randomUUID().toString());
 
         TagMutationPayload payload = TagMutationPayload.newBuilder()
-            .setAudience(audience)
+            .addIOSChannels(iosChannels)
             .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
             .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
             .removeTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"))
