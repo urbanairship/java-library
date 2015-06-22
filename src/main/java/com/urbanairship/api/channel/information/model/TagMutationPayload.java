@@ -81,9 +81,9 @@ public class TagMutationPayload extends PushModelObject {
 
     public static class Builder {
         private Map<String, Set<String>> audience = new HashMap<String, Set<String>>();
-        private ImmutableMap.Builder<String, ImmutableSet<String>> addTags = null;
-        private ImmutableMap.Builder<String, ImmutableSet<String>> removeTags = null;
-        private ImmutableMap.Builder<String, ImmutableSet<String>> setTags = null;
+        private Map<String, Set<String>> addTags = null;
+        private Map<String, Set<String>> removeTags = null;
+        private Map<String, Set<String>> setTags = null;
 
         private Builder() {
         }
@@ -156,25 +156,25 @@ public class TagMutationPayload extends PushModelObject {
 
         public Builder addTags(String tagGroup, Set<String> tags) {
             if (addTags == null) {
-                addTags = ImmutableMap.builder();
+                addTags = new HashMap<String, Set<String>>();
             }
-            this.addTags.put(tagGroup, ImmutableSet.copyOf(tags));
+            MapUtil.appendMapValues(tagGroup, tags, this.addTags);
             return this;
         }
 
         public Builder removeTags(String tagGroup, Set<String> tags) {
             if (removeTags == null) {
-                removeTags = ImmutableMap.builder();
+                removeTags = new HashMap<String, Set<String>>();
             }
-            this.removeTags.put(tagGroup, ImmutableSet.copyOf(tags));
+            MapUtil.appendMapValues(tagGroup, tags, this.removeTags);
             return this;
         }
 
         public Builder setTags(String tagGroup, Set<String> tags) {
             if (setTags == null) {
-                setTags = ImmutableMap.builder();
+                setTags = new HashMap<String, Set<String>>();
             }
-            this.setTags.put(tagGroup, ImmutableSet.copyOf(tags));
+            MapUtil.appendMapValues(tagGroup, tags, this.setTags);
             return this;
         }
 
@@ -187,9 +187,9 @@ public class TagMutationPayload extends PushModelObject {
             }
 
             return new TagMutationPayload(MapUtil.immutableMapConverter(audience),
-                addTags == null ? Optional.<ImmutableMap<String,ImmutableSet<String>>>absent() : Optional.fromNullable(addTags.build()),
-                removeTags == null ? Optional.<ImmutableMap<String,ImmutableSet<String>>>absent() : Optional.fromNullable(removeTags.build()),
-                setTags == null ? Optional.<ImmutableMap<String,ImmutableSet<String>>>absent() : Optional.fromNullable(setTags.build()));
+                addTags == null ? Optional.<ImmutableMap<String,ImmutableSet<String>>>absent() : Optional.fromNullable(MapUtil.immutableMapConverter(addTags)),
+                removeTags == null ? Optional.<ImmutableMap<String,ImmutableSet<String>>>absent() : Optional.fromNullable(MapUtil.immutableMapConverter(removeTags)),
+                setTags == null ? Optional.<ImmutableMap<String,ImmutableSet<String>>>absent() : Optional.fromNullable(MapUtil.immutableMapConverter(setTags)));
         }
     }
 }

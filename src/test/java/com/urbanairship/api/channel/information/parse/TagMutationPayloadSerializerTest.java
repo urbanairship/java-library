@@ -27,8 +27,8 @@ public class TagMutationPayloadSerializerTest {
               "}," +
               "\"add\":{" +
                 "\"tag_group1\":[\"tag1\",\"tag2\",\"tag3\"]," +
-                "\"tag_group2\":[\"tag1\",\"tag2\",\"tag3\"]," +
-                "\"tag_group3\":[\"tag1\",\"tag2\",\"tag3\"]" +
+                "\"tag_group3\":[\"tag1\",\"tag2\",\"tag3\"]," +
+                "\"tag_group2\":[\"tag1\",\"tag2\",\"tag3\"]" +
               "}" +
             "}";
 
@@ -59,8 +59,8 @@ public class TagMutationPayloadSerializerTest {
               "}," +
               "\"remove\":{" +
                 "\"tag_group1\":[\"tag1\",\"tag2\",\"tag3\"]," +
-                "\"tag_group2\":[\"tag1\",\"tag2\",\"tag3\"]," +
-                "\"tag_group3\":[\"tag1\",\"tag2\",\"tag3\"]" +
+                "\"tag_group3\":[\"tag1\",\"tag2\",\"tag3\"]," +
+                "\"tag_group2\":[\"tag1\",\"tag2\",\"tag3\"]" +
               "}" +
             "}";
 
@@ -91,8 +91,8 @@ public class TagMutationPayloadSerializerTest {
               "}," +
               "\"set\":{" +
                 "\"tag_group1\":[\"tag1\",\"tag2\",\"tag3\"]," +
-                "\"tag_group2\":[\"tag1\",\"tag2\",\"tag3\"]," +
-                "\"tag_group3\":[\"tag1\",\"tag2\",\"tag3\"]" +
+                "\"tag_group3\":[\"tag1\",\"tag2\",\"tag3\"]," +
+                "\"tag_group2\":[\"tag1\",\"tag2\",\"tag3\"]" +
               "}" +
             "}";
 
@@ -123,13 +123,13 @@ public class TagMutationPayloadSerializerTest {
               "}," +
               "\"add\":{" +
                 "\"tag_group1\":[\"tag1\",\"tag2\",\"tag3\"]," +
-                "\"tag_group2\":[\"tag1\",\"tag2\",\"tag3\"]," +
-                "\"tag_group3\":[\"tag1\",\"tag2\",\"tag3\"]" +
+                "\"tag_group3\":[\"tag1\",\"tag2\",\"tag3\"]," +
+                "\"tag_group2\":[\"tag1\",\"tag2\",\"tag3\"]" +
               "}," +
               "\"remove\":{" +
                 "\"tag_group1\":[\"tag4\",\"tag5\",\"tag6\"]," +
-                "\"tag_group2\":[\"tag4\",\"tag5\",\"tag6\"]," +
-                "\"tag_group3\":[\"tag4\",\"tag5\",\"tag6\"]" +
+                "\"tag_group3\":[\"tag4\",\"tag5\",\"tag6\"]," +
+                "\"tag_group2\":[\"tag4\",\"tag5\",\"tag6\"]" +
               "}" +
             "}";
 
