@@ -1011,11 +1011,9 @@ overlap on tags being added and removed.
 .. code-block:: java
 
         ImmutableSet<String> iosChannels = ImmutableSet.of(iosChannel1, iosChannel2);
-        ImmutableSet<String> androidChannels = ImmutableSet.of(androidChannel);
-
         TagMutationPayload payload = TagMutationPayload.newBuilder()
             .addIOSChannels(iosChannels)
-            .addAndroidChannel(androidChannels)
+            .addAndroidChannel(androidChannel)
             .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
             .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
             .removeTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"))
@@ -1026,10 +1024,8 @@ A request to set tags must be independent of the other mutation types.
 
 .. code-block:: java
 
-        ImmutableSet<String> iosChannels = ImmutableSet.of(iosChannel1);
-
         TagMutationPayload payload = TagMutationPayload.newBuilder()
-            .addIOSChannels(iosChannels)
+            .addIOSChannel(iosChannel)
             .setTags("tag_group", ImmutableSet.of("tag1", "tag2", "tag3"))
             .build();
 

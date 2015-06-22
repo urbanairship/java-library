@@ -5,7 +5,14 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.urbanairship.api.channel.information.util.MapUtil;
 import com.urbanairship.api.push.model.PushModelObject;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class TagMutationPayload extends PushModelObject {
 
@@ -73,7 +80,7 @@ public class TagMutationPayload extends PushModelObject {
 
 
     public static class Builder {
-        private ImmutableMap.Builder<String, ImmutableSet<String>> audience = ImmutableMap.builder();
+        private Map<String, Set<String>> audience = new HashMap<String, Set<String>>();
         private ImmutableMap.Builder<String, ImmutableSet<String>> addTags = null;
         private ImmutableMap.Builder<String, ImmutableSet<String>> removeTags = null;
         private ImmutableMap.Builder<String, ImmutableSet<String>> setTags = null;
@@ -81,42 +88,93 @@ public class TagMutationPayload extends PushModelObject {
         private Builder() {
         }
 
-        public Builder addIOSChannels(ImmutableSet<String> channels) {
-            this.audience.put("ios_channel", channels);
+        public Builder addIOSChannel(String channel) {
+            String key = "ios_channel";
+            Set<String> channels = new HashSet<String>();
+            channels.add(channel);
+            MapUtil.appendMapValues(key, channels, this.audience);
             return this;
         }
 
-        public Builder addAndroidChannel(ImmutableSet<String> channels) {
-            this.audience.put("android_channel", channels);
+        public Builder addIOSChannels(String ... channels) {
+            String key = "ios_channel";
+            Set<String> channelSet = new HashSet<String>();
+            channelSet.addAll(Arrays.asList(channels));
+            MapUtil.appendMapValues(key, channelSet, this.audience);
             return this;
         }
 
-        public Builder addAmazonChannel(ImmutableSet<String> channels) {
-            this.audience.put("amazon_channel", channels);
+        public Builder addIOSChannels(Set<String> channels) {
+            String key = "ios_channel";
+            MapUtil.appendMapValues(key, channels, this.audience);
             return this;
         }
 
-        public Builder addTags(String tagGroup, ImmutableSet<String> tags) {
+        public Builder addAndroidChannel(String channel) {
+            String key = "android_channel";
+            Set<String> channels = new HashSet<String>();
+            channels.add(channel);
+            MapUtil.appendMapValues(key, channels, this.audience);
+            return this;
+        }
+
+        public Builder addAndroidChannels(String ... channels) {
+            String key = "android_channel";
+            Set<String> channelSet = new HashSet<String>();
+            channelSet.addAll(Arrays.asList(channels));
+            MapUtil.appendMapValues(key, channelSet, this.audience);
+            return this;
+        }
+
+        public Builder addAndroidChannels(Set<String> channels) {
+            String key = "android_channel";
+            MapUtil.appendMapValues(key, channels, this.audience);
+            return this;
+        }
+
+        public Builder addAmazonChannel(String channel) {
+            String key = "amazon_channel";
+            Set<String> channels = new HashSet<String>();
+            channels.add(channel);
+            MapUtil.appendMapValues(key, channels, this.audience);
+            return this;
+        }
+
+        public Builder addAmazonChannels(String ... channels) {
+            String key = "amazon_channel";
+            Set<String> channelSet = new HashSet<String>();
+            channelSet.addAll(Arrays.asList(channels));
+            MapUtil.appendMapValues(key, channelSet, this.audience);
+            return this;
+        }
+
+        public Builder addAmazonChannels(Set<String> channels) {
+            String key = "amazon_channel";
+            MapUtil.appendMapValues(key, channels, this.audience);
+            return this;
+        }
+
+        public Builder addTags(String tagGroup, Set<String> tags) {
             if (addTags == null) {
                 addTags = ImmutableMap.builder();
             }
-            this.addTags.put(tagGroup, tags);
+            this.addTags.put(tagGroup, ImmutableSet.copyOf(tags));
             return this;
         }
 
-        public Builder removeTags(String tagGroup, ImmutableSet<String> tags) {
+        public Builder removeTags(String tagGroup, Set<String> tags) {
             if (removeTags == null) {
                 removeTags = ImmutableMap.builder();
             }
-            this.removeTags.put(tagGroup, tags);
+            this.removeTags.put(tagGroup, ImmutableSet.copyOf(tags));
             return this;
         }
 
-        public Builder setTags(String tagGroup, ImmutableSet<String> tags) {
+        public Builder setTags(String tagGroup, Set<String> tags) {
             if (setTags == null) {
                 setTags = ImmutableMap.builder();
             }
-            this.setTags.put(tagGroup, tags);
+            this.setTags.put(tagGroup, ImmutableSet.copyOf(tags));
             return this;
         }
 
@@ -128,7 +186,7 @@ public class TagMutationPayload extends PushModelObject {
                     "Tag setting cannot coexist with tag removal or addition");
             }
 
-            return new TagMutationPayload(audience.build(),
+            return new TagMutationPayload(MapUtil.immutableMapConverter(audience),
                 addTags == null ? Optional.<ImmutableMap<String,ImmutableSet<String>>>absent() : Optional.fromNullable(addTags.build()),
                 removeTags == null ? Optional.<ImmutableMap<String,ImmutableSet<String>>>absent() : Optional.fromNullable(removeTags.build()),
                 setTags == null ? Optional.<ImmutableMap<String,ImmutableSet<String>>>absent() : Optional.fromNullable(setTags.build()));
