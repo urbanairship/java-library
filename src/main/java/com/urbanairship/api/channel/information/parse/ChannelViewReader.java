@@ -10,7 +10,6 @@ import com.urbanairship.api.channel.information.model.ChannelView;
 import com.urbanairship.api.channel.information.model.DeviceType;
 import com.urbanairship.api.channel.information.model.ios.IosSettings;
 import com.urbanairship.api.channel.information.util.Constants;
-import com.urbanairship.api.channel.information.util.MapUtil;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.BooleanFieldDeserializer;
 import com.urbanairship.api.common.parse.JsonObjectReader;
@@ -80,7 +79,7 @@ public final class ChannelViewReader implements JsonObjectReader<ChannelView> {
 
     public void readTagGroups(JsonParser jsonParser) throws IOException {
         Map<String, Set<String>> mutableTagGroups = jsonParser.readValueAs(new TypeReference<Map<String, Set<String>>>() {});
-        ImmutableMap<String, ImmutableSet<String>> tagGroups = MapUtil.immutableMapConverter(mutableTagGroups);
+        ImmutableMap<String, ImmutableSet<String>> tagGroups = immutableMapConverter(mutableTagGroups);
         builder.addAllTagGroups(tagGroups);
     }
 
@@ -95,6 +94,14 @@ public final class ChannelViewReader implements JsonObjectReader<ChannelView> {
         } catch (Exception e) {
             throw new APIParsingException(e.getMessage());
         }
+    }
+
+    private static ImmutableMap<String, ImmutableSet<String>> immutableMapConverter(Map<String, Set<String>> map) {
+        ImmutableMap.Builder<String, ImmutableSet<String>> builder = ImmutableMap.builder();
+        for (Map.Entry<String, Set<String>> entry : map.entrySet()) {
+            builder.put(entry.getKey(), ImmutableSet.copyOf(entry.getValue()));
+        }
+        return builder.build();
     }
 
 }

@@ -5,7 +5,6 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.urbanairship.api.channel.information.util.MapUtil;
 import com.urbanairship.api.push.model.PushModelObject;
 
 import java.util.Arrays;
@@ -15,6 +14,10 @@ import java.util.Map;
 import java.util.Set;
 
 public class TagMutationPayload extends PushModelObject {
+
+    private static final String IOS_AUDIENCE_KEY = "ios_channel";
+    private static final String ANDROID_AUDIENCE_KEY = "android_channel";
+    private static final String AMAZON_AUDIENCE_KEY = "amazon_channel";
 
     private final ImmutableMap<String, ImmutableSet<String>> audience;
     private final Optional<ImmutableMap<String, ImmutableSet<String>>> addTags;
@@ -89,68 +92,41 @@ public class TagMutationPayload extends PushModelObject {
         }
 
         public Builder addIOSChannel(String channel) {
-            String key = "ios_channel";
-            Set<String> channels = new HashSet<String>();
-            channels.add(channel);
-            MapUtil.appendMapValues(key, channels, this.audience);
-            return this;
+            return addIOSChannels(channel);
         }
 
         public Builder addIOSChannels(String ... channels) {
-            String key = "ios_channel";
-            Set<String> channelSet = new HashSet<String>();
-            channelSet.addAll(Arrays.asList(channels));
-            MapUtil.appendMapValues(key, channelSet, this.audience);
-            return this;
+            return addIOSChannels(new HashSet<String>(Arrays.asList(channels)));
         }
 
         public Builder addIOSChannels(Set<String> channels) {
-            String key = "ios_channel";
-            MapUtil.appendMapValues(key, channels, this.audience);
+            appendMapValues(IOS_AUDIENCE_KEY, channels, this.audience);
             return this;
         }
 
         public Builder addAndroidChannel(String channel) {
-            String key = "android_channel";
-            Set<String> channels = new HashSet<String>();
-            channels.add(channel);
-            MapUtil.appendMapValues(key, channels, this.audience);
-            return this;
+            return addAndroidChannels(channel);
         }
 
         public Builder addAndroidChannels(String ... channels) {
-            String key = "android_channel";
-            Set<String> channelSet = new HashSet<String>();
-            channelSet.addAll(Arrays.asList(channels));
-            MapUtil.appendMapValues(key, channelSet, this.audience);
-            return this;
+            return addAndroidChannels(new HashSet<String>(Arrays.asList(channels)));
         }
 
         public Builder addAndroidChannels(Set<String> channels) {
-            String key = "android_channel";
-            MapUtil.appendMapValues(key, channels, this.audience);
+            appendMapValues(ANDROID_AUDIENCE_KEY, channels, this.audience);
             return this;
         }
 
         public Builder addAmazonChannel(String channel) {
-            String key = "amazon_channel";
-            Set<String> channels = new HashSet<String>();
-            channels.add(channel);
-            MapUtil.appendMapValues(key, channels, this.audience);
-            return this;
+            return addAmazonChannels(channel);
         }
 
         public Builder addAmazonChannels(String ... channels) {
-            String key = "amazon_channel";
-            Set<String> channelSet = new HashSet<String>();
-            channelSet.addAll(Arrays.asList(channels));
-            MapUtil.appendMapValues(key, channelSet, this.audience);
-            return this;
+            return addAmazonChannels(new HashSet<String>(Arrays.asList(channels)));
         }
 
         public Builder addAmazonChannels(Set<String> channels) {
-            String key = "amazon_channel";
-            MapUtil.appendMapValues(key, channels, this.audience);
+            appendMapValues(AMAZON_AUDIENCE_KEY, channels, this.audience);
             return this;
         }
 
@@ -158,7 +134,7 @@ public class TagMutationPayload extends PushModelObject {
             if (addTags == null) {
                 addTags = new HashMap<String, Set<String>>();
             }
-            MapUtil.appendMapValues(tagGroup, tags, this.addTags);
+            appendMapValues(tagGroup, tags, this.addTags);
             return this;
         }
 
@@ -166,7 +142,7 @@ public class TagMutationPayload extends PushModelObject {
             if (removeTags == null) {
                 removeTags = new HashMap<String, Set<String>>();
             }
-            MapUtil.appendMapValues(tagGroup, tags, this.removeTags);
+            appendMapValues(tagGroup, tags, this.removeTags);
             return this;
         }
 
@@ -174,7 +150,7 @@ public class TagMutationPayload extends PushModelObject {
             if (setTags == null) {
                 setTags = new HashMap<String, Set<String>>();
             }
-            MapUtil.appendMapValues(tagGroup, tags, this.setTags);
+            appendMapValues(tagGroup, tags, this.setTags);
             return this;
         }
 
@@ -186,10 +162,28 @@ public class TagMutationPayload extends PushModelObject {
                     "Tag setting cannot coexist with tag removal or addition");
             }
 
-            return new TagMutationPayload(MapUtil.immutableMapConverter(audience),
-                addTags == null ? Optional.<ImmutableMap<String,ImmutableSet<String>>>absent() : Optional.fromNullable(MapUtil.immutableMapConverter(addTags)),
-                removeTags == null ? Optional.<ImmutableMap<String,ImmutableSet<String>>>absent() : Optional.fromNullable(MapUtil.immutableMapConverter(removeTags)),
-                setTags == null ? Optional.<ImmutableMap<String,ImmutableSet<String>>>absent() : Optional.fromNullable(MapUtil.immutableMapConverter(setTags)));
+            return new TagMutationPayload(immutableMapConverter(audience),
+                addTags == null ? Optional.<ImmutableMap<String,ImmutableSet<String>>>absent() : Optional.fromNullable(immutableMapConverter(addTags)),
+                removeTags == null ? Optional.<ImmutableMap<String,ImmutableSet<String>>>absent() : Optional.fromNullable(immutableMapConverter(removeTags)),
+                setTags == null ? Optional.<ImmutableMap<String,ImmutableSet<String>>>absent() : Optional.fromNullable(immutableMapConverter(setTags)));
         }
+    }
+
+    private static void appendMapValues(String key, Set<String> values, Map<String, Set<String>> map) {
+        if (!map.containsKey(key)) {
+            map.put(key, values);
+        } else {
+            Set<String> newSet = map.get(key);
+            newSet.addAll(values);
+            map.put(key, newSet);
+        }
+    }
+
+    private static ImmutableMap<String, ImmutableSet<String>> immutableMapConverter(Map<String, Set<String>> map) {
+        ImmutableMap.Builder<String, ImmutableSet<String>> builder = ImmutableMap.builder();
+        for (Map.Entry<String, Set<String>> entry : map.entrySet()) {
+            builder.put(entry.getKey(), ImmutableSet.copyOf(entry.getValue()));
+        }
+        return builder.build();
     }
 }
