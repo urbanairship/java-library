@@ -221,7 +221,13 @@ to create an Audience Selector. To send to all users with the tag "kittens".
 
      Selectors.tag("kittens")
 
-Or users who like kittens and puppies
+Or to users with the tag "kittens" in your "crm" tag group
+
+ .. code-block:: java
+
+     Selectors.tagWithGroup("kittens", "crm")
+
+You can also send to multiple tags, such as "kittens" and "puppies"
 
 .. code-block:: java
 
@@ -991,12 +997,42 @@ Get all the analytics detail for a specific push ID over time.
     long iosRichResponses = iosRichCounts.getResponses();
 
 
-******************
-Device Information
-******************
+********
+Channels
+********
 
-Individual Device Lookup
-========================
+
+Channel Tags
+============
+
+Add, remove, and set tags from channels.  Tags can be added and removed in a single request, however there must be no
+overlap on tags being added and removed.
+
+.. code-block:: java
+
+        ImmutableSet<String> iosChannels = ImmutableSet.of(iosChannel1, iosChannel2);
+        TagMutationPayload payload = TagMutationPayload.newBuilder()
+            .addIOSChannels(iosChannels)
+            .addAndroidChannel(androidChannel)
+            .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
+            .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
+            .removeTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"))
+            .removeTags("tag_group2", ImmutableSet.of("tag4", "tag5", "tag6"))
+            .build();
+
+A request to set tags must be independent of the other mutation types.
+
+.. code-block:: java
+
+        TagMutationPayload payload = TagMutationPayload.newBuilder()
+            .addIOSChannel(iosChannel)
+            .setTags("tag_group", ImmutableSet.of("tag1", "tag2", "tag3"))
+            .build();
+
+A successful response will return an "ok" status as well as any warnings if a tag group does not exist or is inactive.
+
+Individual Channel Lookup
+=========================
 
 Get information on an individual channel.
 
@@ -1038,9 +1074,8 @@ Get information on an individual channel.
     IosSettings iosSettings = cv.getIosSettings().get();
 
 
-
-Device Listing
-==============
+Channel Listing
+===============
 
 Fetch channels registered to this application, along with associated metadata.
 
@@ -1067,7 +1102,10 @@ Fetch channels registered to this application, along with associated metadata.
     String deviceType = cv.getDeviceType().toString();
 
     // Get a set of tags associated with the channel
-    Set<String> tags = cv.getTags();
+    ImmutableSet<String> tags = cv.getTags();
+
+    // Get a mapping of tag groups and the corresponding sets of tags associated with the channel
+    ImmutableMap<String, ImmutableSet<String>> tagGroups = cv.getTagGroups;
 
     // Get the string representing the alias, if available
     String alias = cv.getAlias().get();
@@ -1168,6 +1206,10 @@ The following helper methods are useful in reducing the verboseness of creating 
          return TagPredicateBuilder.newInstance().setTag(tag).setTagClass(tagClass).build();
     }
 
+    private TagPredicate buildTagPredicateWithGroup(String tag, String tagGroup) {
+         return TagPredicateBuilder.newInstance().setTag(tag).setTagGroup(tagGroup).build();
+    }
+
 Operator Construction
 ---------------------
 
@@ -1192,8 +1234,9 @@ The following is an example of how to build a complex operator
             .build()),
             new RecentDateRange(DateRangeUnit.MONTHS, 3), PresenceTimeframe.ANYTIME))
         .addOperator(Operator.newBuilder(OperatorType.OR)
-            .addPredicate(buildTagPredicate("tag1"))
+            .addPredicate(buildTagPredicateWithGroup("tag1", "group1"))
             .addPredicate(buildTagPredicate("tag2"))
+            .addPredicate(buildTagPredicate("tag3"))
             .build())
         .addOperator(Operator.newBuilder(OperatorType.NOT)
             .addPredicate(buildTagPredicate("not-tag"))

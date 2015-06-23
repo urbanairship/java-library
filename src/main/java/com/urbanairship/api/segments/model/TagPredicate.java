@@ -4,17 +4,21 @@
 
 package com.urbanairship.api.segments.model;
 
+import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import org.apache.commons.lang.StringUtils;
 
 public final class TagPredicate implements Predicate {
 
     public static final String DEFAULT_TAG_CLASS = "device";
     private final String tag;
-    private final String tagClass;
+    private final Optional<String> tagClass;
+    private final Optional<String> tagGroup;
 
-    TagPredicate(String tag, String tagClass) {
+    TagPredicate(String tag, String tagClass, String tagGroup) {
         this.tag = tag;
-        this.tagClass = tagClass;
+        this.tagClass = Optional.fromNullable(tagClass);
+        this.tagGroup = Optional.fromNullable(tagGroup);
     }
 
     @Override
@@ -24,15 +28,19 @@ public final class TagPredicate implements Predicate {
 
     @Override
     public String getIdentifier() {
-        return isDefaultClass() ? getName() : getName() + "/" + getTagClass();
+        return isDefaultClass() ? getName() : getName() + "/" + getTagClass().get();
     }
 
     public String getTag() {
         return tag;
     }
 
-    public String getTagClass() {
+    public Optional<String> getTagClass() {
         return tagClass;
+    }
+
+    public Optional<String> getTagGroup() {
+        return tagGroup;
     }
 
     @Override
@@ -46,7 +54,7 @@ public final class TagPredicate implements Predicate {
 
         TagPredicate that = (TagPredicate) o;
 
-        return !(tag != null ? !tag.equals(that.tag) : that.tag != null);
+        return Objects.equal(this.tag, that.tag) && Objects.equal(this.tagClass, that.tagClass) && Objects.equal(this.tagGroup, that.tagGroup);
 
     }
 
@@ -60,11 +68,12 @@ public final class TagPredicate implements Predicate {
         return "TagPredicate{" +
                 "tag='" + tag + '\'' +
                 ", tagClass='" + tagClass + '\'' +
+                ", tagGroup='" + tagGroup + '\'' +
                 '}';
     }
 
     public boolean isDefaultClass() {
-        return StringUtils.isEmpty(tagClass) || DEFAULT_TAG_CLASS.equals(tagClass);
+        return tagClass.isPresent() && (StringUtils.isEmpty(tagClass.get()) || DEFAULT_TAG_CLASS.equals(tagClass.get()));
     }
 
 }

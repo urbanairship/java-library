@@ -31,7 +31,12 @@ public class APIListAllChannelsResponseTest {
                 "      \"alias\": null,\n" +
                 "      \"tags\": [\n" +
                 "        \"test01\"\n" +
-                "      ]\n" +
+                "      ],\n" +
+                "      \"tag_groups\": {\n" +
+                "        \"testGroup01\" : [\n" +
+                "          \"testGroup01Tag01\"\n" +
+                "        ]\n" +
+                "      }\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"channel_id\": \"00662346-9e39-4f5f-80e7-3f8fae58863c\",\n" +
@@ -47,7 +52,13 @@ public class APIListAllChannelsResponseTest {
                 "        \"aaron-tag\",\n" +
                 "        \"rhtgeg\",\n" +
                 "        \"tnrvrg\"\n" +
-                "      ]\n" +
+                "      ],\n" +
+                "      \"tag_groups\": {\n" +
+                "        \"testGroup02\" : [\n" +
+                "          \"testGroup02Tag01\",\n" +
+                "          \"testGroup02Tag02\"\n" +
+                "        ]\n" +
+                "      }\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"channel_id\": \"00d174cd-0a31-427e-95c9-52d5785bcd50\",\n" +
@@ -62,6 +73,7 @@ public class APIListAllChannelsResponseTest {
                 "      \"tags\": [\n" +
                 "        \"version_1.5.0\"\n" +
                 "      ],\n" +
+                "      \"tag_groups\": {},\n" +
                 "      \"ios\": {\n" +
                 "        \"badge\": 1,\n" +
                 "        \"quiettime\": {\n" +
@@ -84,6 +96,16 @@ public class APIListAllChannelsResponseTest {
                 "        \"kablam\",\n" +
                 "        \"version_1.3\"\n" +
                 "      ],\n" +
+                "      \"tag_groups\": {\n" +
+                "        \"testGroup03\": [\n" +
+                "          \"testGroup03Tag01\",\n" +
+                "          \"testGroup03Tag02\",\n" +
+                "          \"testGroup03Tag03\"\n" +
+                "        ],\n" +
+                "        \"testGroup04\": [\n" +
+                "          \"testGroup04Tag01\"\n" +
+                "        ]\n" +
+                "      },\n" +
                 "      \"ios\": {\n" +
                 "        \"badge\": 1,\n" +
                 "        \"quiettime\": {\n" +
@@ -104,7 +126,8 @@ public class APIListAllChannelsResponseTest {
                 "      \"alias\": null,\n" +
                 "      \"tags\": [\n" +
                 "        \n" +
-                "      ]\n" +
+                "      ],\n" +
+                "      \"tag_groups\": {}\n" +
                 "    }\n" +
                 "  ],\n" +
                 "  \"next_page\": \"https:\\/\\/go.urbanairship.com\\/api\\/channels?limit=5&start=0143e4d6-724c-4fc8-bbc6-ca647b8993bf\"\n" +
@@ -130,6 +153,8 @@ public class APIListAllChannelsResponseTest {
             assertFalse(one.getLastRegistrationMillis().isPresent());
             assertFalse(one.getPushAddress().isPresent());
             assertEquals("[test01]", one.getTags().toString());
+            assertTrue(one.getTagGroups().containsKey("testGroup01"));
+            assertEquals("[testGroup01Tag01]", one.getTagGroups().get("testGroup01").toString());
             assertFalse(one.isInstalled());
             assertFalse(one.isOptedIn());
 
@@ -144,6 +169,8 @@ public class APIListAllChannelsResponseTest {
             assertEquals(1412717315000L, two.getLastRegistrationMillis().get().longValue());
             assertEquals("APA91bFPOUF6KNHXjoG0vaQSP4VLXirGDpy0_CRcb6Jhvnrya2bdRmlUoMiJ12JJevjONZzUwFETYa8uzyiE_9WaL3mzZrdjqOv2YuzYlQ_TrXVgo61JmIyw-M_pshIjVvkvtOuZ4MnRJJ_MiQDYwpB4ZhOTMlyqRw", two.getPushAddress().get());
             assertEquals("[aaron-tag, rhtgeg, tnrvrg]", two.getTags().toString());
+            assertTrue(two.getTagGroups().containsKey("testGroup02"));
+            assertEquals("[testGroup02Tag02, testGroup02Tag01]", two.getTagGroups().get("testGroup02").toString());
             assertTrue(two.isInstalled());
             assertTrue(two.isOptedIn());
 
@@ -158,6 +185,7 @@ public class APIListAllChannelsResponseTest {
             assertEquals(1412214102000L, three.getLastRegistrationMillis().get().longValue());
             assertEquals("E4EA0D96092A9213BB186BEF66E83EE226401F82B3A77A1AC8217A8FE8ED4614", three.getPushAddress().get());
             assertEquals("[version_1.5.0]", three.getTags().toString());
+            assertTrue(three.getTagGroups().isEmpty());
             assertTrue(three.isInstalled());
             assertTrue(three.isOptedIn());
 
@@ -172,6 +200,10 @@ public class APIListAllChannelsResponseTest {
             assertFalse(four.getLastRegistrationMillis().isPresent());
             assertEquals("21F34C9ED37EAF8D7DC43561C07AA398CA5C6F503196C9E8230C50C0959B8653", four.getPushAddress().get());
             assertEquals("[kablam, version_1.3]", four.getTags().toString());
+            assertTrue(four.getTagGroups().containsKey("testGroup03"));
+            assertEquals("[testGroup03Tag01, testGroup03Tag03, testGroup03Tag02]", four.getTagGroups().get("testGroup03").toString());
+            assertTrue(four.getTagGroups().containsKey("testGroup04"));
+            assertEquals("[testGroup04Tag01]", four.getTagGroups().get("testGroup04").toString());
             assertFalse(four.isInstalled());
             assertFalse(four.isOptedIn());
 
@@ -186,6 +218,7 @@ public class APIListAllChannelsResponseTest {
             assertFalse(five.getLastRegistrationMillis().isPresent());
             assertFalse(five.getPushAddress().isPresent());
             assertEquals("[]", five.getTags().toString());
+            assertTrue(five.getTagGroups().isEmpty());
             assertFalse(five.isInstalled());
             assertFalse(five.isOptedIn());
 

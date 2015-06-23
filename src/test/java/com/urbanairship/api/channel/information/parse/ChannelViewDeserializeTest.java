@@ -1,5 +1,6 @@
 package com.urbanairship.api.channel.information.parse;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.urbanairship.api.channel.information.model.ChannelView;
@@ -60,6 +61,16 @@ public class ChannelViewDeserializeTest {
                         "    \"tz\": \"America/Los_Angeles\"" +
                         "  }," +
                         "\"tags\" : [\"tag1\", \"tag2\"]," +
+                        "\"tag_groups\" : {" +
+                        "  \"group1\" : [" +
+                        "    \"tag1OfGroup1\"," +
+                        "    \"tag2OfGroup1\"" +
+                        "  ]," +
+                        "  \"group2\" : [" +
+                        "    \"tag1OfGroup2\"," +
+                        "    \"tag2OfGroup2\"" +
+                        "  ]" +
+                        "}," +
                         "\"alias\" : \"alias\"," +
                         "\"created\" : 12345," +
                         "\"push_address\" : \"address\"" +
@@ -81,6 +92,13 @@ public class ChannelViewDeserializeTest {
         ImmutableSet<String> expectedTags = new ImmutableSet.Builder<String>()
                 .addAll(Sets.newHashSet("tag1", "tag2")).build();
         assertEquals(expectedTags, channel.getTags());
+        ImmutableMap<String, ImmutableSet<String>> expectedTagGroups = new ImmutableMap.Builder<String, ImmutableSet<String>>()
+            .put("group1", new ImmutableSet.Builder<String>()
+                .addAll(Sets.newHashSet("tag1OfGroup1", "tag2OfGroup1")).build())
+            .put("group2", new ImmutableSet.Builder<String>()
+                .addAll(Sets.newHashSet("tag1OfGroup2", "tag2OfGroup2")).build())
+            .build();
+        assertEquals(expectedTagGroups, channel.getTagGroups());
     }
 
     @Test
@@ -98,6 +116,22 @@ public class ChannelViewDeserializeTest {
         ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {
         });
         assertTrue(channel.getTags().isEmpty());
+    }
+
+    @Test
+    public void testEmptyTagGroups() throws Exception {
+        String json = "{" +
+            "\"channel_id\" : \"abcdef\"," +
+            "\"device_type\" : \"ios\"," +
+            "\"installed\" : true," +
+            "\"opt_in\" : false," +
+            "\"created\" : 12345," +
+            "\"tag_groups\" : {}" +
+            "}";
+
+        ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {
+        });
+        assertTrue(channel.getTagGroups().isEmpty());
     }
 
     @Test

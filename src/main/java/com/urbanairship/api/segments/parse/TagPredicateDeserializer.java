@@ -30,11 +30,14 @@ public class TagPredicateDeserializer extends JsonDeserializer<TagPredicate> {
             throw new InvalidAudienceSegmentException(INVALID_TAG_PREDICATE);
         }
         String tag = null;
-        String tagClass = TagPredicate.DEFAULT_TAG_CLASS;
+        String tagClass = null;
+        String tagGroup = null;
         if (jp.getCurrentName().equals("tag")) {
             tag = jp.getText();
         } else if (jp.getCurrentName().equals("tag_class")) {
             tagClass = jp.getText();
+        } else if (jp.getCurrentName().equals("group")) {
+            tagGroup = jp.getText();
         }
         if (!jp.nextToken().equals(JsonToken.END_OBJECT)) {
             if (jp.getCurrentName().equals("tag")) {
@@ -43,8 +46,15 @@ public class TagPredicateDeserializer extends JsonDeserializer<TagPredicate> {
             } else if (jp.getCurrentName().equals("tag_class")) {
                 jp.nextToken();
                 tagClass = jp.getText();
+            } else if (jp.getCurrentName().equals("group")) {
+                jp.nextToken();
+                tagGroup = jp.getText();
             }
         }
-        return TagPredicateBuilder.newInstance().setTag(tag).setTagClass(tagClass).build();
+        return TagPredicateBuilder.newInstance()
+            .setTag(tag)
+            .setTagClass(tagClass)
+            .setTagGroup(tagGroup)
+            .build();
     }
 }

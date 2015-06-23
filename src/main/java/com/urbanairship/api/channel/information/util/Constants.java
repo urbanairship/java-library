@@ -20,6 +20,7 @@ public class Constants {
     public static final String LAST_REGISTRATION = "last_registration";
     public static final String ALIAS = "alias";
     public static final String TAGS = "tags";
+    public static final String TAG_GROUPS = "tag_groups";
     // Platform-specific
     public static final String IOS = "ios";
     public static final String BADGE = "badge";

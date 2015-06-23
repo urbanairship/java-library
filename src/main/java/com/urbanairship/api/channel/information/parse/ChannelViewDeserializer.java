@@ -82,6 +82,12 @@ public final class ChannelViewDeserializer extends JsonDeserializer<ChannelView>
                             reader.readTags(jsonParser);
                         }
                     })
+                    .put(Constants.TAG_GROUPS, new FieldParser<ChannelViewReader>() {
+                        @Override
+                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readTagGroups(jsonParser);
+                        }
+                    })
                     .put(Constants.IOS, new FieldParser<ChannelViewReader>() {
                         @Override
                         public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {

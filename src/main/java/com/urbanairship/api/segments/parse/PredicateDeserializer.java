@@ -23,6 +23,7 @@ public class PredicateDeserializer extends JsonDeserializer<Predicate> {
             ImmutableMap.of(
                     "tag", TagPredicateDeserializer.INSTANCE,
                     "tag_class", TagPredicateDeserializer.INSTANCE,
+                    "group", TagPredicateDeserializer.INSTANCE,
                     "location", LocationPredicateDeserializer.INSTANCE
             );
 

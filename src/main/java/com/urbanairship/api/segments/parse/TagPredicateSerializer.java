@@ -25,9 +25,13 @@ public class TagPredicateSerializer extends JsonSerializer<TagPredicate> {
 
         jgen.writeFieldName("tag");
         jgen.writeString(value.getTag());
-        if (!value.isDefaultClass()) {
+        if (!value.isDefaultClass() && value.getTagClass().isPresent()) {
             jgen.writeFieldName("tag_class");
-            jgen.writeString(value.getTagClass());
+            jgen.writeString(value.getTagClass().get());
+        }
+        if (value.getTagGroup().isPresent()) {
+            jgen.writeFieldName("group");
+            jgen.writeString(value.getTagGroup().get());
         }
         jgen.writeEndObject();
     }

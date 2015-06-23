@@ -3,6 +3,8 @@ package com.urbanairship.api.client;
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableSet;
+import com.urbanairship.api.channel.information.model.TagMutationPayload;
 import com.urbanairship.api.client.model.APIClientResponse;
 import com.urbanairship.api.client.model.APIListAllChannelsResponse;
 import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
@@ -56,6 +58,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
@@ -1864,6 +1867,43 @@ public class APIClientTest {
     }
 
     @Test
+    public void testChannelTagMutations() {
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+            .setBaseURI("http://localhost:8080")
+            .setKey("key")
+            .setSecret("secret")
+            .build();
+
+        stubFor(post(urlEqualTo("/api/channels/tags/"))
+            .willReturn(aResponse()
+                .withHeader(CONTENT_TYPE_KEY, "application/json")
+                .withStatus(200)));
+
+        ImmutableSet<String> iosChannels = ImmutableSet.of(UUID.randomUUID().toString(), UUID.randomUUID().toString());
+
+        TagMutationPayload payload = TagMutationPayload.newBuilder()
+            .addIOSChannels(iosChannels)
+            .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
+            .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
+            .removeTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"))
+            .build();
+
+        try {
+            HttpResponse response = client.channelsTagMutations(payload);
+
+            List<LoggedRequest> requests = findAll(postRequestedFor(urlEqualTo("/api/channels/tags/")));
+            assertEquals(1, requests.size());
+
+            assertNotNull(response);
+            assertEquals(200, response.getStatusLine().getStatusCode());
+
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
     public void testListAllChannels() {
 
         String fiveresponse = "{\n" +
@@ -1880,7 +1920,12 @@ public class APIClientTest {
                 "      \"alias\": null,\n" +
                 "      \"tags\": [\n" +
                 "        \"test01\"\n" +
-                "      ]\n" +
+                "      ]," +
+                "      \"tag_groups\": {\n" +
+                "        \"testGroup01\" : [\n" +
+                "          \"testGroup01Tag01\"\n" +
+                "        ]\n" +
+                "      }\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"channel_id\": \"00662346-9e39-4f5f-80e7-3f8fae58863c\",\n" +
@@ -1896,7 +1941,13 @@ public class APIClientTest {
                 "        \"aaron-tag\",\n" +
                 "        \"rhtgeg\",\n" +
                 "        \"tnrvrg\"\n" +
-                "      ]\n" +
+                "      ],\n" +
+                "      \"tag_groups\": {\n" +
+                "        \"testGroup02\" : [\n" +
+                "          \"testGroup02Tag01\",\n" +
+                "          \"testGroup02Tag02\"\n" +
+                "        ]\n" +
+                "      }\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"channel_id\": \"00d174cd-0a31-427e-95c9-52d5785bcd50\",\n" +
@@ -1911,6 +1962,7 @@ public class APIClientTest {
                 "      \"tags\": [\n" +
                 "        \"version_1.5.0\"\n" +
                 "      ],\n" +
+                "      \"tag_groups\": {},\n" +
                 "      \"ios\": {\n" +
                 "        \"badge\": 1,\n" +
                 "        \"quiettime\": {\n" +
@@ -1933,6 +1985,16 @@ public class APIClientTest {
                 "        \"kablam\",\n" +
                 "        \"version_1.3\"\n" +
                 "      ],\n" +
+                "      \"tag_groups\": {\n" +
+                "        \"testGroup03\": [\n" +
+                "          \"testGroup03Tag01\",\n" +
+                "          \"testGroup03Tag02\",\n" +
+                "          \"testGroup03Tag03\"\n" +
+                "        ],\n" +
+                "        \"testGroup04\": [\n" +
+                "          \"testGroup04Tag01\"\n" +
+                "        ]\n" +
+                "      },\n" +
                 "      \"ios\": {\n" +
                 "        \"badge\": 1,\n" +
                 "        \"quiettime\": {\n" +
@@ -1953,7 +2015,8 @@ public class APIClientTest {
                 "      \"alias\": null,\n" +
                 "      \"tags\": [\n" +
                 "        \n" +
-                "      ]\n" +
+                "      ],\n" +
+                "      \"tag_groups\": {}\n" +
                 "    }\n" +
                 "  ],\n" +
                 "  \"next_page\": \"https:\\/\\/go.urbanairship.com\\/api\\/channels?limit=5&start=0143e4d6-724c-4fc8-bbc6-ca647b8993bf\"\n" +

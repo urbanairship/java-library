@@ -13,10 +13,12 @@ import org.apache.commons.lang.StringUtils;
 public class TagPredicateBuilder {
     private String tag;
     private String tagClass;
+    private String tagGroup;
 
     private TagPredicateBuilder() {
-        this.tagClass = TagPredicate.DEFAULT_TAG_CLASS;
+        this.tagClass = null;
         this.tag = null;
+        this.tagGroup = null;
     }
 
     public static final TagPredicateBuilder newInstance() {
@@ -33,10 +35,22 @@ public class TagPredicateBuilder {
         return this;
     }
 
+    public TagPredicateBuilder setTagGroup(String tagGroup) {
+        this.tagGroup = tagGroup;
+        return this;
+    }
+
     public TagPredicate build() {
         if (StringUtils.isEmpty(tag)) {
             throw new IllegalArgumentException("Tag is required");
         }
-        return new TagPredicate(tag, tagClass);
+        if (tagGroup != null && tagClass != null) {
+            throw new IllegalArgumentException(String.format("tag_class and group cannot both be specified for tag '%s'", tag));
+        }
+        if (tagGroup == null && tagClass == null) {
+            this.tagClass = TagPredicate.DEFAULT_TAG_CLASS;
+        }
+
+        return new TagPredicate(tag, tagClass, tagGroup);
     }
 }
