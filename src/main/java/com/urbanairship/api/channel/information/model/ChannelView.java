@@ -147,8 +147,9 @@ public final class ChannelView {
             Objects.equal(this.pushAddress, other.pushAddress) &&
             Objects.equal(this.createdMillis, other.createdMillis) &&
             Objects.equal(this.lastRegistrationMillis, other.lastRegistrationMillis) &&
-            Objects.equal(this.alias, other.alias) && Objects.equal(this.tags, other.tags) &&
-            Objects.equal(this.tagGroups, other.toString()) &&
+            Objects.equal(this.alias, other.alias) &&
+            Objects.equal(this.tags, other.tags) &&
+            Objects.equal(this.tagGroups, other.tagGroups) &&
             Objects.equal(this.iosSettings, other.iosSettings);
     }
 
