@@ -14,6 +14,10 @@ import com.urbanairship.api.channel.information.parse.ios.IosSettingsDeserialize
 import com.urbanairship.api.channel.information.parse.ios.QuietTimeDeserializer;
 import com.urbanairship.api.client.APIError;
 import com.urbanairship.api.client.APIErrorDetails;
+import com.urbanairship.api.feedback.model.APIApidsFeedbackResponse;
+import com.urbanairship.api.feedback.parse.APIApidsFeedbackResponseDeserializer;
+import com.urbanairship.api.feedback.model.APIDeviceTokensFeedbackResponse;
+import com.urbanairship.api.feedback.parse.APIDeviceTokensFeedbackResponseDeserializer;
 import com.urbanairship.api.client.model.APIListAllChannelsResponse;
 import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
 import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
@@ -119,6 +123,8 @@ public final class APIResponseObjectMapper {
         MODULE.addDeserializer(APIReportsPushListingResponse.class, new APIReportsListingResponseDeserializer());
         MODULE.addDeserializer(Location.class, new LocationDeserializer());
         MODULE.addDeserializer(APILocationResponse.class, new APILocationResponseDeserializer());
+        MODULE.addDeserializer(APIApidsFeedbackResponse.class, new APIApidsFeedbackResponseDeserializer());
+        MODULE.addDeserializer(APIDeviceTokensFeedbackResponse.class, new APIDeviceTokensFeedbackResponseDeserializer());
 
         MAPPER.registerModule(PushObjectMapper.getModule());
         MAPPER.registerModule(MODULE);

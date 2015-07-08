@@ -17,6 +17,10 @@ import com.urbanairship.api.client.model.APILocationResponse;
 import com.urbanairship.api.client.model.APIPushResponse;
 import com.urbanairship.api.client.model.APIReportsPushListingResponse;
 import com.urbanairship.api.client.model.APIScheduleResponse;
+import com.urbanairship.api.feedback.ListApidFeedbackAPIResponseHandler;
+import com.urbanairship.api.feedback.ListDeviceTokensFeedbackAPIResponseHandler;
+import com.urbanairship.api.feedback.model.APIApidsFeedbackResponse;
+import com.urbanairship.api.feedback.model.APIDeviceTokensFeedbackResponse;
 import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.Point;
 import com.urbanairship.api.push.model.PushPayload;
@@ -82,6 +86,8 @@ public class APIClient {
     private final static String API_REPORTS_PUSH_RESPONSE_PATH = "/api/reports/responses/";
     private final static String API_REPORTS_APPS_OPEN_PATH = "/api/reports/opens/";
     private final static String API_REPORTS_TIME_IN_APP_PATH = "/api/reports/timeinapp/";
+    private final static String API_DEVICETOKENS_FEEDBACK_PATH = "/api/device_tokens/feedback/";
+    private final static String API_APIDS_FEEDBACK_PATH = "/api/apids/feedback/";
     private final static Logger logger = LoggerFactory.getLogger("com.urbanairship.api");
     /* User auth */
     private final String appKey;
@@ -896,6 +902,53 @@ public class APIClient {
 
         return provisionExecutor().execute(req).handleResponse(new StringAPIResponseHandler());
     }
+
+    /**
+     * Returns apple device tokens feedbacks.
+     * JSON format
+     *
+     * @param since Find device tokens deactivated since this date or timestamp.
+     * @return APIClientResponse of List of APIDeviceTokensFeedbackResponse in JSON.
+     * @throws IOException
+     */
+    public APIClientResponse<List<APIDeviceTokensFeedbackResponse>> listDeviceTokensFeedback(DateTime since) throws IOException {
+        Preconditions.checkNotNull(since, "since time is required when performing listing of apple feedback");
+
+        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_DEVICETOKENS_FEEDBACK_PATH));
+        builder.addParameter("since", since.toLocalDateTime().toString());
+        Request req = provisionRequest(Request.Get(builder.toString()));
+        req.removeHeaders(ACCEPT_KEY);      // Workaround for v3 routing bug
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list apple feedbacks in CSV String format request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ListDeviceTokensFeedbackAPIResponseHandler());
+    }
+
+    /**
+     * Returns google apids feedbacks.
+     * JSON format
+     *
+     * @param since Find apids deactivated since this date or timestamp.
+     * @return APIClientResponse of List of APIApidsFeedbackResponse in JSON.
+     * @throws IOException
+     */
+    public APIClientResponse<List<APIApidsFeedbackResponse>> listApidsFeedback(DateTime since) throws IOException {
+        Preconditions.checkNotNull(since, "since time is required when performing listing of google feedback");
+
+        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_APIDS_FEEDBACK_PATH));
+        builder.addParameter("since", since.toLocalDateTime().toString());
+        Request req = provisionRequest(Request.Get(builder.toString()));
+        req.removeHeaders(ACCEPT_KEY);      // Workaround for v3 routing bug
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing list google feedbacks in CSV String format request %s", req));
+        }
+
+        return provisionExecutor().execute(req).handleResponse(new ListApidFeedbackAPIResponseHandler());
+    }
+
 
     /* Object methods */
 
