@@ -916,6 +916,7 @@ public class APIClient {
 
         URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_DEVICETOKENS_FEEDBACK_PATH));
         builder.addParameter("since", since.toLocalDateTime().toString());
+        builder.addParameter("format", "json");
         Request req = provisionRequest(Request.Get(builder.toString()));
         req.removeHeaders(ACCEPT_KEY);      // Workaround for v3 routing bug
 
@@ -939,6 +940,7 @@ public class APIClient {
 
         URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_APIDS_FEEDBACK_PATH));
         builder.addParameter("since", since.toLocalDateTime().toString());
+        builder.addParameter("format", "json");
         Request req = provisionRequest(Request.Get(builder.toString()));
         req.removeHeaders(ACCEPT_KEY);      // Workaround for v3 routing bug
 
