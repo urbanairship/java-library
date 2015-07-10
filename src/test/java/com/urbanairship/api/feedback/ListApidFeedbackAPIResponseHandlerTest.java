@@ -46,7 +46,7 @@ public class ListApidFeedbackAPIResponseHandlerTest
                 "\"marked_inactive_on\": \"2009-06-22 10:07:00\"," +
                 "\"alias\": \"Alice\"" +
                 "}" +
-                "]";;
+                "]";
 
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
