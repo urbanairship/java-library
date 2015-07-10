@@ -14,6 +14,8 @@ import com.urbanairship.api.client.model.APIReportsPushListingResponse;
 import com.urbanairship.api.client.model.APIScheduleResponse;
 import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import com.urbanairship.api.common.parse.DateFormats;
+import com.urbanairship.api.feedback.model.APIApidsFeedbackResponse;
+import com.urbanairship.api.feedback.model.APIDeviceTokensFeedbackResponse;
 import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.Point;
 import com.urbanairship.api.push.model.DeviceType;
@@ -2912,5 +2914,95 @@ public class APIClientTest {
         APIClientResponse<ReportsAPITimeInAppResponse> response = client.listTimeInAppReport(start, end, "monthly");
         assertNotNull(response);
 
+    }
+
+    @Test
+    public void testListDeviceTokensFeedback() {
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        String queryPathString = "/api/device_tokens/feedback/?since=2014-10-01T12%3A00%3A00.000&format=json";
+
+        String responseString = "[{" +
+                "\"device_token\": \"1234123412341234123412341234123412341234123412341234123412341234\"," +
+                "\"marked_inactive_on\": \"2009-06-22 10:05:00\"," +
+                "\"alias\": \"bob\"" +
+                "}," +
+                "{" +
+                "\"device_token\": \"ABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCD\"," +
+                "\"marked_inactive_on\": \"2009-06-22 10:07:00\"," +
+                "\"alias\": \"Alice\"" +
+                "}]";
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseString)
+                        .withStatus(200)));
+
+        try {
+            DateTime since = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+
+            APIClientResponse<List<APIDeviceTokensFeedbackResponse>> response = client.listDeviceTokensFeedback(since);
+
+            List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
+            assertEquals(1, requests.size());
+            assertNotNull(response);
+            assertEquals(2, response.getApiResponse().size());
+            assertEquals(200, response.getHttpResponse().getStatusLine().getStatusCode());
+
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testListApidsFeedback() {
+        // Setup a client
+        APIClient client = APIClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        String queryPathString = "/api/apids/feedback/?since=2014-10-01T12%3A00%3A00.000&format=json";
+
+        String responseString = "["+
+                "{" +
+                "\"apid\": \"00000000-0000-0000-0000-000000000000\"," +
+                "\"gcm_registration_id\": \"abcdefghijklmn\", "+
+                "\"marked_inactive_on\": \"2009-06-22 10:05:00\"," +
+                "\"alias\": \"bob\"" +
+                "}," +
+                "{" +
+                "\"apid\": \"00000000-0000-0000-0000-000000000001\"," +
+                "\"gcm_registration_id\": \"opqrstuvmxyz\", "+
+                "\"marked_inactive_on\": \"2009-06-22 10:07:00\"," +
+                "\"alias\": \"Alice\"" +
+                "}" +
+                "]";
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseString)
+                        .withStatus(200)));
+
+        try {
+            DateTime since = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+
+            APIClientResponse<List<APIApidsFeedbackResponse>> response = client.listApidsFeedback(since);
+
+            List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
+            assertEquals(1, requests.size());
+            assertNotNull(response);
+            assertEquals(2, response.getApiResponse().size());
+            assertEquals(200, response.getHttpResponse().getStatusLine().getStatusCode());
+
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
     }
 }
