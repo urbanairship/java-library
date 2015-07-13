@@ -5,6 +5,8 @@
 package com.urbanairship.api.client.model;
 
 import com.google.common.base.Objects;
+import com.urbanairship.api.feedback.model.APIApidsFeedbackResponse;
+import com.urbanairship.api.feedback.model.APIDeviceTokensFeedbackResponse;
 import com.urbanairship.api.reports.model.AppStats;
 import org.apache.http.HttpResponse;
 
@@ -34,6 +36,24 @@ public class APIClientResponse<T> {
      */
     public static Builder<List<AppStats>> newListAppStatsBuilder() {
         return new Builder<List<AppStats>>();
+    }
+
+    /**
+     * Return a Builder for a List of APIApidsFeedbackResponse
+     *
+     * @return Builder
+     */
+    public static Builder<List<APIApidsFeedbackResponse>> newListApidsFeedbackBuilder() {
+        return new Builder<List<APIApidsFeedbackResponse>>();
+    }
+
+    /**
+     * Return a Builder for a List of APIDeviceTokensFeedbackResponse
+     *
+     * @return Builder
+     */
+    public static Builder<List<APIDeviceTokensFeedbackResponse>> newListDeviceTokensFeedbackBuilder() {
+        return new Builder<List<APIDeviceTokensFeedbackResponse>>();
     }
 
     /**
