@@ -1,4 +1,4 @@
-package com.urbanairship.api.push.model;
+package com.urbanairship.api.push;
 
 /*
  * Copyright (c) 2013-2015.  Urban Airship and Contributors
@@ -9,8 +9,10 @@ import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
-import com.urbanairship.api.client.model.APIPushResponse;
 import com.urbanairship.api.client.parse.APIResponseObjectMapper;
+import com.urbanairship.api.push.model.PushPayload;
+import com.urbanairship.api.push.model.PushResponse;
+import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.apache.http.entity.ContentType;
 
 import java.io.IOException;
@@ -19,10 +21,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The PushRequest class builds push and push validation requests to be executed in the UrbanAirshipClient
+ * The PushRequest class builds push and push validation requests to be executed in
+ * the {@link com.urbanairship.api.client.UrbanAirshipClient}.
  */
-
-public class PushRequest implements Request<APIPushResponse> {
+public class PushRequest implements Request<PushResponse> {
 
     private final static String API_PUSH_PATH = "/api/push/";
     private final static String API_VALIDATE_PATH = "/api/push/validate/";
@@ -86,11 +88,11 @@ public class PushRequest implements Request<APIPushResponse> {
     }
 
     @Override
-    public ResponseParser<APIPushResponse> getResponseParser() {
-        return new ResponseParser<APIPushResponse>() {
+    public ResponseParser<PushResponse> getResponseParser() {
+        return new ResponseParser<PushResponse>() {
             @Override
-            public APIPushResponse parse(String response) throws IOException {
-                return APIResponseObjectMapper.getInstance().readValue(response, APIPushResponse.class);
+            public PushResponse parse(String response) throws IOException {
+                return PushObjectMapper.getInstance().readValue(response, PushResponse.class);
             }
         };
     }

@@ -15,12 +15,10 @@ import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
 import com.urbanairship.api.client.model.APIListSingleChannelResponse;
 import com.urbanairship.api.client.model.APIListTagsResponse;
 import com.urbanairship.api.client.model.APILocationResponse;
-import com.urbanairship.api.client.model.APIPushResponse;
 import com.urbanairship.api.client.model.APIReportsPushListingResponse;
 import com.urbanairship.api.client.model.APIScheduleResponse;
 import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.Point;
-import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.reports.model.PerPushDetailResponse;
 import com.urbanairship.api.reports.model.PerPushSeriesResponse;
@@ -209,36 +207,6 @@ public class APIClient {
         }
 
         return baseURI.resolve(path);
-    }
-
-    /* Push API */
-
-    public APIClientResponse<APIPushResponse> push(PushPayload payload) throws IOException {
-        Preconditions.checkNotNull(payload, "Payload required when executing a push operation");
-        Request request = provisionRequest(Request.Post(baseURIResolution(baseURI, API_PUSH_PATH)));
-        request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing push request %s", request));
-        }
-
-        return provisionExecutor()
-            .execute(request)
-            .handleResponse(new APIClientResponseHandler<APIPushResponse>(APIPushResponse.class));
-    }
-
-    public APIClientResponse<APIPushResponse> validate(PushPayload payload) throws IOException {
-        Preconditions.checkNotNull(payload, "Payload required when executing a validate push operation");
-        Request request = provisionRequest(Request.Post(baseURIResolution(baseURI, API_VALIDATE_PATH)));
-        request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing validate push request %s", request));
-        }
-
-        return provisionExecutor()
-            .execute(request)
-            .handleResponse(new APIClientResponseHandler<APIPushResponse>(APIPushResponse.class));
     }
 
     /* Schedules API */

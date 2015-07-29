@@ -2,7 +2,7 @@
  * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
-package com.urbanairship.api.client.model;
+package com.urbanairship.api.push.model;
 
 
 import com.google.common.base.Objects;
@@ -12,7 +12,7 @@ import com.google.common.collect.ImmutableList;
 /**
  * Represents a response from the Urban Airship API for Push Notifications.
  */
-public final class APIPushResponse {
+public final class PushResponse {
 
     private final Optional<String> operationId;
     private final Optional<ImmutableList<String>> pushIds;
@@ -20,7 +20,7 @@ public final class APIPushResponse {
     private final Optional<ImmutableList<String>> messageIds;
     private final Optional<ImmutableList<String>> contentUrls;
 
-    public APIPushResponse(String operationId, ImmutableList<String> pushIds, boolean ok, ImmutableList<String> messageIds, ImmutableList<String> contentUrls) {
+    public PushResponse(String operationId, ImmutableList<String> pushIds, boolean ok, ImmutableList<String> messageIds, ImmutableList<String> contentUrls) {
         this.operationId = Optional.fromNullable(operationId);
         this.pushIds = Optional.fromNullable(pushIds);
         this.ok = ok;
@@ -72,7 +72,7 @@ public final class APIPushResponse {
 
     @Override
     public String toString() {
-        return "APIPushResponse{" +
+        return "PushResponse{" +
                 "operationId=" + operationId +
                 ", pushIds=" + pushIds +
                 ", ok=" + ok +
@@ -94,12 +94,12 @@ public final class APIPushResponse {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final APIPushResponse other = (APIPushResponse) obj;
+        final PushResponse other = (PushResponse) obj;
         return Objects.equal(this.operationId, other.operationId) && Objects.equal(this.pushIds, other.pushIds) && Objects.equal(this.ok, other.ok) && Objects.equal(this.messageIds, other.messageIds) && Objects.equal(this.contentUrls, other.contentUrls);
     }
 
     /**
-     * APIPushResponse Builder
+     * PushResponse Builder
      */
     public static class Builder {
         private String operationId;
@@ -151,8 +151,8 @@ public final class APIPushResponse {
             return this;
         }
 
-        public APIPushResponse build() {
-            return new APIPushResponse(operationId, pushIds.build(), ok, messageIds.build(), contentUrls.build());
+        public PushResponse build() {
+            return new PushResponse(operationId, pushIds.build(), ok, messageIds.build(), contentUrls.build());
 
         }
     }

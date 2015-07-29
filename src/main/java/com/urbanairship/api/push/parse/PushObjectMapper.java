@@ -13,6 +13,7 @@ import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.PushOptions;
 import com.urbanairship.api.push.model.PushPayload;
+import com.urbanairship.api.push.model.PushResponse;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.location.AbsoluteDateRange;
 import com.urbanairship.api.push.model.audience.location.DateRange;
@@ -190,6 +191,8 @@ public class PushObjectMapper {
                 .addDeserializer(DateRange.class, new DateRangeDeserializer())
                 .addSerializer(PushExpiry.class, new PushExpirySerializer())
                 .addDeserializer(PushExpiry.class, new PushExpiryDeserializer())
+                .addDeserializer(PushResponse.class, new PushResponseDeserializer())
+
 
 
             /* IOS */

@@ -3,11 +3,11 @@ package com.urbanairship.api.client;
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
 import com.urbanairship.api.client.model.APIClientResponse;
-import com.urbanairship.api.client.model.APIPushResponse;
+import com.urbanairship.api.push.model.PushResponse;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushPayload;
-import com.urbanairship.api.push.model.PushRequest;
+import com.urbanairship.api.push.PushRequest;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.push.parse.PushObjectMapper;
@@ -87,7 +87,7 @@ public class UrbanAirshipClientTest {
                 .withStatus(201)));
 
         try {
-            APIClientResponse<APIPushResponse> response = client.execute(PushRequest.createPushRequest(payload));
+            Response<PushResponse> response = client.execute(PushRequest.createPushRequest(payload));
 
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/push/"))
@@ -161,7 +161,7 @@ public class UrbanAirshipClientTest {
 
 
         try {
-            APIClientResponse<APIPushResponse> response = proxyClient.execute(PushRequest.createPushRequest(payload));
+            Response<PushResponse> response = proxyClient.execute(PushRequest.createPushRequest(payload));
 
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/push/"))
@@ -230,7 +230,7 @@ public class UrbanAirshipClientTest {
                 .withBody(pushJSON)
                 .withStatus(201)));
         try {
-            APIClientResponse<APIPushResponse> response = client.execute(PushRequest.createValidateRequest(payload));
+            Response<PushResponse> response = client.execute(PushRequest.createValidateRequest(payload));
 
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/push/validate/"))

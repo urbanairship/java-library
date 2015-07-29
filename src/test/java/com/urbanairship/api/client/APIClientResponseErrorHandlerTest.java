@@ -1,6 +1,6 @@
 package com.urbanairship.api.client;
 
-import com.urbanairship.api.client.model.APIPushResponse;
+import com.urbanairship.api.push.model.PushResponse;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.entity.InputStreamEntity;
@@ -48,8 +48,8 @@ public class APIClientResponseErrorHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY, UA_JSON_RESPONSE));
 
         /* Test handling */
-        APIClientResponseHandler<APIPushResponse> handler =
-            new APIClientResponseHandler<APIPushResponse>(APIPushResponse.class);
+        APIClientResponseHandler<PushResponse> handler =
+            new APIClientResponseHandler<PushResponse>(PushResponse.class);
         try {
             handler.handleResponse(httpResponse);
         } catch (APIRequestException ex) {
@@ -86,8 +86,8 @@ public class APIClientResponseErrorHandlerTest {
             pushJSON.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_JSON));
-        APIClientResponseHandler<APIPushResponse> handler =
-            new APIClientResponseHandler<APIPushResponse>(APIPushResponse.class);
+        APIClientResponseHandler<PushResponse> handler =
+            new APIClientResponseHandler<PushResponse>(PushResponse.class);
 
         try {
             handler.handleResponse(httpResponse);
@@ -119,8 +119,8 @@ public class APIClientResponseErrorHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
             CONTENT_TYPE_TEXT_HTML));
 
-        APIClientResponseHandler<APIPushResponse> handler =
-            new APIClientResponseHandler<APIPushResponse>(APIPushResponse.class);
+        APIClientResponseHandler<PushResponse> handler =
+            new APIClientResponseHandler<PushResponse>(PushResponse.class);
 
         try {
             handler.handleResponse(httpResponse);
