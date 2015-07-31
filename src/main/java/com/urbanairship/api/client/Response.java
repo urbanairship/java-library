@@ -4,74 +4,92 @@
 
 package com.urbanairship.api.client;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Optional;
-import com.urbanairship.api.reports.model.AppStats;
-import org.apache.http.HttpResponse;
+import com.google.common.collect.ImmutableMap;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * Response encapsulates relevant data about responses from the
  * Urban Airship API. This is the object returned for successful API requests.
- * It contains the raw HttpResponse object and an optional parsed API response object with
- * the details of the Urban Airship response specifically.
+ * It contains an optional parsed API response body object with
+ * the details of the Urban Airship response specifically, as well as the
+ * API response headers and status code.
  */
 public class Response<T> {
 
-    private final Optional<T> apiResponse;
-    private final HttpResponse httpResponse;
+    private final Optional<T> body;
+    private final ImmutableMap<String, String> headers;
+    private final int status;
 
     /**
      * Default constructor.
      *
-     * @param apiResponse Optional parsed api response.
-     * @param httpResponse HttpResponse object.
+     * @param body Optional parsed api response body.
+     * @param headers Response headers.
+     * @param status Response status.
      */
-    Response(T apiResponse, HttpResponse httpResponse) {
-        this.apiResponse = Optional.fromNullable(apiResponse);
-        this.httpResponse = httpResponse;
+    Response(T body, Map<String, String> headers, int status) {
+        this.body = Optional.fromNullable(body);
+        this.headers = ImmutableMap.copyOf(headers);
+        this.status = status;
     }
 
     /**
-     * Return the HTTP request object used for the request.
-     * The HttpEntity associated with the request will be closed, and
-     * attempting to read from it will throw an exception
+     * Gets the parsed request response body.
      *
-     * @return HttpResponse returned with this request
+     * @return Parsed request response body.
      */
-    public HttpResponse getHttpResponse() {
-        return httpResponse;
+    public Optional<T> getBody() {
+        return body;
     }
 
     /**
-     * Gets the parsed request response.
+     * Gets the response headers.
      *
-     * @return Parsed request response.
+     * @return Map of response headers.
      */
-    public Optional<T> getApiResponse() {
-        return apiResponse;
+    public ImmutableMap<String, String> getHeaders() {
+        return headers;
+    }
+
+    /**
+     * Gets the response status code.
+     *
+     * @return Response status code.
+     */
+    public int getStatus() {
+        return status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Response)) return false;
+
+        Response response = (Response) o;
+
+        if (status != response.status) return false;
+        if (!body.equals(response.body)) return false;
+        if (!headers.equals(response.headers)) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(apiResponse, httpResponse);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        final Response other = (Response) obj;
-        return Objects.equal(this.apiResponse, other.apiResponse) && Objects.equal(this.httpResponse, other.httpResponse);
+        int result = body.hashCode();
+        result = 31 * result + headers.hashCode();
+        result = 31 * result + status;
+        return result;
     }
 
     @Override
     public String toString() {
-        return "\nHttp:" + httpResponse.toString() + "\nAPI:" + apiResponse.toString();
+        return "Response{" +
+            "body=" + body +
+            ", headers=" + headers +
+            ", status=" + status +
+            '}';
     }
 }

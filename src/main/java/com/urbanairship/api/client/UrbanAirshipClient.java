@@ -7,10 +7,11 @@ package com.urbanairship.api.client;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.entity.ContentType;
@@ -155,7 +156,7 @@ public class UrbanAirshipClient {
         }
 
         // User Agent
-        apacheRequest.config(CoreProtocolPNames.USER_AGENT, userAgent);
+        apacheRequest.config(CoreProtocolPNames.USER_AGENT, getUserAgent());
 
         // Http Params
         if (httpParams.isPresent()) {
@@ -180,7 +181,7 @@ public class UrbanAirshipClient {
                         int statusCode = httpResponse.getStatusLine().getStatusCode();
 
                         if (statusCode >= 200 && statusCode < 300) {
-                            return new Response<T>(parseResponse(parser, httpResponse), httpResponse);
+                            return new Response<T>(parseResponse(parser, httpResponse), getHeaders(httpResponse), httpResponse.getStatusLine().getStatusCode());
                         } else {
                             throw APIRequestException.exceptionForResponse(httpResponse);
                         }
@@ -208,6 +209,19 @@ public class UrbanAirshipClient {
         }
 
         return null;
+    }
+
+    /**
+     * Retrieves the response headers.
+     * @param httpResponse The HttpResponse.
+     * @return An immutable map of response headers.
+     */
+    private ImmutableMap<String, String> getHeaders(HttpResponse httpResponse) {
+        ImmutableMap.Builder<String, String> headers = ImmutableMap.builder();
+        for (Header header : httpResponse.getAllHeaders()) {
+            headers.put(header.getName(), header.getValue());
+        }
+        return  headers.build();
     }
 
     private String getUserAgent() {
