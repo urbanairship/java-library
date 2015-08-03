@@ -20,7 +20,6 @@ import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
 import com.urbanairship.api.client.model.APIListSingleChannelResponse;
 import com.urbanairship.api.client.model.APIListTagsResponse;
 import com.urbanairship.api.client.model.APILocationResponse;
-import com.urbanairship.api.client.model.APIPushResponse;
 import com.urbanairship.api.client.model.APIReportsPushListingResponse;
 import com.urbanairship.api.client.model.APIScheduleResponse;
 import com.urbanairship.api.client.model.SegmentInformation;
@@ -80,7 +79,6 @@ public final class APIResponseObjectMapper {
     private static final SimpleModule MODULE = new SimpleModule("Urban Airship API Client Module", new Version(1, 0, 0, null));
 
     static {
-        MODULE.addDeserializer(APIPushResponse.class, new APIPushResponseDeserializer());
         MODULE.addDeserializer(APIErrorDetails.Location.class, new StreamLocationDeserializer());
         MODULE.addDeserializer(APIErrorDetails.class, new APIErrorDetailsDeserializer());
         MODULE.addDeserializer(APIError.class, new APIErrorDeserializer());

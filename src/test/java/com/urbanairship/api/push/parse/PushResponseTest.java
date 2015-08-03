@@ -1,6 +1,7 @@
-package com.urbanairship.api.client.parse;
+package com.urbanairship.api.push.parse;
 
-import com.urbanairship.api.client.model.APIPushResponse;
+import com.urbanairship.api.client.parse.APIResponseObjectMapper;
+import com.urbanairship.api.push.model.PushResponse;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
@@ -10,7 +11,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 
-public class APIPushResponseTest {
+public class PushResponseTest {
 
     @Test
     public void testAPIPushResponse() {
@@ -27,7 +28,7 @@ public class APIPushResponseTest {
 
         ObjectMapper mapper = APIResponseObjectMapper.getInstance();
         try {
-            APIPushResponse response = mapper.readValue(pushJSON, APIPushResponse.class);
+            PushResponse response = mapper.readValue(pushJSON, PushResponse.class);
             assertTrue("Error in response operationId",
                     response.getOperationId().get().equals("df6a6b50"));
             assertTrue("Error in response pushIds",
@@ -41,7 +42,7 @@ public class APIPushResponseTest {
             assertTrue("Error in response contentUrls",
                 response.getContentUrls().get().isEmpty());
         } catch (IOException ex) {
-            fail("Exception in APIPushResponseTest Message: " + ex.getMessage());
+            fail("Exception in PushResponseTest Message: " + ex.getMessage());
         }
     }
 }

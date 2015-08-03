@@ -5,8 +5,10 @@
 package com.urbanairship;
 
 import com.urbanairship.api.client.*;
+import com.urbanairship.api.client.UrbanAirshipClient;
 import com.urbanairship.api.client.model.APIClientResponse;
-import com.urbanairship.api.client.model.APIPushResponse;
+import com.urbanairship.api.push.PushRequest;
+import com.urbanairship.api.push.model.PushResponse;
 import com.urbanairship.api.client.model.APIScheduleResponse;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
@@ -40,13 +42,12 @@ public class PushExample {
         logger.debug(String.format("Make sure key and secret are set Key:%s Secret:%s",
                                    appKey, appSecret));
 
-        APIClient apiClient = APIClient.newBuilder()
-                                       .setKey(appKey)
-                                       .setSecret(appSecret)
-                                       .build();
-        logger.debug(String.format("Setup an APIClient to handle the API call %s", apiClient.toString()));
-        logger.debug("Send the message");
+        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
+                .setKey(appKey)
+                .setSecret(appSecret)
+                .build();
 
+        logger.debug("Send the message");
         PushPayload payload = PushPayload.newBuilder()
                                          .setAudience(Selectors.all())
                                          .setNotification(Notifications.notification("Urban Airship Push"))
@@ -54,7 +55,7 @@ public class PushExample {
                                          .build();
 
         try {
-            APIClientResponse<APIPushResponse> response = apiClient.push(payload);
+            Response<PushResponse> response = client.execute(PushRequest.createPushRequest(payload));
             logger.debug("PUSH SUCCEEDED");
             logger.debug(String.format("RESPONSE:%s", response.toString()));
         }

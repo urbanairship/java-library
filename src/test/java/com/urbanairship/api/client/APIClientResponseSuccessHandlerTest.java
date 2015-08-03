@@ -7,7 +7,7 @@ import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
 import com.urbanairship.api.client.model.APIListSingleChannelResponse;
 import com.urbanairship.api.client.model.APIListTagsResponse;
 import com.urbanairship.api.client.model.APILocationResponse;
-import com.urbanairship.api.client.model.APIPushResponse;
+import com.urbanairship.api.push.model.PushResponse;
 import com.urbanairship.api.client.model.APIReportsPushListingResponse;
 import com.urbanairship.api.client.model.APIScheduleResponse;
 import com.urbanairship.api.reports.model.PerPushDetailResponse;
@@ -829,16 +829,16 @@ public class APIClientResponseSuccessHandlerTest {
             new ByteArrayInputStream(pushJSON.getBytes()),
             pushJSON.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
-        APIClientResponseHandler<APIPushResponse> handler =
-            new APIClientResponseHandler<APIPushResponse>(APIPushResponse.class);
+        APIClientResponseHandler<PushResponse> handler =
+            new APIClientResponseHandler<PushResponse>(PushResponse.class);
         try {
-            APIClientResponse<APIPushResponse> response =
+            APIClientResponse<PushResponse> response =
                 handler.handleResponse(httpResponse);
             assertTrue("HttpResponse incorrect",
                 httpResponse.equals(response.getHttpResponse()));
             assertTrue(response.getApiResponse().getOk());
             String operationId = response.getApiResponse().getOperationId().get();
-            assertTrue("APIPushResponse incorrectly configured",
+            assertTrue("PushResponse incorrectly configured",
                 "df6a6b50".equals(operationId));
 
         } catch (Exception ex) {

@@ -9,7 +9,7 @@ import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
 import com.urbanairship.api.client.model.APIListSingleChannelResponse;
 import com.urbanairship.api.client.model.APIListTagsResponse;
 import com.urbanairship.api.client.model.APILocationResponse;
-import com.urbanairship.api.client.model.APIPushResponse;
+import com.urbanairship.api.push.model.PushResponse;
 import com.urbanairship.api.client.model.APIReportsPushListingResponse;
 import com.urbanairship.api.client.model.APIScheduleResponse;
 import com.urbanairship.api.client.model.SegmentInformation;
@@ -483,16 +483,16 @@ public class APIClientResponseTest {
     public void testAPIPushResponse() {
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
-        APIPushResponse pushResponse = APIPushResponse.newBuilder()
+        PushResponse pushResponse = PushResponse.newBuilder()
                 .setOk(true)
                 .addAllPushIds(Arrays.asList("ID1", "ID2"))
                 .setOperationId("OpID")
                 .build();
-        APIClientResponse.Builder<APIPushResponse> builder =
-                new APIClientResponse.Builder<APIPushResponse>()
+        APIClientResponse.Builder<PushResponse> builder =
+                new APIClientResponse.Builder<PushResponse>()
                         .setApiResponse(pushResponse)
                         .setHttpResponse(httpResponse);
-        APIClientResponse<APIPushResponse> apiResponse = builder.build();
+        APIClientResponse<PushResponse> apiResponse = builder.build();
         assertTrue("HTTP response not set properly",
                 apiResponse.getHttpResponse().equals(httpResponse));
         assertTrue("APIResponse not set properly",

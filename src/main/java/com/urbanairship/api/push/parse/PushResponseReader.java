@@ -2,9 +2,9 @@
  * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
-package com.urbanairship.api.client.parse;
+package com.urbanairship.api.push.parse;
 
-import com.urbanairship.api.client.model.APIPushResponse;
+import com.urbanairship.api.push.model.PushResponse;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import org.codehaus.jackson.JsonParser;
@@ -17,12 +17,12 @@ import java.util.List;
 Readers are the part of the deserialization process that actually builds and
 return an object.
  */
-public final class APIPushResponseReader implements JsonObjectReader<APIPushResponse> {
+public final class PushResponseReader implements JsonObjectReader<PushResponse> {
 
-    private final APIPushResponse.Builder builder;
+    private final PushResponse.Builder builder;
 
-    public APIPushResponseReader() {
-        this.builder = APIPushResponse.newBuilder();
+    public PushResponseReader() {
+        this.builder = PushResponse.newBuilder();
     }
 
     public void readOperationId(JsonParser jsonParser) throws IOException {
@@ -55,7 +55,7 @@ public final class APIPushResponseReader implements JsonObjectReader<APIPushResp
     }
 
     @Override
-    public APIPushResponse validateAndBuild() throws IOException {
+    public PushResponse validateAndBuild() throws IOException {
         try {
             return builder.build();
         } catch (Exception e) {
