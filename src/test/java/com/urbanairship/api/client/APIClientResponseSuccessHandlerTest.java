@@ -2,14 +2,14 @@ package com.urbanairship.api.client;
 
 import com.urbanairship.api.client.model.APIClientResponse;
 import com.urbanairship.api.client.model.APIListAllChannelsResponse;
-import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
+import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
 import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
 import com.urbanairship.api.client.model.APIListSingleChannelResponse;
 import com.urbanairship.api.client.model.APIListTagsResponse;
 import com.urbanairship.api.client.model.APILocationResponse;
+import com.urbanairship.api.schedule.model.ScheduleResponse;
 import com.urbanairship.api.push.model.PushResponse;
 import com.urbanairship.api.client.model.APIReportsPushListingResponse;
-import com.urbanairship.api.client.model.APIScheduleResponse;
 import com.urbanairship.api.reports.model.PerPushDetailResponse;
 import com.urbanairship.api.reports.model.PerPushSeriesResponse;
 import com.urbanairship.api.reports.model.ReportsAPIOpensResponse;
@@ -337,12 +337,12 @@ public class APIClientResponseSuccessHandlerTest {
             listscheduleresponse.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
 
-        APIClientResponseHandler<APIListAllSchedulesResponse> handler =
-            new APIClientResponseHandler<APIListAllSchedulesResponse>(APIListAllSchedulesResponse.class);
+        APIClientResponseHandler<ListAllSchedulesResponse> handler =
+            new APIClientResponseHandler<ListAllSchedulesResponse>(ListAllSchedulesResponse.class);
 
 
         try {
-            APIClientResponse<APIListAllSchedulesResponse> response =
+            APIClientResponse<ListAllSchedulesResponse> response =
                 handler.handleResponse(httpResponse);
             assertTrue("Count incorrect",
                 response.getApiResponse().getCount() == 5);
@@ -867,11 +867,11 @@ public class APIClientResponseSuccessHandlerTest {
             new ByteArrayInputStream(successJSON.getBytes()),
             successJSON.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
-        APIClientResponseHandler<APIScheduleResponse> handler =
-            new APIClientResponseHandler<APIScheduleResponse>(APIScheduleResponse.class);
+        APIClientResponseHandler<ScheduleResponse> handler =
+            new APIClientResponseHandler<ScheduleResponse>(ScheduleResponse.class);
 
         try {
-            APIClientResponse<APIScheduleResponse> response =
+            APIClientResponse<ScheduleResponse> response =
                 handler.handleResponse(httpResponse);
             assertTrue("Operation ID incorrect",
                 response.getApiResponse().getOperationId().equals("OpID"));

@@ -2,9 +2,9 @@
  * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
-package com.urbanairship.api.client.parse;
+package com.urbanairship.api.schedule.parse;
 
-import com.urbanairship.api.client.model.APIScheduleResponse;
+import com.urbanairship.api.schedule.model.ScheduleResponse;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.schedule.model.SchedulePayload;
@@ -18,12 +18,12 @@ import java.util.List;
 Readers are the part of the deserialization process that actually builds and
 return an object.
  */
-public final class APIScheduleResponseReader implements JsonObjectReader<APIScheduleResponse> {
+public final class ScheduleResponseReader implements JsonObjectReader<ScheduleResponse> {
 
-    private final APIScheduleResponse.Builder builder;
+    private final ScheduleResponse.Builder builder;
 
-    public APIScheduleResponseReader() {
-        this.builder = APIScheduleResponse.newBuilder();
+    public ScheduleResponseReader() {
+        this.builder = ScheduleResponse.newBuilder();
     }
 
     public void readOk(JsonParser jsonParser) throws IOException {
@@ -54,7 +54,7 @@ public final class APIScheduleResponseReader implements JsonObjectReader<APISche
     }
 
     @Override
-    public APIScheduleResponse validateAndBuild() throws IOException {
+    public ScheduleResponse validateAndBuild() throws IOException {
         try {
             return builder.build();
         } catch (Exception ex) {

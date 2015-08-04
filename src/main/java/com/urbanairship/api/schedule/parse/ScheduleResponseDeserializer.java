@@ -2,11 +2,11 @@
  * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
-package com.urbanairship.api.client.parse;
+package com.urbanairship.api.schedule.parse;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
-import com.urbanairship.api.client.model.APIScheduleResponse;
+import com.urbanairship.api.schedule.model.ScheduleResponse;
 import com.urbanairship.api.common.parse.FieldParser;
 import com.urbanairship.api.common.parse.FieldParserRegistry;
 import com.urbanairship.api.common.parse.MapFieldParserRegistry;
@@ -24,46 +24,46 @@ the boilerplate necessary for Jackson stream parsing, which is essentially what
  If you're using Intellij, be sure and toggle open the code that's
  been collapsed.
  */
-public final class APIScheduleResponseDeserializer extends JsonDeserializer<APIScheduleResponse> {
+public final class ScheduleResponseDeserializer extends JsonDeserializer<ScheduleResponse> {
 
-    private static final FieldParserRegistry<APIScheduleResponse, APIScheduleResponseReader> FIELD_PARSER =
-            new MapFieldParserRegistry<APIScheduleResponse, APIScheduleResponseReader>(
-                    ImmutableMap.<String, FieldParser<APIScheduleResponseReader>>builder()
-                            .put("ok", new FieldParser<APIScheduleResponseReader>() {
+    private static final FieldParserRegistry<ScheduleResponse, ScheduleResponseReader> FIELD_PARSER =
+            new MapFieldParserRegistry<ScheduleResponse, ScheduleResponseReader>(
+                    ImmutableMap.<String, FieldParser<ScheduleResponseReader>>builder()
+                            .put("ok", new FieldParser<ScheduleResponseReader>() {
                                 @Override
-                                public void parse(APIScheduleResponseReader reader,
+                                public void parse(ScheduleResponseReader reader,
                                                   JsonParser jsonParser,
                                                   DeserializationContext deserializationContext) throws IOException {
                                     reader.readOk(jsonParser);
                                 }
                             })
-                            .put("operation_id", new FieldParser<APIScheduleResponseReader>() {
+                            .put("operation_id", new FieldParser<ScheduleResponseReader>() {
                                 @Override
-                                public void parse(APIScheduleResponseReader reader,
+                                public void parse(ScheduleResponseReader reader,
                                                   JsonParser jsonParser,
                                                   DeserializationContext deserializationContext) throws IOException {
                                     reader.readOperationId(jsonParser);
                                 }
                             })
-                            .put("schedule_urls", new FieldParser<APIScheduleResponseReader>() {
+                            .put("schedule_urls", new FieldParser<ScheduleResponseReader>() {
                                 @Override
-                                public void parse(APIScheduleResponseReader reader,
+                                public void parse(ScheduleResponseReader reader,
                                                   JsonParser jsonParser,
                                                   DeserializationContext deserializationContext) throws IOException {
                                     reader.readScheduleUrls(jsonParser);
                                 }
                             })
-                            .put("schedule_ids", new FieldParser<APIScheduleResponseReader>() {
+                            .put("schedule_ids", new FieldParser<ScheduleResponseReader>() {
                                 @Override
-                                public void parse(APIScheduleResponseReader reader,
+                                public void parse(ScheduleResponseReader reader,
                                                   JsonParser jsonParser,
                                                   DeserializationContext deserializationContext) throws IOException {
                                     reader.readScheduleIds(jsonParser);
                                 }
                             })
-                            .put("schedules", new FieldParser<APIScheduleResponseReader>() {
+                            .put("schedules", new FieldParser<ScheduleResponseReader>() {
                                 @Override
-                                public void parse(APIScheduleResponseReader reader,
+                                public void parse(ScheduleResponseReader reader,
                                                   JsonParser jsonParser,
                                                   DeserializationContext deserializationContext) throws IOException {
                                     reader.readSchedulePayloads(jsonParser);
@@ -72,22 +72,22 @@ public final class APIScheduleResponseDeserializer extends JsonDeserializer<APIS
                             .build()
             );
 
-    private final StandardObjectDeserializer<APIScheduleResponse, ?> deserializer;
+    private final StandardObjectDeserializer<ScheduleResponse, ?> deserializer;
 
-    public APIScheduleResponseDeserializer() {
-        this.deserializer = new StandardObjectDeserializer<APIScheduleResponse, APIScheduleResponseReader>(
+    public ScheduleResponseDeserializer() {
+        this.deserializer = new StandardObjectDeserializer<ScheduleResponse, ScheduleResponseReader>(
                 FIELD_PARSER,
-                new Supplier<APIScheduleResponseReader>() {
+                new Supplier<ScheduleResponseReader>() {
                     @Override
-                    public APIScheduleResponseReader get() {
-                        return new APIScheduleResponseReader();
+                    public ScheduleResponseReader get() {
+                        return new ScheduleResponseReader();
                     }
                 }
         );
     }
 
     @Override
-    public APIScheduleResponse deserialize(JsonParser jsonParser, DeserializationContext
+    public ScheduleResponse deserialize(JsonParser jsonParser, DeserializationContext
             deserializationContext)
             throws IOException {
         return deserializer.deserialize(jsonParser, deserializationContext);

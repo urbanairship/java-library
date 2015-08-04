@@ -7,13 +7,12 @@ import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.channel.information.model.TagMutationPayload;
 import com.urbanairship.api.client.model.APIClientResponse;
 import com.urbanairship.api.client.model.APIListAllChannelsResponse;
-import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
+import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
 import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
 import com.urbanairship.api.client.model.APIListTagsResponse;
 import com.urbanairship.api.client.model.APILocationResponse;
-import com.urbanairship.api.push.model.PushResponse;
+import com.urbanairship.api.schedule.model.ScheduleResponse;
 import com.urbanairship.api.client.model.APIReportsPushListingResponse;
-import com.urbanairship.api.client.model.APIScheduleResponse;
 import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.location.model.BoundedBox;
@@ -259,7 +258,7 @@ public class APIClientTest {
                         .withStatus(201)));
 
         try {
-            APIClientResponse<APIListAllSchedulesResponse> response = client.listAllSchedules();
+            APIClientResponse<ListAllSchedulesResponse> response = client.listAllSchedules();
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/schedules/"))
@@ -347,7 +346,7 @@ public class APIClientTest {
                         .withStatus(201)));
 
         try {
-            APIClientResponse<APIListAllSchedulesResponse> response = client.listAllSchedules("643a297a-7313-45f0-853f-e68785e54c77", 25, "asc");
+            APIClientResponse<ListAllSchedulesResponse> response = client.listAllSchedules("643a297a-7313-45f0-853f-e68785e54c77", 25, "asc");
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/schedules?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"))
@@ -397,7 +396,7 @@ public class APIClientTest {
                         .withStatus(201)));
 
         try {
-            APIClientResponse<APIListAllSchedulesResponse> response = client.listAllSchedules("https://go.urbanairship.com/api/schedules?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc");
+            APIClientResponse<ListAllSchedulesResponse> response = client.listAllSchedules("https://go.urbanairship.com/api/schedules?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc");
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/schedules?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"))
@@ -460,7 +459,7 @@ public class APIClientTest {
                         .withStatus(201)));
 
         try {
-            APIClientResponse<APIScheduleResponse> response = client.schedule(schedulePayload);
+            APIClientResponse<ScheduleResponse> response = client.schedule(schedulePayload);
 
             // Verify components of the underlying request
             verify(postRequestedFor(urlEqualTo("/api/schedules/"))
@@ -530,7 +529,7 @@ public class APIClientTest {
                         .withStatus(201)));
 
         try {
-            APIClientResponse<APIScheduleResponse> response = client.updateSchedule(schedulePayload, "id");
+            APIClientResponse<ScheduleResponse> response = client.updateSchedule(schedulePayload, "id");
 
             // Verify components of the underlying request
             verify(putRequestedFor(urlEqualTo("/api/schedules/id"))

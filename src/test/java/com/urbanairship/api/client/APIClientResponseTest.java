@@ -4,14 +4,14 @@ import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.channel.information.model.ChannelView;
 import com.urbanairship.api.client.model.APIClientResponse;
 import com.urbanairship.api.client.model.APIListAllChannelsResponse;
-import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
+import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
 import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
 import com.urbanairship.api.client.model.APIListSingleChannelResponse;
 import com.urbanairship.api.client.model.APIListTagsResponse;
 import com.urbanairship.api.client.model.APILocationResponse;
+import com.urbanairship.api.schedule.model.ScheduleResponse;
 import com.urbanairship.api.push.model.PushResponse;
 import com.urbanairship.api.client.model.APIReportsPushListingResponse;
-import com.urbanairship.api.client.model.APIScheduleResponse;
 import com.urbanairship.api.client.model.SegmentInformation;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
@@ -328,16 +328,16 @@ public class APIClientResponseTest {
     public void testAPIScheduleResponse() {
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
-        APIScheduleResponse scheduleResponse = APIScheduleResponse.newBuilder()
+        ScheduleResponse scheduleResponse = ScheduleResponse.newBuilder()
                 .setOk(true)
                 .addAllScheduleUrls(Arrays.asList("ID1", "ID2"))
                 .setOperationId("ID")
                 .build();
-        APIClientResponse.Builder<APIScheduleResponse> builder =
-                new APIClientResponse.Builder<APIScheduleResponse>()
+        APIClientResponse.Builder<ScheduleResponse> builder =
+                new APIClientResponse.Builder<ScheduleResponse>()
                         .setApiResponse(scheduleResponse)
                         .setHttpResponse(httpResponse);
-        APIClientResponse<APIScheduleResponse> testResponse = builder.build();
+        APIClientResponse<ScheduleResponse> testResponse = builder.build();
         assertTrue("HTTP response not set properly",
                 testResponse.getHttpResponse().equals(httpResponse));
 
@@ -365,18 +365,18 @@ public class APIClientResponseTest {
                 .setUrl("http://sample.com/")
                 .build();
 
-        APIListAllSchedulesResponse listScheduleResponse = APIListAllSchedulesResponse.newBuilder()
+        ListAllSchedulesResponse listScheduleResponse = ListAllSchedulesResponse.newBuilder()
                 .setOk(true)
                 .setCount(5)
                 .setTotalCount(6)
                 .addSchedule(sample)
                 .build();
 
-        APIClientResponse.Builder<APIListAllSchedulesResponse> builder =
-                new APIClientResponse.Builder<APIListAllSchedulesResponse>()
+        APIClientResponse.Builder<ListAllSchedulesResponse> builder =
+                new APIClientResponse.Builder<ListAllSchedulesResponse>()
                         .setApiResponse(listScheduleResponse)
                         .setHttpResponse(httpResponse);
-        APIClientResponse<APIListAllSchedulesResponse> testResponse = builder.build();
+        APIClientResponse<ListAllSchedulesResponse> testResponse = builder.build();
         assertTrue("HTTP response not set properly",
                 testResponse.getHttpResponse().equals(httpResponse));
 

@@ -10,13 +10,11 @@ import com.google.common.base.Preconditions;
 import com.urbanairship.api.channel.information.model.TagMutationPayload;
 import com.urbanairship.api.client.model.APIClientResponse;
 import com.urbanairship.api.client.model.APIListAllChannelsResponse;
-import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
 import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
 import com.urbanairship.api.client.model.APIListSingleChannelResponse;
 import com.urbanairship.api.client.model.APIListTagsResponse;
 import com.urbanairship.api.client.model.APILocationResponse;
 import com.urbanairship.api.client.model.APIReportsPushListingResponse;
-import com.urbanairship.api.client.model.APIScheduleResponse;
 import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.Point;
 import com.urbanairship.api.reports.model.AppStats;
@@ -25,7 +23,6 @@ import com.urbanairship.api.reports.model.PerPushSeriesResponse;
 import com.urbanairship.api.reports.model.ReportsAPIOpensResponse;
 import com.urbanairship.api.reports.model.ReportsAPITimeInAppResponse;
 import com.urbanairship.api.reports.model.SinglePushInfoResponse;
-import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.segments.model.AudienceSegment;
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
 import com.urbanairship.api.tag.model.BatchModificationPayload;
@@ -67,9 +64,6 @@ public class APIClient {
     private final static String UA_APPLICATION_JSON = "application/vnd.urbanairship+json;";
 
     /* URI Paths */
-    private final static String API_PUSH_PATH = "/api/push/";
-    private final static String API_VALIDATE_PATH = "/api/push/validate/";
-    private final static String API_SCHEDULE_PATH = "/api/schedules/";
     private final static String API_TAGS_PATH = "/api/tags/";
     private final static String API_TAGS_BATCH_PATH = "/api/tags/batch/";
     private final static String API_LOCATION_PATH = "/api/location/";
@@ -207,96 +201,6 @@ public class APIClient {
         }
 
         return baseURI.resolve(path);
-    }
-
-    /* Schedules API */
-
-    public APIClientResponse<APIScheduleResponse> schedule(SchedulePayload payload) throws IOException {
-        Preconditions.checkNotNull(payload, "Payload required when scheduling a push request");
-        Request request = provisionRequest(Request.Post(baseURIResolution(baseURI, API_SCHEDULE_PATH)));
-        request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing schedule request %s", request));
-        }
-
-        return provisionExecutor()
-            .execute(request)
-            .handleResponse(new APIClientResponseHandler<APIScheduleResponse>(APIScheduleResponse.class));
-    }
-
-    public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules() throws IOException {
-        Request request = provisionRequest(Request.Get(baseURIResolution(baseURI, API_SCHEDULE_PATH)));
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing list all schedules request %s", request));
-        }
-
-        return provisionExecutor()
-            .execute(request)
-            .handleResponse(new APIClientResponseHandler<APIListAllSchedulesResponse>(APIListAllSchedulesResponse.class));
-    }
-
-    public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules(String start, int limit, String order) throws IOException {
-        String path = "/api/schedules" + "?" + "start=" + start + "&limit=" + limit + "&order=" + order;
-        Request request = provisionRequest(Request.Get(baseURIResolution(baseURI, path)));
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing list all schedules request %s", request));
-        }
-
-        return provisionExecutor()
-            .execute(request)
-            .handleResponse(new APIClientResponseHandler<APIListAllSchedulesResponse>(APIListAllSchedulesResponse.class));
-    }
-
-    public APIClientResponse<APIListAllSchedulesResponse> listAllSchedules(String next_page) throws IOException, URISyntaxException {
-        URI np = new URI(next_page);
-        Request request = provisionRequest(Request.Get(baseURIResolution(baseURI, np.getPath() + "?" + np.getQuery())));
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing list all schedules request %s", request));
-        }
-
-        return provisionExecutor()
-            .execute(request)
-            .handleResponse(new APIClientResponseHandler<APIListAllSchedulesResponse>(APIListAllSchedulesResponse.class));
-    }
-
-    public APIClientResponse<SchedulePayload> listSchedule(String id) throws IOException {
-        Request request = provisionRequest(Request.Get(baseURIResolution(baseURI, API_SCHEDULE_PATH + id)));
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing list specific schedule request %s", request));
-        }
-
-        return provisionExecutor()
-            .execute(request)
-            .handleResponse(new APIClientResponseHandler<SchedulePayload>(SchedulePayload.class));
-    }
-
-    public APIClientResponse<APIScheduleResponse> updateSchedule(SchedulePayload payload, String id) throws IOException {
-        Preconditions.checkNotNull(payload, "Payload is required when updating schedule");
-        Request req = provisionRequest(Request.Put(baseURIResolution(baseURI, API_SCHEDULE_PATH + id)));
-        req.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing update schedule request %s", req));
-        }
-
-        return provisionExecutor()
-            .execute(req)
-            .handleResponse(new APIClientResponseHandler<APIScheduleResponse>(APIScheduleResponse.class));
-    }
-
-    public HttpResponse deleteSchedule(String id) throws IOException {
-        Request req = provisionRequest(Request.Delete(baseURIResolution(baseURI, API_SCHEDULE_PATH + id)));
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing delete schedule request %s", req));
-        }
-
-        return provisionExecutor().execute(req).returnResponse();
     }
 
     /* Tags API */
