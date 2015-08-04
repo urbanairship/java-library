@@ -55,7 +55,7 @@ public class PushExample {
                                          .build();
 
         try {
-            Response<PushResponse> response = client.execute(PushRequest.createPushRequest(payload));
+            Response<PushResponse> response = client.execute(PushRequest.newRequest(payload));
             logger.debug("PUSH SUCCEEDED");
             logger.debug(String.format("RESPONSE:%s", response.toString()));
         }
