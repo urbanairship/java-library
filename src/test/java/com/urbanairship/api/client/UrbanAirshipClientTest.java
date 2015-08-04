@@ -2,7 +2,6 @@ package com.urbanairship.api.client;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
-import com.urbanairship.api.client.model.APIClientResponse;
 import com.urbanairship.api.push.model.PushResponse;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
@@ -87,7 +86,7 @@ public class UrbanAirshipClientTest {
                 .withStatus(201)));
 
         try {
-            Response<PushResponse> response = client.execute(PushRequest.createPushRequest(payload));
+            Response<PushResponse> response = client.execute(PushRequest.newRequest(payload));
 
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/push/"))
@@ -161,7 +160,7 @@ public class UrbanAirshipClientTest {
 
 
         try {
-            Response<PushResponse> response = proxyClient.execute(PushRequest.createPushRequest(payload));
+            Response<PushResponse> response = proxyClient.execute(PushRequest.newRequest(payload));
 
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/push/"))
@@ -230,7 +229,7 @@ public class UrbanAirshipClientTest {
                 .withBody(pushJSON)
                 .withStatus(201)));
         try {
-            Response<PushResponse> response = client.execute(PushRequest.createValidateRequest(payload));
+            Response<PushResponse> response = client.execute(PushRequest.newRequest(payload).setValidateOnly(true));
 
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/push/validate/"))

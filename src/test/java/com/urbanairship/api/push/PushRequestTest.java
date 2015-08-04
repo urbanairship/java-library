@@ -28,8 +28,8 @@ public class PushRequestTest {
         .setNotification(Notifications.alert("Foo"))
         .build();
 
-    PushRequest pushRequest = PushRequest.createPushRequest(payload);
-    PushRequest validateRequest = PushRequest.createValidateRequest(payload);
+    PushRequest pushRequest = PushRequest.newRequest(payload);
+    PushRequest validateRequest = PushRequest.newRequest(payload).setValidateOnly(true);
 
     @Test
     public void testContentType() throws Exception {
@@ -39,8 +39,8 @@ public class PushRequestTest {
 
     @Test
     public void testMethod() throws Exception {
-        assertEquals(pushRequest.getHTTPMethod(), Request.HTTPMethod.POST);
-        assertEquals(validateRequest.getHTTPMethod(), Request.HTTPMethod.POST);
+        assertEquals(pushRequest.getHttpMethod(), Request.HttpMethod.POST);
+        assertEquals(validateRequest.getHttpMethod(), Request.HttpMethod.POST);
     }
 
     @Test
