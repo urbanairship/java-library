@@ -1,11 +1,11 @@
 package com.urbanairship.api.schedule;
 
-import com.urbanairship.api.client.parse.APIResponseObjectMapper;
-import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushPayload;
+import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
+import com.urbanairship.api.schedule.parse.ScheduleObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
@@ -30,7 +30,7 @@ public class ListSchedulesResponseTest {
                 "\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2016!\",\"android\":{},\"ios\":{}}},\"pus" +
                 "h_ids\":[\"b217a321-922f-4aee-b239-ca1b58c6b652\"]}]}";
 
-        ObjectMapper mapper = APIResponseObjectMapper.getInstance();
+        ObjectMapper mapper = ScheduleObjectMapper.getInstance();
 
         try {
             ListAllSchedulesResponse response = mapper.readValue(listscheduleresponse, ListAllSchedulesResponse.class);
@@ -83,7 +83,7 @@ public class ListSchedulesResponseTest {
                 "\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2016!\",\"android\":{},\"ios\":{}}},\"pus" +
                 "h_ids\":[\"b217a321-922f-4aee-b239-ca1b58c6b652\"]}]}";
 
-        ObjectMapper mapper = APIResponseObjectMapper.getInstance();
+        ObjectMapper mapper = ScheduleObjectMapper.getInstance();
 
         try {
             ListAllSchedulesResponse response = mapper.readValue(listscheduleresponse, ListAllSchedulesResponse.class);

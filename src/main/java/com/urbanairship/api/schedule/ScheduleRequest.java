@@ -4,23 +4,20 @@ package com.urbanairship.api.schedule;
  * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
-import com.google.common.collect.Sets;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.push.model.PushPayload;
-import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.schedule.model.ScheduleResponse;
+import com.urbanairship.api.schedule.parse.ScheduleObjectMapper;
 import org.apache.http.entity.ContentType;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 public class ScheduleRequest implements Request<ScheduleResponse> {
@@ -30,12 +27,10 @@ public class ScheduleRequest implements Request<ScheduleResponse> {
     private final Schedule schedule;
     private final PushPayload pushPayload;
     private final String path;
-    private final HttpMethod method;
-    private final HashSet<String > pushIds = Sets.newHashSet();
-    private String url;
+    private final HTTPMethod method;
     private String name;
 
-    private ScheduleRequest(Schedule schedule, PushPayload pushPayload, HttpMethod method, String path) {
+    private ScheduleRequest(Schedule schedule, PushPayload pushPayload, HTTPMethod method, String path) {
         this.schedule = schedule;
         this.pushPayload = pushPayload;
         this.path = path;
@@ -43,30 +38,15 @@ public class ScheduleRequest implements Request<ScheduleResponse> {
     }
 
     public static ScheduleRequest newRequest(Schedule schedule, PushPayload payload) {
-        return new ScheduleRequest(schedule, payload, HttpMethod.POST, API_SCHEDULE_PATH);
+        return new ScheduleRequest(schedule, payload, HTTPMethod.POST, API_SCHEDULE_PATH);
     }
 
     public static ScheduleRequest newUpdateRequest(Schedule schedule, PushPayload payload, String scheduleId) {
-        return new ScheduleRequest(schedule, payload, HttpMethod.PUT, API_SCHEDULE_PATH + scheduleId);
-    }
-
-    public ScheduleRequest setUrl(String url) {
-        this.url = url;
-        return this;
+        return new ScheduleRequest(schedule, payload, HTTPMethod.PUT, API_SCHEDULE_PATH + scheduleId);
     }
 
     public ScheduleRequest setName(String name) {
         this.name = name;
-        return this;
-    }
-
-    public ScheduleRequest addPushId(String pushId) {
-        this.pushIds.add(pushId);
-        return this;
-    }
-
-    public ScheduleRequest addAllPushIds(Collection<String> pushIds) {
-        this.pushIds.addAll(pushIds);
         return this;
     }
 
@@ -84,7 +64,7 @@ public class ScheduleRequest implements Request<ScheduleResponse> {
     }
 
     @Override
-    public HttpMethod getHttpMethod() {
+    public HTTPMethod getHTTPMethod() {
         return method;
     }
 
@@ -92,10 +72,8 @@ public class ScheduleRequest implements Request<ScheduleResponse> {
     public String getRequestBody() {
         return SchedulePayload.newBuilder()
                 .setName(name)
-                .setUrl(url)
                 .setPushPayload(pushPayload)
                 .setSchedule(schedule)
-                .addAllPushIds(pushIds)
                 .build()
                 .toJSON();
     }
@@ -110,7 +88,7 @@ public class ScheduleRequest implements Request<ScheduleResponse> {
         return new ResponseParser<ScheduleResponse>() {
             @Override
             public ScheduleResponse parse(String response) throws IOException {
-                return PushObjectMapper.getInstance().readValue(response, ScheduleResponse.class);
+                return ScheduleObjectMapper.getInstance().readValue(response, ScheduleResponse.class);
             }
         };
     }

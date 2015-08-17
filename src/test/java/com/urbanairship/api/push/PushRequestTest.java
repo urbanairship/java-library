@@ -39,8 +39,8 @@ public class PushRequestTest {
 
     @Test
     public void testMethod() throws Exception {
-        assertEquals(pushRequest.getHttpMethod(), Request.HttpMethod.POST);
-        assertEquals(validateRequest.getHttpMethod(), Request.HttpMethod.POST);
+        assertEquals(pushRequest.getHTTPMethod(), Request.HTTPMethod.POST);
+        assertEquals(validateRequest.getHTTPMethod(), Request.HTTPMethod.POST);
     }
 
     @Test

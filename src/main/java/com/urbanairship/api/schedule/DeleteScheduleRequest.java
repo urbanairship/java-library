@@ -4,6 +4,7 @@ package com.urbanairship.api.schedule;
  * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
+import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
@@ -11,6 +12,7 @@ import org.apache.http.entity.ContentType;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.Map;
 
 public class DeleteScheduleRequest implements Request<String> {
@@ -32,12 +34,14 @@ public class DeleteScheduleRequest implements Request<String> {
 
     @Override
     public Map<String, String> getRequestHeaders() {
-        return null;
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put(HttpHeaders.ACCEPT, UA_VERSION);
+        return headers;
     }
 
     @Override
-    public HttpMethod getHttpMethod() {
-        return HttpMethod.DELETE;
+    public HTTPMethod getHTTPMethod() {
+        return HTTPMethod.DELETE;
     }
 
     @Override

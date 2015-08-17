@@ -113,7 +113,7 @@ public class UrbanAirshipClient {
     public <T> Response<T> execute(final Request<T> request) throws IOException {
         org.apache.http.client.fluent.Request apacheRequest;
 
-        switch (request.getHttpMethod()) {
+        switch (request.getHTTPMethod()) {
             case GET:
                 apacheRequest = org.apache.http.client.fluent.Request.Get(request.getUri(baseURI));
                 break;
@@ -197,14 +197,16 @@ public class UrbanAirshipClient {
      * @throws IOException
      */
     private <T> T parseResponse(ResponseParser<T> parser, HttpResponse response) throws IOException {
-        String jsonPayload;
+        String jsonPayload = null;
         try {
-            jsonPayload = EntityUtils.toString(response.getEntity());
+            if (response.getEntity() != null) {
+                jsonPayload = EntityUtils.toString(response.getEntity());
+            }
         } finally {
             EntityUtils.consumeQuietly(response.getEntity());
         }
 
-        if (StringUtils.isBlank(jsonPayload) && parser != null) {
+        if (jsonPayload != null && !StringUtils.isBlank(jsonPayload) && parser != null) {
             return parser.parse(jsonPayload);
         }
 

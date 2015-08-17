@@ -1,45 +1,52 @@
 package com.urbanairship.api.schedule;
 
+import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
-import com.urbanairship.api.push.parse.PushObjectMapper;
+import com.urbanairship.api.schedule.model.SchedulePayload;
+import com.urbanairship.api.schedule.parse.ScheduleObjectMapper;
 import org.apache.http.entity.ContentType;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class ListSchedulesRequest implements Request<ListAllSchedulesResponse> {
 
     private final String path;
+    private final boolean isLookup;
 
-    private ListSchedulesRequest(String path) {
+    private ListSchedulesRequest(String path, boolean isLookup) {
         this.path = path;
+        this.isLookup = isLookup;
     }
 
 
     public static ListSchedulesRequest newRequest() {
-        return new ListSchedulesRequest(ScheduleRequest.API_SCHEDULE_PATH);
+        return new ListSchedulesRequest(ScheduleRequest.API_SCHEDULE_PATH, false);
     }
 
     public static ListSchedulesRequest newRequest(String scheduleId) {
-        return new ListSchedulesRequest(ScheduleRequest.API_SCHEDULE_PATH + scheduleId);
+        return new ListSchedulesRequest(ScheduleRequest.API_SCHEDULE_PATH + scheduleId, true);
     }
 
-    public static ListSchedulesRequest newRequest(String start, int limit, String order) {
-        String path = ScheduleRequest.API_SCHEDULE_PATH + "?" + "start=" + start + "&limit=" + limit + "&order=" + order;
-        return new ListSchedulesRequest(path);
+    public static ListSchedulesRequest newRequest(UUID start, int limit, ListSchedulesOrderType orderType) {
+        String path = ScheduleRequest.API_SCHEDULE_PATH + "?" + "start=" + start.toString() + "&limit=" + limit + "&order=" + orderType.getKey();
+        return new ListSchedulesRequest(path, false);
     }
 
     public static ListSchedulesRequest newRequest(URI nextPage) {
-        return new ListSchedulesRequest(nextPage.getPath() + "?" + nextPage.getQuery());
+        return new ListSchedulesRequest(nextPage.getPath() + "?" + nextPage.getQuery(), false);
     }
 
     @Override
-    public HttpMethod getHttpMethod() {
-        return HttpMethod.GET;
+    public HTTPMethod getHTTPMethod() {
+        return HTTPMethod.GET;
     }
 
     @Override
@@ -54,7 +61,10 @@ public class ListSchedulesRequest implements Request<ListAllSchedulesResponse> {
 
     @Override
     public Map<String, String> getRequestHeaders() {
-        return null;
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put(HttpHeaders.CONTENT_TYPE, CONTENT_TYPE_JSON);
+        headers.put(HttpHeaders.ACCEPT, UA_VERSION);
+        return headers;
     }
 
     @Override
@@ -64,10 +74,27 @@ public class ListSchedulesRequest implements Request<ListAllSchedulesResponse> {
 
     @Override
     public ResponseParser<ListAllSchedulesResponse> getResponseParser() {
-        return new ResponseParser<ListAllSchedulesResponse>() {
-            @Override
-            public ListAllSchedulesResponse parse(String response) throws IOException {
-                return PushObjectMapper.getInstance().readValue(response, ListAllSchedulesResponse.class);
-            }
-        };    }
+        final ObjectMapper mapper = ScheduleObjectMapper.getInstance();
+
+        if (isLookup) {
+            return new ResponseParser<ListAllSchedulesResponse>() {
+                @Override
+                public ListAllSchedulesResponse parse(String response) throws IOException {
+                    return ListAllSchedulesResponse.newBuilder()
+                        .setCount(1)
+                        .setTotalCount(1)
+                        .setOk(true)
+                        .addSchedule(mapper.readValue(response, SchedulePayload.class))
+                        .build();
+                }
+            };
+        } else {
+            return new ResponseParser<ListAllSchedulesResponse>() {
+                @Override
+                public ListAllSchedulesResponse parse(String response) throws IOException {
+                    return mapper.readValue(response, ListAllSchedulesResponse.class);
+                }
+            };
+        }
+    }
 }

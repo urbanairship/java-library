@@ -20,7 +20,7 @@ public interface Request<T> {
     public final static String CONTENT_TYPE_JSON = "application/json";
     public final static String UA_VERSION = "application/vnd.urbanairship+json; version=3";
 
-    public static enum HttpMethod {
+    public static enum HTTPMethod {
         GET,
         HEAD,
         POST,
@@ -31,7 +31,7 @@ public interface Request<T> {
     }
 
     @Nonnull
-    HttpMethod getHttpMethod();
+    HTTPMethod getHTTPMethod();
 
     @Nullable
     String getRequestBody();

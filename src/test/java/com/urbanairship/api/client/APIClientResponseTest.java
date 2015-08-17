@@ -4,28 +4,18 @@ import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.channel.information.model.ChannelView;
 import com.urbanairship.api.client.model.APIClientResponse;
 import com.urbanairship.api.client.model.APIListAllChannelsResponse;
-import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
 import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
 import com.urbanairship.api.client.model.APIListSingleChannelResponse;
 import com.urbanairship.api.client.model.APIListTagsResponse;
 import com.urbanairship.api.client.model.APILocationResponse;
-import com.urbanairship.api.schedule.model.ScheduleResponse;
-import com.urbanairship.api.push.model.PushResponse;
 import com.urbanairship.api.client.model.APIReportsPushListingResponse;
 import com.urbanairship.api.client.model.SegmentInformation;
-import com.urbanairship.api.push.model.DeviceType;
-import com.urbanairship.api.push.model.DeviceTypeData;
-import com.urbanairship.api.push.model.PushPayload;
-import com.urbanairship.api.push.model.audience.Selectors;
-import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.reports.model.PerPushDetailResponse;
 import com.urbanairship.api.reports.model.PerPushSeriesResponse;
 import com.urbanairship.api.reports.model.ReportsAPIOpensResponse;
 import com.urbanairship.api.reports.model.ReportsAPITimeInAppResponse;
 import com.urbanairship.api.reports.model.SinglePushInfoResponse;
-import com.urbanairship.api.schedule.model.Schedule;
-import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.segments.model.AudienceSegment;
 import com.urbanairship.api.segments.model.TagPredicateBuilder;
 import org.apache.http.HttpResponse;
@@ -36,7 +26,6 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -325,67 +314,6 @@ public class APIClientResponseTest {
     }
 
     @Test
-    public void testAPIScheduleResponse() {
-        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-                new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
-        ScheduleResponse scheduleResponse = ScheduleResponse.newBuilder()
-                .setOk(true)
-                .addAllScheduleUrls(Arrays.asList("ID1", "ID2"))
-                .setOperationId("ID")
-                .build();
-        APIClientResponse.Builder<ScheduleResponse> builder =
-                new APIClientResponse.Builder<ScheduleResponse>()
-                        .setApiResponse(scheduleResponse)
-                        .setHttpResponse(httpResponse);
-        APIClientResponse<ScheduleResponse> testResponse = builder.build();
-        assertTrue("HTTP response not set properly",
-                testResponse.getHttpResponse().equals(httpResponse));
-
-        assertTrue("APIResponse not set properly",
-                testResponse.getApiResponse().equals(scheduleResponse));
-    }
-
-    @Test
-    public void testAPIListAllSchedulesResponse() {
-        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-                new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
-
-
-        SchedulePayload sample = SchedulePayload.newBuilder()
-                .setSchedule(Schedule.newBuilder()
-                        .setScheduledTimestamp(DateTime.now())
-                        .build())
-                .setPushPayload(PushPayload.newBuilder()
-                        .setAudience(Selectors.all())
-                        .setNotification(Notification.newBuilder()
-                                .setAlert("UA Push")
-                                .build())
-                        .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-                        .build())
-                .setUrl("http://sample.com/")
-                .build();
-
-        ListAllSchedulesResponse listScheduleResponse = ListAllSchedulesResponse.newBuilder()
-                .setOk(true)
-                .setCount(5)
-                .setTotalCount(6)
-                .addSchedule(sample)
-                .build();
-
-        APIClientResponse.Builder<ListAllSchedulesResponse> builder =
-                new APIClientResponse.Builder<ListAllSchedulesResponse>()
-                        .setApiResponse(listScheduleResponse)
-                        .setHttpResponse(httpResponse);
-        APIClientResponse<ListAllSchedulesResponse> testResponse = builder.build();
-        assertTrue("HTTP response not set properly",
-                testResponse.getHttpResponse().equals(httpResponse));
-
-        assertTrue("APIResponse not set properly",
-                testResponse.getApiResponse().equals(listScheduleResponse));
-
-    }
-
-    @Test
     public void testAPIListTagsResponse() {
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
@@ -477,26 +405,6 @@ public class APIClientResponseTest {
 
         assertTrue("APIResponse not set properly",
                 testResponse.getApiResponse().equals(response));
-    }
-
-    @Test
-    public void testAPIPushResponse() {
-        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-                new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
-        PushResponse pushResponse = PushResponse.newBuilder()
-                .setOk(true)
-                .addAllPushIds(Arrays.asList("ID1", "ID2"))
-                .setOperationId("OpID")
-                .build();
-        APIClientResponse.Builder<PushResponse> builder =
-                new APIClientResponse.Builder<PushResponse>()
-                        .setApiResponse(pushResponse)
-                        .setHttpResponse(httpResponse);
-        APIClientResponse<PushResponse> apiResponse = builder.build();
-        assertTrue("HTTP response not set properly",
-                apiResponse.getHttpResponse().equals(httpResponse));
-        assertTrue("APIResponse not set properly",
-                apiResponse.getApiResponse().equals(pushResponse));
     }
 
 }

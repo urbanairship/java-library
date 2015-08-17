@@ -6,8 +6,8 @@ package com.urbanairship.api.push;
 
 import com.google.common.base.Preconditions;
 import com.google.common.net.HttpHeaders;
-import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.Request;
+import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.PushResponse;
@@ -71,8 +71,8 @@ public class PushRequest implements Request<PushResponse> {
     }
 
     @Override
-    public HttpMethod getHttpMethod() {
-        return HttpMethod.POST;
+    public HTTPMethod getHTTPMethod() {
+        return HTTPMethod.POST;
     }
 
     @Override
