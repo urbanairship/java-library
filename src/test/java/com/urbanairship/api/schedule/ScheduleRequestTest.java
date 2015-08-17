@@ -53,8 +53,8 @@ public class ScheduleRequestTest {
 
     @Test
     public void testMethod() throws Exception {
-        assertEquals(scheduleRequest.getHTTPMethod(), Request.HTTPMethod.POST);
-        assertEquals(updateScheduleRequest.getHTTPMethod(), Request.HTTPMethod.PUT);
+        assertEquals(scheduleRequest.getHttpMethod(), Request.HttpMethod.POST);
+        assertEquals(updateScheduleRequest.getHttpMethod(), Request.HttpMethod.PUT);
     }
 
     @Test

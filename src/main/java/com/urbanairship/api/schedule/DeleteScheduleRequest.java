@@ -15,6 +15,10 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The DeleteScheduleRequest class builds delete scheduled push requests to be executed in
+ * the {@link com.urbanairship.api.client.UrbanAirshipClient}.
+ */
 public class DeleteScheduleRequest implements Request<String> {
 
     private final String scheduleId;
@@ -23,6 +27,12 @@ public class DeleteScheduleRequest implements Request<String> {
         this.scheduleId = scheduleId;
     }
 
+    /**
+     * Create the delete request.
+     *
+     * @param scheduleId String
+     * @return DeleteScheduleRequest
+     */
     public static DeleteScheduleRequest newRequest(String scheduleId) {
         return new DeleteScheduleRequest(scheduleId);
     }
@@ -40,8 +50,8 @@ public class DeleteScheduleRequest implements Request<String> {
     }
 
     @Override
-    public HTTPMethod getHTTPMethod() {
-        return HTTPMethod.DELETE;
+    public HttpMethod getHttpMethod() {
+        return HttpMethod.DELETE;
     }
 
     @Override

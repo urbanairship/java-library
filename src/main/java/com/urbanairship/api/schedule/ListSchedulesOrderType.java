@@ -1,5 +1,8 @@
 package com.urbanairship.api.schedule;
 
+/**
+ * A class of ordering options for Schedules API listing responses.
+ */
 public enum ListSchedulesOrderType {
 
     ASC("asc"),

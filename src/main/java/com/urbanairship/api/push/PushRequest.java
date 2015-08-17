@@ -71,8 +71,8 @@ public class PushRequest implements Request<PushResponse> {
     }
 
     @Override
-    public HTTPMethod getHTTPMethod() {
-        return HTTPMethod.POST;
+    public HttpMethod getHttpMethod() {
+        return HttpMethod.POST;
     }
 
     @Override

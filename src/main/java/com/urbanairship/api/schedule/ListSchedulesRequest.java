@@ -8,7 +8,6 @@ import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.schedule.parse.ScheduleObjectMapper;
 import org.apache.http.entity.ContentType;
-import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
 import java.net.URI;
@@ -16,37 +15,85 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * The ListSchedulesRequest class builds schedule listing requests to be executed in
+ * the {@link com.urbanairship.api.client.UrbanAirshipClient}.
+ */
 public class ListSchedulesRequest implements Request<ListAllSchedulesResponse> {
 
+    private static final ResponseParser<ListAllSchedulesResponse> LIST_PARSER = new ResponseParser<ListAllSchedulesResponse>() {
+        @Override
+        public ListAllSchedulesResponse parse(String response) throws IOException {
+            return ScheduleObjectMapper.getInstance().readValue(response, ListAllSchedulesResponse.class);
+        }
+    };
+
+    private static final ResponseParser<ListAllSchedulesResponse> SINGLE_LOOKUP_PARSER = new ResponseParser<ListAllSchedulesResponse>() {
+        @Override
+        public ListAllSchedulesResponse parse(String response) throws IOException {
+            return ListAllSchedulesResponse.newBuilder()
+                .setCount(1)
+                .setTotalCount(1)
+                .setOk(true)
+                .addSchedule(ScheduleObjectMapper.getInstance().readValue(response, SchedulePayload.class))
+                .build();
+        }
+    };
+
     private final String path;
-    private final boolean isLookup;
+    private final ResponseParser<ListAllSchedulesResponse> parser;
 
-    private ListSchedulesRequest(String path, boolean isLookup) {
+    private ListSchedulesRequest(String path, ResponseParser<ListAllSchedulesResponse> parser) {
         this.path = path;
-        this.isLookup = isLookup;
+        this.parser = parser;
     }
 
-
+    /**
+     * Create a request to list all scheduled pushes.
+     *
+     * @return ListSchedulesRequest
+     */
     public static ListSchedulesRequest newRequest() {
-        return new ListSchedulesRequest(ScheduleRequest.API_SCHEDULE_PATH, false);
+        return new ListSchedulesRequest(ScheduleRequest.API_SCHEDULE_PATH, LIST_PARSER);
     }
 
+    /**
+     * Create a request to lookup a specific scheduled push.
+     *
+     * @param scheduleId String
+     * @return ListSchedulesRequest
+     */
     public static ListSchedulesRequest newRequest(String scheduleId) {
-        return new ListSchedulesRequest(ScheduleRequest.API_SCHEDULE_PATH + scheduleId, true);
+        return new ListSchedulesRequest(ScheduleRequest.API_SCHEDULE_PATH + scheduleId, SINGLE_LOOKUP_PARSER);
     }
 
+    /**
+     * Create a request to list scheduled pushes with search parameters.
+     *
+     * @param start UUID - The starting scheduled ID.
+     * @param limit int - The page limit.
+     * @param orderType ListSchedulesOrderType - How to order the response listing.
+     * @return ListSchedulesRequest
+     */
     public static ListSchedulesRequest newRequest(UUID start, int limit, ListSchedulesOrderType orderType) {
         String path = ScheduleRequest.API_SCHEDULE_PATH + "?" + "start=" + start.toString() + "&limit=" + limit + "&order=" + orderType.getKey();
-        return new ListSchedulesRequest(path, false);
+        return new ListSchedulesRequest(path, LIST_PARSER);
     }
 
+
+    /**
+     * Create a request to lookup a next page of scheduled push listings.
+     *
+     * @param nextPage URI - The next page given by a listing response.
+     * @return ListSchedulesRequest
+     */
     public static ListSchedulesRequest newRequest(URI nextPage) {
-        return new ListSchedulesRequest(nextPage.getPath() + "?" + nextPage.getQuery(), false);
+        return new ListSchedulesRequest(nextPage.getPath() + "?" + nextPage.getQuery(), LIST_PARSER);
     }
 
     @Override
-    public HTTPMethod getHTTPMethod() {
-        return HTTPMethod.GET;
+    public HttpMethod getHttpMethod() {
+        return HttpMethod.GET;
     }
 
     @Override
@@ -74,27 +121,6 @@ public class ListSchedulesRequest implements Request<ListAllSchedulesResponse> {
 
     @Override
     public ResponseParser<ListAllSchedulesResponse> getResponseParser() {
-        final ObjectMapper mapper = ScheduleObjectMapper.getInstance();
-
-        if (isLookup) {
-            return new ResponseParser<ListAllSchedulesResponse>() {
-                @Override
-                public ListAllSchedulesResponse parse(String response) throws IOException {
-                    return ListAllSchedulesResponse.newBuilder()
-                        .setCount(1)
-                        .setTotalCount(1)
-                        .setOk(true)
-                        .addSchedule(mapper.readValue(response, SchedulePayload.class))
-                        .build();
-                }
-            };
-        } else {
-            return new ResponseParser<ListAllSchedulesResponse>() {
-                @Override
-                public ListAllSchedulesResponse parse(String response) throws IOException {
-                    return mapper.readValue(response, ListAllSchedulesResponse.class);
-                }
-            };
-        }
+        return parser;
     }
 }

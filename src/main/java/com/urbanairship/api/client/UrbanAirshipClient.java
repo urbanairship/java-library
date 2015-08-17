@@ -113,7 +113,7 @@ public class UrbanAirshipClient {
     public <T> Response<T> execute(final Request<T> request) throws IOException {
         org.apache.http.client.fluent.Request apacheRequest;
 
-        switch (request.getHTTPMethod()) {
+        switch (request.getHttpMethod()) {
             case GET:
                 apacheRequest = org.apache.http.client.fluent.Request.Get(request.getUri(baseURI));
                 break;

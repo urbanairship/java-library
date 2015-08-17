@@ -23,7 +23,7 @@ public class DeleteScheduleRequestTest {
 
     @Test
     public void testMethod() throws Exception {
-        assertEquals(deleteScheduleRequest.getHTTPMethod(), Request.HTTPMethod.DELETE);
+        assertEquals(deleteScheduleRequest.getHttpMethod(), Request.HttpMethod.DELETE);
     }
 
     @Test

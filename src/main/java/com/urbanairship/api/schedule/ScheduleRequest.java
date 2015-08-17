@@ -20,6 +20,10 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The ScheduleRequest class builds scheduled push requests to be executed in
+ * the {@link com.urbanairship.api.client.UrbanAirshipClient}.
+ */
 public class ScheduleRequest implements Request<ScheduleResponse> {
 
     final static String API_SCHEDULE_PATH = "/api/schedules/";
@@ -27,22 +31,37 @@ public class ScheduleRequest implements Request<ScheduleResponse> {
     private final Schedule schedule;
     private final PushPayload pushPayload;
     private final String path;
-    private final HTTPMethod method;
+    private final HttpMethod method;
     private String name;
 
-    private ScheduleRequest(Schedule schedule, PushPayload pushPayload, HTTPMethod method, String path) {
+    private ScheduleRequest(Schedule schedule, PushPayload pushPayload, HttpMethod method, String path) {
         this.schedule = schedule;
         this.pushPayload = pushPayload;
         this.path = path;
         this.method = method;
     }
 
+    /**
+     * Create a scheduled push request.
+     *
+     * @param schedule Schedule
+     * @param payload PushPayload
+     * @return ScheduleRequest
+     */
     public static ScheduleRequest newRequest(Schedule schedule, PushPayload payload) {
-        return new ScheduleRequest(schedule, payload, HTTPMethod.POST, API_SCHEDULE_PATH);
+        return new ScheduleRequest(schedule, payload, HttpMethod.POST, API_SCHEDULE_PATH);
     }
 
+    /**
+     * Create a request to update a scheduled push.
+     *
+     * @param schedule Schedule
+     * @param payload PushPayload
+     * @param scheduleId String
+     * @return ScheduleRequest
+     */
     public static ScheduleRequest newUpdateRequest(Schedule schedule, PushPayload payload, String scheduleId) {
-        return new ScheduleRequest(schedule, payload, HTTPMethod.PUT, API_SCHEDULE_PATH + scheduleId);
+        return new ScheduleRequest(schedule, payload, HttpMethod.PUT, API_SCHEDULE_PATH + scheduleId);
     }
 
     public ScheduleRequest setName(String name) {
@@ -64,7 +83,7 @@ public class ScheduleRequest implements Request<ScheduleResponse> {
     }
 
     @Override
-    public HTTPMethod getHTTPMethod() {
+    public HttpMethod getHttpMethod() {
         return method;
     }
 

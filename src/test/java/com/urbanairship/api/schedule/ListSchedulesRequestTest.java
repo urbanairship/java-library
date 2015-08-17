@@ -34,10 +34,10 @@ public class ListSchedulesRequestTest {
 
     @Test
     public void testMethod() throws Exception {
-        assertEquals(listAllSchedulesRequest.getHTTPMethod(), Request.HTTPMethod.GET);
-        assertEquals(listSchedulesWithParamsRequest.getHTTPMethod(), Request.HTTPMethod.GET);
-        assertEquals(listSingleScheduleRequest.getHTTPMethod(), Request.HTTPMethod.GET);
-        assertEquals(listNextPageSchedulesRequest.getHTTPMethod(), Request.HTTPMethod.GET);
+        assertEquals(listAllSchedulesRequest.getHttpMethod(), Request.HttpMethod.GET);
+        assertEquals(listSchedulesWithParamsRequest.getHttpMethod(), Request.HttpMethod.GET);
+        assertEquals(listSingleScheduleRequest.getHttpMethod(), Request.HttpMethod.GET);
+        assertEquals(listNextPageSchedulesRequest.getHttpMethod(), Request.HttpMethod.GET);
     }
 
     @Test
