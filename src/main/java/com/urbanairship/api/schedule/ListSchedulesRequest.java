@@ -1,5 +1,6 @@
 package com.urbanairship.api.schedule;
 
+import com.google.common.base.Preconditions;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
@@ -64,6 +65,7 @@ public class ListSchedulesRequest implements Request<ListAllSchedulesResponse> {
      * @return ListSchedulesRequest
      */
     public static ListSchedulesRequest newRequest(String scheduleId) {
+        Preconditions.checkNotNull(scheduleId, "Schedule ID may not be null");
         return new ListSchedulesRequest(ScheduleRequest.API_SCHEDULE_PATH + scheduleId, SINGLE_LOOKUP_PARSER);
     }
 
@@ -76,6 +78,8 @@ public class ListSchedulesRequest implements Request<ListAllSchedulesResponse> {
      * @return ListSchedulesRequest
      */
     public static ListSchedulesRequest newRequest(UUID start, int limit, ListSchedulesOrderType orderType) {
+        Preconditions.checkNotNull(start, "Start ID may not be null");
+        Preconditions.checkNotNull(orderType, "Listing response order option may not be null");
         String path = ScheduleRequest.API_SCHEDULE_PATH + "?" + "start=" + start.toString() + "&limit=" + limit + "&order=" + orderType.getKey();
         return new ListSchedulesRequest(path, LIST_PARSER);
     }
@@ -88,6 +92,7 @@ public class ListSchedulesRequest implements Request<ListAllSchedulesResponse> {
      * @return ListSchedulesRequest
      */
     public static ListSchedulesRequest newRequest(URI nextPage) {
+        Preconditions.checkNotNull(nextPage, "Next page URI may not be null");
         return new ListSchedulesRequest(nextPage.getPath() + "?" + nextPage.getQuery(), LIST_PARSER);
     }
 

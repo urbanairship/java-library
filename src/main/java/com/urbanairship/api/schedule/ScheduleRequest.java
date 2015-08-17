@@ -4,6 +4,7 @@ package com.urbanairship.api.schedule;
  * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
+import com.google.common.base.Preconditions;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
@@ -49,6 +50,8 @@ public class ScheduleRequest implements Request<ScheduleResponse> {
      * @return ScheduleRequest
      */
     public static ScheduleRequest newRequest(Schedule schedule, PushPayload payload) {
+        Preconditions.checkNotNull(schedule, "Schedule may not be null");
+        Preconditions.checkNotNull(payload, "Push payload may not be null");
         return new ScheduleRequest(schedule, payload, HttpMethod.POST, API_SCHEDULE_PATH);
     }
 
@@ -61,6 +64,9 @@ public class ScheduleRequest implements Request<ScheduleResponse> {
      * @return ScheduleRequest
      */
     public static ScheduleRequest newUpdateRequest(Schedule schedule, PushPayload payload, String scheduleId) {
+        Preconditions.checkNotNull(scheduleId, "Schedule ID may not be mull");
+        Preconditions.checkNotNull(schedule, "Schedule may not be null");
+        Preconditions.checkNotNull(payload, "Push payload may not be null");
         return new ScheduleRequest(schedule, payload, HttpMethod.PUT, API_SCHEDULE_PATH + scheduleId);
     }
 

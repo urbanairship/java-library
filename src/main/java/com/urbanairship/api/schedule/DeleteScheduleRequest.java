@@ -4,6 +4,7 @@ package com.urbanairship.api.schedule;
  * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
+import com.google.common.base.Preconditions;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
@@ -34,6 +35,7 @@ public class DeleteScheduleRequest implements Request<String> {
      * @return DeleteScheduleRequest
      */
     public static DeleteScheduleRequest newRequest(String scheduleId) {
+        Preconditions.checkNotNull(scheduleId, "Schedule ID may not be null");
         return new DeleteScheduleRequest(scheduleId);
     }
 
