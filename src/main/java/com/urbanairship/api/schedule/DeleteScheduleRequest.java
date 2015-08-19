@@ -9,6 +9,7 @@ import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.entity.ContentType;
 
 import java.io.IOException;
@@ -35,7 +36,7 @@ public class DeleteScheduleRequest implements Request<String> {
      * @return DeleteScheduleRequest
      */
     public static DeleteScheduleRequest newRequest(String scheduleId) {
-        Preconditions.checkNotNull(scheduleId, "Schedule ID may not be null");
+        Preconditions.checkArgument(StringUtils.isNotEmpty(scheduleId), "Schedule ID may not be null");
         return new DeleteScheduleRequest(scheduleId);
     }
 

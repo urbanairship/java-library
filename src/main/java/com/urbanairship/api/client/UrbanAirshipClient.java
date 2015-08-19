@@ -206,7 +206,7 @@ public class UrbanAirshipClient {
             EntityUtils.consumeQuietly(response.getEntity());
         }
 
-        if (jsonPayload != null && !StringUtils.isBlank(jsonPayload) && parser != null) {
+        if (StringUtils.isNotBlank(jsonPayload) && parser != null) {
             return parser.parse(jsonPayload);
         }
 

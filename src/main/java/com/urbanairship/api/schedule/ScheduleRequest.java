@@ -14,6 +14,7 @@ import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.schedule.model.ScheduleResponse;
 import com.urbanairship.api.schedule.parse.ScheduleObjectMapper;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.entity.ContentType;
 
 import java.io.IOException;
@@ -64,7 +65,7 @@ public class ScheduleRequest implements Request<ScheduleResponse> {
      * @return ScheduleRequest
      */
     public static ScheduleRequest newUpdateRequest(Schedule schedule, PushPayload payload, String scheduleId) {
-        Preconditions.checkNotNull(scheduleId, "Schedule ID may not be mull");
+        Preconditions.checkArgument(StringUtils.isNotEmpty(scheduleId), "Schedule ID may not be mull");
         Preconditions.checkNotNull(schedule, "Schedule may not be null");
         Preconditions.checkNotNull(payload, "Push payload may not be null");
         return new ScheduleRequest(schedule, payload, HttpMethod.PUT, API_SCHEDULE_PATH + scheduleId);

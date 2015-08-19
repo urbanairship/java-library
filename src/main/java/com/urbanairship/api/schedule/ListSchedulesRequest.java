@@ -8,6 +8,7 @@ import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.schedule.parse.ScheduleObjectMapper;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.entity.ContentType;
 
 import java.io.IOException;
@@ -65,7 +66,7 @@ public class ListSchedulesRequest implements Request<ListAllSchedulesResponse> {
      * @return ListSchedulesRequest
      */
     public static ListSchedulesRequest newRequest(String scheduleId) {
-        Preconditions.checkNotNull(scheduleId, "Schedule ID may not be null");
+        Preconditions.checkArgument(StringUtils.isNotEmpty(scheduleId), "Schedule ID may not be null");
         return new ListSchedulesRequest(ScheduleRequest.API_SCHEDULE_PATH + scheduleId, SINGLE_LOOKUP_PARSER);
     }
 
