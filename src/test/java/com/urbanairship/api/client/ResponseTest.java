@@ -113,7 +113,6 @@ public class ResponseTest {
             response.getHeaders().equals(headers));
         assertTrue("HTTP response status not set properly",
             response.getStatus() == httpResponse.getStatusLine().getStatusCode());
-
     }
 
 }

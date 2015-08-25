@@ -2,8 +2,7 @@
  * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
-package com.urbanairship.api.channel.information.model;
-
+package com.urbanairship.api.channel.model;
 
 import com.google.common.base.Optional;
 
@@ -14,6 +13,10 @@ public enum DeviceType {
     ANDROID("android");
 
     private final String identifier;
+
+    private DeviceType() {
+        this(null);
+    }
 
     private DeviceType(String identifier) {
         this.identifier = identifier;

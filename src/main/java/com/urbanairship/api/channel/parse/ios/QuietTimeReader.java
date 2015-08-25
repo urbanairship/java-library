@@ -2,9 +2,9 @@
  * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
-package com.urbanairship.api.channel.information.parse.ios;
+package com.urbanairship.api.channel.parse.ios;
 
-import com.urbanairship.api.channel.information.model.ios.QuietTime;
+import com.urbanairship.api.channel.model.ios.QuietTime;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import org.codehaus.jackson.JsonParser;

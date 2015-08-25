@@ -7,11 +7,8 @@ package com.urbanairship.api.client;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.urbanairship.api.channel.information.model.TagMutationPayload;
 import com.urbanairship.api.client.model.APIClientResponse;
-import com.urbanairship.api.client.model.APIListAllChannelsResponse;
 import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
-import com.urbanairship.api.client.model.APIListSingleChannelResponse;
 import com.urbanairship.api.client.model.APIListTagsResponse;
 import com.urbanairship.api.client.model.APILocationResponse;
 import com.urbanairship.api.client.model.APIReportsPushListingResponse;
@@ -490,49 +487,6 @@ public class APIClient {
         }
 
         return provisionExecutor().execute(req).returnResponse();
-    }
-
-    /* Channel Registration API */
-
-    public HttpResponse channelsTagMutations(TagMutationPayload payload) throws IOException {
-
-        String path = API_CHANNELS_PATH + "tags/";
-        Request request = provisionRequest(Request.Post(baseURIResolution(baseURI, path)));
-        request.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing tag mutation request %s", request));
-        }
-
-        return provisionExecutor().execute(request).returnResponse();
-    }
-
-    /* Channel Listing API */
-
-    public APIClientResponse<APIListSingleChannelResponse> listChannel(String channel) throws IOException {
-
-        String path = API_CHANNELS_PATH + channel;
-        Request req = provisionRequest(Request.Get(baseURIResolution(baseURI, path)));
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing get single channels request %s", req));
-        }
-
-        return provisionExecutor()
-            .execute(req)
-            .handleResponse(new APIClientResponseHandler<APIListSingleChannelResponse>(APIListSingleChannelResponse.class));
-    }
-
-    public APIClientResponse<APIListAllChannelsResponse> listAllChannels() throws IOException {
-        Request req = provisionRequest(Request.Get(baseURIResolution(baseURI, API_CHANNELS_PATH)));
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing list all channels request %s", req));
-        }
-
-        return provisionExecutor()
-            .execute(req)
-            .handleResponse(new APIClientResponseHandler<APIListAllChannelsResponse>(APIListAllChannelsResponse.class));
     }
 
     /* Reports API */

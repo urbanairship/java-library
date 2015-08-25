@@ -2,10 +2,10 @@
  * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
-package com.urbanairship.api.channel.information.parse;
+package com.urbanairship.api.channel.parse;
 
 import com.google.common.base.Optional;
-import com.urbanairship.api.channel.information.model.DeviceType;
+import com.urbanairship.api.channel.model.DeviceType;
 import com.urbanairship.api.common.parse.APIParsingException;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;

@@ -5,8 +5,6 @@
 package com.urbanairship.api.push.parse;
 
 import com.google.common.collect.ImmutableMap;
-import com.urbanairship.api.channel.information.model.TagMutationPayload;
-import com.urbanairship.api.channel.information.parse.TagMutationPayloadSerializer;
 import com.urbanairship.api.common.parse.CommonObjectMapper;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
@@ -280,7 +278,6 @@ public class PushObjectMapper {
             /* Tags */
                 .addSerializer(AddRemoveDeviceFromTagPayload.class, new AddRemoveDeviceFromTagPayloadSerializer())
                 .addSerializer(BatchModificationPayload.class, new BatchModificationPayloadSerializer())
-                .addSerializer(TagMutationPayload.class, new TagMutationPayloadSerializer())
 
             /* Segments */
                 .addDeserializer(SegmentDefinition.class, new SegmentDefinitionDeserializer());

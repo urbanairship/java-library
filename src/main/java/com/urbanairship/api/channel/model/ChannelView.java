@@ -2,15 +2,16 @@
  * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
-package com.urbanairship.api.channel.information.model;
+package com.urbanairship.api.channel.model;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.urbanairship.api.channel.information.model.ios.IosSettings;
+import com.urbanairship.api.channel.model.ios.IosSettings;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 
 import java.util.Map;
 
@@ -19,24 +20,29 @@ public final class ChannelView {
     private final String channelId;
     private final DeviceType deviceType;
     private final boolean installed;
-    private final boolean optedIn;
+    private final boolean optIn;
     private final Optional<Boolean> background;
     private final Optional<String> pushAddress;
-    private final long createdMillis;
-    private final Optional<Long> lastRegistrationMillis;
+    private final DateTime created;
+    private final Optional<DateTime> lastRegistration;
     private final Optional<String> alias;
     private final ImmutableSet<String> tags;
     private final ImmutableMap<String, ImmutableSet<String>> tagGroups;
     private final Optional<IosSettings> iosSettings;
 
+    private ChannelView() {
+        this(null, null, true, true, Optional.<Boolean>absent(), Optional.<String>absent(), null,
+            Optional.<DateTime>absent(), Optional.<String>absent(), null, null, Optional.<IosSettings>absent());
+    }
+
     public ChannelView(String channelId,
                        DeviceType deviceType,
                        boolean installed,
-                       boolean optedIn,
+                       boolean optIn,
                        Optional<Boolean> background,
                        Optional<String> pushAddress,
-                       long createdMillis,
-                       Optional<Long> lastRegistrationMillis,
+                       DateTime created,
+                       Optional<DateTime> lastRegistration,
                        Optional<String> alias,
                        ImmutableSet<String> tags,
                        ImmutableMap<String, ImmutableSet<String>> tagGroups,
@@ -44,11 +50,11 @@ public final class ChannelView {
         this.channelId = channelId;
         this.deviceType = deviceType;
         this.installed = installed;
-        this.optedIn = optedIn;
+        this.optIn = optIn;
         this.background = background;
         this.pushAddress = pushAddress;
-        this.createdMillis = createdMillis;
-        this.lastRegistrationMillis = lastRegistrationMillis;
+        this.created = created;
+        this.lastRegistration = lastRegistration;
         this.alias = alias;
         this.tags = tags;
         this.tagGroups = tagGroups;
@@ -71,8 +77,8 @@ public final class ChannelView {
         return installed;
     }
 
-    public boolean isOptedIn() {
-        return optedIn;
+    public boolean isOptIn() {
+        return optIn;
     }
 
     public Optional<Boolean> getBackground() {
@@ -83,12 +89,12 @@ public final class ChannelView {
         return pushAddress;
     }
 
-    public long getCreatedMillis() {
-        return createdMillis;
+    public DateTime getCreated() {
+        return created;
     }
 
-    public Optional<Long> getLastRegistrationMillis() {
-        return lastRegistrationMillis;
+    public Optional<DateTime> getLastRegistration() {
+        return lastRegistration;
     }
 
     public Optional<String> getAlias() {
@@ -110,24 +116,24 @@ public final class ChannelView {
     @Override
     public String toString() {
         return "ChannelView{" +
-                "channelId='" + channelId + '\'' +
-                ", deviceType=" + deviceType +
-                ", installed=" + installed +
-                ", optedIn=" + optedIn +
-                ", background=" + background +
-                ", pushAddress=" + pushAddress +
-                ", createdMillis=" + createdMillis +
-                ", lastRegistrationMillis=" + lastRegistrationMillis +
-                ", alias=" + alias +
-                ", tags=" + tags +
-                ", tagGroups=" + tagGroups +
-                ", iosSettings=" + iosSettings +
-                '}';
+            "channelId='" + channelId + '\'' +
+            ", deviceType=" + deviceType +
+            ", installed=" + installed +
+            ", optIn=" + optIn +
+            ", background=" + background +
+            ", pushAddress=" + pushAddress +
+            ", created=" + created +
+            ", lastRegistration=" + lastRegistration +
+            ", alias=" + alias +
+            ", tags=" + tags +
+            ", tagGroups=" + tagGroups +
+            ", iosSettings=" + iosSettings +
+            '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(channelId, deviceType, installed, optedIn, background, pushAddress, createdMillis, lastRegistrationMillis, alias, tags, tagGroups, iosSettings);
+        return Objects.hashCode(channelId, deviceType, installed, optIn, background, pushAddress, created, lastRegistration, alias, tags, tagGroups, iosSettings);
     }
 
     @Override
@@ -142,11 +148,11 @@ public final class ChannelView {
         return Objects.equal(this.channelId, other.channelId) &&
             Objects.equal(this.deviceType, other.deviceType) &&
             Objects.equal(this.installed, other.installed) &&
-            Objects.equal(this.optedIn, other.optedIn) &&
+            Objects.equal(this.optIn, other.optIn) &&
             Objects.equal(this.background, other.background) &&
             Objects.equal(this.pushAddress, other.pushAddress) &&
-            Objects.equal(this.createdMillis, other.createdMillis) &&
-            Objects.equal(this.lastRegistrationMillis, other.lastRegistrationMillis) &&
+            Objects.equal(this.created, other.created) &&
+            Objects.equal(this.lastRegistration, other.lastRegistration) &&
             Objects.equal(this.alias, other.alias) &&
             Objects.equal(this.tags, other.tags) &&
             Objects.equal(this.tagGroups, other.tagGroups) &&
@@ -158,12 +164,12 @@ public final class ChannelView {
         private final ImmutableMap.Builder<String, ImmutableSet<String>> tagGroups = ImmutableMap.builder();
         private String channelId = null;
         private DeviceType deviceType = null;
-        private Boolean optedIn = null;
+        private Boolean optIn = null;
         private Boolean installed = null;
         private Boolean background = null;
         private String pushAddress = null;
-        private Long createdMillis = null;
-        private Long lastRegistrationMillis = null;
+        private DateTime created = null;
+        private DateTime lastRegistration = null;
         private String alias = null;
         private IosSettings iosSettings = null;
 
@@ -185,8 +191,8 @@ public final class ChannelView {
             return this;
         }
 
-        public Builder setOptedIn(Boolean optedIn) {
-            this.optedIn = optedIn;
+        public Builder setOptIn(Boolean optIn) {
+            this.optIn = optIn;
             return this;
         }
 
@@ -200,13 +206,13 @@ public final class ChannelView {
             return this;
         }
 
-        public Builder setCreatedMillis(Long createdMillis) {
-            this.createdMillis = createdMillis;
+        public Builder setCreated(DateTime created) {
+            this.created = created;
             return this;
         }
 
-        public Builder setLastRegistrationMillis(Long lastRegistrationMillis) {
-            this.lastRegistrationMillis = lastRegistrationMillis;
+        public Builder setLastRegistration(DateTime lastRegistration) {
+            this.lastRegistration = lastRegistration;
             return this;
         }
 
@@ -255,22 +261,22 @@ public final class ChannelView {
             Preconditions.checkNotNull(channelId);
             Preconditions.checkNotNull(deviceType);
             Preconditions.checkNotNull(installed);
-            Preconditions.checkNotNull(optedIn);
-            Preconditions.checkNotNull(createdMillis);
+            Preconditions.checkNotNull(optIn);
+            Preconditions.checkNotNull(created);
 
             return new ChannelView(
-                    channelId,
-                    deviceType,
-                    installed,
-                    optedIn,
-                    Optional.fromNullable(background),
-                    Optional.fromNullable(pushAddress),
-                    createdMillis,
-                    Optional.fromNullable(lastRegistrationMillis),
-                    Optional.fromNullable(alias),
-                    tags.build(),
-                    tagGroups.build(),
-                    Optional.fromNullable(iosSettings)
+                channelId,
+                deviceType,
+                installed,
+                optIn,
+                Optional.fromNullable(background),
+                Optional.fromNullable(pushAddress),
+                created,
+                Optional.fromNullable(lastRegistration),
+                Optional.fromNullable(alias),
+                tags.build(),
+                tagGroups.build(),
+                Optional.fromNullable(iosSettings)
             );
         }
     }

@@ -2,8 +2,7 @@
  * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
-package com.urbanairship.api.channel.information.model.ios;
-
+package com.urbanairship.api.channel.model.ios;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
@@ -19,6 +18,10 @@ public final class IosSettings {
         this.badge = badge;
         this.quiettime = quiettime;
         this.timezone = timezone;
+    }
+
+    private IosSettings() {
+        this(0, Optional.<QuietTime>absent(), Optional.<String>absent());
     }
 
     public static Builder newBuilder() {

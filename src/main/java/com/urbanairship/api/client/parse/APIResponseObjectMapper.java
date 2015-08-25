@@ -4,19 +4,9 @@
 
 package com.urbanairship.api.client.parse;
 
-import com.urbanairship.api.channel.information.model.ChannelView;
-import com.urbanairship.api.channel.information.model.DeviceType;
-import com.urbanairship.api.channel.information.model.ios.IosSettings;
-import com.urbanairship.api.channel.information.model.ios.QuietTime;
-import com.urbanairship.api.channel.information.parse.ChannelViewDeserializer;
-import com.urbanairship.api.channel.information.parse.DeviceTypeDeserializer;
-import com.urbanairship.api.channel.information.parse.ios.IosSettingsDeserializer;
-import com.urbanairship.api.channel.information.parse.ios.QuietTimeDeserializer;
 import com.urbanairship.api.client.APIError;
 import com.urbanairship.api.client.APIErrorDetails;
-import com.urbanairship.api.client.model.APIListAllChannelsResponse;
 import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
-import com.urbanairship.api.client.model.APIListSingleChannelResponse;
 import com.urbanairship.api.client.model.APIListTagsResponse;
 import com.urbanairship.api.client.model.APILocationResponse;
 import com.urbanairship.api.client.model.APIReportsPushListingResponse;
@@ -84,12 +74,6 @@ public final class APIResponseObjectMapper {
         MODULE.addDeserializer(Operator.class, OperatorDeserializer.INSTANCE);
         MODULE.addSerializer(Operator.class, OperatorSerializer.INSTANCE);
         MODULE.addDeserializer(Predicate.class, PredicateDeserializer.INSTANCE);
-        MODULE.addDeserializer(IosSettings.class, new IosSettingsDeserializer());
-        MODULE.addDeserializer(QuietTime.class, new QuietTimeDeserializer());
-        MODULE.addDeserializer(ChannelView.class, new ChannelViewDeserializer());
-        MODULE.addDeserializer(DeviceType.class, new DeviceTypeDeserializer());
-        MODULE.addDeserializer(APIListSingleChannelResponse.class, new APIListSingleChannelResponseDeserializer());
-        MODULE.addDeserializer(APIListAllChannelsResponse.class, new APIListAllChannelsResponseDeserializer());
         MODULE.addDeserializer(AppStats.class, new AppStatsDeserializer());
         MODULE.addDeserializer(PerPushCounts.class, new PerPushCountsDeserializer());
         MODULE.addDeserializer(RichPerPushCounts.class, new RichPerPushCountsDeserializer());

@@ -2,12 +2,12 @@
  * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
-package com.urbanairship.api.channel.information.parse;
+package com.urbanairship.api.channel.parse;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
-import com.urbanairship.api.channel.information.model.ChannelView;
-import com.urbanairship.api.channel.information.util.Constants;
+import com.urbanairship.api.channel.model.ChannelView;
+import com.urbanairship.api.channel.Constants;
 import com.urbanairship.api.common.parse.FieldParser;
 import com.urbanairship.api.common.parse.FieldParserRegistry;
 import com.urbanairship.api.common.parse.MapFieldParserRegistry;

@@ -2,8 +2,7 @@
  * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
-package com.urbanairship.api.channel.information.model.ios;
-
+package com.urbanairship.api.channel.model.ios;
 
 import com.google.common.base.Objects;
 
@@ -15,6 +14,10 @@ public final class QuietTime {
     private QuietTime(String start, String end) {
         this.start = start;
         this.end = end;
+    }
+
+    private QuietTime() {
+        this(null, null);
     }
 
     public static Builder newBuilder() {

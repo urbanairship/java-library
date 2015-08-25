@@ -2,14 +2,14 @@
  * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
-package com.urbanairship.api.channel.information.parse;
+package com.urbanairship.api.channel.parse;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.urbanairship.api.channel.information.model.ChannelView;
-import com.urbanairship.api.channel.information.model.DeviceType;
-import com.urbanairship.api.channel.information.model.ios.IosSettings;
-import com.urbanairship.api.channel.information.util.Constants;
+import com.urbanairship.api.channel.model.ChannelView;
+import com.urbanairship.api.channel.model.DeviceType;
+import com.urbanairship.api.channel.model.ios.IosSettings;
+import com.urbanairship.api.channel.Constants;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.BooleanFieldDeserializer;
 import com.urbanairship.api.common.parse.JsonObjectReader;
@@ -43,7 +43,7 @@ public final class ChannelViewReader implements JsonObjectReader<ChannelView> {
     }
 
     public void readOptIn(JsonParser jsonParser) throws IOException {
-        builder.setOptedIn(BooleanFieldDeserializer.INSTANCE.deserialize(jsonParser, Constants.OPT_IN));
+        builder.setOptIn(BooleanFieldDeserializer.INSTANCE.deserialize(jsonParser, Constants.OPT_IN));
     }
 
     public void readBackground(JsonParser jsonParser) throws IOException {
@@ -55,18 +55,11 @@ public final class ChannelViewReader implements JsonObjectReader<ChannelView> {
     }
 
     public void readCreated(JsonParser jsonParser) throws IOException {
-        builder.setCreatedMillis(jsonParser.readValueAs(DateTime.class).getMillis());
+        builder.setCreated(jsonParser.readValueAs(DateTime.class));
     }
 
     public void readLastRegistration(JsonParser jsonParser) throws IOException {
-        Long mills;
-        DateTime dt = jsonParser.readValueAs(DateTime.class);
-        if (dt == null) {
-            mills = null;
-        } else {
-            mills = dt.getMillis();
-        }
-        builder.setLastRegistrationMillis(mills);
+        builder.setLastRegistration(jsonParser.readValueAs(DateTime.class));
     }
 
     public void readAlias(JsonParser jsonParser) throws IOException {

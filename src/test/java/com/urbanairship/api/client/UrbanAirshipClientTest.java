@@ -29,6 +29,7 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
+import javax.ws.rs.HEAD;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -312,6 +313,7 @@ public class UrbanAirshipClientTest {
     @Test
     public void testListSpecificSchedule() {
         // Setup a client and a schedule payload
+
         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
             .setBaseURI("http://localhost:8080")
             .setKey("key")
@@ -455,7 +457,7 @@ public class UrbanAirshipClientTest {
     public void testSchedule() {
 
         // Setup a client and a schedule payload
-        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
+         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
             .setBaseURI("http://localhost:8080")
             .setKey("key")
             .setSecret("secret")
