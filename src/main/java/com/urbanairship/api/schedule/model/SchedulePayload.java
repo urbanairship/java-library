@@ -8,7 +8,6 @@ import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
-import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.PushPayload;
 import org.apache.commons.lang.StringUtils;
 
@@ -16,7 +15,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public final class SchedulePayload extends PushModelObject {
+public final class SchedulePayload extends ScheduleModelObject {
 
     private final Schedule schedule;
     private final Optional<String> url;

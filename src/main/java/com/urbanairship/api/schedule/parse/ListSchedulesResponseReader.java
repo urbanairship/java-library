@@ -2,10 +2,10 @@
  * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
-package com.urbanairship.api.client.parse;
+package com.urbanairship.api.schedule.parse;
 
 
-import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
+import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.schedule.model.SchedulePayload;
@@ -15,12 +15,12 @@ import org.codehaus.jackson.type.TypeReference;
 import java.io.IOException;
 import java.util.List;
 
-public final class APIListAllSchedulesResponseReader implements JsonObjectReader<APIListAllSchedulesResponse> {
+public final class ListSchedulesResponseReader implements JsonObjectReader<ListAllSchedulesResponse> {
 
-    private final APIListAllSchedulesResponse.Builder builder;
+    private final ListAllSchedulesResponse.Builder builder;
 
-    public APIListAllSchedulesResponseReader() {
-        this.builder = APIListAllSchedulesResponse.newBuilder();
+    public ListSchedulesResponseReader() {
+        this.builder = ListAllSchedulesResponse.newBuilder();
     }
 
     public void readOk(JsonParser jsonParser) throws IOException {
@@ -45,7 +45,7 @@ public final class APIListAllSchedulesResponseReader implements JsonObjectReader
     }
 
     @Override
-    public APIListAllSchedulesResponse validateAndBuild() throws IOException {
+    public ListAllSchedulesResponse validateAndBuild() throws IOException {
         try {
             return builder.build();
         } catch (Exception ex) {

@@ -7,31 +7,19 @@ import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.channel.information.model.TagMutationPayload;
 import com.urbanairship.api.client.model.APIClientResponse;
 import com.urbanairship.api.client.model.APIListAllChannelsResponse;
-import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
 import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
 import com.urbanairship.api.client.model.APIListTagsResponse;
 import com.urbanairship.api.client.model.APILocationResponse;
-import com.urbanairship.api.push.model.PushResponse;
 import com.urbanairship.api.client.model.APIReportsPushListingResponse;
-import com.urbanairship.api.client.model.APIScheduleResponse;
 import com.urbanairship.api.client.parse.APIResponseObjectMapper;
-import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.Point;
-import com.urbanairship.api.push.model.DeviceType;
-import com.urbanairship.api.push.model.DeviceTypeData;
-import com.urbanairship.api.push.model.PushPayload;
-import com.urbanairship.api.push.model.audience.Selectors;
-import com.urbanairship.api.push.model.notification.Notifications;
-import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.reports.model.PerPushDetailResponse;
 import com.urbanairship.api.reports.model.PerPushSeriesResponse;
 import com.urbanairship.api.reports.model.ReportsAPIOpensResponse;
 import com.urbanairship.api.reports.model.ReportsAPITimeInAppResponse;
 import com.urbanairship.api.reports.model.SinglePushInfoResponse;
-import com.urbanairship.api.schedule.model.Schedule;
-import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.segments.model.AudienceSegment;
 import com.urbanairship.api.segments.model.TagPredicateBuilder;
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
@@ -45,9 +33,7 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.log4j.BasicConfigurator;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.joda.time.Period;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -57,7 +43,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
@@ -230,353 +215,6 @@ public class APIClientTest {
         URI uriBase = new URI(base);
         URI uriNuResolved = APIClient.baseURIResolution(uriBase, relative);
         assertEquals(expected, uriNuResolved.toString());
-    }
-
-    @Test
-    public void testListAllSchedules() {
-        // Setup a client and a schedule payload
-        APIClient client = APIClient.newBuilder()
-                .setBaseURI("http://localhost:8080")
-                .setKey("key")
-                .setSecret("secret")
-                .build();
-
-        // Setup a stubbed response for the server
-        String listscheduleresponse = "{\"ok\":true,\"count\":5,\"total_count\":6,\"schedules\":" +
-                "[{\"url\":\"https://go.urbanairship.com/api/schedules/5a60e0a6-9aa7-449f-a038-6806e572baf3\",\"" +
-                "schedule\":{\"scheduled_time\":\"2015-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device" +
-                "_types\":[\"android\",\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2015!\",\"android\"" +
-                ":{},\"ios\":{}}},\"push_ids\":[\"8430f2e0-ec07-4c1e-adc4-0c7c7978e648\"]},{\"url\":\"https://go" +
-                ".urbanairship.com/api/schedules/f53aa2bd-018a-4482-8d7d-691d13407973\",\"schedule\":{\"schedule" +
-                "d_time\":\"2016-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device_types\":[\"android\"," +
-                "\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2016!\",\"android\":{},\"ios\":{}}},\"pus" +
-                "h_ids\":[\"b217a321-922f-4aee-b239-ca1b58c6b652\"]}]}";
-
-        stubFor(get(urlEqualTo("/api/schedules/"))
-                .willReturn(aResponse()
-                        .withHeader(CONTENT_TYPE_KEY, "application/json")
-                        .withBody(listscheduleresponse)
-                        .withStatus(201)));
-
-        try {
-            APIClientResponse<APIListAllSchedulesResponse> response = client.listAllSchedules();
-
-            // Verify components of the underlying HttpRequest
-            verify(getRequestedFor(urlEqualTo("/api/schedules/"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
-            List<LoggedRequest> requests = findAll(getRequestedFor(
-                    urlEqualTo("/api/schedules/")));
-            // There should only be one request
-            assertEquals(requests.size(), 1);
-
-            // The response is tested elsewhere, just check that it exists
-            assertNotNull(response);
-            assertNotNull(response.getApiResponse());
-            assertNotNull(response.getHttpResponse());
-            assertNotNull(response.getApiResponse().getOk());
-            assertNotNull(response.getApiResponse().getCount());
-            assertNotNull(response.getApiResponse().getTotal_Count());
-            assertNotNull(response.getApiResponse().getSchedules());
-        } catch (Exception ex) {
-            fail("Exception thrown " + ex);
-        }
-    }
-
-    @Test
-    public void testListSpecificSchedule() {
-        // Setup a client and a schedule payload
-        APIClient client = APIClient.newBuilder()
-                .setBaseURI("http://localhost:8080")
-                .setKey("key")
-                .setSecret("secret")
-                .build();
-
-        // Setup a stubbed response for the server
-        String listscheduleresponse = "{\"schedule\":{\"scheduled_time\":\"2015-08-07T22:10:44\"},\"name\":\"Special Scheduled Push 20\",\"push\":{\"audience\":\"ALL\",\"device_types\":\"all\",\"notification\":{\"alert\":\"Scheduled Push 20\"}},\"push_ids\":[\"274f9aa4-2d00-4911-a043-70129f29adf2\"]}";
-
-        stubFor(get(urlEqualTo("/api/schedules/ee0dd92c-de3b-46dc-9937-c9dcaef0170f"))
-                .willReturn(aResponse()
-                        .withHeader(CONTENT_TYPE_KEY, "application/json")
-                        .withBody(listscheduleresponse)
-                        .withStatus(201)));
-
-        try {
-            APIClientResponse<SchedulePayload> response = client.listSchedule("ee0dd92c-de3b-46dc-9937-c9dcaef0170f");
-
-            // Verify components of the underlying HttpRequest
-            verify(getRequestedFor(urlEqualTo("/api/schedules/ee0dd92c-de3b-46dc-9937-c9dcaef0170f"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
-            List<LoggedRequest> requests = findAll(getRequestedFor(
-                    urlEqualTo("/api/schedules/ee0dd92c-de3b-46dc-9937-c9dcaef0170f")));
-            // There should only be one request
-            assertEquals(requests.size(), 1);
-
-            // The response is tested elsewhere, just check that it exists
-            assertNotNull(response);
-            assertNotNull(response.getApiResponse());
-            assertNotNull(response.getHttpResponse());
-        } catch (Exception ex) {
-            fail("Exception thrown " + ex);
-        }
-    }
-
-    @Test
-    public void testListAllSchedulesWithParameters() {
-        // Setup a client and a schedule payload
-        APIClient client = APIClient.newBuilder()
-                .setBaseURI("http://localhost:8080")
-                .setKey("key")
-                .setSecret("secret")
-                .build();
-
-        // Setup a stubbed response for the server
-        String listscheduleresponse = "{\"ok\":true,\"count\":5,\"total_count\":6,\"schedules\":" +
-                "[{\"url\":\"https://go.urbanairship.com/api/schedules/5a60e0a6-9aa7-449f-a038-6806e572baf3\",\"" +
-                "schedule\":{\"scheduled_time\":\"2015-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device" +
-                "_types\":[\"android\",\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2015!\",\"android\"" +
-                ":{},\"ios\":{}}},\"push_ids\":[\"8430f2e0-ec07-4c1e-adc4-0c7c7978e648\"]},{\"url\":\"https://go" +
-                ".urbanairship.com/api/schedules/f53aa2bd-018a-4482-8d7d-691d13407973\",\"schedule\":{\"schedule" +
-                "d_time\":\"2016-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device_types\":[\"android\"," +
-                "\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2016!\",\"android\":{},\"ios\":{}}},\"pus" +
-                "h_ids\":[\"b217a321-922f-4aee-b239-ca1b58c6b652\"]}]}";
-
-        stubFor(get(urlEqualTo("/api/schedules?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"))
-                .willReturn(aResponse()
-                        .withHeader(CONTENT_TYPE_KEY, "application/json")
-                        .withBody(listscheduleresponse)
-                        .withStatus(201)));
-
-        try {
-            APIClientResponse<APIListAllSchedulesResponse> response = client.listAllSchedules("643a297a-7313-45f0-853f-e68785e54c77", 25, "asc");
-
-            // Verify components of the underlying HttpRequest
-            verify(getRequestedFor(urlEqualTo("/api/schedules?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
-            List<LoggedRequest> requests = findAll(getRequestedFor(
-                    urlEqualTo("/api/schedules?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc")));
-            // There should only be one request
-            assertEquals(requests.size(), 1);
-
-            // The response is tested elsewhere, just check that it exists
-            assertNotNull(response);
-            assertNotNull(response.getApiResponse());
-            assertNotNull(response.getHttpResponse());
-            assertNotNull(response.getApiResponse().getOk());
-            assertNotNull(response.getApiResponse().getCount());
-            assertNotNull(response.getApiResponse().getTotal_Count());
-            assertNotNull(response.getApiResponse().getSchedules());
-        } catch (Exception ex) {
-            fail("Exception thrown " + ex);
-        }
-    }
-
-    @Test
-    public void testListAllSchedulesNextPage() {
-        // Setup a client and a schedule payload
-        APIClient client = APIClient.newBuilder()
-                .setBaseURI("http://localhost:8080")
-                .setKey("key")
-                .setSecret("secret")
-                .build();
-
-        // Setup a stubbed response for the server
-        String listscheduleresponse = "{\"ok\":true,\"count\":5,\"total_count\":6,\"schedules\":" +
-                "[{\"url\":\"https://go.urbanairship.com/api/schedules/5a60e0a6-9aa7-449f-a038-6806e572baf3\",\"" +
-                "schedule\":{\"scheduled_time\":\"2015-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device" +
-                "_types\":[\"android\",\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2015!\",\"android\"" +
-                ":{},\"ios\":{}}},\"push_ids\":[\"8430f2e0-ec07-4c1e-adc4-0c7c7978e648\"]},{\"url\":\"https://go" +
-                ".urbanairship.com/api/schedules/f53aa2bd-018a-4482-8d7d-691d13407973\",\"schedule\":{\"schedule" +
-                "d_time\":\"2016-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device_types\":[\"android\"," +
-                "\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2016!\",\"android\":{},\"ios\":{}}},\"pus" +
-                "h_ids\":[\"b217a321-922f-4aee-b239-ca1b58c6b652\"]}]}";
-
-        stubFor(get(urlEqualTo("/api/schedules?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"))
-                .willReturn(aResponse()
-                        .withHeader(CONTENT_TYPE_KEY, "application/json")
-                        .withBody(listscheduleresponse)
-                        .withStatus(201)));
-
-        try {
-            APIClientResponse<APIListAllSchedulesResponse> response = client.listAllSchedules("https://go.urbanairship.com/api/schedules?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc");
-
-            // Verify components of the underlying HttpRequest
-            verify(getRequestedFor(urlEqualTo("/api/schedules?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
-            List<LoggedRequest> requests = findAll(getRequestedFor(
-                    urlEqualTo("/api/schedules?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc")));
-            // There should only be one request
-            assertEquals(requests.size(), 1);
-
-            // The response is tested elsewhere, just check that it exists
-            assertNotNull(response);
-            assertNotNull(response.getApiResponse());
-            assertNotNull(response.getHttpResponse());
-            assertNotNull(response.getApiResponse().getOk());
-            assertNotNull(response.getApiResponse().getCount());
-            assertNotNull(response.getApiResponse().getTotal_Count());
-            assertNotNull(response.getApiResponse().getSchedules());
-        } catch (Exception ex) {
-            fail("Exception thrown " + ex);
-        }
-    }
-
-    @Test
-    @SuppressWarnings("unchecked")
-    public void testSchedule() {
-
-        // Setup a client and a schedule payload
-        APIClient client = APIClient.newBuilder()
-                .setBaseURI("http://localhost:8080")
-                .setKey("key")
-                .setSecret("secret")
-                .build();
-
-        PushPayload pushPayload = PushPayload.newBuilder()
-                .setAudience(Selectors.all())
-                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-                .setNotification(Notifications.alert("Foo"))
-                .build();
-
-        DateTime dateTime = DateTime.now(DateTimeZone.UTC).plusSeconds(60);
-        Schedule schedule = Schedule.newBuilder()
-                //To test local schedule time instead build
-                //                  .setLocalScheduledTimestamp(dateTime)
-                .setScheduledTimestamp(dateTime)
-                .build();
-
-        SchedulePayload schedulePayload = SchedulePayload.newBuilder()
-                .setName("Test")
-                .setPushPayload(pushPayload)
-                .setSchedule(schedule)
-                .build();
-
-        // Stub out endpoint
-        // Setup a stubbed response for the server
-        String pushJSON = "{\"ok\" : true,\"operation_id\" : \"OpID\", \"schedule_urls\":[\"ScheduleURL\"]}";
-        stubFor(post(urlEqualTo("/api/schedules/"))
-                .willReturn(aResponse()
-                        .withHeader(CONTENT_TYPE_KEY, APP_JSON)
-                        .withBody(pushJSON)
-                        .withStatus(201)));
-
-        try {
-            APIClientResponse<APIScheduleResponse> response = client.schedule(schedulePayload);
-
-            // Verify components of the underlying request
-            verify(postRequestedFor(urlEqualTo("/api/schedules/"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
-            List<LoggedRequest> requests = findAll(postRequestedFor(urlEqualTo("/api/schedules/")));
-            assertEquals(requests.size(), 1);
-            String receivedBody = requests.get(0).getBodyAsString();
-            ObjectMapper mapper = PushObjectMapper.getInstance();
-            Map<String, Object> result =
-                    mapper.readValue(receivedBody,
-                            new TypeReference<Map<String, Object>>() {
-                            });
-            String name = (String) result.get("name");
-            assertTrue(name.equals("Test"));
-            Map<String, String> scheduleMap =
-                    (Map<String, String>) result.get("schedule");
-            //When testing local schedule test instead use
-            //String dateTimeString = scheduleMap.get("local_scheduled_time");
-            String dateTimeString = scheduleMap.get("scheduled_time");
-
-            // Test DateTime
-            DateTime receivedDateTime = DateTime.parse(dateTimeString, DateFormats.DATE_FORMATTER);
-            // Server truncates milliseconds off request
-            assertEquals(receivedDateTime.getMillis(), dateTime.getMillis(), 1000);
-
-            // The response is tested elsewhere, just check that it exists
-            assertNotNull(response);
-        } catch (Exception ex) {
-            fail("Exception " + ex);
-        }
-    }
-
-    @Test
-    public void testUpdateSchedule() {
-
-        // Setup a client and a schedule payload
-        APIClient client = APIClient.newBuilder()
-                .setBaseURI("http://localhost:8080")
-                .setKey("key")
-                .setSecret("secret")
-                .build();
-
-        PushPayload pushPayload = PushPayload.newBuilder()
-                .setAudience(Selectors.all())
-                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-                .setNotification(Notifications.alert("Foo"))
-                .build();
-
-        DateTime dateTime = DateTime.now(DateTimeZone.UTC).plusSeconds(60);
-        Schedule schedule = Schedule.newBuilder()
-                .setScheduledTimestamp(dateTime)
-                .build();
-
-        SchedulePayload schedulePayload = SchedulePayload.newBuilder()
-                .setName("Test")
-                .setPushPayload(pushPayload)
-                .setSchedule(schedule)
-                .build();
-
-        // Stub out endpoint
-        // Setup a stubbed response for the server
-        String responseJson = "{\"ok\" : true,\"operation_id\" : \"OpID\" }";
-        stubFor(put(urlEqualTo("/api/schedules/id"))
-                .willReturn(aResponse()
-                        .withHeader(CONTENT_TYPE_KEY, APP_JSON)
-                        .withBody(responseJson)
-                        .withStatus(201)));
-
-        try {
-            APIClientResponse<APIScheduleResponse> response = client.updateSchedule(schedulePayload, "id");
-
-            // Verify components of the underlying request
-            verify(putRequestedFor(urlEqualTo("/api/schedules/id"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
-            List<LoggedRequest> requests = findAll(putRequestedFor(urlEqualTo("/api/schedules/id")));
-            assertEquals(requests.size(), 1);
-
-            assertNotNull(response);
-            assertNotNull(response.getApiResponse());
-            assertNotNull(response.getHttpResponse());
-
-        } catch (Exception ex) {
-            fail("Exception " + ex);
-        }
-    }
-
-    @Test
-    public void testDeleteSpecificSchedule() {
-        // Setup a client
-        APIClient client = APIClient.newBuilder()
-                .setBaseURI("http://localhost:8080")
-                .setKey("key")
-                .setSecret("secret")
-                .build();
-
-        stubFor(delete(urlEqualTo("/api/schedules/puppies"))
-                .willReturn(aResponse()
-                        .withStatus(204)));
-
-        try {
-            HttpResponse response = client.deleteSchedule("puppies");
-
-            // Verify components of the underlying HttpRequest
-            verify(deleteRequestedFor(urlEqualTo("/api/schedules/puppies"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
-            List<LoggedRequest> requests = findAll(deleteRequestedFor(
-                    urlEqualTo("/api/schedules/puppies")));
-            // There should only be one request
-            assertEquals(requests.size(), 1);
-
-            // The response is tested elsewhere, just check that it exists
-            assertNotNull(response);
-            assertEquals(204, response.getStatusLine().getStatusCode());
-        } catch (Exception ex) {
-            fail("Exception thrown " + ex);
-        }
     }
 
     @Test

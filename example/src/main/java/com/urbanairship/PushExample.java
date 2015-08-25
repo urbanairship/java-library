@@ -4,12 +4,12 @@
 
 package com.urbanairship;
 
-import com.urbanairship.api.client.*;
 import com.urbanairship.api.client.UrbanAirshipClient;
 import com.urbanairship.api.client.model.APIClientResponse;
+import com.urbanairship.api.schedule.ScheduleRequest;
+import com.urbanairship.api.schedule.model.ScheduleResponse;
 import com.urbanairship.api.push.PushRequest;
 import com.urbanairship.api.push.model.PushResponse;
-import com.urbanairship.api.client.model.APIScheduleResponse;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushPayload;
@@ -40,7 +40,7 @@ public class PushExample {
 
 
         logger.debug(String.format("Make sure key and secret are set Key:%s Secret:%s",
-                                   appKey, appSecret));
+                appKey, appSecret));
 
         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
                 .setKey(appKey)
@@ -49,10 +49,10 @@ public class PushExample {
 
         logger.debug("Send the message");
         PushPayload payload = PushPayload.newBuilder()
-                                         .setAudience(Selectors.all())
-                                         .setNotification(Notifications.notification("Urban Airship Push"))
-                                         .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-                                         .build();
+                .setAudience(Selectors.all())
+                .setNotification(Notifications.notification("Urban Airship Push"))
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .build();
 
         try {
             Response<PushResponse> response = client.execute(PushRequest.newRequest(payload));
@@ -80,32 +80,27 @@ public class PushExample {
         String appKey = "appKey";
         String appSecret = "appSecret";
 
-        APIClient apiClient = APIClient.newBuilder()
-                                       .setKey(appKey)
-                                       .setSecret(appSecret)
-                                       .setBaseURI("https://go.urbanairship.com")
-                                       .setVersion(3)
-                                       .build();
+        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
+                .setKey(appKey)
+                .setSecret(appSecret)
+                .build();
 
         PushPayload payload = PushPayload.newBuilder()
-                                         .setAudience(Selectors.all())
-                                         .setNotification(Notifications.alert("Scheduled API v3"))
-                                         .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-                                         .build();
+                .setAudience(Selectors.all())
+                .setNotification(Notifications.alert("Scheduled API v3"))
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .build();
 
         DateTime dt = DateTime.now().plusSeconds(60);
         Schedule schedule = Schedule.newBuilder()
-                                    .setScheduledTimestamp(dt)
-                                    .build();
+                .setScheduledTimestamp(dt)
+                .build();
 
-        SchedulePayload schedulePayload = SchedulePayload.newBuilder()
-                                                         .setName("Urban Airship Scheduled Push")
-                                                         .setPushPayload(payload)
-                                                         .setSchedule(schedule)
-                                                         .build();
+        ScheduleRequest request = ScheduleRequest.newRequest(schedule, payload)
+                .setName("Urban Airship Scheduled Push");
 
         try {
-            APIClientResponse<APIScheduleResponse> response = apiClient.schedule(schedulePayload);
+            APIClientResponse<ScheduleResponse> response = client.execute(request);
             logger.debug("SCHEDULE PUSH SUCCEEDED");
             logger.debug(String.format("RESPONSE:%s", response.toString()));
         }
@@ -125,7 +120,6 @@ public class PushExample {
         PushExample example = new PushExample();
         example.sendPush();
         example.sendScheduledPush();
-
     }
 }
 

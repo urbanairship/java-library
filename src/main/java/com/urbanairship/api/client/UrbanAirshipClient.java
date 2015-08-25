@@ -197,14 +197,16 @@ public class UrbanAirshipClient {
      * @throws IOException
      */
     private <T> T parseResponse(ResponseParser<T> parser, HttpResponse response) throws IOException {
-        String jsonPayload;
+        String jsonPayload = null;
         try {
-            jsonPayload = EntityUtils.toString(response.getEntity());
+            if (response.getEntity() != null) {
+                jsonPayload = EntityUtils.toString(response.getEntity());
+            }
         } finally {
             EntityUtils.consumeQuietly(response.getEntity());
         }
 
-        if (StringUtils.isBlank(jsonPayload) && parser != null) {
+        if (StringUtils.isNotBlank(jsonPayload) && parser != null) {
             return parser.parse(jsonPayload);
         }
 

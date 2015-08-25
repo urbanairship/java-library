@@ -2,18 +2,17 @@
  * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
-package com.urbanairship.api.client.model;
+package com.urbanairship.api.schedule.model;
 
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.urbanairship.api.schedule.model.SchedulePayload;
 
 /**
  * Represents a response from the Urban Airship API for Scheduled Notifications.
  */
-public final class APIScheduleResponse {
+public final class ScheduleResponse {
 
     private final boolean ok;
     private final String operationId;
@@ -21,7 +20,7 @@ public final class APIScheduleResponse {
     private final ImmutableList<String> scheduleIds;
     private final ImmutableList<SchedulePayload> schedulePayloads;
 
-    private APIScheduleResponse(boolean ok, String operationId, ImmutableList<String> scheduleUrls, ImmutableList<String> scheduleIds, ImmutableList<SchedulePayload> schedulePayloads) {
+    private ScheduleResponse(boolean ok, String operationId, ImmutableList<String> scheduleUrls, ImmutableList<String> scheduleIds, ImmutableList<SchedulePayload> schedulePayloads) {
         this.ok = ok;
         this.operationId = operationId;
         this.scheduleUrls = scheduleUrls;
@@ -30,7 +29,7 @@ public final class APIScheduleResponse {
     }
 
     /**
-     * New APIScheduleResponse builder
+     * New ScheduleResponse builder
      *
      * @return Builder
      */
@@ -86,7 +85,7 @@ public final class APIScheduleResponse {
 
     @Override
     public String toString() {
-        return "APIScheduleResponse{" +
+        return "ScheduleResponse{" +
                 "ok=" + ok +
                 ", operationId='" + operationId + '\'' +
                 ", scheduleUrls=" + scheduleUrls +
@@ -108,12 +107,12 @@ public final class APIScheduleResponse {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final APIScheduleResponse other = (APIScheduleResponse) obj;
+        final ScheduleResponse other = (ScheduleResponse) obj;
         return Objects.equal(this.ok, other.ok) && Objects.equal(this.operationId, other.operationId) && Objects.equal(this.scheduleUrls, other.scheduleUrls) && Objects.equal(this.scheduleIds, other.scheduleIds) && Objects.equal(this.schedulePayloads, other.schedulePayloads);
     }
 
     /**
-     * APIScheduleResponse Builder
+     * ScheduleResponse Builder
      */
     public static class Builder {
 
@@ -166,10 +165,10 @@ public final class APIScheduleResponse {
             return this;
         }
 
-        public APIScheduleResponse build() {
-            Preconditions.checkNotNull(ok, "The ok attribute must be set in order to build APIScheduleResponse");
-            Preconditions.checkNotNull(operationId, "Operation ID must be set in order to build APIScheduleResponse");
-            return new APIScheduleResponse(ok, operationId, scheduleUrls.build(), scheduleIds.build(), schedulePayloads.build());
+        public ScheduleResponse build() {
+            Preconditions.checkNotNull(ok, "The ok attribute must be set in order to build ScheduleResponse");
+            Preconditions.checkNotNull(operationId, "Operation ID must be set in order to build ScheduleResponse");
+            return new ScheduleResponse(ok, operationId, scheduleUrls.build(), scheduleIds.build(), schedulePayloads.build());
         }
     }
 }

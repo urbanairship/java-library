@@ -2,20 +2,16 @@ package com.urbanairship.api.client;
 
 import com.urbanairship.api.client.model.APIClientResponse;
 import com.urbanairship.api.client.model.APIListAllChannelsResponse;
-import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
 import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
 import com.urbanairship.api.client.model.APIListSingleChannelResponse;
 import com.urbanairship.api.client.model.APIListTagsResponse;
 import com.urbanairship.api.client.model.APILocationResponse;
-import com.urbanairship.api.push.model.PushResponse;
 import com.urbanairship.api.client.model.APIReportsPushListingResponse;
-import com.urbanairship.api.client.model.APIScheduleResponse;
 import com.urbanairship.api.reports.model.PerPushDetailResponse;
 import com.urbanairship.api.reports.model.PerPushSeriesResponse;
 import com.urbanairship.api.reports.model.ReportsAPIOpensResponse;
 import com.urbanairship.api.reports.model.ReportsAPITimeInAppResponse;
 import com.urbanairship.api.reports.model.SinglePushInfoResponse;
-import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.segments.model.AudienceSegment;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
@@ -292,61 +288,6 @@ public class APIClientResponseSuccessHandlerTest {
             assertTrue(response.getApiResponse().getOk());
             assertTrue("Count incorrect",
                 response.getApiResponse().getChannelObjects().size() == 5);
-            assertTrue(httpResponse.getStatusLine().toString().equals("HTTP/1.1 200 OK"));
-        } catch (Exception ex) {
-            fail("Exception " + ex);
-        }
-
-    }
-
-    @Test
-    public void testListAllSchedulesHandleSuccess() {
-
-        String listscheduleresponse = "{ \n" +
-            "  \"ok\":true, \n" +
-            "  \"count\":5, \n" +
-            "  \"total_count\":6, \n" +
-            "  \"schedules\": [ \n" +
-            "    { \n" +
-            "      \"url\":\"https://go.urbanairship.com/api/schedules/5a60e0a6-9aa7-449f-a038-6806e572baf3\", \n" +
-            "      \"schedule\":{ \n" +
-            "        \"scheduled_time\":\"2015-01-01T08:00:00\" \n" +
-            "      }, \n" +
-            "      \"push\":{\"audience\":\"ALL\", \n" +
-            "      \"device_types\":[\"android\",\"ios\"], \n" +
-            "      \"notification\":{\"alert\":\"Happy New Year 2015!\",\"android\":{},\"ios\":{}}}, \n" +
-            "      \"push_ids\":[\"8430f2e0-ec07-4c1e-adc4-0c7c7978e648\"] \n" +
-            "    }, \n" +
-            "    { \n" +
-            "      \"url\":\"https://go.urbanairship.com/api/schedules/f53aa2bd-018a-4482-8d7d-691d13407973\", \n" +
-            "      \"schedule\":{ \n" +
-            "        \"scheduled_time\":\"2016-01-01T08:00:00\" \n" +
-            "      }, \n" +
-            "      \"push\":{\"audience\":\"ALL\", \n" +
-            "      \"device_types\":[\"android\",\"ios\"], \n" +
-            "      \"notification\":{\"alert\":\"Happy New Year 2016!\",\"android\":{},\"ios\":{}}}, \n" +
-            "      \"push_ids\":[\"b217a321-922f-4aee-b239-ca1b58c6b652\"] \n" +
-            "    } \n" +
-            "  ] \n" +
-            "} \n";
-
-        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-            new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
-        InputStreamEntity inputStreamEntity = new InputStreamEntity(
-            new ByteArrayInputStream(listscheduleresponse.getBytes()),
-            listscheduleresponse.getBytes().length);
-        httpResponse.setEntity(inputStreamEntity);
-
-        APIClientResponseHandler<APIListAllSchedulesResponse> handler =
-            new APIClientResponseHandler<APIListAllSchedulesResponse>(APIListAllSchedulesResponse.class);
-
-
-        try {
-            APIClientResponse<APIListAllSchedulesResponse> response =
-                handler.handleResponse(httpResponse);
-            assertTrue("Count incorrect",
-                response.getApiResponse().getCount() == 5);
-            assertTrue(response.getApiResponse().getOk());
             assertTrue(httpResponse.getStatusLine().toString().equals("HTTP/1.1 200 OK"));
         } catch (Exception ex) {
             fail("Exception " + ex);
@@ -646,44 +587,6 @@ public class APIClientResponseSuccessHandlerTest {
     }
 
     @Test
-    public void testListScheduleHandleSuccess() {
-
-        String listscheduleresponse = "{ \n" +
-            "  \"schedule\":{ \n" +
-            "    \"scheduled_time\":\"2015-08-07T22:10:44\" \n" +
-            "  }, \n" +
-            "  \"name\":\"Special Scheduled Push 20\", \n" +
-            "  \"push\":{ \n" +
-            "    \"audience\":\"ALL\", \n" +
-            "    \"device_types\":\"all\", \n" +
-            "    \"notification\":{\"alert\":\"Scheduled Push 20\"} \n" +
-            "  }, \n" +
-            "  \"push_ids\":[\"274f9aa4-2d00-4911-a043-70129f29adf2\"] \n" +
-            "}";
-
-
-        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-            new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
-        InputStreamEntity inputStreamEntity = new InputStreamEntity(
-            new ByteArrayInputStream(listscheduleresponse.getBytes()),
-            listscheduleresponse.getBytes().length);
-        httpResponse.setEntity(inputStreamEntity);
-        APIClientResponseHandler<SchedulePayload> handler =
-            new APIClientResponseHandler<SchedulePayload>(SchedulePayload.class);
-
-        try {
-            APIClientResponse<SchedulePayload> response =
-                handler.handleResponse(httpResponse);
-            assertTrue("Name incorrect",
-                response.getApiResponse().getName().get().equals("Special Scheduled Push 20"));
-            assertTrue(httpResponse.getStatusLine().toString().equals("HTTP/1.1 200 OK"));
-        } catch (Exception ex) {
-            fail("Exception " + ex);
-        }
-
-    }
-
-    @Test
     public void testListSingleChannelHandleSuccess() {
 
         String response = "{  \n" +
@@ -805,78 +708,6 @@ public class APIClientResponseSuccessHandlerTest {
                 handler.handleResponse(httpResponse);
             assertNotNull(response);
             assertTrue(httpResponse.getStatusLine().toString().equals("HTTP/1.1 200 OK"));
-        } catch (Exception ex) {
-            fail("Exception " + ex);
-        }
-
-    }
-
-    @Test
-    public void testPushHandleSuccess() {
-        String pushJSON = "{\n" +
-            "    \"ok\" : true,\n" +
-            "    \"operation_id\" : \"df6a6b50\",\n" +
-            "    \"push_ids\": [\n" +
-            "        \"id1\",\n" +
-            "        \"id2\"\n" +
-            "    ],\n" +
-            "    \"message_ids\": [],\n" +
-            "    \"content_urls\" : []\n" +
-            "}";
-        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-            new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
-        InputStreamEntity inputStreamEntity = new InputStreamEntity(
-            new ByteArrayInputStream(pushJSON.getBytes()),
-            pushJSON.getBytes().length);
-        httpResponse.setEntity(inputStreamEntity);
-        APIClientResponseHandler<PushResponse> handler =
-            new APIClientResponseHandler<PushResponse>(PushResponse.class);
-        try {
-            APIClientResponse<PushResponse> response =
-                handler.handleResponse(httpResponse);
-            assertTrue("HttpResponse incorrect",
-                httpResponse.equals(response.getHttpResponse()));
-            assertTrue(response.getApiResponse().getOk());
-            String operationId = response.getApiResponse().getOperationId().get();
-            assertTrue("PushResponse incorrectly configured",
-                "df6a6b50".equals(operationId));
-
-        } catch (Exception ex) {
-            fail("Failed with exception " + ex.getMessage());
-        }
-    }
-
-    @Test
-    public void testScheduleHandleSuccess() {
-        String successJSON = "{\"ok\" : true, \"operation_id\" : \"OpID\", " +
-            "\"schedule_urls\" : [\"ScheduleURL\"], " +
-            "\"schedule_ids\" : [\"ScheduleID\"], " +
-            "\"schedules\" : [\n" +
-            "      {\n" +
-            "         \"url\" : \"http://go.urbanairship/api/schedules/2d69320c-3c91-5241-fac4-248269eed109\",\n" +
-            "         \"schedule\" : { \"scheduled_time\": \"2013-04-01T18:45:00\" },\n" +
-            "         \"push\" : { \"audience\":{ \"tag\": \"spoaaaarts\" },\n" +
-            "            \"notification\": { \"alert\": \"Booyah!\" },\n" +
-            "            \"device_types\": \"all\" },\n" +
-            "         \"push_ids\" : [ \"8f18fcb5-e2aa-4b61-b190-43852eadb5ef\" ]\n" +
-            "      }\n" +
-            "   ]}";
-        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-            new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
-        InputStreamEntity inputStreamEntity = new InputStreamEntity(
-            new ByteArrayInputStream(successJSON.getBytes()),
-            successJSON.getBytes().length);
-        httpResponse.setEntity(inputStreamEntity);
-        APIClientResponseHandler<APIScheduleResponse> handler =
-            new APIClientResponseHandler<APIScheduleResponse>(APIScheduleResponse.class);
-
-        try {
-            APIClientResponse<APIScheduleResponse> response =
-                handler.handleResponse(httpResponse);
-            assertTrue("Operation ID incorrect",
-                response.getApiResponse().getOperationId().equals("OpID"));
-            assertTrue("HttpResponse is incorrect",
-                httpResponse.equals(response.getHttpResponse()));
         } catch (Exception ex) {
             fail("Exception " + ex);
         }

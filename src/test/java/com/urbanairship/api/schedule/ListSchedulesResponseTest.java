@@ -1,10 +1,11 @@
-package com.urbanairship.api.client.parse;
+package com.urbanairship.api.schedule;
 
-import com.urbanairship.api.client.model.APIListAllSchedulesResponse;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushPayload;
+import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
+import com.urbanairship.api.schedule.parse.ScheduleObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
@@ -14,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 
-public class APIListAllSchedulesResponseTest {
+public class ListSchedulesResponseTest {
 
     @Test
     public void testAPIScheduleResponse() {
@@ -29,10 +30,10 @@ public class APIListAllSchedulesResponseTest {
                 "\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2016!\",\"android\":{},\"ios\":{}}},\"pus" +
                 "h_ids\":[\"b217a321-922f-4aee-b239-ca1b58c6b652\"]}]}";
 
-        ObjectMapper mapper = APIResponseObjectMapper.getInstance();
+        ObjectMapper mapper = ScheduleObjectMapper.getInstance();
 
         try {
-            APIListAllSchedulesResponse response = mapper.readValue(listscheduleresponse, APIListAllSchedulesResponse.class);
+            ListAllSchedulesResponse response = mapper.readValue(listscheduleresponse, ListAllSchedulesResponse.class);
             assertTrue(response.getOk());
             assertTrue(response.getCount() == 5);
             assertTrue(response.getTotal_Count() == 6);
@@ -82,10 +83,10 @@ public class APIListAllSchedulesResponseTest {
                 "\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2016!\",\"android\":{},\"ios\":{}}},\"pus" +
                 "h_ids\":[\"b217a321-922f-4aee-b239-ca1b58c6b652\"]}]}";
 
-        ObjectMapper mapper = APIResponseObjectMapper.getInstance();
+        ObjectMapper mapper = ScheduleObjectMapper.getInstance();
 
         try {
-            APIListAllSchedulesResponse response = mapper.readValue(listscheduleresponse, APIListAllSchedulesResponse.class);
+            ListAllSchedulesResponse response = mapper.readValue(listscheduleresponse, ListAllSchedulesResponse.class);
             assertTrue(response.getOk());
             assertTrue(response.getCount() == 5);
             assertTrue(response.getTotal_Count() == 6);
