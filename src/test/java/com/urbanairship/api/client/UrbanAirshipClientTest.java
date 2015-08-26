@@ -615,7 +615,7 @@ public class UrbanAirshipClientTest {
                 .withStatus(200)));
 
         ImmutableSet<String> iosChannels = ImmutableSet.of(UUID.randomUUID().toString(), UUID.randomUUID().toString());
-        ChannelTagRequest request = ChannelTagRequest.createChannelsTagRequest()
+        ChannelTagRequest request = ChannelTagRequest.newRequest()
             .addIOSChannels(iosChannels)
             .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
             .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))

@@ -15,6 +15,9 @@ import org.joda.time.DateTime;
 
 import java.util.Map;
 
+/**
+ * Represents a single channel object.
+ */
 public final class ChannelView {
 
     private final String channelId;
@@ -35,7 +38,7 @@ public final class ChannelView {
             Optional.<DateTime>absent(), Optional.<String>absent(), null, null, Optional.<IosSettings>absent());
     }
 
-    public ChannelView(String channelId,
+    private ChannelView(String channelId,
                        ChannelType channelType,
                        boolean installed,
                        boolean optIn,
@@ -61,54 +64,119 @@ public final class ChannelView {
         this.iosSettings = iosSettings;
     }
 
+    /**
+     * New ChannelView builder.
+     *
+     * @return builder
+     */
     public static Builder newBuilder() {
         return new Builder();
     }
 
+    /**
+     * Get the channel ID
+     *
+     * @return String channel ID
+     */
     public String getChannelId() {
         return channelId;
     }
 
+    /**
+     * Get the channel type
+     *
+     * @return ChannelType
+     */
     public ChannelType getChannelType() {
         return channelType;
     }
 
+    /**
+     * Get the installed status as a boolean
+     *
+     * @return boolean installed status
+     */
     public boolean isInstalled() {
         return installed;
     }
 
+    /**
+     * Get the opt-in status as a boolean
+     *
+     * @return boolean opt-in status
+     */
     public boolean isOptIn() {
         return optIn;
     }
 
+    /**
+     * Get the background status as a boolean
+     *
+     * @return Optional boolean background status
+     */
     public Optional<Boolean> getBackground() {
         return background;
     }
 
+    /**
+     * Get the push address
+     *
+     * @return Optional String push address
+     */
     public Optional<String> getPushAddress() {
         return pushAddress;
     }
 
+    /**
+     * Get the time when the channel was created
+     *
+     * @return DateTime of creation
+     */
     public DateTime getCreated() {
         return created;
     }
 
+    /**
+     * Get the time of last registration
+     *
+     * @return Optional DateTime of last registration
+     */
     public Optional<DateTime> getLastRegistration() {
         return lastRegistration;
     }
 
+    /**
+     * Get the associated alias
+     *
+     * @return Optional String alias
+     */
     public Optional<String> getAlias() {
         return alias;
     }
 
+    /**
+     * Get any associated tags
+     *
+     * @return ImmutableSet of tags
+     */
     public ImmutableSet<String> getTags() {
         return tags;
     }
 
+    /**
+     * Get any associated tag groups and tags
+     *
+     * @return ImmutableMap of tag groups and the relevant Immutable sets of tags
+     */
     public ImmutableMap<String, ImmutableSet<String>> getTagGroups() {
         return tagGroups;
     }
 
+    /**
+     * Get the iOS settings
+     *
+     * @return Optional IosSettings
+     */
     public Optional<IosSettings> getIosSettings() {
         return iosSettings;
     }
@@ -176,51 +244,109 @@ public final class ChannelView {
         private Builder() {
         }
 
+        /**
+         * Set the channel ID
+         *
+         * @param channelId String
+         * @return Builder
+         */
         public Builder setChannelId(String channelId) {
             this.channelId = channelId;
             return this;
         }
 
+        /**
+         * Set the channel type
+         *
+         * @param channelType ChannelType
+         * @return Builder
+         */
         public Builder setChannelType(ChannelType channelType) {
             this.channelType = channelType;
             return this;
         }
 
+        /**
+         * Set the installed status
+         *
+         * @param installed boolean
+         * @return Builder
+         */
         public Builder setInstalled(Boolean installed) {
             this.installed = installed;
             return this;
         }
 
+        /**
+         * Set the opt-in status
+         *
+         * @param optIn boolean
+         * @return Builder
+         */
         public Builder setOptIn(Boolean optIn) {
             this.optIn = optIn;
             return this;
         }
 
+        /**
+         * Set the background status
+         *
+         * @param background boolean
+         * @return Builder
+         */
         public Builder setBackground(Boolean background) {
             this.background = background;
             return this;
         }
 
+        /**
+         * Set the push address
+         *
+         * @param pushAddress String
+         * @return Builder
+         */
         public Builder setPushAddress(String pushAddress) {
             this.pushAddress = pushAddress;
             return this;
         }
 
+        /**
+         * Set the created time
+         * @param created DateTime
+         * @return Builder
+         */
         public Builder setCreated(DateTime created) {
             this.created = created;
             return this;
         }
 
+        /**
+         * Set the last registration time
+         * @param lastRegistration DateTime
+         * @return Builder
+         */
         public Builder setLastRegistration(DateTime lastRegistration) {
             this.lastRegistration = lastRegistration;
             return this;
         }
 
+        /**
+         * Set the alias
+         *
+         * @param alias String
+         * @return Builder
+         */
         public Builder setAlias(String alias) {
             this.alias = alias;
             return this;
         }
 
+        /**
+         * Set the channel tags
+         *
+         * @param tags Iterable of tags
+         * @return Builder
+         */
         public Builder addAllTags(Iterable<String> tags) {
             Preconditions.checkNotNull(tags);
 
@@ -231,6 +357,12 @@ public final class ChannelView {
             return this;
         }
 
+        /**
+         * Add a tag
+         *
+         * @param tag String
+         * @return Builder
+         */
         public Builder addTag(String tag) {
             if (StringUtils.isNotBlank(tag)) {
                 this.tags.add(tag);
@@ -238,6 +370,12 @@ public final class ChannelView {
             return this;
         }
 
+        /**
+         * Add a tag group with tags
+         *
+         * @param tagGroup A map entry of a tag group and ImmutableSet of tags
+         * @return Builder
+         */
         public Builder addTagGroup(Map.Entry<String, ImmutableSet<String>> tagGroup) {
             if (!tagGroup.getKey().isEmpty()) {
                 this.tagGroups.put(tagGroup);
@@ -245,6 +383,12 @@ public final class ChannelView {
             return this;
         }
 
+        /**
+         * Add all the tag groups with tags
+         *
+         * @param tagGroups ImmutableMap of tag groups and ImmutableSets of tags
+         * @return
+         */
         public Builder addAllTagGroups(ImmutableMap<String, ImmutableSet<String>> tagGroups) {
             if (!tagGroups.isEmpty()) {
                 this.tagGroups.putAll(tagGroups);
@@ -252,11 +396,21 @@ public final class ChannelView {
             return this;
         }
 
+        /**
+         * Set the iOS settings
+         *
+         * @param iosSettings IosSettings
+         * @return Builder
+         */
         public Builder setIosSettings(IosSettings iosSettings) {
             this.iosSettings = iosSettings;
             return this;
         }
 
+        /**
+         * Build the ChannelView object
+         * @return ChannelView
+         */
         public ChannelView build() {
             Preconditions.checkNotNull(channelId);
             Preconditions.checkNotNull(channelType);

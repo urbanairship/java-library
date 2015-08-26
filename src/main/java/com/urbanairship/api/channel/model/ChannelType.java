@@ -6,6 +6,9 @@ package com.urbanairship.api.channel.model;
 
 import com.google.common.base.Optional;
 
+/**
+ * Enum of channel types
+ */
 public enum ChannelType {
 
     IOS("ios"),

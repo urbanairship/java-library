@@ -17,6 +17,10 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The ChannelRequest class builds channel listing requests to be executed in
+ * the {@link com.urbanairship.api.client.UrbanAirshipClient}.
+ */
 public class ChannelRequest implements Request<ChannelResponse> {
 
     private final static String API_CHANNELS_LIST = "/api/channels/";
@@ -27,10 +31,21 @@ public class ChannelRequest implements Request<ChannelResponse> {
         this.path = path;
     }
 
+    /**
+     * Create new request for single channel lookup.
+     *
+     * @param channel String
+     * @return ChannelRequest
+     */
     public static ChannelRequest newRequest(String channel) {
         return new ChannelRequest(API_CHANNELS_LIST + channel);
     }
 
+    /**
+     * Create new request for channel listing.
+     *
+     * @return ChannelRequest
+     */
     public static ChannelRequest newRequest() {
         return new ChannelRequest(API_CHANNELS_LIST);
     }

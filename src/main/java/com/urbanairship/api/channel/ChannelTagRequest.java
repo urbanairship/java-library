@@ -20,6 +20,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * The ChannelTagRequest class builds channels tag mutation requests to be executed in
+ * the {@link com.urbanairship.api.client.UrbanAirshipClient}.
+ */
 public class ChannelTagRequest implements Request<String> {
 
     private final static String API_CHANNELS_TAGS_PATH = "/api/channels/tags/";
@@ -31,75 +35,144 @@ public class ChannelTagRequest implements Request<String> {
     private static final String REMOVE_KEY = "remove";
     private static final String SET_KEY = "set";
 
-    Map<String, Map<String, Set<String>>> payload = new HashMap<String, Map<String, Set<String>>>();
-    Map<String, Set<String>> audience = new HashMap<String, Set<String>>();
-    Map<String, Set<String>> addTags;
-    Map<String, Set<String>> removeTags;
-    Map<String, Set<String>> setTags;
+    private final Map<String, Set<String>> audience = new HashMap<String, Set<String>>();
+    private final Map<String, Set<String>> addTags = new HashMap<String, Set<String>>();;
+    private final Map<String, Set<String>> removeTags = new HashMap<String, Set<String>>();;
+    private final Map<String, Set<String>> setTags = new HashMap<String, Set<String>>();;
 
-    public static ChannelTagRequest createChannelsTagRequest() {
+    /**
+     * Create new channels tag mutation request.
+     *
+     * @return ChannelTagRequest
+     */
+    public static ChannelTagRequest newRequest() {
         return new ChannelTagRequest();
     }
 
+    /**
+     * Add an iOS channel to the request audience.
+     *
+     * @param channel String
+     * @return ChannelTagRequest
+     */
     public ChannelTagRequest addIOSChannel(String channel) {
         return addIOSChannels(channel);
     }
 
+    /**
+     * Add multiple iOS channels to the request audience.
+     *
+     * @param channels String... of channel IDs
+     * @return ChannelTagRequest
+     */
     public ChannelTagRequest addIOSChannels(String... channels) {
         return addIOSChannels(new HashSet<String>(Arrays.asList(channels)));
     }
 
+    /**
+     * Add a set of iOS channels to the request audience.
+     *
+     * @param channels Set of channel IDs
+     * @return ChannelTagRequest
+     */
     public ChannelTagRequest addIOSChannels(Set<String> channels) {
         appendMapValues(IOS_CHANNEL_KEY, channels, this.audience);
         return this;
     }
-
+    /**
+     * Add an Android channel to the request audience.
+     *
+     * @param channel String
+     * @return ChannelTagRequest
+     */
     public ChannelTagRequest addAndroidChannel(String channel) {
         return addAndroidChannels(channel);
     }
 
+    /**
+     * Add multiple Android channels to the request audience.
+     *
+     * @param channels String... of channel IDs
+     * @return ChannelTagRequest
+     */
     public ChannelTagRequest addAndroidChannels(String... channels) {
         return addAndroidChannels(new HashSet<String>(Arrays.asList(channels)));
     }
 
+    /**
+     * Add a set of Android channel to the request audience.
+     *
+     * @param channels Set of channels IDs
+     * @return ChannelTagRequest
+     */
     public ChannelTagRequest addAndroidChannels(Set<String> channels) {
         appendMapValues(ANDROID_CHANNEL_KEY, channels, this.audience);
         return this;
     }
 
+    /**
+     * Add an Amazon channel to the request audience.
+     *
+     * @param channel String
+     * @return ChannelTagRequest
+     */
     public ChannelTagRequest addAmazonChannel(String channel) {
         return addAmazonChannels(channel);
     }
 
+    /**
+     * Add multiple Amazon channels to the request audience.
+     *
+     * @param channels String... of channel IDs
+     * @return ChannelTagRequest
+     */
     public ChannelTagRequest addAmazonChannels(String... channels) {
         return addAmazonChannels(new HashSet<String>(Arrays.asList(channels)));
     }
 
+    /**
+     * Add a set of Amazon channels to the request audience.
+     *
+     * @param channels Set of channel IDs
+     * @return ChannelTagRequest
+     */
     public ChannelTagRequest addAmazonChannels(Set<String> channels) {
         appendMapValues(AMAZON_CHANNEL_KEY, channels, this.audience);
         return this;
     }
 
+    /**
+     * Add tag group and tags to add to channels.
+     *
+     * @param tagGroup String
+     * @param tags Set of tags
+     * @return ChannelTagRequest
+     */
     public ChannelTagRequest addTags(String tagGroup, Set<String> tags) {
-        if (addTags == null) {
-            addTags = new HashMap<String, Set<String>>();
-        }
         appendMapValues(tagGroup, tags, this.addTags);
         return this;
     }
 
+    /**
+     * Add tag group and tags to remove from channels.
+     *
+     * @param tagGroup String
+     * @param tags Set of tags
+     * @return ChannelTagRequest
+     */
     public ChannelTagRequest removeTags(String tagGroup, Set<String> tags) {
-        if (removeTags == null) {
-            removeTags = new HashMap<String, Set<String>>();
-        }
         appendMapValues(tagGroup, tags, this.removeTags);
         return this;
     }
 
+    /**
+     * Add tag group and tags to set to channels.
+     *
+     * @param tagGroup String
+     * @param tags Set of tags
+     * @return ChannelTagRequest
+     */
     public ChannelTagRequest setTags(String tagGroup, Set<String> tags) {
-        if (setTags == null) {
-            setTags = new HashMap<String, Set<String>>();
-        }
         appendMapValues(tagGroup, tags, this.setTags);
         return this;
     }
@@ -124,17 +197,18 @@ public class ChannelTagRequest implements Request<String> {
 
     @Override
     public String getRequestBody() {
+        final Map<String, Map<String, Set<String>>> payload = new HashMap<String, Map<String, Set<String>>>();
 
         payload.put(AUDIENCE_KEY, audience);
-        if (addTags != null) {
+        if (!addTags.isEmpty()) {
             payload.put(ADD_KEY, addTags);
         }
 
-        if (removeTags != null) {
+        if (!removeTags.isEmpty()) {
             payload.put(REMOVE_KEY, removeTags);
         }
 
-        if (setTags != null) {
+        if (!setTags.isEmpty()) {
             payload.put(SET_KEY, setTags);
         }
 

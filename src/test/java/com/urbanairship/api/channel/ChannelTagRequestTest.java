@@ -35,7 +35,7 @@ public class ChannelTagRequestTest {
             "}";
 
         Set<String> iosChannels = ImmutableSet.of(iosChannel1, iosChannel2);
-        ChannelTagRequest request = ChannelTagRequest.createChannelsTagRequest()
+        ChannelTagRequest request = ChannelTagRequest.newRequest()
             .addIOSChannels(iosChannels)
             .addAndroidChannel(androidChannel)
             .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
@@ -65,7 +65,7 @@ public class ChannelTagRequestTest {
 
         Set<String> iosChannels = ImmutableSet.of(iosChannel1, iosChannel2);
 
-        ChannelTagRequest request = ChannelTagRequest.createChannelsTagRequest()
+        ChannelTagRequest request = ChannelTagRequest.newRequest()
             .addIOSChannels(iosChannels)
             .addAndroidChannel(androidChannel)
             .removeTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
@@ -95,7 +95,7 @@ public class ChannelTagRequestTest {
 
         Set<String> iosChannels = ImmutableSet.of(iosChannel1, iosChannel2);
 
-        ChannelTagRequest request = ChannelTagRequest.createChannelsTagRequest()
+        ChannelTagRequest request = ChannelTagRequest.newRequest()
             .addIOSChannels(iosChannels)
             .addAndroidChannel(androidChannel)
             .setTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
@@ -130,7 +130,7 @@ public class ChannelTagRequestTest {
 
         Set<String> iosChannels = ImmutableSet.of(iosChannel1, iosChannel2);
 
-        ChannelTagRequest request = ChannelTagRequest.createChannelsTagRequest()
+        ChannelTagRequest request = ChannelTagRequest.newRequest()
             .addIOSChannels(iosChannels)
             .addAndroidChannel(androidChannel)
             .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
@@ -145,7 +145,7 @@ public class ChannelTagRequestTest {
 
     @Test (expected = IllegalArgumentException.class)
     public void testAddAndSetTags() throws Exception {
-        ChannelTagRequest request = ChannelTagRequest.createChannelsTagRequest()
+        ChannelTagRequest request = ChannelTagRequest.newRequest()
             .addIOSChannel(UUID.randomUUID().toString())
             .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
             .setTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"));
@@ -154,7 +154,7 @@ public class ChannelTagRequestTest {
 
     @Test (expected = IllegalArgumentException.class)
     public void testRemoveAndSetTags() throws Exception {
-        ChannelTagRequest request = ChannelTagRequest.createChannelsTagRequest()
+        ChannelTagRequest request = ChannelTagRequest.newRequest()
             .addIOSChannel(UUID.randomUUID().toString())
             .removeTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
             .setTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"));
@@ -163,7 +163,7 @@ public class ChannelTagRequestTest {
 
     @Test (expected = IllegalArgumentException.class)
     public void testNoTagMutations() throws Exception {
-        ChannelTagRequest request = ChannelTagRequest.createChannelsTagRequest()
+        ChannelTagRequest request = ChannelTagRequest.newRequest()
             .addIOSChannel(UUID.randomUUID().toString());
         request.getRequestBody();
     }
@@ -173,7 +173,7 @@ public class ChannelTagRequestTest {
     String iosChannel2 = UUID.randomUUID().toString();
     String androidChannel = UUID.randomUUID().toString();
     Set<String> iosChannels = ImmutableSet.of(iosChannel1, iosChannel2);
-    ChannelTagRequest request = ChannelTagRequest.createChannelsTagRequest()
+    ChannelTagRequest request = ChannelTagRequest.newRequest()
         .addIOSChannels(iosChannels)
         .addAndroidChannel(androidChannel)
         .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
