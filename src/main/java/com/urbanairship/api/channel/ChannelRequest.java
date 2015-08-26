@@ -23,11 +23,11 @@ public class ChannelRequest implements Request<ChannelResponse> {
         this.path = path;
     }
 
-    public static ChannelRequest createListRequest(String channel) {
+    public static ChannelRequest newRequest(String channel) {
         return new ChannelRequest(API_CHANNELS_LIST + channel);
     }
 
-    public static ChannelRequest createListAllRequest() {
+    public static ChannelRequest newRequest() {
         return new ChannelRequest(API_CHANNELS_LIST);
     }
 
@@ -45,8 +45,8 @@ public class ChannelRequest implements Request<ChannelResponse> {
     }
 
     @Override
-    public HTTPMethod getHTTPMethod() {
-        return HTTPMethod.GET;
+    public HttpMethod getHttpMethod() {
+        return HttpMethod.GET;
     }
 
     @Override

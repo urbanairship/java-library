@@ -11,7 +11,7 @@ import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
-public class DeviceTypeDeserializerTest {
+public class ChannelTypeDeserializerTest {
 
     private static final ObjectMapper mapper = PushObjectMapper.getInstance();
 

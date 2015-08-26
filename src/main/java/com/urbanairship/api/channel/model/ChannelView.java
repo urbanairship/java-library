@@ -18,7 +18,7 @@ import java.util.Map;
 public final class ChannelView {
 
     private final String channelId;
-    private final DeviceType deviceType;
+    private final ChannelType channelType;
     private final boolean installed;
     private final boolean optIn;
     private final Optional<Boolean> background;
@@ -36,7 +36,7 @@ public final class ChannelView {
     }
 
     public ChannelView(String channelId,
-                       DeviceType deviceType,
+                       ChannelType channelType,
                        boolean installed,
                        boolean optIn,
                        Optional<Boolean> background,
@@ -48,7 +48,7 @@ public final class ChannelView {
                        ImmutableMap<String, ImmutableSet<String>> tagGroups,
                        Optional<IosSettings> iosSettings) {
         this.channelId = channelId;
-        this.deviceType = deviceType;
+        this.channelType = channelType;
         this.installed = installed;
         this.optIn = optIn;
         this.background = background;
@@ -69,8 +69,8 @@ public final class ChannelView {
         return channelId;
     }
 
-    public DeviceType getDeviceType() {
-        return deviceType;
+    public ChannelType getChannelType() {
+        return channelType;
     }
 
     public boolean isInstalled() {
@@ -117,7 +117,7 @@ public final class ChannelView {
     public String toString() {
         return "ChannelView{" +
             "channelId='" + channelId + '\'' +
-            ", deviceType=" + deviceType +
+            ", deviceType=" + channelType +
             ", installed=" + installed +
             ", optIn=" + optIn +
             ", background=" + background +
@@ -133,7 +133,7 @@ public final class ChannelView {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(channelId, deviceType, installed, optIn, background, pushAddress, created, lastRegistration, alias, tags, tagGroups, iosSettings);
+        return Objects.hashCode(channelId, channelType, installed, optIn, background, pushAddress, created, lastRegistration, alias, tags, tagGroups, iosSettings);
     }
 
     @Override
@@ -146,7 +146,7 @@ public final class ChannelView {
         }
         final ChannelView other = (ChannelView) obj;
         return Objects.equal(this.channelId, other.channelId) &&
-            Objects.equal(this.deviceType, other.deviceType) &&
+            Objects.equal(this.channelType, other.channelType) &&
             Objects.equal(this.installed, other.installed) &&
             Objects.equal(this.optIn, other.optIn) &&
             Objects.equal(this.background, other.background) &&
@@ -163,7 +163,7 @@ public final class ChannelView {
         private final ImmutableSet.Builder<String> tags = ImmutableSet.builder();
         private final ImmutableMap.Builder<String, ImmutableSet<String>> tagGroups = ImmutableMap.builder();
         private String channelId = null;
-        private DeviceType deviceType = null;
+        private ChannelType channelType = null;
         private Boolean optIn = null;
         private Boolean installed = null;
         private Boolean background = null;
@@ -181,8 +181,8 @@ public final class ChannelView {
             return this;
         }
 
-        public Builder setDeviceType(DeviceType deviceType) {
-            this.deviceType = deviceType;
+        public Builder setChannelType(ChannelType channelType) {
+            this.channelType = channelType;
             return this;
         }
 
@@ -259,14 +259,14 @@ public final class ChannelView {
 
         public ChannelView build() {
             Preconditions.checkNotNull(channelId);
-            Preconditions.checkNotNull(deviceType);
+            Preconditions.checkNotNull(channelType);
             Preconditions.checkNotNull(installed);
             Preconditions.checkNotNull(optIn);
             Preconditions.checkNotNull(created);
 
             return new ChannelView(
                 channelId,
-                deviceType,
+                channelType,
                 installed,
                 optIn,
                 Optional.fromNullable(background),

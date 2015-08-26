@@ -1,10 +1,10 @@
-package com.urbanairship.api.channel;
+package com.urbanairship.api.channel.parse;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.urbanairship.api.channel.model.ChannelView;
-import com.urbanairship.api.channel.model.DeviceType;
+import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.channel.parse.ChannelObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -34,7 +34,7 @@ public class ChannelViewDeserializeTest {
         ChannelView channel = mapper.readValue(json, ChannelView.class);
         Assert.assertFalse(channel.isOptIn());
         Assert.assertFalse(channel.getBackground().isPresent());
-        assertEquals(DeviceType.IOS, channel.getDeviceType());
+        assertEquals(ChannelType.IOS, channel.getChannelType());
         Assert.assertFalse(channel.getAlias().isPresent());
         Assert.assertFalse(channel.getIosSettings().isPresent());
         Assert.assertFalse(channel.getPushAddress().isPresent());
@@ -80,7 +80,7 @@ public class ChannelViewDeserializeTest {
         assertTrue(channel.isOptIn());
         assertTrue(channel.getBackground().isPresent());
         assertTrue(channel.getBackground().get());
-        assertEquals(DeviceType.IOS, channel.getDeviceType());
+        assertEquals(ChannelType.IOS, channel.getChannelType());
         assertTrue(channel.getIosSettings().isPresent());
         assertEquals(0, channel.getIosSettings().get().getBadge());
         assertEquals("22:00", channel.getIosSettings().get().getQuietTime().get().getStart());
@@ -135,11 +135,11 @@ public class ChannelViewDeserializeTest {
 
     @Test
     public void testValidChannelDevices() throws Exception {
-        for (DeviceType deviceType : DeviceType.values()) {
+        for (ChannelType channelType : ChannelType.values()) {
             String json =
                 "{" +
                     "\"channel_id\" : \"abcdef\"," +
-                    "\"device_type\" : \"" + deviceType.getIdentifier() + "\"," +
+                    "\"device_type\" : \"" + channelType.getIdentifier() + "\"," +
                     "\"installed\" : true," +
                     "\"created\" : \"2013-08-08T20:41:06.000Z\"," +
                     "\"opt_in\" : false" +
@@ -148,7 +148,7 @@ public class ChannelViewDeserializeTest {
             ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {
             });
             Assert.assertFalse(channel.isOptIn());
-            assertEquals(deviceType, channel.getDeviceType());
+            assertEquals(channelType, channel.getChannelType());
             Assert.assertFalse(channel.getAlias().isPresent());
             Assert.assertFalse(channel.getIosSettings().isPresent());
             Assert.assertFalse(channel.getPushAddress().isPresent());

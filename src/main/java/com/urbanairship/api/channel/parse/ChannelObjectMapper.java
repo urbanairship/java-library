@@ -2,7 +2,7 @@ package com.urbanairship.api.channel.parse;
 
 import com.urbanairship.api.channel.model.ChannelResponse;
 import com.urbanairship.api.channel.model.ChannelView;
-import com.urbanairship.api.channel.model.DeviceType;
+import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.channel.model.ios.IosSettings;
 import com.urbanairship.api.channel.model.ios.QuietTime;
 import com.urbanairship.api.channel.parse.ios.IosSettingsDeserializer;
@@ -22,7 +22,7 @@ public class ChannelObjectMapper {
         MODULE.addDeserializer(IosSettings.class, new IosSettingsDeserializer());
         MODULE.addDeserializer(QuietTime.class, new QuietTimeDeserializer());
         MODULE.addDeserializer(ChannelView.class, new ChannelViewDeserializer());
-        MODULE.addDeserializer(DeviceType.class, new DeviceTypeDeserializer());
+        MODULE.addDeserializer(ChannelType.class, new DeviceTypeDeserializer());
         MODULE.addDeserializer(ChannelResponse.class, new ChannelsResponseDeserializer());
 
 

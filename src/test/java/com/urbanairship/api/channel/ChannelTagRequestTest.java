@@ -187,7 +187,7 @@ public class ChannelTagRequestTest {
 
     @Test
     public void testMethod() throws Exception {
-        assertEquals(request.getHTTPMethod(), Request.HTTPMethod.POST);
+        assertEquals(request.getHttpMethod(), Request.HttpMethod.POST);
     }
 
     @Test

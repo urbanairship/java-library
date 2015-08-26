@@ -6,7 +6,7 @@ package com.urbanairship.api.channel.model;
 
 import com.google.common.base.Optional;
 
-public enum DeviceType {
+public enum ChannelType {
 
     IOS("ios"),
     ADM("amazon"),
@@ -14,18 +14,18 @@ public enum DeviceType {
 
     private final String identifier;
 
-    private DeviceType() {
+    private ChannelType() {
         this(null);
     }
 
-    private DeviceType(String identifier) {
+    private ChannelType(String identifier) {
         this.identifier = identifier;
     }
 
-    public static Optional<DeviceType> find(String identifier) {
-        for (DeviceType deviceType : values()) {
-            if (deviceType.getIdentifier().equals(identifier)) {
-                return Optional.of(deviceType);
+    public static Optional<ChannelType> find(String identifier) {
+        for (ChannelType channelType : values()) {
+            if (channelType.getIdentifier().equals(identifier)) {
+                return Optional.of(channelType);
             }
         }
 

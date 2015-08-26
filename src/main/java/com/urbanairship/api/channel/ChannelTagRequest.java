@@ -114,8 +114,8 @@ public class ChannelTagRequest implements Request<String> {
     }
 
     @Override
-    public HTTPMethod getHTTPMethod() {
-        return HTTPMethod.POST;
+    public HttpMethod getHttpMethod() {
+        return HttpMethod.POST;
     }
 
     @Override

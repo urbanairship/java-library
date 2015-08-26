@@ -7,7 +7,7 @@ package com.urbanairship.api.channel.parse;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.channel.model.ChannelView;
-import com.urbanairship.api.channel.model.DeviceType;
+import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.channel.model.ios.IosSettings;
 import com.urbanairship.api.channel.Constants;
 import com.urbanairship.api.common.parse.APIParsingException;
@@ -35,7 +35,7 @@ public final class ChannelViewReader implements JsonObjectReader<ChannelView> {
     }
 
     public void readDeviceType(JsonParser jsonParser) throws IOException {
-        builder.setDeviceType(jsonParser.readValueAs(DeviceType.class));
+        builder.setChannelType(jsonParser.readValueAs(ChannelType.class));
     }
 
     public void readInstalled(JsonParser jsonParser) throws IOException {

@@ -20,8 +20,8 @@ public class ChannelRequestTest {
 
     ObjectMapper mapper = ChannelObjectMapper.getInstance();
 
-    ChannelRequest listAllRequest = ChannelRequest.createListAllRequest();
-    ChannelRequest listRequest = ChannelRequest.createListRequest("channel");
+    ChannelRequest listAllRequest = ChannelRequest.newRequest();
+    ChannelRequest listRequest = ChannelRequest.newRequest("channel");
 
     @Test
     public void testContentType() throws Exception {
@@ -31,8 +31,8 @@ public class ChannelRequestTest {
 
     @Test
     public void testMethod() throws Exception {
-        assertEquals(listAllRequest.getHTTPMethod(), Request.HTTPMethod.GET);
-        assertEquals(listRequest.getHTTPMethod(), Request.HTTPMethod.GET);
+        assertEquals(listAllRequest.getHttpMethod(), Request.HttpMethod.GET);
+        assertEquals(listRequest.getHttpMethod(), Request.HttpMethod.GET);
     }
 
     @Test

@@ -2,7 +2,7 @@ package com.urbanairship.api.channel;
 
 import com.urbanairship.api.channel.model.ChannelResponse;
 import com.urbanairship.api.channel.model.ChannelView;
-import com.urbanairship.api.channel.model.DeviceType;
+import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.channel.parse.ChannelObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
@@ -149,7 +149,7 @@ public class ChannelResponseTest {
             assertFalse(one.getBackground().isPresent());
             assertEquals("00000000-0000-0000-0000-000000000000", one.getChannelId());
             assertEquals(1338928657000L, one.getCreated().getMillis());
-            assertEquals(DeviceType.ANDROID, one.getDeviceType());
+            assertEquals(ChannelType.ANDROID, one.getChannelType());
             assertFalse(one.getIosSettings().isPresent());
             assertFalse(one.getLastRegistration().isPresent());
             assertFalse(one.getPushAddress().isPresent());
@@ -165,7 +165,7 @@ public class ChannelResponseTest {
             assertTrue(two.getBackground().get());
             assertEquals("00662346-9e39-4f5f-80e7-3f8fae58863c", two.getChannelId());
             assertEquals(1394131979000L, two.getCreated().getMillis());
-            assertEquals(DeviceType.ANDROID, two.getDeviceType());
+            assertEquals(ChannelType.ANDROID, two.getChannelType());
             assertFalse(two.getIosSettings().isPresent());
             assertEquals(1412717315000L, two.getLastRegistration().get().getMillis());
             assertEquals("APA91bFPOUF6KNHXjoG0vaQSP4VLXirGDpy0_CRcb6Jhvnrya2bdRmlUoMiJ12JJevjONZzUwFETYa8uzyiE_9WaL3mzZrdjqOv2YuzYlQ_TrXVgo61JmIyw-M_pshIjVvkvtOuZ4MnRJJ_MiQDYwpB4ZhOTMlyqRw", two.getPushAddress().get());
@@ -181,7 +181,7 @@ public class ChannelResponseTest {
             assertTrue(three.getBackground().get());
             assertEquals("00d174cd-0a31-427e-95c9-52d5785bcd50", three.getChannelId());
             assertEquals(1404929317000L, three.getCreated().getMillis());
-            assertEquals(DeviceType.IOS, three.getDeviceType());
+            assertEquals(ChannelType.IOS, three.getChannelType());
             assertEquals("IosSettings{badge=1, quiettime=Optional.of(QuietTime{start='17:00', end='9:00'}), timezone=Optional.of(America/Los_Angeles)}", three.getIosSettings().get().toString());
             assertEquals(1412214102000L, three.getLastRegistration().get().getMillis());
             assertEquals("E4EA0D96092A9213BB186BEF66E83EE226401F82B3A77A1AC8217A8FE8ED4614", three.getPushAddress().get());
@@ -196,7 +196,7 @@ public class ChannelResponseTest {
             assertFalse(four.getBackground().isPresent());
             assertEquals("00d8cb94-eac9-49fb-bad0-29298a06730e", four.getChannelId());
             assertEquals(1393109317000L, four.getCreated().getMillis());
-            assertEquals(DeviceType.IOS, four.getDeviceType());
+            assertEquals(ChannelType.IOS, four.getChannelType());
             assertEquals("IosSettings{badge=1, quiettime=Optional.of(QuietTime{start='null', end='null'}), timezone=Optional.absent()}", four.getIosSettings().get().toString());
             assertFalse(four.getLastRegistration().isPresent());
             assertEquals("21F34C9ED37EAF8D7DC43561C07AA398CA5C6F503196C9E8230C50C0959B8653", four.getPushAddress().get());
@@ -214,7 +214,7 @@ public class ChannelResponseTest {
             assertFalse(five.getBackground().isPresent());
             assertEquals("01257ecd-8182-41fe-a741-9fed91b993cb", five.getChannelId());
             assertEquals(1359075305000L, five.getCreated().getMillis());
-            assertEquals(DeviceType.ANDROID, five.getDeviceType());
+            assertEquals(ChannelType.ANDROID, five.getChannelType());
             assertFalse(five.getIosSettings().isPresent());
             assertFalse(five.getLastRegistration().isPresent());
             assertFalse(five.getPushAddress().isPresent());

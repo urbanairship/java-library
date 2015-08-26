@@ -10,7 +10,7 @@ import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
-public class DeviceTypeBasicSerializationTest {
+public class ChannelTypeBasicSerializationTest {
 
     private static final ObjectMapper mapper = PushObjectMapper.getInstance();
 
