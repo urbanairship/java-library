@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ */
+
 package com.urbanairship.api.channel.parse;
 
 import com.urbanairship.api.channel.model.ChannelResponse;
