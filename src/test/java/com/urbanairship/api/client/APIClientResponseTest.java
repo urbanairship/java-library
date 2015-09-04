@@ -1,11 +1,8 @@
 package com.urbanairship.api.client;
 
 import com.google.common.collect.ImmutableList;
-import com.urbanairship.api.channel.information.model.ChannelView;
 import com.urbanairship.api.client.model.APIClientResponse;
-import com.urbanairship.api.client.model.APIListAllChannelsResponse;
 import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
-import com.urbanairship.api.client.model.APIListSingleChannelResponse;
 import com.urbanairship.api.client.model.APIListTagsResponse;
 import com.urbanairship.api.client.model.APILocationResponse;
 import com.urbanairship.api.client.model.APIReportsPushListingResponse;
@@ -335,76 +332,6 @@ public class APIClientResponseTest {
 
         assertTrue("APIResponse not set properly",
                 testResponse.getApiResponse().equals(listTagsResponse));
-    }
-
-    @Test
-    public void testAPIChannelViewResponse() {
-        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-                new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
-
-        APIListSingleChannelResponse response =
-                APIListSingleChannelResponse.newBuilder()
-                        .setOk(true)
-                        .setChannelObject(ChannelView.newBuilder()
-                                .setAlias("Alias")
-                                .setBackground(true)
-                                .setChannelId("channelID")
-                                .setCreatedMillis(12345L)
-                                .setDeviceType(com.urbanairship.api.channel.information.model.DeviceType.ANDROID)
-                                .setInstalled(true)
-                                .setLastRegistrationMillis(12345L)
-                                .setOptedIn(true)
-                                .setPushAddress("PUSH")
-                                .build())
-                        .build();
-
-        APIClientResponse.Builder<APIListSingleChannelResponse> builder =
-                new APIClientResponse.Builder<APIListSingleChannelResponse>()
-                        .setApiResponse(response)
-                        .setHttpResponse(httpResponse);
-
-        APIClientResponse<APIListSingleChannelResponse> testResponse = builder.build();
-
-        assertTrue("HTTP response not set properly",
-                testResponse.getHttpResponse().equals(httpResponse));
-
-        assertTrue("APIResponse not set properly",
-                testResponse.getApiResponse().equals(response));
-    }
-
-    @Test
-    public void testAPIListAllChannelsResponse() {
-        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-                new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
-
-        APIListAllChannelsResponse response = APIListAllChannelsResponse.newBuilder()
-                .setOk(true)
-                .setNextPage("nextPage")
-                .addChannel(ChannelView.newBuilder()
-                        .setAlias("Alias")
-                        .setBackground(true)
-                        .setChannelId("channelID")
-                        .setCreatedMillis(12345L)
-                        .setDeviceType(com.urbanairship.api.channel.information.model.DeviceType.ANDROID)
-                        .setInstalled(true)
-                        .setLastRegistrationMillis(12345L)
-                        .setOptedIn(true)
-                        .setPushAddress("PUSH")
-                        .build())
-                .build();
-
-        APIClientResponse.Builder<APIListAllChannelsResponse> builder =
-                new APIClientResponse.Builder<APIListAllChannelsResponse>()
-                        .setApiResponse(response)
-                        .setHttpResponse(httpResponse);
-
-        APIClientResponse<APIListAllChannelsResponse> testResponse = builder.build();
-
-        assertTrue("HTTP response not set properly",
-                testResponse.getHttpResponse().equals(httpResponse));
-
-        assertTrue("APIResponse not set properly",
-                testResponse.getApiResponse().equals(response));
     }
 
 }

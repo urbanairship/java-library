@@ -3,10 +3,7 @@ package com.urbanairship.api.client;
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableSet;
-import com.urbanairship.api.channel.information.model.TagMutationPayload;
 import com.urbanairship.api.client.model.APIClientResponse;
-import com.urbanairship.api.client.model.APIListAllChannelsResponse;
 import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
 import com.urbanairship.api.client.model.APIListTagsResponse;
 import com.urbanairship.api.client.model.APILocationResponse;
@@ -43,7 +40,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.UUID;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
@@ -1308,189 +1304,6 @@ public class APIClientTest {
 
             // The response is tested elsewhere, just check that it exists
             assertNotNull(response);
-        } catch (Exception ex) {
-            fail("Exception thrown " + ex);
-        }
-    }
-
-    @Test
-    public void testChannelTagMutations() {
-        // Setup a client
-        APIClient client = APIClient.newBuilder()
-            .setBaseURI("http://localhost:8080")
-            .setKey("key")
-            .setSecret("secret")
-            .build();
-
-        stubFor(post(urlEqualTo("/api/channels/tags/"))
-            .willReturn(aResponse()
-                .withHeader(CONTENT_TYPE_KEY, "application/json")
-                .withStatus(200)));
-
-        ImmutableSet<String> iosChannels = ImmutableSet.of(UUID.randomUUID().toString(), UUID.randomUUID().toString());
-
-        TagMutationPayload payload = TagMutationPayload.newBuilder()
-            .addIOSChannels(iosChannels)
-            .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .removeTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"))
-            .build();
-
-        try {
-            HttpResponse response = client.channelsTagMutations(payload);
-
-            List<LoggedRequest> requests = findAll(postRequestedFor(urlEqualTo("/api/channels/tags/")));
-            assertEquals(1, requests.size());
-
-            assertNotNull(response);
-            assertEquals(200, response.getStatusLine().getStatusCode());
-
-        } catch (Exception ex) {
-            fail("Exception thrown " + ex);
-        }
-    }
-
-    @Test
-    public void testListAllChannels() {
-
-        String fiveresponse = "{\n" +
-                "  \"ok\": true,\n" +
-                "  \"channels\": [\n" +
-                "    {\n" +
-                "      \"channel_id\": \"00000000-0000-0000-0000-000000000000\",\n" +
-                "      \"device_type\": \"android\",\n" +
-                "      \"installed\": false,\n" +
-                "      \"opt_in\": false,\n" +
-                "      \"push_address\": null,\n" +
-                "      \"created\": \"2012-06-05T20:37:37\",\n" +
-                "      \"last_registration\": null,\n" +
-                "      \"alias\": null,\n" +
-                "      \"tags\": [\n" +
-                "        \"test01\"\n" +
-                "      ]," +
-                "      \"tag_groups\": {\n" +
-                "        \"testGroup01\" : [\n" +
-                "          \"testGroup01Tag01\"\n" +
-                "        ]\n" +
-                "      }\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"channel_id\": \"00662346-9e39-4f5f-80e7-3f8fae58863c\",\n" +
-                "      \"device_type\": \"android\",\n" +
-                "      \"installed\": true,\n" +
-                "      \"opt_in\": true,\n" +
-                "      \"background\": true,\n" +
-                "      \"push_address\": \"APA91bFPOUF6KNHXjoG0vaQSP4VLXirGDpy0_CRcb6Jhvnrya2bdRmlUoMiJ12JJevjONZzUwFETYa8uzyiE_9WaL3mzZrdjqOv2YuzYlQ_TrXVgo61JmIyw-M_pshIjVvkvtOuZ4MnRJJ_MiQDYwpB4ZhOTMlyqRw\",\n" +
-                "      \"created\": \"2014-03-06T18:52:59\",\n" +
-                "      \"last_registration\": \"2014-10-07T21:28:35\",\n" +
-                "      \"alias\": \"aaron-device\",\n" +
-                "      \"tags\": [\n" +
-                "        \"aaron-tag\",\n" +
-                "        \"rhtgeg\",\n" +
-                "        \"tnrvrg\"\n" +
-                "      ],\n" +
-                "      \"tag_groups\": {\n" +
-                "        \"testGroup02\" : [\n" +
-                "          \"testGroup02Tag01\",\n" +
-                "          \"testGroup02Tag02\"\n" +
-                "        ]\n" +
-                "      }\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"channel_id\": \"00d174cd-0a31-427e-95c9-52d5785bcd50\",\n" +
-                "      \"device_type\": \"ios\",\n" +
-                "      \"installed\": true,\n" +
-                "      \"opt_in\": true,\n" +
-                "      \"background\": true,\n" +
-                "      \"push_address\": \"E4EA0D96092A9213BB186BEF66E83EE226401F82B3A77A1AC8217A8FE8ED4614\",\n" +
-                "      \"created\": \"2014-07-09T18:08:37\",\n" +
-                "      \"last_registration\": \"2014-10-02T01:41:42\",\n" +
-                "      \"alias\": null,\n" +
-                "      \"tags\": [\n" +
-                "        \"version_1.5.0\"\n" +
-                "      ],\n" +
-                "      \"tag_groups\": {},\n" +
-                "      \"ios\": {\n" +
-                "        \"badge\": 1,\n" +
-                "        \"quiettime\": {\n" +
-                "          \"start\": \"17:00\",\n" +
-                "          \"end\": \"9:00\"\n" +
-                "        },\n" +
-                "        \"tz\": \"America\\/Los_Angeles\"\n" +
-                "      }\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"channel_id\": \"00d8cb94-eac9-49fb-bad0-29298a06730e\",\n" +
-                "      \"device_type\": \"ios\",\n" +
-                "      \"installed\": false,\n" +
-                "      \"opt_in\": false,\n" +
-                "      \"push_address\": \"21F34C9ED37EAF8D7DC43561C07AA398CA5C6F503196C9E8230C50C0959B8653\",\n" +
-                "      \"created\": \"2014-02-22T22:48:37\",\n" +
-                "      \"last_registration\": null,\n" +
-                "      \"alias\": \"iPhone 7,1\",\n" +
-                "      \"tags\": [\n" +
-                "        \"kablam\",\n" +
-                "        \"version_1.3\"\n" +
-                "      ],\n" +
-                "      \"tag_groups\": {\n" +
-                "        \"testGroup03\": [\n" +
-                "          \"testGroup03Tag01\",\n" +
-                "          \"testGroup03Tag02\",\n" +
-                "          \"testGroup03Tag03\"\n" +
-                "        ],\n" +
-                "        \"testGroup04\": [\n" +
-                "          \"testGroup04Tag01\"\n" +
-                "        ]\n" +
-                "      },\n" +
-                "      \"ios\": {\n" +
-                "        \"badge\": 1,\n" +
-                "        \"quiettime\": {\n" +
-                "          \"start\": null,\n" +
-                "          \"end\": null\n" +
-                "        },\n" +
-                "        \"tz\": null\n" +
-                "      }\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"channel_id\": \"01257ecd-8182-41fe-a741-9fed91b993cb\",\n" +
-                "      \"device_type\": \"android\",\n" +
-                "      \"installed\": false,\n" +
-                "      \"opt_in\": false,\n" +
-                "      \"push_address\": null,\n" +
-                "      \"created\": \"2013-01-25T00:55:05\",\n" +
-                "      \"last_registration\": null,\n" +
-                "      \"alias\": null,\n" +
-                "      \"tags\": [\n" +
-                "        \n" +
-                "      ],\n" +
-                "      \"tag_groups\": {}\n" +
-                "    }\n" +
-                "  ],\n" +
-                "  \"next_page\": \"https:\\/\\/go.urbanairship.com\\/api\\/channels?limit=5&start=0143e4d6-724c-4fc8-bbc6-ca647b8993bf\"\n" +
-                "}";
-
-        // Setup a client
-        APIClient client = APIClient.newBuilder()
-                .setBaseURI("http://localhost:8080")
-                .setKey("key")
-                .setSecret("secret")
-                .build();
-
-        stubFor(get(urlEqualTo("/api/channels/"))
-                .willReturn(aResponse()
-                        .withHeader(CONTENT_TYPE_KEY, "application/json")
-                        .withBody(fiveresponse)
-                        .withStatus(200)));
-
-        try {
-            APIClientResponse<APIListAllChannelsResponse> response = client.listAllChannels();
-
-            List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo("/api/channels/")));
-            assertEquals(1, requests.size());
-
-            assertNotNull(response);
-            assertEquals(200, response.getHttpResponse().getStatusLine().getStatusCode());
-
         } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }

@@ -1,5 +1,8 @@
 package com.urbanairship.api.client;
 
+import com.urbanairship.api.channel.model.ChannelResponse;
+import com.urbanairship.api.channel.model.ChannelType;
+import com.urbanairship.api.channel.model.ChannelView;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushPayload;
@@ -113,7 +116,73 @@ public class ResponseTest {
             response.getHeaders().equals(headers));
         assertTrue("HTTP response status not set properly",
             response.getStatus() == httpResponse.getStatusLine().getStatusCode());
-
     }
 
+    @Test
+    public void testAPIChannelViewResponse() {
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+            new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
+        httpResponse.setHeader(CONTENT_TYPE_KEY, CONTENT_TYPE);
+
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put(httpResponse.getAllHeaders()[0].getName(), httpResponse.getAllHeaders()[0].getValue());
+
+        ChannelResponse channelResponse =
+            ChannelResponse.newBuilder()
+                .setOk(true)
+                .setChannelObject(ChannelView.newBuilder()
+                    .setAlias("Alias")
+                    .setBackground(true)
+                    .setChannelId("channelID")
+                    .setCreated(DateTime.now())
+                    .setChannelType(ChannelType.ANDROID)
+                    .setInstalled(true)
+                    .setLastRegistration(DateTime.now().minus(12345L))
+                    .setOptIn(true)
+                    .setPushAddress("PUSH")
+                    .build())
+                .build();
+
+        Response<ChannelResponse> response = new Response<ChannelResponse>(channelResponse, headers, httpResponse.getStatusLine().getStatusCode());
+        assertTrue("HTTP response body not set properly",
+            response.getBody().get().equals(channelResponse));
+        assertTrue("HTTP response headers not set properly",
+            response.getHeaders().equals(headers));
+        assertTrue("HTTP response status not set properly",
+            response.getStatus() == httpResponse.getStatusLine().getStatusCode());
+    }
+
+    @Test
+    public void testAPIListChannelsResponse() {
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+            new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
+        httpResponse.setHeader(CONTENT_TYPE_KEY, CONTENT_TYPE);
+
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put(httpResponse.getAllHeaders()[0].getName(), httpResponse.getAllHeaders()[0].getValue());
+
+        ChannelResponse channelResponse = ChannelResponse.newBuilder()
+            .setOk(true)
+            .setNextPage("nextPage")
+            .addChannel(ChannelView.newBuilder()
+                .setAlias("Alias")
+                .setBackground(true)
+                .setChannelId("channelID")
+                .setCreated(DateTime.now())
+                .setChannelType(ChannelType.ANDROID)
+                .setInstalled(true)
+                .setLastRegistration(DateTime.now().minus(12345L))
+                .setOptIn(true)
+                .setPushAddress("PUSH")
+                .build())
+            .build();
+
+        Response<ChannelResponse> response = new Response<ChannelResponse>(channelResponse, headers, httpResponse.getStatusLine().getStatusCode());
+        assertTrue("HTTP response body not set properly",
+            response.getBody().get().equals(channelResponse));
+        assertTrue("HTTP response headers not set properly",
+            response.getHeaders().equals(headers));
+        assertTrue("HTTP response status not set properly",
+            response.getStatus() == httpResponse.getStatusLine().getStatusCode());
+    }
 }
