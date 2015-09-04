@@ -387,7 +387,7 @@ public final class ChannelView {
          * Add all the tag groups with tags
          *
          * @param tagGroups ImmutableMap of tag groups and ImmutableSets of tags
-         * @return
+         * @return Builder
          */
         public Builder addAllTagGroups(ImmutableMap<String, ImmutableSet<String>> tagGroups) {
             if (!tagGroups.isEmpty()) {

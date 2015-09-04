@@ -212,8 +212,8 @@ public class ChannelTagRequest implements Request<String> {
             payload.put(SET_KEY, setTags);
         }
 
-        Preconditions.checkArgument(payload.containsKey(AUDIENCE_KEY), "Audience required when executing a named user tag operation");
-        Preconditions.checkArgument(payload.containsKey(ADD_KEY) || payload.containsKey(REMOVE_KEY) || payload.containsKey(SET_KEY), "Audience required when executing a named user tag operation");
+        Preconditions.checkArgument(payload.containsKey(AUDIENCE_KEY), "Audience required when executing a channel tag operation");
+        Preconditions.checkArgument(payload.containsKey(ADD_KEY) || payload.containsKey(REMOVE_KEY) || payload.containsKey(SET_KEY), "Audience required when executing a channel tag operation");
         if (payload.containsKey(SET_KEY)) {
             Preconditions.checkArgument(!payload.containsKey(REMOVE_KEY) && !payload.containsKey(ADD_KEY));
         }

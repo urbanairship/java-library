@@ -55,11 +55,11 @@ public class ChannelRequestTest {
     public void testURI() throws Exception {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
-        URI expextedURI = URI.create("https://go.urbanairship.com/api/channels/");
-        assertEquals(listAllRequest.getUri(baseURI), expextedURI);
+        URI expectedURI = URI.create("https://go.urbanairship.com/api/channels/");
+        assertEquals(listAllRequest.getUri(baseURI), expectedURI);
 
-        expextedURI = URI.create("https://go.urbanairship.com/api/channels/channel");
-        assertEquals(listRequest.getUri(baseURI), expextedURI);
+        expectedURI = URI.create("https://go.urbanairship.com/api/channels/channel");
+        assertEquals(listRequest.getUri(baseURI), expectedURI);
     }
 
     @Test

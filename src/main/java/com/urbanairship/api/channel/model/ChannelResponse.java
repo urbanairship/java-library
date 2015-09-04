@@ -57,7 +57,7 @@ public class ChannelResponse {
     }
 
     /**
-     * Get the channel object if for a single channel lookup request
+     * Get the channel object if present for a single channel lookup request
      *
      * @return An Optional ChannelView
      */
@@ -66,7 +66,7 @@ public class ChannelResponse {
     }
 
     /**
-     * Get a list of channel objects if for a channel listing request
+     * Get a list of channel objects if present for a channel listing request
      *
      * @return An Optional ImmutableList of ChannelView objects
      */
