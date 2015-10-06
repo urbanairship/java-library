@@ -22,6 +22,7 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.Properties;
 
@@ -110,7 +111,7 @@ public class UrbanAirshipClient {
      * @return A client response.
      * @throws IOException
      */
-    public <T> Response<T> execute(final Request<T> request) throws IOException {
+    public <T> Response<T> execute(final Request<T> request) throws IOException, URISyntaxException {
         org.apache.http.client.fluent.Request apacheRequest;
 
         switch (request.getHttpMethod()) {
@@ -212,6 +213,8 @@ public class UrbanAirshipClient {
 
         return null;
     }
+
+
 
     /**
      * Retrieves the response headers.

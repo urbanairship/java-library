@@ -17,54 +17,54 @@ import org.codehaus.jackson.map.JsonDeserializer;
 
 import java.io.IOException;
 
-public final class SinglePushInfoResponseDeserializer extends JsonDeserializer<SinglePushInfoResponse> {
+public final class SinglePushInfoDeserializer extends JsonDeserializer<SinglePushInfoResponse> {
 
-    public static final FieldParserRegistry<SinglePushInfoResponse, SinglePushInfoResponseReader> FIELD_PARSER =
-            new MapFieldParserRegistry<SinglePushInfoResponse, SinglePushInfoResponseReader>(
-                    ImmutableMap.<String, FieldParser<SinglePushInfoResponseReader>>builder()
-                            .put("push_uuid", new FieldParser<SinglePushInfoResponseReader>() {
+    public static final FieldParserRegistry<SinglePushInfoResponse, SinglePushInfoReader> FIELD_PARSER =
+            new MapFieldParserRegistry<SinglePushInfoResponse, SinglePushInfoReader>(
+                    ImmutableMap.<String, FieldParser<SinglePushInfoReader>>builder()
+                            .put("push_uuid", new FieldParser<SinglePushInfoReader>() {
                                 @Override
-                                public void parse(SinglePushInfoResponseReader reader,
+                                public void parse(SinglePushInfoReader reader,
                                                   JsonParser jsonParser,
                                                   DeserializationContext deserializationContext) throws IOException {
                                     reader.readPushUUID(jsonParser);
                                 }
                             })
-                            .put("direct_responses", new FieldParser<SinglePushInfoResponseReader>() {
+                            .put("direct_responses", new FieldParser<SinglePushInfoReader>() {
                                 @Override
-                                public void parse(SinglePushInfoResponseReader reader,
+                                public void parse(SinglePushInfoReader reader,
                                                   JsonParser jsonParser,
                                                   DeserializationContext deserializationContext) throws IOException {
                                     reader.readDirectResponses(jsonParser);
                                 }
                             })
-                            .put("sends", new FieldParser<SinglePushInfoResponseReader>() {
+                            .put("sends", new FieldParser<SinglePushInfoReader>() {
                                 @Override
-                                public void parse(SinglePushInfoResponseReader reader,
+                                public void parse(SinglePushInfoReader reader,
                                                   JsonParser jsonParser,
                                                   DeserializationContext deserializationContext) throws IOException {
                                     reader.readSends(jsonParser);
                                 }
                             })
-                            .put("push_type", new FieldParser<SinglePushInfoResponseReader>() {
+                            .put("push_type", new FieldParser<SinglePushInfoReader>() {
                                 @Override
-                                public void parse(SinglePushInfoResponseReader reader,
+                                public void parse(SinglePushInfoReader reader,
                                                   JsonParser jsonParser,
                                                   DeserializationContext deserializationContext) throws IOException {
                                     reader.readPushType(jsonParser);
                                 }
                             })
-                            .put("push_time", new FieldParser<SinglePushInfoResponseReader>() {
+                            .put("push_time", new FieldParser<SinglePushInfoReader>() {
                                 @Override
-                                public void parse(SinglePushInfoResponseReader reader,
+                                public void parse(SinglePushInfoReader reader,
                                                   JsonParser jsonParser,
                                                   DeserializationContext deserializationContext) throws IOException {
                                     reader.readPushTime(jsonParser);
                                 }
                             })
-                            .put("group_id", new FieldParser<SinglePushInfoResponseReader>() {
+                            .put("group_id", new FieldParser<SinglePushInfoReader>() {
                                 @Override
-                                public void parse(SinglePushInfoResponseReader reader,
+                                public void parse(SinglePushInfoReader reader,
                                                   JsonParser jsonParser,
                                                   DeserializationContext deserializationContext) throws IOException {
                                     reader.readGroupID(jsonParser);
@@ -75,13 +75,13 @@ public final class SinglePushInfoResponseDeserializer extends JsonDeserializer<S
 
     private final StandardObjectDeserializer<SinglePushInfoResponse, ?> deserializer;
 
-    public SinglePushInfoResponseDeserializer() {
-        this.deserializer = new StandardObjectDeserializer<SinglePushInfoResponse, SinglePushInfoResponseReader>(
+    public SinglePushInfoDeserializer() {
+        this.deserializer = new StandardObjectDeserializer<SinglePushInfoResponse, SinglePushInfoReader>(
                 FIELD_PARSER,
-                new Supplier<SinglePushInfoResponseReader>() {
+                new Supplier<SinglePushInfoReader>() {
                     @Override
-                    public SinglePushInfoResponseReader get() {
-                        return new SinglePushInfoResponseReader();
+                    public SinglePushInfoReader get() {
+                        return new SinglePushInfoReader();
                     }
                 }
         );

@@ -5,7 +5,6 @@
 package com.urbanairship.api.reports.parse;
 
 
-import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.reports.model.SinglePushInfoResponse;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -19,9 +18,9 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class SinglePushInfoResponseDeserializerTest {
+public class SinglePushListingResponseDeserializerTest {
 
-    private static final ObjectMapper mapper = APIResponseObjectMapper.getInstance();
+    private static final ObjectMapper mapper = ReportsObjectMapper.getInstance();
 
     @Test
     public void testSinglePushInfoResponseJsonDeserialize() throws Exception {

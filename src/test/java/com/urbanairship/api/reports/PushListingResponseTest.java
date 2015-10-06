@@ -2,19 +2,20 @@
  * Copyright (c) 2013-2014.  Urban Airship and Contributors
  */
 
-package com.urbanairship.api.client.parse;
+package com.urbanairship.api.reports;
 
 
-import com.urbanairship.api.client.model.APIReportsPushListingResponse;
+import com.urbanairship.api.reports.parse.ReportsObjectMapper;
+import com.urbanairship.api.reports.model.PushListingResponse;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class APIReportsPushListingResponseTest {
+public class PushListingResponseTest {
 
-    ObjectMapper mapper = APIResponseObjectMapper.getInstance();
+    ObjectMapper mapper = ReportsObjectMapper.getInstance();
 
     String fiveresponse = "{  \n" +
             "  \"next_page\":\"Value for Next Page\",\n" +
@@ -58,12 +59,12 @@ public class APIReportsPushListingResponseTest {
             "}";
 
     @Test
-    public void testAPIReportsListingResponse() throws Exception {
-        APIReportsPushListingResponse response = mapper.readValue(fiveresponse, APIReportsPushListingResponse.class);
+    public void testPushInfoList() throws Exception {
+        PushListingResponse response = mapper.readValue(fiveresponse, PushListingResponse.class);
         assertNotNull(response);
-        assertEquals(5, response.getSinglePushInfoResponseObjects().size());
+        assertEquals(5, response.getPushInfoObjects().get().size());
         assertEquals("Value for Next Page", response.getNextPage().get());
         assertEquals("1c06d01a-fa3c-11e2-aa2d-d4bed9a88699",
-                response.getSinglePushInfoResponseObjects().get(2).getPushUUID().toString());
+                response.getPushInfoObjects().get().get(2).getPushUUID().toString());
     }
 }
