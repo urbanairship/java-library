@@ -111,33 +111,40 @@ public class UrbanAirshipClient {
      * @return A client response.
      * @throws IOException
      */
-    public <T> Response<T> execute(final Request<T> request) throws IOException, URISyntaxException {
+    public <T> Response<T> execute(final Request<T> request) throws IOException {
         org.apache.http.client.fluent.Request apacheRequest;
+        URI uri;
+
+        try {
+            uri = request.getUri(baseURI);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
 
         switch (request.getHttpMethod()) {
             case GET:
-                apacheRequest = org.apache.http.client.fluent.Request.Get(request.getUri(baseURI));
+                apacheRequest = org.apache.http.client.fluent.Request.Get(uri);
                 break;
             case PUT:
-                apacheRequest = org.apache.http.client.fluent.Request.Put(request.getUri(baseURI));
+                apacheRequest = org.apache.http.client.fluent.Request.Put(uri);
                 break;
             case POST:
-                apacheRequest = org.apache.http.client.fluent.Request.Post(request.getUri(baseURI));
+                apacheRequest = org.apache.http.client.fluent.Request.Post(uri);
                 break;
             case DELETE:
-                apacheRequest = org.apache.http.client.fluent.Request.Delete(request.getUri(baseURI));
+                apacheRequest = org.apache.http.client.fluent.Request.Delete(uri);
                 break;
             case OPTIONS:
-                apacheRequest = org.apache.http.client.fluent.Request.Options(request.getUri(baseURI));
+                apacheRequest = org.apache.http.client.fluent.Request.Options(uri);
                 break;
             case TRACE:
-                apacheRequest = org.apache.http.client.fluent.Request.Trace(request.getUri(baseURI));
+                apacheRequest = org.apache.http.client.fluent.Request.Trace(uri);
                 break;
             case HEAD:
-                apacheRequest = org.apache.http.client.fluent.Request.Head(request.getUri(baseURI));
+                apacheRequest = org.apache.http.client.fluent.Request.Head(uri);
                 break;
             default:
-                apacheRequest = org.apache.http.client.fluent.Request.Get(request.getUri(baseURI));
+                apacheRequest = org.apache.http.client.fluent.Request.Get(uri);
                 break;
         }
 

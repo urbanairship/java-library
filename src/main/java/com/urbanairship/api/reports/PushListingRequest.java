@@ -4,6 +4,7 @@
 
 package com.urbanairship.api.reports;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
@@ -31,8 +32,8 @@ public class PushListingRequest implements Request<PushListingResponse> {
 
     private final DateTime start;
     private final DateTime end;
-    private final Integer limit;
-    private final String pushIdStart;
+    private final Optional<Integer> limit;
+    private final Optional<String> pushIdStart;
 
     private PushListingRequest() {
         this(null,null,null,null);
@@ -40,8 +41,8 @@ public class PushListingRequest implements Request<PushListingResponse> {
 
     private PushListingRequest(DateTime start,
                                DateTime end,
-                               Integer limit,
-                               String pushIdStart)
+                               Optional<Integer> limit,
+                               Optional<String> pushIdStart)
     {
         this.start = start;
         this.end = end;
@@ -81,7 +82,7 @@ public class PushListingRequest implements Request<PushListingResponse> {
      *
      * @return Integer
      */
-    public Integer getLimit() {
+    public Optional<Integer> getLimit() {
         return limit;
     }
 
@@ -90,7 +91,7 @@ public class PushListingRequest implements Request<PushListingResponse> {
      *
      * @return String
      */
-    public String getPushIdStart() {
+    public Optional<String> getPushIdStart() {
         return pushIdStart;
     }
 
@@ -118,19 +119,25 @@ public class PushListingRequest implements Request<PushListingResponse> {
     }
 
     @Override
-    public URI getUri(URI baseUri) throws URISyntaxException {
-
+    public URI getUri(URI baseUri) {
+        URI uri;
         URIBuilder builder = new URIBuilder(RequestUtils.resolveURI(baseUri, API_PUSH_RESPONSE_LISTING));
         builder.addParameter("start", this.start.toString());
         builder.addParameter("end", this.end.toString());
 
-        if (this.limit != null)
-            builder.addParameter("limit", Integer.toString(this.limit));
+        if (this.limit.isPresent())
+            builder.addParameter("limit", Integer.toString(this.limit.get()));
 
-        if (this.pushIdStart != null)
-            builder.addParameter("push_id_start", this.pushIdStart);
+        if (this.pushIdStart.isPresent())
+            builder.addParameter("push_id_start", this.pushIdStart.get());
 
-        return builder.build();
+        try {
+            uri = builder.build();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+
+        return uri;
     }
 
     @Override
@@ -216,7 +223,11 @@ public class PushListingRequest implements Request<PushListingResponse> {
             Preconditions.checkNotNull(end);
             Preconditions.checkArgument(end.isAfter(start));
 
-            return new PushListingRequest(start, end, limit, pushIdStart);
+            return new PushListingRequest(
+                    start,
+                    end,
+                    Optional.fromNullable(limit),
+                    Optional.fromNullable(pushIdStart));
         }
     }
 }
