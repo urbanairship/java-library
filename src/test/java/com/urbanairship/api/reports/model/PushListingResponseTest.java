@@ -2,7 +2,7 @@
  * Copyright (c) 2013-2014.  Urban Airship and Contributors
  */
 
-package com.urbanairship.api.reports;
+package com.urbanairship.api.reports.model;
 
 
 import com.urbanairship.api.reports.parse.ReportsObjectMapper;

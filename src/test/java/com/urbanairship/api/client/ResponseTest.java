@@ -1,5 +1,6 @@
 package com.urbanairship.api.client;
 
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader;
 import com.urbanairship.api.channel.model.ChannelResponse;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.channel.model.ChannelView;
@@ -9,6 +10,8 @@ import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.PushResponse;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
+import com.urbanairship.api.reports.model.PushListingResponse;
+import com.urbanairship.api.reports.model.SinglePushInfoResponse;
 import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
@@ -23,6 +26,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.Assert.assertTrue;
 
@@ -184,5 +188,83 @@ public class ResponseTest {
             response.getHeaders().equals(headers));
         assertTrue("HTTP response status not set properly",
             response.getStatus() == httpResponse.getStatusLine().getStatusCode());
+    }
+
+    @Test
+    public void testAPIReportsListingResponse() {
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
+        httpResponse.setHeader(CONTENT_TYPE_KEY, CONTENT_TYPE);
+
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put(httpResponse.getAllHeaders()[0].getName(), httpResponse.getAllHeaders()[0].getValue());
+
+
+        UUID one = UUID.randomUUID();
+        UUID two = UUID.randomUUID();
+
+        SinglePushInfoResponse spir = SinglePushInfoResponse.newBuilder()
+                .setPushUUID(one)
+                .setDirectResponses(4)
+                .setSends(5)
+                .setPushType(SinglePushInfoResponse.PushType.UNICAST_PUSH)
+                .setPushTime("2013-07-31 21:27:38")
+                .setGroupID(two)
+                .build();
+
+        PushListingResponse pushListingResponse = PushListingResponse.newBuilder()
+                .setNextPage("123")
+                .addPushInfoObject(spir)
+                .addPushInfoObject(spir)
+                .addPushInfoObject(spir)
+                .build();
+
+        Response<PushListingResponse> response = new Response<PushListingResponse>(
+                pushListingResponse,
+                headers,
+                httpResponse.getStatusLine().getStatusCode());
+
+        assertTrue("HTTP response not set properly",
+                response.getBody().get().equals(pushListingResponse));
+        assertTrue("HTTP response headers not set properly",
+                response.getHeaders().equals(headers));
+        assertTrue("HTTP response status not set properly",
+                response.getStatus() == httpResponse.getStatusLine().getStatusCode());
+    }
+
+    @Test
+    public void testListIndividualPushAPIResponse() {
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
+        httpResponse.setHeader(CONTENT_TYPE_KEY, CONTENT_TYPE);
+
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put(httpResponse.getAllHeaders()[0].getName(), httpResponse.getAllHeaders()[0].getValue());
+
+
+        UUID one = UUID.randomUUID();
+        UUID two = UUID.randomUUID();
+
+        SinglePushInfoResponse pushInfoResponse = SinglePushInfoResponse.newBuilder()
+                .setPushUUID(one)
+                .setDirectResponses(4)
+                .setSends(5)
+                .setPushType(SinglePushInfoResponse.PushType.UNICAST_PUSH)
+                .setPushTime("2013-07-31 21:27:38")
+                .setGroupID(two)
+                .build();
+
+        Response<SinglePushInfoResponse> response = new Response<SinglePushInfoResponse>(
+                pushInfoResponse,
+                headers,
+                httpResponse.getStatusLine().getStatusCode());
+
+        assertTrue("HTTP response not set properly",
+                response.getBody().get().equals(pushInfoResponse));
+        assertTrue("HTTP response headers not set properly",
+                response.getHeaders().equals(headers));
+        assertTrue("HTTP response status not set properly",
+                response.getStatus() == httpResponse.getStatusLine().getStatusCode());
+
     }
 }

@@ -22,22 +22,21 @@ import static org.junit.Assert.assertEquals;
 public class SinglePushInfoRequestTest {
     ObjectMapper mapper = ReportsObjectMapper.getInstance();
 
-    SinglePushInfoRequest listRequest = SinglePushInfoRequest.newRequest("uuid");
-    // todo: listAllRequest
+    SinglePushInfoRequest singlePushInfoRequest = SinglePushInfoRequest.newRequest("uuid");
 
     @Test
     public void testContentType() throws Exception {
-        assertEquals(listRequest.getContentType(), ContentType.APPLICATION_JSON);
+        assertEquals(singlePushInfoRequest.getContentType(), ContentType.APPLICATION_JSON);
     }
 
     @Test
     public void testMethod() throws Exception {
-        assertEquals(listRequest.getHttpMethod(), Request.HttpMethod.GET);
+        assertEquals(singlePushInfoRequest.getHttpMethod(), Request.HttpMethod.GET);
     }
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(listRequest.getRequestBody(), null);
+        assertEquals(singlePushInfoRequest.getRequestBody(), null);
     }
 
     @Test
@@ -46,7 +45,7 @@ public class SinglePushInfoRequestTest {
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION);
 
-        assertEquals(listRequest.getRequestHeaders(), headers);
+        assertEquals(singlePushInfoRequest.getRequestHeaders(), headers);
     }
 
     @Test
@@ -54,7 +53,7 @@ public class SinglePushInfoRequestTest {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
         URI expectedURI = URI.create("https://go.urbanairship.com/api/reports/responses/uuid");
-        assertEquals(listRequest.getUri(baseURI), expectedURI);
+        assertEquals(singlePushInfoRequest.getUri(baseURI), expectedURI);
     }
 
     @Test
@@ -75,6 +74,6 @@ public class SinglePushInfoRequestTest {
                 "  \"group_id\":\"5e42ddfc-fa2d-11e2-9ca2-90e2ba025cd0\"\n" +
                 "}";
 
-        assertEquals(listRequest.getResponseParser().parse(response), responseParser.parse(response));
+        assertEquals(singlePushInfoRequest.getResponseParser().parse(response), responseParser.parse(response));
     }
 }

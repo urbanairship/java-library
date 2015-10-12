@@ -2,6 +2,7 @@ package com.urbanairship.api.client;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.channel.ChannelRequest;
 import com.urbanairship.api.channel.ChannelTagRequest;
@@ -15,6 +16,10 @@ import com.urbanairship.api.push.model.PushResponse;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.push.parse.PushObjectMapper;
+import com.urbanairship.api.reports.PushListingRequest;
+import com.urbanairship.api.reports.SinglePushInfoRequest;
+import com.urbanairship.api.reports.model.PushListingResponse;
+import com.urbanairship.api.reports.model.SinglePushInfoResponse;
 import com.urbanairship.api.schedule.DeleteScheduleRequest;
 import com.urbanairship.api.schedule.ListSchedulesOrderType;
 import com.urbanairship.api.schedule.ListSchedulesRequest;
@@ -29,10 +34,12 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Period;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -635,6 +642,7 @@ public class UrbanAirshipClientTest {
         }
     }
 
+
     @Test
     public void testListChannels() {
 
@@ -773,6 +781,207 @@ public class UrbanAirshipClientTest {
             Response<ChannelResponse> response = client.execute(request);
 
             List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo("/api/channels/")));
+            assertEquals(1, requests.size());
+
+            assertNotNull(response);
+            assertEquals(200, response.getStatus());
+
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testSinglePushInfo() throws IOException {
+
+        String queryPathString = "/api/reports/responses/abc";
+
+        String responseString = "{  \n" +
+                "  \"push_uuid\":\"5e42ddfc-fa2d-11e2-9ca2-90e2ba025cd0\",\n" +
+                "  \"push_time\":\"2013-07-31 22:05:53\",\n" +
+                "  \"push_type\":\"BROADCAST_PUSH\",\n" +
+                "  \"direct_responses\":4,\n" +
+                "  \"sends\":176,\n" +
+                "  \"group_id\":\"5e42ddfc-fa2d-11e2-9ca2-90e2ba025cd0\"\n" +
+                "}";
+
+        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseString)
+                        .withStatus(200)));
+
+        SinglePushInfoRequest request = SinglePushInfoRequest.newRequest("abc");
+
+        try {
+            Response<SinglePushInfoResponse> response = client.execute(request);
+
+            List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
+            assertEquals(1, requests.size());
+
+            assertNotNull(response);
+            assertEquals(200, response.getStatus());
+
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testPushListing() throws IOException {
+
+        String queryPathString = "/api/reports/responses/list?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00";
+
+        String responseString = "{  \n" +
+                "  \"next_page\":\"Value for Next Page\",\n" +
+                "  \"pushes\":[  \n" +
+                "    {  \n" +
+                "      \"push_uuid\":\"df31cae0-fa3c-11e2-97ce-14feb5d317b8\",\n" +
+                "      \"push_time\":\"2013-07-31 23:56:52\",\n" +
+                "      \"push_type\":\"BROADCAST_PUSH\",\n" +
+                "      \"direct_responses\":0,\n" +
+                "      \"sends\":1\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"push_uuid\":\"3043779a-fa3c-11e2-a22b-d4bed9a887d4\",\n" +
+                "      \"push_time\":\"2013-07-31 23:51:58\",\n" +
+                "      \"push_type\":\"BROADCAST_PUSH\",\n" +
+                "      \"direct_responses\":0,\n" +
+                "      \"sends\":1\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"push_uuid\":\"1c06d01a-fa3c-11e2-aa2d-d4bed9a88699\",\n" +
+                "      \"push_time\":\"2013-07-31 23:51:24\",\n" +
+                "      \"push_type\":\"BROADCAST_PUSH\",\n" +
+                "      \"direct_responses\":0,\n" +
+                "      \"sends\":1\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"push_uuid\":\"a50eb7de-fa3b-11e2-912f-90e2ba025998\",\n" +
+                "      \"push_time\":\"2013-07-31 23:48:05\",\n" +
+                "      \"push_type\":\"BROADCAST_PUSH\",\n" +
+                "      \"direct_responses\":0,\n" +
+                "      \"sends\":1\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"push_uuid\":\"90483c8a-fa3b-11e2-92d0-90e2ba0253a0\",\n" +
+                "      \"push_time\":\"2013-07-31 23:47:30\",\n" +
+                "      \"push_type\":\"BROADCAST_PUSH\",\n" +
+                "      \"direct_responses\":0,\n" +
+                "      \"sends\":1\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
+
+        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseString)
+                        .withStatus(200)));
+
+        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+        DateTime end = start.plus(Period.hours(48));
+
+        PushListingRequest request = PushListingRequest.newBuilder()
+                .start(start)
+                .end(end)
+                .build();
+
+        try {
+            Response<PushListingResponse> response = client.execute(request);
+
+            List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
+            assertEquals(1, requests.size());
+
+            assertNotNull(response);
+            assertEquals(200, response.getStatus());
+
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testPushListingWithOptionalParams() throws IOException {
+
+        String queryPathString = "/api/reports/responses/list?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&limit=2&push_id_start=start";
+
+        String responseString = "{  \n" +
+                "  \"next_page\":\"Value for Next Page\",\n" +
+                "  \"pushes\":[  \n" +
+                "    {  \n" +
+                "      \"push_uuid\":\"df31cae0-fa3c-11e2-97ce-14feb5d317b8\",\n" +
+                "      \"push_time\":\"2013-07-31 23:56:52\",\n" +
+                "      \"push_type\":\"BROADCAST_PUSH\",\n" +
+                "      \"direct_responses\":0,\n" +
+                "      \"sends\":1\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"push_uuid\":\"3043779a-fa3c-11e2-a22b-d4bed9a887d4\",\n" +
+                "      \"push_time\":\"2013-07-31 23:51:58\",\n" +
+                "      \"push_type\":\"BROADCAST_PUSH\",\n" +
+                "      \"direct_responses\":0,\n" +
+                "      \"sends\":1\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"push_uuid\":\"1c06d01a-fa3c-11e2-aa2d-d4bed9a88699\",\n" +
+                "      \"push_time\":\"2013-07-31 23:51:24\",\n" +
+                "      \"push_type\":\"BROADCAST_PUSH\",\n" +
+                "      \"direct_responses\":0,\n" +
+                "      \"sends\":1\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"push_uuid\":\"a50eb7de-fa3b-11e2-912f-90e2ba025998\",\n" +
+                "      \"push_time\":\"2013-07-31 23:48:05\",\n" +
+                "      \"push_type\":\"BROADCAST_PUSH\",\n" +
+                "      \"direct_responses\":0,\n" +
+                "      \"sends\":1\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"push_uuid\":\"90483c8a-fa3b-11e2-92d0-90e2ba0253a0\",\n" +
+                "      \"push_time\":\"2013-07-31 23:47:30\",\n" +
+                "      \"push_type\":\"BROADCAST_PUSH\",\n" +
+                "      \"direct_responses\":0,\n" +
+                "      \"sends\":1\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
+
+        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
+                .setBaseURI("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseString)
+                        .withStatus(200)));
+
+        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+        DateTime end = start.plus(Period.hours(48));
+
+        PushListingRequest request = PushListingRequest.newBuilder()
+                .start(start)
+                .end(end)
+                .limit(2)
+                .pushIdStart("start")
+                .build();
+
+        try {
+            Response<PushListingResponse> response = client.execute(request);
+
+            List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
             assertEquals(1, requests.size());
 
             assertNotNull(response);
