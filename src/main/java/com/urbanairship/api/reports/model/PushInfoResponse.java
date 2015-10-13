@@ -16,32 +16,31 @@ import java.util.UUID;
 /**
  * Return a single push info object
  */
-public final class SinglePushInfoResponse {
+public final class PushInfoResponse {
 
-    private final UUID pushUUID;
+    private final UUID pushId;
     private final int directResponses;
     private final int sends;
     private final PushType pushType;
     private final DateTime pushTime;
     private final Optional<UUID> groupID;
 
-    private SinglePushInfoResponse() {
-        this(null, 0, 0, null, null, Optional.<UUID>absent());
+    private PushInfoResponse() {
+        this(null, 0, 0, null, null, null);
     }
 
-    private SinglePushInfoResponse(UUID pushUUID,
-                                   int directResponses,
-                                   int sends,
-                                   PushType pushType,
-                                   DateTime pushTime,
-                                   Optional<UUID> groupID)
-    {
-        this.pushUUID = pushUUID;
+    private PushInfoResponse(UUID pushId,
+                             int directResponses,
+                             int sends,
+                             PushType pushType,
+                             DateTime pushTime,
+                             UUID groupID) {
+        this.pushId = pushId;
         this.directResponses = directResponses;
         this.sends = sends;
         this.pushType = pushType;
         this.pushTime = pushTime;
-        this.groupID = groupID;
+        this.groupID = Optional.fromNullable(groupID);
     }
 
     /**
@@ -58,8 +57,8 @@ public final class SinglePushInfoResponse {
      *
      * @return String uuid
      */
-    public UUID getPushUUID() {
-        return pushUUID;
+    public UUID getPushId() {
+        return pushId;
     }
 
     /**
@@ -111,7 +110,7 @@ public final class SinglePushInfoResponse {
     @Override
     public String toString() {
         return "SinglePushInfoResponse{" +
-                "pushUUID=" + pushUUID +
+                "pushId=" + pushId +
                 ", directResponses=" + directResponses +
                 ", sends=" + sends +
                 ", pushType=" + pushType +
@@ -122,7 +121,7 @@ public final class SinglePushInfoResponse {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(pushUUID, directResponses, sends, pushType, pushTime, groupID);
+        return Objects.hashCode(pushId, directResponses, sends, pushType, pushTime, groupID);
     }
 
     @Override
@@ -133,8 +132,8 @@ public final class SinglePushInfoResponse {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final SinglePushInfoResponse other = (SinglePushInfoResponse) obj;
-        return Objects.equal(this.pushUUID, other.pushUUID) && Objects.equal(this.directResponses, other.directResponses) && Objects.equal(this.sends, other.sends) && Objects.equal(this.pushType, other.pushType) && Objects.equal(this.pushTime, other.pushTime) && Objects.equal(this.groupID, other.groupID);
+        final PushInfoResponse other = (PushInfoResponse) obj;
+        return Objects.equal(this.pushId, other.pushId) && Objects.equal(this.directResponses, other.directResponses) && Objects.equal(this.sends, other.sends) && Objects.equal(this.pushType, other.pushType) && Objects.equal(this.pushTime, other.pushTime) && Objects.equal(this.groupID, other.groupID);
     }
 
     public enum PushType {
@@ -145,7 +144,7 @@ public final class SinglePushInfoResponse {
     }
 
     public final static class Builder {
-        private UUID pushUUID;
+        private UUID pushId;
         private int directResponses;
         private int sends;
         private PushType pushType;
@@ -161,8 +160,8 @@ public final class SinglePushInfoResponse {
          * @param value UUID
          * @return Builder
          */
-        public Builder setPushUUID(UUID value) {
-            this.pushUUID = value;
+        public Builder setPushId(UUID value) {
+            this.pushId = value;
             return this;
         }
 
@@ -217,7 +216,7 @@ public final class SinglePushInfoResponse {
          * @param value UUID
          * @return Builder
          */
-        public Builder setGroupID(UUID value) {
+        public Builder setGroupId(UUID value) {
             this.groupID = value;
             return this;
         }
@@ -227,18 +226,18 @@ public final class SinglePushInfoResponse {
          *
          * @return SinglePushInfoResponse
          */
-        public SinglePushInfoResponse build() {
-            Preconditions.checkNotNull(pushUUID, "Push UUID cannot be null.");
+        public PushInfoResponse build() {
+            Preconditions.checkNotNull(pushId, "Push UUID cannot be null.");
             Preconditions.checkNotNull(pushType, "Push Type cannot be null.");
             Preconditions.checkNotNull(pushTime, "Push Time cannot be null.");
 
-            return new SinglePushInfoResponse(
-                    pushUUID,
+            return new PushInfoResponse(
+                    pushId,
                     directResponses,
                     sends,
                     pushType,
                     pushTime,
-                    Optional.fromNullable(groupID));
+                    groupID);
         }
     }
 }

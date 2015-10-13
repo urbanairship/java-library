@@ -42,8 +42,7 @@ public class PushListingRequest implements Request<PushListingResponse> {
     private PushListingRequest(DateTime start,
                                DateTime end,
                                Optional<Integer> limit,
-                               Optional<String> pushIdStart)
-    {
+                               Optional<String> pushIdStart) {
         this.start = start;
         this.end = end;
         this.limit = limit;
@@ -119,8 +118,7 @@ public class PushListingRequest implements Request<PushListingResponse> {
     }
 
     @Override
-    public URI getUri(URI baseUri) {
-        URI uri;
+    public URI getUri(URI baseUri) throws URISyntaxException {
         URIBuilder builder = new URIBuilder(RequestUtils.resolveURI(baseUri, API_PUSH_RESPONSE_LISTING));
         builder.addParameter("start", this.start.toString());
         builder.addParameter("end", this.end.toString());
@@ -131,13 +129,7 @@ public class PushListingRequest implements Request<PushListingResponse> {
         if (this.pushIdStart.isPresent())
             builder.addParameter("push_id_start", this.pushIdStart.get());
 
-        try {
-            uri = builder.build();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-
-        return uri;
+        return builder.build();
     }
 
     @Override

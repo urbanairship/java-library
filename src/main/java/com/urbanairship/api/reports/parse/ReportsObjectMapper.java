@@ -5,7 +5,7 @@
 package com.urbanairship.api.reports.parse;
 
 import com.urbanairship.api.reports.model.PushListingResponse;
-import com.urbanairship.api.reports.model.SinglePushInfoResponse;
+import com.urbanairship.api.reports.model.PushInfoResponse;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.module.SimpleModule;
 import org.codehaus.jackson.Version;
@@ -16,7 +16,7 @@ public class ReportsObjectMapper {
     private static final SimpleModule MODULE = new SimpleModule("Reports API Module", new Version(1, 0, 0, null));
 
     static {
-        MODULE.addDeserializer(SinglePushInfoResponse.class, new SinglePushInfoDeserializer());
+        MODULE.addDeserializer(PushInfoResponse.class, new SinglePushInfoDeserializer());
         MODULE.addDeserializer(PushListingResponse.class, new PushListingResponseDeserializer());
 
         MAPPER.registerModule(MODULE);

@@ -35,7 +35,7 @@ public class UrbanAirshipClient {
     private final String appKey;
     private final String appSecret;
     /* URI */
-    private final URI baseURI;
+    private final URI baseUri;
     /* HTTP */
     private final HttpHost uaHost;
     private final Optional<ProxyInfo> proxyInfo;
@@ -46,8 +46,8 @@ public class UrbanAirshipClient {
     UrbanAirshipClient(Builder builder) {
         this.appKey = builder.key;
         this.appSecret = builder.secret;
-        this.baseURI = URI.create(builder.baseURI);
-        this.uaHost = new HttpHost(URI.create(builder.baseURI).getHost(), 443, "https");
+        this.baseUri = URI.create(builder.baseUri);
+        this.uaHost = new HttpHost(URI.create(builder.baseUri).getHost(), 443, "https");
         this.proxyInfo = Optional.fromNullable(builder.proxyInfo);
         this.httpParams = Optional.fromNullable(builder.httpParams);
 
@@ -116,7 +116,7 @@ public class UrbanAirshipClient {
         URI uri;
 
         try {
-            uri = request.getUri(baseURI);
+            uri = request.getUri(baseUri);
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
@@ -263,7 +263,7 @@ public class UrbanAirshipClient {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(appKey, appSecret, baseURI, uaHost, proxyInfo, httpParams);
+        return Objects.hashCode(appKey, appSecret, baseUri, uaHost, proxyInfo, httpParams);
     }
 
     @Override
@@ -277,7 +277,7 @@ public class UrbanAirshipClient {
         final UrbanAirshipClient other = (UrbanAirshipClient) obj;
         return Objects.equal(this.appKey, other.appKey)
             && Objects.equal(this.appSecret, other.appSecret)
-            && Objects.equal(this.baseURI, other.baseURI)
+            && Objects.equal(this.baseUri, other.baseUri)
             && Objects.equal(this.uaHost, other.uaHost)
             && Objects.equal(this.proxyInfo, other.proxyInfo)
             && Objects.equal(this.httpParams, other.httpParams);
@@ -288,7 +288,7 @@ public class UrbanAirshipClient {
         return "APIClient{ +" +
             "appKey=" + appKey +
             ", appSecret=" + appSecret +
-            ", baseURI=" + baseURI +
+            ", baseUri=" + baseUri +
             ", uaHost=" + uaHost +
             ", proxyInfo=" + proxyInfo +
             ", httpParams=" + httpParams +
@@ -301,12 +301,12 @@ public class UrbanAirshipClient {
 
         private String key;
         private String secret;
-        private String baseURI;
+        private String baseUri;
         private ProxyInfo proxyInfo = null;
         private BasicHttpParams httpParams = null;
 
         private Builder() {
-            baseURI = "https://go.urbanairship.com";
+            baseUri = "https://go.urbanairship.com";
         }
 
         /**
@@ -334,8 +334,8 @@ public class UrbanAirshipClient {
          * @param URI String base URI
          * @return Builder
          */
-        public Builder setBaseURI(String URI) {
-            this.baseURI = URI;
+        public Builder setBaseUri(String URI) {
+            this.baseUri = URI;
             return this;
         }
 
@@ -373,7 +373,7 @@ public class UrbanAirshipClient {
         public UrbanAirshipClient build() {
             Preconditions.checkNotNull(key, "app key needed to build APIClient");
             Preconditions.checkNotNull(secret, "app secret needed to build APIClient");
-            Preconditions.checkNotNull(baseURI, "base URI needed to build APIClient");
+            Preconditions.checkNotNull(baseUri, "base URI needed to build APIClient");
 
             return new UrbanAirshipClient(this);
         }

@@ -1,6 +1,5 @@
 package com.urbanairship.api.client;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader;
 import com.urbanairship.api.channel.model.ChannelResponse;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.channel.model.ChannelView;
@@ -11,7 +10,7 @@ import com.urbanairship.api.push.model.PushResponse;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.reports.model.PushListingResponse;
-import com.urbanairship.api.reports.model.SinglePushInfoResponse;
+import com.urbanairship.api.reports.model.PushInfoResponse;
 import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
@@ -203,13 +202,13 @@ public class ResponseTest {
         UUID one = UUID.randomUUID();
         UUID two = UUID.randomUUID();
 
-        SinglePushInfoResponse spir = SinglePushInfoResponse.newBuilder()
-                .setPushUUID(one)
+        PushInfoResponse spir = PushInfoResponse.newBuilder()
+                .setPushId(one)
                 .setDirectResponses(4)
                 .setSends(5)
-                .setPushType(SinglePushInfoResponse.PushType.UNICAST_PUSH)
+                .setPushType(PushInfoResponse.PushType.UNICAST_PUSH)
                 .setPushTime("2013-07-31 21:27:38")
-                .setGroupID(two)
+                .setGroupId(two)
                 .build();
 
         PushListingResponse pushListingResponse = PushListingResponse.newBuilder()
@@ -245,16 +244,16 @@ public class ResponseTest {
         UUID one = UUID.randomUUID();
         UUID two = UUID.randomUUID();
 
-        SinglePushInfoResponse pushInfoResponse = SinglePushInfoResponse.newBuilder()
-                .setPushUUID(one)
+        PushInfoResponse pushInfoResponse = PushInfoResponse.newBuilder()
+                .setPushId(one)
                 .setDirectResponses(4)
                 .setSends(5)
-                .setPushType(SinglePushInfoResponse.PushType.UNICAST_PUSH)
+                .setPushType(PushInfoResponse.PushType.UNICAST_PUSH)
                 .setPushTime("2013-07-31 21:27:38")
-                .setGroupID(two)
+                .setGroupId(two)
                 .build();
 
-        Response<SinglePushInfoResponse> response = new Response<SinglePushInfoResponse>(
+        Response<PushInfoResponse> response = new Response<PushInfoResponse>(
                 pushInfoResponse,
                 headers,
                 httpResponse.getStatusLine().getStatusCode());

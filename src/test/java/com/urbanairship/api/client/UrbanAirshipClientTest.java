@@ -2,7 +2,6 @@ package com.urbanairship.api.client;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.channel.ChannelRequest;
 import com.urbanairship.api.channel.ChannelTagRequest;
@@ -17,9 +16,9 @@ import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.reports.PushListingRequest;
-import com.urbanairship.api.reports.SinglePushInfoRequest;
+import com.urbanairship.api.reports.PushInfoRequest;
 import com.urbanairship.api.reports.model.PushListingResponse;
-import com.urbanairship.api.reports.model.SinglePushInfoResponse;
+import com.urbanairship.api.reports.model.PushInfoResponse;
 import com.urbanairship.api.schedule.DeleteScheduleRequest;
 import com.urbanairship.api.schedule.ListSchedulesOrderType;
 import com.urbanairship.api.schedule.ListSchedulesRequest;
@@ -93,7 +92,7 @@ public class UrbanAirshipClientTest {
 
         // Setup a client and a push payload
         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-            .setBaseURI("http://localhost:8080")
+            .setBaseUri("http://localhost:8080")
             .setKey("key")
             .setSecret("secret")
             .build();
@@ -160,7 +159,7 @@ public class UrbanAirshipClientTest {
 
         // Setup a client and a push payload
         UrbanAirshipClient proxyClient = UrbanAirshipClient.newBuilder()
-            .setBaseURI("http://localhost:8080")
+            .setBaseUri("http://localhost:8080")
             .setKey("key")
             .setSecret("secret")
             .setProxyInfo(ProxyInfo.newBuilder()
@@ -239,7 +238,7 @@ public class UrbanAirshipClientTest {
 
         // Setup a client and a push payload
         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-            .setBaseURI("http://localhost:8080")
+            .setBaseUri("http://localhost:8080")
             .setKey("key")
             .setSecret("secret")
             .build();
@@ -274,7 +273,7 @@ public class UrbanAirshipClientTest {
     public void testListAllSchedules() {
         // Setup a client and a schedule payload
         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-            .setBaseURI("http://localhost:8080")
+            .setBaseUri("http://localhost:8080")
             .setKey("key")
             .setSecret("secret")
             .build();
@@ -325,7 +324,7 @@ public class UrbanAirshipClientTest {
         // Setup a client and a schedule payload
 
         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-            .setBaseURI("http://localhost:8080")
+            .setBaseUri("http://localhost:8080")
             .setKey("key")
             .setSecret("secret")
             .build();
@@ -364,7 +363,7 @@ public class UrbanAirshipClientTest {
     public void testListAllSchedulesWithParameters() {
         // Setup a client and a schedule payload
         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-            .setBaseURI("http://localhost:8080")
+            .setBaseUri("http://localhost:8080")
             .setKey("key")
             .setSecret("secret")
             .build();
@@ -415,7 +414,7 @@ public class UrbanAirshipClientTest {
     public void testListAllSchedulesNextPage() {
         // Setup a client and a schedule payload
         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-            .setBaseURI("http://localhost:8080")
+            .setBaseUri("http://localhost:8080")
             .setKey("key")
             .setSecret("secret")
             .build();
@@ -468,7 +467,7 @@ public class UrbanAirshipClientTest {
 
         // Setup a client and a schedule payload
          UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-            .setBaseURI("http://localhost:8080")
+            .setBaseUri("http://localhost:8080")
             .setKey("key")
             .setSecret("secret")
             .build();
@@ -532,7 +531,7 @@ public class UrbanAirshipClientTest {
 
         // Setup a client and a schedule payload
         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-            .setBaseURI("http://localhost:8080")
+            .setBaseUri("http://localhost:8080")
             .setKey("key")
             .setSecret("secret")
             .build();
@@ -580,7 +579,7 @@ public class UrbanAirshipClientTest {
     public void testDeleteSpecificSchedule() {
         // Setup a client
         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-            .setBaseURI("http://localhost:8080")
+            .setBaseUri("http://localhost:8080")
             .setKey("key")
             .setSecret("secret")
             .build();
@@ -611,7 +610,7 @@ public class UrbanAirshipClientTest {
     public void testChannelTagMutations() {
         // Setup a client
         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-            .setBaseURI("http://localhost:8080")
+            .setBaseUri("http://localhost:8080")
             .setKey("key")
             .setSecret("secret")
             .build();
@@ -764,7 +763,7 @@ public class UrbanAirshipClientTest {
 
         // Setup a client
         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-            .setBaseURI("http://localhost:8080")
+            .setBaseUri("http://localhost:8080")
             .setKey("key")
             .setSecret("secret")
             .build();
@@ -806,7 +805,7 @@ public class UrbanAirshipClientTest {
                 "}";
 
         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-                .setBaseURI("http://localhost:8080")
+                .setBaseUri("http://localhost:8080")
                 .setKey("key")
                 .setSecret("secret")
                 .build();
@@ -816,10 +815,10 @@ public class UrbanAirshipClientTest {
                         .withBody(responseString)
                         .withStatus(200)));
 
-        SinglePushInfoRequest request = SinglePushInfoRequest.newRequest("abc");
+        PushInfoRequest request = PushInfoRequest.newRequest("abc");
 
         try {
-            Response<SinglePushInfoResponse> response = client.execute(request);
+            Response<PushInfoResponse> response = client.execute(request);
 
             List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
             assertEquals(1, requests.size());
@@ -879,7 +878,7 @@ public class UrbanAirshipClientTest {
                 "}";
 
         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-                .setBaseURI("http://localhost:8080")
+                .setBaseUri("http://localhost:8080")
                 .setKey("key")
                 .setSecret("secret")
                 .build();
@@ -958,7 +957,7 @@ public class UrbanAirshipClientTest {
                 "}";
 
         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-                .setBaseURI("http://localhost:8080")
+                .setBaseUri("http://localhost:8080")
                 .setKey("key")
                 .setSecret("secret")
                 .build();

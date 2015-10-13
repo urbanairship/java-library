@@ -7,7 +7,7 @@ package com.urbanairship.api.reports;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
-import com.urbanairship.api.reports.model.SinglePushInfoResponse;
+import com.urbanairship.api.reports.model.PushInfoResponse;
 import com.urbanairship.api.reports.parse.ReportsObjectMapper;
 import org.apache.http.HttpHeaders;
 import org.apache.http.entity.ContentType;
@@ -22,12 +22,12 @@ import java.util.Map;
  * response statistics request to be executed in the
  * {@link com.urbanairship.api.client.UrbanAirshipClient}
  */
-public class SinglePushInfoRequest implements Request<SinglePushInfoResponse> {
+public class PushInfoRequest implements Request<PushInfoResponse> {
     private final static String API_PUSH_RESPONSE_STATS = "/api/reports/responses/";
 
     private final String path;
 
-    private SinglePushInfoRequest(String path) {
+    private PushInfoRequest(String path) {
         this.path = path;
     }
 
@@ -37,8 +37,8 @@ public class SinglePushInfoRequest implements Request<SinglePushInfoResponse> {
      * @param uuid String
      * @return PushInfoRequest
      */
-    public static SinglePushInfoRequest newRequest(String uuid) {
-        return new SinglePushInfoRequest(API_PUSH_RESPONSE_STATS + uuid);
+    public static PushInfoRequest newRequest(String uuid) {
+        return new PushInfoRequest(API_PUSH_RESPONSE_STATS + uuid);
     }
 
     @Override
@@ -70,11 +70,11 @@ public class SinglePushInfoRequest implements Request<SinglePushInfoResponse> {
     }
 
     @Override
-    public ResponseParser<SinglePushInfoResponse> getResponseParser() {
-        return new ResponseParser<SinglePushInfoResponse>() {
+    public ResponseParser<PushInfoResponse> getResponseParser() {
+        return new ResponseParser<PushInfoResponse>() {
             @Override
-            public SinglePushInfoResponse parse(String response) throws IOException {
-                return ReportsObjectMapper.getInstance().readValue(response, SinglePushInfoResponse.class);
+            public PushInfoResponse parse(String response) throws IOException {
+                return ReportsObjectMapper.getInstance().readValue(response, PushInfoResponse.class);
             }
         };
     }

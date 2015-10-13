@@ -7,7 +7,7 @@ package com.urbanairship.api.reports.parse;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.reports.model.PushListingResponse;
-import com.urbanairship.api.reports.model.SinglePushInfoResponse;
+import com.urbanairship.api.reports.model.PushInfoResponse;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.type.TypeReference;
 
@@ -28,8 +28,8 @@ public final class PushListingResponseReader implements JsonObjectReader<PushLis
 
     public void readPushInfoObjects(JsonParser jsonParser) throws IOException {
         builder.addPushInfoObjects(
-                (List<SinglePushInfoResponse>)jsonParser.readValueAs(
-                        new TypeReference<List<SinglePushInfoResponse>>() {
+                (List<PushInfoResponse>)jsonParser.readValueAs(
+                        new TypeReference<List<PushInfoResponse>>() {
                         })
         );
     }

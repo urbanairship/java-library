@@ -10,17 +10,17 @@ import com.urbanairship.api.common.parse.FieldParser;
 import com.urbanairship.api.common.parse.FieldParserRegistry;
 import com.urbanairship.api.common.parse.MapFieldParserRegistry;
 import com.urbanairship.api.common.parse.StandardObjectDeserializer;
-import com.urbanairship.api.reports.model.SinglePushInfoResponse;
+import com.urbanairship.api.reports.model.PushInfoResponse;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
 
 import java.io.IOException;
 
-public final class SinglePushInfoDeserializer extends JsonDeserializer<SinglePushInfoResponse> {
+public final class SinglePushInfoDeserializer extends JsonDeserializer<PushInfoResponse> {
 
-    public static final FieldParserRegistry<SinglePushInfoResponse, SinglePushInfoReader> FIELD_PARSER =
-            new MapFieldParserRegistry<SinglePushInfoResponse, SinglePushInfoReader>(
+    public static final FieldParserRegistry<PushInfoResponse, SinglePushInfoReader> FIELD_PARSER =
+            new MapFieldParserRegistry<PushInfoResponse, SinglePushInfoReader>(
                     ImmutableMap.<String, FieldParser<SinglePushInfoReader>>builder()
                             .put("push_uuid", new FieldParser<SinglePushInfoReader>() {
                                 @Override
@@ -73,10 +73,10 @@ public final class SinglePushInfoDeserializer extends JsonDeserializer<SinglePus
                             .build()
             );
 
-    private final StandardObjectDeserializer<SinglePushInfoResponse, ?> deserializer;
+    private final StandardObjectDeserializer<PushInfoResponse, ?> deserializer;
 
     public SinglePushInfoDeserializer() {
-        this.deserializer = new StandardObjectDeserializer<SinglePushInfoResponse, SinglePushInfoReader>(
+        this.deserializer = new StandardObjectDeserializer<PushInfoResponse, SinglePushInfoReader>(
                 FIELD_PARSER,
                 new Supplier<SinglePushInfoReader>() {
                     @Override
@@ -88,7 +88,7 @@ public final class SinglePushInfoDeserializer extends JsonDeserializer<SinglePus
     }
 
     @Override
-    public SinglePushInfoResponse deserialize(JsonParser jsonParser, DeserializationContext
+    public PushInfoResponse deserialize(JsonParser jsonParser, DeserializationContext
             deserializationContext)
             throws IOException {
         return deserializer.deserialize(jsonParser, deserializationContext);

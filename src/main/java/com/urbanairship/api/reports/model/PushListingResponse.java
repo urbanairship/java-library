@@ -13,7 +13,7 @@ import com.google.common.collect.ImmutableList;
  */
 public class PushListingResponse {
     private final Optional<String> nextPage;
-    private final Optional<ImmutableList<SinglePushInfoResponse>> pushInfoObjects;
+    private final Optional<ImmutableList<PushInfoResponse>> pushInfoObjects;
 
     private PushListingResponse() {
         this(null, null);
@@ -21,8 +21,7 @@ public class PushListingResponse {
 
     private PushListingResponse(
             String nextPage,
-            Optional<ImmutableList<SinglePushInfoResponse>> pushInfoObjects)
-    {
+            Optional<ImmutableList<PushInfoResponse>> pushInfoObjects) {
         this.nextPage = Optional.fromNullable(nextPage);
         this.pushInfoObjects = pushInfoObjects;
     }
@@ -46,7 +45,7 @@ public class PushListingResponse {
      *
      * @return An Optional ImmutableList of SinglePushInfoResponse objects
      */
-    public Optional<ImmutableList<SinglePushInfoResponse>> getPushInfoObjects() {
+    public Optional<ImmutableList<PushInfoResponse>> getPushInfoList() {
         return pushInfoObjects;
     }
 
@@ -78,7 +77,7 @@ public class PushListingResponse {
 
     public static class Builder {
         private String nextPage = null;
-        private ImmutableList.Builder<SinglePushInfoResponse> pushInfoObjects = ImmutableList.builder();
+        private ImmutableList.Builder<PushInfoResponse> pushInfoObjects = ImmutableList.builder();
 
         private Builder() {
         }
@@ -100,7 +99,7 @@ public class PushListingResponse {
          * @param value SinglePushInfoResponse
          * @return Builder
          */
-        public Builder addPushInfoObject(SinglePushInfoResponse value) {
+        public Builder addPushInfoObject(PushInfoResponse value) {
             this.pushInfoObjects.add(value);
             return this;
         }
@@ -111,7 +110,7 @@ public class PushListingResponse {
          * @param value Iterable of SinglePushInfoResponse objects
          * @return
          */
-        public Builder addPushInfoObjects(Iterable<? extends SinglePushInfoResponse> value) {
+        public Builder addPushInfoObjects(Iterable<? extends PushInfoResponse> value) {
             this.pushInfoObjects.addAll(value);
             return this;
         }

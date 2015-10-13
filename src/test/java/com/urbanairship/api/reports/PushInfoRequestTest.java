@@ -3,7 +3,7 @@ package com.urbanairship.api.reports;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
-import com.urbanairship.api.reports.model.SinglePushInfoResponse;
+import com.urbanairship.api.reports.model.PushInfoResponse;
 import com.urbanairship.api.reports.parse.ReportsObjectMapper;
 import org.apache.http.entity.ContentType;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -19,24 +19,24 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by maxdelgiudice on 10/5/15.
  */
-public class SinglePushInfoRequestTest {
+public class PushInfoRequestTest {
     ObjectMapper mapper = ReportsObjectMapper.getInstance();
 
-    SinglePushInfoRequest singlePushInfoRequest = SinglePushInfoRequest.newRequest("uuid");
+    PushInfoRequest pushInfoRequest = PushInfoRequest.newRequest("uuid");
 
     @Test
     public void testContentType() throws Exception {
-        assertEquals(singlePushInfoRequest.getContentType(), ContentType.APPLICATION_JSON);
+        assertEquals(pushInfoRequest.getContentType(), ContentType.APPLICATION_JSON);
     }
 
     @Test
     public void testMethod() throws Exception {
-        assertEquals(singlePushInfoRequest.getHttpMethod(), Request.HttpMethod.GET);
+        assertEquals(pushInfoRequest.getHttpMethod(), Request.HttpMethod.GET);
     }
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(singlePushInfoRequest.getRequestBody(), null);
+        assertEquals(pushInfoRequest.getRequestBody(), null);
     }
 
     @Test
@@ -45,7 +45,7 @@ public class SinglePushInfoRequestTest {
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION);
 
-        assertEquals(singlePushInfoRequest.getRequestHeaders(), headers);
+        assertEquals(pushInfoRequest.getRequestHeaders(), headers);
     }
 
     @Test
@@ -53,15 +53,15 @@ public class SinglePushInfoRequestTest {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
         URI expectedURI = URI.create("https://go.urbanairship.com/api/reports/responses/uuid");
-        assertEquals(singlePushInfoRequest.getUri(baseURI), expectedURI);
+        assertEquals(pushInfoRequest.getUri(baseURI), expectedURI);
     }
 
     @Test
     public void testPushParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<SinglePushInfoResponse>() {
+        ResponseParser responseParser = new ResponseParser<PushInfoResponse>() {
             @Override
-            public SinglePushInfoResponse parse(String response) throws IOException {
-                return mapper.readValue(response, SinglePushInfoResponse.class);
+            public PushInfoResponse parse(String response) throws IOException {
+                return mapper.readValue(response, PushInfoResponse.class);
             }
         };
 
@@ -74,6 +74,6 @@ public class SinglePushInfoRequestTest {
                 "  \"group_id\":\"5e42ddfc-fa2d-11e2-9ca2-90e2ba025cd0\"\n" +
                 "}";
 
-        assertEquals(singlePushInfoRequest.getResponseParser().parse(response), responseParser.parse(response));
+        assertEquals(pushInfoRequest.getResponseParser().parse(response), responseParser.parse(response));
     }
 }
