@@ -16,8 +16,6 @@ import com.urbanairship.api.location.model.Point;
 import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.reports.model.PerPushDetailResponse;
 import com.urbanairship.api.reports.model.PerPushSeriesResponse;
-import com.urbanairship.api.reports.model.ReportsAPIOpensResponse;
-import com.urbanairship.api.reports.model.ReportsAPITimeInAppResponse;
 import com.urbanairship.api.segments.model.AudienceSegment;
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
 import com.urbanairship.api.tag.model.BatchModificationPayload;
@@ -63,13 +61,9 @@ public class APIClient {
     private final static String API_TAGS_BATCH_PATH = "/api/tags/batch/";
     private final static String API_LOCATION_PATH = "/api/location/";
     private final static String API_SEGMENTS_PATH = "/api/segments/";
-    private final static String API_CHANNELS_PATH = "/api/channels/";
     private final static String API_STATISTICS_PATH = "/api/push/stats/";
     private final static String API_REPORTS_PER_PUSH_DETAIL_PATH = "/api/reports/perpush/detail/";
     private final static String API_REPORTS_PER_PUSH_SERIES_PATH = "/api/reports/perpush/series/";
-    private final static String API_REPORTS_PUSH_RESPONSE_PATH = "/api/reports/responses/";
-    private final static String API_REPORTS_APPS_OPEN_PATH = "/api/reports/opens/";
-    private final static String API_REPORTS_TIME_IN_APP_PATH = "/api/reports/timeinapp/";
     private final static Logger logger = LoggerFactory.getLogger("com.urbanairship.api");
     /* User auth */
     private final String appKey;
@@ -566,62 +560,6 @@ public class APIClient {
         return provisionExecutor()
             .execute(req)
             .handleResponse(new APIClientResponseHandler<PerPushSeriesResponse>(PerPushSeriesResponse.class));
-    }
-
-    public APIClientResponse<ReportsAPIOpensResponse> listAppsOpenReport(DateTime start, DateTime end, String precision) throws IOException {
-
-        Preconditions.checkArgument(precision.toUpperCase().equals("HOURLY") ||
-                precision.toUpperCase().equals("DAILY") ||
-                precision.toUpperCase().equals("MONTHLY"),
-            "Precision must be specified as HOURLY, DAILY or MONTHLY");
-
-        Preconditions.checkNotNull(start, "Start time is required when performing listing of apps open");
-        Preconditions.checkNotNull(end, "End time is required when performing listing of apps open");
-        Preconditions.checkArgument(start.isBefore(end), "Start time must be before End time");
-
-        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_REPORTS_APPS_OPEN_PATH));
-
-        builder.addParameter("precision", precision.toUpperCase());
-        builder.addParameter("start", start.toLocalDateTime().toString());
-        builder.addParameter("end", end.toLocalDateTime().toString());
-
-        Request req = provisionRequest(Request.Get(builder.toString()));
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing list apps open report request %s", req));
-        }
-
-        return provisionExecutor()
-            .execute(req)
-            .handleResponse(new APIClientResponseHandler<ReportsAPIOpensResponse>(ReportsAPIOpensResponse.class));
-    }
-
-    public APIClientResponse<ReportsAPITimeInAppResponse> listTimeInAppReport(DateTime start, DateTime end, String precision) throws IOException {
-
-        Preconditions.checkArgument(precision.toUpperCase().equals("HOURLY") ||
-                precision.toUpperCase().equals("DAILY") ||
-                precision.toUpperCase().equals("MONTHLY"),
-            "Precision must be specified as HOURLY, DAILY or MONTHLY");
-
-        Preconditions.checkNotNull(start, "Start time is required when performing listing of time in app");
-        Preconditions.checkNotNull(end, "End time is required when performing listing of time in app");
-        Preconditions.checkArgument(start.isBefore(end), "Start time must be before End time");
-
-        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_REPORTS_TIME_IN_APP_PATH));
-
-        builder.addParameter("precision", precision.toUpperCase());
-        builder.addParameter("start", start.toLocalDateTime().toString());
-        builder.addParameter("end", end.toLocalDateTime().toString());
-
-        Request req = provisionRequest(Request.Get(builder.toString()));
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing list time in app report request %s", req));
-        }
-
-        return provisionExecutor()
-            .execute(req)
-            .handleResponse(new APIClientResponseHandler<ReportsAPITimeInAppResponse>(ReportsAPITimeInAppResponse.class));
     }
 
     /**

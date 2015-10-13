@@ -7,33 +7,34 @@ package com.urbanairship.api.reports.parse;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.common.parse.JsonObjectReader;
-import com.urbanairship.api.reports.model.TimeInApp;
+import com.urbanairship.api.reports.model.PlatformStats;
 import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
 
-public final class TimeInAppReader implements JsonObjectReader<TimeInApp> {
+public final class PlatformStatsReader implements JsonObjectReader<PlatformStats> {
 
-    private final TimeInApp.Builder builder;
+    private final PlatformStats.Builder builder;
 
-    public TimeInAppReader() {
-        this.builder = TimeInApp.newBuilder();
+    public PlatformStatsReader() {
+        this.builder = PlatformStats.newBuilder();
     }
 
     public void readAndroid(JsonParser jsonParser) throws IOException {
-        builder.setAndroid(jsonParser.readValueAs(float.class));
+        builder.setAndroid(jsonParser.readValueAs(int.class));
     }
 
     public void readIOS(JsonParser jsonParser) throws IOException {
-        builder.setIOS(jsonParser.readValueAs(float.class));
+        builder.setIOS(jsonParser.readValueAs(int.class));
     }
 
     public void readDate(JsonParser jsonParser) throws IOException {
-        builder.setDate(DateFormats.DATE_PARSER.parseDateTime(jsonParser.readValueAs(String.class)));
+        String created = jsonParser.readValueAs(String.class);
+        builder.setDate(DateFormats.DATE_PARSER.parseDateTime(created));
     }
 
     @Override
-    public TimeInApp validateAndBuild() throws IOException {
+    public PlatformStats validateAndBuild() throws IOException {
         try {
             return builder.build();
         } catch (Exception e) {
