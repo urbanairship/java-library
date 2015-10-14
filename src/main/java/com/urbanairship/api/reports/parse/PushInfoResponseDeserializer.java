@@ -17,54 +17,54 @@ import org.codehaus.jackson.map.JsonDeserializer;
 
 import java.io.IOException;
 
-public final class SinglePushInfoDeserializer extends JsonDeserializer<PushInfoResponse> {
+public final class PushInfoResponseDeserializer extends JsonDeserializer<PushInfoResponse> {
 
-    public static final FieldParserRegistry<PushInfoResponse, SinglePushInfoReader> FIELD_PARSER =
-            new MapFieldParserRegistry<PushInfoResponse, SinglePushInfoReader>(
-                    ImmutableMap.<String, FieldParser<SinglePushInfoReader>>builder()
-                            .put("push_uuid", new FieldParser<SinglePushInfoReader>() {
+    public static final FieldParserRegistry<PushInfoResponse, PushInfoResponseReader> FIELD_PARSER =
+            new MapFieldParserRegistry<PushInfoResponse, PushInfoResponseReader>(
+                    ImmutableMap.<String, FieldParser<PushInfoResponseReader>>builder()
+                            .put("push_uuid", new FieldParser<PushInfoResponseReader>() {
                                 @Override
-                                public void parse(SinglePushInfoReader reader,
+                                public void parse(PushInfoResponseReader reader,
                                                   JsonParser jsonParser,
                                                   DeserializationContext deserializationContext) throws IOException {
                                     reader.readPushUUID(jsonParser);
                                 }
                             })
-                            .put("direct_responses", new FieldParser<SinglePushInfoReader>() {
+                            .put("direct_responses", new FieldParser<PushInfoResponseReader>() {
                                 @Override
-                                public void parse(SinglePushInfoReader reader,
+                                public void parse(PushInfoResponseReader reader,
                                                   JsonParser jsonParser,
                                                   DeserializationContext deserializationContext) throws IOException {
                                     reader.readDirectResponses(jsonParser);
                                 }
                             })
-                            .put("sends", new FieldParser<SinglePushInfoReader>() {
+                            .put("sends", new FieldParser<PushInfoResponseReader>() {
                                 @Override
-                                public void parse(SinglePushInfoReader reader,
+                                public void parse(PushInfoResponseReader reader,
                                                   JsonParser jsonParser,
                                                   DeserializationContext deserializationContext) throws IOException {
                                     reader.readSends(jsonParser);
                                 }
                             })
-                            .put("push_type", new FieldParser<SinglePushInfoReader>() {
+                            .put("push_type", new FieldParser<PushInfoResponseReader>() {
                                 @Override
-                                public void parse(SinglePushInfoReader reader,
+                                public void parse(PushInfoResponseReader reader,
                                                   JsonParser jsonParser,
                                                   DeserializationContext deserializationContext) throws IOException {
                                     reader.readPushType(jsonParser);
                                 }
                             })
-                            .put("push_time", new FieldParser<SinglePushInfoReader>() {
+                            .put("push_time", new FieldParser<PushInfoResponseReader>() {
                                 @Override
-                                public void parse(SinglePushInfoReader reader,
+                                public void parse(PushInfoResponseReader reader,
                                                   JsonParser jsonParser,
                                                   DeserializationContext deserializationContext) throws IOException {
                                     reader.readPushTime(jsonParser);
                                 }
                             })
-                            .put("group_id", new FieldParser<SinglePushInfoReader>() {
+                            .put("group_id", new FieldParser<PushInfoResponseReader>() {
                                 @Override
-                                public void parse(SinglePushInfoReader reader,
+                                public void parse(PushInfoResponseReader reader,
                                                   JsonParser jsonParser,
                                                   DeserializationContext deserializationContext) throws IOException {
                                     reader.readGroupID(jsonParser);
@@ -75,13 +75,13 @@ public final class SinglePushInfoDeserializer extends JsonDeserializer<PushInfoR
 
     private final StandardObjectDeserializer<PushInfoResponse, ?> deserializer;
 
-    public SinglePushInfoDeserializer() {
-        this.deserializer = new StandardObjectDeserializer<PushInfoResponse, SinglePushInfoReader>(
+    public PushInfoResponseDeserializer() {
+        this.deserializer = new StandardObjectDeserializer<PushInfoResponse, PushInfoResponseReader>(
                 FIELD_PARSER,
-                new Supplier<SinglePushInfoReader>() {
+                new Supplier<PushInfoResponseReader>() {
                     @Override
-                    public SinglePushInfoReader get() {
-                        return new SinglePushInfoReader();
+                    public PushInfoResponseReader get() {
+                        return new PushInfoResponseReader();
                     }
                 }
         );

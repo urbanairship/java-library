@@ -12,11 +12,11 @@ import org.codehaus.jackson.JsonParser;
 import java.io.IOException;
 import java.util.UUID;
 
-public final class SinglePushInfoReader implements JsonObjectReader<PushInfoResponse> {
+public final class PushInfoResponseReader implements JsonObjectReader<PushInfoResponse> {
 
     private final PushInfoResponse.Builder builder;
 
-    public SinglePushInfoReader() {
+    public PushInfoResponseReader() {
         this.builder = PushInfoResponse.newBuilder();
     }
 

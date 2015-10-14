@@ -16,7 +16,7 @@ public class ReportsObjectMapper {
     private static final SimpleModule MODULE = new SimpleModule("Reports API Module", new Version(1, 0, 0, null));
 
     static {
-        MODULE.addDeserializer(PushInfoResponse.class, new SinglePushInfoDeserializer());
+        MODULE.addDeserializer(PushInfoResponse.class, new PushInfoResponseDeserializer());
         MODULE.addDeserializer(PushListingResponse.class, new PushListingResponseDeserializer());
 
         MAPPER.registerModule(MODULE);
