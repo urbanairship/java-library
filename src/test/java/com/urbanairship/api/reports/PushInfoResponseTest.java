@@ -1,9 +1,6 @@
-/*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
- */
+package com.urbanairship.api.reports;
 
-package com.urbanairship.api.reports.model;
-
+import com.urbanairship.api.reports.model.PushInfoResponse;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -16,10 +13,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class SinglePushInfoResponseTest {
+public class PushInfoResponseTest {
 
     @Test
-    public void testSinglePushInfoResponseBuilder() {
+    public void testPushInfoResponseBuilder() {
 
         UUID one = UUID.randomUUID();
         UUID two = UUID.randomUUID();
@@ -27,20 +24,20 @@ public class SinglePushInfoResponseTest {
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
         DateTime dt = formatter.parseDateTime("2013-07-31 21:27:38");
 
-        SinglePushInfoResponse obj = SinglePushInfoResponse.newBuilder()
-                .setPushUUID(one)
+        PushInfoResponse obj = PushInfoResponse.newBuilder()
+                .setPushId(one)
                 .setDirectResponses(4)
                 .setSends(5)
-                .setPushType(SinglePushInfoResponse.PushType.UNICAST_PUSH)
+                .setPushType(PushInfoResponse.PushType.UNICAST_PUSH)
                 .setPushTime("2013-07-31 21:27:38")
-                .setGroupID(two)
+                .setGroupId(two)
                 .build();
 
         assertNotNull(obj);
-        assertEquals(one, obj.getPushUUID());
+        assertEquals(one, obj.getPushId());
         assertEquals(4, obj.getDirectResponses());
         assertEquals(5, obj.getSends());
-        assertEquals(SinglePushInfoResponse.PushType.UNICAST_PUSH, obj.getPushType());
+        assertEquals(PushInfoResponse.PushType.UNICAST_PUSH, obj.getPushType());
         assertEquals(dt, obj.getPushTime());
         assertTrue(obj.getGroupID().isPresent());
         assertEquals(two, obj.getGroupID().get());
@@ -48,24 +45,24 @@ public class SinglePushInfoResponseTest {
     }
 
     @Test
-    public void testSinglePushInfoResponseBuilderNoGroupID() {
+    public void testPushInfoResponseBuilderNoGroupID() {
 
         UUID one = UUID.randomUUID();
 
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
         DateTime dt = formatter.parseDateTime("2013-07-31 21:27:38");
 
-        SinglePushInfoResponse obj = SinglePushInfoResponse.newBuilder()
-                .setPushUUID(one)
+        PushInfoResponse obj = PushInfoResponse.newBuilder()
+                .setPushId(one)
                 .setSends(5)
-                .setPushType(SinglePushInfoResponse.PushType.UNICAST_PUSH)
+                .setPushType(PushInfoResponse.PushType.UNICAST_PUSH)
                 .setPushTime("2013-07-31 21:27:38")
                 .build();
 
         assertNotNull(obj);
-        assertEquals(one, obj.getPushUUID());
+        assertEquals(one, obj.getPushId());
         assertEquals(5, obj.getSends());
-        assertEquals(SinglePushInfoResponse.PushType.UNICAST_PUSH, obj.getPushType());
+        assertEquals(PushInfoResponse.PushType.UNICAST_PUSH, obj.getPushType());
         assertEquals(dt, obj.getPushTime());
         assertFalse(obj.getGroupID().isPresent());
 

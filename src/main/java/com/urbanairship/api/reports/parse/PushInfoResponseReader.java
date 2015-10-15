@@ -6,22 +6,22 @@ package com.urbanairship.api.reports.parse;
 
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
-import com.urbanairship.api.reports.model.SinglePushInfoResponse;
+import com.urbanairship.api.reports.model.PushInfoResponse;
 import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
 import java.util.UUID;
 
-public final class SinglePushInfoResponseReader implements JsonObjectReader<SinglePushInfoResponse> {
+public final class PushInfoResponseReader implements JsonObjectReader<PushInfoResponse> {
 
-    private final SinglePushInfoResponse.Builder builder;
+    private final PushInfoResponse.Builder builder;
 
-    public SinglePushInfoResponseReader() {
-        this.builder = SinglePushInfoResponse.newBuilder();
+    public PushInfoResponseReader() {
+        this.builder = PushInfoResponse.newBuilder();
     }
 
     public void readPushUUID(JsonParser jsonParser) throws IOException {
-        builder.setPushUUID(jsonParser.readValueAs(UUID.class));
+        builder.setPushId(jsonParser.readValueAs(UUID.class));
     }
 
     public void readDirectResponses(JsonParser jsonParser) throws IOException {
@@ -33,7 +33,7 @@ public final class SinglePushInfoResponseReader implements JsonObjectReader<Sing
     }
 
     public void readPushType(JsonParser jsonParser) throws IOException {
-        builder.setPushType(jsonParser.readValueAs(SinglePushInfoResponse.PushType.class));
+        builder.setPushType(jsonParser.readValueAs(PushInfoResponse.PushType.class));
     }
 
     public void readPushTime(JsonParser jsonParser) throws IOException {
@@ -41,11 +41,11 @@ public final class SinglePushInfoResponseReader implements JsonObjectReader<Sing
     }
 
     public void readGroupID(JsonParser jsonParser) throws IOException {
-        builder.setGroupID(jsonParser.readValueAs(UUID.class));
+        builder.setGroupId(jsonParser.readValueAs(UUID.class));
     }
 
     @Override
-    public SinglePushInfoResponse validateAndBuild() throws IOException {
+    public PushInfoResponse validateAndBuild() throws IOException {
         try {
             return builder.build();
         } catch (Exception ex) {

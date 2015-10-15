@@ -706,7 +706,7 @@ Returns detailed reports information about a specific push notification.
     SinglePushInfoResponse obj = response.getApiResponse();
 
     // Push UUID
-    UUID pushUUID = obj.getPushUUID();
+    UUID pushId = obj.getPushUUID();
 
     // Push Time
     DateTime pushTime = obj.getPushTime();

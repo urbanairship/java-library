@@ -9,6 +9,7 @@ import org.apache.http.entity.ContentType;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Map;
 
 /**
@@ -43,7 +44,7 @@ public interface Request<T> {
     Map<String, String> getRequestHeaders();
 
     @Nonnull
-    URI getUri(URI baseUri);
+    URI getUri(URI baseUri) throws URISyntaxException;
 
     @Nonnull
     ResponseParser<T> getResponseParser();
