@@ -873,130 +873,130 @@ CSV format
 
 .. Hiding the perpush endpoints for now per GAG-705 (until rate limiting is in place)
 
-  Per Push Reporting
-  ==================
+   Per Push Reporting
+   ==================
 
-  Retrieve data specific to the performance of an individual push.
+   Retrieve data specific to the performance of an individual push.
 
-  Detail
-  ------
+   Detail
+   ------
 
-  Get all the analytics detail for a specific push ID.
+   Get all the analytics detail for a specific push ID.
 
-  .. code-block:: java
+   .. code-block:: java
 
-    String pushID = "push_id";
+     String pushID = "push_id";
 
-    // Fetches the analytics detail for a given push id
-    APIClientResponse<PerPushDetailResponse> response = apiClient.listPerPushDetail(pushID);
+     // Fetches the analytics detail for a given push id
+     APIClientResponse<PerPushDetailResponse> response = apiClient.listPerPushDetail(pushID);
 
-    // Get PerPushDetailResponse object
-    PerPushDetailResponse obj = response.getApiResponse();
+     // Get PerPushDetailResponse object
+     PerPushDetailResponse obj = response.getApiResponse();
 
-    // Get App Key
-    String appKey = obj.getAppKey();
+     // Get App Key
+     String appKey = obj.getAppKey();
 
-    // Get Push ID
-    UUID pushID = obj.getPushID();
+     // Get Push ID
+     UUID pushID = obj.getPushID();
 
-    // Get time created, if available
-    DateTime created = obj.getCreated().get();
+     // Get time created, if available
+     DateTime created = obj.getCreated().get();
 
-    // Get Push Body, if available
-    Base64ByteArray pushBody = obj.getPushBody().get();
+     // Get Push Body, if available
+     Base64ByteArray pushBody = obj.getPushBody().get();
 
-    // Get number of rich deletions
-    long richDeletions = obj.getRichDeletions();
+     // Get number of rich deletions
+     long richDeletions = obj.getRichDeletions();
 
-    // Get number of rich responses
-    long richResponses = obj.getRichResponses();
+     // Get number of rich responses
+     long richResponses = obj.getRichResponses();
 
-    // Get number of rich sends
-    long richSends = obj.getRichSends();
+     // Get number of rich sends
+     long richSends = obj.getRichSends();
 
-    // Get number of sends
-    long sends = obj.getSends();
+     // Get number of sends
+     long sends = obj.getSends();
 
-    // Get number of direct responses
-    long directResponses = obj.getDirectResponses();
+     // Get number of direct responses
+     long directResponses = obj.getDirectResponses();
 
-    // Get number of influenced responses
-    long influencedResponses = obj.getInfluencedResponses();
+     // Get number of influenced responses
+     long influencedResponses = obj.getInfluencedResponses();
 
-    // Get Map of Platform counts
-    Map<PlatformType, PerPushCounts> platformCountMap = obj.getPlatforms();
+     // Get Map of Platform counts
+     Map<PlatformType, PerPushCounts> platformCountMap = obj.getPlatforms();
 
-    // Get IOS platform counts
-    PerPushCounts iosCounts = platformCountMap.get(PlatformType.IOS);
+     // Get IOS platform counts
+     PerPushCounts iosCounts = platformCountMap.get(PlatformType.IOS);
 
-    // Get IOS platform direct responses
-    long iosDirectResponses = iosCounts.getDirectResponses();
+     // Get IOS platform direct responses
+     long iosDirectResponses = iosCounts.getDirectResponses();
 
-    // Get IOS influenced responses
-    long iosInfluencedResponses = iosCounts.getInfluencedResponses();
+     // Get IOS influenced responses
+     long iosInfluencedResponses = iosCounts.getInfluencedResponses();
 
-    // Get IOS sends
-    long iosSends = iosCounts.getSends();
+     // Get IOS sends
+     long iosSends = iosCounts.getSends();
 
 
-  Series
-  ------
+   Series
+   ------
 
-  Get all the analytics detail for a specific push ID over time.
+   Get all the analytics detail for a specific push ID over time.
 
-  .. code-block:: java
+   .. code-block:: java
 
-      // Fetches the analytics detail for a given push id over time and precision
-      APIClientResponse<PerPushSeriesResponse> response =
-          apiClient.listPerPushSeries(id, "MONTHLY", DateTime.parse("2013-07-01T00:00:00.000-07:00"), DateTime.now());
+       // Fetches the analytics detail for a given push id over time and precision
+       APIClientResponse<PerPushSeriesResponse> response =
+           apiClient.listPerPushSeries(id, "MONTHLY", DateTime.parse("2013-07-01T00:00:00.000-07:00"), DateTime.now());
 
-      // Get PerPushSeriesResponse object
-      PerPushSeriesResponse obj = response.getApiResponse();
+       // Get PerPushSeriesResponse object
+       PerPushSeriesResponse obj = response.getApiResponse();
 
-      // Get App Key
-      String appKey = obj.getAppKey();
+       // Get App Key
+       String appKey = obj.getAppKey();
 
-      // Get Push ID
-      UUID pushID = obj.getPushID();
+       // Get Push ID
+       UUID pushID = obj.getPushID();
 
-      // Get start time
-      DateTime start = obj.getStart();
+       // Get start time
+       DateTime start = obj.getStart();
 
-      // Get end time
-      DateTime end = obj.getEnd();
+       // Get end time
+       DateTime end = obj.getEnd();
 
-      // Get precision
-      String precision = obj.getPrecision();
+       // Get precision
+       String precision = obj.getPrecision();
 
-      // Get List of PlatformCounts objects
-      List<PlatformCounts> counts = obj.getCounts();
+       // Get List of PlatformCounts objects
+       List<PlatformCounts> counts = obj.getCounts();
 
-      // Get timestamp
-      DateTime = counts.getTime();
+       // Get timestamp
+       DateTime = counts.getTime();
 
-      // Get Map of push counts
-      Map<PlatformType, PerPushCounts> pushPlatforms = counts.getPushPlatforms();
+       // Get Map of push counts
+       Map<PlatformType, PerPushCounts> pushPlatforms = counts.getPushPlatforms();
 
-      // Get IOS platform counts
-      PerPushCounts iosCounts = pushPlatforms.get(PlatformType.IOS);
+       // Get IOS platform counts
+       PerPushCounts iosCounts = pushPlatforms.get(PlatformType.IOS);
 
-      // Get IOS platform direct responses
-      long iosDirectResponses = iosCounts.getDirectResponses();
+       // Get IOS platform direct responses
+       long iosDirectResponses = iosCounts.getDirectResponses();
 
-      // Get IOS influenced responses
-      long iosInfluencedResponses = iosCounts.getInfluencedResponses();
+       // Get IOS influenced responses
+       long iosInfluencedResponses = iosCounts.getInfluencedResponses();
 
-      // Get Map of rich push counts
-      Map<PlatformType, RichPerPushCounts> richPushPlatforms = counts.getRichPushPlatforms();
+       // Get Map of rich push counts
+       Map<PlatformType, RichPerPushCounts> richPushPlatforms = counts.getRichPushPlatforms();
 
-      // Get IOS rich platform counts
-      RichPerPushCounts iosRichCounts = richPushPlatforms.get(PlatformType.IOS);
+       // Get IOS rich platform counts
+       RichPerPushCounts iosRichCounts = richPushPlatforms.get(PlatformType.IOS);
 
-      // Get IOS rich platform sends
-      long iosRichSends = iosRichCounts.getSends();
+       // Get IOS rich platform sends
+       long iosRichSends = iosRichCounts.getSends();
 
-      // Get IOS rich platform responses
-      long iosRichResponses = iosRichCounts.getResponses();
+       // Get IOS rich platform responses
+       long iosRichResponses = iosRichCounts.getResponses();
 
 
 ********
