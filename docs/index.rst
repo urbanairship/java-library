@@ -284,7 +284,7 @@ Notifications are the second part of the ``PushPayload``. Notifications
 are configured for each type of device you would like to
 send a message to. A Notification for an iOS device contains options
 for ``alert``, ``badge``, ``sound``, ``content_available``, ``extra``, ``expiry``, ``priority``, ``category``, or ``interactive``. Other platforms,
-e.g., Android, may offer different configurations based on available features. 
+e.g., Android, may offer different configurations based on available features.
 
 Here's an example of an iOS notification with an alert, a badge, and an extra key/value pair:
 
@@ -295,7 +295,7 @@ Here's an example of an iOS notification with an alert, a badge, and an extra ke
                                          .setValue(5)
                                          .setType(IOSBadgeData.Type.VALUE)
                                          .build();
-                  
+
     IOSDevicePayload iosPayload = IOSDevicePayload.newBuilder()
                                                   .setAlert("iOS Alert")
                                                   .setBadge(badgeData)
@@ -306,7 +306,7 @@ Here's an example of an iOS notification with an alert, a badge, and an extra ke
 
     PushPayload payload = PushPayload.newBuilder()
                                      .setAudience(Selectors.all())
-                                     .setNotification(notification)      
+                                     .setNotification(notification)
                                      .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
                                      .build();
 
@@ -398,7 +398,7 @@ Which will generate the following JSON payload:
 DeviceTypes
 ===========
 
-The final part of the ``PushPayload`` is ``DeviceTypes``, which defines the 
+The final part of the ``PushPayload`` is ``DeviceTypes``, which defines the
 platform you're sending to, e.g., iOS or Amazon.
 Messages can be segregated by device types. Set the device types you
 want to send to using a ``DeviceTypeData`` object. Here's an example of
@@ -407,9 +407,9 @@ sending a message to iOS and Android.
 .. code-block:: java
 
    DeviceTypeData deviceTypeData  = DeviceTypeData.of(DeviceType.IOS, DeviceType.ANDROID);
-   
+
 The ``DeviceTypeData`` class has several convenience methods for working with
-``DeviceTypes``. 
+``DeviceTypes``.
 
 Send Push
 =========
@@ -481,17 +481,17 @@ example is scheduled for delivery at current time plus 60 seconds.
 
     // Operation ID
     String operationID = response.getApiResponse().getOperationId();
-    
+
     // List of SchedulePayloads
     List<SchedulePayload> listOfPayloads = response.getApiResponse().getSchedulePayloads();
-    
+
     // List of Schedule URLs
     List<String> listOfScheduleURLs = response.getApiResponse().getScheduleUrls();
 
 Optionally, scheduled pushes can be configured to be delivered at the device's local time.
 This is done by calling a different method when building your Schedule object.
 
-.. code-block:: java 
+.. code-block:: java
 
     Schedule schedule = Schedule.newBuilder()
                                 .setLocalScheduledTimestamp(DateTime.now().plusSeconds(60))
@@ -535,12 +535,12 @@ List all existing schedules.
 
     // You can specify a url string for nextPage
 
-    APIClientResponse<APIListAllSchedulesResponse> nextPageResponse = 
+    APIClientResponse<APIListAllSchedulesResponse> nextPageResponse =
     apiClient.listAllSchedules(nextPage);
 
     // You can also specify a starting id, limit and order
 
-    APIClientResponse<APIListAllSchedulesResponse> constrainedResponse = 
+    APIClientResponse<APIListAllSchedulesResponse> constrainedResponse =
     apiClient.listAllSchedules("5c69320c-3e91-5241-fad3-248269eed104", 10, "asc");
 
 
@@ -571,10 +571,10 @@ Update the state of a single schedule resource.
 
     // Operation ID
     String operationID = response.getApiResponse().getOperationId();
-    
+
     // List of SchedulePayloads
     List<SchedulePayload> listOfPayloads = response.getApiResponse().getSchedulePayloads();
-    
+
     // List of Schedule URLs
     List<String> listOfScheduleURLs = response.getApiResponse().getScheduleUrls();
 
@@ -583,7 +583,7 @@ The response is a APIScheduleResponse representing the updated state.
 Delete Schedule
 ===============
 
-Delete a schedule resource, which will result in no more pushes being sent.  If the 
+Delete a schedule resource, which will result in no more pushes being sent.  If the
 resource is successfully deleted, the response does not include a body.
 
 .. code-block:: java
@@ -592,7 +592,7 @@ resource is successfully deleted, the response does not include a body.
     HttpResponse response = apiClient.deleteSchedule(id);
 
     //Returns 204 on success
-    int status = response.getStatusLine().getStatusCode();    
+    int status = response.getStatusLine().getStatusCode();
 
 
 ****
@@ -605,7 +605,7 @@ Tag Listing
 List tags that exist for this application.
 
 .. code-block:: java
-  
+
     APIClientResponse<APIListTagsResponse> response = apiClient.listTags();
 
     // List of Tags
@@ -633,7 +633,7 @@ Adding and Removing Devices from a Tag
 Add or remove one or more devices to a particular tag.
 
 .. code-block:: java
-    
+
     String tag = "California";
 
     AddRemoveDeviceFromTagPayload payload = AddRemoveDeviceFromTagPayload.newBuilder()
@@ -658,7 +658,7 @@ Deleting a Tag
 Deletes a tag and removes it from devices.
 
 .. code-block:: java
-    
+
     HttpResponse response = apiClient.deleteTag(tag);
 
     // Returns 204 if the tag has been removed.
@@ -672,7 +672,7 @@ Batch Modification of Tags
 Modify the tags for a number of devices.
 
 .. code-block:: java
-    
+
     BatchTagSet bts = BatchTagSet.newBuilder()
         .setDevice(BatchTagSet.DEVICEIDTYPES.IOS_CHANNEL, "ios_channel_to_tag_2")
         .addTag("GrumpyCat")
@@ -714,7 +714,7 @@ Returns detailed reports information about a specific push notification.
     // Push Type
     SinglePushInfoResponse.PushType pushType = obj.getPushType();
 
-    // Direct Responses 
+    // Direct Responses
     int directResponses = obj.getDirectResponses();
 
     // Sends
@@ -756,7 +756,7 @@ App Opens Report
 Get the number of users who have opened your app within the specified time period.
 
 .. code-block:: java
-  
+
     DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
     DateTime end = start.plus(Period.hours(48));
 
@@ -823,7 +823,7 @@ JSON format
 -----------
 
 .. code-block:: java
-    
+
     DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
     DateTime end = start.plus(Period.hours(48));
 
@@ -861,7 +861,7 @@ CSV format
 ----------
 
 .. code-block:: java
-    
+
     DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
     DateTime end = start.plus(Period.hours(48));
 
@@ -871,130 +871,132 @@ CSV format
     String csv = response.getApiResponse();
 
 
-Per Push Reporting
-==================
+.. Hiding the perpush endpoints for now per GAG-705 (until rate limiting is in place)
 
-Retrieve data specific to the performance of an individual push.
+   Per Push Reporting
+   ==================
 
-Detail
-------
+   Retrieve data specific to the performance of an individual push.
 
-Get all the analytics detail for a specific push ID.
+   Detail
+   ------
 
-.. code-block:: java
+   Get all the analytics detail for a specific push ID.
 
-  String pushID = "push_id";
+   .. code-block:: java
 
-  // Fetches the analytics detail for a given push id
-  APIClientResponse<PerPushDetailResponse> response = apiClient.listPerPushDetail(pushID);
+     String pushID = "push_id";
 
-  // Get PerPushDetailResponse object
-  PerPushDetailResponse obj = response.getApiResponse();
+     // Fetches the analytics detail for a given push id
+     APIClientResponse<PerPushDetailResponse> response = apiClient.listPerPushDetail(pushID);
 
-  // Get App Key
-  String appKey = obj.getAppKey();
+     // Get PerPushDetailResponse object
+     PerPushDetailResponse obj = response.getApiResponse();
 
-  // Get Push ID
-  UUID pushID = obj.getPushID();
+     // Get App Key
+     String appKey = obj.getAppKey();
 
-  // Get time created, if available
-  DateTime created = obj.getCreated().get();
+     // Get Push ID
+     UUID pushID = obj.getPushID();
 
-  // Get Push Body, if available
-  Base64ByteArray pushBody = obj.getPushBody().get();
+     // Get time created, if available
+     DateTime created = obj.getCreated().get();
 
-  // Get number of rich deletions
-  long richDeletions = obj.getRichDeletions();
+     // Get Push Body, if available
+     Base64ByteArray pushBody = obj.getPushBody().get();
 
-  // Get number of rich responses
-  long richResponses = obj.getRichResponses();
+     // Get number of rich deletions
+     long richDeletions = obj.getRichDeletions();
 
-  // Get number of rich sends
-  long richSends = obj.getRichSends();
+     // Get number of rich responses
+     long richResponses = obj.getRichResponses();
 
-  // Get number of sends
-  long sends = obj.getSends();
+     // Get number of rich sends
+     long richSends = obj.getRichSends();
 
-  // Get number of direct responses
-  long directResponses = obj.getDirectResponses();
+     // Get number of sends
+     long sends = obj.getSends();
 
-  // Get number of influenced responses
-  long influencedResponses = obj.getInfluencedResponses();
+     // Get number of direct responses
+     long directResponses = obj.getDirectResponses();
 
-  // Get Map of Platform counts
-  Map<PlatformType, PerPushCounts> platformCountMap = obj.getPlatforms();
+     // Get number of influenced responses
+     long influencedResponses = obj.getInfluencedResponses();
 
-  // Get IOS platform counts
-  PerPushCounts iosCounts = platformCountMap.get(PlatformType.IOS);
+     // Get Map of Platform counts
+     Map<PlatformType, PerPushCounts> platformCountMap = obj.getPlatforms();
 
-  // Get IOS platform direct responses
-  long iosDirectResponses = iosCounts.getDirectResponses();
+     // Get IOS platform counts
+     PerPushCounts iosCounts = platformCountMap.get(PlatformType.IOS);
 
-  // Get IOS influenced responses
-  long iosInfluencedResponses = iosCounts.getInfluencedResponses();
+     // Get IOS platform direct responses
+     long iosDirectResponses = iosCounts.getDirectResponses();
 
-  // Get IOS sends
-  long iosSends = iosCounts.getSends();
+     // Get IOS influenced responses
+     long iosInfluencedResponses = iosCounts.getInfluencedResponses();
+
+     // Get IOS sends
+     long iosSends = iosCounts.getSends();
 
 
-Series
-------
+   Series
+   ------
 
-Get all the analytics detail for a specific push ID over time.
+   Get all the analytics detail for a specific push ID over time.
 
-.. code-block:: java
+   .. code-block:: java
 
-    // Fetches the analytics detail for a given push id over time and precision
-    APIClientResponse<PerPushSeriesResponse> response = 
-        apiClient.listPerPushSeries(id, "MONTHLY", DateTime.parse("2013-07-01T00:00:00.000-07:00"), DateTime.now());
+       // Fetches the analytics detail for a given push id over time and precision
+       APIClientResponse<PerPushSeriesResponse> response =
+           apiClient.listPerPushSeries(id, "MONTHLY", DateTime.parse("2013-07-01T00:00:00.000-07:00"), DateTime.now());
 
-    // Get PerPushSeriesResponse object
-    PerPushSeriesResponse obj = response.getApiResponse();
+       // Get PerPushSeriesResponse object
+       PerPushSeriesResponse obj = response.getApiResponse();
 
-    // Get App Key
-    String appKey = obj.getAppKey();
+       // Get App Key
+       String appKey = obj.getAppKey();
 
-    // Get Push ID
-    UUID pushID = obj.getPushID();
+       // Get Push ID
+       UUID pushID = obj.getPushID();
 
-    // Get start time
-    DateTime start = obj.getStart();
+       // Get start time
+       DateTime start = obj.getStart();
 
-    // Get end time
-    DateTime end = obj.getEnd();
+       // Get end time
+       DateTime end = obj.getEnd();
 
-    // Get precision
-    String precision = obj.getPrecision();
+       // Get precision
+       String precision = obj.getPrecision();
 
-    // Get List of PlatformCounts objects
-    List<PlatformCounts> counts = obj.getCounts();
+       // Get List of PlatformCounts objects
+       List<PlatformCounts> counts = obj.getCounts();
 
-    // Get timestamp 
-    DateTime = counts.getTime();
+       // Get timestamp
+       DateTime = counts.getTime();
 
-    // Get Map of push counts
-    Map<PlatformType, PerPushCounts> pushPlatforms = counts.getPushPlatforms();
+       // Get Map of push counts
+       Map<PlatformType, PerPushCounts> pushPlatforms = counts.getPushPlatforms();
 
-    // Get IOS platform counts
-    PerPushCounts iosCounts = pushPlatforms.get(PlatformType.IOS);
+       // Get IOS platform counts
+       PerPushCounts iosCounts = pushPlatforms.get(PlatformType.IOS);
 
-    // Get IOS platform direct responses
-    long iosDirectResponses = iosCounts.getDirectResponses();
+       // Get IOS platform direct responses
+       long iosDirectResponses = iosCounts.getDirectResponses();
 
-    // Get IOS influenced responses
-    long iosInfluencedResponses = iosCounts.getInfluencedResponses();
+       // Get IOS influenced responses
+       long iosInfluencedResponses = iosCounts.getInfluencedResponses();
 
-    // Get Map of rich push counts
-    Map<PlatformType, RichPerPushCounts> richPushPlatforms = counts.getRichPushPlatforms();
+       // Get Map of rich push counts
+       Map<PlatformType, RichPerPushCounts> richPushPlatforms = counts.getRichPushPlatforms();
 
-    // Get IOS rich platform counts
-    RichPerPushCounts iosRichCounts = richPushPlatforms.get(PlatformType.IOS);
+       // Get IOS rich platform counts
+       RichPerPushCounts iosRichCounts = richPushPlatforms.get(PlatformType.IOS);
 
-    // Get IOS rich platform sends
-    long iosRichSends = iosRichCounts.getSends();
+       // Get IOS rich platform sends
+       long iosRichSends = iosRichCounts.getSends();
 
-    // Get IOS rich platform responses
-    long iosRichResponses = iosRichCounts.getResponses();
+       // Get IOS rich platform responses
+       long iosRichResponses = iosRichCounts.getResponses();
 
 
 ********
@@ -1141,7 +1143,7 @@ List all of the segments for the application.
 
     // Get URL of next page of results, if available
     String nextPage = response.getApiResponse().getNextPage();
-    
+
     // Get a list of SegmentInformation objects, each representing a separate segment
     List<SegmentInformation> segmentInformations = response.getApiResponse().getSegments();
 
@@ -1167,7 +1169,7 @@ List Single Segment
 Fetch information about a particular segment.
 
 .. code-block:: java
-  
+
     // Request to fetch information about a particular segment by segment id
     APIClientResponse<AudienceSegment> response = apiClient.listSegment("a656186e-1263-4d45-964b-44e46faa2e00");
 
@@ -1321,7 +1323,7 @@ Location Boundary Information
 Search for a location and return its information.
 
 .. code-block:: java
-    
+
     // Search for a location by name
     APIClientResponse<APILocationResponse> response = apiClient.queryLocationInformation("San Francisco");
 
@@ -1492,7 +1494,7 @@ The ``APIRequestException`` contains both the raw ``HttpResponse`` from the
 underlying Apache request and the APIError. The APIError is specific
 to Urban Airship functionality, and the ``APIErrorDetails`` provides
 extended details for badly formed API requests. Providing this level
-of detail allows for more customization. 
+of detail allows for more customization.
 
 
 APIParsingException
