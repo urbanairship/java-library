@@ -1,4 +1,4 @@
-package com.urbanairship.api.reports;
+package com.urbanairship.api.reports.model;
 
 import com.urbanairship.api.reports.model.PushInfoResponse;
 import org.joda.time.DateTime;

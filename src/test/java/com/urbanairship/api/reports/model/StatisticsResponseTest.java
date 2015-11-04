@@ -9,70 +9,70 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
-public class AppStatsTest {
+public class StatisticsResponseTest {
 
     @Test
-    public void testAppStatsBuilder() {
-        AppStats obj = AppStats.newBuilder()
+    public void testStatisticsResponseBuilder() {
+        StatisticsResponse obj = StatisticsResponse.newBuilder()
                 .setStartTime(new DateTime(2015, 5, 31, 12, 0, 0, 0))
-                .setIOSCount(1)
+                .setIosCount(1)
                 .setBlackBerryCount(2)
-                .setC2DMCount(3)
-                .setGCMCount(4)
+                .setC2dmCount(3)
+                .setGcmCount(4)
                 .setWindows8Count(5)
                 .setWindowsPhone8Count(6)
                 .build();
 
         assertNotNull(obj);
         assertEquals(new DateTime(2015, 5, 31, 12, 0, 0, 0), obj.getStart());
-        assertEquals(1, obj.getiOSCount());
+        assertEquals(1, obj.getIosCount());
         assertEquals(2, obj.getBlackBerryCount());
-        assertEquals(3, obj.getC2DMCount());
-        assertEquals(4, obj.getGCMCount());
+        assertEquals(3, obj.getC2dmCount());
+        assertEquals(4, obj.getGcmCount());
         assertEquals(5, obj.getWindows8Count());
         assertEquals(6, obj.getWindowsPhone8Count());
     }
 
     @Test(expected = NullPointerException.class)
-    public void testInvalidAppStatsBuilder() {
-        AppStats.newBuilder()
-                .setIOSCount(1)
+    public void testsInvalidStatisticsResponseBuilder() {
+        StatisticsResponse.newBuilder()
+                .setIosCount(1)
                 .setBlackBerryCount(2)
-                .setC2DMCount(3)
-                .setGCMCount(4)
+                .setC2dmCount(3)
+                .setGcmCount(4)
                 .setWindows8Count(5)
                 .setWindowsPhone8Count(6)
                 .build();
     }
 
     @Test
-    public void testAppStatsEqualityandHash() {
-        AppStats obj1 = AppStats.newBuilder()
+    public void testStatisticsResponseEqualityandHash() {
+        StatisticsResponse obj1 = StatisticsResponse.newBuilder()
                 .setStartTime(new DateTime(2015, 5, 31, 12, 0, 0, 0))
-                .setIOSCount(1)
+                .setIosCount(1)
                 .setBlackBerryCount(2)
-                .setC2DMCount(3)
-                .setGCMCount(4)
+                .setC2dmCount(3)
+                .setGcmCount(4)
                 .setWindows8Count(5)
                 .setWindowsPhone8Count(6)
                 .build();
 
-        AppStats obj2 = AppStats.newBuilder()
+        StatisticsResponse obj2 = StatisticsResponse.newBuilder()
                 .setStartTime(new DateTime(2015, 5, 31, 12, 0, 0, 0))
-                .setIOSCount(1)
+                .setIosCount(1)
                 .setBlackBerryCount(2)
-                .setC2DMCount(3)
-                .setGCMCount(4)
+                .setC2dmCount(3)
+                .setGcmCount(4)
                 .setWindows8Count(5)
                 .setWindowsPhone8Count(6)
                 .build();
 
-        AppStats obj3 = AppStats.newBuilder()
+        StatisticsResponse obj3 = StatisticsResponse.newBuilder()
                 .setStartTime(new DateTime(2015, 5, 31, 12, 0, 0, 0))
-                .setIOSCount(1)
+                .setIosCount(1)
                 .setBlackBerryCount(2)
-                .setC2DMCount(2)
-                .setGCMCount(4)
+                .setC2dmCount(2)
+                .setGcmCount(4)
                 .setWindows8Count(5)
                 .setWindowsPhone8Count(6)
                 .build();

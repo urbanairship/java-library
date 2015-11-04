@@ -13,7 +13,6 @@ import com.urbanairship.api.client.model.APIListTagsResponse;
 import com.urbanairship.api.client.model.APILocationResponse;
 import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.Point;
-import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.reports.model.PerPushDetailResponse;
 import com.urbanairship.api.reports.model.PerPushSeriesResponse;
 import com.urbanairship.api.segments.model.AudienceSegment;
@@ -36,7 +35,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 import java.util.Properties;
 
 /**
@@ -61,9 +59,9 @@ public class APIClient {
     private final static String API_TAGS_BATCH_PATH = "/api/tags/batch/";
     private final static String API_LOCATION_PATH = "/api/location/";
     private final static String API_SEGMENTS_PATH = "/api/segments/";
-    private final static String API_STATISTICS_PATH = "/api/push/stats/";
     private final static String API_REPORTS_PER_PUSH_DETAIL_PATH = "/api/reports/perpush/detail/";
     private final static String API_REPORTS_PER_PUSH_SERIES_PATH = "/api/reports/perpush/series/";
+
     private final static Logger logger = LoggerFactory.getLogger("com.urbanairship.api");
     /* User auth */
     private final String appKey;
@@ -560,107 +558,6 @@ public class APIClient {
         return provisionExecutor()
             .execute(req)
             .handleResponse(new APIClientResponseHandler<PerPushSeriesResponse>(PerPushSeriesResponse.class));
-    }
-
-    /**
-     * Returns hourly counts for pushes sent for this application.
-     * JSON format
-     *
-     * @param start Start Time
-     * @param end   Hours
-     * @return APIClientResponse of List of AppStats in JSON. Times are in UTC, and data is provided for each push platform.
-     * @throws IOException
-     */
-    public APIClientResponse<List<AppStats>> listPushStatistics(DateTime start, DateTime end) throws IOException {
-        Preconditions.checkNotNull(start, "Start time is required when performing listing of push statistics");
-        Preconditions.checkNotNull(end, "End time is required when performing listing of push statistics");
-        Preconditions.checkArgument(start.isBefore(end), "Start time must be before End time");
-
-        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_STATISTICS_PATH));
-
-        builder.addParameter("start", start.toLocalDateTime().toString());
-        builder.addParameter("end", end.toLocalDateTime().toString());
-        builder.addParameter("format", "json");
-
-        Request req = provisionRequest(Request.Get(builder.toString()));
-
-        req.removeHeaders(ACCEPT_KEY);      // Workaround for v3 routing bug
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing list Statistics in CSV String format request %s", req));
-        }
-
-        return provisionExecutor().execute(req).handleResponse(new ListAppStatsAPIResponseHandler());
-    }
-
-    /**
-     * Returns hourly counts for pushes sent for this application.
-     * CSV format for easy importing into spreadsheets.
-     *
-     * @param start Start Time
-     * @param end   End Time
-     * @return APIClientResponse of String in CSV. Times are in UTC, and data is provided for each push platform.
-     * (Currently: iOS, Helium, BlackBerry, C2DM, GCM, Windows 8, and Windows Phone 8, in that order.)
-     * @throws IOException
-     */
-    public APIClientResponse<String> listPushStatisticsInCSVString(DateTime start, DateTime end) throws IOException {
-        Preconditions.checkNotNull(start, "Start time is required when performing listing of push statistics");
-        Preconditions.checkNotNull(end, "End time is required when performing listing of push statistics");
-        Preconditions.checkArgument(start.isBefore(end), "Start time must be before End time");
-
-        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_STATISTICS_PATH));
-
-        builder.addParameter("start", start.toLocalDateTime().toString());
-        builder.addParameter("end", end.toLocalDateTime().toString());
-        builder.addParameter("format", "csv");
-
-        Request req = provisionRequest(Request.Get(builder.toString()));
-
-        req.removeHeaders(ACCEPT_KEY);      // Workaround for v3 routing bug
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing list Statistics in CSV String format request %s", req));
-        }
-
-        return provisionExecutor().execute(req).handleResponse(new StringAPIResponseHandler());
-    }
-
-    /* Object methods */
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(appKey, appSecret, baseURI, version, uaHost, proxyInfo, httpParams);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        final APIClient other = (APIClient) obj;
-        return Objects.equal(this.appKey, other.appKey)
-            && Objects.equal(this.appSecret, other.appSecret)
-            && Objects.equal(this.baseURI, other.baseURI)
-            && Objects.equal(this.version, other.version)
-            && Objects.equal(this.uaHost, other.uaHost)
-            && Objects.equal(this.proxyInfo, other.proxyInfo)
-            && Objects.equal(this.httpParams, other.httpParams);
-    }
-
-    @Override
-    public String toString() {
-        return "APIClient{ +" +
-            "appKey=" + appKey +
-            ", appSecret=" + appSecret +
-            ", baseURI=" + baseURI +
-            ", version=" + version +
-            ", uaHost=" + uaHost +
-            ", proxyInfo=" + proxyInfo +
-            ", httpParams=" + httpParams +
-            '}';
     }
 
     /* Builder for APIClient */

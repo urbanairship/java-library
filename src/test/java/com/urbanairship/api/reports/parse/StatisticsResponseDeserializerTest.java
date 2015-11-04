@@ -4,7 +4,7 @@ package com.urbanairship.api.reports.parse;
 import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.DateFormats;
-import com.urbanairship.api.reports.model.AppStats;
+import com.urbanairship.api.reports.model.StatisticsResponse;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.junit.Test;
@@ -14,12 +14,12 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class AppStatsDeserializerTest {
+public class StatisticsResponseDeserializerTest {
 
-    private static final ObjectMapper mapper = APIResponseObjectMapper.getInstance();
+    private static final ObjectMapper mapper = ReportsObjectMapper.getInstance();
 
     @Test
-    public void testAppStatsJsonDeSerialize() throws Exception {
+    public void testStatisticsResponseDeserializer() throws Exception {
 
         String json = "{\n" +
                 "        \"c2dm_messages\": 1,\n" +
@@ -31,13 +31,13 @@ public class AppStatsDeserializerTest {
                 "        \"bb_messages\": 7\n" +
                 "    }";
 
-        AppStats obj = mapper.readValue(json, AppStats.class);
+        StatisticsResponse obj = mapper.readValue(json, StatisticsResponse.class);
         assertNotNull(obj);
 
         assertEquals(DateFormats.DATE_PARSER.parseDateTime("2014-06-22 00:00:00"), obj.getStart());
-        assertEquals(1, obj.getC2DMCount());
-        assertEquals(2, obj.getGCMCount());
-        assertEquals(3, obj.getiOSCount());
+        assertEquals(1, obj.getC2dmCount());
+        assertEquals(2, obj.getGcmCount());
+        assertEquals(3, obj.getIosCount());
         assertEquals(4, obj.getWindows8Count());
         assertEquals(6, obj.getWindowsPhone8Count());
         assertEquals(7, obj.getBlackBerryCount());
@@ -85,26 +85,18 @@ public class AppStatsDeserializerTest {
                 "    }\n" +
                 "]";
 
-        List<AppStats> listOfAppStats = mapper.readValue(json, new TypeReference<List<AppStats>>() {
-        });
+        List<StatisticsResponse> listOfAppStats = mapper.readValue(json, new TypeReference<List<StatisticsResponse>>() {});
+
         assertNotNull(listOfAppStats);
-
         assertEquals(4, listOfAppStats.size());
-        AppStats one = listOfAppStats.get(0);
-
-        assertEquals(3, one.getiOSCount());
-
-        AppStats two = listOfAppStats.get(1);
-
-        assertEquals(10, two.getiOSCount());
-
-        AppStats three = listOfAppStats.get(2);
-
-        assertEquals(15, three.getiOSCount());
-
-        AppStats four = listOfAppStats.get(3);
-
-        assertEquals(23, four.getiOSCount());
+        StatisticsResponse one = listOfAppStats.get(0);
+        assertEquals(3, one.getIosCount());
+        StatisticsResponse two = listOfAppStats.get(1);
+        assertEquals(10, two.getIosCount());
+        StatisticsResponse three = listOfAppStats.get(2);
+        assertEquals(15, three.getIosCount());
+        StatisticsResponse four = listOfAppStats.get(3);
+        assertEquals(23, four.getIosCount());
     }
 
     @Test(expected = APIParsingException.class)
@@ -118,6 +110,6 @@ public class AppStatsDeserializerTest {
                 "        \"bb_messages\": 7\n" +
                 "    }";
 
-        mapper.readValue(json, AppStats.class);
+        mapper.readValue(json, StatisticsResponse.class);
     }
 }
