@@ -6,7 +6,6 @@ import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
 import com.urbanairship.api.client.model.APIListTagsResponse;
 import com.urbanairship.api.client.model.APILocationResponse;
 import com.urbanairship.api.client.model.SegmentInformation;
-import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.reports.model.PerPushDetailResponse;
 import com.urbanairship.api.reports.model.PerPushSeriesResponse;
 import com.urbanairship.api.segments.model.AudienceSegment;
@@ -87,38 +86,6 @@ public class APIClientResponseTest {
 
         assertTrue("APIResponse not set properly",
                 testResponse.getApiResponse().equals(locationResponse));
-    }
-
-    @Test
-    public void testListOfAppStatsAPIResponse() {
-        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-                new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
-
-        AppStats one = AppStats.newBuilder()
-                .setStartTime(new DateTime(2015, 1, 1, 0, 0, 0, 0))
-                .build();
-
-        AppStats two = AppStats.newBuilder()
-                .setStartTime(new DateTime(2016, 1, 1, 0, 0, 0, 0))
-                .build();
-
-        List<AppStats> list = new ArrayList<AppStats>();
-
-        list.add(one);
-        list.add(two);
-
-        APIClientResponse.Builder<List<AppStats>> builder =
-                APIClientResponse.newListAppStatsBuilder()
-                        .setApiResponse(list)
-                        .setHttpResponse(httpResponse);
-
-        APIClientResponse<List<AppStats>> testResponse = builder.build();
-
-        assertTrue("HTTP response not set properly",
-                testResponse.getHttpResponse().equals(httpResponse));
-
-        assertTrue("APIResponse not set properly",
-                testResponse.getApiResponse().equals(list));
     }
 
     @Test

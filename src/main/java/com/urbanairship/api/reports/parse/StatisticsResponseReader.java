@@ -7,17 +7,17 @@ package com.urbanairship.api.reports.parse;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.common.parse.JsonObjectReader;
-import com.urbanairship.api.reports.model.AppStats;
+import com.urbanairship.api.reports.model.StatisticsResponse;
 import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
 
-public final class AppStatsReader implements JsonObjectReader<AppStats> {
+public final class StatisticsResponseReader implements JsonObjectReader<StatisticsResponse> {
 
-    private final AppStats.Builder builder;
+    private final StatisticsResponse.Builder builder;
 
-    public AppStatsReader() {
-        this.builder = AppStats.newBuilder();
+    public StatisticsResponseReader() {
+        this.builder = StatisticsResponse.newBuilder();
     }
 
     public void readStartTime(JsonParser jsonParser) throws IOException {
@@ -26,7 +26,7 @@ public final class AppStatsReader implements JsonObjectReader<AppStats> {
     }
 
     public void readiOSCount(JsonParser jsonParser) throws IOException {
-        builder.setIOSCount(jsonParser.readValueAs(Integer.class));
+        builder.setIosCount(jsonParser.readValueAs(Integer.class));
     }
 
     public void readBlackBerryCount(JsonParser jsonParser) throws IOException {
@@ -34,11 +34,11 @@ public final class AppStatsReader implements JsonObjectReader<AppStats> {
     }
 
     public void readC2DMCount(JsonParser jsonParser) throws IOException {
-        builder.setC2DMCount(jsonParser.readValueAs(Integer.class));
+        builder.setC2dmCount(jsonParser.readValueAs(Integer.class));
     }
 
     public void readGCMCount(JsonParser jsonParser) throws IOException {
-        builder.setGCMCount(jsonParser.readValueAs(Integer.class));
+        builder.setGcmCount(jsonParser.readValueAs(Integer.class));
     }
 
     public void readWindows8Count(JsonParser jsonParser) throws IOException {
@@ -50,7 +50,7 @@ public final class AppStatsReader implements JsonObjectReader<AppStats> {
     }
 
     @Override
-    public AppStats validateAndBuild() throws IOException {
+    public StatisticsResponse validateAndBuild() throws IOException {
         try {
             return builder.build();
         } catch (Exception e) {

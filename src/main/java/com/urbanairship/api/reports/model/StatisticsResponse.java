@@ -8,19 +8,19 @@ import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import org.joda.time.DateTime;
 
-public final class AppStats {
+public final class StatisticsResponse {
 
     private final DateTime start;
-    private final int iOS;
+    private final int ios;
     private final int blackBerry;
     private final int c2dm;
     private final int gcm;
     private final int windows8;
     private final int windowsPhone8;
 
-    private AppStats(DateTime start, int iOS, int blackBerry, int c2dm, int gcm, int windows8, int windowsPhone8) {
+    private StatisticsResponse(DateTime start, int ios, int blackBerry, int c2dm, int gcm, int windows8, int windowsPhone8) {
         this.start = start;
-        this.iOS = iOS;
+        this.ios = ios;
         this.blackBerry = blackBerry;
         this.c2dm = c2dm;
         this.gcm = gcm;
@@ -36,19 +36,19 @@ public final class AppStats {
         return start;
     }
 
-    public int getiOSCount() {
-        return iOS;
+    public int getIosCount() {
+        return ios;
     }
 
     public int getBlackBerryCount() {
         return blackBerry;
     }
 
-    public int getC2DMCount() {
+    public int getC2dmCount() {
         return c2dm;
     }
 
-    public int getGCMCount() {
+    public int getGcmCount() {
         return gcm;
     }
 
@@ -62,7 +62,7 @@ public final class AppStats {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(start, iOS, blackBerry, c2dm, gcm, windows8, windowsPhone8);
+        return Objects.hashCode(start, ios, blackBerry, c2dm, gcm, windows8, windowsPhone8);
     }
 
     @Override
@@ -73,15 +73,15 @@ public final class AppStats {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final AppStats other = (AppStats) obj;
-        return Objects.equal(this.start, other.start) && Objects.equal(this.iOS, other.iOS) && Objects.equal(this.blackBerry, other.blackBerry) && Objects.equal(this.c2dm, other.c2dm) && Objects.equal(this.gcm, other.gcm) && Objects.equal(this.windows8, other.windows8) && Objects.equal(this.windowsPhone8, other.windowsPhone8);
+        final StatisticsResponse other = (StatisticsResponse) obj;
+        return Objects.equal(this.start, other.start) && Objects.equal(this.ios, other.ios) && Objects.equal(this.blackBerry, other.blackBerry) && Objects.equal(this.c2dm, other.c2dm) && Objects.equal(this.gcm, other.gcm) && Objects.equal(this.windows8, other.windows8) && Objects.equal(this.windowsPhone8, other.windowsPhone8);
     }
 
     @Override
     public String toString() {
         return "AppStats{" +
                 "start=" + start +
-                ", iOS=" + iOS +
+                ", ios=" + ios +
                 ", blackBerry=" + blackBerry +
                 ", c2dm=" + c2dm +
                 ", gcm=" + gcm +
@@ -94,7 +94,7 @@ public final class AppStats {
     public static class Builder {
 
         private DateTime start;
-        private int iOS;
+        private int ios;
         private int blackBerry;
         private int c2dm;
         private int gcm;
@@ -109,8 +109,8 @@ public final class AppStats {
             return this;
         }
 
-        public Builder setIOSCount(int value) {
-            this.iOS = value;
+        public Builder setIosCount(int value) {
+            this.ios = value;
             return this;
         }
 
@@ -119,12 +119,12 @@ public final class AppStats {
             return this;
         }
 
-        public Builder setC2DMCount(int value) {
+        public Builder setC2dmCount(int value) {
             this.c2dm = value;
             return this;
         }
 
-        public Builder setGCMCount(int value) {
+        public Builder setGcmCount(int value) {
             this.gcm = value;
             return this;
         }
@@ -139,9 +139,9 @@ public final class AppStats {
             return this;
         }
 
-        public AppStats build() {
+        public StatisticsResponse build() {
             Preconditions.checkNotNull(start, "There must be a start time");
-            return new AppStats(start, iOS, blackBerry, c2dm, gcm, windows8, windowsPhone8);
+            return new StatisticsResponse(start, ios, blackBerry, c2dm, gcm, windows8, windowsPhone8);
         }
     }
 }

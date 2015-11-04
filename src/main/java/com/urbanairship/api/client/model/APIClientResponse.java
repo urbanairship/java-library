@@ -5,7 +5,6 @@
 package com.urbanairship.api.client.model;
 
 import com.google.common.base.Objects;
-import com.urbanairship.api.reports.model.AppStats;
 import org.apache.http.HttpResponse;
 
 import java.util.List;
@@ -25,15 +24,6 @@ public class APIClientResponse<T> {
             httpResponse) {
         this.apiResponse = apiResponse;
         this.httpResponse = httpResponse;
-    }
-
-    /**
-     * Return a Builder for a List of AppStats
-     *
-     * @return Builder
-     */
-    public static Builder<List<AppStats>> newListAppStatsBuilder() {
-        return new Builder<List<AppStats>>();
     }
 
     /**

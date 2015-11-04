@@ -17,8 +17,11 @@ import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.reports.PushListingRequest;
 import com.urbanairship.api.reports.PushInfoRequest;
+import com.urbanairship.api.reports.StatisticsCsvRequest;
+import com.urbanairship.api.reports.StatisticsRequest;
 import com.urbanairship.api.reports.model.PushListingResponse;
 import com.urbanairship.api.reports.model.PushInfoResponse;
+import com.urbanairship.api.reports.model.StatisticsResponse;
 import com.urbanairship.api.reports.model.Precision;
 import com.urbanairship.api.reports.PlatformStatsRequest;
 import com.urbanairship.api.reports.model.PlatformStatsResponse;
@@ -37,6 +40,7 @@ import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Period;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -76,6 +80,18 @@ public class UrbanAirshipClientTest {
         BasicConfigurator.configure();
     }
 
+    private UrbanAirshipClient client;
+
+    // Set up the client
+    @Before
+    public void setup() {
+        client = UrbanAirshipClient.newBuilder()
+                .setBaseUri("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+    }
+
     @ClassRule
     @Rule
     public static WireMockClassRule wireMockClassRule = new WireMockClassRule();
@@ -92,14 +108,6 @@ public class UrbanAirshipClientTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testPush() {
-
-        // Setup a client and a push payload
-        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-            .setBaseUri("http://localhost:8080")
-            .setKey("key")
-            .setSecret("secret")
-            .build();
-
         assertFalse(client.getProxyInfo().isPresent());
 
         PushPayload payload = PushPayload.newBuilder()
@@ -239,13 +247,6 @@ public class UrbanAirshipClientTest {
     @Test
     public void testValidate() {
 
-        // Setup a client and a push payload
-        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-            .setBaseUri("http://localhost:8080")
-            .setKey("key")
-            .setSecret("secret")
-            .build();
-
         PushPayload payload = PushPayload.newBuilder()
             .setAudience(Selectors.all())
             .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
@@ -274,12 +275,6 @@ public class UrbanAirshipClientTest {
 
     @Test
     public void testListAllSchedules() {
-        // Setup a client and a schedule payload
-        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-            .setBaseUri("http://localhost:8080")
-            .setKey("key")
-            .setSecret("secret")
-            .build();
 
         // Setup a stubbed response for the server
         String listscheduleresponse = "{\"ok\":true,\"count\":5,\"total_count\":6,\"schedules\":" +
@@ -324,13 +319,6 @@ public class UrbanAirshipClientTest {
 
     @Test
     public void testListSpecificSchedule() {
-        // Setup a client and a schedule payload
-
-        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-            .setBaseUri("http://localhost:8080")
-            .setKey("key")
-            .setSecret("secret")
-            .build();
 
         // Setup a stubbed response for the server
         String listscheduleresponse = "{\"schedule\":{\"scheduled_time\":\"2015-08-07T22:10:44\"},\"name\":\"Special Scheduled Push 20\",\"push\":{\"audience\":\"ALL\",\"device_types\":\"all\",\"notification\":{\"alert\":\"Scheduled Push 20\"}},\"push_ids\":[\"274f9aa4-2d00-4911-a043-70129f29adf2\"]}";
@@ -364,13 +352,6 @@ public class UrbanAirshipClientTest {
 
     @Test
     public void testListAllSchedulesWithParameters() {
-        // Setup a client and a schedule payload
-        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-            .setBaseUri("http://localhost:8080")
-            .setKey("key")
-            .setSecret("secret")
-            .build();
-
         // Setup a stubbed response for the server
         String listscheduleresponse = "{\"ok\":true,\"count\":5,\"total_count\":6,\"schedules\":" +
             "[{\"url\":\"https://go.urbanairship.com/api/schedules/5a60e0a6-9aa7-449f-a038-6806e572baf3\",\"" +
@@ -415,13 +396,6 @@ public class UrbanAirshipClientTest {
 
     @Test
     public void testListAllSchedulesNextPage() {
-        // Setup a client and a schedule payload
-        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-            .setBaseUri("http://localhost:8080")
-            .setKey("key")
-            .setSecret("secret")
-            .build();
-
         // Setup a stubbed response for the server
         String listscheduleresponse = "{\"ok\":true,\"count\":5,\"total_count\":6,\"schedules\":" +
             "[{\"url\":\"https://go.urbanairship.com/api/schedules/5a60e0a6-9aa7-449f-a038-6806e572baf3\",\"" +
@@ -467,14 +441,6 @@ public class UrbanAirshipClientTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testSchedule() {
-
-        // Setup a client and a schedule payload
-         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-            .setBaseUri("http://localhost:8080")
-            .setKey("key")
-            .setSecret("secret")
-            .build();
-
         PushPayload pushPayload = PushPayload.newBuilder()
             .setAudience(Selectors.all())
             .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
@@ -531,14 +497,6 @@ public class UrbanAirshipClientTest {
 
     @Test
     public void testUpdateSchedule() {
-
-        // Setup a client and a schedule payload
-        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-            .setBaseUri("http://localhost:8080")
-            .setKey("key")
-            .setSecret("secret")
-            .build();
-
         PushPayload pushPayload = PushPayload.newBuilder()
             .setAudience(Selectors.all())
             .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
@@ -580,13 +538,6 @@ public class UrbanAirshipClientTest {
 
     @Test
     public void testDeleteSpecificSchedule() {
-        // Setup a client
-        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-            .setBaseUri("http://localhost:8080")
-            .setKey("key")
-            .setSecret("secret")
-            .build();
-
         stubFor(delete(urlEqualTo("/api/schedules/puppies"))
             .willReturn(aResponse()
                 .withStatus(204)));
@@ -611,13 +562,6 @@ public class UrbanAirshipClientTest {
 
     @Test
     public void testChannelTagMutations() {
-        // Setup a client
-        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-            .setBaseUri("http://localhost:8080")
-            .setKey("key")
-            .setSecret("secret")
-            .build();
-
         stubFor(post(urlEqualTo("/api/channels/tags/"))
             .willReturn(aResponse()
                 .withHeader(CONTENT_TYPE_KEY, "application/json")
@@ -764,13 +708,6 @@ public class UrbanAirshipClientTest {
             "  \"next_page\": \"https:\\/\\/go.urbanairship.com\\/api\\/channels?limit=5&start=0143e4d6-724c-4fc8-bbc6-ca647b8993bf\"\n" +
             "}";
 
-        // Setup a client
-        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-            .setBaseUri("http://localhost:8080")
-            .setKey("key")
-            .setSecret("secret")
-            .build();
-
         stubFor(get(urlEqualTo("/api/channels/"))
             .willReturn(aResponse()
                 .withHeader(CONTENT_TYPE_KEY, "application/json")
@@ -794,7 +731,7 @@ public class UrbanAirshipClientTest {
     }
 
     @Test
-    public void testSinglePushInfo() throws IOException {
+    public void testSinglePushInfo() throws Exception {
 
         String queryPathString = "/api/reports/responses/abc";
 
@@ -807,12 +744,6 @@ public class UrbanAirshipClientTest {
                 "  \"group_id\":\"5e42ddfc-fa2d-11e2-9ca2-90e2ba025cd0\"\n" +
                 "}";
 
-        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-                .setBaseUri("http://localhost:8080")
-                .setKey("key")
-                .setSecret("secret")
-                .build();
-
         stubFor(get(urlEqualTo(queryPathString))
                 .willReturn(aResponse()
                         .withBody(responseString)
@@ -820,22 +751,17 @@ public class UrbanAirshipClientTest {
 
         PushInfoRequest request = PushInfoRequest.newRequest("abc");
 
-        try {
-            Response<PushInfoResponse> response = client.execute(request);
+        Response<PushInfoResponse> response = client.execute(request);
 
-            List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
-            assertEquals(1, requests.size());
+        List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
+        assertEquals(1, requests.size());
 
-            assertNotNull(response);
-            assertEquals(200, response.getStatus());
-
-        } catch (Exception ex) {
-            fail("Exception thrown " + ex);
-        }
+        assertNotNull(response);
+        assertEquals(200, response.getStatus());
     }
 
     @Test
-    public void testPushListing() throws IOException {
+    public void testPushListing() throws Exception {
 
         String queryPathString = "/api/reports/responses/list/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00";
 
@@ -880,12 +806,6 @@ public class UrbanAirshipClientTest {
                 "  ]\n" +
                 "}";
 
-        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-                .setBaseUri("http://localhost:8080")
-                .setKey("key")
-                .setSecret("secret")
-                .build();
-
         stubFor(get(urlEqualTo(queryPathString))
                 .willReturn(aResponse()
                         .withBody(responseString)
@@ -898,22 +818,17 @@ public class UrbanAirshipClientTest {
                 .start(start)
                 .end(end);
 
-        try {
-            Response<PushListingResponse> response = client.execute(request);
+        Response<PushListingResponse> response = client.execute(request);
 
-            List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
-            assertEquals(1, requests.size());
+        List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
+        assertEquals(1, requests.size());
 
-            assertNotNull(response);
-            assertEquals(200, response.getStatus());
-
-        } catch (Exception ex) {
-            fail("Exception thrown " + ex);
-        }
+        assertNotNull(response);
+        assertEquals(200, response.getStatus());
     }
 
     @Test
-    public void testPushListingWithOptionalParams() throws IOException {
+    public void testPushListingWithOptionalParams() throws Exception {
 
         String queryPathString = "/api/reports/responses/list/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&limit=2&push_id_start=start";
 
@@ -958,12 +873,6 @@ public class UrbanAirshipClientTest {
                 "  ]\n" +
                 "}";
 
-        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-                .setBaseUri("http://localhost:8080")
-                .setKey("key")
-                .setSecret("secret")
-                .build();
-
         stubFor(get(urlEqualTo(queryPathString))
                 .willReturn(aResponse()
                         .withBody(responseString)
@@ -978,22 +887,154 @@ public class UrbanAirshipClientTest {
                 .limit(2)
                 .pushIdStart("start");
 
-        try {
-            Response<PushListingResponse> response = client.execute(request);
+        Response<PushListingResponse> response = client.execute(request);
 
-            List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
-            assertEquals(1, requests.size());
+        List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
+        assertEquals(1, requests.size());
 
-            assertNotNull(response);
-            assertEquals(200, response.getStatus());
-
-        } catch (Exception ex) {
-            fail("Exception thrown " + ex);
-        }
+        assertNotNull(response);
+        assertEquals(200, response.getStatus());
     }
 
     @Test
-    public void testAppOpensReport() throws IOException {
+    public void testStatisticsCsv() throws Exception {
+        String queryPathString = "/api/push/stats/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&format=csv";
+
+        String responseString = "2014-10-01 19:00:00,19,0,0,0,60,0,0\n" +
+                "2014-10-01 20:00:00,133,0,0,0,67,0,0\n" +
+                "2014-10-01 21:00:00,11,0,0,0,60,0,0\n" +
+                "2014-10-01 22:00:00,7,0,0,0,60,0,0\n" +
+                "2014-10-01 23:00:00,533,0,0,0,60,0,0\n" +
+                "2014-10-02 00:00:00,116,0,0,0,129,0,0\n" +
+                "2014-10-02 01:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 02:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 03:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 04:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 05:00:00,1,0,0,0,60,0,0\n" +
+                "2014-10-02 06:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 07:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 08:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 09:00:00,1,0,0,0,60,0,0\n" +
+                "2014-10-02 10:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 11:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 12:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 13:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 14:00:00,1,0,0,0,60,0,0\n" +
+                "2014-10-02 15:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 16:00:00,374,0,0,0,275,0,0\n" +
+                "2014-10-02 17:00:00,1,0,0,0,60,0,0\n" +
+                "2014-10-02 18:00:00,0,0,0,0,132,0,0\n" +
+                "2014-10-02 19:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-02 20:00:00,0,0,0,0,132,0,0\n" +
+                "2014-10-02 21:00:00,0,0,0,0,62,0,0\n" +
+                "2014-10-02 22:00:00,122,0,0,0,132,0,0\n" +
+                "2014-10-02 23:00:00,488,0,0,0,132,0,0\n" +
+                "2014-10-03 00:00:00,121,0,0,0,132,0,0\n" +
+                "2014-10-03 01:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-03 02:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-03 03:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-03 04:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-03 05:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-03 06:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-03 07:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-03 08:00:00,0,0,0,0,61,0,0\n" +
+                "2014-10-03 09:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-03 10:00:00,0,0,0,0,62,0,0\n" +
+                "2014-10-03 11:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-03 12:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-03 13:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-03 14:00:00,0,0,0,0,60,0,0\n" +
+                "2014-10-03 15:00:00,115,0,0,0,130,0,0\n" +
+                "2014-10-03 16:00:00,124,0,0,0,132,0,0\n" +
+                "2014-10-03 17:00:00,7,0,0,0,76,0,0\n" +
+                "2014-10-03 18:00:00,19,0,0,0,70,0,0\n" +
+                "2014-10-03 19:00:00,0,0,0,0,60,0,0";
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseString)
+                        .withStatus(200)));
+
+        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+        DateTime end = start.plus(Period.hours(48));
+
+        StatisticsCsvRequest request = StatisticsCsvRequest.newRequest(start, end);
+
+        Response<String> response = client.execute(request);
+
+        List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
+        assertEquals(1, requests.size());
+
+        assertNotNull(response);
+        assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    public void testStatistics() throws Exception {
+
+        String queryPathString = "/api/push/stats/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00";
+
+        String responseString = "[\n" +
+                "    {\n" +
+                "        \"c2dm_messages\": 0,\n" +
+                "        \"gcm_messages\": 3,\n" +
+                "        \"messages\": 2,\n" +
+                "        \"wns_messages\": 0,\n" +
+                "        \"start\": \"2014-06-22 00:00:00\",\n" +
+                "        \"mpns_messages\": 0,\n" +
+                "        \"bb_messages\": 0\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"c2dm_messages\": 0,\n" +
+                "        \"gcm_messages\": 2,\n" +
+                "        \"messages\": 0,\n" +
+                "        \"wns_messages\": 0,\n" +
+                "        \"start\": \"2014-06-22 01:00:00\",\n" +
+                "        \"mpns_messages\": 0,\n" +
+                "        \"bb_messages\": 0\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"messages\": 0,\n" +
+                "        \"mpns_messages\": 0,\n" +
+                "        \"gcm_messages\": 0,\n" +
+                "        \"c2dm_messages\": 0,\n" +
+                "        \"wns_messages\": 0,\n" +
+                "        \"start\": \"2014-06-22 02:00:00\",\n" +
+                "        \"bb_messages\": 0\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"c2dm_messages\": 0,\n" +
+                "        \"gcm_messages\": 1,\n" +
+                "        \"messages\": 3,\n" +
+                "        \"wns_messages\": 0,\n" +
+                "        \"start\": \"2014-06-22 03:00:00\",\n" +
+                "        \"mpns_messages\": 0,\n" +
+                "        \"bb_messages\": 0\n" +
+                "    }\n" +
+                "]";
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseString)
+                        .withStatus(200)));
+
+        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+        DateTime end = start.plus(Period.hours(48));
+
+        StatisticsRequest request = StatisticsRequest.newRequest(start, end);
+
+        Response<List<StatisticsResponse>> response = client.execute(request);
+
+        List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
+        assertEquals(1, requests.size());
+
+        assertNotNull(response);
+        assertEquals(200, response.getStatus());
+    }
+
+
+    @Test
+    public void testAppOpensReport() throws Exception {
 
         String queryPathString = "/api/reports/opens/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&precision=HOURLY";
 
@@ -1013,44 +1054,31 @@ public class UrbanAirshipClientTest {
                 "  ]\n" +
                 "}";
 
-
-        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-                .setBaseUri("http://localhost:8080")
-                .setKey("key")
-                .setSecret("secret")
-                .build();
-
+        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+        DateTime end = start.plus(Period.hours(48));
+        
         stubFor(get(urlEqualTo(queryPathString))
                 .willReturn(aResponse()
                         .withBody(responseString)
                         .withStatus(200)));
-
-        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
-        DateTime end = start.plus(Period.hours(48));
 
         PlatformStatsRequest request = PlatformStatsRequest.newAppOpensRequest()
                 .start(start)
                 .end(end)
                 .precision(Precision.HOURLY);
 
-        try {
-            Response<PlatformStatsResponse> response = client.execute(request);
+        Response<PlatformStatsResponse> response = client.execute(request);
 
-            List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
-            assertEquals(1, requests.size());
+        List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
+        assertEquals(1, requests.size());
 
-//            assertNotNull(response);
-//            assertEquals(200, response.getStatus());
-
-        } catch (Exception ex) {
-            fail("Exception thrown " + ex);
-        }
-
-
+        assertNotNull(response);
+        assertEquals(200, response.getStatus());
     }
 
+
     @Test
-    public void testTimeInAppReport() throws IOException {
+    public void testTimeInAppReport() throws Exception {
 
         String queryPathString = "/api/reports/timeinapp/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&precision=MONTHLY";
 
@@ -1069,13 +1097,6 @@ public class UrbanAirshipClientTest {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-
-        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-                .setBaseUri("http://localhost:8080")
-                .setKey("key")
-                .setSecret("secret")
-                .build();
-
 
         stubFor(get(urlEqualTo(queryPathString))
                 .willReturn(aResponse()
@@ -1098,15 +1119,14 @@ public class UrbanAirshipClientTest {
 
             assertNotNull(response);
             assertEquals(200, response.getStatus());
-
         } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
-
     }
 
+
     @Test
-    public void testOptInsReport() throws IOException {
+    public void testOptInsReport() throws Exception {
 
         String queryPathString = "/api/reports/optins/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&precision=MONTHLY";
 
@@ -1125,13 +1145,6 @@ public class UrbanAirshipClientTest {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-
-        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-                .setBaseUri("http://localhost:8080")
-                .setKey("key")
-                .setSecret("secret")
-                .build();
-
 
         stubFor(get(urlEqualTo(queryPathString))
                 .willReturn(aResponse()
@@ -1162,7 +1175,7 @@ public class UrbanAirshipClientTest {
     }
 
     @Test
-    public void testOptOutsReport() throws IOException {
+    public void testOptOutsReport() throws Exception {
 
         String queryPathString = "/api/reports/optouts/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&precision=MONTHLY";
 
@@ -1182,13 +1195,6 @@ public class UrbanAirshipClientTest {
                 "  ]\n" +
                 "}";
 
-        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-                .setBaseUri("http://localhost:8080")
-                .setKey("key")
-                .setSecret("secret")
-                .build();
-
-
         stubFor(get(urlEqualTo(queryPathString))
                 .willReturn(aResponse()
                         .withBody(responseString)
@@ -1202,23 +1208,18 @@ public class UrbanAirshipClientTest {
                 .end(end)
                 .precision(Precision.MONTHLY);
 
-        try {
-            Response<PlatformStatsResponse> response = client.execute(request);
+        Response<PlatformStatsResponse> response = client.execute(request);
 
-            List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
-            assertEquals(1, requests.size());
+        List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
+        assertEquals(1, requests.size());
 
-            assertNotNull(response);
-            assertEquals(200, response.getStatus());
-
-        } catch (Exception ex) {
-            fail("Exception thrown " + ex);
-        }
+        assertNotNull(response);
+        assertEquals(200, response.getStatus());
 
     }
 
     @Test
-    public void testPushSendsReport() throws IOException {
+    public void testPushSendsReport() throws Exception {
 
         String queryPathString = "/api/reports/sends/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&precision=MONTHLY";
 
@@ -1238,13 +1239,6 @@ public class UrbanAirshipClientTest {
                 "  ]\n" +
                 "}";
 
-        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-                .setBaseUri("http://localhost:8080")
-                .setKey("key")
-                .setSecret("secret")
-                .build();
-
-
         stubFor(get(urlEqualTo(queryPathString))
                 .willReturn(aResponse()
                         .withBody(responseString)
@@ -1258,19 +1252,12 @@ public class UrbanAirshipClientTest {
                 .end(end)
                 .precision(Precision.MONTHLY);
 
-        try {
-            Response<PlatformStatsResponse> response = client.execute(request);
+        Response<PlatformStatsResponse> response = client.execute(request);
 
-            List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
-            assertEquals(1, requests.size());
+        List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
+        assertEquals(1, requests.size());
 
-            assertNotNull(response);
-            assertEquals(200, response.getStatus());
-
-        } catch (Exception ex) {
-            fail("Exception thrown " + ex);
-        }
-
+        assertNotNull(response);
+        assertEquals(200, response.getStatus());
     }
-
 }
