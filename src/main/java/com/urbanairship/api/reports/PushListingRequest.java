@@ -28,34 +28,20 @@ import java.util.Map;
  * the {@link com.urbanairship.api.client.UrbanAirshipClient}
  */
 public class PushListingRequest implements Request<PushListingResponse> {
-    private final static String API_PUSH_RESPONSE_LISTING = "/api/reports/responses/list";
+    private final static String API_PUSH_RESPONSE_LISTING = "/api/reports/responses/list/";
 
-    private final DateTime start;
-    private final DateTime end;
-    private final Optional<Integer> limit;
-    private final Optional<String> pushIdStart;
-
-    private PushListingRequest() {
-        this(null,null,null,null);
-    }
-
-    private PushListingRequest(DateTime start,
-                               DateTime end,
-                               Optional<Integer> limit,
-                               Optional<String> pushIdStart) {
-        this.start = start;
-        this.end = end;
-        this.limit = limit;
-        this.pushIdStart = pushIdStart;
-    }
+    private DateTime start;
+    private DateTime end;
+    private Optional<Integer> limit = Optional.absent();
+    private Optional<String> pushIdStart = Optional.absent();
 
     /**
-     * New PushInfoRequest builder
+     * New PushListingRequest
      *
-     * @return Builder
+     * @return PushListingRequest
      */
-    public static Builder newBuilder() {
-        return new Builder();
+    public static PushListingRequest newRequest() {
+        return new PushListingRequest();
     }
 
     /**
@@ -68,12 +54,32 @@ public class PushListingRequest implements Request<PushListingResponse> {
     }
 
     /**
+     * Set the request start date
+     *
+     * @return PushListingRequest
+     */
+    public PushListingRequest start(DateTime start) {
+        this.start = start;
+        return this;
+    }
+
+    /**
      * Get the request end date
      *
      * @return DateTime
      */
     public DateTime getEnd() {
         return end;
+    }
+
+    /**
+     * Set the request end date
+     *
+     * @return PushListingRequest
+     */
+    public PushListingRequest end(DateTime end) {
+        this.end = end;
+        return this;
     }
 
     /**
@@ -86,12 +92,32 @@ public class PushListingRequest implements Request<PushListingResponse> {
     }
 
     /**
+     * Set the page limit
+     *
+     * @return Integer
+     */
+    public PushListingRequest limit(Integer limit) {
+        this.limit = Optional.of(limit);
+        return this;
+    }
+
+    /**
      * Get the starting push ID
      *
      * @return String
      */
     public Optional<String> getPushIdStart() {
         return pushIdStart;
+    }
+
+    /**
+     * Get the starting push ID
+     *
+     * @return String
+     */
+    public PushListingRequest pushIdStart(String pushIdStart) {
+        this.pushIdStart = Optional.of(pushIdStart);
+        return this;
     }
 
     @Override
@@ -120,6 +146,11 @@ public class PushListingRequest implements Request<PushListingResponse> {
     @Override
     public URI getUri(URI baseUri) throws URISyntaxException {
         URIBuilder builder = new URIBuilder(RequestUtils.resolveURI(baseUri, API_PUSH_RESPONSE_LISTING));
+
+        Preconditions.checkNotNull(this.start, "start cannot be null");
+        Preconditions.checkNotNull(this.end, "end cannot be null");
+        Preconditions.checkArgument(end.isAfter(start), "end date must occur after start date");
+
         builder.addParameter("start", this.start.toString());
         builder.addParameter("end", this.end.toString());
 
@@ -140,86 +171,5 @@ public class PushListingRequest implements Request<PushListingResponse> {
                 return ReportsObjectMapper.getInstance().readValue(response, PushListingResponse.class);
             }
         };
-    }
-
-    public static class Builder {
-
-        // required
-        private DateTime start;
-        private DateTime end;
-
-        // optional
-        private Integer limit;
-        private String pushIdStart;
-
-        private Builder() {
-        }
-
-        /**
-         * Set the start date
-         *
-         * @param value DateTime
-         * @return Builder
-         */
-        public Builder start(DateTime value) {
-            this.start = value;
-            return this;
-        }
-
-        /**
-         * Set the end date
-         *
-         * @param value DateTime
-         * @return Builder
-         */
-        public Builder end(DateTime value) {
-            this.end = value;
-            return this;
-        }
-
-        /**
-         * Set the limit
-         *
-         * @param value Integer
-         * @return Builder
-         */
-        public Builder limit(Integer value) {
-            this.limit = value;
-            return this;
-        }
-
-        /**
-         * Set the starting push ID
-         *
-         * @param value String
-         * @return Builder
-         */
-        public Builder pushIdStart(String value) {
-            this.pushIdStart = value;
-            return this;
-        }
-
-        /**
-         * Build the PushListingRequest object
-         *
-         * <pre>
-         * 1. start cannot be null
-         * 2. end cannot be null
-         * 3. end must be chronologically later than start
-         * </pre>
-         *
-         * @return PushListingRequest
-         */
-        public PushListingRequest build() {
-            Preconditions.checkNotNull(start);
-            Preconditions.checkNotNull(end);
-            Preconditions.checkArgument(end.isAfter(start));
-
-            return new PushListingRequest(
-                    start,
-                    end,
-                    Optional.fromNullable(limit),
-                    Optional.fromNullable(pushIdStart));
-        }
     }
 }

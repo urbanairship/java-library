@@ -12,8 +12,6 @@ import com.urbanairship.api.location.model.Point;
 import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.reports.model.PerPushDetailResponse;
 import com.urbanairship.api.reports.model.PerPushSeriesResponse;
-import com.urbanairship.api.reports.model.ReportsAPIOpensResponse;
-import com.urbanairship.api.reports.model.ReportsAPITimeInAppResponse;
 import com.urbanairship.api.segments.model.AudienceSegment;
 import com.urbanairship.api.segments.model.TagPredicateBuilder;
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
@@ -1991,83 +1989,4 @@ public class APIClientTest {
         assertEquals(obj, response.getApiResponse());
     }
 
-    @Test
-    public void testListAppsOpenReport() throws IOException {
-
-        // Setup a client
-        APIClient client = APIClient.newBuilder()
-                .setBaseURI("http://localhost:8080")
-                .setKey("key")
-                .setSecret("secret")
-                .build();
-
-        String queryPathString = "/api/reports/opens/?precision=MONTHLY&start=2014-10-01T12%3A00%3A00.000&end=2014-10-03T12%3A00%3A00.000";
-
-        String responseString = "{  \n" +
-                "  \"opens\":[  \n" +
-                "    {  \n" +
-                "      \"date\":\"2013-07-01 00:00:00\",\n" +
-                "      \"ios\":1470,\n" +
-                "      \"android\":458\n" +
-                "    },\n" +
-                "    {  \n" +
-                "      \"date\":\"2013-08-01 00:00:00\",\n" +
-                "      \"ios\":1662,\n" +
-                "      \"android\":523\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}";
-
-        stubFor(get(urlEqualTo(queryPathString))
-                .willReturn(aResponse()
-                        .withBody(responseString)
-                        .withStatus(200)));
-
-        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
-        DateTime end = start.plus(Period.hours(48));
-
-        APIClientResponse<ReportsAPIOpensResponse> response = client.listAppsOpenReport(start, end, "monthly");
-        assertNotNull(response);
-
-    }
-
-    @Test
-    public void testListTimeInAppReport() throws IOException {
-
-        // Setup a client
-        APIClient client = APIClient.newBuilder()
-                .setBaseURI("http://localhost:8080")
-                .setKey("key")
-                .setSecret("secret")
-                .build();
-
-        String queryPathString = "/api/reports/timeinapp/?precision=MONTHLY&start=2014-10-01T12%3A00%3A00.000&end=2014-10-03T12%3A00%3A00.000";
-
-        String responseString = "{  \n" +
-                "  \"timeinapp\":[  \n" +
-                "    {  \n" +
-                "      \"date\":\"2013-07-01 00:00:00\",\n" +
-                "      \"ios\":145436.44,\n" +
-                "      \"android\":193246.86\n" +
-                "    },\n" +
-                "    {  \n" +
-                "      \"date\":\"2013-08-01 00:00:00\",\n" +
-                "      \"ios\":45608.027,\n" +
-                "      \"android\":100203.02\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}";
-
-        stubFor(get(urlEqualTo(queryPathString))
-                .willReturn(aResponse()
-                        .withBody(responseString)
-                        .withStatus(200)));
-
-        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
-        DateTime end = start.plus(Period.hours(48));
-
-        APIClientResponse<ReportsAPITimeInAppResponse> response = client.listTimeInAppReport(start, end, "monthly");
-        assertNotNull(response);
-
-    }
 }

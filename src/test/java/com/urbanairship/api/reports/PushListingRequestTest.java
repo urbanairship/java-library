@@ -27,13 +27,11 @@ public class PushListingRequestTest {
 
     String queryPathString = "/api/reports/responses/list?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&limit=2&push_id_start=start";
 
-    PushListingRequest listRequest = PushListingRequest.newBuilder()
+    PushListingRequest listRequest = PushListingRequest.newRequest()
             .start(start)
             .end(end)
             .limit(2)
-            .pushIdStart("start")
-            .build();
-
+            .pushIdStart("start");
     @Test
     public void testContentType() throws Exception {
         assertEquals(listRequest.getContentType(), ContentType.APPLICATION_JSON);
@@ -62,7 +60,7 @@ public class PushListingRequestTest {
     public void testURI() throws Exception {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
-        URI expectedURI = URI.create("https://go.urbanairship.com/api/reports/responses/list?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&limit=2&push_id_start=start");
+        URI expectedURI = URI.create("https://go.urbanairship.com/api/reports/responses/list/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&limit=2&push_id_start=start");
         assertEquals(listRequest.getUri(baseURI), expectedURI);
     }
 

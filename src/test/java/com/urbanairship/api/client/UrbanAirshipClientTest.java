@@ -19,6 +19,9 @@ import com.urbanairship.api.reports.PushListingRequest;
 import com.urbanairship.api.reports.PushInfoRequest;
 import com.urbanairship.api.reports.model.PushListingResponse;
 import com.urbanairship.api.reports.model.PushInfoResponse;
+import com.urbanairship.api.reports.model.Precision;
+import com.urbanairship.api.reports.PlatformStatsRequest;
+import com.urbanairship.api.reports.model.PlatformStatsResponse;
 import com.urbanairship.api.schedule.DeleteScheduleRequest;
 import com.urbanairship.api.schedule.ListSchedulesOrderType;
 import com.urbanairship.api.schedule.ListSchedulesRequest;
@@ -834,7 +837,7 @@ public class UrbanAirshipClientTest {
     @Test
     public void testPushListing() throws IOException {
 
-        String queryPathString = "/api/reports/responses/list?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00";
+        String queryPathString = "/api/reports/responses/list/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00";
 
         String responseString = "{  \n" +
                 "  \"next_page\":\"Value for Next Page\",\n" +
@@ -891,10 +894,9 @@ public class UrbanAirshipClientTest {
         DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
         DateTime end = start.plus(Period.hours(48));
 
-        PushListingRequest request = PushListingRequest.newBuilder()
+        PushListingRequest request = PushListingRequest.newRequest()
                 .start(start)
-                .end(end)
-                .build();
+                .end(end);
 
         try {
             Response<PushListingResponse> response = client.execute(request);
@@ -913,7 +915,7 @@ public class UrbanAirshipClientTest {
     @Test
     public void testPushListingWithOptionalParams() throws IOException {
 
-        String queryPathString = "/api/reports/responses/list?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&limit=2&push_id_start=start";
+        String queryPathString = "/api/reports/responses/list/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&limit=2&push_id_start=start";
 
         String responseString = "{  \n" +
                 "  \"next_page\":\"Value for Next Page\",\n" +
@@ -970,12 +972,11 @@ public class UrbanAirshipClientTest {
         DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
         DateTime end = start.plus(Period.hours(48));
 
-        PushListingRequest request = PushListingRequest.newBuilder()
+        PushListingRequest request = PushListingRequest.newRequest()
                 .start(start)
                 .end(end)
                 .limit(2)
-                .pushIdStart("start")
-                .build();
+                .pushIdStart("start");
 
         try {
             Response<PushListingResponse> response = client.execute(request);
@@ -990,4 +991,286 @@ public class UrbanAirshipClientTest {
             fail("Exception thrown " + ex);
         }
     }
+
+    @Test
+    public void testAppOpensReport() throws IOException {
+
+        String queryPathString = "/api/reports/opens/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&precision=HOURLY";
+
+        String responseString = "{  \n" +
+                "  \"next_page\":\"Value for Next Page\",\n" +
+                "  \"opens\":[  \n" +
+                "    {  \n" +
+                "      \"date\":\"2013-07-01 00:00:00\",\n" +
+                "      \"ios\":1470,\n" +
+                "      \"android\":458\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"date\":\"2013-08-01 00:00:00\",\n" +
+                "      \"ios\":1662,\n" +
+                "      \"android\":523\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
+
+
+        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
+                .setBaseUri("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseString)
+                        .withStatus(200)));
+
+        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+        DateTime end = start.plus(Period.hours(48));
+
+        PlatformStatsRequest request = PlatformStatsRequest.newAppOpensRequest()
+                .start(start)
+                .end(end)
+                .precision(Precision.HOURLY);
+
+        try {
+            Response<PlatformStatsResponse> response = client.execute(request);
+
+            List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
+            assertEquals(1, requests.size());
+
+//            assertNotNull(response);
+//            assertEquals(200, response.getStatus());
+
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
+
+
+    }
+
+    @Test
+    public void testTimeInAppReport() throws IOException {
+
+        String queryPathString = "/api/reports/timeinapp/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&precision=MONTHLY";
+
+        String responseString = "{  \n" +
+                "  \"next_page\":\"Value for Next Page\",\n" +
+                "   \"timeinapp\":[  \n" +
+                "    {  \n" +
+                "      \"date\":\"2013-07-01 00:00:00\",\n" +
+                "      \"ios\":145436.44,\n" +
+                "      \"android\":193246.86\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"date\":\"2013-08-01 00:00:00\",\n" +
+                "      \"ios\":45608.027,\n" +
+                "      \"android\":100203.02\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
+
+        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
+                .setBaseUri("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseString)
+                        .withStatus(200)));
+
+        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+        DateTime end = start.plus(Period.hours(48));
+
+        PlatformStatsRequest request = PlatformStatsRequest.newTimeInAppRequest()
+                .start(start)
+                .end(end)
+                .precision(Precision.MONTHLY);
+
+        try {
+            Response<PlatformStatsResponse> response = client.execute(request);
+
+            List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
+            assertEquals(1, requests.size());
+
+            assertNotNull(response);
+            assertEquals(200, response.getStatus());
+
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
+
+    }
+
+    @Test
+    public void testOptInsReport() throws IOException {
+
+        String queryPathString = "/api/reports/optins/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&precision=MONTHLY";
+
+        String responseString = "{  \n" +
+                "  \"next_page\":\"Value for Next Page\",\n" +
+                "   \"optins\":[  \n" +
+                "    {  \n" +
+                "      \"date\":\"2013-07-01 00:00:00\",\n" +
+                "      \"ios\":145436.44,\n" +
+                "      \"android\":193246.86\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"date\":\"2013-08-01 00:00:00\",\n" +
+                "      \"ios\":45608.027,\n" +
+                "      \"android\":100203.02\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
+
+        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
+                .setBaseUri("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseString)
+                        .withStatus(200)));
+
+        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+        DateTime end = start.plus(Period.hours(48));
+
+        PlatformStatsRequest request = PlatformStatsRequest.newOptInsRequest()
+                .start(start)
+                .end(end)
+                .precision(Precision.MONTHLY);
+
+        try {
+            Response<PlatformStatsResponse> response = client.execute(request);
+
+            List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
+            assertEquals(1, requests.size());
+
+            assertNotNull(response);
+            assertEquals(200, response.getStatus());
+
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
+
+    }
+
+    @Test
+    public void testOptOutsReport() throws IOException {
+
+        String queryPathString = "/api/reports/optouts/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&precision=MONTHLY";
+
+        String responseString = "{  \n" +
+                "  \"next_page\":\"Value for Next Page\",\n" +
+                "   \"optouts\":[  \n" +
+                "    {  \n" +
+                "      \"date\":\"2013-07-01 00:00:00\",\n" +
+                "      \"ios\":145436.44,\n" +
+                "      \"android\":193246.86\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"date\":\"2013-08-01 00:00:00\",\n" +
+                "      \"ios\":45608.027,\n" +
+                "      \"android\":100203.02\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
+
+        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
+                .setBaseUri("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseString)
+                        .withStatus(200)));
+
+        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+        DateTime end = start.plus(Period.hours(48));
+
+        PlatformStatsRequest request = PlatformStatsRequest.newOptOutsRequest()
+                .start(start)
+                .end(end)
+                .precision(Precision.MONTHLY);
+
+        try {
+            Response<PlatformStatsResponse> response = client.execute(request);
+
+            List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
+            assertEquals(1, requests.size());
+
+            assertNotNull(response);
+            assertEquals(200, response.getStatus());
+
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
+
+    }
+
+    @Test
+    public void testPushSendsReport() throws IOException {
+
+        String queryPathString = "/api/reports/sends/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&precision=MONTHLY";
+
+        String responseString = "{  \n" +
+                "  \"next_page\":\"Value for Next Page\",\n" +
+                "   \"sends\":[  \n" +
+                "    {  \n" +
+                "      \"date\":\"2013-07-01 00:00:00\",\n" +
+                "      \"ios\":145436.44,\n" +
+                "      \"android\":193246.86\n" +
+                "    },\n" +
+                "    {  \n" +
+                "      \"date\":\"2013-08-01 00:00:00\",\n" +
+                "      \"ios\":45608.027,\n" +
+                "      \"android\":100203.02\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
+
+        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
+                .setBaseUri("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseString)
+                        .withStatus(200)));
+
+        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+        DateTime end = start.plus(Period.hours(48));
+
+        PlatformStatsRequest request = PlatformStatsRequest.newPushSendsRequest()
+                .start(start)
+                .end(end)
+                .precision(Precision.MONTHLY);
+
+        try {
+            Response<PlatformStatsResponse> response = client.execute(request);
+
+            List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
+            assertEquals(1, requests.size());
+
+            assertNotNull(response);
+            assertEquals(200, response.getStatus());
+
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
+
+    }
+
 }

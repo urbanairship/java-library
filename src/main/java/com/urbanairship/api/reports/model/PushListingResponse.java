@@ -12,6 +12,7 @@ import com.google.common.collect.ImmutableList;
  * Push listing response object
  */
 public class PushListingResponse {
+
     private final Optional<String> nextPage;
     private final Optional<ImmutableList<PushInfoResponse>> pushInfoObjects;
 

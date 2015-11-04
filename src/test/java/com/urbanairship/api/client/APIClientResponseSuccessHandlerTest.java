@@ -6,8 +6,6 @@ import com.urbanairship.api.client.model.APIListTagsResponse;
 import com.urbanairship.api.client.model.APILocationResponse;
 import com.urbanairship.api.reports.model.PerPushDetailResponse;
 import com.urbanairship.api.reports.model.PerPushSeriesResponse;
-import com.urbanairship.api.reports.model.ReportsAPIOpensResponse;
-import com.urbanairship.api.reports.model.ReportsAPITimeInAppResponse;
 import com.urbanairship.api.segments.model.AudienceSegment;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
@@ -23,46 +21,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class APIClientResponseSuccessHandlerTest {
-
-    @Test
-    public void testAppsOpenReportHandleSuccess() {
-
-        String responseString = "{  \n" +
-            "  \"opens\":[  \n" +
-            "    {  \n" +
-            "      \"date\":\"2013-07-01 00:00:00\",\n" +
-            "      \"ios\":1470,\n" +
-            "      \"android\":458\n" +
-            "    },\n" +
-            "    {  \n" +
-            "      \"date\":\"2013-08-01 00:00:00\",\n" +
-            "      \"ios\":1662,\n" +
-            "      \"android\":523\n" +
-            "    }\n" +
-            "  ]\n" +
-            "}";
-
-        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-            new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
-        InputStreamEntity inputStreamEntity = new InputStreamEntity(
-            new ByteArrayInputStream(responseString.getBytes()),
-            responseString.getBytes().length);
-        httpResponse.setEntity(inputStreamEntity);
-        APIClientResponseHandler<ReportsAPIOpensResponse> handler =
-            new APIClientResponseHandler<ReportsAPIOpensResponse>(ReportsAPIOpensResponse.class);
-
-        try {
-            APIClientResponse<ReportsAPIOpensResponse> response = handler.handleResponse(httpResponse);
-            assertTrue("HttpResponse is incorrect",
-                response.getHttpResponse().equals(httpResponse));
-
-            assertNotNull(response.getApiResponse());
-
-        } catch (Exception ex) {
-            fail("Exception " + ex);
-        }
-
-    }
 
     @Test
     public void testAudienceSegmentHandleSuccess() {
@@ -422,47 +380,6 @@ public class APIClientResponseSuccessHandlerTest {
             fail("Exception " + ex);
         }
 
-    }
-
-    @Test
-    public void testTimeInAppHandleSuccess() {
-
-        String responseString = "{  \n" +
-            "  \"timeinapp\":[  \n" +
-            "    {  \n" +
-            "      \"date\":\"2013-07-01 00:00:00\",\n" +
-            "      \"ios\":145436.44,\n" +
-            "      \"android\":193246.86\n" +
-            "    },\n" +
-            "    {  \n" +
-            "      \"date\":\"2013-08-01 00:00:00\",\n" +
-            "      \"ios\":45608.027,\n" +
-            "      \"android\":100203.02\n" +
-            "    }\n" +
-            "  ]\n" +
-            "}";
-
-        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-            new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
-        InputStreamEntity inputStreamEntity = new InputStreamEntity(
-            new ByteArrayInputStream(responseString.getBytes()),
-            responseString.getBytes().length);
-        httpResponse.setEntity(inputStreamEntity);
-        APIClientResponseHandler<ReportsAPITimeInAppResponse> handler =
-            new APIClientResponseHandler<ReportsAPITimeInAppResponse>(ReportsAPITimeInAppResponse.class);
-
-        try {
-
-            APIClientResponse<ReportsAPITimeInAppResponse> response = handler.handleResponse(httpResponse);
-
-            assertTrue("HttpResponse is incorrect",
-                response.getHttpResponse().equals(httpResponse));
-
-            assertNotNull(response.getApiResponse());
-
-        } catch (Exception ex) {
-            fail("Exception " + ex);
-        }
     }
 
 }

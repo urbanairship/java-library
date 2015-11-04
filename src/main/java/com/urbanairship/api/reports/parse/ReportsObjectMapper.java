@@ -4,6 +4,8 @@
 
 package com.urbanairship.api.reports.parse;
 
+import com.urbanairship.api.reports.model.PlatformStats;
+import com.urbanairship.api.reports.model.PlatformStatsResponse;
 import com.urbanairship.api.reports.model.PushListingResponse;
 import com.urbanairship.api.reports.model.PushInfoResponse;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -18,6 +20,8 @@ public class ReportsObjectMapper {
     static {
         MODULE.addDeserializer(PushInfoResponse.class, new PushInfoResponseDeserializer());
         MODULE.addDeserializer(PushListingResponse.class, new PushListingResponseDeserializer());
+        MODULE.addDeserializer(PlatformStats.class, new PlatformStatsDeserializer());
+        MODULE.addDeserializer(PlatformStatsResponse.class, new PlatformStatsResponseDeserializer());
 
         MAPPER.registerModule(MODULE);
     }
