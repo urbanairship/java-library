@@ -6,15 +6,12 @@ import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
 import com.urbanairship.api.client.model.APIListTagsResponse;
 import com.urbanairship.api.client.model.APILocationResponse;
 import com.urbanairship.api.client.model.SegmentInformation;
-import com.urbanairship.api.reports.model.PerPushDetailResponse;
-import com.urbanairship.api.reports.model.PerPushSeriesResponse;
 import com.urbanairship.api.segments.model.AudienceSegment;
 import com.urbanairship.api.segments.model.TagPredicateBuilder;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
-import org.joda.time.DateTime;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -25,50 +22,6 @@ import static org.junit.Assert.assertTrue;
 
 
 public class APIClientResponseTest {
-
-    @Test
-    public void testListPerPushSeriesAPIResponseHandlerTest() {
-        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-                new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
-
-        PerPushSeriesResponse obj = PerPushSeriesResponse.newBuilder()
-                .setAppKey("blah")
-                .build();
-
-        APIClientResponse.Builder<PerPushSeriesResponse> builder = new APIClientResponse.Builder<PerPushSeriesResponse>()
-                .setApiResponse(obj)
-                .setHttpResponse(httpResponse);
-
-        APIClientResponse<PerPushSeriesResponse> testResponse = builder.build();
-
-        assertTrue("HTTP response not set properly",
-                testResponse.getHttpResponse().equals(httpResponse));
-
-        assertTrue("APIResponse not set properly",
-                testResponse.getApiResponse().equals(obj));
-    }
-
-    @Test
-    public void testListPerPushDetailAPIResponseHandlerTest() {
-        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-                new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
-
-        PerPushDetailResponse obj = PerPushDetailResponse.newBuilder()
-                .setAppKey("blah")
-                .build();
-
-        APIClientResponse.Builder<PerPushDetailResponse> builder = new APIClientResponse.Builder<PerPushDetailResponse>()
-                .setApiResponse(obj)
-                .setHttpResponse(httpResponse);
-
-        APIClientResponse<PerPushDetailResponse> testResponse = builder.build();
-
-        assertTrue("HTTP response not set properly",
-                testResponse.getHttpResponse().equals(httpResponse));
-
-        assertTrue("APIResponse not set properly",
-                testResponse.getApiResponse().equals(obj));
-    }
 
     @Test
     public void testAPILocationResponse() {

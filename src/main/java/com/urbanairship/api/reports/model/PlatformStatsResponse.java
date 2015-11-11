@@ -99,7 +99,7 @@ public class PlatformStatsResponse {
          * Add all PlatformStats objects for listing
          *
          * @param value Iterable of PlatformStats objects
-         * @return
+         * @return Builder
          */
         public Builder addPlatformStatsObjects(Iterable<? extends PlatformStats> value) {
             this.platformStatsObjects.addAll(value);

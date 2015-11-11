@@ -32,56 +32,76 @@ public class PlatformStatsRequestTest {
     String optOutsUri = "https://go.urbanairship.com/api/reports/optouts/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&precision=DAILY";
     String pushSendsUri = "https://go.urbanairship.com/api/reports/sends/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&precision=DAILY";
 
-    PlatformStatsRequest timeInAppRequest = PlatformStatsRequest.newTimeInAppRequest()
-            .start(start)
-            .end(end)
-            .precision(Precision.DAILY);
+    private PlatformStatsRequest setupTimeInAppRequest() {
+        PlatformStatsRequest timeInAppRequest = PlatformStatsRequest.newTimeInAppRequest()
+                .start(start)
+                .end(end)
+                .precision(Precision.DAILY);
 
-    PlatformStatsRequest appOpensRequest = PlatformStatsRequest.newAppOpensRequest()
-            .start(start)
-            .end(end)
-            .precision(Precision.DAILY);
+        return timeInAppRequest;
+    }
 
-    PlatformStatsRequest optInsRequest = PlatformStatsRequest.newOptInsRequest()
-            .start(start)
-            .end(end)
-            .precision(Precision.DAILY);
+    private PlatformStatsRequest setupAppOpensRequest() {
+        PlatformStatsRequest appOpensRequest = PlatformStatsRequest.newAppOpensRequest()
+                .start(start)
+                .end(end)
+                .precision(Precision.DAILY);
 
-    PlatformStatsRequest optOutsRequest = PlatformStatsRequest.newOptOutsRequest()
-            .start(start)
-            .end(end)
-            .precision(Precision.DAILY);
+        return appOpensRequest;
+    }
 
-    PlatformStatsRequest pushSendsRequest = PlatformStatsRequest.newPushSendsRequest()
-            .start(start)
-            .end(end)
-            .precision(Precision.DAILY);
+    private PlatformStatsRequest setupOptInsRequest() {
+        PlatformStatsRequest optInsRequest = PlatformStatsRequest.newOptInsRequest()
+                .start(start)
+                .end(end)
+                .precision(Precision.DAILY);
+
+        return optInsRequest;
+    }
+
+    private PlatformStatsRequest setupOptOutsRequest() {
+        PlatformStatsRequest optOutsRequest = PlatformStatsRequest.newOptOutsRequest()
+                .start(start)
+                .end(end)
+                .precision(Precision.DAILY);
+
+        return optOutsRequest;
+    }
+
+    private PlatformStatsRequest setupPushSendsRequest() {
+        PlatformStatsRequest pushSendsRequest = PlatformStatsRequest.newPushSendsRequest()
+                .start(start)
+                .end(end)
+                .precision(Precision.DAILY);
+
+        return pushSendsRequest;
+    }
 
     @Test
     public void testContentType() throws Exception {
-        assertEquals(timeInAppRequest.getContentType(), ContentType.APPLICATION_JSON);
-        assertEquals(appOpensRequest.getContentType(), ContentType.APPLICATION_JSON);
-        assertEquals(optInsRequest.getContentType(), ContentType.APPLICATION_JSON);
-        assertEquals(optOutsRequest.getContentType(), ContentType.APPLICATION_JSON);
-        assertEquals(pushSendsRequest.getContentType(), ContentType.APPLICATION_JSON);
+        assertEquals(setupTimeInAppRequest().getContentType(), ContentType.APPLICATION_JSON);
+        assertEquals(setupAppOpensRequest().getContentType(), ContentType.APPLICATION_JSON);
+        assertEquals(setupOptInsRequest().getContentType(), ContentType.APPLICATION_JSON);
+        assertEquals(setupOptOutsRequest().getContentType(), ContentType.APPLICATION_JSON);
+        assertEquals(setupPushSendsRequest().getContentType(), ContentType.APPLICATION_JSON);
     }
 
     @Test
     public void testMethod() throws Exception {
-        assertEquals(timeInAppRequest.getHttpMethod(), Request.HttpMethod.GET);
-        assertEquals(appOpensRequest.getHttpMethod(), Request.HttpMethod.GET);
-        assertEquals(optInsRequest.getHttpMethod(), Request.HttpMethod.GET);
-        assertEquals(optOutsRequest.getHttpMethod(), Request.HttpMethod.GET);
-        assertEquals(pushSendsRequest.getHttpMethod(), Request.HttpMethod.GET);
+        assertEquals(setupTimeInAppRequest().getHttpMethod(), Request.HttpMethod.GET);
+        assertEquals(setupAppOpensRequest().getHttpMethod(), Request.HttpMethod.GET);
+        assertEquals(setupOptInsRequest().getHttpMethod(), Request.HttpMethod.GET);
+        assertEquals(setupOptOutsRequest().getHttpMethod(), Request.HttpMethod.GET);
+        assertEquals(setupPushSendsRequest().getHttpMethod(), Request.HttpMethod.GET);
     }
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(timeInAppRequest.getRequestBody(), null);
-        assertEquals(appOpensRequest.getRequestBody(), null);
-        assertEquals(optInsRequest.getRequestBody(), null);
-        assertEquals(optOutsRequest.getRequestBody(), null);
-        assertEquals(pushSendsRequest.getRequestBody(), null);
+        assertEquals(setupTimeInAppRequest().getRequestBody(), null);
+        assertEquals(setupAppOpensRequest().getRequestBody(), null);
+        assertEquals(setupOptInsRequest().getRequestBody(), null);
+        assertEquals(setupOptOutsRequest().getRequestBody(), null);
+        assertEquals(setupPushSendsRequest().getRequestBody(), null);
     }
 
     @Test
@@ -90,11 +110,11 @@ public class PlatformStatsRequestTest {
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION);
 
-        assertEquals(timeInAppRequest.getRequestHeaders(), headers);
-        assertEquals(appOpensRequest.getRequestHeaders(), headers);
-        assertEquals(optInsRequest.getRequestHeaders(), headers);
-        assertEquals(optOutsRequest.getRequestHeaders(), headers);
-        assertEquals(pushSendsRequest.getRequestHeaders(), headers);
+        assertEquals(setupTimeInAppRequest().getRequestHeaders(), headers);
+        assertEquals(setupAppOpensRequest().getRequestHeaders(), headers);
+        assertEquals(setupOptInsRequest().getRequestHeaders(), headers);
+        assertEquals(setupOptOutsRequest().getRequestHeaders(), headers);
+        assertEquals(setupPushSendsRequest().getRequestHeaders(), headers);
     }
 
     @Test
@@ -102,15 +122,15 @@ public class PlatformStatsRequestTest {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
         URI expectedTimeInAppURI = URI.create(timeInAppUri);
-        assertEquals(timeInAppRequest.getUri(baseURI), expectedTimeInAppURI);
+        assertEquals(setupTimeInAppRequest().getUri(baseURI), expectedTimeInAppURI);
         URI expectedAppOpensUri = URI.create(appOpensUri);
-        assertEquals(appOpensRequest.getUri(baseURI), expectedAppOpensUri);
+        assertEquals(setupAppOpensRequest().getUri(baseURI), expectedAppOpensUri);
         URI expectedOptInsUri = URI.create(optInsUri);
-        assertEquals(optInsRequest.getUri(baseURI), expectedOptInsUri);
+        assertEquals(setupOptInsRequest().getUri(baseURI), expectedOptInsUri);
         URI expectedOptOutsUri = URI.create(optOutsUri);
-        assertEquals(optOutsRequest.getUri(baseURI), expectedOptOutsUri);
+        assertEquals(setupOptOutsRequest().getUri(baseURI), expectedOptOutsUri);
         URI expectedPushSendsUri = URI.create(pushSendsUri);
-        assertEquals(pushSendsRequest.getUri(baseURI), expectedPushSendsUri);
+        assertEquals(setupPushSendsRequest().getUri(baseURI), expectedPushSendsUri);
 
     }
 
@@ -139,7 +159,7 @@ public class PlatformStatsRequestTest {
                 "  ]\n" +
                 "}";
 
-        assertEquals(timeInAppRequest.getResponseParser().parse(response), responseParser.parse(response));
+        assertEquals(setupTimeInAppRequest().getResponseParser().parse(response), responseParser.parse(response));
     }
 
 }

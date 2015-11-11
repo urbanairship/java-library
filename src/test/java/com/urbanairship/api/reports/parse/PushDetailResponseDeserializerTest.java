@@ -11,7 +11,7 @@ import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.reports.Base64ByteArray;
 import com.urbanairship.api.reports.model.PerPushCounts;
-import com.urbanairship.api.reports.model.PerPushDetailResponse;
+import com.urbanairship.api.reports.model.PushDetailResponse;
 import com.urbanairship.api.reports.model.PlatformType;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
@@ -23,9 +23,9 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class PerPushDetailResponseDeserializerTest {
+public class PushDetailResponseDeserializerTest {
 
-    private static final ObjectMapper mapper = APIResponseObjectMapper.getInstance();
+    private static final ObjectMapper mapper = ReportsObjectMapper.getInstance();
 
     @Test
     public void testPerPushDetailResponseDeserialize() throws IOException {
@@ -55,7 +55,7 @@ public class PerPushDetailResponseDeserializerTest {
                 "  }\n" +
                 "}";
 
-        PerPushDetailResponse obj = mapper.readValue(json, PerPushDetailResponse.class);
+        PushDetailResponse obj = mapper.readValue(json, PushDetailResponse.class);
         assertNotNull(obj);
 
         assertEquals("some_app_key", obj.getAppKey());
@@ -121,7 +121,7 @@ public class PerPushDetailResponseDeserializerTest {
                 "  }\n" +
                 "}";
 
-        PerPushDetailResponse obj = mapper.readValue(json, PerPushDetailResponse.class);
+        PushDetailResponse obj = mapper.readValue(json, PushDetailResponse.class);
         assertNotNull(obj);
 
         assertEquals("some_app_key", obj.getAppKey());
@@ -171,7 +171,7 @@ public class PerPushDetailResponseDeserializerTest {
                 "  }\n" +
                 "}";
 
-        PerPushDetailResponse obj = mapper.readValue(json, PerPushDetailResponse.class);
+        PushDetailResponse obj = mapper.readValue(json, PushDetailResponse.class);
         assertNotNull(obj);
 
         assertEquals("some_app_key", obj.getAppKey());

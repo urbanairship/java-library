@@ -10,7 +10,7 @@ import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.reports.Base64ByteArray;
 import com.urbanairship.api.reports.model.PerPushCounts;
-import com.urbanairship.api.reports.model.PerPushDetailResponse;
+import com.urbanairship.api.reports.model.PushDetailResponse;
 import com.urbanairship.api.reports.model.PlatformType;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.type.TypeReference;
@@ -20,12 +20,12 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 
-public class PerPushDetailResponseReader implements JsonObjectReader<PerPushDetailResponse> {
+public class PushDetailResponseReader implements JsonObjectReader<PushDetailResponse> {
 
-    private final PerPushDetailResponse.Builder builder;
+    private final PushDetailResponse.Builder builder;
 
-    public PerPushDetailResponseReader() {
-        this.builder = PerPushDetailResponse.newBuilder();
+    public PushDetailResponseReader() {
+        this.builder = PushDetailResponse.newBuilder();
     }
 
     public void readAppKey(JsonParser jsonParser) throws IOException {
@@ -90,7 +90,7 @@ public class PerPushDetailResponseReader implements JsonObjectReader<PerPushDeta
     }
 
     @Override
-    public PerPushDetailResponse validateAndBuild() throws IOException {
+    public PushDetailResponse validateAndBuild() throws IOException {
         try {
             return builder.build();
         } catch (Exception e) {
