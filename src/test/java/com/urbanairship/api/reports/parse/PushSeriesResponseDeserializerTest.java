@@ -9,9 +9,10 @@ import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.reports.model.PerPushCounts;
-import com.urbanairship.api.reports.model.PerPushSeriesResponse;
+import com.urbanairship.api.reports.model.PushSeriesResponse;
 import com.urbanairship.api.reports.model.PlatformCounts;
 import com.urbanairship.api.reports.model.PlatformType;
+import com.urbanairship.api.reports.model.Precision;
 import com.urbanairship.api.reports.model.RichPerPushCounts;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
@@ -23,9 +24,9 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class PerPushSeriesResponseDeserializerTest {
+public class PushSeriesResponseDeserializerTest {
 
-    private static final ObjectMapper mapper = APIResponseObjectMapper.getInstance();
+    private static final ObjectMapper mapper = ReportsObjectMapper.getInstance();
 
     @Test
     public void testPerPushSeriesDetailResponseDeserialize() throws IOException {
@@ -118,14 +119,14 @@ public class PerPushSeriesResponseDeserializerTest {
                 "  ]\n" +
                 "}";
 
-        PerPushSeriesResponse obj = mapper.readValue(json, PerPushSeriesResponse.class);
+        PushSeriesResponse obj = mapper.readValue(json, PushSeriesResponse.class);
         assertNotNull(obj);
 
         assertEquals("some_app_key", obj.getAppKey());
         assertEquals(UUID.fromString("57ef3728-79dc-46b1-a6b9-20081e561f97"), obj.getPushID());
         assertEquals(DateFormats.DATE_PARSER.parseDateTime("2013-07-25 23:00:00"), obj.getStart());
         assertEquals(DateFormats.DATE_PARSER.parseDateTime("2013-07-26 11:00:00"), obj.getEnd());
-        assertEquals("HOURLY", obj.getPrecision());
+        assertEquals(Precision.HOURLY, obj.getPrecision());
 
         List<PlatformCounts> listCounts = obj.getCounts();
         PlatformCounts one = listCounts.get(0);

@@ -11,21 +11,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public final class PerPushSeriesResponse {
+public final class PushSeriesResponse {
 
     private final String appKey;
     private final UUID pushID;
     private final DateTime start;
     private final DateTime end;
-    private final String precision;
+    private final Precision precision;
     private final List<PlatformCounts> counts;
 
-    private PerPushSeriesResponse(String appKey,
-                                  UUID pushID,
-                                  DateTime start,
-                                  DateTime end,
-                                  String precision,
-                                  List<PlatformCounts> counts) {
+    private PushSeriesResponse(String appKey,
+                               UUID pushID,
+                               DateTime start,
+                               DateTime end,
+                               Precision precision,
+                               List<PlatformCounts> counts) {
         this.appKey = appKey;
         this.pushID = pushID;
         this.start = start;
@@ -54,7 +54,7 @@ public final class PerPushSeriesResponse {
         return end;
     }
 
-    public String getPrecision() {
+    public Precision getPrecision() {
         return precision;
     }
 
@@ -64,7 +64,7 @@ public final class PerPushSeriesResponse {
 
     @Override
     public String toString() {
-        return "PerPushSeriesResponse{" +
+        return "PushSeriesResponse{" +
                 "appKey='" + appKey + '\'' +
                 ", pushID=" + pushID +
                 ", start=" + start +
@@ -87,7 +87,7 @@ public final class PerPushSeriesResponse {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final PerPushSeriesResponse other = (PerPushSeriesResponse) obj;
+        final PushSeriesResponse other = (PushSeriesResponse) obj;
         return Objects.equal(this.appKey, other.appKey) && Objects.equal(this.pushID, other.pushID) && Objects.equal(this.start, other.start) && Objects.equal(this.end, other.end) && Objects.equal(this.precision, other.precision) && Objects.equal(this.counts, other.counts);
     }
 
@@ -96,7 +96,7 @@ public final class PerPushSeriesResponse {
         private UUID pushID;
         private DateTime start;
         private DateTime end;
-        private String precision;
+        private Precision precision;
         private List<PlatformCounts> counts = new ArrayList<PlatformCounts>();
 
         private Builder() {
@@ -122,7 +122,7 @@ public final class PerPushSeriesResponse {
             return this;
         }
 
-        public Builder setPrecision(String value) {
+        public Builder setPrecision(Precision value) {
             this.precision = value;
             return this;
         }
@@ -137,8 +137,8 @@ public final class PerPushSeriesResponse {
             return this;
         }
 
-        public PerPushSeriesResponse build() {
-            return new PerPushSeriesResponse(appKey, pushID, start, end, precision, counts);
+        public PushSeriesResponse build() {
+            return new PushSeriesResponse(appKey, pushID, start, end, precision, counts);
         }
 
     }

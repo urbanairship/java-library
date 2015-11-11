@@ -27,24 +27,29 @@ public class PushListingRequestTest {
 
     String queryPathString = "/api/reports/responses/list?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&limit=2&push_id_start=start";
 
-    PushListingRequest listRequest = PushListingRequest.newRequest()
-            .start(start)
-            .end(end)
-            .limit(2)
-            .pushIdStart("start");
+    private PushListingRequest setup() {
+        PushListingRequest listRequest = PushListingRequest.newRequest()
+                .start(start)
+                .end(end)
+                .limit(2)
+                .pushIdStart("start");
+
+        return listRequest;
+    }
+
     @Test
     public void testContentType() throws Exception {
-        assertEquals(listRequest.getContentType(), ContentType.APPLICATION_JSON);
+        assertEquals(setup().getContentType(), ContentType.APPLICATION_JSON);
     }
 
     @Test
     public void testMethod() throws Exception {
-        assertEquals(listRequest.getHttpMethod(), Request.HttpMethod.GET);
+        assertEquals(setup().getHttpMethod(), Request.HttpMethod.GET);
     }
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(listRequest.getRequestBody(), null);
+        assertEquals(setup().getRequestBody(), null);
     }
 
     @Test
@@ -53,7 +58,7 @@ public class PushListingRequestTest {
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION);
 
-        assertEquals(listRequest.getRequestHeaders(), headers);
+        assertEquals(setup().getRequestHeaders(), headers);
     }
 
     @Test
@@ -61,7 +66,7 @@ public class PushListingRequestTest {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
         URI expectedURI = URI.create("https://go.urbanairship.com/api/reports/responses/list/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&limit=2&push_id_start=start");
-        assertEquals(listRequest.getUri(baseURI), expectedURI);
+        assertEquals(setup().getUri(baseURI), expectedURI);
     }
 
     @Test
@@ -114,6 +119,6 @@ public class PushListingRequestTest {
                 "  ]\n" +
                 "}";
 
-        assertEquals(listRequest.getResponseParser().parse(response), responseParser.parse(response));
+        assertEquals(setup().getResponseParser().parse(response), responseParser.parse(response));
     }
 }

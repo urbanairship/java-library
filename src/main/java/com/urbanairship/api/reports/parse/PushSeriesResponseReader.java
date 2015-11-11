@@ -7,8 +7,9 @@ package com.urbanairship.api.reports.parse;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.common.parse.JsonObjectReader;
-import com.urbanairship.api.reports.model.PerPushSeriesResponse;
+import com.urbanairship.api.reports.model.PushSeriesResponse;
 import com.urbanairship.api.reports.model.PlatformCounts;
+import com.urbanairship.api.reports.model.Precision;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.type.TypeReference;
 
@@ -16,12 +17,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
-public class PerPushSeriesResponseReader implements JsonObjectReader<PerPushSeriesResponse> {
+public class PushSeriesResponseReader implements JsonObjectReader<PushSeriesResponse> {
 
-    private final PerPushSeriesResponse.Builder builder;
+    private final PushSeriesResponse.Builder builder;
 
-    public PerPushSeriesResponseReader() {
-        this.builder = PerPushSeriesResponse.newBuilder();
+    public PushSeriesResponseReader() {
+        this.builder = PushSeriesResponse.newBuilder();
     }
 
     public void readAppKey(JsonParser jsonParser) throws IOException {
@@ -43,7 +44,7 @@ public class PerPushSeriesResponseReader implements JsonObjectReader<PerPushSeri
     }
 
     public void readPrecision(JsonParser jsonParser) throws IOException {
-        builder.setPrecision(jsonParser.readValueAs(String.class));
+        builder.setPrecision(jsonParser.readValueAs(Precision.class));
     }
 
     public void readCounts(JsonParser jsonParser) throws IOException {
@@ -53,7 +54,7 @@ public class PerPushSeriesResponseReader implements JsonObjectReader<PerPushSeri
     }
 
     @Override
-    public PerPushSeriesResponse validateAndBuild() throws IOException {
+    public PushSeriesResponse validateAndBuild() throws IOException {
         try {
             return builder.build();
         } catch (Exception e) {

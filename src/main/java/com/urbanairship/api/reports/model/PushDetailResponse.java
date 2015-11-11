@@ -12,7 +12,7 @@ import org.joda.time.DateTime;
 
 import java.util.UUID;
 
-public final class PerPushDetailResponse {
+public final class PushDetailResponse {
 
     private final String appKey;
     private final UUID pushID;
@@ -26,17 +26,17 @@ public final class PerPushDetailResponse {
     private final long influencedResponses;
     private final ImmutableMap<PlatformType, PerPushCounts> platforms;
 
-    private PerPushDetailResponse(String appKey,
-                                  UUID pushID,
-                                  Optional<DateTime> created,
-                                  Optional<Base64ByteArray> pushBody,
-                                  long richDeletions,
-                                  long richResponses,
-                                  long richSends,
-                                  long sends,
-                                  long directResponses,
-                                  long influencedResponses,
-                                  ImmutableMap<PlatformType, PerPushCounts> platforms) {
+    private PushDetailResponse(String appKey,
+                               UUID pushID,
+                               Optional<DateTime> created,
+                               Optional<Base64ByteArray> pushBody,
+                               long richDeletions,
+                               long richResponses,
+                               long richSends,
+                               long sends,
+                               long directResponses,
+                               long influencedResponses,
+                               ImmutableMap<PlatformType, PerPushCounts> platforms) {
         this.appKey = appKey;
         this.pushID = pushID;
         this.created = created;
@@ -100,7 +100,7 @@ public final class PerPushDetailResponse {
 
     @Override
     public String toString() {
-        return "PerPushDetailResponse{" +
+        return "PushDetailResponse{" +
                 "appKey='" + appKey + '\'' +
                 ", pushID=" + pushID +
                 ", created=" + created +
@@ -128,7 +128,7 @@ public final class PerPushDetailResponse {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final PerPushDetailResponse other = (PerPushDetailResponse) obj;
+        final PushDetailResponse other = (PushDetailResponse) obj;
         return Objects.equal(this.appKey, other.appKey) && Objects.equal(this.pushID, other.pushID) && Objects.equal(this.created, other.created) && Objects.equal(this.pushBody, other.pushBody) && Objects.equal(this.richDeletions, other.richDeletions) && Objects.equal(this.richResponses, other.richResponses) && Objects.equal(this.richSends, other.richSends) && Objects.equal(this.sends, other.sends) && Objects.equal(this.directResponses, other.directResponses) && Objects.equal(this.influencedResponses, other.influencedResponses) && Objects.equal(this.platforms, other.platforms);
     }
 
@@ -209,8 +209,8 @@ public final class PerPushDetailResponse {
             return this;
         }
 
-        public PerPushDetailResponse build() {
-            return new PerPushDetailResponse(appKey, pushID, created, pushBody,
+        public PushDetailResponse build() {
+            return new PushDetailResponse(appKey, pushID, created, pushBody,
                     richDeletions, richResponses, richSends,
                     sends, directResponses, influencedResponses,
                     platforms.build());

@@ -13,8 +13,6 @@ import com.urbanairship.api.client.model.APIListTagsResponse;
 import com.urbanairship.api.client.model.APILocationResponse;
 import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.Point;
-import com.urbanairship.api.reports.model.PerPushDetailResponse;
-import com.urbanairship.api.reports.model.PerPushSeriesResponse;
 import com.urbanairship.api.segments.model.AudienceSegment;
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
 import com.urbanairship.api.tag.model.BatchModificationPayload;
@@ -479,85 +477,42 @@ public class APIClient {
         return provisionExecutor().execute(req).returnResponse();
     }
 
-    /* Reports API */
+    /* Object methods */
 
-    public APIClientResponse<PerPushDetailResponse> listPerPushDetail(String pushID) throws IOException {
-        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_REPORTS_PER_PUSH_DETAIL_PATH + pushID));
-
-        Request req = provisionRequest(Request.Get(builder.toString()));
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing list per push detail request %s", req));
-        }
-
-        return provisionExecutor()
-            .execute(req)
-            .handleResponse(new APIClientResponseHandler<PerPushDetailResponse>(PerPushDetailResponse.class));
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(appKey, appSecret, baseURI, version, uaHost, proxyInfo, httpParams);
     }
 
-    public APIClientResponse<PerPushSeriesResponse> listPerPushSeries(String pushID) throws IOException {
-        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_REPORTS_PER_PUSH_SERIES_PATH + pushID));
-
-        Request req = provisionRequest(Request.Get(builder.toString()));
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing list per push series request %s", req));
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
         }
-
-        return provisionExecutor()
-            .execute(req)
-            .handleResponse(new APIClientResponseHandler<PerPushSeriesResponse>(PerPushSeriesResponse.class));
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final APIClient other = (APIClient) obj;
+        return Objects.equal(this.appKey, other.appKey)
+            && Objects.equal(this.appSecret, other.appSecret)
+            && Objects.equal(this.baseURI, other.baseURI)
+            && Objects.equal(this.version, other.version)
+            && Objects.equal(this.uaHost, other.uaHost)
+            && Objects.equal(this.proxyInfo, other.proxyInfo)
+            && Objects.equal(this.httpParams, other.httpParams);
     }
 
-    public APIClientResponse<PerPushSeriesResponse> listPerPushSeries(String pushID, String precision) throws IOException {
-        Preconditions.checkArgument(HOURLY.equals(precision) ||
-                        DAILY.equals(precision) ||
-                        MONTHLY.equals(precision),
-                "Precision must be specified as HOURLY, DAILY or MONTHLY");
-
-        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_REPORTS_PER_PUSH_SERIES_PATH + pushID));
-
-        builder.addParameter("precision", precision.toUpperCase());
-
-        Request req = provisionRequest(Request.Get(builder.toString()));
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing list per push series with precision request %s", req));
-        }
-
-        return provisionExecutor()
-            .execute(req)
-            .handleResponse(new APIClientResponseHandler<PerPushSeriesResponse>(PerPushSeriesResponse.class));
-    }
-
-    public APIClientResponse<PerPushSeriesResponse> listPerPushSeries(String pushID,
-                                                                      String precision,
-                                                                      DateTime start,
-                                                                      DateTime end) throws IOException {
-        Preconditions.checkArgument(HOURLY.equals(precision) ||
-                        DAILY.equals(precision) ||
-                        MONTHLY.equals(precision),
-                "Precision must be specified as HOURLY, DAILY or MONTHLY");
-
-        Preconditions.checkNotNull(start, "Start time is required when performing listing of per push series");
-        Preconditions.checkNotNull(end, "End time is required when performing listing of per push series");
-        Preconditions.checkArgument(start.isBefore(end), "Start time must be before End time");
-
-        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_REPORTS_PER_PUSH_SERIES_PATH + pushID));
-
-        builder.addParameter("precision", precision.toUpperCase());
-        builder.addParameter("start", start.toLocalDateTime().toString());
-        builder.addParameter("end", end.toLocalDateTime().toString());
-
-        Request req = provisionRequest(Request.Get(builder.toString()));
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing list per push series with precision and range request %s", req));
-        }
-
-        return provisionExecutor()
-            .execute(req)
-            .handleResponse(new APIClientResponseHandler<PerPushSeriesResponse>(PerPushSeriesResponse.class));
+    @Override
+    public String toString() {
+        return "APIClient{ +" +
+                "appKey=" + appKey +
+                ", appSecret=" + appSecret +
+                ", baseURI=" + baseURI +
+                ", version=" + version +
+                ", uaHost=" + uaHost +
+                ", proxyInfo=" + proxyInfo +
+                ", httpParams=" + httpParams +
+                '}';
     }
 
     /* Builder for APIClient */

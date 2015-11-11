@@ -15,7 +15,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class PlatformCountsDeserializerTest {
 
-    private static final ObjectMapper mapper = APIResponseObjectMapper.getInstance();
+    private static final ObjectMapper mapper = ReportsObjectMapper.getInstance();
 
     @Test
     public void testAndroidPlatformCountJsonDeserialize() throws Exception {
