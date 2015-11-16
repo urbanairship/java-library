@@ -810,7 +810,7 @@ public class UrbanAirshipClientTest {
 
         ImmutableSet<String> namedUsers = ImmutableSet.of(UUID.randomUUID().toString(), UUID.randomUUID().toString());
 
-        NamedUserTagRequest request = NamedUserTagRequest.createNamedUserTagRequest()
+        NamedUserTagRequest request = NamedUserTagRequest.newRequest()
             .addNamedUsers(namedUsers)
             .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
             .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))

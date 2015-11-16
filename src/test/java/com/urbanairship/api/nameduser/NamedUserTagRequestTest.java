@@ -27,7 +27,7 @@ public class NamedUserTagRequestTest {
         namedUserId1 = RandomStringUtils.random(10);
         namedUserId2 = RandomStringUtils.random(10);
         namedUserIds = ImmutableSet.of(namedUserId1, namedUserId2);
-        defaultRequest = NamedUserTagRequest.createNamedUserTagRequest()
+        defaultRequest = NamedUserTagRequest.newRequest()
             .addNamedUsers(namedUserIds)
             .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
             .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
@@ -47,7 +47,7 @@ public class NamedUserTagRequestTest {
             "}" +
             "}";
 
-        NamedUserTagRequest request = NamedUserTagRequest.createNamedUserTagRequest()
+        NamedUserTagRequest request = NamedUserTagRequest.newRequest()
             .addNamedUsers(namedUserIds)
             .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
             .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
@@ -69,7 +69,7 @@ public class NamedUserTagRequestTest {
             "}" +
             "}";
 
-        NamedUserTagRequest request = NamedUserTagRequest.createNamedUserTagRequest()
+        NamedUserTagRequest request = NamedUserTagRequest.newRequest()
             .addNamedUsers(namedUserIds)
             .removeTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
             .removeTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
@@ -91,7 +91,7 @@ public class NamedUserTagRequestTest {
             "}" +
             "}";
 
-        NamedUserTagRequest request = NamedUserTagRequest.createNamedUserTagRequest()
+        NamedUserTagRequest request = NamedUserTagRequest.newRequest()
             .addNamedUsers(namedUserIds)
             .setTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
             .setTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
@@ -118,7 +118,7 @@ public class NamedUserTagRequestTest {
             "}" +
             "}";
 
-        NamedUserTagRequest request = NamedUserTagRequest.createNamedUserTagRequest()
+        NamedUserTagRequest request = NamedUserTagRequest.newRequest()
             .addNamedUsers(namedUserIds)
             .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
             .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
@@ -132,7 +132,7 @@ public class NamedUserTagRequestTest {
 
     @Test (expected = IllegalArgumentException.class)
     public void testAddAndSetTags() throws Exception {
-        NamedUserTagRequest request = NamedUserTagRequest.createNamedUserTagRequest()
+        NamedUserTagRequest request = NamedUserTagRequest.newRequest()
             .addNamedUsers(namedUserId1)
             .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
             .setTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"));
@@ -141,7 +141,7 @@ public class NamedUserTagRequestTest {
 
     @Test (expected = IllegalArgumentException.class)
     public void testRemoveAndSetTags() throws Exception {
-        NamedUserTagRequest request = NamedUserTagRequest.createNamedUserTagRequest()
+        NamedUserTagRequest request = NamedUserTagRequest.newRequest()
             .addNamedUsers(namedUserId1)
             .removeTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
             .setTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"));
@@ -150,7 +150,7 @@ public class NamedUserTagRequestTest {
 
     @Test (expected = IllegalArgumentException.class)
     public void testNoTagMutations() throws Exception {
-        NamedUserTagRequest request = NamedUserTagRequest.createNamedUserTagRequest()
+        NamedUserTagRequest request = NamedUserTagRequest.newRequest()
             .addNamedUsers(namedUserId1);
         request.getRequestBody();
     }

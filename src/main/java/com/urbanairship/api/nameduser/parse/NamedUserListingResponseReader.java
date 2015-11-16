@@ -1,6 +1,5 @@
 package com.urbanairship.api.nameduser.parse;
 
-import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.nameduser.model.NamedUserListingResponse;
@@ -9,7 +8,7 @@ import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.type.TypeReference;
 
 import java.io.IOException;
-import java.util.Set;
+import java.util.List;
 
 public class NamedUserListingResponseReader implements JsonObjectReader<NamedUserListingResponse> {
 
@@ -32,8 +31,8 @@ public class NamedUserListingResponseReader implements JsonObjectReader<NamedUse
     }
 
     public void readNamedUsers(JsonParser jsonParser) throws IOException {
-        builder.setNamedUserViews(ImmutableSet.copyOf((Set<NamedUserView>) jsonParser.readValueAs(new TypeReference<Set<NamedUserView>>() {
-        })));
+        builder.setNamedUserViews((List<NamedUserView>) jsonParser.readValueAs(new TypeReference<List<NamedUserView>>() {
+        }));
     }
 
 

@@ -4,11 +4,20 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.channel.model.ChannelView;
 
+/**
+ * Represents a single named user object.
+ */
 public class NamedUserView {
+
     private final String namedUserId;
     private final ImmutableMap<String, ImmutableSet<String>> namedUserTags;
     private final ImmutableSet<ChannelView> channelViews;
 
+    /**
+     * New NamedUserView builder.
+     *
+     * @return Builder
+     */
     public static Builder newBuilder() {
         return new Builder();
     }
@@ -21,14 +30,29 @@ public class NamedUserView {
         this.channelViews = channelViews;
     }
 
+    /**
+     * Get the named user ID.
+     *
+     * @return String
+     */
     public String getNamedUserId() {
         return namedUserId;
     }
 
+    /**
+     * Get any associated tag groups and tags.
+     *
+     * @return ImmutableMap of tag groups and the relevant Immutable sets of tags
+     */
     public ImmutableMap<String, ImmutableSet<String>> getNamedUserTags() {
         return namedUserTags;
     }
 
+    /**
+     * Get any associated channel objects.
+     *
+     * @return Set of ChannelView objects.
+     */
     public ImmutableSet<ChannelView> getChannelViews() {
         return channelViews;
     }
@@ -71,21 +95,42 @@ public class NamedUserView {
 
         private Builder() { }
 
+        /**
+         * Set the named user ID.
+         *
+         * @param namedUserId String
+         * @return Builder
+         */
         public Builder setNamedUserId(String namedUserId) {
             this.namedUserId = namedUserId;
             return this;
         }
 
+        /**
+         * Set the associated tag groups and tags.
+         *
+         * @param namedUserTags Immutable map of tag groups and ImmutableSets of tags
+         * @return Builder
+         */
         public Builder setNamedUserTags(ImmutableMap<String, ImmutableSet<String>> namedUserTags) {
             this.namedUserTags = namedUserTags;
             return this;
         }
 
+        /**
+         * Set the associated channel objects.
+         * @param channelViews Set of ChannelView objects.
+         * @return Builder
+         */
         public Builder setChannelViews(ImmutableSet<ChannelView> channelViews) {
             this.channelViews = channelViews;
             return this;
         }
 
+        /**
+         * Build the NamedUserView object
+         * @return NamedUserView
+         */
         public NamedUserView build() {
 
             return new NamedUserView(

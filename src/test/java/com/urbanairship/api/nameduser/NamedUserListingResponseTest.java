@@ -122,7 +122,7 @@ public class NamedUserListingResponseTest {
         assertTrue(namedUserResponse.getOk());
         assertEquals("https://go.urbanairship.com/api/named_users?start=user-1234", namedUserResponse.getNextPage().get());
 
-        NamedUserView namedUserView1 = (NamedUserView) namedUserResponse.getNamedUserViews().get().toArray()[1];
+        NamedUserView namedUserView1 = namedUserResponse.getNamedUserViews().get().get(0);
         assertEquals("user-id-1234", namedUserView1.getNamedUserId());
         assertEquals(ImmutableSet.of("my_fav_tag_group"), namedUserView1.getNamedUserTags().keySet());
         assertEquals(ImmutableSet.of("tag1", "tag2"), namedUserView1.getNamedUserTags().get("my_fav_tag_group"));
@@ -145,7 +145,7 @@ public class NamedUserListingResponseTest {
             .add("asdf").build();
         assertEquals(expectedTags, channel.getTags());
 
-        NamedUserView namedUserView2 = (NamedUserView) namedUserResponse.getNamedUserViews().get().toArray()[0];
+        NamedUserView namedUserView2 = namedUserResponse.getNamedUserViews().get().get(1);
         assertEquals("user-id-5678", namedUserView2.getNamedUserId());
         assertTrue(namedUserView2.getNamedUserTags().isEmpty());
         assertTrue(namedUserView2.getChannelViews().isEmpty());

@@ -16,6 +16,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * The NamedUserTagRequest class builds named user tag mutation requests to be executed in
+ * the {@link com.urbanairship.api.client.UrbanAirshipClient}.
+ */
 public class NamedUserTagRequest implements Request<String> {
 
     private final static String API_NAMED_USERS_TAGS = "/api/named_users/tags/";
@@ -30,35 +34,78 @@ public class NamedUserTagRequest implements Request<String> {
     private final Map<String, Set<String>> removeTags = new HashMap<String, Set<String>>();
     private final Map<String, Set<String>> setTags = new HashMap<String, Set<String>>();
 
-    public static NamedUserTagRequest createNamedUserTagRequest() {
+    /**
+     * Create new named user tag mutations request.
+     *
+     * @return NamedUserTagRequest
+     */
+    public static NamedUserTagRequest newRequest() {
         return new NamedUserTagRequest();
     }
 
     private NamedUserTagRequest() {}
 
-    public NamedUserTagRequest addNamedUser(String channel) {
-        return addNamedUsers(channel);
+    /**
+     * Add a named user to the request audience.
+     *
+     * @param namedUser String
+     * @return NamedUserTagRequest
+     */
+    public NamedUserTagRequest addNamedUser(String namedUser) {
+        return addNamedUsers(namedUser);
     }
 
-    public NamedUserTagRequest addNamedUsers(String... channels) {
-        return addNamedUsers(new HashSet<String>(Arrays.asList(channels)));
+    /**
+     * Add multiple named users to the request audience.
+     *
+     * @param namedUsers String... of named users
+     * @return NamedUserTagRequest
+     */
+    public NamedUserTagRequest addNamedUsers(String... namedUsers) {
+        return addNamedUsers(new HashSet<String>(Arrays.asList(namedUsers)));
     }
-
+    /**
+     * Add multiple named users to the request audience.
+     *
+     * @param namedUsers Set of named users
+     * @return NamedUserTagRequest
+     */
     public NamedUserTagRequest addNamedUsers(Set<String> namedUsers) {
         appendMapValues(NAMED_USER_AUDIENCE_KEY, namedUsers, this.audience);
         return this;
     }
 
+    /**
+     * Add tag group and tags to be added to named user.
+     *
+     * @param tagGroup String
+     * @param tags Set of tags
+     * @return NamedUserTagRequest
+     */
     public NamedUserTagRequest addTags(String tagGroup, Set<String> tags) {
         appendMapValues(tagGroup, tags, this.addTags);
         return this;
     }
 
+    /**
+     * Add tag group and tags to be removed from named user.
+     *
+     * @param tagGroup String
+     * @param tags Set of tags
+     * @return NamedUserTagRequest
+     */
     public NamedUserTagRequest removeTags(String tagGroup, Set<String> tags) {
         appendMapValues(tagGroup, tags, this.removeTags);
         return this;
     }
 
+    /**
+     * Add tag group and tags to be set to named user.
+     *
+     * @param tagGroup String
+     * @param tags Set of tags
+     * @return NamedUserTagRequest
+     */
     public NamedUserTagRequest setTags(String tagGroup, Set<String> tags) {
         appendMapValues(tagGroup, tags, this.setTags);
         return this;
@@ -126,7 +173,6 @@ public class NamedUserTagRequest implements Request<String> {
             }
         };
     }
-
 
     private static void appendMapValues(String key, Set<String> values, Map<String, Set<String>> map) {
         if (!map.containsKey(key)) {

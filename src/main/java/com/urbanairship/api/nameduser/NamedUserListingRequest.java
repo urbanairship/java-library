@@ -15,6 +15,10 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The NamedUserListingRequest class builds named user listing requests to be executed in
+ * the {@link com.urbanairship.api.client.UrbanAirshipClient}.
+ */
 public class NamedUserListingRequest implements Request<NamedUserListingResponse> {
 
     private final static String API_NAMED_USERS_GET = "/api/named_users/";
@@ -25,10 +29,21 @@ public class NamedUserListingRequest implements Request<NamedUserListingResponse
         this.namedUserId = namedUserId;
     }
 
+    /**
+     * Create named user lookup request.
+     *
+     * @param namedUserId String
+     * @return NamedUserListingRequest
+     */
     public static NamedUserListingRequest createListRequest(String namedUserId) {
         return new NamedUserListingRequest(namedUserId);
     }
 
+    /**
+     * Create named user listing request.
+     *
+     * @return NamedUserListingRequest
+     */
     public static NamedUserListingRequest createListAllRequest() {
         return new NamedUserListingRequest(null);
     }

@@ -14,6 +14,10 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The NamedUserRequest class builds named user association and disassociation requests to be executed in
+ * the {@link com.urbanairship.api.client.UrbanAirshipClient}.
+ */
 public class NamedUserRequest implements Request<String> {
 
     private final static String API_NAMED_USERS_ASSOCIATE = "/api/named_users/associate";
@@ -30,24 +34,52 @@ public class NamedUserRequest implements Request<String> {
         this.path = path;
     }
 
+    /**
+     * Create a named user association request.
+     *
+     * @return NamedUserRequest
+     */
     public static NamedUserRequest createAssociationRequest() {
         return new NamedUserRequest(API_NAMED_USERS_ASSOCIATE);
     }
 
+    /**
+     * Create a named user disassociation request.
+     *
+     * @return NamedUserRequest
+     */
     public static NamedUserRequest createDisassociationRequest() {
         return new NamedUserRequest(API_NAMED_USERS_DISASSOCIATE);
     }
 
+    /**
+     * Set the request channel ID.
+     *
+     * @param channelId String
+     * @return NamedUserRequest
+     */
     public NamedUserRequest setChannelId(String channelId) {
         payload.put(CHANNEL_KEY, channelId);
         return this;
     }
 
+    /**
+     * Set the request named user ID - optional for disassociation requests.
+     *
+     * @param namedUserId String
+     * @return NamedUserRequest
+     */
     public NamedUserRequest setNamedUserid(String namedUserId) {
         payload.put(NAMED_USER_ID_KEY, namedUserId);
         return this;
     }
 
+    /**
+     * Set the device type of the channel.
+     *
+     * @param deviceType ChannelType enum of channel platforms
+     * @return NamedUserRequest
+     */
     public NamedUserRequest setDeviceType(ChannelType deviceType) {
         payload.put(DEVICE_TYPE_KEY, deviceType.getIdentifier());
         return this;

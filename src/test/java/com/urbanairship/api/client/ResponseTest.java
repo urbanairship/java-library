@@ -203,7 +203,6 @@ public class ResponseTest {
 
         NamedUserListingResponse namedUserListingResponse = NamedUserListingResponse.newBuilder()
             .setOk(true)
-            .setNextPage("nextPage")
             .setNamedUserView(NamedUserView.newBuilder()
                 .setChannelViews(ImmutableSet.of(ChannelView.newBuilder()
                     .setAlias("Alias")

@@ -114,7 +114,16 @@ public class NamedUserViewTest {
         tags.add("tag2");
         assertEquals(namedUserView.getNamedUserTags().get("crm"), tags);
 
-        ChannelView firstChannel = (ChannelView) namedUserView.getChannelViews().toArray()[1];
+        ChannelView firstChannel;
+        ChannelView secondChannel;
+        if (namedUserView.getChannelViews().asList().get(1).isOptIn()) {
+            firstChannel = namedUserView.getChannelViews().asList().get(1);
+            secondChannel = namedUserView.getChannelViews().asList().get(0);
+        } else {
+            firstChannel = namedUserView.getChannelViews().asList().get(0);
+            secondChannel = namedUserView.getChannelViews().asList().get(1);
+        }
+
         assertTrue(firstChannel.isOptIn());
         assertTrue(firstChannel.getBackground().isPresent());
         assertTrue(firstChannel.getBackground().get());
@@ -136,8 +145,6 @@ public class NamedUserViewTest {
                 .addAll(Sets.newHashSet("tag1OfGroup2", "tag2OfGroup2")).build())
             .build();
         assertEquals(expectedTagGroups, firstChannel.getTagGroups());
-
-        ChannelView secondChannel = (ChannelView) namedUserView.getChannelViews().toArray()[0];
         Assert.assertFalse(secondChannel.isOptIn());
         Assert.assertFalse(secondChannel.getBackground().isPresent());
         assertEquals(ChannelType.IOS, secondChannel.getChannelType());
