@@ -25,14 +25,16 @@ public class NamedUserTagRequest implements Request<String> {
     private static final String REMOVE_KEY = "remove";
     private static final String SET_KEY = "set";
 
-    Map<String, Set<String>> audience = new HashMap<String, Set<String>>();
-    Map<String, Set<String>> addTags = new HashMap<String, Set<String>>();
-    Map<String, Set<String>> removeTags = new HashMap<String, Set<String>>();
-    Map<String, Set<String>> setTags = new HashMap<String, Set<String>>();
+    private final Map<String, Set<String>> audience = new HashMap<String, Set<String>>();
+    private final Map<String, Set<String>> addTags = new HashMap<String, Set<String>>();
+    private final Map<String, Set<String>> removeTags = new HashMap<String, Set<String>>();
+    private final Map<String, Set<String>> setTags = new HashMap<String, Set<String>>();
 
     public static NamedUserTagRequest createNamedUserTagRequest() {
         return new NamedUserTagRequest();
     }
+
+    private NamedUserTagRequest() {}
 
     public NamedUserTagRequest addNamedUser(String channel) {
         return addNamedUsers(channel);

@@ -24,8 +24,7 @@ public class NamedUserRequest implements Request<String> {
     private static final String NAMED_USER_ID_KEY = "named_user_id";
 
     private final String path;
-
-    Map<String, String> payload = new HashMap<String, String>();
+    private final Map<String, String> payload = new HashMap<String, String>();
 
     private NamedUserRequest(String path) {
         this.path = path;

@@ -1,8 +1,11 @@
 package com.urbanairship.api.client;
 
+import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.channel.model.ChannelResponse;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.channel.model.ChannelView;
+import com.urbanairship.api.nameduser.model.NamedUserListingResponse;
+import com.urbanairship.api.nameduser.model.NamedUserView;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushPayload;
@@ -183,6 +186,42 @@ public class ResponseTest {
         Response<ChannelResponse> response = new Response<ChannelResponse>(channelResponse, headers, httpResponse.getStatusLine().getStatusCode());
         assertTrue("HTTP response body not set properly",
             response.getBody().get().equals(channelResponse));
+        assertTrue("HTTP response headers not set properly",
+            response.getHeaders().equals(headers));
+        assertTrue("HTTP response status not set properly",
+            response.getStatus() == httpResponse.getStatusLine().getStatusCode());
+    }
+
+    @Test
+    public void testNamedUserListingResponse() {
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+            new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
+        httpResponse.setHeader(CONTENT_TYPE_KEY, CONTENT_TYPE);
+
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put(httpResponse.getAllHeaders()[0].getName(), httpResponse.getAllHeaders()[0].getValue());
+
+        NamedUserListingResponse namedUserListingResponse = NamedUserListingResponse.newBuilder()
+            .setOk(true)
+            .setNextPage("nextPage")
+            .setNamedUserView(NamedUserView.newBuilder()
+                .setChannelViews(ImmutableSet.of(ChannelView.newBuilder()
+                    .setAlias("Alias")
+                    .setBackground(true)
+                    .setChannelId("channelID")
+                    .setCreated(DateTime.now())
+                    .setChannelType(ChannelType.ANDROID)
+                    .setInstalled(true)
+                    .setLastRegistration(DateTime.now().minus(12345L))
+                    .setOptIn(true)
+                    .setPushAddress("PUSH")
+                    .build()))
+                .build())
+            .build();
+
+        Response<NamedUserListingResponse> response = new Response<NamedUserListingResponse>(namedUserListingResponse, headers, httpResponse.getStatusLine().getStatusCode());
+        assertTrue("HTTP response body not set properly",
+            response.getBody().get().equals(namedUserListingResponse));
         assertTrue("HTTP response headers not set properly",
             response.getHeaders().equals(headers));
         assertTrue("HTTP response status not set properly",
