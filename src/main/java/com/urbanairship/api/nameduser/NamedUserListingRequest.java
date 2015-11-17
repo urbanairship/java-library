@@ -35,7 +35,7 @@ public class NamedUserListingRequest implements Request<NamedUserListingResponse
      * @param namedUserId String
      * @return NamedUserListingRequest
      */
-    public static NamedUserListingRequest createListRequest(String namedUserId) {
+    public static NamedUserListingRequest newRequest(String namedUserId) {
         return new NamedUserListingRequest(namedUserId);
     }
 
@@ -44,7 +44,7 @@ public class NamedUserListingRequest implements Request<NamedUserListingResponse
      *
      * @return NamedUserListingRequest
      */
-    public static NamedUserListingRequest createListAllRequest() {
+    public static NamedUserListingRequest newRequest() {
         return new NamedUserListingRequest(null);
     }
 

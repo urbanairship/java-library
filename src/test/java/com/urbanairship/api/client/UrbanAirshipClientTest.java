@@ -746,7 +746,7 @@ public class UrbanAirshipClientTest {
             .willReturn(aResponse()
                 .withStatus(200)));
 
-        NamedUserRequest request = NamedUserRequest.createAssociationRequest()
+        NamedUserRequest request = NamedUserRequest.newAssociationRequest()
             .setNamedUserid("name")
             .setDeviceType(ChannelType.IOS)
             .setChannelId(UUID.randomUUID().toString());
@@ -777,7 +777,7 @@ public class UrbanAirshipClientTest {
             .willReturn(aResponse()
                 .withStatus(200)));
 
-        NamedUserRequest request = NamedUserRequest.createDisassociationRequest()
+        NamedUserRequest request = NamedUserRequest.newDisassociationRequest()
             .setDeviceType(ChannelType.IOS)
             .setChannelId(UUID.randomUUID().toString());
 
@@ -865,7 +865,7 @@ public class UrbanAirshipClientTest {
                 .withBody(body)
                 .withStatus(200)));
 
-        NamedUserListingRequest request = NamedUserListingRequest.createListRequest("user-id-1234");
+        NamedUserListingRequest request = NamedUserListingRequest.newRequest("user-id-1234");
 
         try {
             Response<NamedUserListingResponse> response = client.execute(request);
@@ -947,7 +947,7 @@ public class UrbanAirshipClientTest {
                 .withBody(body)
                 .withStatus(200)));
 
-        NamedUserListingRequest request = NamedUserListingRequest.createListAllRequest();
+        NamedUserListingRequest request = NamedUserListingRequest.newRequest();
 
         try {
             Response<NamedUserListingResponse> response = client.execute(request);

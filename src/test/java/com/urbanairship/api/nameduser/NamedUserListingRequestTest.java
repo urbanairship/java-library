@@ -20,8 +20,8 @@ public class NamedUserListingRequestTest {
 
     private final ObjectMapper mapper = NamedUserObjectMapper.getInstance();
 
-    private final NamedUserListingRequest listAllRequest = NamedUserListingRequest.createListAllRequest();
-    private final NamedUserListingRequest listRequest = NamedUserListingRequest.createListRequest("named_user_id");
+    private final NamedUserListingRequest listAllRequest = NamedUserListingRequest.newRequest();
+    private final NamedUserListingRequest listRequest = NamedUserListingRequest.newRequest("named_user_id");
 
     @Test
     public void testContentType() throws Exception {

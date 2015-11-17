@@ -39,7 +39,7 @@ public class NamedUserRequest implements Request<String> {
      *
      * @return NamedUserRequest
      */
-    public static NamedUserRequest createAssociationRequest() {
+    public static NamedUserRequest newAssociationRequest() {
         return new NamedUserRequest(API_NAMED_USERS_ASSOCIATE);
     }
 
@@ -48,7 +48,7 @@ public class NamedUserRequest implements Request<String> {
      *
      * @return NamedUserRequest
      */
-    public static NamedUserRequest createDisassociationRequest() {
+    public static NamedUserRequest newDisassociationRequest() {
         return new NamedUserRequest(API_NAMED_USERS_DISASSOCIATE);
     }
 
