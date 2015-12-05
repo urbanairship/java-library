@@ -39,6 +39,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <jersey.version>2.19</jersey.version>
         <jackson.version>1.9.8</jackson.version>
+        <guava.version>18.0</guava.version>
         <local.gpg.passphrase />
     </properties>
 
@@ -161,7 +162,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>12.0</version>
+            <version>${guava.version}</version>
         </dependency>
 
         <dependency>
