@@ -6,7 +6,6 @@ import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.nameduser.model.NamedUserListingResponse;
 import com.urbanairship.api.nameduser.parse.NamedUserObjectMapper;
-import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 
 import java.io.IOException;
@@ -23,10 +22,10 @@ public class NamedUserListingRequest implements Request<NamedUserListingResponse
 
     private final static String API_NAMED_USERS_GET = "/api/named_users/";
 
-    private final String namedUserId;
+    private final String path;
 
-    private NamedUserListingRequest(String namedUserId) {
-        this.namedUserId = namedUserId;
+    private NamedUserListingRequest(String path) {
+        this.path = path;
     }
 
     /**
@@ -36,7 +35,7 @@ public class NamedUserListingRequest implements Request<NamedUserListingResponse
      * @return NamedUserListingRequest
      */
     public static NamedUserListingRequest newRequest(String namedUserId) {
-        return new NamedUserListingRequest(namedUserId);
+        return new NamedUserListingRequest(API_NAMED_USERS_GET + "?id=" + namedUserId);
     }
 
     /**
@@ -45,7 +44,7 @@ public class NamedUserListingRequest implements Request<NamedUserListingResponse
      * @return NamedUserListingRequest
      */
     public static NamedUserListingRequest newRequest() {
-        return new NamedUserListingRequest(null);
+        return new NamedUserListingRequest(API_NAMED_USERS_GET);
     }
 
     @Override
@@ -73,13 +72,7 @@ public class NamedUserListingRequest implements Request<NamedUserListingResponse
 
     @Override
     public URI getUri(URI baseUri) throws URISyntaxException {
-        if (namedUserId == null) {
-            return RequestUtils.resolveURI(baseUri, API_NAMED_USERS_GET);
-        } else {
-            URIBuilder builder = new URIBuilder(RequestUtils.resolveURI(baseUri, API_NAMED_USERS_GET));
-            builder.addParameter("id", namedUserId);
-            return builder.build();
-        }
+        return RequestUtils.resolveURI(baseUri, path);
     }
 
     @Override

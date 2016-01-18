@@ -7,6 +7,7 @@ package com.urbanairship.api.client;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -19,7 +20,7 @@ import java.util.Map;
 public class Response<T> {
 
     private final Optional<T> body;
-    private final ImmutableMap<String, String> headers;
+    private final ImmutableMap<String, Collection<String>> headers;
     private final int status;
 
     /**
@@ -29,7 +30,7 @@ public class Response<T> {
      * @param headers Response headers.
      * @param status Response status.
      */
-    Response(T body, Map<String, String> headers, int status) {
+    Response(T body, Map<String, Collection<String>> headers, int status) {
         this.body = Optional.fromNullable(body);
         this.headers = ImmutableMap.copyOf(headers);
         this.status = status;
@@ -49,7 +50,7 @@ public class Response<T> {
      *
      * @return Map of response headers.
      */
-    public ImmutableMap<String, String> getHeaders() {
+    public ImmutableMap<String, Collection<String>> getHeaders() {
         return headers;
     }
 

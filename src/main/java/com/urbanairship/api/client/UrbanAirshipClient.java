@@ -7,7 +7,8 @@ package com.urbanairship.api.client;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
 
@@ -228,12 +230,12 @@ public class UrbanAirshipClient {
      * @param httpResponse The HttpResponse.
      * @return An immutable map of response headers.
      */
-    private ImmutableMap<String, String> getHeaders(HttpResponse httpResponse) {
-        ImmutableMap.Builder<String, String> headers = ImmutableMap.builder();
+    private Map<String, Collection<String>> getHeaders(HttpResponse httpResponse) {
+        ListMultimap<String, String> headers = ArrayListMultimap.create();
         for (Header header : httpResponse.getAllHeaders()) {
             headers.put(header.getName(), header.getValue());
         }
-        return  headers.build();
+        return headers.asMap();
     }
 
     private String getUserAgent() {

@@ -85,7 +85,7 @@ public class NamedUserListingResponse {
 
     @Override
     public String toString() {
-        return "APIListSingleChannelResponse{" +
+        return "NamedUserListingResponse{" +
             "ok=" + ok +
             ", nextPage=" + nextPage +
             ", namedUserView=" + namedUserView +

@@ -23,12 +23,10 @@ public class NamedUserRequestTest {
     private final String namedUserId = RandomStringUtils.random(10);
 
     private final NamedUserRequest associationRequest = NamedUserRequest.newAssociationRequest()
-        .setChannelId(channelId)
-        .setDeviceType(ChannelType.IOS)
+        .setChannel(channelId, ChannelType.IOS)
         .setNamedUserid(namedUserId);
     private final NamedUserRequest disassociationRequest = NamedUserRequest.newDisassociationRequest()
-        .setChannelId(channelId)
-        .setDeviceType(ChannelType.IOS)
+        .setChannel(channelId, ChannelType.IOS)
         .setNamedUserid(namedUserId);
 
     @Test

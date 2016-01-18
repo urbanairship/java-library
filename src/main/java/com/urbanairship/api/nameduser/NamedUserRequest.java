@@ -53,13 +53,15 @@ public class NamedUserRequest implements Request<String> {
     }
 
     /**
-     * Set the request channel ID.
+     * Set the request channel.
      *
-     * @param channelId String
+     * @param channelId The channel ID as a string
+     * @param channelType The channel platform as a ChannelType
      * @return NamedUserRequest
      */
-    public NamedUserRequest setChannelId(String channelId) {
+    public NamedUserRequest setChannel(String channelId, ChannelType channelType) {
         payload.put(CHANNEL_KEY, channelId);
+        payload.put(DEVICE_TYPE_KEY, channelType.getIdentifier());
         return this;
     }
 
@@ -71,17 +73,6 @@ public class NamedUserRequest implements Request<String> {
      */
     public NamedUserRequest setNamedUserid(String namedUserId) {
         payload.put(NAMED_USER_ID_KEY, namedUserId);
-        return this;
-    }
-
-    /**
-     * Set the device type of the channel.
-     *
-     * @param deviceType ChannelType enum of channel platforms
-     * @return NamedUserRequest
-     */
-    public NamedUserRequest setDeviceType(ChannelType deviceType) {
-        payload.put(DEVICE_TYPE_KEY, deviceType.getIdentifier());
         return this;
     }
 

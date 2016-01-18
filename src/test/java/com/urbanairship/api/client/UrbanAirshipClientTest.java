@@ -748,8 +748,7 @@ public class UrbanAirshipClientTest {
 
         NamedUserRequest request = NamedUserRequest.newAssociationRequest()
             .setNamedUserid("name")
-            .setDeviceType(ChannelType.IOS)
-            .setChannelId(UUID.randomUUID().toString());
+            .setChannel(UUID.randomUUID().toString(), ChannelType.IOS);
 
         try {
             Response<String> response = client.execute(request);
@@ -778,8 +777,7 @@ public class UrbanAirshipClientTest {
                 .withStatus(200)));
 
         NamedUserRequest request = NamedUserRequest.newDisassociationRequest()
-            .setDeviceType(ChannelType.IOS)
-            .setChannelId(UUID.randomUUID().toString());
+            .setChannel(UUID.randomUUID().toString(), ChannelType.IOS);
 
         try {
             Response<String> response = client.execute(request);
