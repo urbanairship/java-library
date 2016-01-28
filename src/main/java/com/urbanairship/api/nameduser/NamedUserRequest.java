@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
+ */
+
 package com.urbanairship.api.nameduser;
 
 import com.google.common.base.Preconditions;
