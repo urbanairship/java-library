@@ -6,7 +6,12 @@ import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.channel.ChannelRequest;
 import com.urbanairship.api.channel.ChannelTagRequest;
 import com.urbanairship.api.channel.model.ChannelResponse;
+import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.common.parse.DateFormats;
+import com.urbanairship.api.nameduser.NamedUserListingRequest;
+import com.urbanairship.api.nameduser.NamedUserRequest;
+import com.urbanairship.api.nameduser.NamedUserTagRequest;
+import com.urbanairship.api.nameduser.model.NamedUserListingResponse;
 import com.urbanairship.api.push.PushRequest;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
@@ -724,6 +729,228 @@ public class UrbanAirshipClientTest {
             Response<ChannelResponse> response = client.execute(request);
 
             List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo("/api/channels/")));
+            assertEquals(1, requests.size());
+
+            assertNotNull(response);
+            assertEquals(200, response.getStatus());
+
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testNamedUserAssociation() throws IOException {
+
+        stubFor(post(urlEqualTo("/api/named_users/associate"))
+            .willReturn(aResponse()
+                .withStatus(200)));
+
+        NamedUserRequest request = NamedUserRequest.newAssociationRequest()
+            .setNamedUserid("name")
+            .setChannel(UUID.randomUUID().toString(), ChannelType.IOS);
+
+        try {
+            Response<String> response = client.execute(request);
+
+            // Verify components of the underlying HttpRequest
+            verify(postRequestedFor(urlEqualTo("/api/named_users/associate"))
+                .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+            List<LoggedRequest> requests = findAll(postRequestedFor(
+                urlEqualTo("/api/named_users/associate")));
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+            assertEquals(200, response.getStatus());
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testNamedUserDisassociation() throws IOException {
+
+        stubFor(post(urlEqualTo("/api/named_users/disassociate"))
+            .willReturn(aResponse()
+                .withStatus(200)));
+
+        NamedUserRequest request = NamedUserRequest.newDisassociationRequest()
+            .setChannel(UUID.randomUUID().toString(), ChannelType.IOS);
+
+        try {
+            Response<String> response = client.execute(request);
+
+            // Verify components of the underlying HttpRequest
+            verify(postRequestedFor(urlEqualTo("/api/named_users/disassociate"))
+                .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+            List<LoggedRequest> requests = findAll(postRequestedFor(
+                urlEqualTo("/api/named_users/disassociate")));
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+            assertEquals(200, response.getStatus());
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testNamedUsersTagMutations() {
+
+        stubFor(post(urlEqualTo("/api/named_users/tags/"))
+            .willReturn(aResponse()
+                .withHeader(CONTENT_TYPE_KEY, "application/json")
+                .withStatus(200)));
+
+        ImmutableSet<String> namedUsers = ImmutableSet.of(UUID.randomUUID().toString(), UUID.randomUUID().toString());
+
+        NamedUserTagRequest request = NamedUserTagRequest.newRequest()
+            .addNamedUsers(namedUsers)
+            .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
+            .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
+            .removeTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"));
+
+        try {
+            Response<String> response = client.execute(request);
+
+            List<LoggedRequest> requests = findAll(postRequestedFor(urlEqualTo("/api/named_users/tags/")));
+            assertEquals(1, requests.size());
+
+            assertNotNull(response);
+            assertEquals(200, response.getStatus());
+
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testListNamedUser() {
+        String body = "{  \n" +
+            "  \"ok\": true," +
+            "  \"named_user\": {\n" +
+            "    \"named_user_id\": \"user-id-1234\",\n" +
+            "    \"tags\": {\n" +
+            "      \"my_fav_tag_group\": [\"tag1\", \"tag2\"]\n" +
+            "    },\n" +
+            "    \"channels\": [\n" +
+            "      {\n" +
+            "        \"channel_id\":\"01234567-890a-bcde-f012-34567890abc0\",\n" +
+            "        \"device_type\":\"android\",\n" +
+            "        \"installed\":true,\n" +
+            "        \"opt_in\":false,\n" +
+            "        \"push_address\":null,\n" +
+            "        \"created\":\"2014-07-12T00:45:01\",\n" +
+            "        \"last_registration\":\"2014-08-06T00:33:25\",\n" +
+            "        \"alias\":null,\n" +
+            "        \"tags\":[  \n" +
+            "        ],\n" +
+            "        \"tag_groups\": {\n" +
+            "          \"tagGroup\": []\n" +
+            "        }\n" +
+            "      }\n" +
+            "    ]\n" +
+            "  }\n" +
+            "}";
+
+        stubFor(get(urlEqualTo("/api/named_users/?id=user-id-1234"))
+            .willReturn(aResponse()
+                .withHeader(CONTENT_TYPE_KEY, "application/json")
+                .withBody(body)
+                .withStatus(200)));
+
+        NamedUserListingRequest request = NamedUserListingRequest.newRequest("user-id-1234");
+
+        try {
+            Response<NamedUserListingResponse> response = client.execute(request);
+
+            List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo("/api/named_users/?id=user-id-1234")));
+            assertEquals(1, requests.size());
+
+            assertNotNull(response);
+            assertEquals(200, response.getStatus());
+
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testListAllNamedUsers() {
+        String body = "{  \n" +
+            "  \"ok\": true," +
+            "  \"next_page\": \"https://go.urbanairship.com/api/named_users?start=user-1234\",\n" +
+            "  \"named_users\": [\n" +
+            "    {\n" +
+            "      \"named_user_id\": \"user-id-1234\",\n" +
+            "      \"tags\": {\n" +
+            "        \"my_fav_tag_group\": [\"tag1\", \"tag2\"]\n" +
+            "      },\n" +
+            "      \"channels\": [\n" +
+            "        {\n" +
+            "          \"channel_id\":\"01234567-890a-bcde-f012-34567890abc0\",\n" +
+            "          \"device_type\":\"android\",\n" +
+            "          \"installed\":true,\n" +
+            "          \"opt_in\":false,\n" +
+            "          \"push_address\":null,\n" +
+            "          \"created\":\"2014-07-12T00:45:01\",\n" +
+            "          \"last_registration\":\"2014-08-06T00:33:25\",\n" +
+            "          \"alias\":null,\n" +
+            "          \"tags\":[  \n" +
+            "          ],\n" +
+            "          \"tag_groups\": {\n" +
+            "            \"tagGroup\": \n" +
+            "              [\n" +
+            "                \"tag1\",\n" +
+            "                \"tag2\"\n" +
+            "              ]\n" +
+            "          }\n" +
+            "        }\n" +
+            "      ]\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"named_user_id\": \"user-id-5678\",\n" +
+            "      \"tags\": {\n" +
+            "        \"my_fav_tag_group\": [\"tag3\", \"tag4\"]\n" +
+            "      },\n" +
+            "      \"channels\": [\n" +
+            "        {\n" +
+            "          \"channel_id\": \"00000000-0000-0000-0000-000000000000\",\n" +
+            "          \"device_type\": \"android\",\n" +
+            "          \"installed\": false,\n" +
+            "          \"opt_in\": false,\n" +
+            "          \"push_address\": null,\n" +
+            "          \"created\": \"2012-06-05T20:37:37\",\n" +
+            "          \"last_registration\": null,\n" +
+            "          \"alias\": null,\n" +
+            "          \"tags\": [\"test01\"],\n" +
+            "          \"tag_groups\": {\n" +
+            "            \"testGroup01\" : [\n" +
+            "              \"testGroup01Tag01\"\n" +
+            "            ]\n" +
+            "          }\n" +
+            "        }\n" +
+            "      ]\n" +
+            "    }\n" +
+            "  ]\n" +
+            "}";
+
+        stubFor(get(urlEqualTo("/api/named_users/"))
+            .willReturn(aResponse()
+                .withHeader(CONTENT_TYPE_KEY, "application/json")
+                .withBody(body)
+                .withStatus(200)));
+
+        NamedUserListingRequest request = NamedUserListingRequest.newRequest();
+
+        try {
+            Response<NamedUserListingResponse> response = client.execute(request);
+
+            List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo("/api/named_users/")));
             assertEquals(1, requests.size());
 
             assertNotNull(response);

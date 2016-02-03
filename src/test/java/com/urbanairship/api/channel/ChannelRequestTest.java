@@ -63,7 +63,7 @@ public class ChannelRequestTest {
     }
 
     @Test
-    public void testPushParser() throws Exception {
+    public void testChannelListingParser() throws Exception {
         ResponseParser responseParser = new ResponseParser<ChannelResponse>() {
             @Override
             public ChannelResponse parse(String response) throws IOException {
@@ -191,7 +191,7 @@ public class ChannelRequestTest {
     }
 
     @Test
-    public void testPushValidationParser() throws Exception {
+    public void testChannelLookupParser() throws Exception {
         ResponseParser responseParser = new ResponseParser<ChannelResponse>() {
             @Override
             public ChannelResponse parse(String response) throws IOException {
