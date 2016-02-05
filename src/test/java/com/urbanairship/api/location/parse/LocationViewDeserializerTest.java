@@ -1,18 +1,17 @@
 package com.urbanairship.api.location.parse;
 
 
-import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
-import com.urbanairship.api.location.model.Location;
+import com.urbanairship.api.location.model.LocationView;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class LocationDeserializerTest {
+public class LocationViewDeserializerTest {
 
-    private static final ObjectMapper MAPPER = APIResponseObjectMapper.getInstance();
+    private static final ObjectMapper MAPPER = LocationObjectMapper.getInstance();
 
     @Test
     public void testDeserialization() throws Exception {
@@ -42,7 +41,7 @@ public class LocationDeserializerTest {
                 "   ]\n" +
                 "}";
 
-        Location target = MAPPER.readValue(json, Location.class);
+        LocationView target = MAPPER.readValue(json, LocationView.class);
 
         assertNotNull(target);
         assertEquals(
@@ -83,7 +82,7 @@ public class LocationDeserializerTest {
                 "   ]\n" +
                 "}";
 
-        Location target = MAPPER.readValue(json, Location.class);
+        LocationView target = MAPPER.readValue(json, LocationView.class);
         assertNotNull(target);
     }
 }
