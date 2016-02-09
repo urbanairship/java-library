@@ -1,10 +1,8 @@
 package com.urbanairship.api.client;
 
 import com.urbanairship.api.client.model.APIClientResponse;
-import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
 import com.urbanairship.api.client.model.APIListTagsResponse;
 import com.urbanairship.api.client.model.APILocationResponse;
-import com.urbanairship.api.segments.model.AudienceSegment;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.entity.InputStreamEntity;
@@ -19,127 +17,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class APIClientResponseSuccessHandlerTest {
-
-    @Test
-    public void testAudienceSegmentHandleSuccess() {
-
-        String testresponse = "{  \n" +
-            "  \"display_name\":\"2014-11-07T14:26:56.749-08:00\",\n" +
-            "  \"criteria\":{  \n" +
-            "    \"and\":[  \n" +
-            "      {  \n" +
-            "        \"location\":{  \n" +
-            "          \"us_state\":\"OR\",\n" +
-            "          \"date\":{  \n" +
-            "            \"days\":{  \n" +
-            "              \"start\":\"2014-11-02\",\n" +
-            "              \"end\":\"2014-11-07\"\n" +
-            "            }\n" +
-            "          }\n" +
-            "        }\n" +
-            "      },\n" +
-            "      {  \n" +
-            "        \"location\":{  \n" +
-            "          \"us_state\":\"CA\",\n" +
-            "          \"date\":{  \n" +
-            "            \"recent\":{  \n" +
-            "              \"months\":3\n" +
-            "            }\n" +
-            "          }\n" +
-            "        }\n" +
-            "      },\n" +
-            "      {  \n" +
-            "        \"or\":[  \n" +
-            "          {  \n" +
-            "            \"tag\":\"tag1\"\n" +
-            "          },\n" +
-            "          {  \n" +
-            "            \"tag\":\"tag2\"\n" +
-            "          }\n" +
-            "        ]\n" +
-            "      },\n" +
-            "      {  \n" +
-            "        \"not\":{  \n" +
-            "          \"tag\":\"not-tag\"\n" +
-            "        }\n" +
-            "      },\n" +
-            "      {  \n" +
-            "        \"not\":{  \n" +
-            "          \"and\":[  \n" +
-            "            {  \n" +
-            "              \"location\":{  \n" +
-            "                \"us_state\":\"WA\",\n" +
-            "                \"date\":{  \n" +
-            "                  \"months\":{  \n" +
-            "                    \"start\":\"2011-05\",\n" +
-            "                    \"end\":\"2012-02\"\n" +
-            "                  }\n" +
-            "                }\n" +
-            "              }\n" +
-            "            },\n" +
-            "            {  \n" +
-            "              \"tag\":\"woot\"\n" +
-            "            }\n" +
-            "          ]\n" +
-            "        }\n" +
-            "      }\n" +
-            "    ]\n" +
-            "  }\n" +
-            "}";
-
-        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-            new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
-        InputStreamEntity inputStreamEntity = new InputStreamEntity(
-            new ByteArrayInputStream(testresponse.getBytes()),
-            testresponse.getBytes().length);
-        httpResponse.setEntity(inputStreamEntity);
-        APIClientResponseHandler<AudienceSegment> handler =
-            new APIClientResponseHandler<AudienceSegment>(AudienceSegment.class);
-
-        try {
-            APIClientResponse<AudienceSegment> response = handler.handleResponse(httpResponse);
-            assertNotNull(response);
-            assertTrue(httpResponse.getStatusLine().toString().equals("HTTP/1.1 200 OK"));
-        } catch (Exception ex) {
-            fail("Exception " + ex);
-        }
-
-    }
-
-    @Test
-    public void testAllSegmentsHandleSuccess() {
-
-        String testresponse = "{\n" +
-            "   \"next_page\": \"https://go.urbanairship.com/api/segments?limit=1&sort=id&order=asc&start=3832cf72-cb44-4132-a11f-eafb41b82f64\",\n" +
-            "   \"segments\": [\n" +
-            "      {\n" +
-            "         \"creation_date\": 1346248822220,\n" +
-            "         \"display_name\": \"A segment\",\n" +
-            "         \"id\": \"00c0d899-a595-4c66-9071-bc59374bbe6b\",\n" +
-            "         \"modification_date\": 1346248822221\n" +
-            "      }\n" +
-            "   ]\n" +
-            "}";
-
-        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-            new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
-        InputStreamEntity inputStreamEntity = new InputStreamEntity(
-            new ByteArrayInputStream(testresponse.getBytes()),
-            testresponse.getBytes().length);
-        httpResponse.setEntity(inputStreamEntity);
-        APIClientResponseHandler<APIListAllSegmentsResponse> handler =
-            new APIClientResponseHandler<APIListAllSegmentsResponse>(APIListAllSegmentsResponse.class);
-
-        try {
-            APIClientResponse<APIListAllSegmentsResponse> response =
-                handler.handleResponse(httpResponse);
-            assertTrue("NextPage incorrect", response.getApiResponse().getNextPage().equals("https://go.urbanairship.com/api/segments?limit=1&sort=id&order=asc&start=3832cf72-cb44-4132-a11f-eafb41b82f64"));
-            assertTrue(httpResponse.getStatusLine().toString().equals("HTTP/1.1 200 OK"));
-        } catch (Exception ex) {
-            fail("Exception " + ex);
-        }
-
-    }
 
     @Test
     public void testListTagsHandleSuccess() {

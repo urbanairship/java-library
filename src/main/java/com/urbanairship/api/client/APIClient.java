@@ -8,12 +8,10 @@ import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.client.model.APIClientResponse;
-import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
 import com.urbanairship.api.client.model.APIListTagsResponse;
 import com.urbanairship.api.client.model.APILocationResponse;
 import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.Point;
-import com.urbanairship.api.segments.model.AudienceSegment;
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
 import com.urbanairship.api.tag.model.BatchModificationPayload;
 import org.apache.commons.lang.StringUtils;
@@ -56,9 +54,6 @@ public class APIClient {
     private final static String API_TAGS_PATH = "/api/tags/";
     private final static String API_TAGS_BATCH_PATH = "/api/tags/batch/";
     private final static String API_LOCATION_PATH = "/api/location/";
-    private final static String API_SEGMENTS_PATH = "/api/segments/";
-    private final static String API_REPORTS_PER_PUSH_DETAIL_PATH = "/api/reports/perpush/detail/";
-    private final static String API_REPORTS_PER_PUSH_SERIES_PATH = "/api/reports/perpush/series/";
 
     private final static Logger logger = LoggerFactory.getLogger("com.urbanairship.api");
     /* User auth */
@@ -378,104 +373,6 @@ public class APIClient {
             .handleResponse(new APIClientResponseHandler<APILocationResponse>(APILocationResponse.class));
     }
 
-    /* Segments API */
-
-    public APIClientResponse<APIListAllSegmentsResponse> listAllSegments() throws IOException {
-        Request req = provisionRequest(Request.Get(baseURIResolution(baseURI, API_SEGMENTS_PATH)));
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing list all segments request %s", req));
-        }
-
-        return provisionExecutor()
-            .execute(req)
-            .handleResponse(new APIClientResponseHandler<APIListAllSegmentsResponse>(APIListAllSegmentsResponse.class));
-    }
-
-    public APIClientResponse<APIListAllSegmentsResponse> listAllSegments(String nextPage) throws IOException, URISyntaxException {
-        URI np = new URI(nextPage);
-        Request req = provisionRequest(Request.Get(baseURIResolution(baseURI, np.getPath() + "?" + np.getQuery())));
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing list all segments request %s", req));
-        }
-
-        return provisionExecutor()
-            .execute(req)
-            .handleResponse(new APIClientResponseHandler<APIListAllSegmentsResponse>(APIListAllSegmentsResponse.class));
-    }
-
-    public APIClientResponse<APIListAllSegmentsResponse> listAllSegments(String start, int limit, String order) throws IOException {
-        String path = "/api/segments" + "?" + "start=" + start + "&limit=" + limit + "&order=" + order;
-        Request req = provisionRequest(Request.Get(baseURIResolution(baseURI, path)));
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing list all segments request %s", req));
-        }
-
-        return provisionExecutor()
-            .execute(req)
-            .handleResponse(new APIClientResponseHandler<APIListAllSegmentsResponse>(APIListAllSegmentsResponse.class));
-    }
-
-    public APIClientResponse<AudienceSegment> listSegment(String segmentID) throws IOException {
-        Preconditions.checkArgument(StringUtils.isNotBlank(segmentID), "segmentID is required when listing segment");
-
-        String path = API_SEGMENTS_PATH + segmentID;
-        Request req = provisionRequest(Request.Get(baseURIResolution(baseURI, path)));
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing list all segments request %s", req));
-        }
-
-        return provisionExecutor()
-            .execute(req)
-            .handleResponse(new APIClientResponseHandler<AudienceSegment>(AudienceSegment.class));
-    }
-
-    public HttpResponse createSegment(AudienceSegment payload) throws IOException {
-        Preconditions.checkNotNull(payload, "Payload is required when creating segment");
-        Request req = provisionRequest(Request.Post(baseURIResolution(baseURI, API_SEGMENTS_PATH)));
-
-
-        req.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing create segment request %s", req));
-        }
-
-        return provisionExecutor().execute(req).returnResponse();
-    }
-
-    public HttpResponse changeSegment(String segmentID, AudienceSegment payload) throws IOException {
-        Preconditions.checkArgument(StringUtils.isNotBlank(segmentID), "segmentID is required when updating segment");
-        Preconditions.checkNotNull(payload, "Payload is required when updating segment");
-
-        String path = API_SEGMENTS_PATH + segmentID;
-        Request req = provisionRequest(Request.Put(baseURIResolution(baseURI, path)));
-
-
-        req.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing change segment request %s", req));
-        }
-
-        return provisionExecutor().execute(req).returnResponse();
-    }
-
-    public HttpResponse deleteSegment(String segmentID) throws IOException {
-        Preconditions.checkArgument(StringUtils.isNotBlank(segmentID), "segmentID is required when deleting segment");
-
-        String path = API_SEGMENTS_PATH + segmentID;
-        Request req = provisionRequest(Request.Delete(baseURIResolution(baseURI, path)));
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing delete segment request %s", req));
-        }
-
-        return provisionExecutor().execute(req).returnResponse();
-    }
 
     /* Object methods */
 

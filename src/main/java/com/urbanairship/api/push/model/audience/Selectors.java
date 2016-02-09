@@ -7,6 +7,7 @@ package com.urbanairship.api.push.model.audience;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.push.model.audience.location.DateRange;
 import com.urbanairship.api.push.model.audience.location.DateRangeUnit;
+import com.urbanairship.api.push.model.audience.location.LocationAlias;
 import com.urbanairship.api.push.model.audience.location.LocationIdentifier;
 import com.urbanairship.api.push.model.audience.location.LocationSelector;
 import com.urbanairship.api.push.model.audience.location.PresenceTimeframe;
@@ -315,6 +316,17 @@ public class Selectors {
             .build();
     }
 
+    public static final Selector location(String type, String value, DateRange range) {
+        return LocationSelector.newBuilder()
+                .setId(LocationIdentifier.newBuilder()
+                        .setAlias(LocationAlias.newBuilder()
+                                .setType(type)
+                                .setValue(value)
+                                .build())
+                        .build())
+                .setDateRange(range)
+                .build();
+    }
 
     public static final DateRange minutes(int units) {
         return minutes(units, PresenceTimeframe.ANYTIME);
