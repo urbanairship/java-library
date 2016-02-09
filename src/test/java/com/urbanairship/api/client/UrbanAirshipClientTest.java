@@ -17,6 +17,7 @@ import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.PushResponse;
+import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.push.parse.PushObjectMapper;
@@ -41,6 +42,12 @@ import com.urbanairship.api.schedule.ScheduleRequest;
 import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.ScheduleResponse;
+import com.urbanairship.api.segments.SegmentDeleteRequest;
+import com.urbanairship.api.segments.SegmentListingRequest;
+import com.urbanairship.api.segments.SegmentLookupRequest;
+import com.urbanairship.api.segments.SegmentRequest;
+import com.urbanairship.api.segments.model.SegmentListingResponse;
+import com.urbanairship.api.segments.model.SegmentView;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.log4j.BasicConfigurator;
@@ -1890,6 +1897,237 @@ public class UrbanAirshipClientTest {
         assertEquals(1, requests.size());
         assertNotNull(response);
         assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    public void testLookupSegment() throws Exception {
+        String queryPathString = "/api/segments/abc";
+        String responseString = "{  \n" +
+                "  \"display_name\":\"2014-11-07T14:26:56.749-08:00\",\n" +
+                "  \"criteria\":{  \n" +
+                "    \"and\":[  \n" +
+                "      {  \n" +
+                "        \"location\":{  \n" +
+                "          \"us_state\":\"OR\",\n" +
+                "          \"date\":{  \n" +
+                "            \"days\":{  \n" +
+                "              \"start\":\"2014-11-02\",\n" +
+                "              \"end\":\"2014-11-07\"\n" +
+                "            }\n" +
+                "          }\n" +
+                "        }\n" +
+                "      },\n" +
+                "      {  \n" +
+                "        \"location\":{  \n" +
+                "          \"us_state\":\"CA\",\n" +
+                "          \"date\":{  \n" +
+                "            \"recent\":{  \n" +
+                "              \"months\":3\n" +
+                "            }\n" +
+                "          }\n" +
+                "        }\n" +
+                "      },\n" +
+                "      {  \n" +
+                "        \"or\":[  \n" +
+                "          {  \n" +
+                "            \"tag\":\"tag1\"\n" +
+                "          },\n" +
+                "          {  \n" +
+                "            \"tag\":\"tag2\"\n" +
+                "          }\n" +
+                "        ]\n" +
+                "      },\n" +
+                "      {  \n" +
+                "        \"not\":{  \n" +
+                "          \"tag\":\"not-tag\"\n" +
+                "        }\n" +
+                "      },\n" +
+                "      {  \n" +
+                "        \"not\":{  \n" +
+                "          \"and\":[  \n" +
+                "            {  \n" +
+                "              \"location\":{  \n" +
+                "                \"us_state\":\"WA\",\n" +
+                "                \"date\":{  \n" +
+                "                  \"months\":{  \n" +
+                "                    \"start\":\"2011-05\",\n" +
+                "                    \"end\":\"2012-02\"\n" +
+                "                  }\n" +
+                "                }\n" +
+                "              }\n" +
+                "            },\n" +
+                "            {  \n" +
+                "              \"tag\":\"woot\"\n" +
+                "            }\n" +
+                "          ]\n" +
+                "        }\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  }\n" +
+                "}";
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseString)
+                        .withStatus(200)));
+
+        SegmentLookupRequest request = SegmentLookupRequest.newRequest("abc");
+
+        Response<SegmentView> response = client.execute(request);
+
+        List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
+        assertEquals(1, requests.size());
+
+        assertNotNull(response);
+        assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    public void testListSegments() throws Exception {
+        String queryPathString = "/api/segments/";
+        String responseList = "{\n" +
+                "   \"next_page\": \"https://go.urbanairship.com/api/segments?limit=1&sort=id&order=asc&start=3832cf72-cb44-4132-a11f-eafb41b82f64\",\n" +
+                "   \"segments\": [\n" +
+                "      {\n" +
+                "        \"creation_date\": 1346248822221,\n" +
+                "        \"display_name\": \"segment1\",\n" +
+                "        \"id\": \"00c0d899-a595-4c66-9071-bc59374bbe6a\",\n" +
+                "        \"modification_date\": 1346248822221\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"creation_date\": 1346248822222,\n" +
+                "        \"display_name\": \"segment2\",\n" +
+                "        \"id\": \"00c0d899-a595-4c66-9071-bc59374bbe6b\",\n" +
+                "        \"modification_date\": 1346248822222\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"creation_date\": 1346248822223,\n" +
+                "        \"display_name\": \"segment3\",\n" +
+                "        \"id\": \"00c0d899-a595-4c66-9071-bc59374bbe6c\",\n" +
+                "        \"modification_date\": 1346248822223\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"creation_date\": 1346248822224,\n" +
+                "        \"display_name\": \"segment4\",\n" +
+                "        \"id\": \"00c0d899-a595-4c66-9071-bc59374bbe6d\",\n" +
+                "        \"modification_date\": 1346248822224\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"creation_date\": 1346248822225,\n" +
+                "        \"display_name\": \"segment5\",\n" +
+                "        \"id\": \"00c0d899-a595-4c66-9071-bc59374bbe6e\",\n" +
+                "        \"modification_date\": 1346248822225\n" +
+                "      }\n" +
+                "   ]\n" +
+                "}";
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseList)
+                        .withStatus(200)));
+
+        SegmentListingRequest request = SegmentListingRequest.newRequest();
+
+        Response<SegmentListingResponse> response = client.execute(request);
+
+        List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
+        assertEquals(1, requests.size());
+
+        assertNotNull(response);
+        assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    public void testCreateSegment() throws Exception {
+        String queryPathString = "/api/segments/";
+
+        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
+                .setBaseUri("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        stubFor(post(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, APP_JSON)
+                        .withStatus(201)));
+
+        Selector orSelector = Selectors.tags("java", "lib");
+        Selector compound = Selectors.and(orSelector, Selectors.tag("mfd"));
+
+        SegmentRequest request = SegmentRequest.newRequest();
+        request.setDisplayName("test")
+                .setCriteria(compound);
+
+        Response<String> response = client.execute(request);
+
+        verify(postRequestedFor(urlEqualTo(queryPathString)));
+        List<LoggedRequest> requests = findAll(postRequestedFor(
+                urlEqualTo(queryPathString)));
+
+        assertEquals(requests.size(), 1);
+        assertNotNull(response);
+        assertEquals(201, response.getStatus());
+    }
+
+    @Test
+    public void testUpdateSegment() throws Exception {
+        String queryPathString = "/api/segments/abc";
+
+        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
+                .setBaseUri("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        stubFor(put(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, APP_JSON)
+                        .withStatus(200)));
+
+        Selector orSelector = Selectors.tags("java", "lib");
+        Selector compound = Selectors.and(orSelector, Selectors.not(Selectors.tag("mfd")));
+
+        SegmentRequest request = SegmentRequest.newRequest("abc");
+        request.setDisplayName("test")
+                .setCriteria(compound);
+
+        Response<String> response = client.execute(request);
+
+        verify(putRequestedFor(urlEqualTo(queryPathString)));
+        List<LoggedRequest> requests = findAll(putRequestedFor(
+                urlEqualTo(queryPathString)));
+
+        assertEquals(requests.size(), 1);
+        assertNotNull(response);
+        assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    public void testDeleteSegment() throws Exception {
+        String queryPathString = "/api/segments/abc";
+
+        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
+                .setBaseUri("http://localhost:8080")
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        stubFor(delete(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withStatus(204)));
+
+        SegmentDeleteRequest request = SegmentDeleteRequest.newRequest("abc");
+
+        Response<String> response = client.execute(request);
+
+        verify(deleteRequestedFor(urlEqualTo(queryPathString)));
+        List<LoggedRequest> requests = findAll(deleteRequestedFor(
+                urlEqualTo(queryPathString)));
+
+        assertEquals(requests.size(), 1);
+        assertNotNull(response);
+        assertEquals(204, response.getStatus());
     }
 
 }

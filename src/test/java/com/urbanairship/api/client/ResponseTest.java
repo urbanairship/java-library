@@ -1,6 +1,7 @@
 package com.urbanairship.api.client;
 
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ListMultimap;
 import com.urbanairship.api.channel.model.ChannelResponse;
@@ -12,6 +13,7 @@ import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.PushResponse;
+import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.reports.model.PushInfoResponse;
@@ -20,6 +22,9 @@ import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.schedule.model.ScheduleResponse;
+import com.urbanairship.api.segments.model.SegmentListingResponse;
+import com.urbanairship.api.segments.model.SegmentListingView;
+import com.urbanairship.api.segments.model.SegmentView;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.message.BasicHttpResponse;
@@ -56,7 +61,7 @@ public class ResponseTest {
         assertTrue("HTTP response body not set properly",
             response.getBody().get().equals(pushResponse));
         assertTrue("HTTP response headers not set properly",
-            response.getHeaders().equals(headers));
+            response.getHeaders().equals(headers.asMap()));
         assertTrue("HTTP response status not set properly",
             response.getStatus() == httpResponse.getStatusLine().getStatusCode());
     }
@@ -80,7 +85,7 @@ public class ResponseTest {
         assertTrue("HTTP response body not set properly",
             response.getBody().get().equals(scheduleResponse));
         assertTrue("HTTP response headers not set properly",
-            response.getHeaders().equals(headers));
+            response.getHeaders().equals(headers.asMap()));
         assertTrue("HTTP response status not set properly",
             response.getStatus() == httpResponse.getStatusLine().getStatusCode());
     }
@@ -93,15 +98,15 @@ public class ResponseTest {
 
         SchedulePayload sample = SchedulePayload.newBuilder()
             .setSchedule(Schedule.newBuilder()
-                .setScheduledTimestamp(DateTime.now())
-                .build())
-            .setPushPayload(PushPayload.newBuilder()
-                .setAudience(Selectors.all())
-                .setNotification(Notification.newBuilder()
-                    .setAlert("UA Push")
+                    .setScheduledTimestamp(DateTime.now())
                     .build())
-                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-                .build())
+            .setPushPayload(PushPayload.newBuilder()
+                    .setAudience(Selectors.all())
+                    .setNotification(Notification.newBuilder()
+                            .setAlert("UA Push")
+                            .build())
+                    .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                    .build())
             .setUrl("http://sample.com/")
             .build();
 
@@ -119,7 +124,7 @@ public class ResponseTest {
         assertTrue("HTTP response body not set properly",
             response.getBody().get().equals(listScheduleResponse));
         assertTrue("HTTP response headers not set properly",
-            response.getHeaders().equals(headers));
+            response.getHeaders().equals(headers.asMap()));
         assertTrue("HTTP response status not set properly",
             response.getStatus() == httpResponse.getStatusLine().getStatusCode());
     }
@@ -137,23 +142,23 @@ public class ResponseTest {
             ChannelResponse.newBuilder()
                 .setOk(true)
                 .setChannelObject(ChannelView.newBuilder()
-                    .setAlias("Alias")
-                    .setBackground(true)
-                    .setChannelId("channelID")
-                    .setCreated(DateTime.now())
-                    .setChannelType(ChannelType.ANDROID)
-                    .setInstalled(true)
-                    .setLastRegistration(DateTime.now().minus(12345L))
-                    .setOptIn(true)
-                    .setPushAddress("PUSH")
-                    .build())
+                        .setAlias("Alias")
+                        .setBackground(true)
+                        .setChannelId("channelID")
+                        .setCreated(DateTime.now())
+                        .setChannelType(ChannelType.ANDROID)
+                        .setInstalled(true)
+                        .setLastRegistration(DateTime.now().minus(12345L))
+                        .setOptIn(true)
+                        .setPushAddress("PUSH")
+                        .build())
                 .build();
 
         Response<ChannelResponse> response = new Response<ChannelResponse>(channelResponse, headers.asMap(), httpResponse.getStatusLine().getStatusCode());
         assertTrue("HTTP response body not set properly",
             response.getBody().get().equals(channelResponse));
         assertTrue("HTTP response headers not set properly",
-            response.getHeaders().equals(headers));
+            response.getHeaders().equals(headers.asMap()));
         assertTrue("HTTP response status not set properly",
             response.getStatus() == httpResponse.getStatusLine().getStatusCode());
     }
@@ -171,23 +176,23 @@ public class ResponseTest {
             .setOk(true)
             .setNextPage("nextPage")
             .addChannel(ChannelView.newBuilder()
-                .setAlias("Alias")
-                .setBackground(true)
-                .setChannelId("channelID")
-                .setCreated(DateTime.now())
-                .setChannelType(ChannelType.ANDROID)
-                .setInstalled(true)
-                .setLastRegistration(DateTime.now().minus(12345L))
-                .setOptIn(true)
-                .setPushAddress("PUSH")
-                .build())
+                    .setAlias("Alias")
+                    .setBackground(true)
+                    .setChannelId("channelID")
+                    .setCreated(DateTime.now())
+                    .setChannelType(ChannelType.ANDROID)
+                    .setInstalled(true)
+                    .setLastRegistration(DateTime.now().minus(12345L))
+                    .setOptIn(true)
+                    .setPushAddress("PUSH")
+                    .build())
             .build();
 
         Response<ChannelResponse> response = new Response<ChannelResponse>(channelResponse, headers.asMap(), httpResponse.getStatusLine().getStatusCode());
         assertTrue("HTTP response body not set properly",
             response.getBody().get().equals(channelResponse));
         assertTrue("HTTP response headers not set properly",
-            response.getHeaders().equals(headers));
+            response.getHeaders().equals(headers.asMap()));
         assertTrue("HTTP response status not set properly",
             response.getStatus() == httpResponse.getStatusLine().getStatusCode());
     }
@@ -222,7 +227,7 @@ public class ResponseTest {
         assertTrue("HTTP response body not set properly",
             response.getBody().get().equals(namedUserListingResponse));
         assertTrue("HTTP response headers not set properly",
-            response.getHeaders().equals(headers));
+            response.getHeaders().equals(headers.asMap()));
         assertTrue("HTTP response status not set properly",
             response.getStatus() == httpResponse.getStatusLine().getStatusCode());
     }
@@ -264,7 +269,7 @@ public class ResponseTest {
         assertTrue("HTTP response not set properly",
                 response.getBody().get().equals(pushListingResponse));
         assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers));
+                response.getHeaders().equals(headers.asMap()));
         assertTrue("HTTP response status not set properly",
                 response.getStatus() == httpResponse.getStatusLine().getStatusCode());
     }
@@ -299,9 +304,80 @@ public class ResponseTest {
         assertTrue("HTTP response not set properly",
                 response.getBody().get().equals(pushInfoResponse));
         assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers));
+                response.getHeaders().equals(headers.asMap()));
         assertTrue("HTTP response status not set properly",
                 response.getStatus() == httpResponse.getStatusLine().getStatusCode());
 
+    }
+
+    @Test
+    public void testAudienceSegmentResponse() {
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
+        httpResponse.setHeader(CONTENT_TYPE_KEY, CONTENT_TYPE);
+
+        ListMultimap<String, String> headers = ArrayListMultimap.create();
+        headers.put(httpResponse.getAllHeaders()[0].getName(), httpResponse.getAllHeaders()[0].getValue());
+
+        Selector andSelector = Selectors.tags("java", "lib");
+        Selector compound = Selectors.or(andSelector, Selectors.not(Selectors.tag("mfd")));
+
+        SegmentView segment = SegmentView.newBuilder()
+                .setDisplayName("hello")
+                .setCriteria(compound)
+                .build();
+
+        Response<SegmentView> response = new Response<SegmentView>(
+                segment,
+                headers.asMap(),
+                httpResponse.getStatusLine().getStatusCode());
+
+        assertTrue("HTTP response not set properly",
+                response.getBody().get().equals(segment));
+        assertTrue("HTTP response headers not set properly",
+                response.getHeaders().equals(headers.asMap()));
+        assertTrue("HTTP response status not set properly",
+                response.getStatus() == httpResponse.getStatusLine().getStatusCode());
+    }
+
+
+    @Test
+    public void testAPIListAllSegmentsResponse() {
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+                new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
+        httpResponse.setHeader(CONTENT_TYPE_KEY, CONTENT_TYPE);
+
+        ListMultimap<String, String> headers = ArrayListMultimap.create();
+        headers.put(httpResponse.getAllHeaders()[0].getName(), httpResponse.getAllHeaders()[0].getValue());
+
+        SegmentListingView listItem = SegmentListingView.newBuilder()
+                .setCreationDate(123L)
+                .setDisplayName("DisplayName")
+                .setId("Id")
+                .setModificationDate(321L)
+                .build();
+
+        ImmutableList<SegmentListingView> list = ImmutableList.<SegmentListingView>builder()
+                .add(listItem)
+                .add(listItem)
+                .add(listItem)
+                .build();
+
+        SegmentListingResponse segments = SegmentListingResponse.newBuilder()
+                .setNextPage("NextPage")
+                .addAllSegmentObjects(list)
+                .build();
+
+        Response<SegmentListingResponse> response = new Response<SegmentListingResponse>(
+                segments,
+                headers.asMap(),
+                httpResponse.getStatusLine().getStatusCode());
+
+        assertTrue("HTTP response not set properly",
+                response.getBody().get().equals(segments));
+        assertTrue("HTTP response headers not set properly",
+                response.getHeaders().equals(headers.asMap()));
+        assertTrue("HTTP response status not set properly",
+                response.getStatus() == httpResponse.getStatusLine().getStatusCode());
     }
 }

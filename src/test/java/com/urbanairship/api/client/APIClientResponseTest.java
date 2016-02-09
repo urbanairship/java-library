@@ -2,12 +2,8 @@ package com.urbanairship.api.client;
 
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.client.model.APIClientResponse;
-import com.urbanairship.api.client.model.APIListAllSegmentsResponse;
 import com.urbanairship.api.client.model.APIListTagsResponse;
 import com.urbanairship.api.client.model.APILocationResponse;
-import com.urbanairship.api.client.model.SegmentInformation;
-import com.urbanairship.api.segments.model.AudienceSegment;
-import com.urbanairship.api.segments.model.TagPredicateBuilder;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.message.BasicHttpResponse;
@@ -58,61 +54,6 @@ public class APIClientResponseTest {
 
         assertTrue("APIResponse not set properly",
                 testResponse.getApiResponse().equals("StringLaLaLa"));
-    }
-
-    @Test
-    public void testAPIListAllSegmentsResponse() {
-        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-                new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
-
-        httpResponse.setHeader("Link", "NextPage");
-
-        SegmentInformation si = SegmentInformation.newBuilder()
-                .setCreationDate(123L)
-                .setDisplayName("DisplayName")
-                .setId("Id")
-                .setModificationDate(321L)
-                .build();
-
-        ImmutableList<SegmentInformation> listsi = ImmutableList.<SegmentInformation>builder()
-                .add(si)
-                .build();
-
-        APIListAllSegmentsResponse segmentsResponse = APIListAllSegmentsResponse.newBuilder()
-                .setNextPage("NextPage")
-                .setSegments(listsi)
-                .build();
-
-        APIClientResponse.Builder<APIListAllSegmentsResponse> builder =
-                new APIClientResponse.Builder<APIListAllSegmentsResponse>()
-                        .setApiResponse(segmentsResponse)
-                        .setHttpResponse(httpResponse);
-
-        APIClientResponse<APIListAllSegmentsResponse> testResponse = builder.build();
-
-        assertEquals("HTTP response not set properly", httpResponse, testResponse.getHttpResponse());
-        assertEquals("APIResponse not set properly", segmentsResponse, testResponse.getApiResponse());
-    }
-
-    @Test
-    public void testAudienceSegmentResponse() {
-        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-                new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
-
-        AudienceSegment segmentsResponse = AudienceSegment.newBuilder()
-                .setDisplayName("hello")
-                .setRootPredicate(TagPredicateBuilder.newInstance().setTag("tag").build())
-                .build();
-
-        APIClientResponse.Builder<AudienceSegment> builder =
-                new APIClientResponse.Builder<AudienceSegment>()
-                        .setApiResponse(segmentsResponse)
-                        .setHttpResponse(httpResponse);
-
-        APIClientResponse<AudienceSegment> testResponse = builder.build();
-
-        assertEquals("HTTP response not set properly", httpResponse, testResponse.getHttpResponse());
-        assertEquals("APIResponse not set properly", segmentsResponse, testResponse.getApiResponse());
     }
 
     @Test

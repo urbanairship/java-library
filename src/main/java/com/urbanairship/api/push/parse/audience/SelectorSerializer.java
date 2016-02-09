@@ -4,9 +4,12 @@
 
 package com.urbanairship.api.push.parse.audience;
 
+import com.google.common.collect.Iterables;
 import com.urbanairship.api.push.model.audience.CompoundSelector;
 import com.urbanairship.api.push.model.audience.Selector;
+import com.urbanairship.api.push.model.audience.SelectorType;
 import com.urbanairship.api.push.model.audience.ValueSelector;
+import com.urbanairship.api.push.model.audience.location.LocationSelector;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
@@ -29,17 +32,24 @@ public class SelectorSerializer extends JsonSerializer<Selector> {
                 }
             }
             jgen.writeEndObject();
-
         } else if (s instanceof CompoundSelector) {
             CompoundSelector cs = (CompoundSelector)s;
             jgen.writeStartObject();
-            jgen.writeArrayFieldStart(cs.getType().getIdentifier());
-            for (Selector child : cs.getChildren()) {
-                serialize(child, jgen, provider);
+            if (cs.getType() == SelectorType.NOT) {
+                jgen.writeObjectField("not", cs.getChildren().iterator().next());
+            } else {
+                jgen.writeArrayFieldStart(cs.getType().getIdentifier());
+                for (Selector child : cs.getChildren()) {
+                    serialize(child, jgen, provider);
+                }
+                jgen.writeEndArray();
             }
-            jgen.writeEndArray();
             jgen.writeEndObject();
-
+        } else if (s instanceof LocationSelector) {
+            LocationSelector ls = (LocationSelector)s;
+            jgen.writeStartObject();
+            jgen.writeObjectField("location", s);
+            jgen.writeEndObject();
         } else {
             jgen.writeString(s.getType().name());
         }
