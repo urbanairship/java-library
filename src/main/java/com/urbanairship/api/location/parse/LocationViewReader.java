@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.location.parse;
 
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
-import com.urbanairship.api.location.model.Location;
+import com.urbanairship.api.location.model.LocationView;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.type.TypeReference;
@@ -14,12 +14,12 @@ import org.codehaus.jackson.type.TypeReference;
 import java.io.IOException;
 import java.util.List;
 
-public class LocationReader implements JsonObjectReader<Location> {
+public class LocationViewReader implements JsonObjectReader<LocationView> {
 
-    private final Location.Builder builder;
+    private final LocationView.Builder builder;
 
-    public LocationReader() {
-        this.builder = Location.newBuilder();
+    public LocationViewReader() {
+        this.builder = LocationView.newBuilder();
     }
 
     public void readBounds(JsonParser jsonParser) throws IOException {
@@ -46,7 +46,7 @@ public class LocationReader implements JsonObjectReader<Location> {
     }
 
     @Override
-    public Location validateAndBuild() throws IOException {
+    public LocationView validateAndBuild() throws IOException {
         try {
             return builder.build();
         } catch (Exception e) {

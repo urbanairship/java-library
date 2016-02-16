@@ -7,6 +7,8 @@ import com.google.common.collect.ListMultimap;
 import com.urbanairship.api.channel.model.ChannelResponse;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.channel.model.ChannelView;
+import com.urbanairship.api.location.model.LocationResponse;
+import com.urbanairship.api.location.model.LocationView;
 import com.urbanairship.api.nameduser.model.NamedUserListingResponse;
 import com.urbanairship.api.nameduser.model.NamedUserView;
 import com.urbanairship.api.push.model.DeviceType;
@@ -29,6 +31,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
@@ -380,4 +384,40 @@ public class ResponseTest {
         assertTrue("HTTP response status not set properly",
                 response.getStatus() == httpResponse.getStatusLine().getStatusCode());
     }
+
+    @Test
+    public void testLocationResponse() {
+        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
+            new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
+        httpResponse.setHeader(CONTENT_TYPE_KEY, CONTENT_TYPE);
+
+        ListMultimap<String, String> headers = ArrayListMultimap.create();
+        headers.put(httpResponse.getAllHeaders()[0].getName(), httpResponse.getAllHeaders()[0].getValue());
+
+        ObjectNode node = JsonNodeFactory.instance.objectNode();
+        node.put("hello", "kitty");
+
+        LocationView locationView = LocationView.newBuilder()
+            .setLocationId("ID")
+            .setLocationType("Type")
+            .setPropertiesNode(node)
+            .build();
+
+        LocationResponse locationResponse = LocationResponse.newBuilder()
+            .addAllFeatures(Arrays.asList(locationView))
+            .build();
+
+        Response<LocationResponse> response = new Response<LocationResponse>(
+            locationResponse,
+            headers.asMap(),
+            httpResponse.getStatusLine().getStatusCode());
+
+        assertTrue("HTTP response not set properly",
+            response.getBody().get().equals(locationResponse));
+        assertTrue("HTTP response headers not set properly",
+            response.getHeaders().equals(headers.asMap()));
+        assertTrue("HTTP response status not set properly",
+            response.getStatus() == httpResponse.getStatusLine().getStatusCode());
+    }
+
 }

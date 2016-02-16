@@ -1,29 +1,42 @@
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.location.model;
 
+/**
+ * Represents the location bounds.
+ */
 public final class BoundedBox {
 
     private final Point cornerOne;
     private final Point cornerTwo;
 
-    public BoundedBox(Point cornerOne, Point cornerTwo) {
+    private BoundedBox(Point cornerOne, Point cornerTwo) {
         this.cornerOne = cornerOne;
         this.cornerTwo = cornerTwo;
     }
 
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    /**
+     * Get the first corner.
+     *
+     * @return The first corner as a Point object.
+     */
     public Point getCornerOne() {
         return cornerOne;
     }
 
+    /**
+     * Get the second corner.
+     *
+     * @return The second corner as a Point object.
+     */
     public Point getCornerTwo() {
         return cornerTwo;
-    }
-
-    public boolean isValid() {
-        return cornerOne.isValid() && cornerTwo.isValid();
     }
 
     @Override
@@ -60,5 +73,44 @@ public final class BoundedBox {
                 "cornerOne=" + cornerOne +
                 ", cornerTwo=" + cornerTwo +
                 '}';
+    }
+
+    public static class Builder {
+        private Point cornerOne;
+        private Point cornerTwo;
+
+        private Builder() {
+        }
+
+        /**
+         * Set the first corner.
+         *
+         * @param value The first corner as a Point.
+         * @return Builder
+         */
+        public Builder setCornerOne(Point value) {
+            this.cornerOne = value;
+            return this;
+        }
+
+        /**
+         * Set the second corner.
+         *
+         * @param value The second corner as a Point.
+         * @return Builder
+         */
+        public Builder setCornerTwo(Point value) {
+            this.cornerTwo = value;
+            return this;
+        }
+
+        /**
+         * Build the BoundBox object.
+         *
+         * @return Point
+         */
+        public BoundedBox build() {
+            return new BoundedBox(cornerOne, cornerTwo);
+        }
     }
 }

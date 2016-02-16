@@ -9,14 +9,13 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
-public class LocationTest {
+public class LocationViewTest {
 
     ObjectNode node = JsonNodeFactory.instance.objectNode();
 
     @Test
-    public void testLocationBuilder() {
+    public void testLocationViewBuilder() {
 
         List<Double> bounds = new ArrayList<Double>();
         bounds.add(1.0D);
@@ -26,17 +25,16 @@ public class LocationTest {
 
         assertEquals(4, bounds.size());
 
-        BoundedBox testBounds = new BoundedBox(
-                Point.newBuilder()
+        BoundedBox testBounds = BoundedBox.newBuilder()
+                .setCornerOne(Point.newBuilder()
                         .setLatitude(1.0D)
                         .setLongitude(2.0D)
-                        .build(),
-                Point.newBuilder()
+                        .build())
+                .setCornerTwo(Point.newBuilder()
                         .setLatitude(3.0D)
                         .setLongitude(4.0D)
-                        .build());
-
-        assertTrue(testBounds.isValid());
+                        .build())
+                .build();
 
         List<Double> center = new ArrayList<Double>();
         center.add(5.0D);
@@ -49,11 +47,9 @@ public class LocationTest {
                 .setLongitude(6.0D)
                 .build();
 
-        assertTrue(testPoint.isValid());
-
         node.put("hello", "kitty");
 
-        Location target = Location.newBuilder()
+        LocationView target = LocationView.newBuilder()
                 .setBounds(bounds)
                 .setCentroid(center)
                 .setLocationId("ID")
@@ -81,18 +77,6 @@ public class LocationTest {
 
         assertEquals(3, bounds.size());
 
-        BoundedBox testBounds = new BoundedBox(
-                Point.newBuilder()
-                        .setLatitude(1.0D)
-                        .setLongitude(2.0D)
-                        .build(),
-                Point.newBuilder()
-                        .setLatitude(3.0D)
-                        .setLongitude(4.0D)
-                        .build());
-
-        assertTrue(testBounds.isValid());
-
         List<Double> center = new ArrayList<Double>();
         center.add(5.0D);
         center.add(6.0D);
@@ -104,11 +88,9 @@ public class LocationTest {
                 .setLongitude(6.0D)
                 .build();
 
-        assertTrue(testPoint.isValid());
-
         node.put("hello", "kitty");
 
-        Location.newBuilder()
+        LocationView.newBuilder()
                 .setBounds(bounds)
                 .setCentroid(center)
                 .setLocationId("ID")
@@ -128,18 +110,6 @@ public class LocationTest {
 
         assertEquals(4, bounds.size());
 
-        BoundedBox testBounds = new BoundedBox(
-                Point.newBuilder()
-                        .setLatitude(1.0D)
-                        .setLongitude(2.0D)
-                        .build(),
-                Point.newBuilder()
-                        .setLatitude(3.0D)
-                        .setLongitude(4.0D)
-                        .build());
-
-        assertTrue(testBounds.isValid());
-
         List<Double> center = new ArrayList<Double>();
         center.add(5.0D);
 
@@ -150,11 +120,9 @@ public class LocationTest {
                 .setLongitude(6.0D)
                 .build();
 
-        assertTrue(testPoint.isValid());
-
         node.put("hello", "kitty");
 
-        Location.newBuilder()
+        LocationView.newBuilder()
                 .setBounds(bounds)
                 .setCentroid(center)
                 .setLocationId("ID")
@@ -162,5 +130,14 @@ public class LocationTest {
                 .setPropertiesNode(node)
                 .build();
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testInvalidPoint() {
+        Point.newBuilder()
+            .setLatitude(95.0D)
+            .setLongitude(6.0D)
+            .build();
+    }
+
 
 }

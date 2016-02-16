@@ -9,7 +9,6 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.client.model.APIClientResponse;
 import com.urbanairship.api.client.model.APIListTagsResponse;
-import com.urbanairship.api.client.model.APILocationResponse;
 import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.Point;
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
@@ -23,7 +22,6 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreProtocolPNames;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -242,137 +240,6 @@ public class APIClient {
 
         return provisionExecutor().execute(req).returnResponse();
     }
-
-    /* Location API */
-
-    public APIClientResponse<APILocationResponse> queryLocationInformation(String query) throws IOException {
-        Preconditions.checkArgument(StringUtils.isNotBlank(query), "Query text cannot be blank");
-
-        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_LOCATION_PATH));
-        builder.addParameter("q", query);
-
-        Request req = provisionRequest(Request.Get(builder.toString()));
-
-        req.removeHeaders(ACCEPT_KEY);      // Workaround for v3 routing bug
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing query location information without type request %s", req));
-        }
-
-        return provisionExecutor()
-            .execute(req)
-            .handleResponse(new APIClientResponseHandler<APILocationResponse>(APILocationResponse.class));
-    }
-
-    public APIClientResponse<APILocationResponse> queryLocationInformation(String query, String type) throws IOException {
-        Preconditions.checkArgument(StringUtils.isNotBlank(query), "Query text cannot be blank");
-
-        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_LOCATION_PATH));
-        builder.addParameter("q", query);
-        builder.addParameter("type", type);
-
-        Request req = provisionRequest(Request.Get(builder.toString()));
-
-        req.removeHeaders(ACCEPT_KEY);      // Workaround for v3 routing bug
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing query location information without type request %s", req));
-        }
-
-        return provisionExecutor()
-            .execute(req)
-            .handleResponse(new APIClientResponseHandler<APILocationResponse>(APILocationResponse.class));
-    }
-
-    public APIClientResponse<APILocationResponse> queryLocationInformation(Point point) throws IOException {
-        Preconditions.checkNotNull(point, "Point must not be null");
-        Preconditions.checkArgument(point.isValid(), "Point must be a valid coordinate");
-
-        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_LOCATION_PATH + point.getLatitude() + "," + point.getLongitude()));
-
-        Request req = provisionRequest(Request.Get(builder.toString()));
-
-        req.removeHeaders(ACCEPT_KEY);      // Workaround for v3 routing bug
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing query location information without type request %s", req));
-        }
-
-        return provisionExecutor()
-            .execute(req)
-            .handleResponse(new APIClientResponseHandler<APILocationResponse>(APILocationResponse.class));
-    }
-
-    public APIClientResponse<APILocationResponse> queryLocationInformation(Point point, String type) throws IOException {
-        Preconditions.checkNotNull(point, "Point must not be null");
-        Preconditions.checkArgument(point.isValid(), "Point must be a valid coordinate");
-
-        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_LOCATION_PATH + point.getLatitude() + "," + point.getLongitude()));
-        builder.addParameter("type", type);
-
-        Request req = provisionRequest(Request.Get(builder.toString()));
-
-        req.removeHeaders(ACCEPT_KEY);      // Workaround for v3 routing bug
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing query location information without type request %s", req));
-        }
-
-        return provisionExecutor()
-            .execute(req)
-            .handleResponse(new APIClientResponseHandler<APILocationResponse>(APILocationResponse.class));
-    }
-
-    public APIClientResponse<APILocationResponse> queryLocationInformation(BoundedBox box) throws IOException {
-        Preconditions.checkNotNull(box, "Box must not be null");
-        Preconditions.checkArgument(box.isValid(), "Box must be a valid coordinate");
-
-        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_LOCATION_PATH +
-                        box.getCornerOne().getLatitude() + "," +
-                        box.getCornerOne().getLongitude() + "," +
-                        box.getCornerTwo().getLatitude() + "," +
-                        box.getCornerTwo().getLongitude()
-        ));
-
-        Request req = provisionRequest(Request.Get(builder.toString()));
-
-        req.removeHeaders(ACCEPT_KEY);      // Workaround for v3 routing bug
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing query location information without type request %s", req));
-        }
-
-        return provisionExecutor()
-            .execute(req)
-            .handleResponse(new APIClientResponseHandler<APILocationResponse>(APILocationResponse.class));
-    }
-
-    public APIClientResponse<APILocationResponse> queryLocationInformation(BoundedBox box, String type) throws IOException {
-        Preconditions.checkNotNull(box, "Box must not be null");
-        Preconditions.checkArgument(box.isValid(), "Box must be a valid coordinate");
-
-        URIBuilder builder = new URIBuilder(baseURIResolution(baseURI, API_LOCATION_PATH +
-                        box.getCornerOne().getLatitude() + "," +
-                        box.getCornerOne().getLongitude() + "," +
-                        box.getCornerTwo().getLatitude() + "," +
-                        box.getCornerTwo().getLongitude()
-        ));
-
-        builder.addParameter("type", type);
-
-        Request req = provisionRequest(Request.Get(builder.toString()));
-
-        req.removeHeaders(ACCEPT_KEY);      // Workaround for v3 routing bug
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Executing query location information without type request %s", req));
-        }
-
-        return provisionExecutor()
-            .execute(req)
-            .handleResponse(new APIClientResponseHandler<APILocationResponse>(APILocationResponse.class));
-    }
-
 
     /* Object methods */
 
