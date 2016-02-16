@@ -1,8 +1,8 @@
-package com.urbanairship.api.client;
-
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
+
+package com.urbanairship.api.client;
 
 import org.apache.http.entity.ContentType;
 
@@ -23,12 +23,9 @@ public interface Request<T> {
 
     public static enum HttpMethod {
         GET,
-        HEAD,
         POST,
         PUT,
         DELETE,
-        TRACE,
-        OPTIONS
     }
 
     @Nonnull

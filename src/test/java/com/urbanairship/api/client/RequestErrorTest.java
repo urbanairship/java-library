@@ -1,23 +1,24 @@
 package com.urbanairship.api.client;
 
-import com.urbanairship.api.client.parse.APIErrorObjectMapper;
+import com.urbanairship.api.client.parse.RequestErrorObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-public class APIErrorTest {
+public class RequestErrorTest {
 
     @Test
-    public void testAPIErrorDetailsLocationDeserialization() {
+    public void testRequestErrorDetailsLocationDeserialization() {
 
         String errorJSON = "{\"line\":5, \"column\":5}";
 
-        ObjectMapper mapper = APIErrorObjectMapper.getInstance();
+        ObjectMapper mapper = RequestErrorObjectMapper.getInstance();
         try {
-            APIErrorDetails.Location location = mapper.readValue(errorJSON, APIErrorDetails.Location.class);
+            RequestErrorDetails.Location location = mapper.readValue(errorJSON, RequestErrorDetails.Location.class);
             assertTrue("Error in line", location.getLine().equals(5));
             assertTrue("Error in column", location.getColumn().equals(5));
         } catch (Exception ex) {
@@ -27,20 +28,20 @@ public class APIErrorTest {
     }
 
     @Test
-    public void testAPIErrorDetailsDeserialization() {
+    public void testRequestErrorDetailsDeserialization() {
         String errorJson = "{\"error\":\"error\", \"path\":\"path\", \"location\":{\"line\":42,\"column\":42}}";
 
-        ObjectMapper mapper = APIErrorObjectMapper.getInstance();
+        ObjectMapper mapper = RequestErrorObjectMapper.getInstance();
 
         try {
-            APIErrorDetails errorDetails = mapper.readValue(errorJson, APIErrorDetails.class);
+            RequestErrorDetails errorDetails = mapper.readValue(errorJson, RequestErrorDetails.class);
             assertTrue("Error in detail error string", errorDetails.getError().equals("error"));
             assertTrue("Error in detail path string", errorDetails.getPath().equals("path"));
-            APIErrorDetails.Location testLocation = APIErrorDetails.Location.newBuilder()
+            RequestErrorDetails.Location testLocation = RequestErrorDetails.Location.newBuilder()
                     .setColumn(42)
                     .setLine(42)
                     .build();
-            APIErrorDetails.Location location = errorDetails.getLocation().get();
+            RequestErrorDetails.Location location = errorDetails.getLocation().get();
             assertTrue("Error in detail location object", testLocation.equals(location));
         } catch (Exception ex) {
             fail("Exception " + ex.getMessage());
@@ -48,7 +49,7 @@ public class APIErrorTest {
     }
 
     @Test
-    public void testAPIErrorDeserialization() {
+    public void testRequestErrorDeserialization() {
         String errorJSON = "{\n" +
                 "    \"ok\" : false,\n" +
                 "    \"operation_id\" : \"operation id\",\n" +
@@ -63,18 +64,20 @@ public class APIErrorTest {
                 "        }\n" +
                 "    }\n" +
                 "}";
-        ObjectMapper mapper = APIErrorObjectMapper.getInstance();
+        ObjectMapper mapper = RequestErrorObjectMapper.getInstance();
 
         try {
-            APIError error = mapper.readValue(errorJSON, APIError.class);
+            RequestError error = mapper.readValue(errorJSON, RequestError.class);
+
+            assertEquals(RequestError.errorFromResponse(errorJSON, "application/vnd.urbanairship+json"), error);
             assertFalse("Error in ok", error.getOk());
             assertTrue("Error in operation id", error.getOperationId().get().equals("operation id"));
             assertTrue("Error in error code", error.getErrorCode().get().equals(40001));
             assertTrue("Error in error string", error.getError().equals("Invalid push content"));
-            APIErrorDetails testDetails = APIErrorDetails.newBuilder()
+            RequestErrorDetails testDetails = RequestErrorDetails.newBuilder()
                     .setError("error message")
                     .setPath("push.wns.text")
-                    .setLocation(APIErrorDetails.Location.newBuilder()
+                    .setLocation(RequestErrorDetails.Location.newBuilder()
                             .setLine(47)
                             .setColumn(12)
                             .build())
@@ -85,13 +88,39 @@ public class APIErrorTest {
         }
     }
 
+    @Test
+    public void testDeprecatedJsonRequestErrorDeserialization() {
+        String errorJSON = "{\"message\":\"Unauthorized\"}";
+        try {
+            RequestError error = RequestError.newBuilder().setError("Unauthorized").build();
+
+            assertEquals(RequestError.errorFromResponse(errorJSON, "application/json"), error);
+            assertTrue("Error in error string", error.getError().equals("Unauthorized"));
+        } catch (Exception ex) {
+            fail("Exception " + ex.getMessage());
+        }
+    }
+
+    @Test
+    public void testDeprecatedStringRequestErrorDeserialization() {
+        String errorString = "Unauthorized";
+        try {
+            RequestError error = RequestError.newBuilder().setError("Unauthorized").build();
+
+            assertEquals(RequestError.errorFromResponse(errorString, "text/html"), error);
+            assertTrue("Error in error string", error.getError().equals("Unauthorized"));
+        } catch (Exception ex) {
+            fail("Exception " + ex.getMessage());
+        }
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void testThrowsOnNullString() {
-        @SuppressWarnings("UnusedAssignment") APIError error = APIError.newBuilder().build();
+        @SuppressWarnings("UnusedAssignment") RequestError error = RequestError.newBuilder().build();
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testThrowsOnEmptyError() {
-        @SuppressWarnings("UnusedAssignment") APIError error = APIError.newBuilder().setError("").build();
+        @SuppressWarnings("UnusedAssignment") RequestError error = RequestError.newBuilder().setError("").build();
     }
 }

@@ -5,10 +5,7 @@
 package com.urbanairship.api.client;
 
 import com.google.common.base.Optional;
-import com.urbanairship.api.client.parse.APIErrorObjectMapper;
-import org.apache.http.HeaderElement;
-import org.apache.http.HttpResponse;
-import org.apache.http.util.EntityUtils;
+import com.urbanairship.api.client.parse.RequestErrorObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
@@ -21,10 +18,9 @@ import java.util.Map;
  * error. Optional values from Google Guava are used in place of values
  * that may not be present.
  */
-public final class APIError {
+public final class RequestError {
 
     /* Header keys, values */
-    private final static String CONTENT_TYPE_KEY = "Content-type";
     private final static String CONTENT_TYPE_TEXT_HTML = "text/html";
     private final static String CONTENT_TYPE_JSON = "application/json";
     private final static String UA_APPLICATION_JSON = "application/vnd.urbanairship+json";
@@ -33,10 +29,10 @@ public final class APIError {
     private final Optional<String> operationId;
     private final String error;
     private final Optional<Number> errorCode;
-    private final Optional<APIErrorDetails> details;
+    private final Optional<RequestErrorDetails> details;
 
-    private APIError(boolean ok, Optional<String> operationId, String error, Optional<Number> errorCode,
-                     Optional<APIErrorDetails> details) {
+    private RequestError(boolean ok, Optional<String> operationId, String error, Optional<Number> errorCode,
+                         Optional<RequestErrorDetails> details) {
         this.ok = ok;
         this.operationId = operationId;
         if (error == null || error.isEmpty()) {
@@ -53,36 +49,31 @@ public final class APIError {
      * basic JSON errors {"error":"message"} and the v3 error spec. This method
      * parses between three, and returns a best effort response.
      *
-     * @param response HttpResponse for the request that caused the exception
+     * @param body Response body for the request that caused the exception
      * @return APIError
      * @throws IOException
      */
-    public static APIError errorFromResponse(HttpResponse response) throws IOException {
-
-        HeaderElement[] headerElements = response.getFirstHeader(CONTENT_TYPE_KEY)
-                .getElements();
-        String contentType = headerElements[0].getName();
+    public static RequestError errorFromResponse(String body, String contentType) throws IOException {
 
         // Text/html
         if (contentType.equalsIgnoreCase(CONTENT_TYPE_TEXT_HTML)) {
-            return nonJSONError(response);
+            return nonJSONError(body);
         }
 
         // JSON but not v3
         else if (contentType.equalsIgnoreCase(CONTENT_TYPE_JSON)) {
-            return nonV3JSONError(response);
+            return nonV3JSONError(body);
         }
 
         // v3 JSON parsing
         else if (contentType.equalsIgnoreCase(UA_APPLICATION_JSON)) {
-            String responseBody = EntityUtils.toString(response.getEntity());
-            ObjectMapper mapper = APIErrorObjectMapper.getInstance();
-            return mapper.readValue(responseBody, APIError.class);
+            ObjectMapper mapper = RequestErrorObjectMapper.getInstance();
+            return mapper.readValue(body, RequestError.class);
         }
 
         // wut?
         else {
-            return APIError.newBuilder()
+            return RequestError.newBuilder()
                     .setError("Unknown response parsing error")
                     .build();
         }
@@ -93,12 +84,10 @@ public final class APIError {
     do this. API-291, 12JUL13
      */
     @Deprecated
-    private static APIError nonJSONError(HttpResponse response) throws
+    private static RequestError nonJSONError(String body) throws
             IOException {
-        String responseBody = EntityUtils.toString(response.getEntity());
-        EntityUtils.consumeQuietly(response.getEntity());
-        return APIError.newBuilder()
-                .setError(responseBody)
+        return RequestError.newBuilder()
+                .setError(body)
                 .build();
     }
 
@@ -107,18 +96,15 @@ public final class APIError {
     API-281, 12JUL13
      */
     @Deprecated
-    private static APIError nonV3JSONError(HttpResponse response) throws
-            IOException {
-        String responseBody = EntityUtils.toString(response.getEntity());
-        EntityUtils.consume(response.getEntity());
-        ObjectMapper mapper = APIErrorObjectMapper.getInstance();
+    private static RequestError nonV3JSONError(String body) throws IOException {
+        ObjectMapper mapper = RequestErrorObjectMapper.getInstance();
 
         Map<String, String> errorMsg =
-                mapper.readValue(responseBody,
+                mapper.readValue(body,
                         new TypeReference<Map<String, String>>() {
                         });
 
-        return APIError.newBuilder()
+        return RequestError.newBuilder()
                 .setError(errorMsg.get("message"))
                 .build();
     }
@@ -174,7 +160,7 @@ public final class APIError {
      *
      * @return Optional details object
      */
-    public Optional<APIErrorDetails> getDetails() {
+    public Optional<RequestErrorDetails> getDetails() {
         return details;
     }
 
@@ -194,6 +180,32 @@ public final class APIError {
         return stringBuilder.toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RequestError)) return false;
+
+        RequestError that = (RequestError) o;
+
+        if (ok != that.ok) return false;
+        if (details != null ? !details.equals(that.details) : that.details != null) return false;
+        if (error != null ? !error.equals(that.error) : that.error != null) return false;
+        if (errorCode != null ? !errorCode.equals(that.errorCode) : that.errorCode != null) return false;
+        if (operationId != null ? !operationId.equals(that.operationId) : that.operationId != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (ok ? 1 : 0);
+        result = 31 * result + (operationId != null ? operationId.hashCode() : 0);
+        result = 31 * result + (error != null ? error.hashCode() : 0);
+        result = 31 * result + (errorCode != null ? errorCode.hashCode() : 0);
+        result = 31 * result + (details != null ? details.hashCode() : 0);
+        return result;
+    }
+
     /**
      * Builds an APIError.
      */
@@ -203,7 +215,7 @@ public final class APIError {
         private String operationId;
         private String error;
         private Number errorCode;
-        private APIErrorDetails details;
+        private RequestErrorDetails details;
 
         public Builder setOk(boolean ok) {
             this.ok = ok;
@@ -232,18 +244,35 @@ public final class APIError {
             return this;
         }
 
+        /**
+         * Set the error code.
+         *
+         * @param errorCode The error code.
+         * @return Build
+         */
         public Builder setErrorCode(Number errorCode) {
             this.errorCode = errorCode;
             return this;
         }
 
-        public Builder setDetails(APIErrorDetails details) {
+        /**
+         * Set the error details.
+         *
+         * @param details The RequestErrorDetails.
+         * @return Builder
+         */
+        public Builder setDetails(RequestErrorDetails details) {
             this.details = details;
             return this;
         }
 
-        public APIError build() {
-            return new APIError(ok,
+        /**
+         * Build the RequestError instance.
+         *
+         * @return The RequestError instance.
+         */
+        public RequestError build() {
+            return new RequestError(ok,
                     Optional.fromNullable(operationId),
                     error,
                     Optional.fromNullable(errorCode),

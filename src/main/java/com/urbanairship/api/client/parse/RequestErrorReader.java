@@ -5,8 +5,8 @@
 package com.urbanairship.api.client.parse;
 
 
-import com.urbanairship.api.client.APIError;
-import com.urbanairship.api.client.APIErrorDetails;
+import com.urbanairship.api.client.RequestError;
+import com.urbanairship.api.client.RequestErrorDetails;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import org.codehaus.jackson.JsonParser;
@@ -17,12 +17,12 @@ import java.io.IOException;
 Readers are the part of the deserialization process that actually builds and
 return an object.
  */
-public final class APIErrorReader implements JsonObjectReader<APIError> {
+public final class RequestErrorReader implements JsonObjectReader<RequestError> {
 
-    private final APIError.Builder builder;
+    private final RequestError.Builder builder;
 
-    public APIErrorReader() {
-        this.builder = APIError.newBuilder();
+    public RequestErrorReader() {
+        this.builder = RequestError.newBuilder();
     }
 
     public void readOk(JsonParser parser) throws IOException {
@@ -42,11 +42,11 @@ public final class APIErrorReader implements JsonObjectReader<APIError> {
     }
 
     public void readDetails(JsonParser parser) throws IOException {
-        builder.setDetails(parser.readValueAs(APIErrorDetails.class));
+        builder.setDetails(parser.readValueAs(RequestErrorDetails.class));
     }
 
     @Override
-    public APIError validateAndBuild() throws IOException {
+    public RequestError validateAndBuild() throws IOException {
         try {
             return builder.build();
         } catch (Exception ex) {
