@@ -1,7 +1,6 @@
 package com.urbanairship.api.reports.parse;
 
 
-import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.reports.model.StatisticsResponse;

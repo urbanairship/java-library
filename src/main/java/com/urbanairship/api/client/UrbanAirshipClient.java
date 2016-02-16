@@ -4,6 +4,7 @@ package com.urbanairship.api.client;
  * Copyright (c) 2013-2015.  Urban Airship and Contributors
  */
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -238,7 +239,8 @@ public class UrbanAirshipClient {
         return headers.asMap();
     }
 
-    private String getUserAgent() {
+    @VisibleForTesting
+    public String getUserAgent() {
         if (userAgent == null) {
             userAgent = "UNKNOWN";
 

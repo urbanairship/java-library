@@ -5,7 +5,6 @@
 package com.urbanairship.api.reports.parse;
 
 
-import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import com.urbanairship.api.reports.model.PerPushCounts;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;

@@ -124,10 +124,6 @@ import com.urbanairship.api.schedule.parse.ScheduleDetailsSerializer;
 import com.urbanairship.api.schedule.parse.SchedulePayloadDeserializer;
 import com.urbanairship.api.schedule.parse.ScheduleSerializer;
 import com.urbanairship.api.schedule.parse.ScheduledPayloadSerializer;
-import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
-import com.urbanairship.api.tag.model.BatchModificationPayload;
-import com.urbanairship.api.tag.parse.AddRemoveDeviceFromTagPayloadSerializer;
-import com.urbanairship.api.tag.parse.BatchModificationPayloadSerializer;
 import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.JsonDeserializer;
@@ -274,10 +270,6 @@ public class PushObjectMapper {
                 .addSerializer(ShareAction.class, new ShareActionSerializer())
 
                 .addDeserializer(TagActionData.class, new TagActionDataDeserializer())
-
-            /* Tags */
-                .addSerializer(AddRemoveDeviceFromTagPayload.class, new AddRemoveDeviceFromTagPayloadSerializer())
-                .addSerializer(BatchModificationPayload.class, new BatchModificationPayloadSerializer())
 
             /* Segments */
                 .addDeserializer(SegmentDefinition.class, new SegmentDefinitionDeserializer());

@@ -3,6 +3,7 @@ package com.urbanairship.api.client;
 import com.urbanairship.api.push.model.PushResponse;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicHttpResponse;
@@ -10,6 +11,7 @@ import org.apache.http.message.BasicStatusLine;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -48,8 +50,19 @@ public class APIClientResponseErrorHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY, UA_JSON_RESPONSE));
 
         /* Test handling */
-        APIClientResponseHandler<PushResponse> handler =
-            new APIClientResponseHandler<PushResponse>(PushResponse.class);
+        ResponseHandler<Response<PushResponse>> handler = new ResponseHandler<Response<PushResponse>>() {
+            @Override
+            public Response<PushResponse> handleResponse(HttpResponse httpResponse) throws IOException {
+                int statusCode = httpResponse.getStatusLine().getStatusCode();
+
+                if (statusCode >= 200 && statusCode < 300) {
+                    return new Response<PushResponse>(null, null, httpResponse.getStatusLine().getStatusCode());
+                } else {
+                    throw APIRequestException.exceptionForResponse(httpResponse);
+                }
+            }
+        };
+
         try {
             handler.handleResponse(httpResponse);
         } catch (APIRequestException ex) {
@@ -86,8 +99,18 @@ public class APIClientResponseErrorHandlerTest {
             pushJSON.getBytes().length);
         httpResponse.setEntity(inputStreamEntity);
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY, CONTENT_TYPE_JSON));
-        APIClientResponseHandler<PushResponse> handler =
-            new APIClientResponseHandler<PushResponse>(PushResponse.class);
+        ResponseHandler<Response<PushResponse>> handler = new ResponseHandler<Response<PushResponse>>() {
+            @Override
+            public Response<PushResponse> handleResponse(HttpResponse httpResponse) throws IOException {
+                int statusCode = httpResponse.getStatusLine().getStatusCode();
+
+                if (statusCode >= 200 && statusCode < 300) {
+                    return new Response<PushResponse>(null, null, httpResponse.getStatusLine().getStatusCode());
+                } else {
+                    throw APIRequestException.exceptionForResponse(httpResponse);
+                }
+            }
+        };
 
         try {
             handler.handleResponse(httpResponse);
@@ -119,8 +142,18 @@ public class APIClientResponseErrorHandlerTest {
         httpResponse.setHeader(new BasicHeader(CONTENT_TYPE_KEY,
             CONTENT_TYPE_TEXT_HTML));
 
-        APIClientResponseHandler<PushResponse> handler =
-            new APIClientResponseHandler<PushResponse>(PushResponse.class);
+        ResponseHandler<Response<PushResponse>> handler = new ResponseHandler<Response<PushResponse>>() {
+            @Override
+            public Response<PushResponse> handleResponse(HttpResponse httpResponse) throws IOException {
+                int statusCode = httpResponse.getStatusLine().getStatusCode();
+
+                if (statusCode >= 200 && statusCode < 300) {
+                    return new Response<PushResponse>(null, null, httpResponse.getStatusLine().getStatusCode());
+                } else {
+                    throw APIRequestException.exceptionForResponse(httpResponse);
+                }
+            }
+        };
 
         try {
             handler.handleResponse(httpResponse);

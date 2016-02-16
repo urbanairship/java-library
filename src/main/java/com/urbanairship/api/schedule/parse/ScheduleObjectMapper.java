@@ -1,6 +1,5 @@
 package com.urbanairship.api.schedule.parse;
 
-import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
 import com.urbanairship.api.schedule.model.Schedule;
@@ -29,7 +28,6 @@ public class ScheduleObjectMapper {
 
         MAPPER.registerModule(MODULE);
         MAPPER.registerModule(PushObjectMapper.getModule());
-        MAPPER.registerModule(APIResponseObjectMapper.getModule());
         MAPPER.configure(DeserializationConfig.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
     }
 

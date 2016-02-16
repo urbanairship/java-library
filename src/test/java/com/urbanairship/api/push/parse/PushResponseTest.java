@@ -1,6 +1,5 @@
 package com.urbanairship.api.push.parse;
 
-import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import com.urbanairship.api.push.model.PushResponse;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
@@ -26,7 +25,7 @@ public class PushResponseTest {
                 "    \"content_urls\" : []\n" +
             "}";
 
-        ObjectMapper mapper = APIResponseObjectMapper.getInstance();
+        ObjectMapper mapper = PushObjectMapper.getInstance();
         try {
             PushResponse response = mapper.readValue(pushJSON, PushResponse.class);
             assertTrue("Error in response operationId",
