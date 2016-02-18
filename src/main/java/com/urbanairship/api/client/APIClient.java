@@ -379,9 +379,9 @@ public class APIClient {
         return provisionExecutor().execute(req).returnResponse();
     }
 
-    public HttpResponse addRemoveNamedUserFromTag(String tag, AddRemoveNamedUserFromTagPayload payload) throws IOException {
+    public HttpResponse addRemoveNamedUserFromTag(AddRemoveNamedUserFromTagPayload payload) throws IOException {
         Preconditions.checkNotNull(payload, "Payload is required when adding and/or removing tags from a named user");
-        Request req = provisionRequest(Request.Post(baseURIResolution(baseURI, API_TAGS_PATH + tag)));
+        Request req = provisionRequest(Request.Post(baseURIResolution(baseURI, API_TAGS_PATH )));
         req.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
 
         if (logger.isDebugEnabled()) {
