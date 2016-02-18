@@ -29,6 +29,7 @@ import com.urbanairship.api.reports.model.SinglePushInfoResponse;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.segments.model.AudienceSegment;
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
+import com.urbanairship.api.tag.model.AddRemoveNamedUserFromTagPayload;
 import com.urbanairship.api.tag.model.BatchModificationPayload;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpHost;
@@ -368,6 +369,18 @@ public class APIClient {
 
     public HttpResponse addRemoveDevicesFromTag(String tag, AddRemoveDeviceFromTagPayload payload) throws IOException {
         Preconditions.checkNotNull(payload, "Payload is required when adding and/or removing devices from a tag");
+        Request req = provisionRequest(Request.Post(baseURIResolution(baseURI, API_TAGS_PATH + tag)));
+        req.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing add/remove tags from named user request %s", req));
+        }
+
+        return provisionExecutor().execute(req).returnResponse();
+    }
+
+    public HttpResponse addRemoveNamedUserFromTag(String tag, AddRemoveNamedUserFromTagPayload payload) throws IOException {
+        Preconditions.checkNotNull(payload, "Payload is required when adding and/or removing tags from a named user");
         Request req = provisionRequest(Request.Post(baseURIResolution(baseURI, API_TAGS_PATH + tag)));
         req.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
 
