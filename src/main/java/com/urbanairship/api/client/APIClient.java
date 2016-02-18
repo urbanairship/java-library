@@ -19,6 +19,7 @@ import com.urbanairship.api.client.model.APIReportsPushListingResponse;
 import com.urbanairship.api.client.model.APIScheduleResponse;
 import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.Point;
+import com.urbanairship.api.nameduser.model.AssociateNamedUserPayload;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.reports.model.PerPushDetailResponse;
@@ -377,6 +378,7 @@ public class APIClient {
 
         return provisionExecutor().execute(req).returnResponse();
     }
+
 
     public HttpResponse batchModificationOfTags(BatchModificationPayload payload) throws IOException {
         Preconditions.checkNotNull(payload, "Payload is required when performing batch modification of tags");
@@ -895,6 +897,19 @@ public class APIClient {
         }
 
         return provisionExecutor().execute(req).handleResponse(new StringAPIResponseHandler());
+    }
+
+
+    public HttpResponse associateNamedUser(AssociateNamedUserPayload payload) throws IOException {
+        Preconditions.checkNotNull(payload, "Payload is required when associating a named user");
+        Request req = provisionRequest(Request.Post(baseURIResolution(baseURI, API_TAGS_PATH)));
+        req.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing associate named user request %s", req));
+        }
+
+        return provisionExecutor().execute(req).returnResponse();
     }
 
     /* Object methods */
