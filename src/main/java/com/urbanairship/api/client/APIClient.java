@@ -83,6 +83,8 @@ public class APIClient {
     private final static String API_REPORTS_PUSH_RESPONSE_PATH = "/api/reports/responses/";
     private final static String API_REPORTS_APPS_OPEN_PATH = "/api/reports/opens/";
     private final static String API_REPORTS_TIME_IN_APP_PATH = "/api/reports/timeinapp/";
+    private final static String API_NAMED_USER_PATH = "/api/named_users/associate";
+
     private final static Logger logger = LoggerFactory.getLogger("com.urbanairship.api");
     /* User auth */
     private final String appKey;
@@ -902,7 +904,7 @@ public class APIClient {
 
     public HttpResponse associateNamedUser(AssociateNamedUserPayload payload) throws IOException {
         Preconditions.checkNotNull(payload, "Payload is required when associating a named user");
-        Request req = provisionRequest(Request.Post(baseURIResolution(baseURI, API_TAGS_PATH)));
+        Request req = provisionRequest(Request.Post(baseURIResolution(baseURI, API_NAMED_USER_PATH)));
         req.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
 
         if (logger.isDebugEnabled()) {
