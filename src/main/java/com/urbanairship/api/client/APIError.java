@@ -5,7 +5,7 @@
 package com.urbanairship.api.client;
 
 import com.google.common.base.Optional;
-import com.urbanairship.api.client.parse.APIResponseObjectMapper;
+import com.urbanairship.api.client.parse.APIErrorObjectMapper;
 import org.apache.http.HeaderElement;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
@@ -76,7 +76,7 @@ public final class APIError {
         // v3 JSON parsing
         else if (contentType.equalsIgnoreCase(UA_APPLICATION_JSON)) {
             String responseBody = EntityUtils.toString(response.getEntity());
-            ObjectMapper mapper = APIResponseObjectMapper.getInstance();
+            ObjectMapper mapper = APIErrorObjectMapper.getInstance();
             return mapper.readValue(responseBody, APIError.class);
         }
 
@@ -111,7 +111,7 @@ public final class APIError {
             IOException {
         String responseBody = EntityUtils.toString(response.getEntity());
         EntityUtils.consume(response.getEntity());
-        ObjectMapper mapper = APIResponseObjectMapper.getInstance();
+        ObjectMapper mapper = APIErrorObjectMapper.getInstance();
 
         Map<String, String> errorMsg =
                 mapper.readValue(responseBody,

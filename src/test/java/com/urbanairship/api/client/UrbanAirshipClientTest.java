@@ -54,6 +54,8 @@ import com.urbanairship.api.segments.model.SegmentListingResponse;
 import com.urbanairship.api.segments.model.SegmentView;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.CoreConnectionPNames;
 import org.apache.log4j.BasicConfigurator;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -67,6 +69,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -116,6 +119,146 @@ public class UrbanAirshipClientTest {
     @Rule
     public static WireMockClassRule wireMockClassRule = new WireMockClassRule();
 
+
+    @Test(expected = NullPointerException.class)
+    public void testAPIClientThrowsForNoAppKey() {
+        @SuppressWarnings("UnusedAssignment") UrbanAirshipClient apiClient = UrbanAirshipClient.newBuilder()
+            .setKey("foo")
+            .build();
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testAPIClientThrowsForNoAppSecret() {
+        @SuppressWarnings("UnusedAssignment") UrbanAirshipClient apiClient = UrbanAirshipClient.newBuilder()
+            .setSecret("foo")
+            .build();
+    }
+
+    @Test
+    public void testAPIClientBuilder() {
+        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
+            .setKey("key")
+            .setSecret("secret")
+            .build();
+        assertEquals("App key incorrect", "key", client.getAppKey());
+        assertEquals("App secret incorrect", "secret", client.getAppSecret());
+        assertFalse(client.getProxyInfo().isPresent());
+    }
+
+    @Test
+    public void testAPIClientBuilderWithOptionalProxyInfoOptionalCredential() {
+        UrbanAirshipClient proxyClient = UrbanAirshipClient.newBuilder()
+            .setKey("key")
+            .setSecret("secret")
+            .setProxyInfo(ProxyInfo.newBuilder()
+                .setProxyHost(new HttpHost("host"))
+                .setProxyCredentials(new UsernamePasswordCredentials("user", "password"))
+                .build())
+            .build();
+
+        assertTrue(proxyClient.getProxyInfo().isPresent());
+        assertTrue(proxyClient.getProxyInfo().get().getProxyCredentials().isPresent());
+
+        assertEquals(new HttpHost("host"), proxyClient.getProxyInfo().get().getProxyHost());
+        assertEquals(new UsernamePasswordCredentials("user", "password"), proxyClient.getProxyInfo().get().getProxyCredentials().get());
+    }
+
+    @Test
+    public void testAPIClientBuilderWithOptionalProxyInfoNoCredential() {
+        UrbanAirshipClient proxyClient = UrbanAirshipClient.newBuilder()
+            .setKey("key")
+            .setSecret("secret")
+            .setProxyInfo(ProxyInfo.newBuilder()
+                .setProxyHost(new HttpHost("host"))
+                .build())
+            .build();
+
+        assertTrue(proxyClient.getProxyInfo().isPresent());
+        assertFalse(proxyClient.getProxyInfo().get().getProxyCredentials().isPresent());
+
+        assertEquals(new HttpHost("host"), proxyClient.getProxyInfo().get().getProxyHost());
+    }
+
+    @Test
+    public void testGetUserAgent() {
+        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
+            .setKey("key")
+            .setSecret("secret")
+            .build();
+        String userAgent = client.getUserAgent();
+        assertNotNull(userAgent);
+        assertFalse(userAgent.equals("UNKNOWN"));
+        assertFalse(userAgent.equals("UAJavaLib/UNKNOWN"));
+        assertFalse(userAgent.equals("UAJavaLib/"));
+        assertFalse(userAgent.endsWith("/"));
+        assertTrue(userAgent.startsWith("UAJavaLib/"));
+    }
+
+    @Test
+    public void testAPIClientBuilderWithBasicHttpParams() {
+        BasicHttpParams httpParams = new BasicHttpParams();
+        httpParams.setParameter(CoreConnectionPNames.SO_TIMEOUT, 10);
+        httpParams.setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 20);
+
+        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
+            .setKey("key")
+            .setSecret("secret")
+            .setHttpParams(httpParams)
+            .build();
+
+        String socketTimeoutName = "http.socket.timeout";
+        String connectionTimeoutName = "http.connection.timeout";
+        BasicHttpParams retrievedParams = client.getHttpParams().get();
+
+        assertTrue(retrievedParams.getNames().contains(socketTimeoutName));
+        assertTrue(retrievedParams.getNames().contains(connectionTimeoutName));
+        assertTrue(retrievedParams.getParameter(socketTimeoutName).equals(10));
+        assertTrue(retrievedParams.getParameter(connectionTimeoutName).equals(20));
+    }
+
+    @Test
+    public void testBaseUriResolutionWithPath() throws URISyntaxException {
+        String base = "https://test.com/big/fun/path/";
+        String relative = "/api/push/";
+        String expected = "https://test.com/big/fun/path/api/push/";
+
+        URI uriBase = new URI(base);
+        URI uriNuResolved = RequestUtils.resolveURI(uriBase, relative);
+        assertEquals(expected, uriNuResolved.toString());
+    }
+
+    @Test
+    public void testBaseUriResolutionWithPathWithoutSlash() throws URISyntaxException {
+        String base = "https://test.com/big/fun/path";
+        String relative = "/api/push/";
+        String expected = "https://test.com/big/fun/path/api/push/";
+
+        URI uriBase = new URI(base);
+        URI uriNuResolved = RequestUtils.resolveURI(uriBase, relative);
+        assertEquals(expected, uriNuResolved.toString());
+    }
+
+    @Test
+    public void testBaseUriResolutionWithoutPath() throws URISyntaxException {
+        String base = "https://test.com/";
+        String relative = "/api/push/";
+        String expected = "https://test.com/api/push/";
+
+        URI uriBase = new URI(base);
+        URI uriNuResolved = RequestUtils.resolveURI(uriBase, relative);
+        assertEquals(expected, uriNuResolved.toString());
+    }
+
+    @Test
+    public void testBaseUriResolutionWithoutSlash() throws URISyntaxException {
+        String base = "https://test.com";
+        String relative = "/api/push/";
+        String expected = "https://test.com/api/push/";
+
+        URI uriBase = new URI(base);
+        URI uriNuResolved = RequestUtils.resolveURI(uriBase, relative);
+        assertEquals(expected, uriNuResolved.toString());
+    }
 
     /* Test the following attributes of the push method on the APIClient object
      1. Method produces a post request

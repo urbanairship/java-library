@@ -1,6 +1,6 @@
 package com.urbanairship.api.client;
 
-import com.urbanairship.api.client.parse.APIResponseObjectMapper;
+import com.urbanairship.api.client.parse.APIErrorObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
@@ -15,7 +15,7 @@ public class APIErrorTest {
 
         String errorJSON = "{\"line\":5, \"column\":5}";
 
-        ObjectMapper mapper = APIResponseObjectMapper.getInstance();
+        ObjectMapper mapper = APIErrorObjectMapper.getInstance();
         try {
             APIErrorDetails.Location location = mapper.readValue(errorJSON, APIErrorDetails.Location.class);
             assertTrue("Error in line", location.getLine().equals(5));
@@ -30,7 +30,7 @@ public class APIErrorTest {
     public void testAPIErrorDetailsDeserialization() {
         String errorJson = "{\"error\":\"error\", \"path\":\"path\", \"location\":{\"line\":42,\"column\":42}}";
 
-        ObjectMapper mapper = APIResponseObjectMapper.getInstance();
+        ObjectMapper mapper = APIErrorObjectMapper.getInstance();
 
         try {
             APIErrorDetails errorDetails = mapper.readValue(errorJson, APIErrorDetails.class);
@@ -63,7 +63,7 @@ public class APIErrorTest {
                 "        }\n" +
                 "    }\n" +
                 "}";
-        ObjectMapper mapper = APIResponseObjectMapper.getInstance();
+        ObjectMapper mapper = APIErrorObjectMapper.getInstance();
 
         try {
             APIError error = mapper.readValue(errorJSON, APIError.class);

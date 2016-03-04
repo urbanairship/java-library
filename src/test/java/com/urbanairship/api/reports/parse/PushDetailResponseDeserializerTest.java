@@ -7,7 +7,6 @@ package com.urbanairship.api.reports.parse;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
-import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.reports.Base64ByteArray;
 import com.urbanairship.api.reports.model.PerPushCounts;
