@@ -123,6 +123,7 @@ public class UrbanAirshipClient implements Closeable {
         try {
             uri = request.getUri(baseUri).toString();
         } catch (URISyntaxException e) {
+            log.error("Failed to generate a request URI from base URI " + baseUri.toString(), e);
             throw new RuntimeException(e);
         }
 
@@ -166,6 +167,7 @@ public class UrbanAirshipClient implements Closeable {
             requestBuilder.setBody(body.getBytes(contentType.getCharset()));
         }
 
+        log.debug(String.format("Executing Urban Airship request to %s with body %s.", uri, request.getRequestBody()));
         ResponseAsyncHandler<T> handler = new ResponseAsyncHandler<>(Optional.fromNullable(callback), request.getResponseParser());
         return requestBuilder.execute(handler);
     }
@@ -214,6 +216,7 @@ public class UrbanAirshipClient implements Closeable {
      */
     @Override
     public void close() {
+        log.info("Closing client");
         client.close();
     }
 
@@ -234,7 +237,7 @@ public class UrbanAirshipClient implements Closeable {
                 stream.close();
                 userAgent = "UAJavaLib/" + props.get("client.version");
             } catch (IOException e) {
-                 // log it
+                log.error("Failed to retrieve client user agent due to IOException - setting to \"UNKNOWN\"", e);
             }
         }
         return userAgent;

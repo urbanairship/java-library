@@ -10,6 +10,8 @@ import com.ning.http.client.HttpResponseBodyPart;
 import com.ning.http.client.HttpResponseHeaders;
 import com.ning.http.client.HttpResponseStatus;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
@@ -23,8 +25,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @param <T> The response type.
  */
 class ResponseAsyncHandler<T> implements AsyncHandler<Response> {
-
-    private final static String CONTENT_TYPE_KEY = "Content-type";
+    private static final Logger log = LoggerFactory.getLogger(ResponseAsyncHandler.class);
+    private static final String CONTENT_TYPE_KEY = "Content-type";
 
     private final Response.Builder<T> responseBuilder = new Response.Builder<>();
     private final ClientException.Builder exceptionBuilder = ClientException.newBuilder();
@@ -81,6 +83,7 @@ class ResponseAsyncHandler<T> implements AsyncHandler<Response> {
         String body = new String(bodyPart.getBodyPartBytes(), StandardCharsets.UTF_8);
 
         if (!isSuccessful) {
+            // The response body for an error won't be very big, so we can throw here without needing to aggregate.
             RequestError error = RequestError.errorFromResponse(body, exceptionContentType);
             exceptionBuilder.setRequestError(error);
             throw exceptionBuilder.build();
@@ -96,15 +99,18 @@ class ResponseAsyncHandler<T> implements AsyncHandler<Response> {
             responseBuilder.setBody(parser.parse(bodyBuilder.toString()));
         }
 
+        Response response = responseBuilder.build();
         if (clientCallback.isPresent()) {
-            clientCallback.get().completed(responseBuilder.build());
+            clientCallback.get().completed(response);
         }
 
-        return responseBuilder.build();
+        log.debug("Response processing completed for " + response.getBody());
+        return response;
     }
 
     @Override
     public void onThrowable(Throwable t) {
+        log.error("Exception thrown during response processing", t);
         if (clientCallback.isPresent()) {
             clientCallback.get().error(t);
         }
