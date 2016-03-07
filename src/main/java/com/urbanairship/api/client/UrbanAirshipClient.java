@@ -92,7 +92,7 @@ public class UrbanAirshipClient implements Closeable {
     }
 
     /**
-     * Get the max count for request retries on 5xx.
+     * Get the max count for request retries on 503.
      *
      * @return The max retry count.
      */
@@ -354,7 +354,7 @@ public class UrbanAirshipClient implements Closeable {
         }
 
         /**
-         * Set the maximum for request retries on 5XXs -- defaults to 10.
+         * Set the maximum for request retries on 503s -- defaults to 10.
          *
          * @param maxRetries The maximum.
          * @return Builder
@@ -394,7 +394,7 @@ public class UrbanAirshipClient implements Closeable {
          * 1. App key must be set.
          * 2. App secret must be set.
          * 3. The base URI has been overridden but not set.
-         * 4. Max for 5XX retries must be set, already defaults to 10.
+         * 4. Max for 503 retries must be set, already defaults to 10.
          * 5. HTTP client config builder must be set, already defaults to a new builder.
          * </pre>
          *

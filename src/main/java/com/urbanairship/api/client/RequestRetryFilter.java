@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ResponseFilter in charge of async request retries on 5xxs. The filter is applied before the response reaches the
+ * ResponseFilter in charge of async request retries on 503s. The filter is applied before the response reaches the
  * ResponseAsyncHandler, but calls upon the handler of a given request to track the retry count. If the count is below the max retry limit,
  * the request will be replayed with an exponential backoff. If the limit is reached, a ServerException is thrown.
  */
@@ -29,7 +29,7 @@ public class RequestRetryFilter implements ResponseFilter {
     @Override
     public <T> FilterContext<T> filter(FilterContext<T> ctx) throws FilterException {
         int statusCode = ctx.getResponseStatus().getStatusCode();
-        if (statusCode >= 500) {
+        if (statusCode == 503) {
             if (ctx.getAsyncHandler() instanceof ResponseAsyncHandler) {
                 ResponseAsyncHandler asyncHandler = (ResponseAsyncHandler) ctx.getAsyncHandler();
                 if (asyncHandler.getRetryCount() < maxRetries) {

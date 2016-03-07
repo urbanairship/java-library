@@ -538,7 +538,7 @@ public class UrbanAirshipClientTest {
         stubFor(post(urlEqualTo("/api/push/"))
             .willReturn(aResponse()
                 .withHeader(CONTENT_TYPE_KEY, "application/vnd.urbanairship+json")
-                .withStatus(501)));
+                .withStatus(503)));
 
         try {
             final CountDownLatch latch = new CountDownLatch(1);
