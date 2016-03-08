@@ -36,6 +36,7 @@ public class UrbanAirshipClient implements Closeable {
     private final String appSecret;
     private final URI baseUri;
     private final Integer maxRetries;
+    private final Integer maxPostRetries;
     private final AsyncHttpClient client;
 
     private UrbanAirshipClient(Builder builder) {
@@ -43,10 +44,11 @@ public class UrbanAirshipClient implements Closeable {
         this.appSecret = builder.secret;
         this.baseUri = URI.create(builder.baseUri);
         this.maxRetries = builder.maxRetries;
+        this.maxPostRetries = builder.maxPostRetries;
 
         AsyncHttpClientConfig.Builder clientConfigBuilder = builder.clientConfigBuilder;
         clientConfigBuilder.setUserAgent(getUserAgent());
-        clientConfigBuilder.addResponseFilter(new RequestRetryFilter(maxRetries));
+        clientConfigBuilder.addResponseFilter(new RequestRetryFilter(maxRetries, maxPostRetries));
 
         Optional<ProxyServer> proxyServer = convertProxyInfo(Optional.fromNullable(builder.proxyInfo));
         if (proxyServer.isPresent()) {
@@ -92,13 +94,23 @@ public class UrbanAirshipClient implements Closeable {
     }
 
     /**
-     * Get the max count for request retries on 503.
+     * Get the max count for non-POST request retries on 5xx.
      *
      * @return The max retry count.
      */
     public Integer getMaxRetries() {
         return maxRetries;
     }
+
+    /**
+     * Get the max count for POST request retries on 503.
+     *
+     * @return The max retry count.
+     */
+    public Integer getMaxPostRetries() {
+        return maxPostRetries;
+    }
+
 
     /**
      * Get the underlying HTTP client.
@@ -272,6 +284,7 @@ public class UrbanAirshipClient implements Closeable {
 
 
     /* Object methods */
+
     @Override
     public String toString() {
         return "UrbanAirshipClient{" +
@@ -279,6 +292,7 @@ public class UrbanAirshipClient implements Closeable {
             ", appSecret='" + appSecret + '\'' +
             ", baseUri=" + baseUri +
             ", maxRetries=" + maxRetries +
+            ", maxPostRetries=" + maxPostRetries +
             ", client=" + client +
             '}';
     }
@@ -294,6 +308,8 @@ public class UrbanAirshipClient implements Closeable {
         if (appSecret != null ? !appSecret.equals(that.appSecret) : that.appSecret != null) return false;
         if (baseUri != null ? !baseUri.equals(that.baseUri) : that.baseUri != null) return false;
         if (client != null ? !client.equals(that.client) : that.client != null) return false;
+        if (maxPostRetries != null ? !maxPostRetries.equals(that.maxPostRetries) : that.maxPostRetries != null)
+            return false;
         if (maxRetries != null ? !maxRetries.equals(that.maxRetries) : that.maxRetries != null) return false;
 
         return true;
@@ -305,9 +321,11 @@ public class UrbanAirshipClient implements Closeable {
         result = 31 * result + (appSecret != null ? appSecret.hashCode() : 0);
         result = 31 * result + (baseUri != null ? baseUri.hashCode() : 0);
         result = 31 * result + (maxRetries != null ? maxRetries.hashCode() : 0);
+        result = 31 * result + (maxPostRetries != null ? maxPostRetries.hashCode() : 0);
         result = 31 * result + (client != null ? client.hashCode() : 0);
         return result;
     }
+
     /* Builder for newAPIClient */
 
     public static class Builder {
@@ -316,6 +334,7 @@ public class UrbanAirshipClient implements Closeable {
         private String secret;
         private String baseUri;
         private Integer maxRetries = 10;
+        private Integer maxPostRetries = 0;
         private AsyncHttpClientConfig.Builder clientConfigBuilder = new AsyncHttpClientConfig.Builder();
         private ProxyInfo proxyInfo = null;
 
@@ -354,13 +373,25 @@ public class UrbanAirshipClient implements Closeable {
         }
 
         /**
-         * Set the maximum for request retries on 503s -- defaults to 10.
+         * Set the maximum for non-POST request retries on 5xxs -- defaults to 10.
          *
          * @param maxRetries The maximum.
          * @return Builder
          */
         public Builder setMaxRetries(Integer maxRetries) {
             this.maxRetries = maxRetries;
+            return this;
+        }
+
+
+        /**
+         * Set the maximum for POST request retries on 503s -- defaults to 0.
+         *
+         * @param maxPostRetries The maximum.
+         * @return Builder
+         */
+        public Builder setMaxPostRetries(Integer maxPostRetries) {
+            this.maxPostRetries = maxPostRetries;
             return this;
         }
 
@@ -394,8 +425,9 @@ public class UrbanAirshipClient implements Closeable {
          * 1. App key must be set.
          * 2. App secret must be set.
          * 3. The base URI has been overridden but not set.
-         * 4. Max for 503 retries must be set, already defaults to 10.
-         * 5. HTTP client config builder must be set, already defaults to a new builder.
+         * 4. Max for non-POST 5xx retries must be set, already defaults to 10.
+         * 5. Max for POST 503 retries must be set, already defaults to 0.
+         * 6. HTTP client config builder must be set, already defaults to a new builder.
          * </pre>
          *
          * @return UrbanAirshipClient
@@ -404,7 +436,8 @@ public class UrbanAirshipClient implements Closeable {
             Preconditions.checkNotNull(key, "app key needed to build APIClient");
             Preconditions.checkNotNull(secret, "app secret needed to build APIClient");
             Preconditions.checkNotNull(baseUri, "base URI needed to build APIClient");
-            Preconditions.checkNotNull(maxRetries, "max retries needed to build APIClient");
+            Preconditions.checkNotNull(maxRetries, "max non-POST retries needed to build APIClient");
+            Preconditions.checkNotNull(maxPostRetries, "max POST retries needed to build APIClient");
             Preconditions.checkNotNull(clientConfigBuilder, "Async HTTP client config builder needed to build APIClient");
 
             return new UrbanAirshipClient(this);

@@ -119,6 +119,7 @@ public class UrbanAirshipClientTest {
                 .setKey("key")
                 .setSecret("secret")
                 .setMaxRetries(5)
+                .setMaxPostRetries(5)
                 .build();
     }
 
