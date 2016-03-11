@@ -162,7 +162,7 @@ public class UrbanAirshipClientTest {
     public void testAPIClientBuilderWithOptionalProxyInfo() throws Exception {
         ProxyInfo proxyInfo = ProxyInfo.newBuilder()
             .setHost("host")
-            .setProtocol("https")
+            .setProtocol(ProxyInfo.ProxyInfoProtocol.HTTPS)
             .setPrincipal("user")
             .setPassword("password")
             .setPort(8080)
@@ -170,7 +170,7 @@ public class UrbanAirshipClientTest {
 
         ProxyInfo proxyInfoCopy = ProxyInfo.newBuilder()
             .setHost("host")
-            .setProtocol("https")
+            .setProtocol(ProxyInfo.ProxyInfoProtocol.HTTPS)
             .setPrincipal("user")
             .setPassword("password")
             .setPort(8080)

@@ -263,7 +263,7 @@ public class UrbanAirshipClient implements Closeable {
      */
     private Optional<ProxyServer> convertProxyInfo(Optional<ProxyInfo> proxyInfo) {
         if (proxyInfo.isPresent()) {
-            ProxyServer.Protocol protocol = ProxyServer.Protocol.HTTP;
+            ProxyServer.Protocol protocol = ProxyServer.Protocol.HTTPS;
             for (ProxyServer.Protocol proto : ProxyServer.Protocol.values()) {
                 if (proxyInfo.get().getProtocol().equals(proto.getProtocol())) {
                     protocol = proto;

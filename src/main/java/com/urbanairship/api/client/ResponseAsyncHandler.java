@@ -95,7 +95,7 @@ class ResponseAsyncHandler<T> implements AsyncHandler<Response> {
 
     @Override
     public Response onCompleted() throws Exception {
-        if (StringUtils.isNotBlank(bodyBuilder.toString()) && parser != null) {
+        if (StringUtils.isNotBlank(bodyBuilder.toString())) {
             responseBuilder.setBody(parser.parse(bodyBuilder.toString()));
         }
 

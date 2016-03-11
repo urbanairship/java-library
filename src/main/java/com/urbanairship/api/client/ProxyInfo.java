@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
  */
 public final class ProxyInfo {
 
-    private final String protocol;
+    private final ProxyInfoProtocol protocol;
     private final String host;
     private final Integer port;
     private final String principal;
@@ -43,7 +43,7 @@ public final class ProxyInfo {
      * @return The protocol.
      */
     public String getProtocol() {
-        return protocol;
+        return protocol.toString().toLowerCase();
     }
 
     /**
@@ -123,7 +123,7 @@ public final class ProxyInfo {
 
     public static class Builder {
 
-        private String protocol = "http";
+        private ProxyInfoProtocol protocol = ProxyInfoProtocol.HTTPS;
         private String host;
         private int port = -1;
         private String principal = null;
@@ -133,12 +133,12 @@ public final class ProxyInfo {
         }
 
         /**
-         * Set the proxy protocol. Can be one of: http, https, NTLM, KERBEROS, SPNEGO.
+         * Set the proxy protocol. Can be https or http.
          *
          * @param protocol The protocol.
          * @return Builder
          */
-        public Builder setProtocol(String protocol) {
+        public Builder setProtocol(ProxyInfoProtocol protocol) {
             this.protocol = protocol;
             return this;
         }
@@ -192,7 +192,7 @@ public final class ProxyInfo {
          * preconditions are not met.
          * <pre>
          * 1. Proxy host must be set.
-         * 2. Proxy protocol must be set - defaults to http.
+         * 2. Proxy protocol must be set - defaults to https.
          * 3. Proxy port must be set.
          * </pre>
          *
@@ -200,11 +200,18 @@ public final class ProxyInfo {
          */
         public ProxyInfo build() {
             Preconditions.checkArgument(StringUtils.isNotEmpty(host), "Proxy host must be set.");
-            Preconditions.checkArgument(StringUtils.isNotEmpty(principal), "Proxy protocol must be set.");
+            Preconditions.checkNotNull(protocol, "Proxy protocol must be set.");
             Preconditions.checkArgument(port > 0, "Proxy port must be set.");
 
             return new ProxyInfo(this);
         }
 
+    }
+
+    /**
+     * Enum of available Urban Airship API protocols.
+     */
+    public enum ProxyInfoProtocol {
+        HTTP, HTTPS
     }
 }
