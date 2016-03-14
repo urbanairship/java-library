@@ -4,6 +4,8 @@
 
 package com.urbanairship.api.client;
 
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
 import com.ning.http.client.filter.FilterContext;
 import com.ning.http.client.filter.FilterException;
 import com.ning.http.client.filter.ResponseFilter;
@@ -15,11 +17,10 @@ import org.slf4j.LoggerFactory;
  * ResponseFilter in charge of async request retries on server errors. The filter is applied before the response reaches the
  * ResponseAsyncHandler, but calls upon the handler of a given request to track the retry count.
  *
- * Due to the idempotent nature of push requests, the client will only retry a POST request if it returns a 503.
- * The maximum POST request retry limit is configured in the {@link com.urbanairship.api.client.UrbanAirshipClient} builder.
- * This defaults to 0 as the client implementer must choose to accept the risk of duplicating a push, however the mechanism
- * to configure the limit is still provided. Other requests (PUT, DELETE, GET) will retry on any 5xx. The maximum non-post
- * request retry limit is also configured in the {@link com.urbanairship.api.client.UrbanAirshipClient} builder and defaults to 10.
+ * Due to the idempotent nature of push requests, the client will by default not retry on a POST request if it returns a 5xx.
+ * If the client user decides to do so, a retry predicate may be created and passed in by the {@link com.urbanairship.api.client.UrbanAirshipClient} builder.
+ * The default predicate logic allows for retries on all non-POST 5xxs. The maximum non-post request retry limit is also
+ * configured in the {@link com.urbanairship.api.client.UrbanAirshipClient} builder and defaults to 10.
  * If the count is below the max retry limit, the request will be replayed with an exponential backoff. If the limit is
  * reached, a ServerException is thrown.
  */
@@ -27,23 +28,24 @@ public class RequestRetryFilter implements ResponseFilter {
 
     private static final Logger log = LoggerFactory.getLogger(RequestRetryFilter.class);
     private static final int BASE_RETRY_TIME_MS = 5;
-    private final int maxRetries;
-    private final int maxPostRetries;
+    private static final Predicate<FilterContext> DEFAULT_PREDICATE = new Predicate<FilterContext>() {
+        @Override
+        public boolean apply(FilterContext input) {
+            return !input.getRequest().getMethod().equals("POST") && input.getResponseStatus().getStatusCode() >= 500;
+        }
+    };
 
-    public RequestRetryFilter(int maxRetries, int maxPostRetries) {
+    private final int maxRetries;
+    private final Predicate<FilterContext> retryPredicate;
+
+    public RequestRetryFilter(int maxRetries, Optional<Predicate<FilterContext>> retryPredicate) {
         this.maxRetries = maxRetries;
-        this.maxPostRetries = maxPostRetries;
+        this.retryPredicate = retryPredicate.isPresent() ? retryPredicate.get() : DEFAULT_PREDICATE;
     }
 
     @Override
     public <T> FilterContext<T> filter(FilterContext<T> ctx) throws FilterException {
-        int statusCode = ctx.getResponseStatus().getStatusCode();
-
-        if (ctx.getRequest().getMethod().equals("POST") && statusCode == 503) {
-         return retry(ctx, maxPostRetries);
-        }
-
-        if (statusCode >= 500) {
+        if (retryPredicate.apply(ctx)) {
             return retry(ctx, maxRetries);
         }
 

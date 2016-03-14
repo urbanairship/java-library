@@ -2,10 +2,12 @@ package com.urbanairship.api.client;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.ProxyServer;
+import com.ning.http.client.filter.FilterContext;
 import com.ning.http.client.uri.Uri;
 import com.urbanairship.api.channel.ChannelRequest;
 import com.urbanairship.api.channel.ChannelTagRequest;
@@ -119,7 +121,12 @@ public class UrbanAirshipClientTest {
                 .setKey("key")
                 .setSecret("secret")
                 .setMaxRetries(5)
-                .setMaxPostRetries(5)
+                .setRetryPredicate(new Predicate<FilterContext>() {
+                    @Override
+                    public boolean apply(FilterContext input) {
+                        return input.getResponseStatus().getStatusCode() >= 500;
+                    }
+                })
                 .build();
     }
 
@@ -161,7 +168,7 @@ public class UrbanAirshipClientTest {
     @Test
     public void testAPIClientBuilderWithOptionalProxyInfo() throws Exception {
         ProxyInfo proxyInfo = ProxyInfo.newBuilder()
-            .setHost("host")
+            .setHost("test.urbanairship.com")
             .setProtocol(ProxyInfo.ProxyInfoProtocol.HTTPS)
             .setPrincipal("user")
             .setPassword("password")
@@ -169,7 +176,7 @@ public class UrbanAirshipClientTest {
             .build();
 
         ProxyInfo proxyInfoCopy = ProxyInfo.newBuilder()
-            .setHost("host")
+            .setHost("test.urbanairship.com")
             .setProtocol(ProxyInfo.ProxyInfoProtocol.HTTPS)
             .setPrincipal("user")
             .setPassword("password")
@@ -185,7 +192,7 @@ public class UrbanAirshipClientTest {
             .build();
 
         ProxyServer proxyServer = proxyClient.getClient().getConfig().getProxyServerSelector().select(Uri.create("https://host:8080"));
-        assertEquals("host", proxyServer.getHost());
+        assertEquals("test.urbanairship.com", proxyServer.getHost());
         assertEquals(8080, proxyServer.getPort());
         assertEquals(ProxyServer.Protocol.HTTPS, proxyServer.getProtocol());
         assertEquals("user", proxyServer.getPrincipal());

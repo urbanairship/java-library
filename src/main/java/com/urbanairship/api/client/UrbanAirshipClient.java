@@ -7,9 +7,11 @@ package com.urbanairship.api.client;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Predicate;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.ProxyServer;
+import com.ning.http.client.filter.FilterContext;
 import com.ning.http.util.Base64;
 import org.apache.http.entity.ContentType;
 import org.slf4j.Logger;
@@ -35,20 +37,16 @@ public class UrbanAirshipClient implements Closeable {
     private final String appKey;
     private final String appSecret;
     private final URI baseUri;
-    private final Integer maxRetries;
-    private final Integer maxPostRetries;
     private final AsyncHttpClient client;
 
     private UrbanAirshipClient(Builder builder) {
         this.appKey = builder.key;
         this.appSecret = builder.secret;
         this.baseUri = URI.create(builder.baseUri);
-        this.maxRetries = builder.maxRetries;
-        this.maxPostRetries = builder.maxPostRetries;
 
         AsyncHttpClientConfig.Builder clientConfigBuilder = builder.clientConfigBuilder;
         clientConfigBuilder.setUserAgent(getUserAgent());
-        clientConfigBuilder.addResponseFilter(new RequestRetryFilter(maxRetries, maxPostRetries));
+        clientConfigBuilder.addResponseFilter(new RequestRetryFilter(builder.maxRetries, Optional.fromNullable(builder.retryPredicate)));
 
         Optional<ProxyServer> proxyServer = convertProxyInfo(Optional.fromNullable(builder.proxyInfo));
         if (proxyServer.isPresent()) {
@@ -92,25 +90,6 @@ public class UrbanAirshipClient implements Closeable {
     public URI getBaseUri() {
         return baseUri;
     }
-
-    /**
-     * Get the max count for non-POST request retries on 5xx.
-     *
-     * @return The max retry count.
-     */
-    public Integer getMaxRetries() {
-        return maxRetries;
-    }
-
-    /**
-     * Get the max count for POST request retries on 503.
-     *
-     * @return The max retry count.
-     */
-    public Integer getMaxPostRetries() {
-        return maxPostRetries;
-    }
-
 
     /**
      * Get the underlying HTTP client.
@@ -291,8 +270,6 @@ public class UrbanAirshipClient implements Closeable {
             "appKey='" + appKey + '\'' +
             ", appSecret='" + appSecret + '\'' +
             ", baseUri=" + baseUri +
-            ", maxRetries=" + maxRetries +
-            ", maxPostRetries=" + maxPostRetries +
             ", client=" + client +
             '}';
     }
@@ -308,9 +285,6 @@ public class UrbanAirshipClient implements Closeable {
         if (appSecret != null ? !appSecret.equals(that.appSecret) : that.appSecret != null) return false;
         if (baseUri != null ? !baseUri.equals(that.baseUri) : that.baseUri != null) return false;
         if (client != null ? !client.equals(that.client) : that.client != null) return false;
-        if (maxPostRetries != null ? !maxPostRetries.equals(that.maxPostRetries) : that.maxPostRetries != null)
-            return false;
-        if (maxRetries != null ? !maxRetries.equals(that.maxRetries) : that.maxRetries != null) return false;
 
         return true;
     }
@@ -320,8 +294,6 @@ public class UrbanAirshipClient implements Closeable {
         int result = appKey != null ? appKey.hashCode() : 0;
         result = 31 * result + (appSecret != null ? appSecret.hashCode() : 0);
         result = 31 * result + (baseUri != null ? baseUri.hashCode() : 0);
-        result = 31 * result + (maxRetries != null ? maxRetries.hashCode() : 0);
-        result = 31 * result + (maxPostRetries != null ? maxPostRetries.hashCode() : 0);
         result = 31 * result + (client != null ? client.hashCode() : 0);
         return result;
     }
@@ -334,9 +306,9 @@ public class UrbanAirshipClient implements Closeable {
         private String secret;
         private String baseUri;
         private Integer maxRetries = 10;
-        private Integer maxPostRetries = 0;
         private AsyncHttpClientConfig.Builder clientConfigBuilder = new AsyncHttpClientConfig.Builder();
         private ProxyInfo proxyInfo = null;
+        private Predicate<FilterContext> retryPredicate = null;
 
         private Builder() {
             baseUri = "https://go.urbanairship.com";
@@ -383,18 +355,6 @@ public class UrbanAirshipClient implements Closeable {
             return this;
         }
 
-
-        /**
-         * Set the maximum for POST request retries on 503s -- defaults to 0.
-         *
-         * @param maxPostRetries The maximum.
-         * @return Builder
-         */
-        public Builder setMaxPostRetries(Integer maxPostRetries) {
-            this.maxPostRetries = maxPostRetries;
-            return this;
-        }
-
         /**
          * Set the client config builder -- defaults to a new builder. Available for custom settings.
          *
@@ -417,6 +377,17 @@ public class UrbanAirshipClient implements Closeable {
             return this;
         }
 
+        /**
+         * Set an optional predicate for allowing request retries on 5xxs.
+         *
+         * @param retryPredicate The retry predicate.
+         * @return Builder
+         */
+        public Builder setRetryPredicate(Predicate<FilterContext> retryPredicate) {
+            this.retryPredicate = retryPredicate;
+            return this;
+        }
+
 
         /**
          * Build an UrbanAirshipClient object.  Will fail if any of the following
@@ -426,8 +397,7 @@ public class UrbanAirshipClient implements Closeable {
          * 2. App secret must be set.
          * 3. The base URI has been overridden but not set.
          * 4. Max for non-POST 5xx retries must be set, already defaults to 10.
-         * 5. Max for POST 503 retries must be set, already defaults to 0.
-         * 6. HTTP client config builder must be set, already defaults to a new builder.
+         * 5. HTTP client config builder must be set, already defaults to a new builder.
          * </pre>
          *
          * @return UrbanAirshipClient
@@ -437,7 +407,6 @@ public class UrbanAirshipClient implements Closeable {
             Preconditions.checkNotNull(secret, "app secret needed to build APIClient");
             Preconditions.checkNotNull(baseUri, "base URI needed to build APIClient");
             Preconditions.checkNotNull(maxRetries, "max non-POST retries needed to build APIClient");
-            Preconditions.checkNotNull(maxPostRetries, "max POST retries needed to build APIClient");
             Preconditions.checkNotNull(clientConfigBuilder, "Async HTTP client config builder needed to build APIClient");
 
             return new UrbanAirshipClient(this);
