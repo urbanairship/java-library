@@ -481,6 +481,46 @@ public class UrbanAirshipClientTest {
 
     @Test
     @SuppressWarnings("unchecked")
+    public void testClose() {
+        client = UrbanAirshipClient.newBuilder()
+            .setBaseUri("http://localhost:8080")
+            .setKey("key")
+            .setSecret("secret")
+            .setMaxRetries(1000)
+            .build();
+
+
+        stubFor(get(urlEqualTo("/api/named_users/"))
+            .willReturn(aResponse()
+                .withStatus(503)));
+
+        ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryBuilder()
+            .setDaemon(false)
+            .build());
+
+        try {
+            final Future future = client.executeAsync(NamedUserListingRequest.newRequest());
+
+            scheduledExecutorService.schedule(new Runnable() {
+                @Override
+                public void run() {
+                    client.close();
+
+                    // Test that closing the client cancels retrying requests.
+                    assertTrue(future.isCancelled());
+                }
+            }, 5, TimeUnit.MILLISECONDS);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            fail("Exception thrown " + ex);
+        } finally {
+            scheduledExecutorService.shutdown();
+        }
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
     public void testClientException() {
 
         PushPayload payload = PushPayload.newBuilder()
