@@ -352,7 +352,7 @@ public class UrbanAirshipClientTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testPushRetry() {
+    public void testPushRetry() throws Exception {
 
         PushPayload payload = PushPayload.newBuilder()
             .setAudience(Selectors.all())
@@ -375,51 +375,45 @@ public class UrbanAirshipClientTest {
                 .withBody(pushJSON)
                 .withStatus(201)));
 
-
-        try {
-            Response<PushResponse> response = client.execute(PushRequest.newRequest(payload));
+        Response<PushResponse> response = client.execute(PushRequest.newRequest(payload));
 
 
-            // Verify components of the underlying HttpRequest
-            verify(postRequestedFor(urlEqualTo("/api/push/"))
-                .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
-            List<LoggedRequest> requests = findAll(postRequestedFor(
-                urlEqualTo("/api/push/")));
-            // There should only be one request
-            assertEquals(requests.size(), 2);
-            // Parse the request using the server side deserializer and check
-            // results
-            String requestPayload = requests.get(1).getBodyAsString();
-            ObjectMapper mapper = PushObjectMapper.getInstance();
-            Map<String, Object> result =
-                mapper.readValue(requestPayload,
-                    new TypeReference<Map<String, Object>>() {
-                    });
-            // Audience
-            String audience = (String) result.get("audience");
-            assertTrue(audience.equals("ALL"));
+        // Verify components of the underlying HttpRequest
+        verify(postRequestedFor(urlEqualTo("/api/push/"))
+            .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+        List<LoggedRequest> requests = findAll(postRequestedFor(
+            urlEqualTo("/api/push/")));
+        // There should only be one request
+        assertEquals(requests.size(), 2);
+        // Parse the request using the server side deserializer and check
+        // results
+        String requestPayload = requests.get(1).getBodyAsString();
+        ObjectMapper mapper = PushObjectMapper.getInstance();
+        Map<String, Object> result =
+            mapper.readValue(requestPayload,
+                new TypeReference<Map<String, Object>>() {
+                });
+        // Audience
+        String audience = (String) result.get("audience");
+        assertTrue(audience.equals("ALL"));
 
-            // DeviceType
-            List<String> deviceTypeData = (List<String>) result.get("device_types");
-            assertTrue(deviceTypeData.get(0).equals("ios"));
-            assertEquals(DeviceType.find(deviceTypeData.get(0)).get(), DeviceType.IOS);
+        // DeviceType
+        List<String> deviceTypeData = (List<String>) result.get("device_types");
+        assertTrue(deviceTypeData.get(0).equals("ios"));
+        assertEquals(DeviceType.find(deviceTypeData.get(0)).get(), DeviceType.IOS);
 
-            // Notification
-            Map<String, String> notification =
-                (Map<String, String>) result.get("notification");
-            assertTrue(notification.get("alert").equals("Foo"));
+        // Notification
+        Map<String, String> notification =
+            (Map<String, String>) result.get("notification");
+        assertTrue(notification.get("alert").equals("Foo"));
 
-            // The response is tested elsewhere, just check that it exists
-            assertNotNull(response);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            fail("Exception thrown " + ex);
-        }
+        // The response is tested elsewhere, just check that it exists
+        assertNotNull(response);
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testRetryIsNonBlocking() {
+    public void testRetryIsNonBlocking() throws Exception {
         client = UrbanAirshipClient.newBuilder()
             .setBaseUri("http://localhost:8080")
             .setKey("key")
@@ -446,42 +440,35 @@ public class UrbanAirshipClientTest {
                 .withBody(pushJSON)
                 .withStatus(201)));
 
-        ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryBuilder()
+        final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryBuilder()
             .setDaemon(false)
             .build());
 
-        try {
-            final Future future = client.executeAsync(NamedUserListingRequest.newRequest());
-            Response<PushResponse> response = client.execute(PushRequest.newRequest(payload));
+        final Future future = client.executeAsync(NamedUserListingRequest.newRequest());
+        Response<PushResponse> response = client.execute(PushRequest.newRequest(payload));
 
-            // Verify components of the underlying HttpRequest
-            verify(postRequestedFor(urlEqualTo("/api/push/"))
-                .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
-            List<LoggedRequest> requests = findAll(postRequestedFor(
-                urlEqualTo("/api/push/")));
-            // There should only be one request
-            assertEquals(requests.size(), 1);
-            // The response is tested elsewhere, just check that it exists
-            assertNotNull(response);
+        // Verify components of the underlying HttpRequest
+        verify(postRequestedFor(urlEqualTo("/api/push/"))
+            .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+        List<LoggedRequest> requests = findAll(postRequestedFor(
+            urlEqualTo("/api/push/")));
+        // There should only be one request
+        assertEquals(requests.size(), 1);
+        // The response is tested elsewhere, just check that it exists
+        assertNotNull(response);
 
-            scheduledExecutorService.schedule(new Runnable() {
-                @Override
-                public void run() {
-                    future.cancel(true);
-                }
-            }, 5, TimeUnit.MILLISECONDS);
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            fail("Exception thrown " + ex);
-        } finally {
-            scheduledExecutorService.shutdown();
-        }
+        scheduledExecutorService.schedule(new Runnable() {
+            @Override
+            public void run() {
+                future.cancel(true);
+                scheduledExecutorService.shutdown();
+            }
+        }, 5, TimeUnit.MILLISECONDS);
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testClose() {
+    public void testClose() throws Exception {
         client = UrbanAirshipClient.newBuilder()
             .setBaseUri("http://localhost:8080")
             .setKey("key")
@@ -494,34 +481,27 @@ public class UrbanAirshipClientTest {
             .willReturn(aResponse()
                 .withStatus(503)));
 
-        ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryBuilder()
+        final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryBuilder()
             .setDaemon(false)
             .build());
 
-        try {
-            final Future future = client.executeAsync(NamedUserListingRequest.newRequest());
+        final Future future = client.executeAsync(NamedUserListingRequest.newRequest());
 
-            scheduledExecutorService.schedule(new Runnable() {
-                @Override
-                public void run() {
-                    client.close();
+        scheduledExecutorService.schedule(new Runnable() {
+            @Override
+            public void run() {
+                client.close();
 
-                    // Test that closing the client cancels retrying requests.
-                    assertTrue(future.isCancelled());
-                }
-            }, 5, TimeUnit.MILLISECONDS);
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            fail("Exception thrown " + ex);
-        } finally {
-            scheduledExecutorService.shutdown();
-        }
+                // Test that closing the client cancels retrying requests.
+                assertTrue(future.isCancelled());
+                scheduledExecutorService.shutdown();
+            }
+        }, 5, TimeUnit.MILLISECONDS);
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testClientException() {
+    public void testClientException() throws Exception {
 
         PushPayload payload = PushPayload.newBuilder()
             .setAudience(Selectors.all())
@@ -539,41 +519,36 @@ public class UrbanAirshipClientTest {
                 .withBody(errorJSON)
                 .withStatus(401)));
 
-        try {
-            final CountDownLatch latch = new CountDownLatch(1);
-            client.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
-                @Override
-                public void completed(Response response) {
-                }
+        final CountDownLatch latch = new CountDownLatch(1);
+        client.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
+            @Override
+            public void completed(Response response) {
+            }
 
-                @Override
-                public void error(Throwable throwable) {
-                    assertTrue(throwable instanceof ClientException);
-                    ClientException clientException = (ClientException) throwable;
-                    RequestError error = clientException.getError().get();
+            @Override
+            public void error(Throwable throwable) {
+                assertTrue(throwable instanceof ClientException);
+                ClientException clientException = (ClientException) throwable;
+                RequestError error = clientException.getError().get();
 
-                    assertTrue("Operation ID is incorrect",
-                        error.getOperationId().get().equals("operation id"));
-                    assertTrue("Error code is incorrect",
-                        error.getErrorCode().get().equals(40001));
-                    RequestErrorDetails details = error.getDetails().get();
-                    RequestErrorDetails.Location errorLocation = details.getLocation().get();
-                    assertTrue("Location not setup properly",
-                        errorLocation.getLine().equals(47));
-                    latch.countDown();
-                }
-            });
+                assertTrue("Operation ID is incorrect",
+                    error.getOperationId().get().equals("operation id"));
+                assertTrue("Error code is incorrect",
+                    error.getErrorCode().get().equals(40001));
+                RequestErrorDetails details = error.getDetails().get();
+                RequestErrorDetails.Location errorLocation = details.getLocation().get();
+                assertTrue("Location not setup properly",
+                    errorLocation.getLine().equals(47));
+                latch.countDown();
+            }
+        });
 
-            latch.await();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            fail("Exception thrown " + ex);
-        }
+        latch.await();
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testServerException() {
+    public void testServerException() throws Exception {
 
         PushPayload payload = PushPayload.newBuilder()
             .setAudience(Selectors.all())
@@ -588,30 +563,25 @@ public class UrbanAirshipClientTest {
                 .withHeader(CONTENT_TYPE_KEY, "application/vnd.urbanairship+json")
                 .withStatus(503)));
 
-        try {
-            final CountDownLatch latch = new CountDownLatch(1);
-            client.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
-                @Override
-                public void completed(Response response) {
-                }
+        final CountDownLatch latch = new CountDownLatch(1);
+        client.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
+            @Override
+            public void completed(Response response) {
+            }
 
-                @Override
-                public void error(Throwable throwable) {
-                    assertTrue(throwable instanceof ServerException);
-                    latch.countDown();
-                }
-            });
+            @Override
+            public void error(Throwable throwable) {
+                assertTrue(throwable instanceof ServerException);
+                latch.countDown();
+            }
+        });
 
-            latch.await();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            fail("Exception thrown " + ex);
-        }
+        latch.await();
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testPushWithProxyClient(){
+    public void testPushWithProxyClient() throws Exception {
 
         // Setup a client and a push payload
         UrbanAirshipClient proxyClient = UrbanAirshipClient.newBuilder()
@@ -641,46 +611,39 @@ public class UrbanAirshipClientTest {
                     .withStatus(201)
             ));
 
+        Response<PushResponse> response = proxyClient.execute(PushRequest.newRequest(payload));
 
-        try {
-            Response<PushResponse> response = proxyClient.execute(PushRequest.newRequest(payload));
+        // Verify components of the underlying HttpRequest
+        verify(postRequestedFor(urlEqualTo("/api/push/"))
+                .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON))
+        );
+        List<LoggedRequest> requests = findAll(postRequestedFor(
+            urlEqualTo("/api/push/")));
+        // There should only be one request
+        assertEquals(requests.size(), 1);
+        // Parse the request using the server side deserializer and check
+        // results
+        String requestPayload = requests.get(0).getBodyAsString();
+        ObjectMapper mapper = PushObjectMapper.getInstance();
+        Map<String, Object> result =
+            mapper.readValue(requestPayload,
+                new TypeReference<Map<String,Object>>(){});
+        // Audience
+        String audience = (String)result.get("audience");
+        assertTrue(audience.equals("ALL"));
 
-            // Verify components of the underlying HttpRequest
-            verify(postRequestedFor(urlEqualTo("/api/push/"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON))
-            );
-            List<LoggedRequest> requests = findAll(postRequestedFor(
-                urlEqualTo("/api/push/")));
-            // There should only be one request
-            assertEquals(requests.size(), 1);
-            // Parse the request using the server side deserializer and check
-            // results
-            String requestPayload = requests.get(0).getBodyAsString();
-            ObjectMapper mapper = PushObjectMapper.getInstance();
-            Map<String, Object> result =
-                mapper.readValue(requestPayload,
-                    new TypeReference<Map<String,Object>>(){});
-            // Audience
-            String audience = (String)result.get("audience");
-            assertTrue(audience.equals("ALL"));
+        // DeviceType
+        List<String> deviceTypeData = (List<String>)result.get("device_types");
+        assertTrue(deviceTypeData.get(0).equals("ios"));
+        assertEquals(DeviceType.find(deviceTypeData.get(0)).get(), DeviceType.IOS);
 
-            // DeviceType
-            List<String> deviceTypeData = (List<String>)result.get("device_types");
-            assertTrue(deviceTypeData.get(0).equals("ios"));
-            assertEquals(DeviceType.find(deviceTypeData.get(0)).get(), DeviceType.IOS);
+        // Notification
+        Map<String, String> notification =
+            (Map<String,String>)result.get("notification");
+        assertTrue(notification.get("alert").equals("Foo"));
 
-            // Notification
-            Map<String, String> notification =
-                (Map<String,String>)result.get("notification");
-            assertTrue(notification.get("alert").equals("Foo"));
-
-            // The response is tested elsewhere, just check that it exists
-            assertNotNull(response);
-        }
-        catch (Exception ex){
-            ex.printStackTrace();
-            fail("Exception thrown " + ex);
-        }
+        // The response is tested elsewhere, just check that it exists
+        assertNotNull(response);
     }
 
       /*

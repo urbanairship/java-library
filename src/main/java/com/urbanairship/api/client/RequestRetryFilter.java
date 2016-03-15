@@ -21,8 +21,8 @@ import org.slf4j.LoggerFactory;
  * If the client user decides to do so, a retry predicate may be created and passed in by the {@link com.urbanairship.api.client.UrbanAirshipClient} builder.
  * The default predicate logic allows for retries on all non-POST 5xxs. The maximum non-post request retry limit is also
  * configured in the {@link com.urbanairship.api.client.UrbanAirshipClient} builder and defaults to 10.
- * If the count is below the max retry limit, the request will be replayed with an exponential backoff. If the limit is
- * reached, a ServerException is thrown.
+ * If the count is below the max retry limit and the predicate allows for a retry, the request will be replayed with an
+ * exponential backoff. If the limit is reached and the predicate allows for a retry, a ServerException is thrown.
  */
 public class RequestRetryFilter implements ResponseFilter {
 
@@ -45,26 +45,10 @@ public class RequestRetryFilter implements ResponseFilter {
 
     @Override
     public <T> FilterContext<T> filter(FilterContext<T> ctx) throws FilterException {
-        if (retryPredicate.apply(ctx)) {
-            return retry(ctx, maxRetries);
-        }
-
-        return ctx;
-    }
-
-    /**
-     * If a request hasn't exceeded the retry limit, this method puts the thread to sleep and then replays the request.
-     *
-     * @param ctx The request FilterContext.
-     * @param retryLimit The request retry limit.
-     * @param <T> The response type returned by the async handler.
-     * @return A FilterContext instance - either the original or a duplicate set to replay the request.
-     */
-    private <T> FilterContext<T> retry(FilterContext<T> ctx, int retryLimit) {
         int statusCode = ctx.getResponseStatus().getStatusCode();
         if (ctx.getAsyncHandler() instanceof ResponseAsyncHandler) {
             ResponseAsyncHandler asyncHandler = (ResponseAsyncHandler) ctx.getAsyncHandler();
-            if (asyncHandler.getRetryCount() < retryLimit) {
+            if (asyncHandler.getRetryCount() < maxRetries && retryPredicate.apply(ctx)) {
                 try {
                     int sleepTime = BASE_RETRY_TIME_MS * Math.max(1, RandomUtils.nextInt(1 << (asyncHandler.getRetryCount() + 1)));
                     log.info(String.format("Request failed with status code %s - waiting for %s ms before retrying request", statusCode, sleepTime));
@@ -77,11 +61,14 @@ public class RequestRetryFilter implements ResponseFilter {
                     .request(ctx.getRequest())
                     .replayRequest(true)
                     .build();
-            } else {
+            }
+
+            if (asyncHandler.getRetryCount() >= maxRetries && retryPredicate.apply(ctx)) {
                 log.warn(String.format("Request failed with status code %s after %s attempts", statusCode, asyncHandler.getRetryCount()));
                 throw new ServerException(ctx.getResponseStatus().getStatusText());
             }
         }
+
         return ctx;
     }
 }

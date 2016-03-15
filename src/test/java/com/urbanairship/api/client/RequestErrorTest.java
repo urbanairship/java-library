@@ -6,50 +6,38 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 public class RequestErrorTest {
 
     @Test
-    public void testRequestErrorDetailsLocationDeserialization() {
-
+    public void testRequestErrorDetailsLocationDeserialization() throws Exception {
         String errorJSON = "{\"line\":5, \"column\":5}";
-
         ObjectMapper mapper = RequestErrorObjectMapper.getInstance();
-        try {
-            RequestErrorDetails.Location location = mapper.readValue(errorJSON, RequestErrorDetails.Location.class);
-            assertTrue("Error in line", location.getLine().equals(5));
-            assertTrue("Error in column", location.getColumn().equals(5));
-        } catch (Exception ex) {
-            fail("Exception " + ex.getMessage());
-        }
 
+        RequestErrorDetails.Location location = mapper.readValue(errorJSON, RequestErrorDetails.Location.class);
+        assertEquals("Error in line", location.getLine(), 5);
+        assertEquals("Error in column", location.getColumn(), 5);
     }
 
     @Test
-    public void testRequestErrorDetailsDeserialization() {
+    public void testRequestErrorDetailsDeserialization() throws Exception {
         String errorJson = "{\"error\":\"error\", \"path\":\"path\", \"location\":{\"line\":42,\"column\":42}}";
-
         ObjectMapper mapper = RequestErrorObjectMapper.getInstance();
 
-        try {
-            RequestErrorDetails errorDetails = mapper.readValue(errorJson, RequestErrorDetails.class);
-            assertTrue("Error in detail error string", errorDetails.getError().equals("error"));
-            assertTrue("Error in detail path string", errorDetails.getPath().equals("path"));
-            RequestErrorDetails.Location testLocation = RequestErrorDetails.Location.newBuilder()
-                    .setColumn(42)
-                    .setLine(42)
-                    .build();
-            RequestErrorDetails.Location location = errorDetails.getLocation().get();
-            assertTrue("Error in detail location object", testLocation.equals(location));
-        } catch (Exception ex) {
-            fail("Exception " + ex.getMessage());
-        }
+        RequestErrorDetails errorDetails = mapper.readValue(errorJson, RequestErrorDetails.class);
+        assertEquals("Error in detail error string", errorDetails.getError(), "error");
+        assertEquals("Error in detail path string", errorDetails.getPath(), "path");
+
+        RequestErrorDetails.Location testLocation = RequestErrorDetails.Location.newBuilder()
+            .setColumn(42)
+            .setLine(42)
+            .build();
+        RequestErrorDetails.Location location = errorDetails.getLocation().get();
+        assertEquals("Error in detail location object", testLocation, location);
     }
 
     @Test
-    public void testRequestErrorDeserialization() {
+    public void testRequestErrorDeserialization() throws Exception{
         String errorJSON = "{\n" +
                 "    \"ok\" : false,\n" +
                 "    \"operation_id\" : \"operation id\",\n" +
@@ -66,61 +54,48 @@ public class RequestErrorTest {
                 "}";
         ObjectMapper mapper = RequestErrorObjectMapper.getInstance();
 
-        try {
-            RequestError error = mapper.readValue(errorJSON, RequestError.class);
+        RequestError error = mapper.readValue(errorJSON, RequestError.class);
+        assertEquals(RequestError.errorFromResponse(errorJSON, "application/vnd.urbanairship+json"), error);
+        assertFalse("Error in ok", error.getOk());
+        assertEquals("Error in operation id", error.getOperationId().get(), "operation id");
+        assertEquals("Error in error code", error.getErrorCode().get(), 40001);
+        assertEquals("Error in error string", error.getError(), "Invalid push content");
 
-            assertEquals(RequestError.errorFromResponse(errorJSON, "application/vnd.urbanairship+json"), error);
-            assertFalse("Error in ok", error.getOk());
-            assertTrue("Error in operation id", error.getOperationId().get().equals("operation id"));
-            assertTrue("Error in error code", error.getErrorCode().get().equals(40001));
-            assertTrue("Error in error string", error.getError().equals("Invalid push content"));
-            RequestErrorDetails testDetails = RequestErrorDetails.newBuilder()
-                    .setError("error message")
-                    .setPath("push.wns.text")
-                    .setLocation(RequestErrorDetails.Location.newBuilder()
-                            .setLine(47)
-                            .setColumn(12)
-                            .build())
-                    .build();
-            assertTrue("Error in the details", error.getDetails().get().equals(testDetails));
-        } catch (Exception ex) {
-            fail("Exception " + ex.getMessage());
-        }
+        RequestErrorDetails testDetails = RequestErrorDetails.newBuilder()
+            .setError("error message")
+            .setPath("push.wns.text")
+            .setLocation(RequestErrorDetails.Location.newBuilder()
+                .setLine(47)
+                .setColumn(12)
+                .build())
+            .build();
+        assertEquals("Error in the details", error.getDetails().get(), testDetails);
     }
 
     @Test
-    public void testDeprecatedJsonRequestErrorDeserialization() {
+    public void testDeprecatedJsonRequestErrorDeserialization() throws Exception {
         String errorJSON = "{\"message\":\"Unauthorized\"}";
-        try {
-            RequestError error = RequestError.newBuilder().setError("Unauthorized").build();
+        RequestError error = RequestError.newBuilder().setError("Unauthorized").build();
 
-            assertEquals(RequestError.errorFromResponse(errorJSON, "application/json"), error);
-            assertTrue("Error in error string", error.getError().equals("Unauthorized"));
-        } catch (Exception ex) {
-            fail("Exception " + ex.getMessage());
-        }
+        assertEquals(RequestError.errorFromResponse(errorJSON, "application/json"), error);
     }
 
     @Test
-    public void testDeprecatedStringRequestErrorDeserialization() {
+    public void testDeprecatedStringRequestErrorDeserialization() throws Exception {
         String errorString = "Unauthorized";
-        try {
-            RequestError error = RequestError.newBuilder().setError("Unauthorized").build();
+        RequestError error = RequestError.newBuilder().setError("Unauthorized").build();
 
-            assertEquals(RequestError.errorFromResponse(errorString, "text/html"), error);
-            assertTrue("Error in error string", error.getError().equals("Unauthorized"));
-        } catch (Exception ex) {
-            fail("Exception " + ex.getMessage());
-        }
+        assertEquals(RequestError.errorFromResponse(errorString, "text/html"), error);
+        assertEquals("Error in error string", error.getError(), "Unauthorized");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testThrowsOnNullString() {
+    public void testThrowsOnNullString() throws Exception {
         @SuppressWarnings("UnusedAssignment") RequestError error = RequestError.newBuilder().build();
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testThrowsOnEmptyError() {
+    public void testThrowsOnEmptyError() throws Exception {
         @SuppressWarnings("UnusedAssignment") RequestError error = RequestError.newBuilder().setError("").build();
     }
 }

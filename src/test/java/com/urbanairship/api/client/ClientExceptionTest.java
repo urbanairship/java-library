@@ -2,7 +2,7 @@ package com.urbanairship.api.client;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 public class ClientExceptionTest {
 
@@ -21,14 +21,14 @@ public class ClientExceptionTest {
                 .setRequestError(requestError)
                 .build();
 
-        assertTrue("HTTP response code incorrect",
-                testException.getStatusCode() == 404);
-        assertTrue("APIError incorrect",
-                testException.getError().get().equals(requestError));
-        assertTrue("Status message incorrect",
-                testException.getStatusText().equals("Not Found"));
-        assertTrue("Exception message incorrect",
-                testException.getMessage().equals("Not Found"));
+        assertEquals("HTTP response code incorrect",
+                testException.getStatusCode(), 404);
+        assertEquals("APIError incorrect",
+                testException.getError().get(), requestError);
+        assertEquals("Status message incorrect",
+                testException.getStatusText(), "Not Found");
+        assertEquals("Exception message incorrect",
+                testException.getMessage(), "Not Found");
 
     }
 }
