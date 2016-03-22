@@ -11,7 +11,7 @@ import com.google.common.base.Optional;
  * Provides details on processing errors that are returned by the Urban Airship
  * API. These are available in some error cases, and can assist in debugging.
  */
-public final class APIErrorDetails {
+public final class RequestErrorDetails {
 
     private final static String ERROR_FORMAT = "\nAPIErrorDetails: \nPath:%s\nError:%s\nOptional Location:%s";
 
@@ -20,7 +20,7 @@ public final class APIErrorDetails {
     private final Optional<Location> location;
 
 
-    private APIErrorDetails(String path, String error, Optional<Location> location) {
+    private RequestErrorDetails(String path, String error, Optional<Location> location) {
         this.path = path;
         this.error = error;
         this.location = location;
@@ -66,7 +66,7 @@ public final class APIErrorDetails {
             return false;
         }
 
-        APIErrorDetails that = (APIErrorDetails) o;
+        RequestErrorDetails that = (RequestErrorDetails) o;
         return (that.path.equals(this.path)
                 && that.error.equals(this.error)
                 && that.location.equals(this.location));
@@ -107,8 +107,8 @@ public final class APIErrorDetails {
             return this;
         }
 
-        public APIErrorDetails build() {
-            return new APIErrorDetails(path, error,
+        public RequestErrorDetails build() {
+            return new RequestErrorDetails(path, error,
                     Optional.fromNullable(location));
         }
     }

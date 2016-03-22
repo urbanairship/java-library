@@ -6,7 +6,7 @@ package com.urbanairship.api.client.parse;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
-import com.urbanairship.api.client.APIError;
+import com.urbanairship.api.client.RequestError;
 import com.urbanairship.api.common.parse.FieldParser;
 import com.urbanairship.api.common.parse.FieldParserRegistry;
 import com.urbanairship.api.common.parse.MapFieldParserRegistry;
@@ -24,60 +24,60 @@ the boilerplate necessary for Jackson stream parsing, which is essentially what
  If you're using Intellij, be sure and toggle open the code that's
  been collapsed.
  */
-public final class APIErrorDeserializer extends JsonDeserializer<APIError> {
+public final class RequestErrorDeserializer extends JsonDeserializer<RequestError> {
 
-    private static final FieldParserRegistry<APIError, APIErrorReader> FIELD_PARSERS =
-            new MapFieldParserRegistry<APIError, APIErrorReader>(
-                    ImmutableMap.<String, FieldParser<APIErrorReader>>builder()
-                            .put("ok", new FieldParser<APIErrorReader>() {
+    private static final FieldParserRegistry<RequestError, RequestErrorReader> FIELD_PARSERS =
+            new MapFieldParserRegistry<RequestError, RequestErrorReader>(
+                    ImmutableMap.<String, FieldParser<RequestErrorReader>>builder()
+                            .put("ok", new FieldParser<RequestErrorReader>() {
                                 @Override
-                                public void parse(APIErrorReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                public void parse(RequestErrorReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
                                     reader.readOk(jsonParser);
                                 }
                             })
-                            .put("operation_id", new FieldParser<APIErrorReader>() {
+                            .put("operation_id", new FieldParser<RequestErrorReader>() {
                                 @Override
-                                public void parse(APIErrorReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                public void parse(RequestErrorReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
                                     reader.readOperationId(jsonParser);
                                 }
                             })
-                            .put("error", new FieldParser<APIErrorReader>() {
+                            .put("error", new FieldParser<RequestErrorReader>() {
                                 @Override
-                                public void parse(APIErrorReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                public void parse(RequestErrorReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
                                     reader.readError(jsonParser);
                                 }
                             })
-                            .put("error_code", new FieldParser<APIErrorReader>() {
+                            .put("error_code", new FieldParser<RequestErrorReader>() {
                                 @Override
-                                public void parse(APIErrorReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                public void parse(RequestErrorReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
                                     reader.readErrorCode(jsonParser);
                                 }
                             })
-                            .put("details", new FieldParser<APIErrorReader>() {
+                            .put("details", new FieldParser<RequestErrorReader>() {
                                 @Override
-                                public void parse(APIErrorReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                public void parse(RequestErrorReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
                                     reader.readDetails(jsonParser);
                                 }
                             })
                             .build()
             );
 
-    private final StandardObjectDeserializer<APIError, ?> deserializer;
+    private final StandardObjectDeserializer<RequestError, ?> deserializer;
 
     // See Google Guava for Supplier details
-    public APIErrorDeserializer() {
-        deserializer = new StandardObjectDeserializer<APIError, APIErrorReader>(
+    public RequestErrorDeserializer() {
+        deserializer = new StandardObjectDeserializer<RequestError, RequestErrorReader>(
                 FIELD_PARSERS,
-                new Supplier<APIErrorReader>() {
+                new Supplier<RequestErrorReader>() {
                     @Override
-                    public APIErrorReader get() {
-                        return new APIErrorReader();
+                    public RequestErrorReader get() {
+                        return new RequestErrorReader();
                     }
                 }
         );
     }
 
-    public APIError deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
+    public RequestError deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
             throws IOException {
         return deserializer.deserialize(jsonParser, deserializationContext);
     }

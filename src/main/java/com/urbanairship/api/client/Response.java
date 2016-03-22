@@ -93,4 +93,51 @@ public class Response<T> {
             ", status=" + status +
             '}';
     }
+
+    public static class Builder<T> {
+        private T body = null;
+        private Map<String, Collection<String>> headers;
+        private int status;
+
+        /**
+         * Set the response body.
+         *
+         * @param body The response body of type T.
+         * @return Builder
+         */
+        public Builder setBody(T body) {
+            this.body = body;
+            return this;
+        }
+
+        /**
+         * Set the response headers.
+         *
+         * @param headers The response headers as a map.
+         * @return Builder
+         */
+        public Builder setHeaders(Map<String, Collection<String>> headers) {
+            this.headers = headers;
+            return this;
+        }
+
+        /**
+         * Set the response status code.
+         *
+         * @param status The status code.
+         * @return Builder
+         */
+        public Builder setStatus(int status) {
+            this.status = status;
+            return this;
+        }
+
+        /**
+         * Build the Response instance.
+         * @return The response instance.
+         */
+        public Response build() {
+            return new Response<>(body, headers, status);
+        }
+    }
 }

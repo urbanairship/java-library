@@ -4,7 +4,7 @@
 
 package com.urbanairship.api.client.parse;
 
-import com.urbanairship.api.client.APIErrorDetails;
+import com.urbanairship.api.client.RequestErrorDetails;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import org.codehaus.jackson.JsonParser;
@@ -15,12 +15,12 @@ import java.io.IOException;
 Readers are the part of the deserialization process that actually builds and
 return an object.
  */
-public final class APIErrorDetailsReader implements JsonObjectReader<APIErrorDetails> {
+public final class RequestErrorDetailsReader implements JsonObjectReader<RequestErrorDetails> {
 
-    private final APIErrorDetails.Builder builder;
+    private final RequestErrorDetails.Builder builder;
 
-    public APIErrorDetailsReader() {
-        this.builder = APIErrorDetails.newBuilder();
+    public RequestErrorDetailsReader() {
+        this.builder = RequestErrorDetails.newBuilder();
     }
 
     public void readPath(JsonParser parser) throws IOException {
@@ -32,11 +32,11 @@ public final class APIErrorDetailsReader implements JsonObjectReader<APIErrorDet
     }
 
     public void readLocation(JsonParser parser) throws IOException {
-        builder.setLocation(parser.readValueAs(APIErrorDetails.Location.class));
+        builder.setLocation(parser.readValueAs(RequestErrorDetails.Location.class));
     }
 
     @Override
-    public APIErrorDetails validateAndBuild() throws IOException {
+    public RequestErrorDetails validateAndBuild() throws IOException {
         try {
             return builder.build();
         } catch (Exception ex) {

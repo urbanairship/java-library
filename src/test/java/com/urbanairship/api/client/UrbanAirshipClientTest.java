@@ -2,7 +2,13 @@ package com.urbanairship.api.client;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import com.ning.http.client.AsyncHttpClientConfig;
+import com.ning.http.client.ProxyServer;
+import com.ning.http.client.filter.FilterContext;
+import com.ning.http.client.uri.Uri;
 import com.urbanairship.api.channel.ChannelRequest;
 import com.urbanairship.api.channel.ChannelTagRequest;
 import com.urbanairship.api.channel.model.ChannelResponse;
@@ -52,16 +58,13 @@ import com.urbanairship.api.segments.SegmentLookupRequest;
 import com.urbanairship.api.segments.SegmentRequest;
 import com.urbanairship.api.segments.model.SegmentListingResponse;
 import com.urbanairship.api.segments.model.SegmentView;
-import org.apache.http.HttpHost;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.CoreConnectionPNames;
 import org.apache.log4j.BasicConfigurator;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Period;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -73,6 +76,11 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
@@ -112,7 +120,19 @@ public class UrbanAirshipClientTest {
                 .setBaseUri("http://localhost:8080")
                 .setKey("key")
                 .setSecret("secret")
+                .setMaxRetries(5)
+                .setRetryPredicate(new Predicate<FilterContext>() {
+                    @Override
+                    public boolean apply(FilterContext input) {
+                        return input.getResponseStatus().getStatusCode() >= 500;
+                    }
+                })
                 .build();
+    }
+
+    @After
+    public void takeDown() {
+        client.close();
     }
 
     @ClassRule
@@ -142,49 +162,46 @@ public class UrbanAirshipClientTest {
             .build();
         assertEquals("App key incorrect", "key", client.getAppKey());
         assertEquals("App secret incorrect", "secret", client.getAppSecret());
-        assertFalse(client.getProxyInfo().isPresent());
+        client.close();
     }
 
     @Test
-    public void testAPIClientBuilderWithOptionalProxyInfoOptionalCredential() {
+    public void testAPIClientBuilderWithOptionalProxyInfo() throws Exception {
+        ProxyInfo proxyInfo = ProxyInfo.newBuilder()
+            .setHost("test.urbanairship.com")
+            .setProtocol(ProxyInfo.ProxyInfoProtocol.HTTPS)
+            .setPrincipal("user")
+            .setPassword("password")
+            .setPort(8080)
+            .build();
+
+        ProxyInfo proxyInfoCopy = ProxyInfo.newBuilder()
+            .setHost("test.urbanairship.com")
+            .setProtocol(ProxyInfo.ProxyInfoProtocol.HTTPS)
+            .setPrincipal("user")
+            .setPassword("password")
+            .setPort(8080)
+            .build();
+
+        assertEquals(proxyInfo, proxyInfoCopy);
+
         UrbanAirshipClient proxyClient = UrbanAirshipClient.newBuilder()
             .setKey("key")
             .setSecret("secret")
-            .setProxyInfo(ProxyInfo.newBuilder()
-                .setProxyHost(new HttpHost("host"))
-                .setProxyCredentials(new UsernamePasswordCredentials("user", "password"))
-                .build())
+            .setProxyInfo(proxyInfo)
             .build();
 
-        assertTrue(proxyClient.getProxyInfo().isPresent());
-        assertTrue(proxyClient.getProxyInfo().get().getProxyCredentials().isPresent());
-
-        assertEquals(new HttpHost("host"), proxyClient.getProxyInfo().get().getProxyHost());
-        assertEquals(new UsernamePasswordCredentials("user", "password"), proxyClient.getProxyInfo().get().getProxyCredentials().get());
-    }
-
-    @Test
-    public void testAPIClientBuilderWithOptionalProxyInfoNoCredential() {
-        UrbanAirshipClient proxyClient = UrbanAirshipClient.newBuilder()
-            .setKey("key")
-            .setSecret("secret")
-            .setProxyInfo(ProxyInfo.newBuilder()
-                .setProxyHost(new HttpHost("host"))
-                .build())
-            .build();
-
-        assertTrue(proxyClient.getProxyInfo().isPresent());
-        assertFalse(proxyClient.getProxyInfo().get().getProxyCredentials().isPresent());
-
-        assertEquals(new HttpHost("host"), proxyClient.getProxyInfo().get().getProxyHost());
+        ProxyServer proxyServer = proxyClient.getClient().getConfig().getProxyServerSelector().select(Uri.create("https://host:8080"));
+        assertEquals("test.urbanairship.com", proxyServer.getHost());
+        assertEquals(8080, proxyServer.getPort());
+        assertEquals(ProxyServer.Protocol.HTTPS, proxyServer.getProtocol());
+        assertEquals("user", proxyServer.getPrincipal());
+        assertEquals("password", proxyServer.getPassword());
+        proxyClient.close();
     }
 
     @Test
     public void testGetUserAgent() {
-        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-            .setKey("key")
-            .setSecret("secret")
-            .build();
         String userAgent = client.getUserAgent();
         assertNotNull(userAgent);
         assertFalse(userAgent.equals("UNKNOWN"));
@@ -195,25 +212,20 @@ public class UrbanAirshipClientTest {
     }
 
     @Test
-    public void testAPIClientBuilderWithBasicHttpParams() {
-        BasicHttpParams httpParams = new BasicHttpParams();
-        httpParams.setParameter(CoreConnectionPNames.SO_TIMEOUT, 10);
-        httpParams.setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 20);
+    public void testAPIClientBuilderWithParams() {
+        AsyncHttpClientConfig.Builder configBuilder = new AsyncHttpClientConfig.Builder()
+            .setConnectTimeout(20)
+            .setWebSocketTimeout(10);
 
         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
             .setKey("key")
             .setSecret("secret")
-            .setHttpParams(httpParams)
+            .setClientConfigBuilder(configBuilder)
             .build();
 
-        String socketTimeoutName = "http.socket.timeout";
-        String connectionTimeoutName = "http.connection.timeout";
-        BasicHttpParams retrievedParams = client.getHttpParams().get();
-
-        assertTrue(retrievedParams.getNames().contains(socketTimeoutName));
-        assertTrue(retrievedParams.getNames().contains(connectionTimeoutName));
-        assertTrue(retrievedParams.getParameter(socketTimeoutName).equals(10));
-        assertTrue(retrievedParams.getParameter(connectionTimeoutName).equals(20));
+        assertEquals(20, client.getClient().getConfig().getConnectTimeout());
+        assertEquals(10, client.getClient().getConfig().getWebSocketTimeout());
+        client.close();
     }
 
     @Test
@@ -271,7 +283,6 @@ public class UrbanAirshipClientTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testPush() {
-        assertFalse(client.getProxyInfo().isPresent());
 
         PushPayload payload = PushPayload.newBuilder()
             .setAudience(Selectors.all())
@@ -288,7 +299,19 @@ public class UrbanAirshipClientTest {
                 .withStatus(201)));
 
         try {
-            Response<PushResponse> response = client.execute(PushRequest.newRequest(payload));
+            final CountDownLatch latch = new CountDownLatch(1);
+            Response<PushResponse> response = client.execute(PushRequest.newRequest(payload), new ResponseCallback() {
+                @Override
+                public void completed(Response response) {
+                    latch.countDown();
+                }
+
+                @Override
+                public void error(Throwable throwable) {
+
+                }
+            });
+            latch.await();
 
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/push/"))
@@ -329,7 +352,236 @@ public class UrbanAirshipClientTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testPushWithProxyClient(){
+    public void testPushRetry() throws Exception {
+
+        PushPayload payload = PushPayload.newBuilder()
+            .setAudience(Selectors.all())
+            .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+            .setNotification(Notifications.alert("Foo"))
+            .build();
+
+        // Setup a stubbed response for the server
+        String pushJSON = "{\"ok\" : true,\"operation_id\" : \"df6a6b50\", \"push_ids\":[\"PushID\"]}";
+        stubFor(post(urlEqualTo("/api/push/")).inScenario("test")
+            .whenScenarioStateIs("Started")
+            .willReturn(aResponse()
+                .withStatus(503))
+            .willSetStateTo("Retry"));
+
+        stubFor(post(urlEqualTo("/api/push/")).inScenario("test")
+            .whenScenarioStateIs("Retry")
+            .willReturn(aResponse()
+                .withHeader(CONTENT_TYPE_KEY, "application/json")
+                .withBody(pushJSON)
+                .withStatus(201)));
+
+        Response<PushResponse> response = client.execute(PushRequest.newRequest(payload));
+
+
+        // Verify components of the underlying HttpRequest
+        verify(postRequestedFor(urlEqualTo("/api/push/"))
+            .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+        List<LoggedRequest> requests = findAll(postRequestedFor(
+            urlEqualTo("/api/push/")));
+        // There should only be one request
+        assertEquals(requests.size(), 2);
+        // Parse the request using the server side deserializer and check
+        // results
+        String requestPayload = requests.get(1).getBodyAsString();
+        ObjectMapper mapper = PushObjectMapper.getInstance();
+        Map<String, Object> result =
+            mapper.readValue(requestPayload,
+                new TypeReference<Map<String, Object>>() {
+                });
+        // Audience
+        String audience = (String) result.get("audience");
+        assertTrue(audience.equals("ALL"));
+
+        // DeviceType
+        List<String> deviceTypeData = (List<String>) result.get("device_types");
+        assertTrue(deviceTypeData.get(0).equals("ios"));
+        assertEquals(DeviceType.find(deviceTypeData.get(0)).get(), DeviceType.IOS);
+
+        // Notification
+        Map<String, String> notification =
+            (Map<String, String>) result.get("notification");
+        assertTrue(notification.get("alert").equals("Foo"));
+
+        // The response is tested elsewhere, just check that it exists
+        assertNotNull(response);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testRetryIsNonBlocking() throws Exception {
+        client = UrbanAirshipClient.newBuilder()
+            .setBaseUri("http://localhost:8080")
+            .setKey("key")
+            .setSecret("secret")
+            .setMaxRetries(1000)
+            .build();
+
+
+        stubFor(get(urlEqualTo("/api/named_users/"))
+            .willReturn(aResponse()
+                .withStatus(503)));
+
+        PushPayload payload = PushPayload.newBuilder()
+            .setAudience(Selectors.all())
+            .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+            .setNotification(Notifications.alert("Foo"))
+            .build();
+
+        // Setup a stubbed response for the server
+        String pushJSON = "{\"ok\" : true,\"operation_id\" : \"df6a6b50\", \"push_ids\":[\"PushID\"]}";
+        stubFor(post(urlEqualTo("/api/push/"))
+            .willReturn(aResponse()
+                .withHeader(CONTENT_TYPE_KEY, "application/json")
+                .withBody(pushJSON)
+                .withStatus(201)));
+
+        final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryBuilder()
+            .setDaemon(false)
+            .build());
+
+        final Future future = client.executeAsync(NamedUserListingRequest.newRequest());
+        Response<PushResponse> response = client.execute(PushRequest.newRequest(payload));
+
+        // Verify components of the underlying HttpRequest
+        verify(postRequestedFor(urlEqualTo("/api/push/"))
+            .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+        List<LoggedRequest> requests = findAll(postRequestedFor(
+            urlEqualTo("/api/push/")));
+        // There should only be one request
+        assertEquals(requests.size(), 1);
+        // The response is tested elsewhere, just check that it exists
+        assertNotNull(response);
+
+        scheduledExecutorService.schedule(new Runnable() {
+            @Override
+            public void run() {
+                future.cancel(true);
+                scheduledExecutorService.shutdown();
+            }
+        }, 5, TimeUnit.MILLISECONDS);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testClose() throws Exception {
+        client = UrbanAirshipClient.newBuilder()
+            .setBaseUri("http://localhost:8080")
+            .setKey("key")
+            .setSecret("secret")
+            .setMaxRetries(1000)
+            .build();
+
+
+        stubFor(get(urlEqualTo("/api/named_users/"))
+            .willReturn(aResponse()
+                .withStatus(503)));
+
+        final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryBuilder()
+            .setDaemon(false)
+            .build());
+
+        final Future future = client.executeAsync(NamedUserListingRequest.newRequest());
+
+        scheduledExecutorService.schedule(new Runnable() {
+            @Override
+            public void run() {
+                client.close();
+
+                // Test that closing the client cancels retrying requests.
+                assertTrue(future.isCancelled());
+                scheduledExecutorService.shutdown();
+            }
+        }, 5, TimeUnit.MILLISECONDS);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testClientException() throws Exception {
+
+        PushPayload payload = PushPayload.newBuilder()
+            .setAudience(Selectors.all())
+            .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+            .setNotification(Notifications.alert("Foo"))
+            .build();
+
+
+        // Setup a stubbed response for the server
+        final String errorJSON = "{\"ok\" : false,\"operation_id\" : \"operation id\",\"error\" : \"Invalid push content\",\"error_code\" : 40001,\"details\" : {\"error\" : \"error message\",\"path\" : \"push.wns.text\",\"location\" : {\"line\" : 47,\"column\" : 12}}}";
+
+        stubFor(post(urlEqualTo("/api/push/"))
+            .willReturn(aResponse()
+                .withHeader(CONTENT_TYPE_KEY, "application/vnd.urbanairship+json")
+                .withBody(errorJSON)
+                .withStatus(401)));
+
+        final CountDownLatch latch = new CountDownLatch(1);
+        client.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
+            @Override
+            public void completed(Response response) {
+            }
+
+            @Override
+            public void error(Throwable throwable) {
+                assertTrue(throwable instanceof ClientException);
+                ClientException clientException = (ClientException) throwable;
+                RequestError error = clientException.getError().get();
+
+                assertTrue("Operation ID is incorrect",
+                    error.getOperationId().get().equals("operation id"));
+                assertTrue("Error code is incorrect",
+                    error.getErrorCode().get().equals(40001));
+                RequestErrorDetails details = error.getDetails().get();
+                RequestErrorDetails.Location errorLocation = details.getLocation().get();
+                assertTrue("Location not setup properly",
+                    errorLocation.getLine().equals(47));
+                latch.countDown();
+            }
+        });
+
+        latch.await();
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testServerException() throws Exception {
+
+        PushPayload payload = PushPayload.newBuilder()
+            .setAudience(Selectors.all())
+            .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+            .setNotification(Notifications.alert("Foo"))
+            .build();
+
+
+        // Setup a stubbed response for the server
+        stubFor(post(urlEqualTo("/api/push/"))
+            .willReturn(aResponse()
+                .withHeader(CONTENT_TYPE_KEY, "application/vnd.urbanairship+json")
+                .withStatus(503)));
+
+        final CountDownLatch latch = new CountDownLatch(1);
+        client.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
+            @Override
+            public void completed(Response response) {
+            }
+
+            @Override
+            public void error(Throwable throwable) {
+                assertTrue(throwable instanceof ServerException);
+                latch.countDown();
+            }
+        });
+
+        latch.await();
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testPushWithProxyClient() throws Exception {
 
         // Setup a client and a push payload
         UrbanAirshipClient proxyClient = UrbanAirshipClient.newBuilder()
@@ -337,13 +589,12 @@ public class UrbanAirshipClientTest {
             .setKey("key")
             .setSecret("secret")
             .setProxyInfo(ProxyInfo.newBuilder()
-                .setProxyHost(new HttpHost("localhost", 8080))
-                .setProxyCredentials(new UsernamePasswordCredentials("user", "password"))
+                .setHost("localhost")
+                .setPort(8080)
+                .setPrincipal("user")
+                .setPassword("password")
                 .build())
             .build();
-
-        assertTrue(proxyClient.getProxyInfo().isPresent());
-        assertTrue(proxyClient.getProxyInfo().get().getProxyCredentials().isPresent());
 
         PushPayload payload = PushPayload.newBuilder()
             .setAudience(Selectors.all())
@@ -360,46 +611,39 @@ public class UrbanAirshipClientTest {
                     .withStatus(201)
             ));
 
+        Response<PushResponse> response = proxyClient.execute(PushRequest.newRequest(payload));
 
-        try {
-            Response<PushResponse> response = proxyClient.execute(PushRequest.newRequest(payload));
+        // Verify components of the underlying HttpRequest
+        verify(postRequestedFor(urlEqualTo("/api/push/"))
+                .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON))
+        );
+        List<LoggedRequest> requests = findAll(postRequestedFor(
+            urlEqualTo("/api/push/")));
+        // There should only be one request
+        assertEquals(requests.size(), 1);
+        // Parse the request using the server side deserializer and check
+        // results
+        String requestPayload = requests.get(0).getBodyAsString();
+        ObjectMapper mapper = PushObjectMapper.getInstance();
+        Map<String, Object> result =
+            mapper.readValue(requestPayload,
+                new TypeReference<Map<String,Object>>(){});
+        // Audience
+        String audience = (String)result.get("audience");
+        assertTrue(audience.equals("ALL"));
 
-            // Verify components of the underlying HttpRequest
-            verify(postRequestedFor(urlEqualTo("/api/push/"))
-                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON))
-            );
-            List<LoggedRequest> requests = findAll(postRequestedFor(
-                urlEqualTo("/api/push/")));
-            // There should only be one request
-            assertEquals(requests.size(), 1);
-            // Parse the request using the server side deserializer and check
-            // results
-            String requestPayload = requests.get(0).getBodyAsString();
-            ObjectMapper mapper = PushObjectMapper.getInstance();
-            Map<String, Object> result =
-                mapper.readValue(requestPayload,
-                    new TypeReference<Map<String,Object>>(){});
-            // Audience
-            String audience = (String)result.get("audience");
-            assertTrue(audience.equals("ALL"));
+        // DeviceType
+        List<String> deviceTypeData = (List<String>)result.get("device_types");
+        assertTrue(deviceTypeData.get(0).equals("ios"));
+        assertEquals(DeviceType.find(deviceTypeData.get(0)).get(), DeviceType.IOS);
 
-            // DeviceType
-            List<String> deviceTypeData = (List<String>)result.get("device_types");
-            assertTrue(deviceTypeData.get(0).equals("ios"));
-            assertEquals(DeviceType.find(deviceTypeData.get(0)).get(), DeviceType.IOS);
+        // Notification
+        Map<String, String> notification =
+            (Map<String,String>)result.get("notification");
+        assertTrue(notification.get("alert").equals("Foo"));
 
-            // Notification
-            Map<String, String> notification =
-                (Map<String,String>)result.get("notification");
-            assertTrue(notification.get("alert").equals("Foo"));
-
-            // The response is tested elsewhere, just check that it exists
-            assertNotNull(response);
-        }
-        catch (Exception ex){
-            ex.printStackTrace();
-            fail("Exception thrown " + ex);
-        }
+        // The response is tested elsewhere, just check that it exists
+        assertNotNull(response);
     }
 
       /*
@@ -2188,12 +2432,6 @@ public class UrbanAirshipClientTest {
     public void testCreateSegment() throws Exception {
         String queryPathString = "/api/segments/";
 
-        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-                .setBaseUri("http://localhost:8080")
-                .setKey("key")
-                .setSecret("secret")
-                .build();
-
         stubFor(post(urlEqualTo(queryPathString))
                 .willReturn(aResponse()
                         .withHeader(CONTENT_TYPE_KEY, APP_JSON)
@@ -2221,12 +2459,6 @@ public class UrbanAirshipClientTest {
     public void testUpdateSegment() throws Exception {
         String queryPathString = "/api/segments/abc";
 
-        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-                .setBaseUri("http://localhost:8080")
-                .setKey("key")
-                .setSecret("secret")
-                .build();
-
         stubFor(put(urlEqualTo(queryPathString))
                 .willReturn(aResponse()
                         .withHeader(CONTENT_TYPE_KEY, APP_JSON)
@@ -2253,12 +2485,6 @@ public class UrbanAirshipClientTest {
     @Test
     public void testDeleteSegment() throws Exception {
         String queryPathString = "/api/segments/abc";
-
-        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-                .setBaseUri("http://localhost:8080")
-                .setKey("key")
-                .setSecret("secret")
-                .build();
 
         stubFor(delete(urlEqualTo(queryPathString))
                 .willReturn(aResponse()
