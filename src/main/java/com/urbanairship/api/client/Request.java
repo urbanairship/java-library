@@ -6,8 +6,6 @@ package com.urbanairship.api.client;
 
 import org.apache.http.entity.ContentType;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
@@ -28,21 +26,15 @@ public interface Request<T> {
         DELETE,
     }
 
-    @Nonnull
     HttpMethod getHttpMethod();
 
-    @Nullable
     String getRequestBody();
 
-    @Nullable
     ContentType getContentType();
 
-    @Nullable
     Map<String, String> getRequestHeaders();
 
-    @Nonnull
     URI getUri(URI baseUri) throws URISyntaxException;
 
-    @Nonnull
     ResponseParser<T> getResponseParser();
 }

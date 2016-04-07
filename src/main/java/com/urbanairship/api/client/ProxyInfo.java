@@ -7,7 +7,6 @@ package com.urbanairship.api.client;
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang.StringUtils;
 
-import javax.annotation.Nullable;
 
 /**
  * Wrapper class for ProxyServer metadata.
@@ -69,7 +68,6 @@ public final class ProxyInfo {
      *
      * @return The principal.
      */
-    @Nullable
     public String getPrincipal() {
         return principal;
     }
@@ -79,7 +77,6 @@ public final class ProxyInfo {
      *
      * @return The password.
      */
-    @Nullable
     public String getPassword() {
         return password;
     }

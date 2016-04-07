@@ -18,8 +18,6 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.message.BasicNameValuePair;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -97,13 +95,11 @@ public class LocationRequest implements Request<LocationResponse> {
     }
 
 
-    @Nonnull
     @Override
     public HttpMethod getHttpMethod() {
         return HttpMethod.GET;
     }
 
-    @Nullable
     @Override
     public String getRequestBody() {
         return null;
@@ -122,7 +118,6 @@ public class LocationRequest implements Request<LocationResponse> {
         return headers;
     }
 
-    @Nonnull
     @Override
     public URI getUri(URI baseUri) throws URISyntaxException {
         URIBuilder builder = new URIBuilder(RequestUtils.resolveURI(baseUri, path));
@@ -133,7 +128,6 @@ public class LocationRequest implements Request<LocationResponse> {
         return builder.build();
     }
 
-    @Nonnull
     @Override
     public ResponseParser<LocationResponse> getResponseParser() {
         return new ResponseParser<LocationResponse>() {

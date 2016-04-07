@@ -8,11 +8,11 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
+import com.google.common.io.BaseEncoding;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.ProxyServer;
 import com.ning.http.client.filter.FilterContext;
-import com.ning.http.util.Base64;
 import org.apache.http.entity.ContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -147,7 +147,7 @@ public class UrbanAirshipClient implements Closeable {
         // Auth
         requestBuilder.setHeader(
             "Authorization",
-            "Basic " + Base64.encode((appKey + ":" + appSecret).getBytes())
+            "Basic " + BaseEncoding.base64().encode((appKey + ":" + appSecret).getBytes())
         );
 
 

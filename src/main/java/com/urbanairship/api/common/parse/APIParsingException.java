@@ -5,16 +5,13 @@
 package com.urbanairship.api.common.parse;
 
 import com.google.common.base.Optional;
-import com.urbanairship.api.common.APIException;
 import org.codehaus.jackson.JsonLocation;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonStreamContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.core.Response;
-
-public class APIParsingException extends APIException {
+public class APIParsingException extends RuntimeException {
 
     private static final Logger log = LoggerFactory.getLogger("com.urbanairship.api");
 
@@ -43,11 +40,6 @@ public class APIParsingException extends APIException {
         super(cause);
         this.path = Optional.absent();
         this.location = Optional.absent();
-    }
-
-    @Override
-    public Response.Status getStatus() {
-        return Response.Status.BAD_REQUEST;
     }
 
     public Optional<String> getPath() {
