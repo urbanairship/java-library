@@ -58,6 +58,13 @@ import com.urbanairship.api.segments.SegmentLookupRequest;
 import com.urbanairship.api.segments.SegmentRequest;
 import com.urbanairship.api.segments.model.SegmentListingResponse;
 import com.urbanairship.api.segments.model.SegmentView;
+import com.urbanairship.api.staticlists.StaticListDeleteRequest;
+import com.urbanairship.api.staticlists.StaticListListingRequest;
+import com.urbanairship.api.staticlists.StaticListLookupRequest;
+import com.urbanairship.api.staticlists.StaticListRequest;
+import com.urbanairship.api.staticlists.StaticListUploadRequest;
+import com.urbanairship.api.staticlists.model.StaticListListingResponse;
+import com.urbanairship.api.staticlists.model.StaticListView;
 import org.apache.log4j.BasicConfigurator;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -70,6 +77,7 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -3021,6 +3029,179 @@ public class UrbanAirshipClientTest {
         } catch (Exception ex) {
             fail("Exception " + ex);
         }
+    }
+
+    @Test
+    public void testLookupStaticList() throws Exception {
+        String listName = "test_list";
+        String queryPathString = "/api/lists/" + listName;
+
+        String responseString = "{\n" +
+                "\"ok\": true,\n" +
+                "\"name\": \"platinum_members\",\n" +
+                "\"description\": \"loyalty program platinum members\",\n" +
+                "\"extra\": {\"key\": \"value\"},\n" +
+                "\"created\": \"2013-08-08T20:41:06\",\n" +
+                "\"last_updated\": \"2014-05-01T18:00:27\",\n" +
+                "\"channel_count\": 3145,\n" +
+                "\"status\": \"ready\"\n" +
+                "}";
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseString)
+                        .withStatus(200)));
+
+        StaticListLookupRequest request = StaticListLookupRequest.newRequest(listName);
+
+        Response<StaticListView> response = client.execute(request);
+
+        List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
+        assertEquals(1, requests.size());
+
+        assertNotNull(response);
+        assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    public void testListingStaticList() throws Exception {
+        String queryPathString = "/api/lists/";
+
+        String responseString = "{" +
+                "\"ok\": true,\n" +
+                "\"lists\": [\n" +
+                "{\n" +
+                "\"name\": \"platinum_members\",\n" +
+                "\"description\": \"loyalty program platinum members\",\n" +
+                "\"extra\": {\"key\": \"value\"},\n" +
+                "\"created\": \"2013-08-08T20:41:06\",\n" +
+                "\"last_updated\": \"2014-05-01T18:00:27\",\n" +
+                "\"channel_count\": 3145,\n" +
+                "\"status\": \"ready\"\n" +
+                "},\n" +
+                "{\n" +
+                "\"name\": \"silver_members\",\n" +
+                "\"extra\": {\"key2\": \"value2\"},\n" +
+                "\"created\": \"2013-08-08T20:41:06\",\n" +
+                "\"last_updated\": \"2014-05-01T18:00:27\",\n" +
+                "\"channel_count\": 19999,\n" +
+                "\"status\": \"ready\"\n" +
+                "},\n" +
+                "{\n" +
+                "\"name\": \"gold_members\",\n" +
+                "\"description\": \"loyalty program gold members\",\n" +
+                "\"extra\": {\"key3\": \"value3\"},\n" +
+                "\"created\": \"2013-08-08T20:45:06\",\n" +
+                "\"last_updated\": \"2015-05-01T18:00:27\",\n" +
+                "\"channel_count\": 2142,\n" +
+                "\"status\": \"processing\"\n" +
+                "}\n" +
+                "]\n" +
+                "}";
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseString)
+                        .withStatus(200)));
+
+        StaticListListingRequest request = StaticListListingRequest.newRequest();
+
+        Response<StaticListListingResponse> response = client.execute(request);
+
+        List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
+        assertEquals(1, requests.size());
+
+        assertNotNull(response);
+        assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    public void testCreateStaticList() throws Exception {
+        String queryPathString = "/api/lists/";
+        String listName = "test_list";
+
+        stubFor(post(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, APP_JSON)
+                        .withStatus(201)));
+
+        StaticListRequest request = StaticListRequest.newRequest(listName);
+        Response<String> response = client.execute(request);
+
+        verify(postRequestedFor(urlEqualTo(queryPathString)));
+        List<LoggedRequest> requests = findAll(postRequestedFor(
+                urlEqualTo(queryPathString)));
+
+        assertEquals(requests.size(), 1);
+        assertNotNull(response);
+        assertEquals(201, response.getStatus());
+    }
+
+    @Test
+    public void testUpdateStaticList() throws Exception {
+        String listName = "test_list";
+        String queryPathString = "/api/lists/" + listName;
+
+        stubFor(put(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, APP_JSON)
+                        .withStatus(200)));
+
+        StaticListRequest request = StaticListRequest.newUpdateRequest(listName);
+        request.setDescription("a new description");
+        Response<String> response = client.execute(request);
+
+        verify(putRequestedFor(urlEqualTo(queryPathString)));
+        List<LoggedRequest> requests = findAll(putRequestedFor(
+                urlEqualTo(queryPathString)));
+
+        assertEquals(requests.size(), 1);
+        assertNotNull(response);
+        assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    public void testUploadStaticList() throws Exception {
+        String csvFile = (new File("src/test/data")).getAbsolutePath() + "/test.csv";
+        String listName = "testlist";
+        String queryPathString = "/api/lists/" + listName + "/csv";
+
+        stubFor(put(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, APP_JSON)
+                        .withStatus(200)));
+
+        StaticListUploadRequest request = StaticListUploadRequest.newRequest(listName, csvFile);
+        Response<String> response = client.execute(request);
+
+        verify(putRequestedFor(urlEqualTo(queryPathString)));
+        List<LoggedRequest> requests = findAll(putRequestedFor(
+                urlEqualTo(queryPathString)));
+
+        assertEquals(requests.size(), 1);
+        assertNotNull(response);
+        assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    public void testDeleteStaticList() throws Exception {
+        String listName = "testlist";
+        String queryPathString = "/api/lists/" + listName;
+
+        stubFor(delete(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withStatus(204)));
+
+        StaticListDeleteRequest request = StaticListDeleteRequest.newRequest(listName);
+        Response<String> response = client.execute(request);
+
+        verify(deleteRequestedFor(urlEqualTo(queryPathString)));
+        List<LoggedRequest> requests = findAll(deleteRequestedFor(
+                urlEqualTo(queryPathString)));
+
+        assertEquals(requests.size(), 1);
+        assertNotNull(response);
+        assertEquals(204, response.getStatus());
     }
 
 }
