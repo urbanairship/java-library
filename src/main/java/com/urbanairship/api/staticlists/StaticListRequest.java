@@ -4,18 +4,14 @@
 
 package com.urbanairship.api.staticlists;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
-import com.urbanairship.api.staticlists.model.StaticListView;
 import com.urbanairship.api.staticlists.parse.StaticListsObjectMapper;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.entity.ContentType;
-import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
 import java.net.URI;
@@ -113,7 +109,7 @@ public class StaticListRequest implements Request<String> {
 
     @Override
     public Request.HttpMethod getHttpMethod() {
-        if (path == API_LISTS_PATH) {
+        if (path.equals(API_LISTS_PATH)) {
             return Request.HttpMethod.POST;
         }
         return HttpMethod.PUT;
@@ -122,12 +118,9 @@ public class StaticListRequest implements Request<String> {
     @Override
     public String getRequestBody() {
         if (!extras.isEmpty()) {
-            try {
-                this.payload.put(EXTRAS_KEY, extras);
-            } catch (Exception ex) {
-                return "{ \"exception\" : \"" + ex.getClass().getName() + "\", \"message\" : \"" + ex.getMessage() + "\" }";
-            }
+            this.payload.put(EXTRAS_KEY, extras);
         }
+
         try {
             return StaticListsObjectMapper.getInstance().writeValueAsString(this.payload);
         } catch (Exception ex) {

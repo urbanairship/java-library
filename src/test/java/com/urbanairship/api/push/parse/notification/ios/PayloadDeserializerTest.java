@@ -252,4 +252,14 @@ public class PayloadDeserializerTest {
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
         assertTrue(payload.getPriority().get().equals(5));
     }
+
+    @Test
+    public void testTitle() throws Exception {
+        String json
+            = "{"
+            + "  \"title\": \"title\""
+            + "}";
+        IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
+        assertTrue(payload.getTitle().get().equals("title"));
+    }
 }

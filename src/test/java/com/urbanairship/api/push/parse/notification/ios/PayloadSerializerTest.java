@@ -128,4 +128,20 @@ public class PayloadSerializerTest {
         assertEquals(interactive, returned);
     }
 
+    @Test
+    public void testTitle() throws Exception {
+        IOSDevicePayload payload = IOSDevicePayload.newBuilder()
+            .setAlert("alert")
+            .setTitle("title")
+            .build();
+
+        String json = mapper.writeValueAsString(payload);
+
+
+        String expected
+            = "{\"alert\":\"alert\",\"title\":\"title\"}";
+
+        assertEquals(expected, json);
+    }
+
 }
