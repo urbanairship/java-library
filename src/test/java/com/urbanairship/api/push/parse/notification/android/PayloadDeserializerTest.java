@@ -186,4 +186,21 @@ public class PayloadDeserializerTest {
         Interactive returned = payload.getInteractive().get();
         assertEquals(interactive, returned);
     }
+
+    @Test
+    public void testTitle() throws Exception {
+        String json
+            = "{"
+            + "  \"title\": \"title\""
+            + "}";
+
+        AndroidDevicePayload expected = AndroidDevicePayload.newBuilder()
+            .setTitle("title")
+            .build();
+
+        AndroidDevicePayload payload = mapper.readValue(json, AndroidDevicePayload.class);
+        assertEquals(expected, payload);
+        assertTrue(payload.getTitle().isPresent());
+        assertEquals("title", payload.getTitle().get());
+    }
 }

@@ -22,19 +22,22 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
     private final Optional<Boolean> delayWhileIdle;
     private final Optional<ImmutableMap<String, String>> extra;
     private final Optional<Interactive> interactive;
+    private final Optional<String> title;
 
     private AndroidDevicePayload(Optional<String> alert,
                                  Optional<String> collapseKey,
                                  Optional<PushExpiry> timeToLive,
                                  Optional<Boolean> delayWhileIdle,
                                  Optional<ImmutableMap<String, String>> extra,
-                                 Optional<Interactive> interactive) {
+                                 Optional<Interactive> interactive,
+                                 Optional<String> title) {
         this.alert = alert;
         this.collapseKey = collapseKey;
         this.timeToLive = timeToLive;
         this.delayWhileIdle = delayWhileIdle;
         this.extra = extra;
         this.interactive = interactive;
+        this.title = title;
     }
 
     public static Builder newBuilder() {
@@ -72,6 +75,10 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         return interactive;
     }
 
+    public Optional<String> getTitle() {
+        return title;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -100,6 +107,9 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         if (interactive != null ? !interactive.equals(that.interactive) : that.interactive != null) {
             return false;
         }
+        if (title != null ? !title.equals(that.title) : that.title != null) {
+            return false;
+        }
         return true;
     }
 
@@ -111,6 +121,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         result = 31 * result + (delayWhileIdle != null ? delayWhileIdle.hashCode() : 0);
         result = 31 * result + (extra != null ? extra.hashCode() : 0);
         result = 31 * result + (interactive != null ? interactive.hashCode() : 0);
+        result = 31 * result + (title != null ? title.hashCode() : 0);
         return result;
     }
 
@@ -121,6 +132,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         private Boolean delayWhileIdle = null;
         private ImmutableMap.Builder<String, String> extra = null;
         private Interactive interactive = null;
+        private String title = null;
 
         private Builder() { }
 
@@ -165,13 +177,19 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
             return this;
         }
 
+        public Builder setTitle(String value) {
+            this.title = value;
+            return this;
+        }
+
         public AndroidDevicePayload build() {
             return new AndroidDevicePayload(Optional.fromNullable(alert),
                                             Optional.fromNullable(collapseKey),
                                             Optional.fromNullable(timeToLive),
                                             Optional.fromNullable(delayWhileIdle),
                                             extra == null ? Optional.<ImmutableMap<String,String>>absent() : Optional.fromNullable(extra.build()),
-                                            Optional.fromNullable(interactive));
+                                            Optional.fromNullable(interactive),
+                                            Optional.fromNullable(title));
         }
     }
 }
