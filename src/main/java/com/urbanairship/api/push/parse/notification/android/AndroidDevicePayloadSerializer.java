@@ -40,6 +40,9 @@ public class AndroidDevicePayloadSerializer extends JsonSerializer<AndroidDevice
             jgen.writeObjectField("interactive", payload.getInteractive().get());
         }
 
+        if (payload.getTitle().isPresent()) {
+            jgen.writeStringField("title", payload.getTitle().get());
+        }
         jgen.writeEndObject();
     }
 }

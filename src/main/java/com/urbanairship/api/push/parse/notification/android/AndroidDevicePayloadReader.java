@@ -47,6 +47,10 @@ public class AndroidDevicePayloadReader implements JsonObjectReader<AndroidDevic
         builder.setInteractive(parser.readValueAs(Interactive.class));
     }
 
+    public void readTitle(JsonParser parser) throws IOException {
+        builder.setTitle(StringFieldDeserializer.INSTANCE.deserialize(parser, "title"));
+    }
+
     @Override
     public AndroidDevicePayload validateAndBuild() throws IOException {
         try {

@@ -144,9 +144,10 @@ public class UrbanAirshipClientTest {
     }
 
     @ClassRule
-    @Rule
-    public static WireMockClassRule wireMockClassRule = new WireMockClassRule();
+    public static WireMockClassRule wireMockRule = new WireMockClassRule();
 
+    @Rule
+    public WireMockClassRule instanceRule = wireMockRule;
 
     @Test(expected = NullPointerException.class)
     public void testAPIClientThrowsForNoAppKey() {

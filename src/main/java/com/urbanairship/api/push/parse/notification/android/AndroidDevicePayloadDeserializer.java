@@ -22,10 +22,10 @@ public class AndroidDevicePayloadDeserializer extends JsonDeserializer<AndroidDe
     private static final FieldParserRegistry<AndroidDevicePayload, AndroidDevicePayloadReader> FIELD_PARSERS = new MapFieldParserRegistry<AndroidDevicePayload, AndroidDevicePayloadReader>(
             ImmutableMap.<String, FieldParser<AndroidDevicePayloadReader>>builder()
             .put("alert", new FieldParser<AndroidDevicePayloadReader>() {
-                    public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readAlert(json);
-                    }
-                })
+                public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                    reader.readAlert(json);
+                }
+            })
             .put("collapse_key", new FieldParser<AndroidDevicePayloadReader>() {
                     public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
                         reader.readCollapseKey(json);
@@ -49,6 +49,11 @@ public class AndroidDevicePayloadDeserializer extends JsonDeserializer<AndroidDe
             .put("interactive", new FieldParser<AndroidDevicePayloadReader>() {
                     public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
                         reader.readInteractive(json);
+                    }
+                })
+            .put("title", new FieldParser<AndroidDevicePayloadReader>() {
+                    public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                        reader.readTitle(json);
                     }
                 })
             .build()
