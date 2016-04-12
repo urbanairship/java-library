@@ -7,6 +7,7 @@ package com.urbanairship.api.push.parse.notification.actions;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.io.BaseEncoding;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.push.model.notification.actions.Action;
@@ -23,7 +24,6 @@ import com.urbanairship.api.push.model.notification.actions.RemoveTagAction;
 import com.urbanairship.api.push.model.notification.actions.ShareAction;
 import com.urbanairship.api.push.model.notification.actions.TagActionData;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParseException;
@@ -123,8 +123,12 @@ public final class ActionsReader implements JsonObjectReader<Actions> {
                     !contentEncoding.getTextValue().equals("base64"))) {
                 throw new APIParsingException("The content encoding attribute must be either 'utf-8' or 'base64'");
 
-            } else if (!contentEncoding.isMissingNode() && contentEncoding.getTextValue().equals("base64") && !Base64.isBase64(body.getTextValue())) {
-                throw new APIParsingException("Content contains invalid data that is not valid for base64 encoding.");
+            } else if (!contentEncoding.isMissingNode() && contentEncoding.getTextValue().equals("base64")) {
+                try {
+                    BaseEncoding.base64().decode(body.getTextValue());
+                } catch (IllegalArgumentException e) {
+                    throw new APIParsingException("Content contains invalid data that is not valid for base64 encoding.");
+                }
             }
         }
 

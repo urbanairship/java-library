@@ -4,8 +4,7 @@
 
 package com.urbanairship.api.reports;
 
-import com.google.common.base.Preconditions;
-import com.sun.jersey.core.util.Base64;
+import com.google.common.io.BaseEncoding;
 
 import java.util.Arrays;
 
@@ -14,9 +13,7 @@ public final class Base64ByteArray {
     public byte[] binary;
 
     public Base64ByteArray(String value) {
-        Preconditions.checkArgument(Base64.isBase64(value));
-
-        this.binary = Base64.decode(value);
+        this.binary = BaseEncoding.base64().decode(value);
     }
 
     public byte[] getByteArray() {
@@ -24,7 +21,7 @@ public final class Base64ByteArray {
     }
 
     public String getBase64EncodedString() {
-        return new String(Base64.encode(binary));
+        return BaseEncoding.base64().encode(binary);
     }
 
     @Override
