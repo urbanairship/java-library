@@ -7,9 +7,9 @@ package com.urbanairship.api.reports.parse;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.common.parse.JsonObjectReader;
-import com.urbanairship.api.reports.model.PushSeriesResponse;
 import com.urbanairship.api.reports.model.PlatformCounts;
 import com.urbanairship.api.reports.model.Precision;
+import com.urbanairship.api.reports.model.PushSeriesResponse;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.type.TypeReference;
 

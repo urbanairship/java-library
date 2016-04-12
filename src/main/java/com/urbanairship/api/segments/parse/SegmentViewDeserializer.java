@@ -7,7 +7,6 @@ import com.urbanairship.api.common.parse.FieldParserRegistry;
 import com.urbanairship.api.common.parse.MapFieldParserRegistry;
 import com.urbanairship.api.common.parse.StandardObjectDeserializer;
 import com.urbanairship.api.segments.model.SegmentView;
-import com.urbanairship.api.segments.model.SegmentView;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;

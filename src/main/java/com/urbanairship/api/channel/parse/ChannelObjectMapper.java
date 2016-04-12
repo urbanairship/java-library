@@ -5,8 +5,8 @@
 package com.urbanairship.api.channel.parse;
 
 import com.urbanairship.api.channel.model.ChannelResponse;
-import com.urbanairship.api.channel.model.ChannelView;
 import com.urbanairship.api.channel.model.ChannelType;
+import com.urbanairship.api.channel.model.ChannelView;
 import com.urbanairship.api.channel.model.ios.IosSettings;
 import com.urbanairship.api.channel.model.ios.QuietTime;
 import com.urbanairship.api.channel.parse.ios.IosSettingsDeserializer;

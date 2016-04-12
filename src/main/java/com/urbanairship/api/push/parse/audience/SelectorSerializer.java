@@ -4,7 +4,6 @@
 
 package com.urbanairship.api.push.parse.audience;
 
-import com.google.common.collect.Iterables;
 import com.urbanairship.api.push.model.audience.CompoundSelector;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.SelectorType;

@@ -6,7 +6,6 @@ package com.urbanairship.api.reports.parse;
 
 
 import com.urbanairship.api.reports.model.PushListingResponse;
-import com.urbanairship.api.reports.parse.ReportsObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 

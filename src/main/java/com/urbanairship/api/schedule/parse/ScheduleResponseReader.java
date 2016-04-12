@@ -4,10 +4,10 @@
 
 package com.urbanairship.api.schedule.parse;
 
-import com.urbanairship.api.schedule.model.ScheduleResponse;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.schedule.model.SchedulePayload;
+import com.urbanairship.api.schedule.model.ScheduleResponse;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.type.TypeReference;
 

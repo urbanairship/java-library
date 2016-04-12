@@ -8,7 +8,6 @@ import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.reports.model.PushInfoResponse;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
-import com.urbanairship.api.reports.parse.ReportsObjectMapper;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

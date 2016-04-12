@@ -10,8 +10,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import org.joda.time.DateTime;
 
-import java.util.Map;
-
 public class StaticListView {
     private final Optional<Boolean> ok;
     private final String name;

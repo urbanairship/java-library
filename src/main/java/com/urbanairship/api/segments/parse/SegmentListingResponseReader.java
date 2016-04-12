@@ -2,9 +2,8 @@ package com.urbanairship.api.segments.parse;
 
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
-import com.urbanairship.api.push.model.audience.Selector;
-import com.urbanairship.api.segments.model.SegmentListingView;
 import com.urbanairship.api.segments.model.SegmentListingResponse;
+import com.urbanairship.api.segments.model.SegmentListingView;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.type.TypeReference;
 

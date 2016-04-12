@@ -5,7 +5,6 @@ import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.staticlists.model.StaticListView;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
-import org.joda.time.Period;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

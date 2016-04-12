@@ -1,8 +1,8 @@
 package com.urbanairship.api.channel;
 
 import com.urbanairship.api.channel.model.ChannelResponse;
-import com.urbanairship.api.channel.model.ChannelView;
 import com.urbanairship.api.channel.model.ChannelType;
+import com.urbanairship.api.channel.model.ChannelView;
 import com.urbanairship.api.channel.parse.ChannelObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;

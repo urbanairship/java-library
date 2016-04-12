@@ -6,8 +6,8 @@ package com.urbanairship.api.channel.parse.ios;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
-import com.urbanairship.api.channel.model.ios.IosSettings;
 import com.urbanairship.api.channel.Constants;
+import com.urbanairship.api.channel.model.ios.IosSettings;
 import com.urbanairship.api.common.parse.FieldParser;
 import com.urbanairship.api.common.parse.FieldParserRegistry;
 import com.urbanairship.api.common.parse.MapFieldParserRegistry;

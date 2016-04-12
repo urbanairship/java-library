@@ -4,7 +4,6 @@
 
 package com.urbanairship.api.staticlists.parse;
 
-import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.staticlists.model.StaticListListingResponse;
@@ -14,7 +13,6 @@ import org.codehaus.jackson.type.TypeReference;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 public class StaticListListingResponseReader implements JsonObjectReader<StaticListListingResponse> {
     private final StaticListListingResponse.Builder builder;

@@ -4,8 +4,8 @@
 
 package com.urbanairship.api.location.parse;
 
-import com.urbanairship.api.location.model.LocationView;
 import com.urbanairship.api.location.model.LocationResponse;
+import com.urbanairship.api.location.model.LocationView;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.DeserializationConfig;

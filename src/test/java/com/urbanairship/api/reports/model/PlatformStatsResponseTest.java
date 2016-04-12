@@ -1,8 +1,6 @@
 package com.urbanairship.api.reports.model;
 
 
-import com.urbanairship.api.reports.model.PlatformStats;
-import com.urbanairship.api.reports.model.PlatformStatsResponse;
 import org.joda.time.DateTime;
 import org.junit.Test;
 

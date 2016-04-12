@@ -2,7 +2,6 @@ package com.urbanairship.api.staticlists;
 
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
-import com.urbanairship.api.staticlists.model.StaticListView;
 import com.urbanairship.api.staticlists.parse.StaticListsObjectMapper;
 import org.apache.http.entity.ContentType;
 import org.codehaus.jackson.map.ObjectMapper;

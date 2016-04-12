@@ -11,7 +11,6 @@ import com.urbanairship.api.common.parse.FieldParserRegistry;
 import com.urbanairship.api.common.parse.MapFieldParserRegistry;
 import com.urbanairship.api.common.parse.StandardObjectDeserializer;
 import com.urbanairship.api.staticlists.model.StaticListListingResponse;
-import com.urbanairship.api.staticlists.model.StaticListListingResponse;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
