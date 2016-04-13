@@ -1,16 +1,16 @@
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.schedule.parse;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
-import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
 import com.urbanairship.api.common.parse.FieldParser;
 import com.urbanairship.api.common.parse.FieldParserRegistry;
 import com.urbanairship.api.common.parse.MapFieldParserRegistry;
 import com.urbanairship.api.common.parse.StandardObjectDeserializer;
+import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;

@@ -1,15 +1,15 @@
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.channel.parse;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.urbanairship.api.channel.model.ChannelView;
-import com.urbanairship.api.channel.model.ChannelType;
-import com.urbanairship.api.channel.model.ios.IosSettings;
 import com.urbanairship.api.channel.Constants;
+import com.urbanairship.api.channel.model.ChannelType;
+import com.urbanairship.api.channel.model.ChannelView;
+import com.urbanairship.api.channel.model.ios.IosSettings;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.BooleanFieldDeserializer;
 import com.urbanairship.api.common.parse.JsonObjectReader;

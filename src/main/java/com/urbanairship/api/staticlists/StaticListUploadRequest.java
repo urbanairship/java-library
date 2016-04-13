@@ -13,13 +13,12 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.http.entity.ContentType;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-import java.io.File;
 
 /**
  * The StaticListUploadRequest class builds a static list upload request to be executed in

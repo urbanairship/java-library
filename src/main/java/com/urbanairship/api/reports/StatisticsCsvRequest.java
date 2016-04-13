@@ -4,16 +4,13 @@ import com.google.common.base.Preconditions;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
-import com.urbanairship.api.reports.parse.ReportsObjectMapper;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
 import java.util.Map;
 
 

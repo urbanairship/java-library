@@ -1,13 +1,13 @@
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.reports.parse;
 
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
-import com.urbanairship.api.reports.model.PushListingResponse;
 import com.urbanairship.api.reports.model.PushInfoResponse;
+import com.urbanairship.api.reports.model.PushListingResponse;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.type.TypeReference;
 

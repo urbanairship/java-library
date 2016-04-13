@@ -1,6 +1,5 @@
 package com.urbanairship.api.reports;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import org.apache.http.entity.ContentType;
@@ -9,7 +8,6 @@ import org.junit.Test;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;

@@ -1,7 +1,7 @@
 package com.urbanairship.api.schedule;
 
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 
 import com.google.common.base.Preconditions;

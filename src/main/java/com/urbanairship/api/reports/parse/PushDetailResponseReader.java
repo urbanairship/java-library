@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.reports.parse;
@@ -10,8 +10,8 @@ import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.reports.Base64ByteArray;
 import com.urbanairship.api.reports.model.PerPushCounts;
-import com.urbanairship.api.reports.model.PushDetailResponse;
 import com.urbanairship.api.reports.model.PlatformType;
+import com.urbanairship.api.reports.model.PushDetailResponse;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.DateTime;

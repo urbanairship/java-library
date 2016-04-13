@@ -1,10 +1,8 @@
 package com.urbanairship.api.reports.parse;
 
-import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.reports.model.PlatformStats;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

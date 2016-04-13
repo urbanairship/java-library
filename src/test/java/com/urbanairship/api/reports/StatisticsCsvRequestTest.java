@@ -1,24 +1,16 @@
 package com.urbanairship.api.reports;
 
-import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
-import com.urbanairship.api.reports.model.StatisticsResponse;
 import com.urbanairship.api.reports.parse.ReportsObjectMapper;
-import org.apache.http.entity.ContentType;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 

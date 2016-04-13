@@ -6,11 +6,9 @@ import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
-import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.reports.model.PushDetailResponse;
 import com.urbanairship.api.reports.parse.ReportsObjectMapper;
 import org.apache.http.entity.ContentType;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
 import java.io.IOException;

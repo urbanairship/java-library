@@ -1,11 +1,10 @@
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.reports.model;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
 import org.joda.time.DateTime;
 
 /**

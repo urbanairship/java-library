@@ -2,9 +2,6 @@ package com.urbanairship.api.segments.model;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import sun.security.util.BigInt;
-
-import java.math.BigInteger;
 
 public class SegmentListingView {
     private final String displayName;

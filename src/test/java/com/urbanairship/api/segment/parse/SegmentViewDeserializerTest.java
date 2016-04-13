@@ -2,15 +2,9 @@ package com.urbanairship.api.segment.parse;
 
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.Selectors;
-import com.urbanairship.api.push.model.audience.location.DateRange;
-import com.urbanairship.api.push.model.audience.location.DateRangeUnit;
-import com.urbanairship.api.reports.parse.ReportsObjectMapper;
 import com.urbanairship.api.segments.model.SegmentView;
 import com.urbanairship.api.segments.parse.SegmentObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
