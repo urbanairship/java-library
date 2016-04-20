@@ -29,6 +29,7 @@ import com.urbanairship.api.reports.model.SinglePushInfoResponse;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.segments.model.AudienceSegment;
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
+import com.urbanairship.api.tag.model.AddRemoveNamedUserFromTagPayload;
 import com.urbanairship.api.tag.model.BatchModificationPayload;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpHost;
@@ -82,6 +83,8 @@ public class APIClient {
     private final static String API_REPORTS_PUSH_RESPONSE_PATH = "/api/reports/responses/";
     private final static String API_REPORTS_APPS_OPEN_PATH = "/api/reports/opens/";
     private final static String API_REPORTS_TIME_IN_APP_PATH = "/api/reports/timeinapp/";
+    private final static String API_NAMED_USER_TAGS = "/api/named_users/tags/";
+
     private final static Logger logger = LoggerFactory.getLogger("com.urbanairship.api");
     /* User auth */
     private final String appKey;
@@ -369,6 +372,18 @@ public class APIClient {
     public HttpResponse addRemoveDevicesFromTag(String tag, AddRemoveDeviceFromTagPayload payload) throws IOException {
         Preconditions.checkNotNull(payload, "Payload is required when adding and/or removing devices from a tag");
         Request req = provisionRequest(Request.Post(baseURIResolution(baseURI, API_TAGS_PATH + tag)));
+        req.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing add/remove tags from named user request %s", req));
+        }
+
+        return provisionExecutor().execute(req).returnResponse();
+    }
+
+    public HttpResponse addRemoveNamedUserFromTag(AddRemoveNamedUserFromTagPayload payload) throws IOException {
+        Preconditions.checkNotNull(payload, "Payload is required when adding and/or removing tags from a named user");
+        Request req = provisionRequest(Request.Post(baseURIResolution(baseURI, API_NAMED_USER_TAGS )));
         req.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
 
         if (logger.isDebugEnabled()) {
