@@ -19,6 +19,7 @@ import com.urbanairship.api.client.model.APIReportsPushListingResponse;
 import com.urbanairship.api.client.model.APIScheduleResponse;
 import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.Point;
+import com.urbanairship.api.nameduser.model.AssociateNamedUserPayload;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.reports.model.AppStats;
 import com.urbanairship.api.reports.model.PerPushDetailResponse;
@@ -82,6 +83,8 @@ public class APIClient {
     private final static String API_REPORTS_PUSH_RESPONSE_PATH = "/api/reports/responses/";
     private final static String API_REPORTS_APPS_OPEN_PATH = "/api/reports/opens/";
     private final static String API_REPORTS_TIME_IN_APP_PATH = "/api/reports/timeinapp/";
+    private final static String API_NAMED_USER_PATH = "/api/named_users/associate";
+
     private final static Logger logger = LoggerFactory.getLogger("com.urbanairship.api");
     /* User auth */
     private final String appKey;
@@ -377,6 +380,7 @@ public class APIClient {
 
         return provisionExecutor().execute(req).returnResponse();
     }
+
 
     public HttpResponse batchModificationOfTags(BatchModificationPayload payload) throws IOException {
         Preconditions.checkNotNull(payload, "Payload is required when performing batch modification of tags");
@@ -895,6 +899,19 @@ public class APIClient {
         }
 
         return provisionExecutor().execute(req).handleResponse(new StringAPIResponseHandler());
+    }
+
+
+    public HttpResponse associateNamedUser(AssociateNamedUserPayload payload) throws IOException {
+        Preconditions.checkNotNull(payload, "Payload is required when associating a named user");
+        Request req = provisionRequest(Request.Post(baseURIResolution(baseURI, API_NAMED_USER_PATH)));
+        req.bodyString(payload.toJSON(), ContentType.APPLICATION_JSON);
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Executing associate named user request %s", req));
+        }
+
+        return provisionExecutor().execute(req).returnResponse();
     }
 
     /* Object methods */

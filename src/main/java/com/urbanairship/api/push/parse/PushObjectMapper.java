@@ -6,6 +6,8 @@ package com.urbanairship.api.push.parse;
 
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.CommonObjectMapper;
+import com.urbanairship.api.nameduser.model.AssociateNamedUserPayload;
+import com.urbanairship.api.nameduser.parse.AssociateNamedUserPayloadSerializer;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushExpiry;
@@ -124,8 +126,10 @@ import com.urbanairship.api.schedule.parse.SchedulePayloadDeserializer;
 import com.urbanairship.api.schedule.parse.ScheduleSerializer;
 import com.urbanairship.api.schedule.parse.ScheduledPayloadSerializer;
 import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
+import com.urbanairship.api.tag.model.AddRemoveNamedUserFromTagPayload;
 import com.urbanairship.api.tag.model.BatchModificationPayload;
 import com.urbanairship.api.tag.parse.AddRemoveDeviceFromTagPayloadSerializer;
+import com.urbanairship.api.tag.parse.AddRemoveNamedUserFromTagPayloadSerializer;
 import com.urbanairship.api.tag.parse.BatchModificationPayloadSerializer;
 import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.DeserializationConfig;
@@ -275,6 +279,10 @@ public class PushObjectMapper {
             /* Tags */
                 .addSerializer(AddRemoveDeviceFromTagPayload.class, new AddRemoveDeviceFromTagPayloadSerializer())
                 .addSerializer(BatchModificationPayload.class, new BatchModificationPayloadSerializer())
+
+            /* Named Users */
+                .addSerializer(AssociateNamedUserPayload.class, new AssociateNamedUserPayloadSerializer())
+
 
             /* Segments */
                 .addDeserializer(SegmentDefinition.class, new SegmentDefinitionDeserializer());
