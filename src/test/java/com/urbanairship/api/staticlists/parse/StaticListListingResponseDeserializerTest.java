@@ -47,7 +47,7 @@ public class StaticListListingResponseDeserializerTest {
         assertNotNull(lists);
         assertEquals(true, lists.getOk());
 
-        StaticListView list1 = lists.getStaticListObjects().get(0);
+        StaticListView list1 = lists.getStaticListViews().get(0);
         assertNotNull(list1);
         assertEquals("platinum_members", list1.getName());
         assertEquals(Optional.of("loyalty program platinum members"), list1.getDescription());
@@ -56,7 +56,7 @@ public class StaticListListingResponseDeserializerTest {
         assertEquals(Integer.valueOf(3145), list1.getChannelCount());
         assertEquals("ready", list1.getStatus());
 
-        StaticListView list2 = lists.getStaticListObjects().get(1);
+        StaticListView list2 = lists.getStaticListViews().get(1);
         assertNotNull(list2);
         assertEquals("gold_members", list2.getName());
         assertEquals(Optional.absent(), list2.getDescription());

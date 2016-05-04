@@ -21,11 +21,11 @@ import java.util.Map;
  * The DeleteScheduleRequest class builds delete scheduled push requests to be executed in
  * the {@link com.urbanairship.api.client.UrbanAirshipClient}.
  */
-public class DeleteScheduleRequest implements Request<String> {
+public class ScheduleDeleteRequest implements Request<String> {
 
     private final String scheduleId;
 
-    private DeleteScheduleRequest(String scheduleId) {
+    private ScheduleDeleteRequest(String scheduleId) {
         this.scheduleId = scheduleId;
     }
 
@@ -35,9 +35,9 @@ public class DeleteScheduleRequest implements Request<String> {
      * @param scheduleId String
      * @return DeleteScheduleRequest
      */
-    public static DeleteScheduleRequest newRequest(String scheduleId) {
+    public static ScheduleDeleteRequest newRequest(String scheduleId) {
         Preconditions.checkArgument(StringUtils.isNotEmpty(scheduleId), "Schedule ID may not be null");
-        return new DeleteScheduleRequest(scheduleId);
+        return new ScheduleDeleteRequest(scheduleId);
     }
 
     @Override

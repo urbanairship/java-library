@@ -61,7 +61,7 @@ public class ChannelResponse {
      *
      * @return An Optional ChannelView
      */
-    public Optional<ChannelView> getChannelObject() {
+    public Optional<ChannelView> getChannelView() {
         return channelObject;
     }
 

@@ -43,7 +43,7 @@ public class PushSeriesRequest implements Request<PushSeriesResponse> {
      *
      * @return PushSeriesRequest
      */
-    public PushSeriesRequest start(DateTime start) {
+    public PushSeriesRequest setStart(DateTime start) {
         this.start = Optional.of(start);
         return this;
     }
@@ -53,7 +53,7 @@ public class PushSeriesRequest implements Request<PushSeriesResponse> {
      *
      * @return PushSeriesRequest
      */
-    public PushSeriesRequest end(DateTime end) {
+    public PushSeriesRequest setEnd(DateTime end) {
         this.end = Optional.of(end);
         return this;
     }
@@ -63,7 +63,7 @@ public class PushSeriesRequest implements Request<PushSeriesResponse> {
      *
      * @return PushSeriesRequest
      */
-    public PushSeriesRequest precision(Precision precision) {
+    public PushSeriesRequest setPrecision(Precision precision) {
         this.precision = Optional.of(precision);
         return this;
     }

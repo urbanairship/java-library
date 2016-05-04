@@ -46,10 +46,10 @@ public class SegmentRequestTest {
         createLocationRequest = SegmentRequest.newRequest()
                 .setCriteria(locationCriteria)
                 .setDisplayName(displayName);
-        updateRequest = SegmentRequest.newRequest(TEST_SEGMENT_ID)
+        updateRequest = SegmentRequest.newUpdateRequest(TEST_SEGMENT_ID)
                 .setCriteria(criteria)
                 .setDisplayName(displayName);
-        updateLocationRequest = SegmentRequest.newRequest(TEST_SEGMENT_ID)
+        updateLocationRequest = SegmentRequest.newUpdateRequest(TEST_SEGMENT_ID)
                 .setCriteria(locationCriteria)
                 .setDisplayName(displayName);
     }

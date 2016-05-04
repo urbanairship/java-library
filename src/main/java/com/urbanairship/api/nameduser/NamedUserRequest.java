@@ -24,8 +24,8 @@ import java.util.Map;
  */
 public class NamedUserRequest implements Request<String> {
 
-    private final static String API_NAMED_USERS_ASSOCIATE = "/api/named_users/associate";
-    private final static String API_NAMED_USERS_DISASSOCIATE = "/api/named_users/disassociate";
+    private final static String API_NAMED_USERS_ASSOCIATE = "/api/named_users/associate/";
+    private final static String API_NAMED_USERS_DISASSOCIATE = "/api/named_users/disassociate/";
 
     private static final String CHANNEL_KEY = "channel_id";
     private static final String DEVICE_TYPE_KEY = "device_type";
@@ -75,7 +75,7 @@ public class NamedUserRequest implements Request<String> {
      * @param namedUserId String
      * @return NamedUserRequest
      */
-    public NamedUserRequest setNamedUserid(String namedUserId) {
+    public NamedUserRequest setNamedUserId(String namedUserId) {
         payload.put(NAMED_USER_ID_KEY, namedUserId);
         return this;
     }

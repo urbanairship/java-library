@@ -9,11 +9,11 @@ import com.google.common.collect.ImmutableList;
 
 public class StaticListListingResponse {
     private final boolean ok;
-    private final ImmutableList<StaticListView> staticListObjects;
+    private final ImmutableList<StaticListView> staticListViews;
 
     private StaticListListingResponse(Builder builder) {
         this.ok = builder.ok;
-        this.staticListObjects = builder.staticListObjects.build();
+        this.staticListViews = builder.staticListObjects.build();
     }
 
     /**
@@ -39,21 +39,21 @@ public class StaticListListingResponse {
      *
      * @return An ImmutableList of StaticListLookupResponses
      */
-    public ImmutableList<StaticListView> getStaticListObjects() {
-        return staticListObjects;
+    public ImmutableList<StaticListView> getStaticListViews() {
+        return staticListViews;
     }
 
     @Override
     public String toString() {
         return "StaticListListingResponse{" +
                 "ok=" + ok +
-                ", staticListObjects=" + staticListObjects +
+                ", staticListViews=" + staticListViews +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(ok, staticListObjects);
+        return Objects.hashCode(ok, staticListViews);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class StaticListListingResponse {
         }
         final StaticListListingResponse other = (StaticListListingResponse) obj;
         return Objects.equal(this.ok, other.ok) &&
-                Objects.equal(this.staticListObjects, other.staticListObjects);
+                Objects.equal(this.staticListViews, other.staticListViews);
     }
 
 

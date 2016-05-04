@@ -20,7 +20,7 @@ public class LocationRequestTest {
 
     private final ObjectMapper mapper = LocationObjectMapper.getInstance();
 
-    private final LocationRequest locationRequest = LocationRequest.newQueryRequest("chicago").setType("city");
+    private final LocationRequest locationRequest = LocationRequest.newRequest("chicago").setType("city");
 
     @Test
     public void testContentType() throws Exception {

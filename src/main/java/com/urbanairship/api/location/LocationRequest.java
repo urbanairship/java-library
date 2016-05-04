@@ -51,7 +51,7 @@ public class LocationRequest implements Request<LocationResponse> {
      * @param query The query as a string.
      * @return LocationRequest
      */
-    public static LocationRequest newQueryRequest(String query) {
+    public static LocationRequest newRequest(String query) {
         Preconditions.checkArgument(StringUtils.isNotBlank(query), "Query text cannot be blank");
         return new LocationRequest(API_LOCATION_PATH, new BasicNameValuePair("q", query));
     }
@@ -62,7 +62,7 @@ public class LocationRequest implements Request<LocationResponse> {
      * @param point The latitude and longitude encapsulated in a Point object.
      * @return LocationRequest
      */
-    public static LocationRequest newLatLongRequest(Point point) {
+    public static LocationRequest newRequest(Point point) {
         Preconditions.checkNotNull(point, "Point must not be null");
         return new LocationRequest(API_LOCATION_PATH + point.getLatitude() + "," + point.getLongitude(), null);
     }
@@ -73,7 +73,7 @@ public class LocationRequest implements Request<LocationResponse> {
      * @param boundedBox The bounded box.
      * @return LocationRequest
      */
-    public static LocationRequest newBoundingBoxRequest(BoundedBox boundedBox) {
+    public static LocationRequest newRequest(BoundedBox boundedBox) {
         Preconditions.checkNotNull(boundedBox, "Box must not be null");
         return new LocationRequest(API_LOCATION_PATH +
             boundedBox.getCornerOne().getLatitude() + "," +

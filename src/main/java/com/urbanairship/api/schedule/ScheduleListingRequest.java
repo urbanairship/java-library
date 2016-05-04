@@ -21,7 +21,7 @@ import java.util.UUID;
  * The ListSchedulesRequest class builds schedule listing requests to be executed in
  * the {@link com.urbanairship.api.client.UrbanAirshipClient}.
  */
-public class ListSchedulesRequest implements Request<ListAllSchedulesResponse> {
+public class ScheduleListingRequest implements Request<ListAllSchedulesResponse> {
 
     private static final ResponseParser<ListAllSchedulesResponse> LIST_PARSER = new ResponseParser<ListAllSchedulesResponse>() {
         @Override
@@ -45,7 +45,7 @@ public class ListSchedulesRequest implements Request<ListAllSchedulesResponse> {
     private final String path;
     private final ResponseParser<ListAllSchedulesResponse> parser;
 
-    private ListSchedulesRequest(String path, ResponseParser<ListAllSchedulesResponse> parser) {
+    private ScheduleListingRequest(String path, ResponseParser<ListAllSchedulesResponse> parser) {
         this.path = path;
         this.parser = parser;
     }
@@ -55,8 +55,8 @@ public class ListSchedulesRequest implements Request<ListAllSchedulesResponse> {
      *
      * @return ListSchedulesRequest
      */
-    public static ListSchedulesRequest newRequest() {
-        return new ListSchedulesRequest(ScheduleRequest.API_SCHEDULE_PATH, LIST_PARSER);
+    public static ScheduleListingRequest newRequest() {
+        return new ScheduleListingRequest(ScheduleRequest.API_SCHEDULE_PATH, LIST_PARSER);
     }
 
     /**
@@ -65,9 +65,9 @@ public class ListSchedulesRequest implements Request<ListAllSchedulesResponse> {
      * @param scheduleId String
      * @return ListSchedulesRequest
      */
-    public static ListSchedulesRequest newRequest(String scheduleId) {
+    public static ScheduleListingRequest newRequest(String scheduleId) {
         Preconditions.checkArgument(StringUtils.isNotEmpty(scheduleId), "Schedule ID may not be null");
-        return new ListSchedulesRequest(ScheduleRequest.API_SCHEDULE_PATH + scheduleId, SINGLE_LOOKUP_PARSER);
+        return new ScheduleListingRequest(ScheduleRequest.API_SCHEDULE_PATH + scheduleId, SINGLE_LOOKUP_PARSER);
     }
 
     /**
@@ -78,11 +78,11 @@ public class ListSchedulesRequest implements Request<ListAllSchedulesResponse> {
      * @param orderType ListSchedulesOrderType - How to order the response listing.
      * @return ListSchedulesRequest
      */
-    public static ListSchedulesRequest newRequest(UUID start, int limit, ListSchedulesOrderType orderType) {
+    public static ScheduleListingRequest newRequest(UUID start, int limit, ListSchedulesOrderType orderType) {
         Preconditions.checkNotNull(start, "Start ID may not be null");
         Preconditions.checkNotNull(orderType, "Listing response order option may not be null");
         String path = ScheduleRequest.API_SCHEDULE_PATH + "?" + "start=" + start.toString() + "&limit=" + limit + "&order=" + orderType.getKey();
-        return new ListSchedulesRequest(path, LIST_PARSER);
+        return new ScheduleListingRequest(path, LIST_PARSER);
     }
 
 
@@ -92,9 +92,9 @@ public class ListSchedulesRequest implements Request<ListAllSchedulesResponse> {
      * @param nextPage URI - The next page given by a listing response.
      * @return ListSchedulesRequest
      */
-    public static ListSchedulesRequest newRequest(URI nextPage) {
+    public static ScheduleListingRequest newRequest(URI nextPage) {
         Preconditions.checkNotNull(nextPage, "Next page URI may not be null");
-        return new ListSchedulesRequest(nextPage.getPath() + "?" + nextPage.getQuery(), LIST_PARSER);
+        return new ScheduleListingRequest(nextPage.getPath() + "?" + nextPage.getQuery(), LIST_PARSER);
     }
 
     @Override

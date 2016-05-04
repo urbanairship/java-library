@@ -48,7 +48,7 @@ public class SegmentRequest implements Request<String> {
      * @param segmentId
      * @return SegmentRequest
      */
-    public static SegmentRequest newRequest(String segmentId) {
+    public static SegmentRequest newUpdateRequest(String segmentId) {
         Preconditions.checkArgument(StringUtils.isNotEmpty(segmentId), "Segment ID may not be null");
         return new SegmentRequest(API_SEGMENTS_PATH + segmentId);
     }

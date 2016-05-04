@@ -33,46 +33,46 @@ public class PlatformStatsRequestTest {
     String pushSendsUri = "https://go.urbanairship.com/api/reports/sends/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&precision=DAILY";
 
     private PlatformStatsRequest setupTimeInAppRequest() {
-        PlatformStatsRequest timeInAppRequest = PlatformStatsRequest.newTimeInAppRequest()
-                .start(start)
-                .end(end)
-                .precision(Precision.DAILY);
+        PlatformStatsRequest timeInAppRequest = PlatformStatsRequest.newRequest(PlatformStatsRequestType.TIME_IN_APP)
+                .setStart(start)
+                .setEnd(end)
+                .setPrecision(Precision.DAILY);
 
         return timeInAppRequest;
     }
 
     private PlatformStatsRequest setupAppOpensRequest() {
-        PlatformStatsRequest appOpensRequest = PlatformStatsRequest.newAppOpensRequest()
-                .start(start)
-                .end(end)
-                .precision(Precision.DAILY);
+        PlatformStatsRequest appOpensRequest = PlatformStatsRequest.newRequest(PlatformStatsRequestType.APP_OPENS)
+                .setStart(start)
+                .setEnd(end)
+                .setPrecision(Precision.DAILY);
 
         return appOpensRequest;
     }
 
     private PlatformStatsRequest setupOptInsRequest() {
-        PlatformStatsRequest optInsRequest = PlatformStatsRequest.newOptInsRequest()
-                .start(start)
-                .end(end)
-                .precision(Precision.DAILY);
+        PlatformStatsRequest optInsRequest = PlatformStatsRequest.newRequest(PlatformStatsRequestType.OPT_INS)
+                .setStart(start)
+                .setEnd(end)
+                .setPrecision(Precision.DAILY);
 
         return optInsRequest;
     }
 
     private PlatformStatsRequest setupOptOutsRequest() {
-        PlatformStatsRequest optOutsRequest = PlatformStatsRequest.newOptOutsRequest()
-                .start(start)
-                .end(end)
-                .precision(Precision.DAILY);
+        PlatformStatsRequest optOutsRequest = PlatformStatsRequest.newRequest(PlatformStatsRequestType.OPT_OUTS)
+                .setStart(start)
+                .setEnd(end)
+                .setPrecision(Precision.DAILY);
 
         return optOutsRequest;
     }
 
     private PlatformStatsRequest setupPushSendsRequest() {
-        PlatformStatsRequest pushSendsRequest = PlatformStatsRequest.newPushSendsRequest()
-                .start(start)
-                .end(end)
-                .precision(Precision.DAILY);
+        PlatformStatsRequest pushSendsRequest = PlatformStatsRequest.newRequest(PlatformStatsRequestType.SENDS)
+                .setStart(start)
+                .setEnd(end)
+                .setPrecision(Precision.DAILY);
 
         return pushSendsRequest;
     }

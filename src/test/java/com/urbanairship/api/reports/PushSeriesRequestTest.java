@@ -22,9 +22,9 @@ public class PushSeriesRequestTest {
 
     private PushSeriesRequest setup() {
         return PushSeriesRequest.newRequest(pushId)
-                .start(start)
-                .end(end)
-                .precision(Precision.HOURLY);
+                .setStart(start)
+                .setEnd(end)
+                .setPrecision(Precision.HOURLY);
     }
 
     @Test

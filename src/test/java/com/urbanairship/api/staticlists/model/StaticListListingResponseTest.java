@@ -40,15 +40,15 @@ public class StaticListListingResponseTest {
 
         assertNotNull(response);
         assertEquals(true, response.getOk());
-        assertEquals("static_list_name", response.getStaticListObjects().get(0).getName());
-        assertEquals(created, response.getStaticListObjects().get(0).getCreated());
-        assertEquals(Integer.valueOf(1234), response.getStaticListObjects().get(0).getChannelCount());
-        assertEquals("ready", response.getStaticListObjects().get(0).getStatus());
-        assertEquals("static_list_name", response.getStaticListObjects().get(1).getName());
-        assertEquals(Optional.of("a great list"), response.getStaticListObjects().get(1).getDescription());
-        assertEquals(created, response.getStaticListObjects().get(1).getCreated());
-        assertEquals(updated, response.getStaticListObjects().get(1).getLastUpdated());
-        assertEquals(Integer.valueOf(1234), response.getStaticListObjects().get(1).getChannelCount());
-        assertEquals("processing", response.getStaticListObjects().get(1).getStatus());
+        assertEquals("static_list_name", response.getStaticListViews().get(0).getName());
+        assertEquals(created, response.getStaticListViews().get(0).getCreated());
+        assertEquals(Integer.valueOf(1234), response.getStaticListViews().get(0).getChannelCount());
+        assertEquals("ready", response.getStaticListViews().get(0).getStatus());
+        assertEquals("static_list_name", response.getStaticListViews().get(1).getName());
+        assertEquals(Optional.of("a great list"), response.getStaticListViews().get(1).getDescription());
+        assertEquals(created, response.getStaticListViews().get(1).getCreated());
+        assertEquals(updated, response.getStaticListViews().get(1).getLastUpdated());
+        assertEquals(Integer.valueOf(1234), response.getStaticListViews().get(1).getChannelCount());
+        assertEquals("processing", response.getStaticListViews().get(1).getStatus());
     }
 }

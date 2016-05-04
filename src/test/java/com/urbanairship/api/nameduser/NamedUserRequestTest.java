@@ -24,10 +24,10 @@ public class NamedUserRequestTest {
 
     private final NamedUserRequest associationRequest = NamedUserRequest.newAssociationRequest()
         .setChannel(channelId, ChannelType.IOS)
-        .setNamedUserid(namedUserId);
+        .setNamedUserId(namedUserId);
     private final NamedUserRequest disassociationRequest = NamedUserRequest.newDisassociationRequest()
         .setChannel(channelId, ChannelType.IOS)
-        .setNamedUserid(namedUserId);
+        .setNamedUserId(namedUserId);
 
     @Test
     public void testContentType() throws Exception {
@@ -78,10 +78,10 @@ public class NamedUserRequestTest {
     public void testURI() throws Exception {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
-        URI expectedURI = URI.create("https://go.urbanairship.com/api/named_users/associate");
+        URI expectedURI = URI.create("https://go.urbanairship.com/api/named_users/associate/");
         assertEquals(associationRequest.getUri(baseURI), expectedURI);
 
-        expectedURI = URI.create("https://go.urbanairship.com/api/named_users/disassociate");
+        expectedURI = URI.create("https://go.urbanairship.com/api/named_users/disassociate/");
         assertEquals(disassociationRequest.getUri(baseURI), expectedURI);
     }
 

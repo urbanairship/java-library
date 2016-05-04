@@ -6,11 +6,11 @@ import com.google.common.collect.ImmutableList;
 
 public class SegmentListingResponse {
     private final Optional<String> nextPage;
-    private final ImmutableList<SegmentListingView> segmentObjects;
+    private final ImmutableList<SegmentListingView> segmentListingViews;
 
-    private SegmentListingResponse(String nextPage, ImmutableList<SegmentListingView> segmentObjects) {
+    private SegmentListingResponse(String nextPage, ImmutableList<SegmentListingView> segmentListingViews) {
         this.nextPage = Optional.fromNullable(nextPage);
-        this.segmentObjects = segmentObjects;
+        this.segmentListingViews = segmentListingViews;
     }
 
     /**
@@ -37,21 +37,21 @@ public class SegmentListingResponse {
      *
      * @return An Optional ImmutableList of SegmentListingView objects
      */
-    public ImmutableList<SegmentListingView> getSegmentObjects() {
-        return segmentObjects;
+    public ImmutableList<SegmentListingView> getSegmentListingViews() {
+        return segmentListingViews;
     }
 
     @Override
     public String toString() {
         return "SegmentListingResponse{" +
                 "nextPage=" + nextPage +
-                ", segments=" + segmentObjects +
+                ", segments=" + segmentListingViews +
                 "}";
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(nextPage, segmentObjects);
+        return Objects.hashCode(nextPage, segmentListingViews);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class SegmentListingResponse {
         final SegmentListingResponse other = (SegmentListingResponse) obj;
 
         return Objects.equal(this.nextPage, other.nextPage) &&
-                Objects.equal(this.segmentObjects, other.segmentObjects);
+                Objects.equal(this.segmentListingViews, other.segmentListingViews);
     }
 
     public final static class Builder {

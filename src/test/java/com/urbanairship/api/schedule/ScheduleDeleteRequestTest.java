@@ -12,23 +12,23 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
-public class DeleteScheduleRequestTest {
+public class ScheduleDeleteRequestTest {
 
-    DeleteScheduleRequest deleteScheduleRequest = DeleteScheduleRequest.newRequest("id");
+    ScheduleDeleteRequest scheduleDeleteRequest = ScheduleDeleteRequest.newRequest("id");
 
     @Test
     public void testContentType() throws Exception {
-        assertEquals(deleteScheduleRequest.getContentType(), null);
+        assertEquals(scheduleDeleteRequest.getContentType(), null);
     }
 
     @Test
     public void testMethod() throws Exception {
-        assertEquals(deleteScheduleRequest.getHttpMethod(), Request.HttpMethod.DELETE);
+        assertEquals(scheduleDeleteRequest.getHttpMethod(), Request.HttpMethod.DELETE);
     }
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(deleteScheduleRequest.getRequestBody(), null);
+        assertEquals(scheduleDeleteRequest.getRequestBody(), null);
     }
 
     @Test
@@ -36,7 +36,7 @@ public class DeleteScheduleRequestTest {
         Map<String, String> headers = new HashMap<String, String>();
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION);
 
-        assertEquals(deleteScheduleRequest.getRequestHeaders(), headers);
+        assertEquals(scheduleDeleteRequest.getRequestHeaders(), headers);
     }
 
     @Test
@@ -44,7 +44,7 @@ public class DeleteScheduleRequestTest {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
         URI expextedURI = URI.create("https://go.urbanairship.com/api/schedules/id");
-        assertEquals(deleteScheduleRequest.getUri(baseURI), expextedURI);
+        assertEquals(scheduleDeleteRequest.getUri(baseURI), expextedURI);
     }
 
     @Test
@@ -56,6 +56,6 @@ public class DeleteScheduleRequestTest {
             }
         };
 
-        assertEquals(deleteScheduleRequest.getResponseParser().parse(null), responseParser.parse(null));
+        assertEquals(scheduleDeleteRequest.getResponseParser().parse(null), responseParser.parse(null));
     }
 }

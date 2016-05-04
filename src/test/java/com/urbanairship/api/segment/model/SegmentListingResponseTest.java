@@ -56,31 +56,31 @@ public class SegmentListingResponseTest {
                 .build();
 
         assertNotNull(response);
-        assertEquals(response.getSegmentObjects().size(), 5);
+        assertEquals(response.getSegmentListingViews().size(), 5);
 
-        assertEquals(response.getSegmentObjects().get(0).getDisplayName(), "segment1");
-        assertEquals(response.getSegmentObjects().get(0).getSegmentId(), "id1");
-        assertEquals(response.getSegmentObjects().get(0).getCreationDate(), 1);
-        assertEquals(response.getSegmentObjects().get(0).getModificationDate(), 6);
+        assertEquals(response.getSegmentListingViews().get(0).getDisplayName(), "segment1");
+        assertEquals(response.getSegmentListingViews().get(0).getSegmentId(), "id1");
+        assertEquals(response.getSegmentListingViews().get(0).getCreationDate(), 1);
+        assertEquals(response.getSegmentListingViews().get(0).getModificationDate(), 6);
 
-        assertEquals(response.getSegmentObjects().get(1).getDisplayName(), "segment2");
-        assertEquals(response.getSegmentObjects().get(1).getSegmentId(), "id2");
-        assertEquals(response.getSegmentObjects().get(1).getCreationDate(), 2);
-        assertEquals(response.getSegmentObjects().get(1).getModificationDate(), 7);
+        assertEquals(response.getSegmentListingViews().get(1).getDisplayName(), "segment2");
+        assertEquals(response.getSegmentListingViews().get(1).getSegmentId(), "id2");
+        assertEquals(response.getSegmentListingViews().get(1).getCreationDate(), 2);
+        assertEquals(response.getSegmentListingViews().get(1).getModificationDate(), 7);
 
-        assertEquals(response.getSegmentObjects().get(2).getDisplayName(), "segment3");
-        assertEquals(response.getSegmentObjects().get(2).getSegmentId(), "id3");
-        assertEquals(response.getSegmentObjects().get(2).getCreationDate(), 3);
-        assertEquals(response.getSegmentObjects().get(2).getModificationDate(), 8);
+        assertEquals(response.getSegmentListingViews().get(2).getDisplayName(), "segment3");
+        assertEquals(response.getSegmentListingViews().get(2).getSegmentId(), "id3");
+        assertEquals(response.getSegmentListingViews().get(2).getCreationDate(), 3);
+        assertEquals(response.getSegmentListingViews().get(2).getModificationDate(), 8);
 
-        assertEquals(response.getSegmentObjects().get(3).getDisplayName(), "segment4");
-        assertEquals(response.getSegmentObjects().get(3).getSegmentId(), "id4");
-        assertEquals(response.getSegmentObjects().get(3).getCreationDate(), 4);
-        assertEquals(response.getSegmentObjects().get(3).getModificationDate(), 9);
+        assertEquals(response.getSegmentListingViews().get(3).getDisplayName(), "segment4");
+        assertEquals(response.getSegmentListingViews().get(3).getSegmentId(), "id4");
+        assertEquals(response.getSegmentListingViews().get(3).getCreationDate(), 4);
+        assertEquals(response.getSegmentListingViews().get(3).getModificationDate(), 9);
 
-        assertEquals(response.getSegmentObjects().get(4).getDisplayName(), "segment5");
-        assertEquals(response.getSegmentObjects().get(4).getSegmentId(), "id5");
-        assertEquals(response.getSegmentObjects().get(4).getCreationDate(), 5);
-        assertEquals(response.getSegmentObjects().get(4).getModificationDate(), 10);
+        assertEquals(response.getSegmentListingViews().get(4).getDisplayName(), "segment5");
+        assertEquals(response.getSegmentListingViews().get(4).getSegmentId(), "id5");
+        assertEquals(response.getSegmentListingViews().get(4).getCreationDate(), 5);
+        assertEquals(response.getSegmentListingViews().get(4).getModificationDate(), 10);
     }
 }

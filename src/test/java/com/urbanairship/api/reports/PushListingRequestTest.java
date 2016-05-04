@@ -29,10 +29,10 @@ public class PushListingRequestTest {
 
     private PushListingRequest setup() {
         PushListingRequest listRequest = PushListingRequest.newRequest()
-                .start(start)
-                .end(end)
-                .limit(2)
-                .pushIdStart("start");
+                .setStart(start)
+                .setEnd(end)
+                .setLimit(2)
+                .setPushIdStart("start");
 
         return listRequest;
     }

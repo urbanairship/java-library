@@ -58,7 +58,7 @@ public class PushListingRequest implements Request<PushListingResponse> {
      *
      * @return PushListingRequest
      */
-    public PushListingRequest start(DateTime start) {
+    public PushListingRequest setStart(DateTime start) {
         this.start = start;
         return this;
     }
@@ -77,7 +77,7 @@ public class PushListingRequest implements Request<PushListingResponse> {
      *
      * @return PushListingRequest
      */
-    public PushListingRequest end(DateTime end) {
+    public PushListingRequest setEnd(DateTime end) {
         this.end = end;
         return this;
     }
@@ -96,7 +96,7 @@ public class PushListingRequest implements Request<PushListingResponse> {
      *
      * @return Integer
      */
-    public PushListingRequest limit(Integer limit) {
+    public PushListingRequest setLimit(Integer limit) {
         this.limit = Optional.of(limit);
         return this;
     }
@@ -111,11 +111,11 @@ public class PushListingRequest implements Request<PushListingResponse> {
     }
 
     /**
-     * Get the starting push ID
+     * Set the starting push ID
      *
      * @return String
      */
-    public PushListingRequest pushIdStart(String pushIdStart) {
+    public PushListingRequest setPushIdStart(String pushIdStart) {
         this.pushIdStart = Optional.of(pushIdStart);
         return this;
     }

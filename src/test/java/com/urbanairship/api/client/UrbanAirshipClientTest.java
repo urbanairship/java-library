@@ -39,15 +39,16 @@ import com.urbanairship.api.reports.PushSeriesRequest;
 import com.urbanairship.api.reports.StatisticsCsvRequest;
 import com.urbanairship.api.reports.StatisticsRequest;
 import com.urbanairship.api.reports.model.PlatformStatsResponse;
+import com.urbanairship.api.reports.PlatformStatsRequestType;
 import com.urbanairship.api.reports.model.Precision;
 import com.urbanairship.api.reports.model.PushDetailResponse;
 import com.urbanairship.api.reports.model.PushInfoResponse;
 import com.urbanairship.api.reports.model.PushListingResponse;
 import com.urbanairship.api.reports.model.PushSeriesResponse;
 import com.urbanairship.api.reports.model.StatisticsResponse;
-import com.urbanairship.api.schedule.DeleteScheduleRequest;
+import com.urbanairship.api.schedule.ScheduleDeleteRequest;
 import com.urbanairship.api.schedule.ListSchedulesOrderType;
-import com.urbanairship.api.schedule.ListSchedulesRequest;
+import com.urbanairship.api.schedule.ScheduleListingRequest;
 import com.urbanairship.api.schedule.ScheduleRequest;
 import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
 import com.urbanairship.api.schedule.model.Schedule;
@@ -710,7 +711,7 @@ public class UrbanAirshipClientTest {
                 .withStatus(201)));
 
         try {
-            Response<ListAllSchedulesResponse> response = client.execute(ListSchedulesRequest.newRequest());
+            Response<ListAllSchedulesResponse> response = client.execute(ScheduleListingRequest.newRequest());
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/schedules/"))
@@ -746,7 +747,7 @@ public class UrbanAirshipClientTest {
                 .withStatus(201)));
 
         try {
-            Response<ListAllSchedulesResponse> response = client.execute(ListSchedulesRequest.newRequest("ee0dd92c-de3b-46dc-9937-c9dcaef0170f"));
+            Response<ListAllSchedulesResponse> response = client.execute(ScheduleListingRequest.newRequest("ee0dd92c-de3b-46dc-9937-c9dcaef0170f"));
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/schedules/ee0dd92c-de3b-46dc-9937-c9dcaef0170f"))
@@ -786,7 +787,7 @@ public class UrbanAirshipClientTest {
                 .withStatus(201)));
 
         try {
-            Response<ListAllSchedulesResponse> response = client.execute(ListSchedulesRequest.newRequest(UUID.fromString("643a297a-7313-45f0-853f-e68785e54c77"), 25, ListSchedulesOrderType.ASC));
+            Response<ListAllSchedulesResponse> response = client.execute(ScheduleListingRequest.newRequest(UUID.fromString("643a297a-7313-45f0-853f-e68785e54c77"), 25, ListSchedulesOrderType.ASC));
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"))
@@ -830,7 +831,7 @@ public class UrbanAirshipClientTest {
                 .withStatus(201)));
 
         try {
-            Response<ListAllSchedulesResponse> response = client.execute(ListSchedulesRequest.newRequest(URI.create("https://go.urbanairship.com/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc")));
+            Response<ListAllSchedulesResponse> response = client.execute(ScheduleListingRequest.newRequest(URI.create("https://go.urbanairship.com/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc")));
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"))
@@ -959,7 +960,7 @@ public class UrbanAirshipClientTest {
                 .withStatus(204)));
 
         try {
-            Response<String> response = client.execute(DeleteScheduleRequest.newRequest("puppies"));
+            Response<String> response = client.execute(ScheduleDeleteRequest.newRequest("puppies"));
 
             // Verify components of the underlying HttpRequest
             verify(deleteRequestedFor(urlEqualTo("/api/schedules/puppies")));
@@ -1149,22 +1150,22 @@ public class UrbanAirshipClientTest {
     @Test
     public void testNamedUserAssociation() throws IOException {
 
-        stubFor(post(urlEqualTo("/api/named_users/associate"))
+        stubFor(post(urlEqualTo("/api/named_users/associate/"))
             .willReturn(aResponse()
                 .withStatus(200)));
 
         NamedUserRequest request = NamedUserRequest.newAssociationRequest()
-            .setNamedUserid("name")
+            .setNamedUserId("name")
             .setChannel(UUID.randomUUID().toString(), ChannelType.IOS);
 
         try {
             Response<String> response = client.execute(request);
 
             // Verify components of the underlying HttpRequest
-            verify(postRequestedFor(urlEqualTo("/api/named_users/associate"))
+            verify(postRequestedFor(urlEqualTo("/api/named_users/associate/"))
                 .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(postRequestedFor(
-                urlEqualTo("/api/named_users/associate")));
+                urlEqualTo("/api/named_users/associate/")));
             // There should only be one request
             assertEquals(requests.size(), 1);
 
@@ -1179,7 +1180,7 @@ public class UrbanAirshipClientTest {
     @Test
     public void testNamedUserDisassociation() throws IOException {
 
-        stubFor(post(urlEqualTo("/api/named_users/disassociate"))
+        stubFor(post(urlEqualTo("/api/named_users/disassociate/"))
             .willReturn(aResponse()
                 .withStatus(200)));
 
@@ -1190,10 +1191,10 @@ public class UrbanAirshipClientTest {
             Response<String> response = client.execute(request);
 
             // Verify components of the underlying HttpRequest
-            verify(postRequestedFor(urlEqualTo("/api/named_users/disassociate"))
+            verify(postRequestedFor(urlEqualTo("/api/named_users/disassociate/"))
                 .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(postRequestedFor(
-                urlEqualTo("/api/named_users/disassociate")));
+                urlEqualTo("/api/named_users/disassociate/")));
             // There should only be one request
             assertEquals(requests.size(), 1);
 
@@ -1453,8 +1454,8 @@ public class UrbanAirshipClientTest {
         DateTime end = start.plus(Period.hours(48));
 
         PushListingRequest request = PushListingRequest.newRequest()
-                .start(start)
-                .end(end);
+                .setStart(start)
+                .setEnd(end);
 
         Response<PushListingResponse> response = client.execute(request);
 
@@ -1520,10 +1521,10 @@ public class UrbanAirshipClientTest {
         DateTime end = start.plus(Period.hours(48));
 
         PushListingRequest request = PushListingRequest.newRequest()
-                .start(start)
-                .end(end)
-                .limit(2)
-                .pushIdStart("start");
+                .setStart(start)
+                .setEnd(end)
+                .setLimit(2)
+                .setPushIdStart("start");
 
         Response<PushListingResponse> response = client.execute(request);
 
@@ -1700,10 +1701,10 @@ public class UrbanAirshipClientTest {
                         .withBody(responseString)
                         .withStatus(200)));
 
-        PlatformStatsRequest request = PlatformStatsRequest.newAppOpensRequest()
-                .start(start)
-                .end(end)
-                .precision(Precision.HOURLY);
+        PlatformStatsRequest request = PlatformStatsRequest.newRequest(PlatformStatsRequestType.APP_OPENS)
+                .setStart(start)
+                .setEnd(end)
+                .setPrecision(Precision.HOURLY);
 
         Response<PlatformStatsResponse> response = client.execute(request);
 
@@ -1744,10 +1745,10 @@ public class UrbanAirshipClientTest {
         DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
         DateTime end = start.plus(Period.hours(48));
 
-        PlatformStatsRequest request = PlatformStatsRequest.newTimeInAppRequest()
-                .start(start)
-                .end(end)
-                .precision(Precision.MONTHLY);
+        PlatformStatsRequest request = PlatformStatsRequest.newRequest(PlatformStatsRequestType.TIME_IN_APP)
+                .setStart(start)
+                .setEnd(end)
+                .setPrecision(Precision.MONTHLY);
 
         Response<PlatformStatsResponse> response = client.execute(request);
 
@@ -1788,10 +1789,10 @@ public class UrbanAirshipClientTest {
         DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
         DateTime end = start.plus(Period.hours(48));
 
-        PlatformStatsRequest request = PlatformStatsRequest.newOptInsRequest()
-                .start(start)
-                .end(end)
-                .precision(Precision.MONTHLY);
+        PlatformStatsRequest request = PlatformStatsRequest.newRequest(PlatformStatsRequestType.OPT_INS)
+                .setStart(start)
+                .setEnd(end)
+                .setPrecision(Precision.MONTHLY);
 
         try {
             Response<PlatformStatsResponse> response = client.execute(request);
@@ -1837,10 +1838,10 @@ public class UrbanAirshipClientTest {
         DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
         DateTime end = start.plus(Period.hours(48));
 
-        PlatformStatsRequest request = PlatformStatsRequest.newOptOutsRequest()
-                .start(start)
-                .end(end)
-                .precision(Precision.MONTHLY);
+        PlatformStatsRequest request = PlatformStatsRequest.newRequest(PlatformStatsRequestType.OPT_OUTS)
+                .setStart(start)
+                .setEnd(end)
+                .setPrecision(Precision.MONTHLY);
 
         Response<PlatformStatsResponse> response = client.execute(request);
 
@@ -1881,10 +1882,10 @@ public class UrbanAirshipClientTest {
         DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
         DateTime end = start.plus(Period.hours(48));
 
-        PlatformStatsRequest request = PlatformStatsRequest.newPushSendsRequest()
-                .start(start)
-                .end(end)
-                .precision(Precision.MONTHLY);
+        PlatformStatsRequest request = PlatformStatsRequest.newRequest(PlatformStatsRequestType.SENDS)
+                .setStart(start)
+                .setEnd(end)
+                .setPrecision(Precision.MONTHLY);
 
         Response<PlatformStatsResponse> response = client.execute(request);
 
@@ -2174,7 +2175,7 @@ public class UrbanAirshipClientTest {
                         .withStatus(200)));
 
         PushSeriesRequest request = PushSeriesRequest.newRequest("push_id")
-                .precision(Precision.DAILY);
+                .setPrecision(Precision.DAILY);
 
         Response<PushSeriesResponse> response = client.execute(request);
         List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
@@ -2287,9 +2288,9 @@ public class UrbanAirshipClientTest {
                         .withStatus(200)));
 
         PushSeriesRequest request = PushSeriesRequest.newRequest("push_id")
-                .start(start)
-                .end(end)
-                .precision(Precision.DAILY);
+                .setStart(start)
+                .setEnd(end)
+                .setPrecision(Precision.DAILY);
 
         Response<PushSeriesResponse> response = client.execute(request);
         List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
@@ -2476,7 +2477,7 @@ public class UrbanAirshipClientTest {
         Selector orSelector = Selectors.tags("java", "lib");
         Selector compound = Selectors.and(orSelector, Selectors.not(Selectors.tag("mfd")));
 
-        SegmentRequest request = SegmentRequest.newRequest("abc");
+        SegmentRequest request = SegmentRequest.newUpdateRequest("abc");
         request.setDisplayName("test")
                 .setCriteria(compound);
 
@@ -2574,7 +2575,7 @@ public class UrbanAirshipClientTest {
                 .withStatus(200)));
 
         try {
-            Request<LocationResponse> request = LocationRequest.newQueryRequest("San Francisco").setType("city");
+            Request<LocationResponse> request = LocationRequest.newRequest("San Francisco").setType("city");
             Response<LocationResponse> response = client.execute(request);
 
             // Verify components of the underlying request
@@ -2654,7 +2655,7 @@ public class UrbanAirshipClientTest {
                 .withStatus(200)));
 
         try {
-            Request<LocationResponse> request = LocationRequest.newQueryRequest("San Francisco");
+            Request<LocationResponse> request = LocationRequest.newRequest("San Francisco");
             Response<LocationResponse> response = client.execute(request);
 
             // Verify components of the underlying request
@@ -2740,7 +2741,7 @@ public class UrbanAirshipClientTest {
                 .withStatus(200)));
 
         try {
-            Request<LocationResponse> request = LocationRequest.newLatLongRequest(portland).setType("city");
+            Request<LocationResponse> request = LocationRequest.newRequest(portland).setType("city");
             Response<LocationResponse> response = client.execute(request);
 
             // Verify components of the underlying request
@@ -2826,7 +2827,7 @@ public class UrbanAirshipClientTest {
                 .withStatus(200)));
 
         try {
-            Request<LocationResponse> request = LocationRequest.newLatLongRequest(portland);
+            Request<LocationResponse> request = LocationRequest.newRequest(portland);
             Response<LocationResponse> response = client.execute(request);
 
             // Verify components of the underlying request
@@ -2920,7 +2921,7 @@ public class UrbanAirshipClientTest {
                 .withStatus(200)));
 
         try {
-            Request<LocationResponse> request = LocationRequest.newBoundingBoxRequest(california).setType("city");
+            Request<LocationResponse> request = LocationRequest.newRequest(california).setType("city");
             Response<LocationResponse> response = client.execute(request);
 
             // Verify components of the underlying request
@@ -3014,7 +3015,7 @@ public class UrbanAirshipClientTest {
                 .withStatus(200)));
 
         try {
-            Request<LocationResponse> request = LocationRequest.newBoundingBoxRequest(california);
+            Request<LocationResponse> request = LocationRequest.newRequest(california);
             Response<LocationResponse> response = client.execute(request);
 
             // Verify components of the underlying request

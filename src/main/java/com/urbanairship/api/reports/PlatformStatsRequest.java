@@ -24,13 +24,6 @@ import java.util.Map;
  * the {@link com.urbanairship.api.client.UrbanAirshipClient}
  */
 public class PlatformStatsRequest implements Request<PlatformStatsResponse> {
-
-    private final static String API_TIME_IN_APP = "/api/reports/timeinapp/";
-    private final static String API_APP_OPENS = "/api/reports/opens/";
-    private final static String API_OPT_INS = "/api/reports/optins/";
-    private final static String API_OPT_OUTS = "/api/reports/optouts/";
-    private final static String API_SENDS = "/api/reports/sends/";
-
     private final String path;
     private DateTime start;
     private DateTime end;
@@ -40,24 +33,13 @@ public class PlatformStatsRequest implements Request<PlatformStatsResponse> {
         this.path = path;
     }
 
-    public static PlatformStatsRequest newTimeInAppRequest() {
-        return new PlatformStatsRequest(API_TIME_IN_APP);
-    }
-
-    public static PlatformStatsRequest newAppOpensRequest() {
-        return new PlatformStatsRequest(API_APP_OPENS);
-    }
-
-    public static PlatformStatsRequest newOptInsRequest() {
-        return new PlatformStatsRequest(API_OPT_INS);
-    }
-
-    public static PlatformStatsRequest newOptOutsRequest() {
-        return new PlatformStatsRequest(API_OPT_OUTS);
-    }
-
-    public static PlatformStatsRequest newPushSendsRequest() {
-        return new PlatformStatsRequest(API_SENDS);
+    /**
+     * Create a platform stats request.
+     *
+     * @return PlatformStatsRequest
+     */
+    public static PlatformStatsRequest newRequest(PlatformStatsRequestType type) {
+        return new PlatformStatsRequest(type.getPath());
     }
 
     /**
@@ -65,7 +47,7 @@ public class PlatformStatsRequest implements Request<PlatformStatsResponse> {
      *
      * @return PlatformStatsRequest
      */
-    public PlatformStatsRequest start(DateTime start) {
+    public PlatformStatsRequest setStart(DateTime start) {
         this.start = start;
         return this;
     }
@@ -75,7 +57,7 @@ public class PlatformStatsRequest implements Request<PlatformStatsResponse> {
      *
      * @return PlatformStatsRequest
      */
-    public PlatformStatsRequest end(DateTime end) {
+    public PlatformStatsRequest setEnd(DateTime end) {
         this.end = end;
         return this;
     }
@@ -85,7 +67,7 @@ public class PlatformStatsRequest implements Request<PlatformStatsResponse> {
      *
      * @return DateTime
      */
-    public PlatformStatsRequest precision(Precision precision) {
+    public PlatformStatsRequest setPrecision(Precision precision) {
         this.precision = precision;
         return this;
     }

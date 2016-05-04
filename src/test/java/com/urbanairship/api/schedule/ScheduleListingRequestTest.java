@@ -16,12 +16,12 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
-public class ListSchedulesRequestTest {
+public class ScheduleListingRequestTest {
 
-    ListSchedulesRequest listAllSchedulesRequest = ListSchedulesRequest.newRequest();
-    ListSchedulesRequest listSchedulesWithParamsRequest = ListSchedulesRequest.newRequest(UUID.fromString("643a297a-7313-45f0-853f-e68785e54c77"), 25, ListSchedulesOrderType.ASC);
-    ListSchedulesRequest listSingleScheduleRequest = ListSchedulesRequest.newRequest("id");
-    ListSchedulesRequest listNextPageSchedulesRequest = ListSchedulesRequest.newRequest(URI.create("https://go.urbanairship.com/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"));
+    ScheduleListingRequest listAllSchedulesRequest = ScheduleListingRequest.newRequest();
+    ScheduleListingRequest listSchedulesWithParamsRequest = ScheduleListingRequest.newRequest(UUID.fromString("643a297a-7313-45f0-853f-e68785e54c77"), 25, ListSchedulesOrderType.ASC);
+    ScheduleListingRequest listSingleScheduleRequest = ScheduleListingRequest.newRequest("id");
+    ScheduleListingRequest listNextPageSchedulesRequest = ScheduleListingRequest.newRequest(URI.create("https://go.urbanairship.com/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"));
 
     @Test
     public void testContentType() throws Exception {
