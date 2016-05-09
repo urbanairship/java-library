@@ -10,6 +10,7 @@ import com.urbanairship.api.reports.parse.ReportsObjectMapper;
 import org.apache.http.entity.ContentType;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Period;
 import org.junit.Test;
 
@@ -23,14 +24,14 @@ import static org.junit.Assert.assertEquals;
 public class PlatformStatsRequestTest {
     ObjectMapper mapper = ReportsObjectMapper.getInstance();
 
-    DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+    DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0, DateTimeZone.UTC);
     DateTime end = start.plus(Period.hours(48));
 
-    String appOpensUri = "https://go.urbanairship.com/api/reports/opens/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&precision=DAILY";
-    String timeInAppUri = "https://go.urbanairship.com/api/reports/timeinapp/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&precision=DAILY";
-    String optInsUri = "https://go.urbanairship.com/api/reports/optins/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&precision=DAILY";
-    String optOutsUri = "https://go.urbanairship.com/api/reports/optouts/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&precision=DAILY";
-    String pushSendsUri = "https://go.urbanairship.com/api/reports/sends/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&precision=DAILY";
+    String appOpensUri = "https://go.urbanairship.com/api/reports/opens/?start=2014-10-01T12%3A00%3A00&end=2014-10-03T12%3A00%3A00&precision=DAILY";
+    String timeInAppUri = "https://go.urbanairship.com/api/reports/timeinapp/?start=2014-10-01T12%3A00%3A00&end=2014-10-03T12%3A00%3A00&precision=DAILY";
+    String optInsUri = "https://go.urbanairship.com/api/reports/optins/?start=2014-10-01T12%3A00%3A00&end=2014-10-03T12%3A00%3A00&precision=DAILY";
+    String optOutsUri = "https://go.urbanairship.com/api/reports/optouts/?start=2014-10-01T12%3A00%3A00&end=2014-10-03T12%3A00%3A00&precision=DAILY";
+    String pushSendsUri = "https://go.urbanairship.com/api/reports/sends/?start=2014-10-01T12%3A00%3A00&end=2014-10-03T12%3A00%3A00&precision=DAILY";
 
     private PlatformStatsRequest setupTimeInAppRequest() {
         PlatformStatsRequest timeInAppRequest = PlatformStatsRequest.newRequest(PlatformStatsRequestType.TIME_IN_APP)

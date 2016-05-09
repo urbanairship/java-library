@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
+import com.urbanairship.api.common.parse.DateFormats;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.joda.time.DateTime;
@@ -66,8 +67,8 @@ public class StatisticsCsvRequest implements Request<String> {
         Preconditions.checkArgument(end.isAfter(start), "end must occur after start");
 
         URIBuilder builder = new URIBuilder(RequestUtils.resolveURI(baseUri, API_STATISTICS));
-        builder.addParameter("start", this.start.toString());
-        builder.addParameter("end", this.end.toString());
+        builder.addParameter("start", this.start.toString(DateFormats.DATE_FORMATTER));
+        builder.addParameter("end", this.end.toString(DateFormats.DATE_FORMATTER));
         builder.addParameter("format", "csv");
 
         return builder.build();

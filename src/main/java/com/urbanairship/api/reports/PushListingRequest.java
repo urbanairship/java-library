@@ -9,6 +9,7 @@ import com.google.common.base.Preconditions;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
+import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.reports.model.PushListingResponse;
 import com.urbanairship.api.reports.parse.ReportsObjectMapper;
 import org.apache.http.HttpHeaders;
@@ -151,8 +152,8 @@ public class PushListingRequest implements Request<PushListingResponse> {
         Preconditions.checkNotNull(this.end, "end cannot be null");
         Preconditions.checkArgument(end.isAfter(start), "end date must occur after start date");
 
-        builder.addParameter("start", this.start.toString());
-        builder.addParameter("end", this.end.toString());
+        builder.addParameter("start", this.start.toString(DateFormats.DATE_FORMATTER));
+        builder.addParameter("end", this.end.toString(DateFormats.DATE_FORMATTER));
 
         if (this.limit.isPresent())
             builder.addParameter("limit", Integer.toString(this.limit.get()));
