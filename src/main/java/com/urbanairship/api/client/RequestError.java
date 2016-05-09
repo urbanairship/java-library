@@ -169,10 +169,12 @@ public final class RequestError {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("ok:");
         stringBuilder.append(getOk());
-        stringBuilder.append("\nAPIError:");
+        stringBuilder.append("\nRequestError:");
         stringBuilder.append(getError());
-        stringBuilder.append("\nCode:");
-        stringBuilder.append(getErrorCode());
+        if (errorCode.isPresent()) {
+            stringBuilder.append("\nCode:");
+            stringBuilder.append(getErrorCode());
+        }
         if (details.isPresent()) {
             stringBuilder.append("\nDetails:");
             stringBuilder.append(details.get().toString());
