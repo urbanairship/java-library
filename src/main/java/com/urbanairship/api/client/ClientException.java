@@ -63,7 +63,7 @@ public class ClientException extends RuntimeException {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("\nAPIRequestException:");
+        stringBuilder.append("\nClientException:");
         stringBuilder.append(String.format("\nMessage:%s", getMessage()));
         stringBuilder.append(String.format("\nStatusCode:%s", statusCode));
         stringBuilder.append(String.format("\nStatusText:%s", statusText));
