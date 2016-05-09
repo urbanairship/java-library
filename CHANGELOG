@@ -11,6 +11,16 @@
 - Title field for iOS and Android payloads
 
 -------------------------
+0.4.2 12APR16
+-------------------------
+- Updated library to use Guava 19 and Jersey 2.22.2
+
+-------------------------
+0.4.1 07MAR16
+-------------------------
+- Removed Apache Commons Collections 3.2.1 due to a security vulnerability https://commons.apache.org/proper/commons-collections/security-reports.html
+
+-------------------------
 0.4 04JUN15
 -------------------------
 - Push to named users

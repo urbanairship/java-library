@@ -34,7 +34,7 @@ public class SelectorDeserializer extends JsonDeserializer<Selector> {
                         reader.readExtraField(parser);
                     }
             }
-            );
+    );
 
     public static final SelectorDeserializer INSTANCE = new SelectorDeserializer();
 
