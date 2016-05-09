@@ -43,7 +43,7 @@ More complex logic is possible:
 
 .. code-block:: java
 
-   Selector andSelector = Selectors.tags("puppies", "kittens");
+   Selector andSelector = Selectors.and(Selectors.tag("puppies"), Selectors.tag("kittens"));
    Selector notSelector = Selectors.not(Selectors.tag("fish"));
    Selector compound = Selectors.or(andSelector, notSelector);
 
