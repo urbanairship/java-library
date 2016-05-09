@@ -16,9 +16,6 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by maxdelgiudice on 10/5/15.
- */
 public class PushInfoRequestTest {
     ObjectMapper mapper = ReportsObjectMapper.getInstance();
 

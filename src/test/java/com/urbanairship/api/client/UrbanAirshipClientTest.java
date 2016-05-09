@@ -1402,7 +1402,7 @@ public class UrbanAirshipClientTest {
     @Test
     public void testPushListing() throws Exception {
 
-        String queryPathString = "/api/reports/responses/list/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00";
+        String queryPathString = "/api/reports/responses/list/?start=2014-10-01T12%3A00%3A00&end=2014-10-03T12%3A00%3A00";
 
         String responseString = "{  \n" +
                 "  \"next_page\":\"Value for Next Page\",\n" +
@@ -1450,7 +1450,7 @@ public class UrbanAirshipClientTest {
                         .withBody(responseString)
                         .withStatus(200)));
 
-        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0, DateTimeZone.UTC);
         DateTime end = start.plus(Period.hours(48));
 
         PushListingRequest request = PushListingRequest.newRequest()
@@ -1469,7 +1469,7 @@ public class UrbanAirshipClientTest {
     @Test
     public void testPushListingWithOptionalParams() throws Exception {
 
-        String queryPathString = "/api/reports/responses/list/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&limit=2&push_id_start=start";
+        String queryPathString = "/api/reports/responses/list/?start=2014-10-01T12%3A00%3A00&end=2014-10-03T12%3A00%3A00&limit=2&push_id_start=start";
 
         String responseString = "{  \n" +
                 "  \"next_page\":\"Value for Next Page\",\n" +
@@ -1517,7 +1517,7 @@ public class UrbanAirshipClientTest {
                         .withBody(responseString)
                         .withStatus(200)));
 
-        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0, DateTimeZone.UTC);
         DateTime end = start.plus(Period.hours(48));
 
         PushListingRequest request = PushListingRequest.newRequest()
@@ -1537,7 +1537,7 @@ public class UrbanAirshipClientTest {
 
     @Test
     public void testStatisticsCsv() throws Exception {
-        String queryPathString = "/api/push/stats/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&format=csv";
+        String queryPathString = "/api/push/stats/?start=2014-10-01T12%3A00%3A00&end=2014-10-03T12%3A00%3A00&format=csv";
 
         String responseString = "2014-10-01 19:00:00,19,0,0,0,60,0,0\n" +
                 "2014-10-01 20:00:00,133,0,0,0,67,0,0\n" +
@@ -1594,7 +1594,7 @@ public class UrbanAirshipClientTest {
                         .withBody(responseString)
                         .withStatus(200)));
 
-        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0, DateTimeZone.UTC);
         DateTime end = start.plus(Period.hours(48));
 
         StatisticsCsvRequest request = StatisticsCsvRequest.newRequest(start, end);
@@ -1611,7 +1611,7 @@ public class UrbanAirshipClientTest {
     @Test
     public void testStatistics() throws Exception {
 
-        String queryPathString = "/api/push/stats/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00";
+        String queryPathString = "/api/push/stats/?start=2014-10-01T12%3A00%3A00&end=2014-10-03T12%3A00%3A00";
 
         String responseString = "[\n" +
                 "    {\n" +
@@ -1657,7 +1657,7 @@ public class UrbanAirshipClientTest {
                         .withBody(responseString)
                         .withStatus(200)));
 
-        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0, DateTimeZone.UTC);
         DateTime end = start.plus(Period.hours(48));
 
         StatisticsRequest request = StatisticsRequest.newRequest(start, end);
@@ -1675,7 +1675,7 @@ public class UrbanAirshipClientTest {
     @Test
     public void testAppOpensReport() throws Exception {
 
-        String queryPathString = "/api/reports/opens/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&precision=HOURLY";
+        String queryPathString = "/api/reports/opens/?start=2014-10-01T12%3A00%3A00&end=2014-10-03T12%3A00%3A00&precision=HOURLY";
 
         String responseString = "{  \n" +
                 "  \"next_page\":\"Value for Next Page\",\n" +
@@ -1693,9 +1693,9 @@ public class UrbanAirshipClientTest {
                 "  ]\n" +
                 "}";
 
-        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0, DateTimeZone.UTC);
         DateTime end = start.plus(Period.hours(48));
-        
+
         stubFor(get(urlEqualTo(queryPathString))
                 .willReturn(aResponse()
                         .withBody(responseString)
@@ -1719,7 +1719,7 @@ public class UrbanAirshipClientTest {
     @Test
     public void testTimeInAppReport() throws Exception {
 
-        String queryPathString = "/api/reports/timeinapp/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&precision=MONTHLY";
+        String queryPathString = "/api/reports/timeinapp/?start=2014-10-01T12%3A00%3A00&end=2014-10-03T12%3A00%3A00&precision=MONTHLY";
 
         String responseString = "{  \n" +
                 "  \"next_page\":\"Value for Next Page\",\n" +
@@ -1742,7 +1742,7 @@ public class UrbanAirshipClientTest {
                         .withBody(responseString)
                         .withStatus(200)));
 
-        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0, DateTimeZone.UTC);
         DateTime end = start.plus(Period.hours(48));
 
         PlatformStatsRequest request = PlatformStatsRequest.newRequest(PlatformStatsRequestType.TIME_IN_APP)
@@ -1763,7 +1763,7 @@ public class UrbanAirshipClientTest {
     @Test
     public void testOptInsReport() throws Exception {
 
-        String queryPathString = "/api/reports/optins/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&precision=MONTHLY";
+        String queryPathString = "/api/reports/optins/?start=2014-10-01T12%3A00%3A00&end=2014-10-03T12%3A00%3A00&precision=MONTHLY";
 
         String responseString = "{  \n" +
                 "  \"next_page\":\"Value for Next Page\",\n" +
@@ -1786,7 +1786,7 @@ public class UrbanAirshipClientTest {
                         .withBody(responseString)
                         .withStatus(200)));
 
-        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0, DateTimeZone.UTC);
         DateTime end = start.plus(Period.hours(48));
 
         PlatformStatsRequest request = PlatformStatsRequest.newRequest(PlatformStatsRequestType.OPT_INS)
@@ -1812,7 +1812,7 @@ public class UrbanAirshipClientTest {
     @Test
     public void testOptOutsReport() throws Exception {
 
-        String queryPathString = "/api/reports/optouts/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&precision=MONTHLY";
+        String queryPathString = "/api/reports/optouts/?start=2014-10-01T12%3A00%3A00&end=2014-10-03T12%3A00%3A00&precision=MONTHLY";
 
         String responseString = "{  \n" +
                 "  \"next_page\":\"Value for Next Page\",\n" +
@@ -1835,7 +1835,7 @@ public class UrbanAirshipClientTest {
                         .withBody(responseString)
                         .withStatus(200)));
 
-        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0, DateTimeZone.UTC);
         DateTime end = start.plus(Period.hours(48));
 
         PlatformStatsRequest request = PlatformStatsRequest.newRequest(PlatformStatsRequestType.OPT_OUTS)
@@ -1856,7 +1856,7 @@ public class UrbanAirshipClientTest {
     @Test
     public void testPushSendsReport() throws Exception {
 
-        String queryPathString = "/api/reports/sends/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&precision=MONTHLY";
+        String queryPathString = "/api/reports/sends/?start=2014-10-01T12%3A00%3A00&end=2014-10-03T12%3A00%3A00&precision=MONTHLY";
 
         String responseString = "{  \n" +
                 "  \"next_page\":\"Value for Next Page\",\n" +
@@ -1879,7 +1879,7 @@ public class UrbanAirshipClientTest {
                         .withBody(responseString)
                         .withStatus(200)));
 
-        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0, DateTimeZone.UTC);
         DateTime end = start.plus(Period.hours(48));
 
         PlatformStatsRequest request = PlatformStatsRequest.newRequest(PlatformStatsRequestType.SENDS)
@@ -2189,7 +2189,7 @@ public class UrbanAirshipClientTest {
     @Test
     public void testListPerPushSeriesWithPrecisionWithRange() throws Exception {
 
-        String queryPathString = "/api/reports/perpush/series/push_id?precision=DAILY&start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00";
+        String queryPathString = "/api/reports/perpush/series/push_id?precision=DAILY&start=2014-10-01T12%3A00%3A00&end=2014-10-03T12%3A00%3A00";
 
         String responseString = "{  \n" +
                 "  \"app_key\":\"some_app_key\",\n" +
@@ -2279,7 +2279,7 @@ public class UrbanAirshipClientTest {
                 "  ]\n" +
                 "}";
 
-        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0, DateTimeZone.UTC);
         DateTime end = start.plus(Period.hours(48));
 
         stubFor(get(urlEqualTo(queryPathString))

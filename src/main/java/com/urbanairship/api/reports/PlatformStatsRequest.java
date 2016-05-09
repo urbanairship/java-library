@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
+import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.reports.model.PlatformStatsResponse;
 import com.urbanairship.api.reports.model.Precision;
 import com.urbanairship.api.reports.parse.ReportsObjectMapper;
@@ -104,8 +105,8 @@ public class PlatformStatsRequest implements Request<PlatformStatsResponse> {
 
         URI uri;
         URIBuilder builder = new URIBuilder(RequestUtils.resolveURI(baseUri, path));
-        builder.addParameter("start", this.start.toString());
-        builder.addParameter("end", this.end.toString());
+        builder.addParameter("start", this.start.toString(DateFormats.DATE_FORMATTER));
+        builder.addParameter("end", this.end.toString(DateFormats.DATE_FORMATTER));
         builder.addParameter("precision", this.precision.toString());
 
         try {

@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
+import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.reports.model.StatisticsResponse;
 import com.urbanairship.api.reports.parse.ReportsObjectMapper;
 import org.apache.http.client.utils.URIBuilder;
@@ -69,8 +70,8 @@ public class StatisticsRequest implements Request<List<StatisticsResponse>> {
         Preconditions.checkArgument(end.isAfter(start), "end must occur after start");
 
         URIBuilder builder = new URIBuilder(RequestUtils.resolveURI(baseUri, API_STATISTICS));
-        builder.addParameter("start", this.start.toString());
-        builder.addParameter("end", this.end.toString());
+        builder.addParameter("start", this.start.toString(DateFormats.DATE_FORMATTER));
+        builder.addParameter("end", this.end.toString(DateFormats.DATE_FORMATTER));
 
         return builder.build();
     }

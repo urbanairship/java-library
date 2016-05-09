@@ -5,6 +5,7 @@ import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.reports.parse.ReportsObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Period;
 import org.junit.Test;
 
@@ -17,9 +18,9 @@ import static org.junit.Assert.assertEquals;
 public class StatisticsCsvRequestTest {
     ObjectMapper mapper = ReportsObjectMapper.getInstance();
 
-    DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+    DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0, DateTimeZone.UTC);
     DateTime end = start.plus(Period.hours(48));
-    String queryPathString = "/api/push/stats/?start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00&format=csv";
+    String queryPathString = "/api/push/stats/?start=2014-10-01T12%3A00%3A00&end=2014-10-03T12%3A00%3A00&format=csv";
 
     private StatisticsCsvRequest setup() {
         return StatisticsCsvRequest.newRequest(start, end);

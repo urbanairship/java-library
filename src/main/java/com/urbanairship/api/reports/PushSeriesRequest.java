@@ -5,6 +5,7 @@ import com.google.common.base.Preconditions;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
+import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.reports.model.Precision;
 import com.urbanairship.api.reports.model.PushSeriesResponse;
 import com.urbanairship.api.reports.parse.ReportsObjectMapper;
@@ -100,10 +101,10 @@ public class PushSeriesRequest implements Request<PushSeriesResponse> {
 
         if (start.isPresent()) {
             Preconditions.checkArgument(this.precision.isPresent(), "precision must be present if start is included");
-            builder.addParameter("start", this.start.get().toString());
+            builder.addParameter("start", this.start.get().toString(DateFormats.DATE_FORMATTER));
             if (end.isPresent()) {
                 Preconditions.checkArgument(this.end.get().isAfter(this.start.get()), "end date must occur after start date");
-                builder.addParameter("end", this.end.get().toString());
+                builder.addParameter("end", this.end.get().toString(DateFormats.DATE_FORMATTER));
             }
         }
 

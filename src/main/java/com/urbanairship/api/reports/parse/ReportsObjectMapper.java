@@ -4,6 +4,7 @@
 
 package com.urbanairship.api.reports.parse;
 
+import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.reports.model.PerPushCounts;
 import com.urbanairship.api.reports.model.PlatformCounts;
 import com.urbanairship.api.reports.model.PlatformStats;
@@ -36,6 +37,7 @@ public class ReportsObjectMapper {
         MODULE.addDeserializer(RichPerPushCounts.class, new RichPerPushCountsDeserializer());
 
         MAPPER.registerModule(MODULE);
+        MAPPER.registerModule(PushObjectMapper.getModule());
     }
 
     public static SimpleModule getModule() {

@@ -4,6 +4,7 @@ import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.reports.model.Precision;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Period;
 import org.junit.Test;
 
@@ -16,8 +17,8 @@ import static org.junit.Assert.assertEquals;
 
 public class PushSeriesRequestTest {
     String pushId = UUID.randomUUID().toString();
-    String queryPathString = "/api/reports/perpush/series/" + pushId + "?precision=HOURLY&start=2014-10-01T12%3A00%3A00.000-07%3A00&end=2014-10-03T12%3A00%3A00.000-07%3A00";
-    DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0);
+    String queryPathString = "/api/reports/perpush/series/" + pushId + "?precision=HOURLY&start=2014-10-01T12%3A00%3A00&end=2014-10-03T12%3A00%3A00";
+    DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0, DateTimeZone.UTC);
     DateTime end = start.plus(Period.hours(48));
 
     private PushSeriesRequest setup() {
