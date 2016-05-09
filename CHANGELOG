@@ -1,11 +1,20 @@
+-------------------------
+1.0.0 09MAY16
+-------------------------
+- Add named user endpoints: associate, disassociate, and tags
+- Add static list endpoints: create, update, upload, lookup, listing, and
+  delete
+- Tag groups support (channel listings, segments, push audience)
+- Channels API tag mutations
+- Add new UrbanAirshipClient that allows for async requests and callbacks
+- Refactor all request payloads to implement Request
+- Add title field to iOS and Android payloads
 
 -------------------------
 0.4 04JUN15
 -------------------------
 - Push to named users
 - Audience selector naming correction (iosChannel --> iosChannels for multiple input channels)
-- Tag groups support (channel listings, segments, push audience)
-- Channels API tag mutations
 
 -------------------------
 0.3 15DEC14

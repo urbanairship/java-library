@@ -220,8 +220,8 @@ public class ChannelTagRequest implements Request<String> {
 
         try {
             return ChannelObjectMapper.getInstance().writeValueAsString(payload);
-        } catch (Exception e) {
-            throw new RuntimeException("Payload parsing error.");
+        } catch (Exception ex) {
+            return "{ \"exception\" : \"" + ex.getClass().getName() + "\", \"message\" : \"" + ex.getMessage() + "\" }";
         }
     }
 
