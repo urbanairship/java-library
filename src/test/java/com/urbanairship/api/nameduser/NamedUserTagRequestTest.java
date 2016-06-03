@@ -169,7 +169,7 @@ public class NamedUserTagRequestTest {
     public void testHeaders() throws Exception {
         Map<String, String> headers = new HashMap<String, String>();
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
-        headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION);
+        headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
         assertEquals(defaultRequest.getRequestHeaders(), headers);
     }

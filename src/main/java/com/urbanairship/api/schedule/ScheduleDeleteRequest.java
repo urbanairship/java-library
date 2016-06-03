@@ -48,7 +48,7 @@ public class ScheduleDeleteRequest implements Request<String> {
     @Override
     public Map<String, String> getRequestHeaders() {
         Map<String, String> headers = new HashMap<String, String>();
-        headers.put(HttpHeaders.ACCEPT, UA_VERSION);
+        headers.put(HttpHeaders.ACCEPT, UA_VERSION_JSON);
         return headers;
     }
 

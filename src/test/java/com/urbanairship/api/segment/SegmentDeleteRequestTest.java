@@ -41,7 +41,7 @@ public class SegmentDeleteRequestTest {
     @Test
     public void testHeaders() throws Exception {
         Map<String, String> headers = new HashMap<String, String>();
-        headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION);
+        headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
         assertEquals(request.getRequestHeaders(), headers);
     }

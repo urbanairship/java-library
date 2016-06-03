@@ -124,7 +124,7 @@ public class NamedUserTagRequest implements Request<String> {
     public Map<String, String> getRequestHeaders() {
         Map<String, String> headers = new HashMap<String, String>();
         headers.put(HttpHeaders.CONTENT_TYPE, CONTENT_TYPE_JSON);
-        headers.put(HttpHeaders.ACCEPT, UA_VERSION);
+        headers.put(HttpHeaders.ACCEPT, UA_VERSION_JSON);
         return headers;
     }
 

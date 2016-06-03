@@ -23,7 +23,7 @@ To create a static list, use the ``StaticListRequest.newRequest("<list_name>")``
 Upload Static List
 ******************
 
-To upload a static list, use the ``StaticListUpload.newRequest("<list_name>", "<file_path>")``
+To upload a static list, use the ``StaticListUploadRequest.newRequest("<list_name>", "<file_path>")``
 method:
 
 .. sourcecode:: java
@@ -31,6 +31,43 @@ method:
    File dataDirectory = new File("src/data");
    String filePath = dataDirectory.getAbsolutePath() + "/platinum.csv";
    StaticListUploadRequest request = StaticListUploadRequest.newRequest("platinum_members", filePath);
+   Response<String> response = client.execute(request);
+
+
+********************
+Download Static List
+********************
+
+**Note**: This feature is only available with certain plans. Please contact support or your account manager
+for details on enabling static list downloads.
+
+
+To download the CSV associated with a static list, use the
+``StaticListDownloadRequest.newRequest("<list_name>")`` method:
+
+.. sourcecode:: java
+
+   StaticListDownloadRequest request = StaticListDownloadRequest.newRequest("<list_name>");
+   Response<String> response = client.execute(request);
+
+Optionally, you can direct the output to a ``FileOutputStream`` by using the ``setResponseFile``
+setter:
+
+.. sourcecode:: java
+
+   FileOutputStream fileOutputStream = new FileOutputStream(new File("list.csv"));
+
+   StaticListDownloadRequest request = StaticListDownloadRequest.newRequest("<list_name>");
+       .setResponseFile(fileOutputStream);
+   Response<String> response = client.execute(request);
+
+You can also call the ``StaticListDownloadRequest.newRequest`` method with one of the Lifecycle
+List types defined in the ``LifecycleListType`` enum, e.g.:
+
+.. sourcecode:: java
+
+   StaticListDownloadRequest request = StaticListDownloadRequest.newRequest(LifecycleListType.UNINSTALLS_LAST_MONTH)
+       .setResponseFile(fileOutputStream);
    Response<String> response = client.execute(request);
 
 

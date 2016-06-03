@@ -19,7 +19,8 @@ public interface Request<T> {
     public final static String CONTENT_TYPE_TEXT_CSV = "text/csv";
     public final static String CONTENT_TYPE_JSON = "application/json";
     public final static String CONTENT_ENCODING_GZIP = "gzip";
-    public final static String UA_VERSION = "application/vnd.urbanairship+json; version=3";
+    public final static String UA_VERSION_JSON = "application/vnd.urbanairship+json; version=3";
+    public final static String UA_VERSION_CSV = "application/vnd.urbanairship+csv; version=3";
 
     public static enum HttpMethod {
         GET,

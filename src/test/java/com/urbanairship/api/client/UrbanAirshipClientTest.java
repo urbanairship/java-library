@@ -60,6 +60,7 @@ import com.urbanairship.api.segments.SegmentRequest;
 import com.urbanairship.api.segments.model.SegmentListingResponse;
 import com.urbanairship.api.segments.model.SegmentView;
 import com.urbanairship.api.staticlists.StaticListDeleteRequest;
+import com.urbanairship.api.staticlists.StaticListDownloadRequest;
 import com.urbanairship.api.staticlists.StaticListListingRequest;
 import com.urbanairship.api.staticlists.StaticListLookupRequest;
 import com.urbanairship.api.staticlists.StaticListRequest;
@@ -79,6 +80,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -115,6 +117,7 @@ public class UrbanAirshipClientTest {
 
     public final static String CONTENT_TYPE_KEY = "Content-type";
     public final static String APP_JSON = "application/json";
+    public final static String TEXT_CSV = "text/csv";
 
     static {
         BasicConfigurator.configure();
@@ -3178,6 +3181,30 @@ public class UrbanAirshipClientTest {
 
         verify(putRequestedFor(urlEqualTo(queryPathString)));
         List<LoggedRequest> requests = findAll(putRequestedFor(
+                urlEqualTo(queryPathString)));
+
+        assertEquals(requests.size(), 1);
+        assertNotNull(response);
+        assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    public void testDownloadStaticList() throws Exception {
+        FileOutputStream fileOutputStream = new FileOutputStream(new File("src/test/data/out.csv"));
+        String listName = "testlist";
+        String queryPathString = "/api/lists/" + listName + "/csv";
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, TEXT_CSV)
+                        .withStatus(200)));
+
+        StaticListDownloadRequest request = StaticListDownloadRequest.newRequest(listName)
+                .setOutputStream(fileOutputStream);
+        Response<String> response = client.execute(request);
+
+        verify(getRequestedFor(urlEqualTo(queryPathString)));
+        List<LoggedRequest> requests = findAll(getRequestedFor(
                 urlEqualTo(queryPathString)));
 
         assertEquals(requests.size(), 1);
