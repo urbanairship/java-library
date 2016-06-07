@@ -1,15 +1,19 @@
 package com.urbanairship.api.push.parse;
 
 import com.google.common.base.Optional;
+import com.urbanairship.api.client.UrbanAirshipClient;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.push.model.Display;
 import com.urbanairship.api.push.model.Position;
 import org.codehaus.jackson.JsonParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 public class DisplayReader implements JsonObjectReader<Display> {
+    private static final Logger log = LoggerFactory.getLogger(UrbanAirshipClient.class);
 
     private final Display.Builder builder;
 
@@ -34,7 +38,8 @@ public class DisplayReader implements JsonObjectReader<Display> {
         Optional<Position> positionOpt = Position.find(positionString);
 
         if (!positionOpt.isPresent()) {
-            throw new APIParsingException("Unrecognized position " + positionString);
+            log.error("Unrecognized position " + positionString);
+            return;
         }
 
         builder.setPosition(positionOpt.get());
