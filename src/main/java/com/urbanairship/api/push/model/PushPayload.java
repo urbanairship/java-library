@@ -21,6 +21,7 @@ public final class PushPayload extends PushModelObject {
     private final Optional<RichPushMessage> message;
     private final DeviceTypeData deviceTypes;
     private final Optional<PushOptions> pushOptions;
+    private final Optional<InApp> inApp;
 
     /**
      * PushPayload builder
@@ -34,12 +35,14 @@ public final class PushPayload extends PushModelObject {
                         Optional<Notification> notification,
                         Optional<RichPushMessage> message,
                         DeviceTypeData deviceTypes,
-                        Optional<PushOptions> pushOptions) {
+                        Optional<PushOptions> pushOptions,
+                        Optional<InApp> inApp) {
         this.audience = audience;
         this.notification = notification;
         this.message = message;
         this.deviceTypes = deviceTypes;
         this.pushOptions = pushOptions;
+        this.inApp = inApp;
     }
 
     /**
@@ -82,6 +85,15 @@ public final class PushPayload extends PushModelObject {
         return audience.getType().equals(SelectorType.ALL);
     }
 
+    /**
+     * Get the optional in app message.
+     *
+     * @return An optional InApp message object.
+     */
+    public Optional<InApp> getInApp() {
+        return inApp;
+    }
+
     public Optional<PushOptions> getPushOptions() {
         return pushOptions;
     }
@@ -112,6 +124,9 @@ public final class PushPayload extends PushModelObject {
         if (pushOptions != null ? !pushOptions.equals(that.pushOptions) : that.pushOptions != null) {
             return false;
         }
+        if (inApp != null ? !inApp.equals(that.inApp) : that.inApp != null) {
+            return false;
+        }
 
         return true;
     }
@@ -123,6 +138,7 @@ public final class PushPayload extends PushModelObject {
         result = 31 * result + (message != null ? message.hashCode() : 0);
         result = 31 * result + (deviceTypes != null ? deviceTypes.hashCode() : 0);
         result = 31 * result + (pushOptions != null ? pushOptions.hashCode() : 0);
+        result = 31 * result + (inApp != null ? inApp.hashCode() : 0);
         return result;
     }
 
@@ -134,6 +150,7 @@ public final class PushPayload extends PushModelObject {
                 ", message=" + message +
                 ", deviceTypes=" + deviceTypes +
                 ", pushOptions=" + pushOptions +
+                ", inApp=" + inApp +
                 '}';
     }
 
@@ -143,7 +160,7 @@ public final class PushPayload extends PushModelObject {
         private Notification notification = null;
         private RichPushMessage message = null;
         private PushOptions pushOptions = null;
-
+        private InApp inApp = null;
 
         private Builder() { }
 
@@ -158,7 +175,7 @@ public final class PushPayload extends PushModelObject {
         }
 
         /**
-         * Set the Notification
+         * Set the Notification.
          * @param notification Notification
          * @return Builder
          */
@@ -178,7 +195,7 @@ public final class PushPayload extends PushModelObject {
         }
 
         /**
-         * Set the Device Type data
+         * Set the Device Type data.
          * @param deviceTypes DeviceTypeData
          * @return Builder
          */
@@ -187,8 +204,23 @@ public final class PushPayload extends PushModelObject {
             return this;
         }
 
+        /**
+         * Set the push options.
+         * @param pushOptions PushOptions
+         * @return Builder
+         */
         public Builder setPushOptions(PushOptions pushOptions) {
             this.pushOptions = pushOptions;
+            return this;
+        }
+
+        /**
+         * Set the in-app message.
+         * @param inApp An InApp message object.
+         * @return Builder
+         */
+        public Builder setInApp(InApp inApp) {
+            this.inApp = inApp;
             return this;
         }
 
@@ -196,7 +228,7 @@ public final class PushPayload extends PushModelObject {
          * Build a PushPayload object. Will fail if any of the following
          * preconditions are not met.
          * <pre>
-         * 1. At least one of notification or message must be set.
+         * 1. At least one of notification, message, or inApp must be set.
          * 2. Audience must be set.
          * 3. DeviceTypes (device types) must be set.
          * </pre>
@@ -206,16 +238,19 @@ public final class PushPayload extends PushModelObject {
          * @return PushPayload
          */
         public PushPayload build() {
-            Preconditions.checkArgument(!(notification == null && message == null),
-                    "At least one of 'notification' or 'message' must be set.");
+            Preconditions.checkArgument(!(notification == null && message == null && inApp == null),
+                    "At least one of 'notification', 'message', or 'inApp' must be set.");
             Preconditions.checkNotNull(audience, "'audience' must be set");
             Preconditions.checkNotNull(deviceTypes, "'device_types' must be set");
 
-            return new PushPayload(audience,
+            return new PushPayload(
+                    audience,
                     Optional.fromNullable(notification),
                     Optional.fromNullable(message),
                     deviceTypes,
-                    Optional.fromNullable(pushOptions));
+                    Optional.fromNullable(pushOptions),
+                    Optional.fromNullable(inApp)
+            );
         }
     }
 }

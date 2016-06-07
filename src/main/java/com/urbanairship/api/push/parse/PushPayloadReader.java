@@ -10,6 +10,7 @@ import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushOptions;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.audience.Selector;
+import com.urbanairship.api.push.model.InApp;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import org.codehaus.jackson.JsonParser;
@@ -42,6 +43,10 @@ public class PushPayloadReader implements JsonObjectReader<PushPayload> {
 
     public void readDeviceTypes(JsonParser parser) throws IOException {
         builder.setDeviceTypes(parser.readValueAs(DeviceTypeData.class));
+    }
+
+    public void readInApp(JsonParser parser) throws IOException {
+        builder.setInApp(parser.readValueAs(InApp.class));
     }
 
     @Override

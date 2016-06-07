@@ -3,6 +3,8 @@ package com.urbanairship.api.push.parse;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
+import com.urbanairship.api.push.model.InApp;
+import com.urbanairship.api.push.model.Position;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
@@ -222,6 +224,40 @@ public class PushPayloadBasicSerializationTest {
         assertTrue(adm.getAlert().isPresent());
         assertEquals("phoenix", adm.getAlert().get());
     }
+
+    @Test
+    public void testInAppMessage() throws Exception {
+        String json = "{" +
+                "\"audience\": \"all\"," +
+                "\"device_types\": [\"ios\", \"android\", \"amazon\"]," +
+                "\"notification\": {" +
+                    "\"alert\": \"test alert test test\"" +
+                "}," +
+                "\"in_app\": {" +
+                    "\"alert\": \"This part appears in-app!\"," +
+                    "\"display_type\": \"banner\"," +
+                    "\"display\": {" +
+                        "\"position\": \"top\"" +
+                    "}" +
+                "}" +
+                "}";
+
+        PushPayload push = mapper.readValue(json, PushPayload.class);
+        assertNotNull(push);
+        assertEquals(push.getAudience(), Selectors.all());
+        assertEquals(push.getDeviceTypes(), DeviceTypeData.of(DeviceType.IOS,DeviceType.AMAZON,DeviceType.ANDROID));
+
+        Notification notification = push.getNotification().get();
+        assertNotNull(notification);
+        assertEquals(notification.getAlert().get(), "test alert test test");
+
+        InApp inAppMessage = push.getInApp().get();
+        assertNotNull(inAppMessage);
+        assertEquals(inAppMessage.getAlert(), "This part appears in-app!");
+        assertEquals(inAppMessage.getDisplayType(), "banner");
+        assertEquals(inAppMessage.getDisplay().get().getPosition().get(), Position.TOP);
+    }
+
 
     // TODO: split this into individual tests
     @Test

@@ -38,7 +38,6 @@ public class StaticListViewReader implements JsonObjectReader<StaticListView> {
         Map<String, String> mutableExtras = jsonParser.readValueAs(new TypeReference<Map<String, String>>() {});
         ImmutableMap<String, String> extras = immutableMapConverter(mutableExtras);
         builder.addAllExtras(extras);
-
     }
 
     public void readCreated(JsonParser jsonParser) throws IOException {

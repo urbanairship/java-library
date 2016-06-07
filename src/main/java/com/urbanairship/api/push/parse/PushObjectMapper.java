@@ -8,6 +8,8 @@ import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.CommonObjectMapper;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
+import com.urbanairship.api.push.model.Display;
+import com.urbanairship.api.push.model.InApp;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.PushOptions;
 import com.urbanairship.api.push.model.PushPayload;
@@ -170,6 +172,10 @@ public class PushObjectMapper {
                 .addDeserializer(Notification.class, notificationDeserializer)
                 .addSerializer(Interactive.class, new InteractiveSerializer())
                 .addDeserializer(Interactive.class, new InteractiveDeserializer())
+                .addSerializer(InApp.class, new InAppSerializer())
+                .addDeserializer(InApp.class, new InAppDeserializer())
+                .addSerializer(Display.class, new DisplaySerializer())
+                .addDeserializer(Display.class, new DisplayDeserializer())
                 .addSerializer(DeviceType.class, new DeviceTypeSerializer())
                 .addDeserializer(DeviceType.class, new PlatformDeserializer())
                 .addSerializer(Selector.class, new SelectorSerializer())
