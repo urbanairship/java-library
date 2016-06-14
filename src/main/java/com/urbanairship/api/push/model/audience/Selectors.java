@@ -112,6 +112,22 @@ public class Selectors {
             .build();
     }
 
+    /* Static Lists */
+
+    public static final Selector staticList(String staticList) {
+        return value(SelectorType.STATIC_LIST, staticList);
+    }
+
+    public static final Selector staticLists(String... staticLists) {
+        return compound(SelectorType.OR, SelectorType.STATIC_LIST, staticLists);
+    }
+
+    public static final Selector staticLists(Collection<String> staticLists) {
+        return compound(SelectorType.OR, SelectorType.STATIC_LIST, staticLists);
+    }
+
+    /* Autogroups */
+
     public static final Selector autogroup(int value) {
         return autogroup(Integer.toString(value));
     }
