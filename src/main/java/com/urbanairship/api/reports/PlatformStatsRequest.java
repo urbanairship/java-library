@@ -44,6 +44,18 @@ public class PlatformStatsRequest implements Request<PlatformStatsResponse> {
     }
 
     /**
+     * Create a new platform stats request listing using a next page URI.
+     *
+     * @param nextPage URI
+     * @return ChannelRequest
+     */
+    public static PlatformStatsRequest newRequest(URI nextPage) {
+        Preconditions.checkNotNull(nextPage, "Next page URI cannot be null");
+        return new PlatformStatsRequest(nextPage.getPath() + "?" + nextPage.getQuery());
+    }
+
+
+    /**
      * Set the request start date
      *
      * @return PlatformStatsRequest

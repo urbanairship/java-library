@@ -4,6 +4,7 @@
 
 package com.urbanairship.api.channel;
 
+import com.google.common.base.Preconditions;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.channel.model.ChannelResponse;
 import com.urbanairship.api.channel.parse.ChannelObjectMapper;
@@ -48,6 +49,17 @@ public class ChannelRequest implements Request<ChannelResponse> {
      */
     public static ChannelRequest newRequest() {
         return new ChannelRequest(API_CHANNELS_LIST);
+    }
+
+    /**
+     * Create a request for channel listing using a next page URI.
+     *
+     * @param nextPage URI
+     * @return ChannelRequest
+     */
+    public static ChannelRequest newRequest(URI nextPage) {
+        Preconditions.checkNotNull(nextPage, "Next page URI cannot be null");
+        return new ChannelRequest(nextPage.getPath() + "?" + nextPage.getQuery());
     }
 
     @Override
