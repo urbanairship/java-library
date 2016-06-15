@@ -22,23 +22,27 @@ public class NamedUserListingRequestTest {
 
     private final NamedUserListingRequest listAllRequest = NamedUserListingRequest.newRequest();
     private final NamedUserListingRequest listRequest = NamedUserListingRequest.newRequest("named_user_id");
+    private final NamedUserListingRequest listNextPageRequest = NamedUserListingRequest.newRequest(URI.create("https://go.urbanairship.com/api/named_users/?limit=10&start=mfd"));
 
     @Test
     public void testContentType() throws Exception {
         assertEquals(listAllRequest.getContentType(), ContentType.APPLICATION_JSON);
         assertEquals(listRequest.getContentType(), ContentType.APPLICATION_JSON);
+        assertEquals(listNextPageRequest.getContentType(), ContentType.APPLICATION_JSON);
     }
 
     @Test
     public void testMethod() throws Exception {
         assertEquals(listAllRequest.getHttpMethod(), Request.HttpMethod.GET);
         assertEquals(listRequest.getHttpMethod(), Request.HttpMethod.GET);
+        assertEquals(listNextPageRequest.getHttpMethod(), Request.HttpMethod.GET);
     }
 
     @Test
     public void testBody() throws Exception {
         assertEquals(listAllRequest.getRequestBody(), null);
         assertEquals(listRequest.getRequestBody(), null);
+        assertEquals(listNextPageRequest.getRequestBody(), null);
     }
 
     @Test
@@ -49,6 +53,7 @@ public class NamedUserListingRequestTest {
 
         assertEquals(listAllRequest.getRequestHeaders(), headers);
         assertEquals(listRequest.getRequestHeaders(), headers);
+        assertEquals(listNextPageRequest.getRequestHeaders(), headers);
     }
 
     @Test
@@ -60,6 +65,9 @@ public class NamedUserListingRequestTest {
 
         expectedURI = URI.create("https://go.urbanairship.com/api/named_users/?id=named_user_id");
         assertEquals(listRequest.getUri(baseURI), expectedURI);
+
+        expectedURI = URI.create("https://go.urbanairship.com/api/named_users/?limit=10&start=mfd");
+        assertEquals(listNextPageRequest.getUri(baseURI), expectedURI);
     }
 
     @Test
@@ -111,6 +119,7 @@ public class NamedUserListingRequestTest {
             "}";
 
         assertEquals(listAllRequest.getResponseParser().parse(response), responseParser.parse(response));
+        assertEquals(listNextPageRequest.getResponseParser().parse(response), responseParser.parse(response));
     }
 
     @Test

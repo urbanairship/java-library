@@ -63,7 +63,6 @@ public class NamedUserListingRequest implements Request<NamedUserListingResponse
         return new NamedUserListingRequest(nextPage.getPath() + "?" + nextPage.getQuery());
     }
 
-
     @Override
     public ContentType getContentType() {
         return ContentType.APPLICATION_JSON;

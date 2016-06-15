@@ -26,12 +26,14 @@ import java.util.Map;
  */
 public class PlatformStatsRequest implements Request<PlatformStatsResponse> {
     private final String path;
+    private final boolean nextPageRequest;
     private DateTime start;
     private DateTime end;
     private Precision precision;
 
-    private PlatformStatsRequest(String path) {
+    private PlatformStatsRequest(String path, boolean nextPageRequest) {
         this.path = path;
+        this.nextPageRequest = nextPageRequest;
     }
 
     /**
@@ -40,20 +42,19 @@ public class PlatformStatsRequest implements Request<PlatformStatsResponse> {
      * @return PlatformStatsRequest
      */
     public static PlatformStatsRequest newRequest(PlatformStatsRequestType type) {
-        return new PlatformStatsRequest(type.getPath());
+        return new PlatformStatsRequest(type.getPath(), false);
     }
 
     /**
      * Create a new platform stats request listing using a next page URI.
      *
      * @param nextPage URI
-     * @return ChannelRequest
+     * @return PlatformStatsRequest
      */
     public static PlatformStatsRequest newRequest(URI nextPage) {
         Preconditions.checkNotNull(nextPage, "Next page URI cannot be null");
-        return new PlatformStatsRequest(nextPage.getPath() + "?" + nextPage.getQuery());
+        return new PlatformStatsRequest(nextPage.getPath() + "?" + nextPage.getQuery(), true);
     }
-
 
     /**
      * Set the request start date
@@ -110,16 +111,19 @@ public class PlatformStatsRequest implements Request<PlatformStatsResponse> {
 
     @Override
     public URI getUri(URI baseUri) {
-        Preconditions.checkNotNull(start, "start cannot be null");
-        Preconditions.checkNotNull(end, "end cannot be null");
-        Preconditions.checkNotNull(precision, "precision cannot be null");
-        Preconditions.checkArgument(end.isAfter(start), "end date must occur after start date");
-
         URI uri;
         URIBuilder builder = new URIBuilder(RequestUtils.resolveURI(baseUri, path));
-        builder.addParameter("start", this.start.toString(DateFormats.DATE_FORMATTER));
-        builder.addParameter("end", this.end.toString(DateFormats.DATE_FORMATTER));
-        builder.addParameter("precision", this.precision.toString());
+
+        if (!nextPageRequest) {
+            Preconditions.checkNotNull(start, "start cannot be null");
+            Preconditions.checkNotNull(end, "end cannot be null");
+            Preconditions.checkNotNull(precision, "precision cannot be null");
+            Preconditions.checkArgument(end.isAfter(start), "end date must occur after start date");
+
+            builder.addParameter("start", this.start.toString(DateFormats.DATE_FORMATTER));
+            builder.addParameter("end", this.end.toString(DateFormats.DATE_FORMATTER));
+            builder.addParameter("precision", this.precision.toString());
+        }
 
         try {
             uri = builder.build();

@@ -44,13 +44,12 @@ public class SegmentListingRequest implements Request<SegmentListingResponse> {
      * Create a request for segment listing using a next page URI.
      *
      * @param nextPage URI
-     * @return ChannelRequest
+     * @return SegmentListingRequest
      */
     public static SegmentListingRequest newRequest(URI nextPage) {
         Preconditions.checkNotNull(nextPage, "Next page URI cannot be null");
         return new SegmentListingRequest(nextPage.getPath() + "?" + nextPage.getQuery());
     }
-
 
     @Override
     public ContentType getContentType() {
@@ -76,7 +75,7 @@ public class SegmentListingRequest implements Request<SegmentListingResponse> {
 
     @Override
     public URI getUri(URI baseUri) {
-        return RequestUtils.resolveURI(baseUri, API_SEGMENTS_PATH);
+        return RequestUtils.resolveURI(baseUri, path);
     }
 
     @Override
