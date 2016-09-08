@@ -22,23 +22,28 @@ public class ChannelRequestTest {
 
     ChannelRequest listAllRequest = ChannelRequest.newRequest();
     ChannelRequest listRequest = ChannelRequest.newRequest("channel");
+    ChannelRequest listNextPageChannelRequest = ChannelRequest.newRequest(URI.create("https://go.urbanairship.com/api/channels/?limit=1000&start=c238b2d2-996a-4ef3-ab54-1d4dc5bca99a"));
+
 
     @Test
     public void testContentType() throws Exception {
         assertEquals(listAllRequest.getContentType(), ContentType.APPLICATION_JSON);
         assertEquals(listRequest.getContentType(), ContentType.APPLICATION_JSON);
+        assertEquals(listNextPageChannelRequest.getContentType(), ContentType.APPLICATION_JSON);
     }
 
     @Test
     public void testMethod() throws Exception {
         assertEquals(listAllRequest.getHttpMethod(), Request.HttpMethod.GET);
         assertEquals(listRequest.getHttpMethod(), Request.HttpMethod.GET);
+        assertEquals(listNextPageChannelRequest.getHttpMethod(), Request.HttpMethod.GET);
     }
 
     @Test
     public void testBody() throws Exception {
         assertEquals(listAllRequest.getRequestBody(), null);
         assertEquals(listRequest.getRequestBody(), null);
+        assertEquals(listNextPageChannelRequest.getRequestBody(), null);
     }
 
     @Test
@@ -49,6 +54,7 @@ public class ChannelRequestTest {
 
         assertEquals(listAllRequest.getRequestHeaders(), headers);
         assertEquals(listRequest.getRequestHeaders(), headers);
+        assertEquals(listNextPageChannelRequest.getRequestHeaders(), headers);
     }
 
     @Test
@@ -60,6 +66,9 @@ public class ChannelRequestTest {
 
         expectedURI = URI.create("https://go.urbanairship.com/api/channels/channel");
         assertEquals(listRequest.getUri(baseURI), expectedURI);
+
+        expectedURI = URI.create("https://go.urbanairship.com/api/channels/?limit=1000&start=c238b2d2-996a-4ef3-ab54-1d4dc5bca99a");
+        assertEquals(listNextPageChannelRequest.getUri(baseURI), expectedURI);
     }
 
     @Test
@@ -188,6 +197,7 @@ public class ChannelRequestTest {
             "}";
 
         assertEquals(listAllRequest.getResponseParser().parse(response), responseParser.parse(response));
+        assertEquals(listNextPageChannelRequest.getResponseParser().parse(response), responseParser.parse(response));
     }
 
     @Test

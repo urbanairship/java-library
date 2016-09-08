@@ -30,11 +30,17 @@ import java.util.Map;
  */
 public class PushListingRequest implements Request<PushListingResponse> {
     private final static String API_PUSH_RESPONSE_LISTING = "/api/reports/responses/list/";
-
+    private final String path;
+    private final boolean nextPageRequest;
     private DateTime start;
     private DateTime end;
     private Optional<Integer> limit = Optional.absent();
     private Optional<String> pushIdStart = Optional.absent();
+
+    private PushListingRequest(String path, boolean nextPageRequest) {
+        this.path = path;
+        this.nextPageRequest = nextPageRequest;
+    }
 
     /**
      * New PushListingRequest
@@ -42,7 +48,18 @@ public class PushListingRequest implements Request<PushListingResponse> {
      * @return PushListingRequest
      */
     public static PushListingRequest newRequest() {
-        return new PushListingRequest();
+        return new PushListingRequest(API_PUSH_RESPONSE_LISTING, false);
+    }
+
+    /**
+     * Create a new push listing request listing using a next page URI.
+     *
+     * @param nextPage URI
+     * @return PushListingRequest
+     */
+    public static PushListingRequest newRequest(URI nextPage) {
+        Preconditions.checkNotNull(nextPage, "Next page URI cannot be null");
+        return new PushListingRequest(nextPage.getPath() + "?" + nextPage.getQuery(), true);
     }
 
     /**
@@ -146,20 +163,21 @@ public class PushListingRequest implements Request<PushListingResponse> {
 
     @Override
     public URI getUri(URI baseUri) throws URISyntaxException {
-        URIBuilder builder = new URIBuilder(RequestUtils.resolveURI(baseUri, API_PUSH_RESPONSE_LISTING));
+        URIBuilder builder = new URIBuilder(RequestUtils.resolveURI(baseUri, path));
 
-        Preconditions.checkNotNull(this.start, "start cannot be null");
-        Preconditions.checkNotNull(this.end, "end cannot be null");
-        Preconditions.checkArgument(end.isAfter(start), "end date must occur after start date");
+        if (!nextPageRequest) {
+            Preconditions.checkNotNull(this.start, "start cannot be null");
+            Preconditions.checkNotNull(this.end, "end cannot be null");
+            Preconditions.checkArgument(end.isAfter(start), "end date must occur after start date");
+            builder.addParameter("start", this.start.toString(DateFormats.DATE_FORMATTER));
+            builder.addParameter("end", this.end.toString(DateFormats.DATE_FORMATTER));
 
-        builder.addParameter("start", this.start.toString(DateFormats.DATE_FORMATTER));
-        builder.addParameter("end", this.end.toString(DateFormats.DATE_FORMATTER));
+            if (this.limit.isPresent())
+                builder.addParameter("limit", Integer.toString(this.limit.get()));
 
-        if (this.limit.isPresent())
-            builder.addParameter("limit", Integer.toString(this.limit.get()));
-
-        if (this.pushIdStart.isPresent())
-            builder.addParameter("push_id_start", this.pushIdStart.get());
+            if (this.pushIdStart.isPresent())
+                builder.addParameter("push_id_start", this.pushIdStart.get());
+        }
 
         return builder.build();
     }

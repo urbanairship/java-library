@@ -4,6 +4,7 @@
 
 package com.urbanairship.api.nameduser;
 
+import com.google.common.base.Preconditions;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
@@ -49,6 +50,17 @@ public class NamedUserListingRequest implements Request<NamedUserListingResponse
      */
     public static NamedUserListingRequest newRequest() {
         return new NamedUserListingRequest(API_NAMED_USERS_GET);
+    }
+
+    /**
+     * Create a request for named user listing using a next page URI.
+     *
+     * @param nextPage URI
+     * @return NamedUserListingRequest
+     */
+    public static NamedUserListingRequest newRequest(URI nextPage) {
+        Preconditions.checkNotNull(nextPage, "Next page URI cannot be null");
+        return new NamedUserListingRequest(nextPage.getPath() + "?" + nextPage.getQuery());
     }
 
     @Override

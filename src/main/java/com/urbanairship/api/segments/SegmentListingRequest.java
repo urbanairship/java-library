@@ -4,6 +4,7 @@
 
 package com.urbanairship.api.segments;
 
+import com.google.common.base.Preconditions;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
@@ -24,13 +25,30 @@ import java.util.Map;
 public class SegmentListingRequest implements Request<SegmentListingResponse> {
     private final static String API_SEGMENTS_PATH = "/api/segments/";
 
+    private final String path;
+
+    private SegmentListingRequest(String path) {
+        this.path = path;
+    }
+
     /**
      * Create new request for segment listing.
      *
      * @return SegmentRequest
      */
     public static SegmentListingRequest newRequest() {
-        return new SegmentListingRequest();
+        return new SegmentListingRequest(API_SEGMENTS_PATH);
+    }
+
+    /**
+     * Create a request for segment listing using a next page URI.
+     *
+     * @param nextPage URI
+     * @return SegmentListingRequest
+     */
+    public static SegmentListingRequest newRequest(URI nextPage) {
+        Preconditions.checkNotNull(nextPage, "Next page URI cannot be null");
+        return new SegmentListingRequest(nextPage.getPath() + "?" + nextPage.getQuery());
     }
 
     @Override
@@ -57,7 +75,7 @@ public class SegmentListingRequest implements Request<SegmentListingResponse> {
 
     @Override
     public URI getUri(URI baseUri) {
-        return RequestUtils.resolveURI(baseUri, API_SEGMENTS_PATH);
+        return RequestUtils.resolveURI(baseUri, path);
     }
 
     @Override

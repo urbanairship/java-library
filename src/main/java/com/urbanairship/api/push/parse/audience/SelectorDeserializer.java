@@ -29,10 +29,10 @@ public class SelectorDeserializer extends JsonDeserializer<Selector> {
             getRegistryMap(),
             // Default parser
             new FieldParser<SelectorReader>() {
-                    @Override
-                    public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                        reader.readExtraField(parser);
-                    }
+                @Override
+                public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
+                    reader.readExtraField(parser);
+                }
             }
     );
 
@@ -49,7 +49,7 @@ public class SelectorDeserializer extends JsonDeserializer<Selector> {
                     return new SelectorReader();
                 }
             }
-            );
+        );
     }
 
     @Override
@@ -107,6 +107,12 @@ public class SelectorDeserializer extends JsonDeserializer<Selector> {
                     @Override
                     public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
                         reader.readValueSelector(SelectorType.SEGMENT, parser, context);
+                    }
+                })
+                .put("static_list", new FieldParser<SelectorReader>() {
+                    @Override
+                    public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
+                        reader.readValueSelector(SelectorType.STATIC_LIST, parser, context);
                     }
                 })
 

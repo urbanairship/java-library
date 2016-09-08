@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class SelectorDeserializerTest {
@@ -106,6 +107,14 @@ public class SelectorDeserializerTest {
         assertEquals("group1", vs.getAttributes().get().get("group"));
     }
 
+    @Test
+    public void testStaticList() throws Exception {
+        String json = "{\"static_list\":\"list123\"}";
+        Selector value = mapper.readValue(json, Selector.class);
+        assertNotNull(value);
+        assertEquals(value.getType(), SelectorType.STATIC_LIST);
+        assertEquals(((ValueSelector)value).getValue(), "list123");
+    }
 
     @Test
     public void testAtomicCaseInsensitivity() throws Exception {
@@ -122,7 +131,8 @@ public class SelectorDeserializerTest {
         String json = "{\n"
                 + "  \"and\" : [\n"
                 + "    { \"tag\" : \"herp\" }, \n"
-                + "    { \"tag\" : \"derp\" } \n"
+                + "    { \"tag\" : \"derp\" }, \n"
+                + "    { \"static_list\"  :  \"test123\"} \n"
                 + "  ]\n"
                 + "}";
         Selector s = mapper.readValue(json, Selector.class);
@@ -130,7 +140,7 @@ public class SelectorDeserializerTest {
         assertEquals(SelectorType.AND, s.getType());
 
         CompoundSelector cs = (CompoundSelector) s;
-        assertEquals(2, Iterables.size(cs.getChildren()));
+        assertEquals(3, Iterables.size(cs.getChildren()));
 
         Iterator<Selector> i = cs.getChildren().iterator();
 
@@ -145,6 +155,12 @@ public class SelectorDeserializerTest {
         vs = (ValueSelector) c;
         assertEquals(SelectorType.TAG, c.getType());
         assertEquals("derp", vs.getValue());
+
+        c = i.next();
+        assertTrue(c instanceof ValueSelector);
+        vs = (ValueSelector) c;
+        assertEquals(SelectorType.STATIC_LIST, c.getType());
+        assertEquals("test123", vs.getValue());
     }
 
     @Test
