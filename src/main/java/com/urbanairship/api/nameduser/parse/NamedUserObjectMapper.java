@@ -4,12 +4,10 @@
 
 package com.urbanairship.api.nameduser.parse;
 
-import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.channel.model.ChannelView;
 import com.urbanairship.api.channel.model.ios.IosSettings;
 import com.urbanairship.api.channel.model.ios.QuietTime;
 import com.urbanairship.api.channel.parse.ChannelViewDeserializer;
-import com.urbanairship.api.channel.parse.DeviceTypeDeserializer;
 import com.urbanairship.api.channel.parse.ios.IosSettingsDeserializer;
 import com.urbanairship.api.channel.parse.ios.QuietTimeDeserializer;
 import com.urbanairship.api.nameduser.model.NamedUserListingResponse;
@@ -28,7 +26,6 @@ public class NamedUserObjectMapper {
         MODULE.addDeserializer(IosSettings.class, new IosSettingsDeserializer());
         MODULE.addDeserializer(QuietTime.class, new QuietTimeDeserializer());
         MODULE.addDeserializer(ChannelView.class, new ChannelViewDeserializer());
-        MODULE.addDeserializer(ChannelType.class, new DeviceTypeDeserializer());
         MODULE.addDeserializer(NamedUserView.class, new NamedUserViewDeserializer());
         MODULE.addDeserializer(NamedUserListingResponse.class, new NamedUserlListingResponseDeserializer());
 
