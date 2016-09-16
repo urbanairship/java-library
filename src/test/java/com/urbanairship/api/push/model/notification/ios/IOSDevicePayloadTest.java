@@ -52,7 +52,7 @@ public class IOSDevicePayloadTest {
         assertEquals("this is a sound", m.getSound().get());
         assertTrue(m.getContentAvailable().get());
         assertEquals("title", m.getTitle().get());
-        assertEquals("subtitle", m.getTitle().get());
+        assertEquals("subtitle", m.getSubtitle().get());
     }
 
 }

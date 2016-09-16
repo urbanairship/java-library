@@ -76,6 +76,11 @@ public class IOSDevicePayloadDeserializer extends JsonDeserializer<IOSDevicePayl
                         reader.readTitle(json);
                     }
                 })
+            .put("subtitle", new FieldParser<IOSDevicePayloadReader>() {
+                    public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                        reader.readSubtitle(json);
+                    }
+            })
             .build()
             );
 
