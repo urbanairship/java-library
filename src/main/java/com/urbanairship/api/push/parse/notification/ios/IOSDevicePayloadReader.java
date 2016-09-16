@@ -65,6 +65,10 @@ public class IOSDevicePayloadReader implements JsonObjectReader<IOSDevicePayload
         builder.setTitle(StringFieldDeserializer.INSTANCE.deserialize(parser, "title"));
     }
 
+    public void readSubtitle(JsonParser parser) throws IOException{
+        builder.setSubtitle(StringFieldDeserializer.INSTANCE.deserialize(parser, "subtitle"));
+    }
+
     @Override
     public IOSDevicePayload validateAndBuild() throws IOException {
         try {

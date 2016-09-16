@@ -38,6 +38,7 @@ public class IOSDevicePayloadTest {
                 .setPriority(10)
                 .addExtraEntry("this", "that")
                 .setTitle("title")
+                .setSubtitle("subtitle")
                 .build();
         assertTrue(m.getExtra().isPresent());
         assertEquals(1, m.getExtra().get().size());
@@ -51,6 +52,7 @@ public class IOSDevicePayloadTest {
         assertEquals("this is a sound", m.getSound().get());
         assertTrue(m.getContentAvailable().get());
         assertEquals("title", m.getTitle().get());
+        assertEquals("subtitle", m.getTitle().get());
     }
 
 }

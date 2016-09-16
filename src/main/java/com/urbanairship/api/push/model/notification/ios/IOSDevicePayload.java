@@ -5,6 +5,7 @@
 package com.urbanairship.api.push.model.notification.ios;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushExpiry;
@@ -29,6 +30,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
     private final Optional<String> category;
     private final Optional<Interactive> interactive;
     private final Optional<String> title;
+    private final Optional<String> subtitle;
 
     private IOSDevicePayload(Optional<IOSAlertData> alert,
                              Optional<String> sound,
@@ -39,7 +41,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                              Optional<ImmutableMap<String, String>> extra,
                              Optional<String> category,
                              Optional<Interactive> interactive,
-                             Optional<String> title) {
+                             Optional<String> title,
+                             Optional<String> subtitle) {
         this.alert = alert;
         this.sound = sound;
         this.badge = badge;
@@ -50,6 +53,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         this.category = category;
         this.interactive = interactive;
         this.title = title;
+        this.subtitle = subtitle;
     }
 
     /**
@@ -158,6 +162,10 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         return title;
     }
 
+    public Optional<String> getSubtitle() {
+        return subtitle;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -198,6 +206,9 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         if (title!= null ? ! title.equals(that.title) : that.title != null) {
             return false;
         }
+        if(subtitle!= null ? ! subtitle.equals(that.subtitle) : that.subtitle != null){
+            return false;
+        }
         return true;
     }
 
@@ -229,6 +240,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
             ", category=" + category +
             ", interactive=" + interactive +
             ", title=" + title +
+            ", subtitle=" + subtitle +
                 '}';
     }
 
@@ -243,6 +255,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         private String category = null;
         private Interactive interactive = null;
         private String title = null;
+        private String subtitle = null;
 
         private Builder() { }
 
@@ -380,6 +393,11 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
             return this;
         }
 
+        public Builder setSubtitle(String value){
+            this.subtitle = value;
+            return this;
+        }
+
         /**
          * Build IOSDevicePayload
          * @return IOSDevicePayload
@@ -395,7 +413,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                     extra == null ? Optional.<ImmutableMap<String,String>>absent() : Optional.fromNullable(extra.build()),
                     Optional.fromNullable(category),
                     Optional.fromNullable(interactive),
-                    Optional.fromNullable(title));
+                    Optional.fromNullable(title),
+                    Optional.fromNullable(subtitle));
         }
     }
 }

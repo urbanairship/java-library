@@ -144,4 +144,19 @@ public class PayloadSerializerTest {
         assertEquals(expected, json);
     }
 
+    @Test
+    public void testSubtitle() throws Exception {
+        IOSDevicePayload payload = IOSDevicePayload.newBuilder()
+                .setAlert("alert")
+                .setSubtitle("subtitle")
+                .build();
+
+        String json = mapper.writeValueAsString(payload);
+
+        String expected
+            = "{\"alert\":\"alert\",\"subtitle\":\"subtitle\"}";
+
+        assertEquals(expected, json);
+    }
+
 }
