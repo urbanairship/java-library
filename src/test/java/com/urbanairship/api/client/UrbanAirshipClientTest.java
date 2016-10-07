@@ -32,6 +32,7 @@ import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.reports.PlatformStatsRequest;
+import com.urbanairship.api.reports.PlatformStatsRequestType;
 import com.urbanairship.api.reports.PushDetailRequest;
 import com.urbanairship.api.reports.PushInfoRequest;
 import com.urbanairship.api.reports.PushListingRequest;
@@ -39,15 +40,14 @@ import com.urbanairship.api.reports.PushSeriesRequest;
 import com.urbanairship.api.reports.StatisticsCsvRequest;
 import com.urbanairship.api.reports.StatisticsRequest;
 import com.urbanairship.api.reports.model.PlatformStatsResponse;
-import com.urbanairship.api.reports.PlatformStatsRequestType;
 import com.urbanairship.api.reports.model.Precision;
 import com.urbanairship.api.reports.model.PushDetailResponse;
 import com.urbanairship.api.reports.model.PushInfoResponse;
 import com.urbanairship.api.reports.model.PushListingResponse;
 import com.urbanairship.api.reports.model.PushSeriesResponse;
 import com.urbanairship.api.reports.model.StatisticsResponse;
-import com.urbanairship.api.schedule.ScheduleDeleteRequest;
 import com.urbanairship.api.schedule.ListSchedulesOrderType;
+import com.urbanairship.api.schedule.ScheduleDeleteRequest;
 import com.urbanairship.api.schedule.ScheduleListingRequest;
 import com.urbanairship.api.schedule.ScheduleRequest;
 import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
@@ -67,6 +67,14 @@ import com.urbanairship.api.staticlists.StaticListRequest;
 import com.urbanairship.api.staticlists.StaticListUploadRequest;
 import com.urbanairship.api.staticlists.model.StaticListListingResponse;
 import com.urbanairship.api.staticlists.model.StaticListView;
+import com.urbanairship.api.templates.TemplateDeleteRequest;
+import com.urbanairship.api.templates.TemplateListingRequest;
+import com.urbanairship.api.templates.TemplatePushRequest;
+import com.urbanairship.api.templates.TemplateRequest;
+import com.urbanairship.api.templates.model.TemplateListingResponse;
+import com.urbanairship.api.templates.model.TemplatePushPayload;
+import com.urbanairship.api.templates.model.TemplateResponse;
+import com.urbanairship.api.templates.model.TemplateSelector;
 import org.apache.log4j.BasicConfigurator;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -3233,4 +3241,263 @@ public class UrbanAirshipClientTest {
         assertEquals(204, response.getStatus());
     }
 
+    @Test
+    public void testCreateTemplate() throws Exception {
+        String queryPathString = "/api/templates/";
+        String responseJson =
+                "{" +
+                    "\"ok\": true," +
+                    "\"operation_id\": \"df6a6b50-9843-0304-d5a5-743f246a4946\"," +
+                    "\"template_id\": \"1cbfbfa2-08d1-92c2-7119-f8f7f670f5f6\"" +
+                "}";
+
+        stubFor(post(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withStatus(201)
+                        .withBody(responseJson)));
+
+        TemplateRequest request = TemplateRequest.newRequest()
+                .setName("Blah")
+                .setDescription("A description")
+                .setPush(null);
+
+        Response<TemplateResponse> response = client.execute(request);
+        verify(postRequestedFor(urlEqualTo(queryPathString)));
+        List<LoggedRequest> requests = findAll(postRequestedFor(
+                urlEqualTo(queryPathString)));
+
+        assertEquals(requests.size(), 1);
+        assertNotNull(response);
+        assertEquals(201, response.getStatus());
+        assertNotNull(response.getBody().get().getOk());
+        assertNotNull(response.getBody().get().getOperationId().get());
+        assertNotNull(response.getBody().get().getTemplateId().get());
+    }
+
+    @Test
+    public void testUpdateTemplate() throws Exception {
+        String templateName = "abc123";
+        String queryPathString = "/api/templates/" + templateName;
+        String responseJson =
+                "{" +
+                    "\"ok\": true," +
+                    "\"operation_id\": \"df6a6b50-9843-0304-d5a5-743f246a4946\"" +
+                "}";
+
+        stubFor(post(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withBody(responseJson)));
+
+        TemplateRequest request = TemplateRequest.newRequest(templateName)
+                .setName("Blah")
+                .setDescription("A description")
+                .setPush(null);
+
+        Response<TemplateResponse> response = client.execute(request);
+        verify(postRequestedFor(urlEqualTo(queryPathString)));
+        List<LoggedRequest> requests = findAll(postRequestedFor(
+                urlEqualTo(queryPathString)));
+
+        assertEquals(requests.size(), 1);
+        assertNotNull(response);
+        assertEquals(200, response.getStatus());
+        assertNotNull(response.getBody().get().getOk());
+        assertNotNull(response.getBody().get().getOperationId().get());
+    }
+
+    @Test
+    public void testTemplatePush() throws Exception {
+        String queryPathString = "/api/templates/push/";
+
+        String responseJson =
+                "{" +
+                        "\"ok\": true," +
+                        "\"operation_id\": \"df6a6b50-9843-0304-d5a5-743f246a4946\"," +
+                        "\"push_ids\": [" +
+                            "\"9d78a53b-b16a-c58f-b78d-181d5e242078\"," +
+                            "\"1cbfbfa2-08d1-92c2-7119-f8f7f670f5f6\"" +
+                        "]" +
+                "}";
+
+        TemplatePushPayload payload = TemplatePushPayload.newBuilder()
+                .setAudience(Selectors.namedUser("named_user"))
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.ANDROID))
+                .setMergeData(TemplateSelector.newBuilder()
+                        .setTemplateId("template-id")
+                        .addSubstitution("FIRST_NAME", "Firsty")
+                        .addSubstitution("LAST_NAME", "Lasty")
+                        .addSubstitution("TITLE", "Dr.")
+                        .build())
+                .build();
+
+
+        stubFor(post(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseJson)
+                        .withStatus(202)));
+
+        TemplatePushRequest request = TemplatePushRequest.newRequest()
+                .addTemplatePushPayload(payload);
+
+        Response<TemplateResponse> response = client.execute(request);
+        verify(postRequestedFor(urlEqualTo(queryPathString)));
+        List<LoggedRequest> requests = findAll(postRequestedFor(urlEqualTo(queryPathString)));
+
+        assertEquals(requests.size(), 1);
+        assertNotNull(response);
+        assertEquals(202, response.getStatus());
+        assertNotNull(response.getBody().get().getOperationId().get());
+        assertNotNull(response.getBody().get().getPushIds().get());
+        assertNotNull(response.getBody().get().getOk());
+    }
+
+    @Test
+    public void testDeleteTemplate() throws Exception {
+        String templateName = "abc123";
+        String queryPathString = "/api/templates/" + templateName;
+
+        stubFor(delete(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, APP_JSON)
+                        .withStatus(200)));
+
+        TemplateDeleteRequest request = TemplateDeleteRequest.newRequest(templateName);
+        Response<TemplateResponse> response = client.execute(request);
+
+        verify(deleteRequestedFor(urlEqualTo(queryPathString)));
+        List<LoggedRequest> requests = findAll(deleteRequestedFor(
+                urlEqualTo(queryPathString)));
+
+        assertEquals(requests.size(), 1);
+        assertNotNull(response);
+    }
+
+    @Test
+    public void testLookupTemplate() throws Exception {
+        String templateName = "abc123";
+        String queryPathString = "/api/templates/" + templateName;
+
+        String lookupJson =
+                    "{"+
+                        "\"ok\" : true,"+
+                        "\"template\": {"+
+                            "\"id\" : \"ef34a8d9-0ad7-491c-86b0-aea74da15161\","+
+                            "\"created_at\" : \"2015-08-17T11:10:02Z\","+
+                            "\"modified_at\" : \"2015-08-17T11:10:02Z\","+
+                            "\"last_used\" : \"2015-08-17T11:10:01Z\","+
+                            "\"name\" : \"Welcome Message\","+
+                            "\"description\": \"Our welcome message\","+
+                            "\"variables\": ["+
+                                "{"+
+                                    "\"key\": \"TITLE\","+
+                                    "\"name\": \"Title\","+
+                                    "\"description\": \"e.g. Mr, Ms, Dr, etc.\","+
+                                    "\"default_value\": \"\""+
+                                "},"+
+                                "{"+
+                                    "\"key\": \"FIRST_NAME\","+
+                                    "\"name\": \"First Name\","+
+                                    "\"description\": \"Given name\","+
+                                    "\"default_value\": \"\""+
+                                "},"+
+                                "{"+
+                                    "\"key\": \"LAST_NAME\","+
+                                    "\"name\": \"Last Name\","+
+                                    "\"description\": \"Family name\","+
+                                    "\"default_value\": \"\""+
+                                "}"+
+                            "],"+
+                            "\"push\": {"+
+                                "\"notification\": {"+
+                                    "\"alert\": \"Hello {{FIRST_NAME}}, this is your welcome message!\""+
+                                "}"+
+                            "}"+
+                        "}"+
+                    "}";
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(lookupJson)
+                        .withStatus(200)));
+
+        TemplateListingRequest request = TemplateListingRequest.newRequest(templateName);
+        Response<TemplateListingResponse> response = client.execute(request);
+        List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
+
+        assertEquals(1, requests.size());
+        assertNotNull(response);
+        assertEquals(200, response.getStatus());
+        assertNotNull(response.getBody().get().getOk());
+        assertNotNull(response.getBody().get().getTemplate().get());
+    }
+
+    @Test
+    public void testListingTemplate() throws Exception {
+        String queryPathString = "/api/templates/";
+
+        String listingJson =
+            "{"+
+                "\"ok\" : true,"+
+                "\"count\": 1,"+
+                "\"total_count\": 2,"+
+                "\"templates\": ["+
+                    "{"+
+                        "\"id\" : \"ef34a8d9-0ad7-491c-86b0-aea74da15161\","+
+                        "\"created_at\" : \"2015-08-17T11:10:01Z\","+
+                        "\"modified_at\" : \"2015-08-17T11:10:01Z\","+
+                        "\"last_used\" : \"2015-08-17T11:10:01Z\","+
+                        "\"name\" : \"Welcome Message\","+
+                        "\"description\": \"Our welcome message\","+
+                        "\"variables\": ["+
+                            "{"+
+                                "\"key\": \"TITLE\","+
+                                "\"name\": \"Title\","+
+                                "\"description\": \"e.g. Mr, Ms, Dr, etc.\","+
+                                "\"default_value\": \"\""+
+                            "},"+
+                            "{"+
+                                "\"key\": \"FIRST_NAME\","+
+                                "\"name\": \"First Name\","+
+                                "\"description\": \"Given name\","+
+                                "\"default_value\": \"test\""+
+                            "},"+
+                            "{"+
+                                "\"key\": \"LAST_NAME\","+
+                                "\"name\": \"Last Name\","+
+                                "\"description\": \"Family name\","+
+                                "\"default_value\": \"blah\""+
+                            "}"+
+                        "],"+
+                        "\"push\": {"+
+                            "\"notification\": {"+
+                                "\"alert\": \"Hello {{FIRST_NAME}}, this is your welcome message!\""+
+                            "}"+
+                        "}"+
+                    "}"+
+                "],"+
+                "\"prev_page\": null,"+
+                "\"next_page\": \"https://go.urbanairship.com/api/templates?page=2&page_size=1\""+
+            "}";
+
+
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(listingJson)
+                        .withStatus(200)));
+
+        TemplateListingRequest request = TemplateListingRequest.newRequest();
+        Response<TemplateListingResponse> response = client.execute(request);
+        List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
+
+        assertEquals(1, requests.size());
+        assertNotNull(response);
+        assertEquals(200, response.getStatus());
+        assertNotNull(response.getBody().get().getOk());
+        assertNotNull(response.getBody().get().getCount().get());
+        assertNotNull(response.getBody().get().getTotalCount().get());
+        assertNotNull(response.getBody().get().getTemplates().get());
+        assertNotNull(response.getBody().get().getNextPage());
+        assertNotNull(response.getBody().get().getPrevPage());
+    }
 }
