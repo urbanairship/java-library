@@ -3,9 +3,6 @@ package com.urbanairship.api.push.model.notification.ios;
 import com.google.common.base.Optional;
 import com.urbanairship.api.push.model.PushModelObject;
 
-/**
- * Created by devinsmythe on 9/16/16.
- */
 public class Content extends PushModelObject{
     private final Optional<String> title;
     private final Optional<String> body;

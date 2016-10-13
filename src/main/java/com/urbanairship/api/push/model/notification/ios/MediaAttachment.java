@@ -6,9 +6,6 @@ import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.PushModelObject;
 
-/**
- * Created by devinsmythe on 9/16/16.
- */
 public class MediaAttachment extends PushModelObject {
 
     private final String url;

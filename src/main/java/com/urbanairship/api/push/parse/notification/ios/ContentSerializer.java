@@ -8,9 +8,6 @@ import org.codehaus.jackson.map.SerializerProvider;
 
 import java.io.IOException;
 
-/**
- * Created by devinsmythe on 10/13/16.
- */
 public class ContentSerializer extends JsonSerializer<Content> {
     @Override
     public void serialize(Content content, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {

@@ -14,9 +14,6 @@ import org.codehaus.jackson.map.JsonDeserializer;
 
 import java.io.IOException;
 
-/**
- * Created by devinsmythe on 10/13/16.
- */
 public class ContentDeserializer extends JsonDeserializer<Content> {
 
     private static final FieldParserRegistry<Content, ContentReader> FIELD_PARSER = new MapFieldParserRegistry<Content, ContentReader>(

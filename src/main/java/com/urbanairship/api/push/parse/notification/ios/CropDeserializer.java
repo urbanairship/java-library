@@ -13,9 +13,6 @@ import org.codehaus.jackson.map.JsonDeserializer;
 
 import java.io.IOException;
 
-/**
- * Created by devinsmythe on 9/19/16.
- */
 public class CropDeserializer extends JsonDeserializer<Crop> {
 
     private static final FieldParserRegistry<Crop, CropPayloadReader> FIELD_PARSERS = new MapFieldParserRegistry<Crop, CropPayloadReader>(

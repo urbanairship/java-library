@@ -4,9 +4,6 @@ import com.google.common.base.Optional;
 import com.google.common.primitives.Floats;
 import com.urbanairship.api.push.model.PushModelObject;
 
-/**
- * Created by devinsmythe on 9/19/16.
- */
 public class Crop extends PushModelObject{
 
     private final Optional<Float> x;

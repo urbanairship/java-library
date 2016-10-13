@@ -8,9 +8,6 @@ import org.codehaus.jackson.map.DeserializationContext;
 
 import java.io.IOException;
 
-/**
- * Created by devinsmythe on 10/13/16.
- */
 public class ContentReader implements JsonObjectReader<Content> {
 
     private Content.Builder builder = Content.newBuilder();

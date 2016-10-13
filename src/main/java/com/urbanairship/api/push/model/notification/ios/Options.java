@@ -3,9 +3,6 @@ package com.urbanairship.api.push.model.notification.ios;
 import com.google.common.base.Optional;
 import com.urbanairship.api.push.model.PushModelObject;
 
-/**
- * Created by devinsmythe on 9/16/16.
- */
 public class Options extends PushModelObject{
 
     private final Optional<Integer> time;
