@@ -190,12 +190,14 @@ public class PayloadSerializerTest {
 
         IOSDevicePayload payload = IOSDevicePayload.newBuilder()
                 .setAlert("alert")
+                .setMutableContent(true)
+                .setSubtitle("subtitle")
                 .setMediaAttachment(mediaAttachment)
                 .build();
 
         String json = mapper.writeValueAsString(payload);
         String expected
-                = "{\"alert\":\"alert\",\"media_attachment\":{\"url\":\"http://www.google.com\",\"options\":{\"time\":10,\"crop\":{\"x\":0.1,\"y\":0.1,\"width\":0.2,\"height\":0.2}},\"content\":{\"body\":\"content body\",\"title\":\"content title\",\"subtitle\":\"content subtitle\"}}}";
+                = "{\"alert\":\"alert\",\"subtitle\":\"subtitle\",\"mutable_content\":true,\"media_attachment\":{\"url\":\"http://www.google.com\",\"options\":{\"time\":10,\"crop\":{\"x\":0.1,\"y\":0.1,\"width\":0.2,\"height\":0.2}},\"content\":{\"body\":\"content body\",\"title\":\"content title\",\"subtitle\":\"content subtitle\"}}}";
 
         assertEquals(expected, json);
     }

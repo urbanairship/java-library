@@ -32,6 +32,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
     private final Optional<String> title;
     private final Optional<String> subtitle;
     private final Optional<MediaAttachment> mediaAttachment;
+    private final Optional<Boolean> mutableContent;
 
     private IOSDevicePayload(Optional<IOSAlertData> alert,
                              Optional<String> sound,
@@ -44,7 +45,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                              Optional<Interactive> interactive,
                              Optional<String> title,
                              Optional<String> subtitle,
-                             Optional<MediaAttachment> mediaAttachment) {
+                             Optional<MediaAttachment> mediaAttachment,
+                             Optional<Boolean> mutableContent) {
         this.alert = alert;
         this.sound = sound;
         this.badge = badge;
@@ -57,6 +59,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         this.title = title;
         this.subtitle = subtitle;
         this.mediaAttachment = mediaAttachment;
+        this.mutableContent = mutableContent;
     }
 
     /**
@@ -165,8 +168,20 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         return title;
     }
 
+    /**
+     * Get the subtitle if present
+     * @return subtitle
+     */
     public Optional<String> getSubtitle() {
         return subtitle;
+    }
+
+    /**
+     * Get the mutable content boolean value
+     * @return mutable content
+     */
+    public Optional<Boolean> getMutableContent() {
+        return mutableContent;
     }
 
     public Optional<MediaAttachment> getMediaAttachment() {
@@ -219,6 +234,9 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         if(mediaAttachment != null ? ! mediaAttachment.equals(that.mediaAttachment) : that.mediaAttachment != null) {
             return false;
         }
+        if(mutableContent != null ? ! mutableContent.equals(that.mutableContent) : that.mutableContent != null) {
+            return false;
+        }
         return true;
     }
 
@@ -235,6 +253,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         result = 31 * result + (interactive != null ? interactive.hashCode() : 0);
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (mediaAttachment != null ? mediaAttachment.hashCode() : 0);
+        result = 31 * result + (mutableContent != null ? mutableContent.hashCode() : 0);
         return result;
     }
 
@@ -253,6 +272,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
             ", title=" + title +
             ", subtitle=" + subtitle +
             ", mediaAttachment=" + mediaAttachment +
+            ", mutable_content=" + mutableContent +
                 '}';
     }
 
@@ -269,6 +289,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         private String title = null;
         private String subtitle = null;
         private MediaAttachment mediaAttachment = null;
+        private Boolean mutableContent = null;
 
         private Builder() { }
 
@@ -413,15 +434,23 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
         /**
          * Set the media attachment.
-         * @param
+         * @param value MediaAttachment
          * @return MediaAttachment
          */
-
-        public Builder setMediaAttachment(MediaAttachment mediaAttachment) {
-            this.mediaAttachment = mediaAttachment;
+        public Builder setMediaAttachment(MediaAttachment value) {
+            this.mediaAttachment = value;
             return this;
         }
 
+        /**
+         * Set the mutable content
+         * @param value Boolean
+         * @return Boolean
+         */
+        public Builder setMutableContent(Boolean value) {
+            this.mutableContent = value;
+            return this;
+        }
         /**
          * Build IOSDevicePayload
          * @return IOSDevicePayload
@@ -439,7 +468,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                     Optional.fromNullable(interactive),
                     Optional.fromNullable(title),
                     Optional.fromNullable(subtitle),
-                    Optional.fromNullable(mediaAttachment));
+                    Optional.fromNullable(mediaAttachment),
+                    Optional.fromNullable(mutableContent));
         }
     }
 }

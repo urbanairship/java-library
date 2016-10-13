@@ -29,23 +29,3 @@ public class ContentSerializer extends JsonSerializer<Content> {
         }
     }
 }
-
-
-/*
-"media_attachment": {
-                "content": {
-                    "title": "Moustache Twirl",
-                    "body": "Have you ever seen a moustache like this?!"
-                },
-                "options": {
-                    "crop": {
-                        "height": 0.5,
-                        "width": 0.5,
-                        "x": 0.25,
-                        "y": 0.25
-                    },
-                    "time": 15
-                },
-                "url": "https://media.giphy.com/media/JYsWwF82EGnpC/giphy.gif"
-            },
- */

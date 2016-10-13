@@ -81,6 +81,12 @@ public class IOSDevicePayloadDeserializer extends JsonDeserializer<IOSDevicePayl
                         reader.readSubtitle(json);
                     }
             })
+            .put("mutable_content", new FieldParser<IOSDevicePayloadReader>() {
+                @Override
+                public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                    reader.readMutableContent(json);
+                }
+            })
             .put("media_attachment", new FieldParser<IOSDevicePayloadReader>() {
                 @Override
                 public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {

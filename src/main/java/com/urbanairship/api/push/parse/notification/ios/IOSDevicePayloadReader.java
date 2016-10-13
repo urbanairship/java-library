@@ -70,6 +70,10 @@ public class IOSDevicePayloadReader implements JsonObjectReader<IOSDevicePayload
         builder.setSubtitle(StringFieldDeserializer.INSTANCE.deserialize(parser, "subtitle"));
     }
 
+    public void readMutableContent(JsonParser parser) throws IOException {
+        builder.setMutableContent(BooleanFieldDeserializer.INSTANCE.deserialize(parser, "mutable_content"));
+    }
+
     public void readMediaAttachment(JsonParser parser, DeserializationContext context) throws IOException {
         builder.setMediaAttachment(mediaAttachmentDS.deserialize(parser, context));
     }
