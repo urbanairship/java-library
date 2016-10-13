@@ -60,6 +60,10 @@ public class IOSDevicePayloadSerializer extends JsonSerializer<IOSDevicePayload>
             jgen.writeStringField("subtitle", payload.getSubtitle().get());
         }
 
+        if (payload.getMediaAttachment().isPresent()) {
+            jgen.writeObjectField("media_attachment", payload.getMediaAttachment().get());
+        }
+
         jgen.writeEndObject();
     }
 }

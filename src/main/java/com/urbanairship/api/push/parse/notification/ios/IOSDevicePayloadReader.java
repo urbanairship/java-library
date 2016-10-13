@@ -21,6 +21,7 @@ public class IOSDevicePayloadReader implements JsonObjectReader<IOSDevicePayload
 
     private IOSDevicePayload.Builder builder = IOSDevicePayload.newBuilder();
     private IOSAlertDataDeserializer alertDS = new IOSAlertDataDeserializer();
+    private MediaAttachmentDeserializer mediaAttachmentDS = new MediaAttachmentDeserializer();
 
     public IOSDevicePayloadReader() {
     }
@@ -67,6 +68,10 @@ public class IOSDevicePayloadReader implements JsonObjectReader<IOSDevicePayload
 
     public void readSubtitle(JsonParser parser) throws IOException{
         builder.setSubtitle(StringFieldDeserializer.INSTANCE.deserialize(parser, "subtitle"));
+    }
+
+    public void readMediaAttachment(JsonParser parser, DeserializationContext context) throws IOException {
+        builder.setMediaAttachment(mediaAttachmentDS.deserialize(parser, context));
     }
 
     @Override

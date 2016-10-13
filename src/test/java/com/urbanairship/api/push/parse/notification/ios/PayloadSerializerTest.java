@@ -2,10 +2,13 @@ package com.urbanairship.api.push.parse.notification.ios;
 
 
 import com.google.common.collect.ImmutableList;
+import com.urbanairship.api.push.model.DeviceType;
+import com.urbanairship.api.push.model.DeviceTypeData;
+import com.urbanairship.api.push.model.PushPayload;
+import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Interactive;
-import com.urbanairship.api.push.model.notification.ios.IOSAlertData;
-import com.urbanairship.api.push.model.notification.ios.IOSBadgeData;
-import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
+import com.urbanairship.api.push.model.notification.Notification;
+import com.urbanairship.api.push.model.notification.ios.*;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
@@ -155,6 +158,44 @@ public class PayloadSerializerTest {
 
         String expected
             = "{\"alert\":\"alert\",\"subtitle\":\"subtitle\"}";
+
+        assertEquals(expected, json);
+    }
+
+    @Test
+    public void testMediaAttachment() throws Exception {
+        Crop crop = Crop.newBuilder()
+                .setHeight(0.2f)
+                .setWidth(0.2f)
+                .setX(0.1f)
+                .setY(0.1f)
+                .build();
+
+        Options options = Options.newBuilder()
+                .setTime(10)
+                .setCrop(crop)
+                .build();
+
+        Content content = Content.newBuilder()
+                .setBody("content body")
+                .setTitle("content title")
+                .setSubtitle("content subtitle")
+                .build();
+
+        MediaAttachment mediaAttachment = MediaAttachment.newBuilder()
+                .setUrl("http://www.google.com")
+                .setOptions(options)
+                .setContent(content)
+                .build();
+
+        IOSDevicePayload payload = IOSDevicePayload.newBuilder()
+                .setAlert("alert")
+                .setMediaAttachment(mediaAttachment)
+                .build();
+
+        String json = mapper.writeValueAsString(payload);
+        String expected
+                = "{\"alert\":\"alert\",\"media_attachment\":{\"url\":\"http://www.google.com\",\"options\":{\"time\":10,\"crop\":{\"x\":0.1,\"y\":0.1,\"width\":0.2,\"height\":0.2}},\"content\":{\"body\":\"content body\",\"title\":\"content title\",\"subtitle\":\"content subtitle\"}}}";
 
         assertEquals(expected, json);
     }

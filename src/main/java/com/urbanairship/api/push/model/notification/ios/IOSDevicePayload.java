@@ -31,6 +31,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
     private final Optional<Interactive> interactive;
     private final Optional<String> title;
     private final Optional<String> subtitle;
+    private final Optional<MediaAttachment> mediaAttachment;
 
     private IOSDevicePayload(Optional<IOSAlertData> alert,
                              Optional<String> sound,
@@ -42,7 +43,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                              Optional<String> category,
                              Optional<Interactive> interactive,
                              Optional<String> title,
-                             Optional<String> subtitle) {
+                             Optional<String> subtitle,
+                             Optional<MediaAttachment> mediaAttachment) {
         this.alert = alert;
         this.sound = sound;
         this.badge = badge;
@@ -54,6 +56,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         this.interactive = interactive;
         this.title = title;
         this.subtitle = subtitle;
+        this.mediaAttachment = mediaAttachment;
     }
 
     /**
@@ -166,6 +169,10 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         return subtitle;
     }
 
+    public Optional<MediaAttachment> getMediaAttachment() {
+        return mediaAttachment;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -206,7 +213,10 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         if (title!= null ? ! title.equals(that.title) : that.title != null) {
             return false;
         }
-        if(subtitle!= null ? ! subtitle.equals(that.subtitle) : that.subtitle != null){
+        if(subtitle!= null ? ! subtitle.equals(that.subtitle) : that.subtitle != null) {
+            return false;
+        }
+        if(mediaAttachment != null ? ! mediaAttachment.equals(that.mediaAttachment) : that.mediaAttachment != null) {
             return false;
         }
         return true;
@@ -224,6 +234,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         result = 31 * result + (category != null ? category.hashCode() : 0);
         result = 31 * result + (interactive != null ? interactive.hashCode() : 0);
         result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (mediaAttachment != null ? mediaAttachment.hashCode() : 0);
         return result;
     }
 
@@ -241,6 +252,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
             ", interactive=" + interactive +
             ", title=" + title +
             ", subtitle=" + subtitle +
+            ", mediaAttachment=" + mediaAttachment +
                 '}';
     }
 
@@ -256,6 +268,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         private Interactive interactive = null;
         private String title = null;
         private String subtitle = null;
+        private MediaAttachment mediaAttachment = null;
 
         private Builder() { }
 
@@ -399,6 +412,17 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         }
 
         /**
+         * Set the media attachment.
+         * @param
+         * @return MediaAttachment
+         */
+
+        public Builder setMediaAttachment(MediaAttachment mediaAttachment) {
+            this.mediaAttachment = mediaAttachment;
+            return this;
+        }
+
+        /**
          * Build IOSDevicePayload
          * @return IOSDevicePayload
          */
@@ -414,7 +438,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                     Optional.fromNullable(category),
                     Optional.fromNullable(interactive),
                     Optional.fromNullable(title),
-                    Optional.fromNullable(subtitle));
+                    Optional.fromNullable(subtitle),
+                    Optional.fromNullable(mediaAttachment));
         }
     }
 }

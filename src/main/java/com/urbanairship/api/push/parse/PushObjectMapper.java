@@ -36,9 +36,7 @@ import com.urbanairship.api.push.model.notification.actions.TagActionData;
 import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
 import com.urbanairship.api.push.model.notification.blackberry.BlackberryDevicePayload;
-import com.urbanairship.api.push.model.notification.ios.IOSAlertData;
-import com.urbanairship.api.push.model.notification.ios.IOSBadgeData;
-import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
+import com.urbanairship.api.push.model.notification.ios.*;
 import com.urbanairship.api.push.model.notification.mpns.MPNSDevicePayload;
 import com.urbanairship.api.push.model.notification.mpns.MPNSPush;
 import com.urbanairship.api.push.model.notification.mpns.MPNSTileData;
@@ -83,11 +81,7 @@ import com.urbanairship.api.push.parse.notification.android.AndroidDevicePayload
 import com.urbanairship.api.push.parse.notification.android.AndroidDevicePayloadSerializer;
 import com.urbanairship.api.push.parse.notification.blackberry.BlackberryDevicePayloadDeserializer;
 import com.urbanairship.api.push.parse.notification.blackberry.BlackberryDevicePayloadSerializer;
-import com.urbanairship.api.push.parse.notification.ios.IOSAlertDataDeserializer;
-import com.urbanairship.api.push.parse.notification.ios.IOSAlertDataSerializer;
-import com.urbanairship.api.push.parse.notification.ios.IOSBadgeDataSerializer;
-import com.urbanairship.api.push.parse.notification.ios.IOSDevicePayloadDeserializer;
-import com.urbanairship.api.push.parse.notification.ios.IOSDevicePayloadSerializer;
+import com.urbanairship.api.push.parse.notification.ios.*;
 import com.urbanairship.api.push.parse.notification.mpns.MPNSBatchingIntervalDeserializer;
 import com.urbanairship.api.push.parse.notification.mpns.MPNSBatchingIntervalSerializer;
 import com.urbanairship.api.push.parse.notification.mpns.MPNSDevicePayloadDeserializer;
@@ -201,6 +195,14 @@ public class PushObjectMapper {
                 .addSerializer(IOSBadgeData.class, new IOSBadgeDataSerializer())
                 .addSerializer(IOSAlertData.class, new IOSAlertDataSerializer())
                 .addDeserializer(IOSAlertData.class, new IOSAlertDataDeserializer())
+                .addSerializer(MediaAttachment.class, new MediaAttachmentSerializer())
+                .addDeserializer(MediaAttachment.class, new MediaAttachmentDeserializer())
+                .addSerializer(Options.class, new OptionsSerializer())
+                .addDeserializer(Options.class, new OptionsDeserializer())
+                .addSerializer(Crop.class, new CropSerializer())
+                .addDeserializer(Crop.class, new CropDeserializer())
+                .addSerializer(Content.class, new ContentSerializer())
+                .addDeserializer(Content.class, new ContentDeserializer())
 
             /* WNS enums */
                 .addSerializer(WNSToastData.Duration.class, new WNSDurationSerializer())
