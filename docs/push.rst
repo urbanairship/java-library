@@ -187,6 +187,85 @@ Which will generate the following JSON payload:
       }
   }
 
+Here's an example of an iOS notification utilizing rich media (iOS 10+):
+
+.. code-block:: java
+
+    Crop crop = Crop.newBuilder()
+            .setHeight(0.2f)
+            .setWidth(0.2f)
+            .setX(0.1f)
+            .setY(0.1f)
+            .build();
+
+    Options options = Options.newBuilder()
+            .setTime(10)
+            .setCrop(crop)
+            .build();
+
+    Content content = Content.newBuilder()
+            .setBody("content body")
+            .setTitle("content title")
+            .setSubtitle("content subtitle")
+            .build();
+
+    MediaAttachment mediaAttachment = MediaAttachment.newBuilder()
+            .setUrl("https://media.giphy.com/media/JYsWwF82EGnpC/giphy.gif")
+            .setOptions(options)
+            .setContent(content)
+            .build();
+
+    IOSDevicePayload iosPayload = IOSDevicePayload.newBuilder()
+            .setAlert("alert")
+            .setTitle("title")
+            .setSubtitle("subtitle")
+            .setMediaAttachment(mediaAttachment)
+            .setMutableContent(true)
+            .build();
+
+    PushPayload payload = PushPayload.newBuilder()
+            .setAudience(Selectors.iosChannel(channel))
+            .setNotification(Notifications.notification(iosPayload))
+            .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+            .build();
+
+Which will generate the following JSON payload:
+
+.. code-block:: json
+
+  {
+      "audience": {
+          "ios_channel": "50614f67-498b-49df-b832-a046de0ec6ec"
+      },
+      "device_types": [
+          "ios"
+      ],
+      "notification": {
+          "ios": {
+              "alert": "alert",
+              "title": "title",
+              "subtitle": "subtitle",
+              "mutable_content": true,
+              "media_attachment": {
+                  "url": "https://media.giphy.com/media/JYsWwF82EGnpC/giphy.gif",
+                  "options": {
+                      "time": 10,
+                      "crop": {
+                          "x": 0.1,
+                          "y": 0.1,
+                          "width": 0.2,
+                          "height": 0.2
+                      }
+                  },
+                  "content": {
+                      "body": "content body",
+                      "title": "content title",
+                      "subtitle": "content subtitle"
+                  }
+              }
+          }
+      }
+  }
 
 DeviceTypes
 ===========
