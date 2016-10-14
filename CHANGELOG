@@ -1,4 +1,9 @@
 -------------------------
+1.1.0 10OCT16
+-------------------------
+- iOS 10 rich media support.
+
+-------------------------
 1.0.0 09MAY16
 -------------------------
 - Named user API: associate, disassociate, and tag mutations

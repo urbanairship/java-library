@@ -262,4 +262,55 @@ public class PayloadDeserializerTest {
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
         assertTrue(payload.getTitle().get().equals("title"));
     }
+
+    @Test
+    public void testIos10Extras() throws Exception {
+        String json
+            = "{\n" +
+                "    \"alert\": \"alert\"," +
+                "    \"subtitle\": \"subtitle\"," +
+                "    \"mutable_content\": true," +
+                "    \"media_attachment\": {" +
+                "        \"url\": \"https://media.giphy.com/media/JYsWwF82EGnpC/giphy.gif\"," +
+                "        \"options\": {" +
+                "            \"time\": 10," +
+                "            \"crop\": {" +
+                "                \"x\": 0.1," +
+                "                \"y\": 0.1," +
+                "                \"width\": 0.2," +
+                "                \"height\": 0.2" +
+                "            }" +
+                "        }," +
+                "        \"content\": {" +
+                "            \"body\": \"content body\"," +
+                "            \"title\": \"content title\"," +
+                "            \"subtitle\": \"content subtitle\"" +
+                "        }" +
+                "    }" +
+                "}";
+
+        IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
+        assertTrue(payload.getAlert().get().equals("alert"));
+
+        //Mutable Content
+        assertTrue(payload.getMutableContent().get().equals(true));
+
+        //Subtitle
+        assertTrue(payload.getSubtitle().get().equals("subtitle"));
+
+        //Media Attachment
+        assertTrue(payload.getMediaAttachment().get().getUrl().equals("https://media.giphy.com/media/JYsWwF82EGnpC/giphy.gif"));
+
+        //options
+        assertTrue(payload.getMediaAttachment().get().getOptions().get().getTime().get().equals(10));
+        assertTrue(payload.getMediaAttachment().get().getOptions().get().getCrop().get().getX().get().equals(0.1f));
+        assertTrue(payload.getMediaAttachment().get().getOptions().get().getCrop().get().getY().get().equals(0.1f));
+        assertTrue(payload.getMediaAttachment().get().getOptions().get().getCrop().get().getWidth().get().equals(0.2f));
+        assertTrue(payload.getMediaAttachment().get().getOptions().get().getCrop().get().getHeight().get().equals(0.2f));
+
+        //content
+        assertTrue(payload.getMediaAttachment().get().getContent().get().getBody().get().equals("content body"));
+        assertTrue(payload.getMediaAttachment().get().getContent().get().getSubtitle().get().equals("content subtitle"));
+        assertTrue(payload.getMediaAttachment().get().getContent().get().getTitle().get().equals("content title"));
+    }
 }

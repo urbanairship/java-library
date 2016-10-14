@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
+ */
 package com.urbanairship.api.push.parse.notification.ios;
 
 

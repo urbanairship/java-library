@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
+ */
 package com.urbanairship.api.push.parse.notification.ios;
 
 import com.google.common.base.Supplier;
@@ -55,6 +58,6 @@ public class ContentDeserializer extends JsonDeserializer<Content> {
 
     @Override
     public Content deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-        return unwrappingDeserializer().deserialize(jp, ctxt);
+        return deserializer.deserialize(jp, ctxt);
     }
 }

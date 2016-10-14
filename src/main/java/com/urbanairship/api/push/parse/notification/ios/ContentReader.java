@@ -1,7 +1,11 @@
+/*
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
+ */
 package com.urbanairship.api.push.parse.notification.ios;
 
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
+import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import com.urbanairship.api.push.model.notification.ios.Content;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
@@ -21,14 +25,14 @@ public class ContentReader implements JsonObjectReader<Content> {
     }
 
     public void readTitle(JsonParser parser, DeserializationContext context) throws IOException {
-        builder.setTitle(parser.getText());
+        builder.setTitle(StringFieldDeserializer.INSTANCE.deserialize(parser, "title"));
     }
 
     public void readSubtitle(JsonParser parser, DeserializationContext context) throws IOException {
-        builder.setSubtitle(parser.getText());
+        builder.setSubtitle(StringFieldDeserializer.INSTANCE.deserialize(parser, "subtitle"));
     }
 
     public void readBody(JsonParser parser, DeserializationContext context) throws IOException {
-        builder.setBody(parser.getText());
+        builder.setBody(StringFieldDeserializer.INSTANCE.deserialize(parser, "body"));
     }
 }

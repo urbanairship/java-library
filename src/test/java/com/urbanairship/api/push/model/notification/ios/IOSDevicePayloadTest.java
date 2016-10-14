@@ -29,6 +29,30 @@ public class IOSDevicePayloadTest {
 
     @Test
     public void testBuilder() {
+        Crop crop = Crop.newBuilder()
+                .setHeight(0.2f)
+                .setWidth(0.2f)
+                .setX(0.1f)
+                .setY(0.1f)
+                .build();
+
+        Options options = Options.newBuilder()
+                .setTime(10)
+                .setCrop(crop)
+                .build();
+
+        Content content = Content.newBuilder()
+                .setBody("content body")
+                .setTitle("content title")
+                .setSubtitle("content subtitle")
+                .build();
+
+        MediaAttachment mediaAttachment = MediaAttachment.newBuilder()
+                .setUrl("https://media.giphy.com/media/JYsWwF82EGnpC/giphy.gif")
+                .setOptions(options)
+                .setContent(content)
+                .build();
+
         IOSDevicePayload m = IOSDevicePayload.newBuilder()
                 .setSound("this is a sound")
                 .setContentAvailable(true)
@@ -39,7 +63,10 @@ public class IOSDevicePayloadTest {
                 .addExtraEntry("this", "that")
                 .setTitle("title")
                 .setSubtitle("subtitle")
+                .setMediaAttachment(mediaAttachment)
+                .setMutableContent(true)
                 .build();
+
         assertTrue(m.getExtra().isPresent());
         assertEquals(1, m.getExtra().get().size());
         assertTrue(m.getExtra().get().containsKey("this"));
@@ -53,6 +80,20 @@ public class IOSDevicePayloadTest {
         assertTrue(m.getContentAvailable().get());
         assertEquals("title", m.getTitle().get());
         assertEquals("subtitle", m.getSubtitle().get());
+        assertEquals("https://media.giphy.com/media/JYsWwF82EGnpC/giphy.gif", m.getMediaAttachment().get().getUrl());
+        assertEquals("content body", m.getMediaAttachment().get().getContent().get().getBody().get());
+        assertEquals("content title", m.getMediaAttachment().get().getContent().get().getTitle().get());
+        assertEquals("content subtitle", m.getMediaAttachment().get().getContent().get().getSubtitle().get());
+        Integer time = 10;
+        assertEquals(time, m.getMediaAttachment().get().getOptions().get().getTime().get());
+        Float height = 0.2f;
+        Float width = 0.2f;
+        Float x = 0.1f;
+        Float y = 0.1f;
+        assertEquals(height, m.getMediaAttachment().get().getOptions().get().getCrop().get().getHeight().get());
+        assertEquals(width, m.getMediaAttachment().get().getOptions().get().getCrop().get().getWidth().get());
+        assertEquals(x, m.getMediaAttachment().get().getOptions().get().getCrop().get().getX().get());
+        assertEquals(y, m.getMediaAttachment().get().getOptions().get().getCrop().get().getY().get());
     }
 
 }

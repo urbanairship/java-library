@@ -1,6 +1,10 @@
+/*
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
+ */
 package com.urbanairship.api.push.parse.notification.ios;
 
 import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.IntFieldDeserializer;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.push.model.notification.ios.Options;
 import org.codehaus.jackson.JsonParser;
@@ -22,7 +26,7 @@ public class OptionsPayloadReader implements JsonObjectReader<Options> {
     }
 
     public void readTime(JsonParser parser) throws IOException {
-        builder.setTime(parser.getIntValue());
+        builder.setTime(IntFieldDeserializer.INSTANCE.deserialize(parser, "time"));
     }
 
     public void readCrop(JsonParser parser, DeserializationContext context) throws IOException {
