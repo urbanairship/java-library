@@ -25,8 +25,8 @@ public final class MediaAttachment extends PushModelObject {
     }
 
     /**
-     * Get an MediaAttachment
-     * @return IOSPayloadBuilder
+     * Get a MediaAttachment builder
+     * @return Builder
      */
     public static Builder newBuilder() {
         return new Builder();
@@ -34,7 +34,7 @@ public final class MediaAttachment extends PushModelObject {
 
     /**
      * Get the url
-     * @return url
+     * @return String representation of the url
      */
     public String getUrl() {
         return url;
@@ -42,7 +42,7 @@ public final class MediaAttachment extends PushModelObject {
 
     /**
      * Get the Content
-     * @return Content
+     * @return Optional Content object
      */
     public Optional<Content> getContent() {
         return content;
@@ -50,7 +50,7 @@ public final class MediaAttachment extends PushModelObject {
 
     /**
      * Get the Options
-     * @return Options
+     * @return Optional Options object
      */
     public Optional<Options> getOptions() {
         return options;

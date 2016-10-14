@@ -21,8 +21,8 @@ public final class Content extends PushModelObject{
     }
 
     /**
-     * Get an ContentBuilder
-     * @return ContentBuilder
+     * Get a Content builder
+     * @return Builder
      */
     public static Builder newBuilder() {
         return new Builder();
@@ -30,7 +30,7 @@ public final class Content extends PushModelObject{
 
     /**
      * Get the title.
-     * @return title
+     * @return Optional string representing the title
      */
     public Optional<String> getTitle() {
         return title;
@@ -38,7 +38,7 @@ public final class Content extends PushModelObject{
 
     /**
      * Get the body.
-     * @return body
+     * @return Optional string representing the body
      */
     public Optional<String> getBody() {
         return body;
@@ -46,7 +46,7 @@ public final class Content extends PushModelObject{
 
     /**
      * Get the subtitle.
-     * @return subtitle
+     * @return Optional string representing the body
      */
     public Optional<String> getSubtitle() {
         return subtitle;

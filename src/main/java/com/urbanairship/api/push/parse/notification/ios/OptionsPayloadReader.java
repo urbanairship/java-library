@@ -6,6 +6,7 @@ package com.urbanairship.api.push.parse.notification.ios;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.IntFieldDeserializer;
 import com.urbanairship.api.common.parse.JsonObjectReader;
+import com.urbanairship.api.push.model.notification.ios.Crop;
 import com.urbanairship.api.push.model.notification.ios.Options;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
@@ -15,7 +16,6 @@ import java.io.IOException;
 public class OptionsPayloadReader implements JsonObjectReader<Options> {
 
     private final Options.Builder builder;
-    private CropDeserializer cropDS = new CropDeserializer();
 
     public OptionsPayloadReader() {
         this.builder = Options.newBuilder();
@@ -35,6 +35,6 @@ public class OptionsPayloadReader implements JsonObjectReader<Options> {
     }
 
     public void readCrop(JsonParser parser, DeserializationContext context) throws IOException {
-        builder.setCrop(cropDS.deserialize(parser, context));
+        builder.setCrop(parser.readValueAs(Crop.class));
     }
 }

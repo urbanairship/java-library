@@ -20,8 +20,8 @@ public final class Options extends PushModelObject{
     }
 
     /**
-     * Get an OptionsBuilder
-     * @return OptionsBuilder
+     * Get a Options builder
+     * @return Builder
      */
     public static Builder newBuilder() {
         return new Builder();
@@ -29,7 +29,7 @@ public final class Options extends PushModelObject{
 
     /**
      * Get the time.
-     * @return time
+     * @return Optional Integer representation of the time
      */
     public Optional<Integer> getTime() {
         return time;
@@ -37,7 +37,7 @@ public final class Options extends PushModelObject{
 
     /**
      * Get the Crop.
-     * @return Crop
+     * @return Optional Crop object
      */
     public Optional<Crop> getCrop() {
         return crop;

@@ -6,7 +6,9 @@ package com.urbanairship.api.push.parse.notification.ios;
 
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
+import com.urbanairship.api.push.model.notification.ios.Content;
 import com.urbanairship.api.push.model.notification.ios.MediaAttachment;
+import com.urbanairship.api.push.model.notification.ios.Options;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
 
@@ -15,8 +17,6 @@ import java.io.IOException;
 public class MediaAttachmentReader implements JsonObjectReader<MediaAttachment> {
 
     private final MediaAttachment.Builder builder;
-    private OptionsDeserializer optionsDS = new OptionsDeserializer();
-    private ContentDeserializer contentDS = new ContentDeserializer();
 
     public MediaAttachmentReader() {
         this.builder = MediaAttachment.newBuilder();
@@ -32,7 +32,7 @@ public class MediaAttachmentReader implements JsonObjectReader<MediaAttachment> 
     }
 
     public void readOptions(JsonParser parser, DeserializationContext context) throws IOException {
-        builder.setOptions(optionsDS.deserialize(parser, context));
+        builder.setOptions(parser.readValueAs(Options.class));
     }
 
     public void readUrl(JsonParser parser) throws IOException {
@@ -40,6 +40,6 @@ public class MediaAttachmentReader implements JsonObjectReader<MediaAttachment> 
     }
 
     public void readContent(JsonParser parser, DeserializationContext context) throws IOException {
-        builder.setContent(contentDS.deserialize(parser, context));
+        builder.setContent(parser.readValueAs(Content.class));
     }
 }

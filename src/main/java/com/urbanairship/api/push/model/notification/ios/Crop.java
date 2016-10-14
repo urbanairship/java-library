@@ -25,8 +25,8 @@ public final class Crop extends PushModelObject{
     }
 
     /**
-     * Get an CropBuilder
-     * @return CropBuilder
+     * Get a Crop builder
+     * @return Builder
      */
     public static Builder newBuilder() {
         return new Builder();
@@ -34,7 +34,7 @@ public final class Crop extends PushModelObject{
 
     /**
      * Get the x float value.
-     * @return x
+     * @return Optional float representation of x
      */
     public Optional<Float> getX() {
         return x;
@@ -42,7 +42,7 @@ public final class Crop extends PushModelObject{
 
     /**
      * Get the y float value.
-     * @return y
+     * @return Optional float representation of y
      */
     public Optional<Float> getY() {
         return y;
@@ -50,7 +50,7 @@ public final class Crop extends PushModelObject{
 
     /**
      * Get the height float value.
-     * @return height
+     * @return Optional float representation of the height
      */
     public Optional<Float> getHeight() {
         return height;
@@ -58,7 +58,7 @@ public final class Crop extends PushModelObject{
 
     /**
      * Get the width float value.
-     * @return width
+     * @return Optional float representation of the width
      */
     public Optional<Float> getWidth() {
         return width;

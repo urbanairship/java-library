@@ -63,8 +63,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
     }
 
     /**
-     * Get an IOSPayloadBuilder
-     * @return IOSPayloadBuilder
+     * Get a IOSDevicePayload Builder
+     * @return Builder
      */
     public static Builder newBuilder() {
         return new Builder();
@@ -72,7 +72,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get the deviceType.
-     * @return deviceType
+     * @return DeviceType
      */
     @Override
     public DeviceType getDeviceType() {
@@ -81,7 +81,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get the alert if present.
-     * @return alert
+     * @return Optional string representing the alert
      */
     @Override
     public Optional<String> getAlert() {
@@ -90,7 +90,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get the IOSAlertData
-     * @return IOSAlertData
+     * @return Optional IOSAlertData
      */
     public Optional<IOSAlertData> getAlertData() {
         return alert;
@@ -98,7 +98,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get the sound file name
-     * @return sound file name
+     * @return Optional string representing the sound file name
      */
     public Optional<String> getSound() {
         return sound;
@@ -106,7 +106,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get IOSBadgeData
-     * @return IOSBadgeData
+     * @return Optional IOSBadgeData
      */
     public Optional<IOSBadgeData> getBadge() {
         return badge;
@@ -114,7 +114,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get the content available boolean value
-     * @return content available
+     * @return Optional boolean representation of content available
      */
     public Optional<Boolean> getContentAvailable() {
         return contentAvailable;
@@ -122,7 +122,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get a Map of the extra key value pairs
-     * @return key value pairs
+     * @return Optional ImmutableMap of strings representing the key value pairs
      */
     public Optional<ImmutableMap<String, String>> getExtra() {
         return extra;
@@ -130,7 +130,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get the expiry (TTL) if present
-     * @return expiry value
+     * @return Optional PushExpiry expiry value
      */
     public Optional<PushExpiry> getExpiry() {
         return  expiry;
@@ -138,7 +138,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get the priority value
-     * @return priority
+     * @return Optional Integer representation of the priority
      */
     public Optional<Integer> getPriority() {
         return priority;
@@ -146,7 +146,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get the category if present
-     * @return category
+     * @return Optional string representation of the category
      */
     public Optional<String> getCategory() {
         return category;
@@ -154,7 +154,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get the Interactive data if present
-     * @return interactive
+     * @return Optional Interactive
      */
     public Optional<Interactive> getInteractive() {
         return interactive;
@@ -162,7 +162,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get the title if present.
-     * @return title
+     * @return Optional string representation of the title
      */
     public Optional<String> getTitle() {
         return title;
@@ -170,7 +170,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get the subtitle if present
-     * @return subtitle
+     * @return Optional string representation of the subtitle
      */
     public Optional<String> getSubtitle() {
         return subtitle;
@@ -178,7 +178,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get the mutable content boolean value
-     * @return mutable content
+     * @return Optional boolean representation of the mutable content
      */
     public Optional<Boolean> getMutableContent() {
         return mutableContent;
