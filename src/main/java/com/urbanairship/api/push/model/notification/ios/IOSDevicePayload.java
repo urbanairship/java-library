@@ -352,7 +352,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         /**
          * Set the expiry
          * @param value Integer
-         * @return Integer
+         * @return Builder
          **/
         public Builder setExpiry(PushExpiry value) {
             this.expiry = value;
@@ -362,7 +362,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         /**
          * Set the priority
          * @param value Integer
-         * @return Integer
+         * @return Builder
          **/
         public Builder setPriority(int value) {
             this.priority = value;
@@ -400,7 +400,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         /**
          * Set the category
          * @param value String
-         * @return String
+         * @return Builder
          */
         public Builder setCategory(String value) {
             this.category = value;
@@ -410,7 +410,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         /**
          * Set the Interactive object
          * @param value Interactive
-         * @return Interactive
+         * @return Builder
          */
         public Builder setInteractive(Interactive value) {
             this.interactive = value;
@@ -420,7 +420,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         /**
          * Set the title
          * @param value String
-         * @return String
+         * @return Builder
          */
         public Builder setTitle(String value) {
             this.title = value;
@@ -435,7 +435,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         /**
          * Set the media attachment.
          * @param value MediaAttachment
-         * @return MediaAttachment
+         * @return Builder
          */
         public Builder setMediaAttachment(MediaAttachment value) {
             this.mediaAttachment = value;
@@ -445,7 +445,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         /**
          * Set the mutable content
          * @param value Boolean
-         * @return Boolean
+         * @return Builder
          */
         public Builder setMutableContent(Boolean value) {
             this.mutableContent = value;

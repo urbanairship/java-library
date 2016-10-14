@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class MediaAttachmentSerializer extends JsonSerializer<MediaAttachment> {
     @Override
-    public void serialize(MediaAttachment mediaAttachment, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+    public void serialize(MediaAttachment mediaAttachment, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         jgen.writeStartObject();
 
         jgen.writeStringField("url", mediaAttachment.getUrl());
@@ -26,5 +26,7 @@ public class MediaAttachmentSerializer extends JsonSerializer<MediaAttachment> {
         if(mediaAttachment.getContent().isPresent()){
             jgen.writeObjectField("content", mediaAttachment.getContent().get());
         }
+
+        jgen.writeEndObject();
     }
 }

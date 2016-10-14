@@ -9,7 +9,10 @@ import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.PushModelObject;
 
-public class MediaAttachment extends PushModelObject {
+/**
+ * MediaAttachment for iOS specific push messages.
+ */
+public final class MediaAttachment extends PushModelObject {
 
     private final String url;
     private final Optional<Content> content;
@@ -21,18 +24,34 @@ public class MediaAttachment extends PushModelObject {
         this.options = options;
     }
 
+    /**
+     * Get an MediaAttachment
+     * @return IOSPayloadBuilder
+     */
     public static Builder newBuilder() {
         return new Builder();
     }
 
+    /**
+     * Get the url
+     * @return url
+     */
     public String getUrl() {
         return url;
     }
 
+    /**
+     * Get the Content
+     * @return Content
+     */
     public Optional<Content> getContent() {
         return content;
     }
 
+    /**
+     * Get the Options
+     * @return Options
+     */
     public Optional<Options> getOptions() {
         return options;
     }
@@ -71,32 +90,51 @@ public class MediaAttachment extends PushModelObject {
     @Override
     public String toString(){
         return "MediaAttachment{" +
-                "" + content +
-                ", " + options;
+                "content=" + content +
+                ", options=" + options;
     }
 
     public static class Builder{
-        private String url;
+        private String url = null;
         private Content content = null;
         private Options options = null;
 
         private Builder() { }
 
+        /**
+         * Set the url string.
+         * @param url String url
+         * @return Builder
+         */
         public Builder setUrl(String url) {
             this.url = url;
             return this;
         }
 
+        /**
+         * Set the Content object.
+         * @param content Content
+         * @return Builder
+         */
         public Builder setContent(Content content) {
             this.content = content;
             return this;
         }
 
+        /**
+         * Set the Options object.
+         * @param options Options
+         * @return Builder
+         */
         public Builder setOptions(Options options) {
             this.options = options;
             return this;
         }
 
+        /**
+         * Build MediaAttachment
+         * @return MediaAttachment
+         */
         public MediaAttachment build() {
             Preconditions.checkNotNull(url, "'url' must be set");
 

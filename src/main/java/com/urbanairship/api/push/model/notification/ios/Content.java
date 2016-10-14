@@ -6,7 +6,10 @@ package com.urbanairship.api.push.model.notification.ios;
 import com.google.common.base.Optional;
 import com.urbanairship.api.push.model.PushModelObject;
 
-public class Content extends PushModelObject{
+/**
+ * Content for iOS specific media push messages.
+ */
+public final class Content extends PushModelObject{
     private final Optional<String> title;
     private final Optional<String> body;
     private final Optional<String> subtitle;
@@ -17,18 +20,34 @@ public class Content extends PushModelObject{
         this.subtitle = subtitle;
     }
 
+    /**
+     * Get an ContentBuilder
+     * @return ContentBuilder
+     */
     public static Builder newBuilder() {
         return new Builder();
     }
 
+    /**
+     * Get the title.
+     * @return title
+     */
     public Optional<String> getTitle() {
         return title;
     }
 
+    /**
+     * Get the body.
+     * @return body
+     */
     public Optional<String> getBody() {
         return body;
     }
 
+    /**
+     * Get the subtitle.
+     * @return subtitle
+     */
     public Optional<String> getSubtitle() {
         return subtitle;
     }
@@ -79,21 +98,40 @@ public class Content extends PushModelObject{
 
         private Builder() { }
 
+        /**
+         * Set the title
+         * @param title String
+         * @return Builder
+         */
         public Builder setTitle(String title) {
             this.title = title;
             return this;
         }
 
+        /**
+         * Set the body
+         * @param body String
+         * @return Builder
+         */
         public Builder setBody(String body) {
             this.body = body;
             return this;
         }
 
+        /**
+         * Set the subtitle
+         * @param subtitle String
+         * @return Builder
+         */
         public Builder setSubtitle(String subtitle) {
             this.subtitle = subtitle;
             return this;
         }
 
+        /**
+         * Build Content
+         * @return Content
+         */
         public Content build() {
             return new Content(Optional.fromNullable(title),
                                Optional.fromNullable(body),

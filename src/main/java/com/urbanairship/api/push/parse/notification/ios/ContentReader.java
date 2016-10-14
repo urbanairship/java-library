@@ -14,8 +14,13 @@ import java.io.IOException;
 
 public class ContentReader implements JsonObjectReader<Content> {
 
-    private Content.Builder builder = Content.newBuilder();
+    private final Content.Builder builder;
 
+    public ContentReader() {
+        this.builder = Content.newBuilder();
+    }
+
+    @Override
     public Content validateAndBuild() throws IOException {
         try {
             return builder.build();

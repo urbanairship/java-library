@@ -14,10 +14,13 @@ import java.io.IOException;
 
 public class MediaAttachmentReader implements JsonObjectReader<MediaAttachment> {
 
-    private MediaAttachment.Builder builder = MediaAttachment.newBuilder();
+    private final MediaAttachment.Builder builder;
     private OptionsDeserializer optionsDS = new OptionsDeserializer();
     private ContentDeserializer contentDS = new ContentDeserializer();
 
+    public MediaAttachmentReader() {
+        this.builder = MediaAttachment.newBuilder();
+    }
 
     @Override
     public MediaAttachment validateAndBuild() throws IOException {

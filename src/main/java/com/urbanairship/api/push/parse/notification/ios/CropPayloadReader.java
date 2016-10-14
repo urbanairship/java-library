@@ -14,15 +14,17 @@ import java.io.IOException;
 
 public class CropPayloadReader implements JsonObjectReader<Crop> {
 
-    private Crop.Builder builder = Crop.newBuilder();
+    private final Crop.Builder builder;
 
     public CropPayloadReader(){
+        this.builder = Crop.newBuilder();
     }
 
+    @Override
     public Crop validateAndBuild() throws IOException {
         try {
             return builder.build();
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new APIParsingException(e.getMessage(), e);
         }
     }

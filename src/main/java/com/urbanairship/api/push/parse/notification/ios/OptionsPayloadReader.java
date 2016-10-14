@@ -14,9 +14,14 @@ import java.io.IOException;
 
 public class OptionsPayloadReader implements JsonObjectReader<Options> {
 
-    private Options.Builder builder = Options.newBuilder();
+    private final Options.Builder builder;
     private CropDeserializer cropDS = new CropDeserializer();
 
+    public OptionsPayloadReader() {
+        this.builder = Options.newBuilder();
+    }
+
+    @Override
     public Options validateAndBuild() throws IOException {
         try {
             return builder.build();

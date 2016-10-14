@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class ContentSerializer extends JsonSerializer<Content> {
     @Override
-    public void serialize(Content content, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+    public void serialize(Content content, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         jgen.writeStartObject();
 
         if(content.getBody().isPresent()) {
@@ -27,5 +27,7 @@ public class ContentSerializer extends JsonSerializer<Content> {
         if(content.getSubtitle().isPresent()) {
             jgen.writeStringField("subtitle", content.getSubtitle().get());
         }
+
+        jgen.writeEndObject();
     }
 }
