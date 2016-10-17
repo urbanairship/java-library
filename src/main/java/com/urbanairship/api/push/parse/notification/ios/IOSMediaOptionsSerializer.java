@@ -26,7 +26,7 @@ public class IOSMediaOptionsSerializer extends JsonSerializer<IOSMediaOptions>{
         }
 
         if(options.getHidden().isPresent()) {
-            jgen.writeObjectField("hidden", options.getHidden().get());
+            jgen.writeBooleanField("hidden", options.getHidden().get());
         }
 
         jgen.writeEndObject();
