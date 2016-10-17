@@ -293,6 +293,10 @@ public class PayloadDeserializerTest {
 
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
         String objectJson = mapper.writeValueAsString(payload);
+        IOSDevicePayload payload2 = mapper.readValue(json, IOSDevicePayload.class);
+
+        assertTrue(payload.equals(payload2));
+
         payload = mapper.readValue(objectJson, IOSDevicePayload.class);
 
         assertTrue(payload.getAlert().get().equals("alert"));
