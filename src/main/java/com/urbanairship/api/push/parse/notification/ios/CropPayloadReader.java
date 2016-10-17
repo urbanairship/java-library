@@ -30,18 +30,18 @@ public class CropPayloadReader implements JsonObjectReader<Crop> {
     }
 
     public void readX(JsonParser parser) throws IOException {
-        builder.setX(parser.getFloatValue());
+        builder.setX(parser.getDecimalValue());
     }
 
     public void readY(JsonParser parser) throws IOException {
-        builder.setY(parser.getFloatValue());
+        builder.setY(parser.getDecimalValue());
     }
 
     public void readWidth(JsonParser parser) throws IOException {
-        builder.setWidth(parser.getFloatValue());
+        builder.setWidth(parser.getDecimalValue());
     }
 
     public void readHeight(JsonParser parser) throws IOException {
-        builder.setHeight(parser.getFloatValue());
+        builder.setHeight(parser.getDecimalValue());
     }
 }

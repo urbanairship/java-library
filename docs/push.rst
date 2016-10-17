@@ -204,9 +204,10 @@ Here's an example of an iOS notification utilizing rich media (iOS 10+):
             .build();
 
     Content content = Content.newBuilder()
-            .setBody("content body")
-            .setTitle("content title")
-            .setSubtitle("content subtitle")
+            .setTitle("Kitten Alert!")
+            .setSubtitle("from Kittens Ahoy")
+            .setBody("Have you ever seen a kitten this cute?")
+            //These lines will only appear if the media attachment succeeds.
             .build();
 
     MediaAttachment mediaAttachment = MediaAttachment.newBuilder()
@@ -216,9 +217,10 @@ Here's an example of an iOS notification utilizing rich media (iOS 10+):
             .build();
 
     IOSDevicePayload iosPayload = IOSDevicePayload.newBuilder()
-            .setAlert("alert")
-            .setTitle("title")
-            .setSubtitle("subtitle")
+            .setTitle("Kitten Alert!")
+            .setSubtitle("from Kittens Ahoy")
+            .setAlert("New Kitten Pics await you in Kittens Ahoy")
+            //These lines will appear if the media attachment fails due to an old iOS version, failure to download, etc.
             .setMediaAttachment(mediaAttachment)
             .setMutableContent(true)
             .build();
@@ -266,6 +268,8 @@ Which will generate the following JSON payload:
           }
       }
   }
+
+For more information on iOS rich media content see `Media Attachment <https://docs.urbanairship.com/api/ua.html#media-attachment>`__.
 
 DeviceTypes
 ===========

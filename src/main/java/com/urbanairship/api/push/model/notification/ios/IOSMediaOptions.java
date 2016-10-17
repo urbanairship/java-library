@@ -7,20 +7,22 @@ import com.google.common.base.Optional;
 import com.urbanairship.api.push.model.PushModelObject;
 
 /**
- * Options for iOS specific MediaAttachment push messages.
+ * IOSMediaOptions for iOS specific MediaAttachment push messages.
  */
-public final class Options extends PushModelObject{
+public final class IOSMediaOptions extends PushModelObject{
 
     private final Optional<Integer> time;
     private final Optional<Crop> crop;
+    private final Optional<Boolean> hidden;
 
-    private Options(Optional<Integer> time, Optional<Crop> crop) {
+    private IOSMediaOptions(Optional<Integer> time, Optional<Crop> crop, Optional<Boolean> hidden) {
         this.time = time;
         this.crop = crop;
+        this.hidden = hidden;
     }
 
     /**
-     * Get a Options builder
+     * Get a IOSMediaOptions builder
      * @return Builder
      */
     public static Builder newBuilder() {
@@ -28,7 +30,7 @@ public final class Options extends PushModelObject{
     }
 
     /**
-     * Get the time.
+     * Get the time used for the thumbnail.
      * @return Optional Integer representation of the time
      */
     public Optional<Integer> getTime() {
@@ -36,11 +38,19 @@ public final class Options extends PushModelObject{
     }
 
     /**
-     * Get the Crop.
+     * Get the Crop object that describes the crop parameters to be used in the thumbnail.
      * @return Optional Crop object
      */
     public Optional<Crop> getCrop() {
         return crop;
+    }
+
+    /**
+     * Get the hidden value of the thumbnail.
+     * @return Optional Boolean representation of the hidden value
+     */
+    public Optional<Boolean> getHidden() {
+        return hidden;
     }
 
     @Override
@@ -52,7 +62,7 @@ public final class Options extends PushModelObject{
             return false;
         }
 
-        Options that = (Options)o;
+        IOSMediaOptions that = (IOSMediaOptions)o;
         if (time != null ? !time.equals(that.time) : that.time != null) {
             return false;
         }
@@ -71,7 +81,7 @@ public final class Options extends PushModelObject{
 
     @Override
     public String toString() {
-        return "Options{" +
+        return "IOSMediaOptions{" +
                 "time=" + time +
                 ", crop=" + crop +
                 '}';
@@ -80,11 +90,12 @@ public final class Options extends PushModelObject{
     public static class Builder {
         private Integer time;
         private Crop crop;
+        private Boolean hidden;
 
         private Builder() { }
 
         /**
-         * Set the time Integer.
+         * Set the time Integer of the frame of the animated resource that should be used in the thumbnail.
          * @param time Integer
          * @return Builder
          */
@@ -94,7 +105,7 @@ public final class Options extends PushModelObject{
         }
 
         /**
-         * Set the Crop object.
+         * Set the Crop object that describes the crop parameters to be used in the thumbnail. Each field is a decimal, normalized from 0 to 1.
          * @param crop Crop
          * @return Builder
          */
@@ -104,11 +115,21 @@ public final class Options extends PushModelObject{
         }
 
         /**
-         * Build Options
-         * @return Options
+         * Set the hidden Boolean value, when true, the thumbnail will be hidden
+         * @param hidden Boolean
+         * @return Builder
          */
-        public Options build() {
-            return new Options(Optional.fromNullable(time), Optional.fromNullable(crop));
+        public Builder setHidden(Boolean hidden) {
+            this.hidden = hidden;
+            return this;
+        }
+
+        /**
+         * Build IOSMediaOptions
+         * @return IOSMediaOptions
+         */
+        public IOSMediaOptions build() {
+            return new IOSMediaOptions(Optional.fromNullable(time), Optional.fromNullable(crop), Optional.fromNullable(hidden));
         }
     }
 }

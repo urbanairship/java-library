@@ -6,22 +6,22 @@ package com.urbanairship.api.push.parse.notification.ios;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.common.parse.StringFieldDeserializer;
-import com.urbanairship.api.push.model.notification.ios.Content;
+import com.urbanairship.api.push.model.notification.ios.IOSMediaContent;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
 
 import java.io.IOException;
 
-public class ContentReader implements JsonObjectReader<Content> {
+public class IOSMediaContentReader implements JsonObjectReader<IOSMediaContent> {
 
-    private final Content.Builder builder;
+    private final IOSMediaContent.Builder builder;
 
-    public ContentReader() {
-        this.builder = Content.newBuilder();
+    public IOSMediaContentReader() {
+        this.builder = IOSMediaContent.newBuilder();
     }
 
     @Override
-    public Content validateAndBuild() throws IOException {
+    public IOSMediaContent validateAndBuild() throws IOException {
         try {
             return builder.build();
         }catch (Exception e){

@@ -3,6 +3,8 @@ package com.urbanairship.api.push.model.notification.ios;
 import com.urbanairship.api.push.model.PushExpiry;
 import org.junit.Test;
 
+import java.math.BigDecimal;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -29,19 +31,25 @@ public class IOSDevicePayloadTest {
 
     @Test
     public void testBuilder() {
+        BigDecimal x = new BigDecimal("0.1");
+        BigDecimal y = new BigDecimal("0.2");
+        BigDecimal width = new BigDecimal("0.3");
+        BigDecimal height = new BigDecimal("0.4");
+
         Crop crop = Crop.newBuilder()
-                .setHeight(0.2f)
-                .setWidth(0.2f)
-                .setX(0.1f)
-                .setY(0.1f)
+                .setX(x)
+                .setY(y)
+                .setWidth(width)
+                .setHeight(height)
                 .build();
 
-        Options options = Options.newBuilder()
+        IOSMediaOptions options = IOSMediaOptions.newBuilder()
                 .setTime(10)
                 .setCrop(crop)
+                .setHidden(true)
                 .build();
 
-        Content content = Content.newBuilder()
+        IOSMediaContent content = IOSMediaContent.newBuilder()
                 .setBody("content body")
                 .setTitle("content title")
                 .setSubtitle("content subtitle")
@@ -86,14 +94,12 @@ public class IOSDevicePayloadTest {
         assertEquals("content subtitle", m.getMediaAttachment().get().getContent().get().getSubtitle().get());
         Integer time = 10;
         assertEquals(time, m.getMediaAttachment().get().getOptions().get().getTime().get());
-        Float height = 0.2f;
-        Float width = 0.2f;
-        Float x = 0.1f;
-        Float y = 0.1f;
         assertEquals(height, m.getMediaAttachment().get().getOptions().get().getCrop().get().getHeight().get());
         assertEquals(width, m.getMediaAttachment().get().getOptions().get().getCrop().get().getWidth().get());
         assertEquals(x, m.getMediaAttachment().get().getOptions().get().getCrop().get().getX().get());
         assertEquals(y, m.getMediaAttachment().get().getOptions().get().getCrop().get().getY().get());
+        Boolean hidden = true;
+        assertEquals(hidden, m.getMediaAttachment().get().getOptions().get().getHidden().get());
     }
 
 }

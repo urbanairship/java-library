@@ -2,16 +2,13 @@ package com.urbanairship.api.push.parse.notification.ios;
 
 
 import com.google.common.collect.ImmutableList;
-import com.urbanairship.api.push.model.DeviceType;
-import com.urbanairship.api.push.model.DeviceTypeData;
-import com.urbanairship.api.push.model.PushPayload;
-import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Interactive;
-import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.notification.ios.*;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
+
+import java.math.BigDecimal;
 
 import static org.junit.Assert.assertEquals;
 
@@ -164,19 +161,21 @@ public class PayloadSerializerTest {
 
     @Test
     public void testMediaAttachment() throws Exception {
+
         Crop crop = Crop.newBuilder()
-                .setHeight(0.2f)
-                .setWidth(0.2f)
-                .setX(0.1f)
-                .setY(0.1f)
+                .setHeight(new BigDecimal("0.4"))
+                .setWidth(new BigDecimal("0.3"))
+                .setX(new BigDecimal("0.1"))
+                .setY(new BigDecimal("0.2"))
                 .build();
 
-        Options options = Options.newBuilder()
+        IOSMediaOptions options = IOSMediaOptions.newBuilder()
                 .setTime(10)
                 .setCrop(crop)
+                .setHidden(true)
                 .build();
 
-        Content content = Content.newBuilder()
+        IOSMediaContent content = IOSMediaContent.newBuilder()
                 .setBody("content body")
                 .setTitle("content title")
                 .setSubtitle("content subtitle")
@@ -197,7 +196,7 @@ public class PayloadSerializerTest {
 
         String json = mapper.writeValueAsString(payload);
         String expected
-                = "{\"alert\":\"alert\",\"subtitle\":\"subtitle\",\"mutable_content\":true,\"media_attachment\":{\"url\":\"http://www.google.com\",\"options\":{\"time\":10,\"crop\":{\"x\":0.1,\"y\":0.1,\"width\":0.2,\"height\":0.2}},\"content\":{\"body\":\"content body\",\"title\":\"content title\",\"subtitle\":\"content subtitle\"}}}";
+                = "{\"alert\":\"alert\",\"subtitle\":\"subtitle\",\"mutable_content\":true,\"media_attachment\":{\"url\":\"http://www.google.com\",\"options\":{\"time\":10,\"crop\":{\"x\":0.1,\"y\":0.2,\"width\":0.3,\"height\":0.4},\"hidden\":true},\"content\":{\"body\":\"content body\",\"title\":\"content title\",\"subtitle\":\"content subtitle\"}}}";
 
         assertEquals(expected, json);
     }

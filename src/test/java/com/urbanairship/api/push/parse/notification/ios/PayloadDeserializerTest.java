@@ -9,6 +9,7 @@ import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -276,10 +277,11 @@ public class PayloadDeserializerTest {
                 "            \"time\": 10," +
                 "            \"crop\": {" +
                 "                \"x\": 0.1," +
-                "                \"y\": 0.1," +
-                "                \"width\": 0.2," +
-                "                \"height\": 0.2" +
-                "            }" +
+                "                \"y\": 0.2," +
+                "                \"width\": 0.3," +
+                "                \"height\": 0.4" +
+                "            }," +
+                "           \"hidden\": true" +
                 "        }," +
                 "        \"content\": {" +
                 "            \"body\": \"content body\"," +
@@ -303,10 +305,11 @@ public class PayloadDeserializerTest {
 
         //options
         assertTrue(payload.getMediaAttachment().get().getOptions().get().getTime().get().equals(10));
-        assertTrue(payload.getMediaAttachment().get().getOptions().get().getCrop().get().getX().get().equals(0.1f));
-        assertTrue(payload.getMediaAttachment().get().getOptions().get().getCrop().get().getY().get().equals(0.1f));
-        assertTrue(payload.getMediaAttachment().get().getOptions().get().getCrop().get().getWidth().get().equals(0.2f));
-        assertTrue(payload.getMediaAttachment().get().getOptions().get().getCrop().get().getHeight().get().equals(0.2f));
+        assertTrue(payload.getMediaAttachment().get().getOptions().get().getCrop().get().getX().get().equals(new BigDecimal("0.1")));
+        assertTrue(payload.getMediaAttachment().get().getOptions().get().getCrop().get().getY().get().equals(new BigDecimal("0.2")));
+        assertTrue(payload.getMediaAttachment().get().getOptions().get().getCrop().get().getWidth().get().equals(new BigDecimal("0.3")));
+        assertTrue(payload.getMediaAttachment().get().getOptions().get().getCrop().get().getHeight().get().equals(new BigDecimal("0.4")));
+        assertTrue(payload.getMediaAttachment().get().getOptions().get().getHidden().get().equals(true));
 
         //content
         assertTrue(payload.getMediaAttachment().get().getContent().get().getBody().get().equals("content body"));

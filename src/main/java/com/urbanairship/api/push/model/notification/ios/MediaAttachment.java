@@ -5,8 +5,6 @@ package com.urbanairship.api.push.model.notification.ios;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableBiMap;
-import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.PushModelObject;
 
 /**
@@ -15,10 +13,10 @@ import com.urbanairship.api.push.model.PushModelObject;
 public final class MediaAttachment extends PushModelObject {
 
     private final String url;
-    private final Optional<Content> content;
-    private final Optional<Options> options;
+    private final Optional<IOSMediaContent> content;
+    private final Optional<IOSMediaOptions> options;
 
-    private MediaAttachment(String url, Optional<Content> content, Optional<Options> options) {
+    private MediaAttachment(String url, Optional<IOSMediaContent> content, Optional<IOSMediaOptions> options) {
         this.url = url;
         this.content = content;
         this.options = options;
@@ -33,7 +31,7 @@ public final class MediaAttachment extends PushModelObject {
     }
 
     /**
-     * Get the url
+     * Get the url used for the iOS media
      * @return String representation of the url
      */
     public String getUrl() {
@@ -41,18 +39,18 @@ public final class MediaAttachment extends PushModelObject {
     }
 
     /**
-     * Get the Content
+     * Get the Content object that describes portions of the notification that should be modified if the media attachment succeeds
      * @return Optional Content object
      */
-    public Optional<Content> getContent() {
+    public Optional<IOSMediaContent> getContent() {
         return content;
     }
 
     /**
-     * Get the Options
-     * @return Optional Options object
+     * Get the IOSMediaOptions that describes how to display the resource at the URL
+     * @return Optional IOSMediaOptions object
      */
-    public Optional<Options> getOptions() {
+    public Optional<IOSMediaOptions> getOptions() {
         return options;
     }
 
@@ -96,13 +94,13 @@ public final class MediaAttachment extends PushModelObject {
 
     public static class Builder{
         private String url = null;
-        private Content content = null;
-        private Options options = null;
+        private IOSMediaContent content = null;
+        private IOSMediaOptions options = null;
 
         private Builder() { }
 
         /**
-         * Set the url string.
+         * Set the url string for iOS media.
          * @param url String url
          * @return Builder
          */
@@ -112,21 +110,21 @@ public final class MediaAttachment extends PushModelObject {
         }
 
         /**
-         * Set the Content object.
+         * Set the Content object that describes portions of the notification that should be modified if the media attachment succeeds.
          * @param content Content
          * @return Builder
          */
-        public Builder setContent(Content content) {
+        public Builder setContent(IOSMediaContent content) {
             this.content = content;
             return this;
         }
 
         /**
-         * Set the Options object.
-         * @param options Options
+         * Set the IOSMediaOptions object that describes how to display the resource at the URL specified.
+         * @param options IOSMediaOptions
          * @return Builder
          */
-        public Builder setOptions(Options options) {
+        public Builder setOptions(IOSMediaOptions options) {
             this.options = options;
             return this;
         }

@@ -197,12 +197,12 @@ public class PushObjectMapper {
                 .addDeserializer(IOSAlertData.class, new IOSAlertDataDeserializer())
                 .addSerializer(MediaAttachment.class, new MediaAttachmentSerializer())
                 .addDeserializer(MediaAttachment.class, new MediaAttachmentDeserializer())
-                .addSerializer(Options.class, new OptionsSerializer())
-                .addDeserializer(Options.class, new OptionsDeserializer())
+                .addSerializer(IOSMediaOptions.class, new IOSMediaOptionsSerializer())
+                .addDeserializer(IOSMediaOptions.class, new IOSMediaOptionsDeserializer())
                 .addSerializer(Crop.class, new CropSerializer())
                 .addDeserializer(Crop.class, new CropDeserializer())
-                .addSerializer(Content.class, new ContentSerializer())
-                .addDeserializer(Content.class, new ContentDeserializer())
+                .addSerializer(IOSMediaContent.class, new IOSMediaContentSerializer())
+                .addDeserializer(IOSMediaContent.class, new IOSMediaContentDeserializer())
 
             /* WNS enums */
                 .addSerializer(WNSToastData.Duration.class, new WNSDurationSerializer())

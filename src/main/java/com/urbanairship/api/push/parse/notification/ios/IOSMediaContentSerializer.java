@@ -3,17 +3,16 @@
  */
 package com.urbanairship.api.push.parse.notification.ios;
 
-import com.urbanairship.api.push.model.notification.ios.Content;
+import com.urbanairship.api.push.model.notification.ios.IOSMediaContent;
 import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
 
 import java.io.IOException;
 
-public class ContentSerializer extends JsonSerializer<Content> {
+public class IOSMediaContentSerializer extends JsonSerializer<IOSMediaContent> {
     @Override
-    public void serialize(Content content, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+    public void serialize(IOSMediaContent content, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         jgen.writeStartObject();
 
         if(content.getBody().isPresent()) {

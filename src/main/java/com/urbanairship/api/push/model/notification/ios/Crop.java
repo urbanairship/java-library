@@ -7,17 +7,19 @@ import com.google.common.base.Optional;
 import com.google.common.primitives.Floats;
 import com.urbanairship.api.push.model.PushModelObject;
 
+import java.math.BigDecimal;
+
 /**
  * Crop for iOS specific media push messages.
  */
 public final class Crop extends PushModelObject{
 
-    private final Optional<Float> x;
-    private final Optional<Float> y;
-    private final Optional<Float> height;
-    private final Optional<Float> width;
+    private final Optional<BigDecimal> x;
+    private final Optional<BigDecimal> y;
+    private final Optional<BigDecimal> height;
+    private final Optional<BigDecimal> width;
 
-    private Crop(Optional<Float> x, Optional<Float> y, Optional<Float> height, Optional<Float> width) {
+    private Crop(Optional<BigDecimal> x, Optional<BigDecimal> y, Optional<BigDecimal> height, Optional<BigDecimal> width) {
         this.x = x;
         this.y = y;
         this.height = height;
@@ -25,7 +27,8 @@ public final class Crop extends PushModelObject{
     }
 
     /**
-     * Get a Crop builder
+     * Get a Crop builder object that describes the crop parameters to be used in the thumbnail.
+     * Each field is a decimal, normalized from 0 to 1
      * @return Builder
      */
     public static Builder newBuilder() {
@@ -33,34 +36,34 @@ public final class Crop extends PushModelObject{
     }
 
     /**
-     * Get the x float value.
-     * @return Optional float representation of x
+     * Get the x BigDecimal offset value where the crop begins.
+     * @return Optional BigDecimal representation of x
      */
-    public Optional<Float> getX() {
+    public Optional<BigDecimal> getX() {
         return x;
     }
 
     /**
-     * Get the y float value.
-     * @return Optional float representation of y
+     * Get the y BigDecimal offset value where the crop begins.
+     * @return Optional BigDecimal representation of y
      */
-    public Optional<Float> getY() {
+    public Optional<BigDecimal> getY() {
         return y;
     }
 
     /**
-     * Get the height float value.
-     * @return Optional float representation of the height
+     * Get the BigDecimal height of the final crop.
+     * @return Optional BigDecimal representation of the height
      */
-    public Optional<Float> getHeight() {
+    public Optional<BigDecimal> getHeight() {
         return height;
     }
 
     /**
-     * Get the width float value.
-     * @return Optional float representation of the width
+     * Get the BigDecimal width of the final crop.
+     * @return Optional BigDecimal representation of the width
      */
-    public Optional<Float> getWidth() {
+    public Optional<BigDecimal> getWidth() {
         return width;
     }
 
@@ -109,49 +112,49 @@ public final class Crop extends PushModelObject{
     }
 
     public static class Builder {
-        private Float x = null;
-        private Float y = null;
-        private Float height = null;
-        private Float width = null;
+        private BigDecimal x = null;
+        private BigDecimal y = null;
+        private BigDecimal height = null;
+        private BigDecimal width = null;
 
         private Builder() { }
 
         /**
-         * Set the x value
-         * @param x Float
+         * Set the x value where offset crop begins
+         * @param x BigDecimal
          * @return Builder
          **/
-        public Builder setX(Float x) {
+        public Builder setX(BigDecimal x) {
             this.x = x;
             return this;
         }
 
         /**
-         * Set the y value
-         * @param y Float
+         * Set the y value where offset crop begins
+         * @param y BigDecimal
          * @return Builder
          **/
-        public Builder setY(Float y) {
+        public Builder setY(BigDecimal y) {
             this.y = y;
             return this;
         }
 
         /**
-         * Set the height
-         * @param height Float
+         * Set the height of the final crop
+         * @param height BigDecimal
          * @return Builder
          **/
-        public Builder setHeight(Float height) {
+        public Builder setHeight(BigDecimal height) {
             this.height = height;
             return this;
         }
 
         /**
-         * Set the width
-         * @param width Float
+         * Set the width of the final crop
+         * @param width BigDecimal
          * @return Builder
          **/
-        public Builder setWidth(Float width) {
+        public Builder setWidth(BigDecimal width) {
             this.width = width;
             return this;
         }

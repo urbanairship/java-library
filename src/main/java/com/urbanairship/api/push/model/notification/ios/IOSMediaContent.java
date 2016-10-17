@@ -9,19 +9,19 @@ import com.urbanairship.api.push.model.PushModelObject;
 /**
  * Content for iOS specific media push messages.
  */
-public final class Content extends PushModelObject{
+public final class IOSMediaContent extends PushModelObject{
     private final Optional<String> title;
     private final Optional<String> body;
     private final Optional<String> subtitle;
 
-    private Content(Optional<String> title, Optional<String> body, Optional<String> subtitle) {
+    private IOSMediaContent(Optional<String> title, Optional<String> body, Optional<String> subtitle) {
         this.title = title;
         this.body = body;
         this.subtitle = subtitle;
     }
 
     /**
-     * Get a Content builder
+     * Get a IOSMediaContent builder object that describes portions of the notification that should be modified if the media attachment succeeds.
      * @return Builder
      */
     public static Builder newBuilder() {
@@ -29,7 +29,7 @@ public final class Content extends PushModelObject{
     }
 
     /**
-     * Get the title.
+     * Get the title used if the media attachment succeeds.
      * @return Optional string representing the title
      */
     public Optional<String> getTitle() {
@@ -37,7 +37,7 @@ public final class Content extends PushModelObject{
     }
 
     /**
-     * Get the body.
+     * Get the body used if the media attachment succeeds.
      * @return Optional string representing the body
      */
     public Optional<String> getBody() {
@@ -45,7 +45,7 @@ public final class Content extends PushModelObject{
     }
 
     /**
-     * Get the subtitle.
+     * Get the subtitle used if the media attachment succeeds.
      * @return Optional string representing the body
      */
     public Optional<String> getSubtitle() {
@@ -61,7 +61,7 @@ public final class Content extends PushModelObject{
             return false;
         }
 
-        Content that = (Content)o;
+        IOSMediaContent that = (IOSMediaContent)o;
         if (title != null ? !title.equals(that.title) : that.title != null) {
             return false;
         }
@@ -84,7 +84,7 @@ public final class Content extends PushModelObject{
 
     @Override
     public String toString(){
-        return "Content{" +
+        return "IOSMediaContent{" +
                 "title=" + title +
                 ", body=" + body +
                 ", subtitle=" + subtitle +
@@ -99,7 +99,7 @@ public final class Content extends PushModelObject{
         private Builder() { }
 
         /**
-         * Set the title
+         * Set the title for the media attachment.
          * @param title String
          * @return Builder
          */
@@ -109,7 +109,7 @@ public final class Content extends PushModelObject{
         }
 
         /**
-         * Set the body
+         * Set the body for the media attachment.
          * @param body String
          * @return Builder
          */
@@ -119,7 +119,7 @@ public final class Content extends PushModelObject{
         }
 
         /**
-         * Set the subtitle
+         * Set the subtitle for the media attachment.
          * @param subtitle String
          * @return Builder
          */
@@ -129,11 +129,11 @@ public final class Content extends PushModelObject{
         }
 
         /**
-         * Build Content
-         * @return Content
+         * Build IOSMediaContent
+         * @return IOSMediaContent
          */
-        public Content build() {
-            return new Content(Optional.fromNullable(title),
+        public IOSMediaContent build() {
+            return new IOSMediaContent(Optional.fromNullable(title),
                                Optional.fromNullable(body),
                                Optional.fromNullable(subtitle));
         }
