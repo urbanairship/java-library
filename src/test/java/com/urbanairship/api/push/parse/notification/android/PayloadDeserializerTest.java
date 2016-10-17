@@ -1,5 +1,6 @@
 package com.urbanairship.api.push.parse.notification.android;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.PushExpiry;
@@ -7,6 +8,10 @@ import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.notification.actions.Actions;
 import com.urbanairship.api.push.model.notification.actions.ShareAction;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
+import com.urbanairship.api.push.model.notification.android.Category;
+import com.urbanairship.api.push.model.notification.android.PublicNotification;
+import com.urbanairship.api.push.model.notification.android.Style;
+import com.urbanairship.api.push.model.notification.android.Wearable;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
@@ -202,5 +207,189 @@ public class PayloadDeserializerTest {
         assertEquals(expected, payload);
         assertTrue(payload.getTitle().isPresent());
         assertEquals("title", payload.getTitle().get());
+    }
+
+    @Test
+    public void testDeliveryPriority() throws Exception {
+        String json =
+                "{" +
+                        "\"delivery_priority\": \"high\"" +
+                "}";
+
+        AndroidDevicePayload payload = mapper.readValue(json, AndroidDevicePayload.class);
+        assertNotNull(payload);
+        assertEquals(payload.getDeliveryPriority().get(), "high");
+    }
+
+    @Test
+    public void testLocalOnly() throws Exception {
+        String json =
+                "{" +
+                        "\"local_only\": true" +
+                "}";
+
+        AndroidDevicePayload payload = mapper.readValue(json, AndroidDevicePayload.class);
+        assertNotNull(payload);
+        assertEquals(payload.getLocalOnly().get(), true);
+    }
+
+    @Test
+    public void testWearable() throws Exception {
+        String json =
+                "{" +
+                        "\"wearable\": {" +
+                            "\"background_image\": \"https://yolo.pizza.biz/\"" +
+                        "}" +
+                "}";
+
+        Wearable wearable = Wearable.newBuilder()
+                .setBackgroundImage("https://yolo.pizza.biz/")
+                .build();
+
+        AndroidDevicePayload payload = mapper.readValue(json, AndroidDevicePayload.class);
+        assertNotNull(payload);
+        assertEquals(payload.getWearable().get(), wearable);
+    }
+
+    @Test
+    public void testSummary() throws Exception {
+        String json =
+                "{" +
+                        "\"summary\": \"A summary\"" +
+                "}";
+
+        AndroidDevicePayload payload = mapper.readValue(json, AndroidDevicePayload.class);
+        assertNotNull(payload);
+        assertEquals(payload.getSummary().get(), "A summary");
+    }
+
+    @Test
+    public void testStyle() throws Exception {
+        String bigTextJson =
+                "{" +
+                        "\"style\":{" +
+                            "\"summary\": \"A summary\"," +
+                            "\"title\": \"A title\"," +
+                            "\"type\": \"big_text\"," +
+                            "\"big_text\": \"BlahBlah\"" +
+                        "}" +
+                "}";
+
+        String bigPicJson =
+                "{" +
+                        "\"style\":{" +
+                            "\"summary\": \"A summary\"," +
+                            "\"title\": \"A title\"," +
+                            "\"type\": \"big_picture\"," +
+                            "\"big_picture\": \"pic.png\"" +
+                        "}" +
+                "}";
+
+        String inboxJson =
+                "{" +
+                        "\"style\":{" +
+                            "\"type\":\"inbox\"," +
+                            "\"lines\":[\"line_1\",\"line_2\",\"line_3\"]," +
+                            "\"title\":\"lines title\"," +
+                            "\"summary\":\"lines summary\"" +
+                        "}" +
+                "}";
+
+
+        AndroidDevicePayload bigTextPayload = mapper.readValue(bigTextJson, AndroidDevicePayload.class);
+        assertNotNull(bigTextPayload);
+        Style bigTextStyle = bigTextPayload.getStyle().get();
+        assertEquals(bigTextStyle.getType().getStyleType(), "big_text");
+        assertEquals(bigTextStyle.getSummary().get(), "A summary");
+        assertEquals(bigTextStyle.getTitle().get(), "A title");
+        assertEquals(bigTextStyle.getContent(), "BlahBlah");
+
+        AndroidDevicePayload bigPicPayload = mapper.readValue(bigPicJson, AndroidDevicePayload.class);
+        assertNotNull(bigPicPayload);
+        Style bigPicStyle = bigPicPayload.getStyle().get();
+        assertEquals(bigPicStyle.getType().getStyleType(), "big_picture");
+        assertEquals(bigPicStyle.getSummary().get(), "A summary");
+        assertEquals(bigPicStyle.getTitle().get(), "A title");
+        assertEquals(bigPicStyle.getContent(), "pic.png");
+
+        AndroidDevicePayload inboxPayload = mapper.readValue(inboxJson, AndroidDevicePayload.class);
+        assertNotNull(inboxPayload);
+        Style inboxStyle = inboxPayload.getStyle().get();
+        assertEquals(inboxStyle.getType().getStyleType(), "inbox");
+        assertEquals(inboxStyle.getSummary().get(), "lines summary");
+        assertEquals(inboxStyle.getTitle().get(), "lines title");
+        ImmutableList<String> lines = (ImmutableList<String>) inboxStyle.getContent();
+        assertEquals(lines.get(0), "line_1");
+        assertEquals(lines.get(1), "line_2");
+        assertEquals(lines.get(2), "line_3");
+
+    }
+
+    @Test
+    public void testSound() throws Exception {
+        String json =
+                "{" +
+                        "\"sound\": \"cowbell.mp3\"" +
+                "}";
+
+        AndroidDevicePayload payload = mapper.readValue(json, AndroidDevicePayload.class);
+        assertNotNull(payload);
+        assertEquals(payload.getSound().get(), "cowbell.mp3");
+    }
+
+    @Test
+    public void testPriority() throws Exception {
+        String json =
+                "{" +
+                        "\"priority\": 1" +
+                "}";
+
+        AndroidDevicePayload payload = mapper.readValue(json, AndroidDevicePayload.class);
+        assertNotNull(payload);
+        assertEquals(payload.getPriority().get().intValue(), 1);
+    }
+
+    @Test
+    public void testCategory() throws Exception {
+        String json =
+                "{" +
+                        "\"category\": \"promo\"" +
+                "}";
+
+        AndroidDevicePayload payload = mapper.readValue(json, AndroidDevicePayload.class);
+        assertNotNull(payload);
+        assertEquals(payload.getCategory().get().getCategory(), Category.PROMO.getCategory());
+    }
+
+    @Test
+    public void testVisibility() throws Exception {
+        String json =
+                "{" +
+                        "\"visibility\": 1" +
+                "}";
+
+        AndroidDevicePayload payload = mapper.readValue(json, AndroidDevicePayload.class);
+        assertNotNull(payload);
+        assertEquals(payload.getVisibility().get().intValue(), 1);
+
+    }
+
+    @Test
+    public void testPublicNotification() throws Exception {
+        String json =
+                "{" +
+                        "\"public_notification\":{" +
+                            "\"summary\": \"A summary\"," +
+                            "\"title\": \"A title\"," +
+                            "\"alert\": \"An alert\"" +
+                        "}" +
+                "}";
+
+        AndroidDevicePayload payload = mapper.readValue(json, AndroidDevicePayload.class);
+        assertNotNull(payload);
+        PublicNotification publicNotification = payload.getPublicNotification().get();
+        assertEquals(publicNotification.getSummary().get(), "A summary");
+        assertEquals(publicNotification.getTitle().get(), "A title");
+        assertEquals(publicNotification.getAlert().get(), "An alert");
     }
 }
