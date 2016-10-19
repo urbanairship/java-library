@@ -7,6 +7,8 @@ package com.urbanairship.api.templates.model;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
+import java.util.Objects;
+
 /**
  * The TemplateVariable object is used to specify which pieces of a template to override when
  * creating template-based pushes.
@@ -90,7 +92,7 @@ public class TemplateVariable {
 
         TemplateVariable that = (TemplateVariable) o;
 
-        if (!defaultValue.equals(that.defaultValue)) return false;
+        if (!Objects.equals(defaultValue, that.defaultValue)) return false;
         if (!description.equals(that.description)) return false;
         if (!key.equals(that.key)) return false;
         if (!name.equals(that.name)) return false;

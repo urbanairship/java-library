@@ -1,7 +1,14 @@
 -------------------------
-1.1.0 10OCT16
+1.1.0 19OCT16
 -------------------------
 - iOS 10 rich media support.
+- Static List download support.
+- Static List selector support.
+- In-App Message support.
+- Add next page handlers for listing requests.
+- Update Android payload with the following fields: "delivery_priority",
+  "local_only", "wearable", "summary", "style", "sound", "priority",
+  "category", "visibility", and "public_notification".
 
 -------------------------
 1.0.0 09MAY16

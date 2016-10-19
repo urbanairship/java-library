@@ -23,8 +23,8 @@ public class TemplateSelectorSerializerTest {
                 "{" +
                     "\"template_id\":\"id123\"," +
                     "\"substitutions\":{" +
-                        "\"TITLE\":\"Dr.\"," +
-                        "\"FIRST\":\"Jen\"" +
+                        "\"FIRST\":\"Jen\"," +
+                        "\"TITLE\":\"Dr.\"" +
                     "}" +
                 "}";
 

@@ -111,3 +111,4 @@ Endpoint Reference
    named-user
    static-lists
    location
+   templates
