@@ -33,6 +33,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
     private final Optional<String> subtitle;
     private final Optional<MediaAttachment> mediaAttachment;
     private final Optional<Boolean> mutableContent;
+    private final Optional<String> collapseId;
 
     private IOSDevicePayload(Optional<IOSAlertData> alert,
                              Optional<String> sound,
@@ -46,7 +47,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                              Optional<String> title,
                              Optional<String> subtitle,
                              Optional<MediaAttachment> mediaAttachment,
-                             Optional<Boolean> mutableContent) {
+                             Optional<Boolean> mutableContent,
+                             Optional<String> collapseID) {
         this.alert = alert;
         this.sound = sound;
         this.badge = badge;
@@ -60,6 +62,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         this.subtitle = subtitle;
         this.mediaAttachment = mediaAttachment;
         this.mutableContent = mutableContent;
+        this.collapseId = collapseID;
     }
 
     /**
@@ -184,8 +187,22 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         return mutableContent;
     }
 
+    /**
+     * Get the Media Attachment object that specifies a media attachment to be
+     * handled by the UA Media Attachment Extension. iOS 10
+     * @return Optional MediaAttachment object.
+     */
     public Optional<MediaAttachment> getMediaAttachment() {
         return mediaAttachment;
+    }
+
+    /**
+     * Get the Collapse ID String. When there is a newer message that renders an older, related message irrelevant to the client app,
+     * the new message replaces the older message with the same collapse id. Similar to the GCM collapse key. iOS 10.
+     * @return Optional String representation of the collapse ID.
+     */
+    public Optional<String> getCollapseID() {
+        return collapseId;
     }
 
     @Override
@@ -254,6 +271,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (mediaAttachment != null ? mediaAttachment.hashCode() : 0);
         result = 31 * result + (mutableContent != null ? mutableContent.hashCode() : 0);
+        result = 31 * result + (collapseId != null ? collapseId.hashCode() : 0);
         return result;
     }
 
@@ -273,6 +291,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
             ", subtitle=" + subtitle +
             ", mediaAttachment=" + mediaAttachment +
             ", mutable_content=" + mutableContent +
+            ", collapse_id=" + collapseId +
                 '}';
     }
 
@@ -290,6 +309,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         private String subtitle = null;
         private MediaAttachment mediaAttachment = null;
         private Boolean mutableContent = null;
+        private String collapseId = null;
 
         private Builder() { }
 
@@ -451,6 +471,17 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
             this.mutableContent = value;
             return this;
         }
+
+        /**
+         * Set the collapseId. When there is a newer message that renders an older, related message irrelevant to the client app, the new message replaces the older message with the same collapse id.
+         * @param value String
+         * @return Builder
+         */
+        public Builder setCollapseId(String value) {
+            this.collapseId = value;
+            return this;
+        }
+
         /**
          * Build IOSDevicePayload
          * @return IOSDevicePayload
@@ -469,7 +500,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                     Optional.fromNullable(title),
                     Optional.fromNullable(subtitle),
                     Optional.fromNullable(mediaAttachment),
-                    Optional.fromNullable(mutableContent));
+                    Optional.fromNullable(mutableContent),
+                    Optional.fromNullable(collapseId));
         }
     }
 }

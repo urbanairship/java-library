@@ -288,7 +288,8 @@ public class PayloadDeserializerTest {
                 "            \"title\": \"content title\"," +
                 "            \"subtitle\": \"content subtitle\"" +
                 "        }" +
-                "    }" +
+                "    }," +
+                "    \"collapse_id\": \"collapseId\"" +
                 "}";
 
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
@@ -300,6 +301,9 @@ public class PayloadDeserializerTest {
         payload = mapper.readValue(objectJson, IOSDevicePayload.class);
 
         assertTrue(payload.getAlert().get().equals("alert"));
+
+        //Collapse ID
+        assertTrue(payload.getCollapseID().get().equals("collapseId"));
 
         //Mutable Content
         assertTrue(payload.getMutableContent().get().equals(true));
