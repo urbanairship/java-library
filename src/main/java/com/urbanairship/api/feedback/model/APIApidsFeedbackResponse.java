@@ -5,18 +5,19 @@ package com.urbanairship.api.feedback.model;
 
 import com.google.common.base.Objects;
 
-public class APIApidsFeedbackResponse
-{
+import org.joda.time.DateTime;
+
+public class APIApidsFeedbackResponse {
     private String apid;
     private String gcmRegistrationId;
-    private String markedInactiveOn;
+    private DateTime markedInactiveOn;
     private String alias;
 
     public static Builder newBuilder() {
         return new Builder();
     }
 
-    public APIApidsFeedbackResponse(String apid, String gcmRegistrationId, String markedInactiveOn, String alias) {
+    public APIApidsFeedbackResponse(String apid, String gcmRegistrationId, DateTime markedInactiveOn, String alias) {
         this.apid = apid;
         this.gcmRegistrationId = gcmRegistrationId;
         this.markedInactiveOn = markedInactiveOn;
@@ -33,7 +34,7 @@ public class APIApidsFeedbackResponse
         this.gcmRegistrationId = gcmRegistrationId;
     }
 
-    public void setMarkedInactiveOn(String markedInactiveOn)
+    public void setMarkedInactiveOn(DateTime markedInactiveOn)
     {
         this.markedInactiveOn = markedInactiveOn;
     }
@@ -53,7 +54,7 @@ public class APIApidsFeedbackResponse
         return gcmRegistrationId;
     }
 
-    public String getMarkedInactiveOn()
+    public DateTime getMarkedInactiveOn()
     {
         return markedInactiveOn;
     }
@@ -97,7 +98,7 @@ public class APIApidsFeedbackResponse
 
         private String apid;
         private String gcmRegistrationId;
-        private String markedInactiveOn;
+        private DateTime markedInactiveOn;
         private String alias;
 
         private Builder() {
@@ -113,7 +114,7 @@ public class APIApidsFeedbackResponse
             this.gcmRegistrationId = gcmRegistrationId;
         }
 
-        public Builder setMarkedInactiveOn(String markedInactiveOn)
+        public Builder setMarkedInactiveOn(DateTime markedInactiveOn)
         {
             this.markedInactiveOn = markedInactiveOn;
             return this;

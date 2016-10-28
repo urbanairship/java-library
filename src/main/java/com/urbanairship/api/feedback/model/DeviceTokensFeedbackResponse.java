@@ -5,17 +5,19 @@ package com.urbanairship.api.feedback.model;
 
 import com.google.common.base.Objects;
 
-public class APIDeviceTokensFeedbackResponse
+import org.joda.time.DateTime;
+
+public class DeviceTokensFeedbackResponse
 {
     private String deviceToken;
-    private String markedInactiveOn;
+    private DateTime markedInactiveOn;
     private String alias;
 
     public static Builder newBuilder() {
         return new Builder();
     }
 
-    public APIDeviceTokensFeedbackResponse(String device_token, String marked_inactive_on, String alias) {
+    public DeviceTokensFeedbackResponse(String device_token, DateTime marked_inactive_on, String alias) {
         this.deviceToken = device_token;
         this.markedInactiveOn = marked_inactive_on;
         this.alias = alias;
@@ -31,7 +33,7 @@ public class APIDeviceTokensFeedbackResponse
         this.deviceToken = deviceToken;
     }
 
-    public void setMarkedInactiveOn(String markedInactiveOn)
+    public void setMarkedInactiveOn(DateTime markedInactiveOn)
     {
         this.markedInactiveOn = markedInactiveOn;
     }
@@ -46,7 +48,7 @@ public class APIDeviceTokensFeedbackResponse
         return deviceToken;
     }
 
-    public String getMarkedInactiveOn()
+    public DateTime getMarkedInactiveOn()
     {
         return markedInactiveOn;
     }
@@ -73,7 +75,7 @@ public class APIDeviceTokensFeedbackResponse
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final APIDeviceTokensFeedbackResponse other = (APIDeviceTokensFeedbackResponse) obj;
+        final DeviceTokensFeedbackResponse other = (DeviceTokensFeedbackResponse) obj;
         return Objects.equal(this.deviceToken, other.deviceToken) &&
                 Objects.equal(this.markedInactiveOn, other.markedInactiveOn) &&
                 Objects.equal(this.alias, other.alias);
@@ -82,13 +84,13 @@ public class APIDeviceTokensFeedbackResponse
     public static class Builder {
 
         private String deviceToken;
-        private String markedInactiveOn;
+        private DateTime markedInactiveOn;
         private String alias;
 
         private Builder() {
         }
 
-        public Builder setMarkedInactiveOn(String markedInactiveOn)
+        public Builder setMarkedInactiveOn(DateTime markedInactiveOn)
         {
             this.markedInactiveOn = markedInactiveOn;
             return this;
@@ -106,8 +108,8 @@ public class APIDeviceTokensFeedbackResponse
             return this;
         }
 
-        public APIDeviceTokensFeedbackResponse build() {
-            return new APIDeviceTokensFeedbackResponse(deviceToken, markedInactiveOn, alias);
+        public DeviceTokensFeedbackResponse build() {
+            return new DeviceTokensFeedbackResponse(deviceToken, markedInactiveOn, alias);
         }
     }
 }

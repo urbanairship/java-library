@@ -1,21 +1,22 @@
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 package com.urbanairship.api.feedback.parse;
 
-import com.urbanairship.api.feedback.model.APIDeviceTokensFeedbackResponse;
+import com.urbanairship.api.feedback.model.DeviceTokensFeedbackResponse;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import org.codehaus.jackson.JsonParser;
+import org.joda.time.DateTime;
 
 import java.io.IOException;
 
-public class APIDeviceTokensFeedbackResponseReader implements JsonObjectReader<APIDeviceTokensFeedbackResponse>
+public class DeviceTokensFeedbackResponseReader implements JsonObjectReader<DeviceTokensFeedbackResponse>
 {
-    private static APIDeviceTokensFeedbackResponse.Builder builder;
+    private static DeviceTokensFeedbackResponse.Builder builder;
 
-    public APIDeviceTokensFeedbackResponseReader() {
-        builder = APIDeviceTokensFeedbackResponse.newBuilder();
+    public DeviceTokensFeedbackResponseReader() {
+        builder = DeviceTokensFeedbackResponse.newBuilder();
     }
 
     public void readDeviceToken(JsonParser jsonParser) throws IOException{
@@ -23,7 +24,7 @@ public class APIDeviceTokensFeedbackResponseReader implements JsonObjectReader<A
     }
 
     public void readMarkedInactiveOn(JsonParser jsonParser) throws IOException {
-        builder.setMarkedInactiveOn(jsonParser.readValueAs(String.class));
+        builder.setMarkedInactiveOn(jsonParser.readValueAs(DateTime.class));
     }
 
     public void readAlias(JsonParser jsonParser) throws IOException {
@@ -31,7 +32,7 @@ public class APIDeviceTokensFeedbackResponseReader implements JsonObjectReader<A
     }
 
     @Override
-    public APIDeviceTokensFeedbackResponse validateAndBuild() throws IOException
+    public DeviceTokensFeedbackResponse validateAndBuild() throws IOException
     {
         try {
             return builder.build();

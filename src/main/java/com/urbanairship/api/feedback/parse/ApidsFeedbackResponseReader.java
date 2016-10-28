@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 package com.urbanairship.api.feedback.parse;
 
@@ -7,14 +7,15 @@ import com.urbanairship.api.feedback.model.APIApidsFeedbackResponse;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import org.codehaus.jackson.JsonParser;
+import org.joda.time.DateTime;
 
 import java.io.IOException;
 
-public class APIApidsFeedbackResponseReader implements JsonObjectReader<APIApidsFeedbackResponse>
+public class ApidsFeedbackResponseReader implements JsonObjectReader<APIApidsFeedbackResponse>
 {
     private static APIApidsFeedbackResponse.Builder builder;
 
-    public APIApidsFeedbackResponseReader() {
+    public ApidsFeedbackResponseReader() {
         builder = APIApidsFeedbackResponse.newBuilder();
     }
 
@@ -29,7 +30,7 @@ public class APIApidsFeedbackResponseReader implements JsonObjectReader<APIApids
     }
 
     public void readMarkedInactiveOn(JsonParser jsonParser) throws IOException {
-        builder.setMarkedInactiveOn(jsonParser.readValueAs(String.class));
+        builder.setMarkedInactiveOn(jsonParser.readValueAs(DateTime.class));
     }
 
     public void readAlias(JsonParser jsonParser) throws IOException {
