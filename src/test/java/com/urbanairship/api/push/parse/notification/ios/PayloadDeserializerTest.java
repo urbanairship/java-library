@@ -9,6 +9,7 @@ import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -251,5 +252,75 @@ public class PayloadDeserializerTest {
             + "}";
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
         assertTrue(payload.getPriority().get().equals(5));
+    }
+
+    @Test
+    public void testTitle() throws Exception {
+        String json
+            = "{"
+            + "  \"title\": \"title\""
+            + "}";
+        IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
+        assertTrue(payload.getTitle().get().equals("title"));
+    }
+
+    @Test
+    public void testIos10Extras() throws Exception {
+        String json
+            = "{\n" +
+                "    \"alert\": \"alert\"," +
+                "    \"subtitle\": \"subtitle\"," +
+                "    \"mutable_content\": true," +
+                "    \"media_attachment\": {" +
+                "        \"url\": \"https://media.giphy.com/media/JYsWwF82EGnpC/giphy.gif\"," +
+                "        \"options\": {" +
+                "            \"time\": 10," +
+                "            \"crop\": {" +
+                "                \"x\": 0.1," +
+                "                \"y\": 0.2," +
+                "                \"width\": 0.3," +
+                "                \"height\": 0.4" +
+                "            }," +
+                "           \"hidden\": true" +
+                "        }," +
+                "        \"content\": {" +
+                "            \"body\": \"content body\"," +
+                "            \"title\": \"content title\"," +
+                "            \"subtitle\": \"content subtitle\"" +
+                "        }" +
+                "    }" +
+                "}";
+
+        IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
+        String objectJson = mapper.writeValueAsString(payload);
+        IOSDevicePayload payload2 = mapper.readValue(json, IOSDevicePayload.class);
+
+        assertTrue(payload.equals(payload2));
+
+        payload = mapper.readValue(objectJson, IOSDevicePayload.class);
+
+        assertTrue(payload.getAlert().get().equals("alert"));
+
+        //Mutable Content
+        assertTrue(payload.getMutableContent().get().equals(true));
+
+        //Subtitle
+        assertTrue(payload.getSubtitle().get().equals("subtitle"));
+
+        //Media Attachment
+        assertTrue(payload.getMediaAttachment().get().getUrl().equals("https://media.giphy.com/media/JYsWwF82EGnpC/giphy.gif"));
+
+        //options
+        assertTrue(payload.getMediaAttachment().get().getOptions().get().getTime().get().equals(10));
+        assertTrue(payload.getMediaAttachment().get().getOptions().get().getCrop().get().getX().get().equals(new BigDecimal("0.1")));
+        assertTrue(payload.getMediaAttachment().get().getOptions().get().getCrop().get().getY().get().equals(new BigDecimal("0.2")));
+        assertTrue(payload.getMediaAttachment().get().getOptions().get().getCrop().get().getWidth().get().equals(new BigDecimal("0.3")));
+        assertTrue(payload.getMediaAttachment().get().getOptions().get().getCrop().get().getHeight().get().equals(new BigDecimal("0.4")));
+        assertTrue(payload.getMediaAttachment().get().getOptions().get().getHidden().get().equals(true));
+
+        //content
+        assertTrue(payload.getMediaAttachment().get().getContent().get().getBody().get().equals("content body"));
+        assertTrue(payload.getMediaAttachment().get().getContent().get().getSubtitle().get().equals("content subtitle"));
+        assertTrue(payload.getMediaAttachment().get().getContent().get().getTitle().get().equals("content title"));
     }
 }

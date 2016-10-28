@@ -1,14 +1,13 @@
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.schedule.model;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.urbanairship.api.push.model.PushModelObject;
 
-public final class ScheduleDetails extends PushModelObject {
+public final class ScheduleDetails extends ScheduleModelObject {
 
     private final String jobId;
     private final SchedulePayload schedulePayload;

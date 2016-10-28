@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.model.audience;
@@ -7,6 +7,7 @@ package com.urbanairship.api.push.model.audience;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.push.model.audience.location.DateRange;
 import com.urbanairship.api.push.model.audience.location.DateRangeUnit;
+import com.urbanairship.api.push.model.audience.location.LocationAlias;
 import com.urbanairship.api.push.model.audience.location.LocationIdentifier;
 import com.urbanairship.api.push.model.audience.location.LocationSelector;
 import com.urbanairship.api.push.model.audience.location.PresenceTimeframe;
@@ -19,6 +20,9 @@ import java.util.Collection;
  * expressions.
  */
 public class Selectors {
+
+    public static final String GROUP_ATTR = "group";
+    public static final String CLASS_ATTR = "tag_class";
 
     public static final Selector atomic(SelectorType type) {
         return BasicSelector.newBuilder()
@@ -92,13 +96,37 @@ public class Selectors {
         return compound(SelectorType.OR, SelectorType.TAG, tags);
     }
 
+    public static final Selector tagWithGroup(String tag, String group) {
+        return BasicValueSelector.newBuilder()
+            .setType(SelectorType.TAG)
+            .setValue(tag)
+            .addAttribute(GROUP_ATTR, group)
+            .build();
+    }
+
     public static final Selector tagWithClass(String tag, String tagClass) {
         return BasicValueSelector.newBuilder()
             .setType(SelectorType.TAG)
             .setValue(tag)
-            .addAttribute("tag_class", tagClass)
+            .addAttribute(CLASS_ATTR, tagClass)
             .build();
     }
+
+    /* Static Lists */
+
+    public static final Selector staticList(String staticList) {
+        return value(SelectorType.STATIC_LIST, staticList);
+    }
+
+    public static final Selector staticLists(String... staticLists) {
+        return compound(SelectorType.OR, SelectorType.STATIC_LIST, staticLists);
+    }
+
+    public static final Selector staticLists(Collection<String> staticLists) {
+        return compound(SelectorType.OR, SelectorType.STATIC_LIST, staticLists);
+    }
+
+    /* Autogroups */
 
     public static final Selector autogroup(int value) {
         return autogroup(Integer.toString(value));
@@ -304,6 +332,17 @@ public class Selectors {
             .build();
     }
 
+    public static final Selector location(String type, String value, DateRange range) {
+        return LocationSelector.newBuilder()
+                .setId(LocationIdentifier.newBuilder()
+                        .setAlias(LocationAlias.newBuilder()
+                                .setType(type)
+                                .setValue(value)
+                                .build())
+                        .build())
+                .setDateRange(range)
+                .build();
+    }
 
     public static final DateRange minutes(int units) {
         return minutes(units, PresenceTimeframe.ANYTIME);

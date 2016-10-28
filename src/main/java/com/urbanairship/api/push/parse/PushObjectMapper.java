@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse;
@@ -8,9 +8,12 @@ import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.CommonObjectMapper;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
+import com.urbanairship.api.push.model.Display;
+import com.urbanairship.api.push.model.InApp;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.PushOptions;
 import com.urbanairship.api.push.model.PushPayload;
+import com.urbanairship.api.push.model.PushResponse;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.location.AbsoluteDateRange;
 import com.urbanairship.api.push.model.audience.location.DateRange;
@@ -32,10 +35,14 @@ import com.urbanairship.api.push.model.notification.actions.ShareAction;
 import com.urbanairship.api.push.model.notification.actions.TagActionData;
 import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
+import com.urbanairship.api.push.model.notification.android.BigPictureStyle;
+import com.urbanairship.api.push.model.notification.android.BigTextStyle;
+import com.urbanairship.api.push.model.notification.android.Category;
+import com.urbanairship.api.push.model.notification.android.InboxStyle;
+import com.urbanairship.api.push.model.notification.android.PublicNotification;
+import com.urbanairship.api.push.model.notification.android.Wearable;
 import com.urbanairship.api.push.model.notification.blackberry.BlackberryDevicePayload;
-import com.urbanairship.api.push.model.notification.ios.IOSAlertData;
-import com.urbanairship.api.push.model.notification.ios.IOSBadgeData;
-import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
+import com.urbanairship.api.push.model.notification.ios.*;
 import com.urbanairship.api.push.model.notification.mpns.MPNSDevicePayload;
 import com.urbanairship.api.push.model.notification.mpns.MPNSPush;
 import com.urbanairship.api.push.model.notification.mpns.MPNSTileData;
@@ -78,13 +85,20 @@ import com.urbanairship.api.push.parse.notification.adm.ADMDevicePayloadDeserial
 import com.urbanairship.api.push.parse.notification.adm.ADMDevicePayloadSerializer;
 import com.urbanairship.api.push.parse.notification.android.AndroidDevicePayloadDeserializer;
 import com.urbanairship.api.push.parse.notification.android.AndroidDevicePayloadSerializer;
+import com.urbanairship.api.push.parse.notification.android.BigPictureStyleDeserializer;
+import com.urbanairship.api.push.parse.notification.android.BigPictureStyleSerializer;
+import com.urbanairship.api.push.parse.notification.android.BigTextStyleDeserializer;
+import com.urbanairship.api.push.parse.notification.android.BigTextStyleSerializer;
+import com.urbanairship.api.push.parse.notification.android.CategoryDeserializer;
+import com.urbanairship.api.push.parse.notification.android.InboxStyleDeserializer;
+import com.urbanairship.api.push.parse.notification.android.InboxStyleSerializer;
+import com.urbanairship.api.push.parse.notification.android.PublicNotificationDeserializer;
+import com.urbanairship.api.push.parse.notification.android.PublicNotificationSerializer;
+import com.urbanairship.api.push.parse.notification.android.WearableDeserializer;
+import com.urbanairship.api.push.parse.notification.android.WearableSerializer;
 import com.urbanairship.api.push.parse.notification.blackberry.BlackberryDevicePayloadDeserializer;
 import com.urbanairship.api.push.parse.notification.blackberry.BlackberryDevicePayloadSerializer;
-import com.urbanairship.api.push.parse.notification.ios.IOSAlertDataDeserializer;
-import com.urbanairship.api.push.parse.notification.ios.IOSAlertDataSerializer;
-import com.urbanairship.api.push.parse.notification.ios.IOSBadgeDataSerializer;
-import com.urbanairship.api.push.parse.notification.ios.IOSDevicePayloadDeserializer;
-import com.urbanairship.api.push.parse.notification.ios.IOSDevicePayloadSerializer;
+import com.urbanairship.api.push.parse.notification.ios.*;
 import com.urbanairship.api.push.parse.notification.mpns.MPNSBatchingIntervalDeserializer;
 import com.urbanairship.api.push.parse.notification.mpns.MPNSBatchingIntervalSerializer;
 import com.urbanairship.api.push.parse.notification.mpns.MPNSDevicePayloadDeserializer;
@@ -123,10 +137,6 @@ import com.urbanairship.api.schedule.parse.ScheduleDetailsSerializer;
 import com.urbanairship.api.schedule.parse.SchedulePayloadDeserializer;
 import com.urbanairship.api.schedule.parse.ScheduleSerializer;
 import com.urbanairship.api.schedule.parse.ScheduledPayloadSerializer;
-import com.urbanairship.api.tag.model.AddRemoveDeviceFromTagPayload;
-import com.urbanairship.api.tag.model.BatchModificationPayload;
-import com.urbanairship.api.tag.parse.AddRemoveDeviceFromTagPayloadSerializer;
-import com.urbanairship.api.tag.parse.BatchModificationPayloadSerializer;
 import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.JsonDeserializer;
@@ -173,6 +183,10 @@ public class PushObjectMapper {
                 .addDeserializer(Notification.class, notificationDeserializer)
                 .addSerializer(Interactive.class, new InteractiveSerializer())
                 .addDeserializer(Interactive.class, new InteractiveDeserializer())
+                .addSerializer(InApp.class, new InAppSerializer())
+                .addDeserializer(InApp.class, new InAppDeserializer())
+                .addSerializer(Display.class, new DisplaySerializer())
+                .addDeserializer(Display.class, new DisplayDeserializer())
                 .addSerializer(DeviceType.class, new DeviceTypeSerializer())
                 .addDeserializer(DeviceType.class, new PlatformDeserializer())
                 .addSerializer(Selector.class, new SelectorSerializer())
@@ -188,6 +202,8 @@ public class PushObjectMapper {
                 .addDeserializer(DateRange.class, new DateRangeDeserializer())
                 .addSerializer(PushExpiry.class, new PushExpirySerializer())
                 .addDeserializer(PushExpiry.class, new PushExpiryDeserializer())
+                .addDeserializer(PushResponse.class, new PushResponseDeserializer())
+
 
 
             /* IOS */
@@ -196,6 +212,14 @@ public class PushObjectMapper {
                 .addSerializer(IOSBadgeData.class, new IOSBadgeDataSerializer())
                 .addSerializer(IOSAlertData.class, new IOSAlertDataSerializer())
                 .addDeserializer(IOSAlertData.class, new IOSAlertDataDeserializer())
+                .addSerializer(MediaAttachment.class, new MediaAttachmentSerializer())
+                .addDeserializer(MediaAttachment.class, new MediaAttachmentDeserializer())
+                .addSerializer(IOSMediaOptions.class, new IOSMediaOptionsSerializer())
+                .addDeserializer(IOSMediaOptions.class, new IOSMediaOptionsDeserializer())
+                .addSerializer(Crop.class, new CropSerializer())
+                .addDeserializer(Crop.class, new CropDeserializer())
+                .addSerializer(IOSMediaContent.class, new IOSMediaContentSerializer())
+                .addDeserializer(IOSMediaContent.class, new IOSMediaContentDeserializer())
 
             /* WNS enums */
                 .addSerializer(WNSToastData.Duration.class, new WNSDurationSerializer())
@@ -236,6 +260,18 @@ public class PushObjectMapper {
             /* Android */
                 .addSerializer(AndroidDevicePayload.class, new AndroidDevicePayloadSerializer())
                 .addDeserializer(AndroidDevicePayload.class, androidPayloadDS)
+                .addSerializer(Wearable.class, new WearableSerializer())
+                .addDeserializer(Wearable.class, new WearableDeserializer())
+                .addSerializer(BigPictureStyle.class, new BigPictureStyleSerializer())
+                .addDeserializer(BigPictureStyle.class, new BigPictureStyleDeserializer())
+                .addSerializer(BigTextStyle.class, new BigTextStyleSerializer())
+                .addDeserializer(BigTextStyle.class, new BigTextStyleDeserializer())
+                .addSerializer(InboxStyle.class, new InboxStyleSerializer())
+                .addDeserializer(InboxStyle.class, new InboxStyleDeserializer())
+                .addDeserializer(Category.class, new CategoryDeserializer())
+                .addSerializer(PublicNotification.class, new PublicNotificationSerializer())
+                .addDeserializer(PublicNotification.class, new PublicNotificationDeserializer())
+
 
             /* Blackberry */
                 .addSerializer(BlackberryDevicePayload.class, new BlackberryDevicePayloadSerializer())
@@ -271,10 +307,6 @@ public class PushObjectMapper {
                 .addSerializer(ShareAction.class, new ShareActionSerializer())
 
                 .addDeserializer(TagActionData.class, new TagActionDataDeserializer())
-
-            /* Tags */
-                .addSerializer(AddRemoveDeviceFromTagPayload.class, new AddRemoveDeviceFromTagPayloadSerializer())
-                .addSerializer(BatchModificationPayload.class, new BatchModificationPayloadSerializer())
 
             /* Segments */
                 .addDeserializer(SegmentDefinition.class, new SegmentDefinitionDeserializer());

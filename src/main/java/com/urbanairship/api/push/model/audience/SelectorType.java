@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.model.audience;
@@ -13,6 +13,7 @@ public enum SelectorType {
     ALIAS("alias", SelectorCategory.VALUE),
     SEGMENT("segment", SelectorCategory.VALUE),
     NAMED_USER("named_user", SelectorCategory.VALUE),
+    STATIC_LIST("static_list", SelectorCategory.VALUE),
 
     DEVICE_TOKEN("device_token", SelectorCategory.VALUE, true, DeviceType.IOS),
     DEVICE_PIN("device_pin", SelectorCategory.VALUE, true, DeviceType.BLACKBERRY),

@@ -3,6 +3,8 @@ package com.urbanairship.api.push.parse;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
+import com.urbanairship.api.push.model.InApp;
+import com.urbanairship.api.push.model.Position;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
@@ -223,12 +225,46 @@ public class PushPayloadBasicSerializationTest {
         assertEquals("phoenix", adm.getAlert().get());
     }
 
+    @Test
+    public void testInAppMessage() throws Exception {
+        String json = "{" +
+                "\"audience\": \"all\"," +
+                "\"device_types\": [\"ios\", \"android\", \"amazon\"]," +
+                "\"notification\": {" +
+                    "\"alert\": \"test alert test test\"" +
+                "}," +
+                "\"in_app\": {" +
+                    "\"alert\": \"This part appears in-app!\"," +
+                    "\"display_type\": \"banner\"," +
+                    "\"display\": {" +
+                        "\"position\": \"top\"" +
+                    "}" +
+                "}" +
+                "}";
+
+        PushPayload push = mapper.readValue(json, PushPayload.class);
+        assertNotNull(push);
+        assertEquals(push.getAudience(), Selectors.all());
+        assertEquals(push.getDeviceTypes(), DeviceTypeData.of(DeviceType.IOS,DeviceType.AMAZON,DeviceType.ANDROID));
+
+        Notification notification = push.getNotification().get();
+        assertNotNull(notification);
+        assertEquals(notification.getAlert().get(), "test alert test test");
+
+        InApp inAppMessage = push.getInApp().get();
+        assertNotNull(inAppMessage);
+        assertEquals(inAppMessage.getAlert(), "This part appears in-app!");
+        assertEquals(inAppMessage.getDisplayType(), "banner");
+        assertEquals(inAppMessage.getDisplay().get().getPosition().get(), Position.TOP);
+    }
+
+
     // TODO: split this into individual tests
     @Test
     public void testRoundTrip() throws Exception {
 
         PushPayload expected = PushPayload.newBuilder()
-                .setAudience(Selectors.tag("derp"))
+                .setAudience(Selectors.tag("tag1"))
                 .setNotification(Notification.newBuilder()
                                 .setAlert(RandomStringUtils.randomAlphabetic(10))
                                 .build()
@@ -250,7 +286,7 @@ public class PushPayloadBasicSerializationTest {
                                 .build()
                 )
                 .setDeviceTypes(DeviceTypeData.newBuilder()
-                        .addDeviceType(DeviceType.WNS)
+                        .addDeviceType(DeviceType.IOS)
                         .build())
                 .build();
 
@@ -260,12 +296,12 @@ public class PushPayloadBasicSerializationTest {
         assertEquals(expected, parsed);
 
         expected = PushPayload.newBuilder()
-                .setAudience(Selectors.or(Selectors.alias("alpern"), Selectors.tag("wat")))
+                .setAudience(Selectors.or(Selectors.alias("alias1"), Selectors.tag("tag1")))
                 .setNotification(Notification.newBuilder()
                         .setAlert(RandomStringUtils.randomAlphabetic(10))
                         .build())
                 .setDeviceTypes(DeviceTypeData.newBuilder()
-                        .addDeviceType(DeviceType.WNS)
+                        .addDeviceType(DeviceType.ANDROID)
                         .build())
                 .build();
 
@@ -275,14 +311,29 @@ public class PushPayloadBasicSerializationTest {
         assertEquals(expected, parsed);
 
         expected = PushPayload.newBuilder()
-                .setAudience(Selectors.and(Selectors.tag("Beyonce"), Selectors.tag("GreenDay")))
+                .setAudience(Selectors.and(Selectors.tag("tag1"), Selectors.tag("tag2")))
                 .setNotification(Notification.newBuilder()
                         .setAlert(RandomStringUtils.randomAlphabetic(10))
                         .build())
                 .setDeviceTypes(DeviceTypeData.newBuilder()
-                        .addDeviceType(DeviceType.WNS)
+                        .addDeviceType(DeviceType.AMAZON)
                         .build())
                 .build();
+
+        serial = mapper.writeValueAsString(expected);
+        parsed = mapper.readValue(serial, PushPayload.class);
+
+        assertEquals(expected, parsed);
+
+        expected = PushPayload.newBuilder()
+            .setAudience(Selectors.or(Selectors.tagWithGroup("tag1", "group1"), Selectors.tagWithGroup("tag2", "group2")))
+            .setNotification(Notification.newBuilder()
+                .setAlert(RandomStringUtils.randomAlphabetic(10))
+                .build())
+            .setDeviceTypes(DeviceTypeData.newBuilder()
+                .addDeviceType(DeviceType.IOS)
+                .build())
+            .build();
 
         serial = mapper.writeValueAsString(expected);
         parsed = mapper.readValue(serial, PushPayload.class);
@@ -293,9 +344,9 @@ public class PushPayloadBasicSerializationTest {
     @Test(expected = APIParsingException.class)
     public void testInvalidDeviceIdentifiers() throws Exception {
         PushPayload payload = PushPayload.newBuilder()
-                .setAudience(Selectors.apid("wat"))
+                .setAudience(Selectors.apid("apid1"))
                 .setNotification(Notification.newBuilder()
-                        .setAlert("WAT")
+                        .setAlert(RandomStringUtils.randomAlphabetic(10))
                         .build())
                 .setDeviceTypes(DeviceTypeData.newBuilder()
                         .addDeviceType(DeviceType.WNS)
@@ -309,7 +360,7 @@ public class PushPayloadBasicSerializationTest {
         PushPayload payload = PushPayload.newBuilder()
                 .setAudience(Selectors.apid("6de14dab-a4e0-fe5b-06f7-f03b090e4a25"))
                 .setNotification(Notification.newBuilder()
-                        .setAlert("WAT")
+                        .setAlert(RandomStringUtils.randomAlphabetic(10))
                         .build())
                 .setDeviceTypes(DeviceTypeData.newBuilder()
                         .addDeviceType(DeviceType.WNS)

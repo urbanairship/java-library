@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.notification.ios;
@@ -50,6 +50,22 @@ public class IOSDevicePayloadSerializer extends JsonSerializer<IOSDevicePayload>
 
         if (payload.getInteractive().isPresent()) {
             jgen.writeObjectField("interactive", payload.getInteractive().get());
+        }
+
+        if (payload.getTitle().isPresent()) {
+            jgen.writeStringField("title", payload.getTitle().get());
+        }
+
+        if (payload.getSubtitle().isPresent()) {
+            jgen.writeStringField("subtitle", payload.getSubtitle().get());
+        }
+
+        if (payload.getMutableContent().isPresent()) {
+            jgen.writeBooleanField("mutable_content", payload.getMutableContent().get());
+        }
+
+        if (payload.getMediaAttachment().isPresent()) {
+            jgen.writeObjectField("media_attachment", payload.getMediaAttachment().get());
         }
 
         jgen.writeEndObject();

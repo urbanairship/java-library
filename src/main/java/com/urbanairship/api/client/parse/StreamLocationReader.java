@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.client.parse;
 
-import com.urbanairship.api.client.APIErrorDetails;
+import com.urbanairship.api.client.RequestErrorDetails;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import org.codehaus.jackson.JsonParser;
@@ -15,12 +15,12 @@ import java.io.IOException;
 Readers are the part of the deserialization process that actually builds and
 return an object.
  */
-public class StreamLocationReader implements JsonObjectReader<APIErrorDetails.Location> {
+public class StreamLocationReader implements JsonObjectReader<RequestErrorDetails.Location> {
 
-    private final APIErrorDetails.Location.Builder builder;
+    private final RequestErrorDetails.Location.Builder builder;
 
     public StreamLocationReader() {
-        this.builder = APIErrorDetails.Location.newBuilder();
+        this.builder = RequestErrorDetails.Location.newBuilder();
     }
 
     public void readLine(JsonParser parser) throws IOException {
@@ -31,7 +31,7 @@ public class StreamLocationReader implements JsonObjectReader<APIErrorDetails.Lo
         builder.setColumn(parser.readValueAs(Number.class));
     }
 
-    public APIErrorDetails.Location validateAndBuild() throws IOException {
+    public RequestErrorDetails.Location validateAndBuild() throws IOException {
         try {
             return builder.build();
         } catch (Exception ex) {

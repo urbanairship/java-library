@@ -1,10 +1,11 @@
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.model.notification.ios;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushExpiry;
@@ -28,6 +29,10 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
     private final Optional<Integer> priority;
     private final Optional<String> category;
     private final Optional<Interactive> interactive;
+    private final Optional<String> title;
+    private final Optional<String> subtitle;
+    private final Optional<MediaAttachment> mediaAttachment;
+    private final Optional<Boolean> mutableContent;
 
     private IOSDevicePayload(Optional<IOSAlertData> alert,
                              Optional<String> sound,
@@ -37,7 +42,11 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                              Optional<Integer> priority,
                              Optional<ImmutableMap<String, String>> extra,
                              Optional<String> category,
-                             Optional<Interactive> interactive) {
+                             Optional<Interactive> interactive,
+                             Optional<String> title,
+                             Optional<String> subtitle,
+                             Optional<MediaAttachment> mediaAttachment,
+                             Optional<Boolean> mutableContent) {
         this.alert = alert;
         this.sound = sound;
         this.badge = badge;
@@ -47,11 +56,15 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         this.priority = priority;
         this.category = category;
         this.interactive = interactive;
+        this.title = title;
+        this.subtitle = subtitle;
+        this.mediaAttachment = mediaAttachment;
+        this.mutableContent = mutableContent;
     }
 
     /**
-     * Get an IOSPayloadBuilder
-     * @return IOSPayloadBuilder
+     * Get a IOSDevicePayload Builder
+     * @return Builder
      */
     public static Builder newBuilder() {
         return new Builder();
@@ -59,7 +72,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get the deviceType.
-     * @return deviceType
+     * @return DeviceType
      */
     @Override
     public DeviceType getDeviceType() {
@@ -68,7 +81,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get the alert if present.
-     * @return alert
+     * @return Optional string representing the alert
      */
     @Override
     public Optional<String> getAlert() {
@@ -77,7 +90,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get the IOSAlertData
-     * @return IOSAlertData
+     * @return Optional IOSAlertData
      */
     public Optional<IOSAlertData> getAlertData() {
         return alert;
@@ -85,7 +98,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get the sound file name
-     * @return sound file name
+     * @return Optional string representing the sound file name
      */
     public Optional<String> getSound() {
         return sound;
@@ -93,7 +106,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get IOSBadgeData
-     * @return IOSBadgeData
+     * @return Optional IOSBadgeData
      */
     public Optional<IOSBadgeData> getBadge() {
         return badge;
@@ -101,7 +114,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get the content available boolean value
-     * @return content available
+     * @return Optional boolean representation of content available
      */
     public Optional<Boolean> getContentAvailable() {
         return contentAvailable;
@@ -109,7 +122,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get a Map of the extra key value pairs
-     * @return key value pairs
+     * @return Optional ImmutableMap of strings representing the key value pairs
      */
     public Optional<ImmutableMap<String, String>> getExtra() {
         return extra;
@@ -117,7 +130,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get the expiry (TTL) if present
-     * @return expiry value
+     * @return Optional PushExpiry expiry value
      */
     public Optional<PushExpiry> getExpiry() {
         return  expiry;
@@ -125,7 +138,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get the priority value
-     * @return priority
+     * @return Optional Integer representation of the priority
      */
     public Optional<Integer> getPriority() {
         return priority;
@@ -133,7 +146,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get the category if present
-     * @return category
+     * @return Optional string representation of the category
      */
     public Optional<String> getCategory() {
         return category;
@@ -141,10 +154,38 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get the Interactive data if present
-     * @return interactive
+     * @return Optional Interactive
      */
     public Optional<Interactive> getInteractive() {
         return interactive;
+    }
+
+    /**
+     * Get the title if present.
+     * @return Optional string representation of the title
+     */
+    public Optional<String> getTitle() {
+        return title;
+    }
+
+    /**
+     * Get the subtitle if present
+     * @return Optional string representation of the subtitle
+     */
+    public Optional<String> getSubtitle() {
+        return subtitle;
+    }
+
+    /**
+     * Get the mutable content boolean value
+     * @return Optional boolean representation of the mutable content
+     */
+    public Optional<Boolean> getMutableContent() {
+        return mutableContent;
+    }
+
+    public Optional<MediaAttachment> getMediaAttachment() {
+        return mediaAttachment;
     }
 
     @Override
@@ -184,6 +225,18 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         if (interactive!= null ? ! interactive.equals(that.interactive) : that.interactive != null) {
             return false;
         }
+        if (title!= null ? ! title.equals(that.title) : that.title != null) {
+            return false;
+        }
+        if(subtitle!= null ? ! subtitle.equals(that.subtitle) : that.subtitle != null) {
+            return false;
+        }
+        if(mediaAttachment != null ? ! mediaAttachment.equals(that.mediaAttachment) : that.mediaAttachment != null) {
+            return false;
+        }
+        if(mutableContent != null ? ! mutableContent.equals(that.mutableContent) : that.mutableContent != null) {
+            return false;
+        }
         return true;
     }
 
@@ -198,6 +251,9 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         result = 31 * result + (priority != null ? priority.hashCode() : 0);
         result = 31 * result + (category != null ? category.hashCode() : 0);
         result = 31 * result + (interactive != null ? interactive.hashCode() : 0);
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (mediaAttachment != null ? mediaAttachment.hashCode() : 0);
+        result = 31 * result + (mutableContent != null ? mutableContent.hashCode() : 0);
         return result;
     }
 
@@ -213,6 +269,10 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
             ", contentAvailable=" + contentAvailable +
             ", category=" + category +
             ", interactive=" + interactive +
+            ", title=" + title +
+            ", subtitle=" + subtitle +
+            ", mediaAttachment=" + mediaAttachment +
+            ", mutable_content=" + mutableContent +
                 '}';
     }
 
@@ -226,6 +286,10 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         private Integer priority = null;
         private String category = null;
         private Interactive interactive = null;
+        private String title = null;
+        private String subtitle = null;
+        private MediaAttachment mediaAttachment = null;
+        private Boolean mutableContent = null;
 
         private Builder() { }
 
@@ -288,7 +352,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         /**
          * Set the expiry
          * @param value Integer
-         * @return Integer
+         * @return Builder
          **/
         public Builder setExpiry(PushExpiry value) {
             this.expiry = value;
@@ -298,7 +362,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         /**
          * Set the priority
          * @param value Integer
-         * @return Integer
+         * @return Builder
          **/
         public Builder setPriority(int value) {
             this.priority = value;
@@ -336,7 +400,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         /**
          * Set the category
          * @param value String
-         * @return String
+         * @return Builder
          */
         public Builder setCategory(String value) {
             this.category = value;
@@ -346,13 +410,47 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         /**
          * Set the Interactive object
          * @param value Interactive
-         * @return Interactive
+         * @return Builder
          */
         public Builder setInteractive(Interactive value) {
             this.interactive = value;
             return this;
         }
 
+        /**
+         * Set the title
+         * @param value String
+         * @return Builder
+         */
+        public Builder setTitle(String value) {
+            this.title = value;
+            return this;
+        }
+
+        public Builder setSubtitle(String value){
+            this.subtitle = value;
+            return this;
+        }
+
+        /**
+         * Set the media attachment.
+         * @param value MediaAttachment
+         * @return Builder
+         */
+        public Builder setMediaAttachment(MediaAttachment value) {
+            this.mediaAttachment = value;
+            return this;
+        }
+
+        /**
+         * Set the mutable content
+         * @param value Boolean
+         * @return Builder
+         */
+        public Builder setMutableContent(Boolean value) {
+            this.mutableContent = value;
+            return this;
+        }
         /**
          * Build IOSDevicePayload
          * @return IOSDevicePayload
@@ -367,8 +465,11 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                     Optional.fromNullable(priority),
                     extra == null ? Optional.<ImmutableMap<String,String>>absent() : Optional.fromNullable(extra.build()),
                     Optional.fromNullable(category),
-                    Optional.fromNullable(interactive));
-
+                    Optional.fromNullable(interactive),
+                    Optional.fromNullable(title),
+                    Optional.fromNullable(subtitle),
+                    Optional.fromNullable(mediaAttachment),
+                    Optional.fromNullable(mutableContent));
         }
     }
 }

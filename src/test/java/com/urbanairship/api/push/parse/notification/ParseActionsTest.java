@@ -4,6 +4,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.google.common.io.BaseEncoding;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.notification.actions.Action;
 import com.urbanairship.api.push.model.notification.actions.ActionType;
@@ -18,7 +19,6 @@ import com.urbanairship.api.push.model.notification.actions.RemoveTagAction;
 import com.urbanairship.api.push.model.notification.actions.ShareAction;
 import com.urbanairship.api.push.model.notification.actions.TagActionData;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import org.apache.commons.codec.binary.Base64;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ObjectNode;
 import org.junit.Before;
@@ -317,7 +317,7 @@ public class ParseActionsTest {
     @Test
     public void testSmallBinaryBody() throws Exception {
         byte[] bodyBytes = new byte[32 * 1024];
-        String bodyString = Base64.encodeBase64String(bodyBytes);
+        String bodyString = BaseEncoding.base64().encode(bodyBytes);
 
         openLandingPageBody(bodyString, LandingPageContent.Encoding.Base64);
     }
@@ -325,7 +325,7 @@ public class ParseActionsTest {
     @Test
     public void testLargeBinaryBody() throws Exception {
         byte[] bodyBytes = new byte[LandingPageContent.MAX_BODY_SIZE_BYTES];
-        String bodyString = Base64.encodeBase64String(bodyBytes);
+        String bodyString = BaseEncoding.base64().encode(bodyBytes);
         assertEquals(LandingPageContent.MAX_BODY_SIZE_BASE64, bodyString.length());
 
         openLandingPageBody(bodyString, LandingPageContent.Encoding.Base64);
@@ -334,7 +334,7 @@ public class ParseActionsTest {
     @Test(expected = APIParsingException.class)
     public void testTooLargeBinaryBody() throws Exception {
         byte[] bodyBytes = new byte[LandingPageContent.MAX_BODY_SIZE_BYTES + 24];
-        String bodyString = Base64.encodeBase64String(bodyBytes);
+        String bodyString = BaseEncoding.base64().encode(bodyBytes);
 
         openLandingPageBody(bodyString, LandingPageContent.Encoding.Base64);
     }

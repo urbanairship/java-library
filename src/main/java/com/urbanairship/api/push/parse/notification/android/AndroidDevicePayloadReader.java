@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.notification.android;
@@ -12,15 +12,20 @@ import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
+import com.urbanairship.api.push.model.notification.android.Category;
+import com.urbanairship.api.push.model.notification.android.PublicNotification;
+import com.urbanairship.api.push.model.notification.android.Style;
+import com.urbanairship.api.push.model.notification.android.Wearable;
 import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
 
 public class AndroidDevicePayloadReader implements JsonObjectReader<AndroidDevicePayload> {
 
-    private AndroidDevicePayload.Builder builder = AndroidDevicePayload.newBuilder();
+    private final AndroidDevicePayload.Builder builder;
 
     public AndroidDevicePayloadReader() {
+        this.builder = AndroidDevicePayload.newBuilder();
     }
 
     public void readAlert(JsonParser parser) throws IOException {
@@ -35,6 +40,10 @@ public class AndroidDevicePayloadReader implements JsonObjectReader<AndroidDevic
         builder.setTimeToLive(parser.readValueAs(PushExpiry.class));
     }
 
+    public void readDeliveryPriority(JsonParser parser) throws IOException {
+        builder.setDeliveryPriority(parser.readValueAs(String.class));
+    }
+
     public void readDelayWhileIdle(JsonParser parser) throws IOException {
         builder.setDelayWhileIdle(BooleanFieldDeserializer.INSTANCE.deserialize(parser, "delay_while_idle"));
     }
@@ -45,6 +54,46 @@ public class AndroidDevicePayloadReader implements JsonObjectReader<AndroidDevic
 
     public void readInteractive(JsonParser parser) throws IOException {
         builder.setInteractive(parser.readValueAs(Interactive.class));
+    }
+
+    public void readTitle(JsonParser parser) throws IOException {
+        builder.setTitle(StringFieldDeserializer.INSTANCE.deserialize(parser, "title"));
+    }
+
+    public void readWearable(JsonParser parser) throws IOException {
+        builder.setWearable(parser.readValueAs(Wearable.class));
+    }
+
+    public void readLocalOnly(JsonParser parser) throws IOException {
+        builder.setLocalOnly(parser.readValueAs(Boolean.class));
+    }
+
+    public void readSummary(JsonParser parser) throws IOException {
+        builder.setSummary(parser.readValueAs(String.class));
+    }
+
+    public void readStyle(JsonParser parser) throws IOException {
+        builder.setStyle(parser.readValueAs(Style.class));
+    }
+
+    public void readSound(JsonParser parser) throws IOException {
+        builder.setSound(parser.readValueAs(String.class));
+    }
+
+    public void readPriority(JsonParser parser) throws IOException {
+        builder.setPriority(parser.readValueAs(Integer.class));
+    }
+
+    public void readCategory(JsonParser parser) throws IOException {
+        builder.setCategory(parser.readValueAs(Category.class));
+    }
+
+    public void readVisibility(JsonParser parser) throws IOException {
+        builder.setVisibility(parser.readValueAs(Integer.class));
+    }
+
+    public void readPublicNotification(JsonParser parser) throws IOException {
+        builder.setPublicNotification(parser.readValueAs(PublicNotification.class));
     }
 
     @Override

@@ -3,6 +3,8 @@ package com.urbanairship.api.push.model.notification.ios;
 import com.urbanairship.api.push.model.PushExpiry;
 import org.junit.Test;
 
+import java.math.BigDecimal;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -29,6 +31,36 @@ public class IOSDevicePayloadTest {
 
     @Test
     public void testBuilder() {
+        BigDecimal x = new BigDecimal("0.1");
+        BigDecimal y = new BigDecimal("0.2");
+        BigDecimal width = new BigDecimal("0.3");
+        BigDecimal height = new BigDecimal("0.4");
+
+        Crop crop = Crop.newBuilder()
+                .setX(x)
+                .setY(y)
+                .setWidth(width)
+                .setHeight(height)
+                .build();
+
+        IOSMediaOptions options = IOSMediaOptions.newBuilder()
+                .setTime(10)
+                .setCrop(crop)
+                .setHidden(true)
+                .build();
+
+        IOSMediaContent content = IOSMediaContent.newBuilder()
+                .setBody("content body")
+                .setTitle("content title")
+                .setSubtitle("content subtitle")
+                .build();
+
+        MediaAttachment mediaAttachment = MediaAttachment.newBuilder()
+                .setUrl("https://media.giphy.com/media/JYsWwF82EGnpC/giphy.gif")
+                .setOptions(options)
+                .setContent(content)
+                .build();
+
         IOSDevicePayload m = IOSDevicePayload.newBuilder()
                 .setSound("this is a sound")
                 .setContentAvailable(true)
@@ -37,7 +69,12 @@ public class IOSDevicePayloadTest {
                 .setExpiry(PushExpiry.newBuilder().setExpirySeconds(600).build())
                 .setPriority(10)
                 .addExtraEntry("this", "that")
+                .setTitle("title")
+                .setSubtitle("subtitle")
+                .setMediaAttachment(mediaAttachment)
+                .setMutableContent(true)
                 .build();
+
         assertTrue(m.getExtra().isPresent());
         assertEquals(1, m.getExtra().get().size());
         assertTrue(m.getExtra().get().containsKey("this"));
@@ -49,6 +86,20 @@ public class IOSDevicePayloadTest {
         assertTrue(m.getBadge().isPresent());
         assertEquals("this is a sound", m.getSound().get());
         assertTrue(m.getContentAvailable().get());
+        assertEquals("title", m.getTitle().get());
+        assertEquals("subtitle", m.getSubtitle().get());
+        assertEquals("https://media.giphy.com/media/JYsWwF82EGnpC/giphy.gif", m.getMediaAttachment().get().getUrl());
+        assertEquals("content body", m.getMediaAttachment().get().getContent().get().getBody().get());
+        assertEquals("content title", m.getMediaAttachment().get().getContent().get().getTitle().get());
+        assertEquals("content subtitle", m.getMediaAttachment().get().getContent().get().getSubtitle().get());
+        Integer time = 10;
+        assertEquals(time, m.getMediaAttachment().get().getOptions().get().getTime().get());
+        assertEquals(height, m.getMediaAttachment().get().getOptions().get().getCrop().get().getHeight().get());
+        assertEquals(width, m.getMediaAttachment().get().getOptions().get().getCrop().get().getWidth().get());
+        assertEquals(x, m.getMediaAttachment().get().getOptions().get().getCrop().get().getX().get());
+        assertEquals(y, m.getMediaAttachment().get().getOptions().get().getCrop().get().getY().get());
+        Boolean hidden = true;
+        assertEquals(hidden, m.getMediaAttachment().get().getOptions().get().getHidden().get());
     }
 
 }

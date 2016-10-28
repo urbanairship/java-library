@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.audience;
@@ -42,6 +42,7 @@ public class Validation {
               break;
           case TAG:
           case ALIAS:
+          case STATIC_LIST:
           case SEGMENT:
               // TODO: are there any restrictions on tag, alias, and
               // segment names?

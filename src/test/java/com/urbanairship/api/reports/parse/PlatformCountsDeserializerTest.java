@@ -1,11 +1,6 @@
-/*
- * Copyright (c) 2013-2014.  Urban Airship and Contributors
- */
-
 package com.urbanairship.api.reports.parse;
 
 
-import com.urbanairship.api.client.parse.APIResponseObjectMapper;
 import com.urbanairship.api.reports.model.PerPushCounts;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
@@ -15,7 +10,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class PlatformCountsDeserializerTest {
 
-    private static final ObjectMapper mapper = APIResponseObjectMapper.getInstance();
+    private static final ObjectMapper mapper = ReportsObjectMapper.getInstance();
 
     @Test
     public void testAndroidPlatformCountJsonDeserialize() throws Exception {

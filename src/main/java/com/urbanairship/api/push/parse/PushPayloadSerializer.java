@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse;
@@ -31,6 +31,9 @@ public class PushPayloadSerializer extends JsonSerializer<PushPayload> {
         }
         if (payload.getPushOptions().isPresent()) {
             jgen.writeObjectField("options", payload.getPushOptions().get());
+        }
+        if (payload.getInApp().isPresent()) {
+            jgen.writeObjectField("in_app", payload.getInApp().get());
         }
 
         jgen.writeEndObject();

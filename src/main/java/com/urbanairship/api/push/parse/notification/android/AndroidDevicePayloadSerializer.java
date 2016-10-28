@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.notification.android;
@@ -28,6 +28,10 @@ public class AndroidDevicePayloadSerializer extends JsonSerializer<AndroidDevice
             jgen.writeObjectField("time_to_live", payload.getTimeToLive().get());
         }
 
+        if (payload.getDeliveryPriority().isPresent()) {
+            jgen.writeStringField("delivery_priority", payload.getDeliveryPriority().get());
+        }
+
         if (payload.getDelayWhileIdle().isPresent()) {
             jgen.writeBooleanField("delay_while_idle", payload.getDelayWhileIdle().get());
         }
@@ -38,6 +42,46 @@ public class AndroidDevicePayloadSerializer extends JsonSerializer<AndroidDevice
 
         if (payload.getInteractive().isPresent()) {
             jgen.writeObjectField("interactive", payload.getInteractive().get());
+        }
+
+        if (payload.getTitle().isPresent()) {
+            jgen.writeStringField("title", payload.getTitle().get());
+        }
+
+        if (payload.getLocalOnly().isPresent()) {
+            jgen.writeBooleanField("local_only", payload.getLocalOnly().get());
+        }
+
+        if (payload.getWearable().isPresent()) {
+            jgen.writeObjectField("wearable", payload.getWearable().get());
+        }
+
+        if (payload.getSummary().isPresent()) {
+            jgen.writeStringField("summary", payload.getSummary().get());
+        }
+
+        if (payload.getSound().isPresent()) {
+            jgen.writeStringField("sound", payload.getSound().get());
+        }
+
+        if (payload.getCategory().isPresent()) {
+            jgen.writeStringField("category", payload.getCategory().get().getCategory());
+        }
+
+        if (payload.getPriority().isPresent()) {
+            jgen.writeNumberField("priority", payload.getPriority().get());
+        }
+
+        if (payload.getStyle().isPresent()) {
+            jgen.writeObjectField("style", payload.getStyle().get());
+        }
+
+        if (payload.getTimeToLive().isPresent()) {
+            jgen.writeObjectField("time_to_live", payload.getTimeToLive().get());
+        }
+
+        if (payload.getVisibility().isPresent()) {
+            jgen.writeNumberField("visibility", payload.getVisibility().get());
         }
 
         jgen.writeEndObject();

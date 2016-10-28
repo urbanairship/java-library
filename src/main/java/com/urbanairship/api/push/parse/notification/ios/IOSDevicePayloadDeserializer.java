@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.notification.ios;
@@ -70,6 +70,28 @@ public class IOSDevicePayloadDeserializer extends JsonDeserializer<IOSDevicePayl
                     public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
                     reader.readPriority(json);
                     }
+            })
+            .put("title", new FieldParser<IOSDevicePayloadReader>() {
+                    public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                        reader.readTitle(json);
+                    }
+                })
+            .put("subtitle", new FieldParser<IOSDevicePayloadReader>() {
+                    public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                        reader.readSubtitle(json);
+                    }
+            })
+            .put("mutable_content", new FieldParser<IOSDevicePayloadReader>() {
+                @Override
+                public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                    reader.readMutableContent(json);
+                }
+            })
+            .put("media_attachment", new FieldParser<IOSDevicePayloadReader>() {
+                @Override
+                public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                    reader.readMediaAttachment(json, context);
+                }
             })
             .build()
             );

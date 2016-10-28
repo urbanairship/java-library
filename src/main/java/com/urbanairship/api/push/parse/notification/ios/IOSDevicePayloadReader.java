@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.parse.notification.ios;
@@ -21,6 +21,7 @@ public class IOSDevicePayloadReader implements JsonObjectReader<IOSDevicePayload
 
     private IOSDevicePayload.Builder builder = IOSDevicePayload.newBuilder();
     private IOSAlertDataDeserializer alertDS = new IOSAlertDataDeserializer();
+    private MediaAttachmentDeserializer mediaAttachmentDS = new MediaAttachmentDeserializer();
 
     public IOSDevicePayloadReader() {
     }
@@ -59,6 +60,22 @@ public class IOSDevicePayloadReader implements JsonObjectReader<IOSDevicePayload
 
     public void readPriority(JsonParser parser) throws IOException {
         builder.setPriority(parser.getIntValue());
+    }
+
+    public void readTitle(JsonParser parser) throws IOException {
+        builder.setTitle(StringFieldDeserializer.INSTANCE.deserialize(parser, "title"));
+    }
+
+    public void readSubtitle(JsonParser parser) throws IOException{
+        builder.setSubtitle(StringFieldDeserializer.INSTANCE.deserialize(parser, "subtitle"));
+    }
+
+    public void readMutableContent(JsonParser parser) throws IOException {
+        builder.setMutableContent(BooleanFieldDeserializer.INSTANCE.deserialize(parser, "mutable_content"));
+    }
+
+    public void readMediaAttachment(JsonParser parser, DeserializationContext context) throws IOException {
+        builder.setMediaAttachment(mediaAttachmentDS.deserialize(parser, context));
     }
 
     @Override

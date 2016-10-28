@@ -1,10 +1,11 @@
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.push.model.notification.android;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushExpiry;
@@ -19,98 +20,290 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
     private final Optional<String> alert;
     private final Optional<String> collapseKey;
     private final Optional<PushExpiry> timeToLive;
+    private final Optional<String> deliveryPriority;
     private final Optional<Boolean> delayWhileIdle;
     private final Optional<ImmutableMap<String, String>> extra;
     private final Optional<Interactive> interactive;
+    private final Optional<String> title;
+    private final Optional<Boolean> localOnly;
+    private final Optional<Wearable> wearable;
+    private final Optional<String> summary;
+    private final Optional<Style> style;
+    private final Optional<String> sound;
+    // Android L features
+    private final Optional<Integer> priority;
+    private final Optional<Category> category;
+    private final Optional<Integer> visibility;
+    private final Optional<PublicNotification> publicNotification;
 
-    private AndroidDevicePayload(Optional<String> alert,
-                                 Optional<String> collapseKey,
-                                 Optional<PushExpiry> timeToLive,
-                                 Optional<Boolean> delayWhileIdle,
-                                 Optional<ImmutableMap<String, String>> extra,
-                                 Optional<Interactive> interactive) {
-        this.alert = alert;
-        this.collapseKey = collapseKey;
-        this.timeToLive = timeToLive;
-        this.delayWhileIdle = delayWhileIdle;
-        this.extra = extra;
-        this.interactive = interactive;
+    private AndroidDevicePayload(Builder builder) {
+        this.alert = Optional.fromNullable(builder.alert);
+        this.collapseKey = Optional.fromNullable(builder.collapseKey);
+        this.timeToLive = Optional.fromNullable(builder.timeToLive);
+        this.deliveryPriority = Optional.fromNullable(builder.deliveryPriority);
+        this.delayWhileIdle = Optional.fromNullable(builder.delayWhileIdle);
+        if (builder.extra.build().isEmpty()) {
+            this.extra = Optional.absent();
+        } else {
+            this.extra = Optional.of(builder.extra.build());
+        }
+        this.interactive = Optional.fromNullable(builder.interactive);
+        this.title = Optional.fromNullable(builder.title);
+        this.localOnly = Optional.fromNullable(builder.localOnly);
+        this.wearable = Optional.fromNullable(builder.wearable);
+        this.summary = Optional.fromNullable(builder.summary);
+        this.style = Optional.fromNullable(builder.style);
+        this.sound = Optional.fromNullable(builder.sound);
+        this.priority = Optional.fromNullable(builder.priority);
+        this.category = Optional.fromNullable(builder.category);
+        this.visibility = Optional.fromNullable(builder.visibility);
+        this.publicNotification = Optional.fromNullable(builder.publicNotification);
     }
 
+    /**
+     * New AndroidDevicePayload Builder.
+     *
+     * @return Builder
+     */
     public static Builder newBuilder() {
         return new Builder();
     }
 
+    /**
+     * Get the device type.
+     *
+     * @return DeviceType.ANDROID
+     */
     @Override
     public DeviceType getDeviceType() {
         return DeviceType.ANDROID;
     }
 
+    /**
+     * Get the alert.
+     *
+     * @return Optional String alert
+     */
     @Override
     public Optional<String> getAlert() {
         return alert;
     }
 
-
+    /**
+     * Get the collapse key.
+     *
+     * @return Optional String collapse key
+     */
     public Optional<String> getCollapseKey() {
         return collapseKey;
     }
 
+    /**
+     * Get the push expiry.
+     *
+     * @return Optional PushExpiry object
+     */
     public Optional<PushExpiry> getTimeToLive() {
         return timeToLive;
     }
 
+    /**
+     * Get the delivery priority.
+     *
+     * @return Optional String
+     */
+    public Optional<String> getDeliveryPriority() {
+        return deliveryPriority;
+    }
+
+    /**
+     * Get the delay while idle flag.
+     *
+     * @return Optional boolean delay while idle
+     */
     public Optional<Boolean> getDelayWhileIdle() {
         return delayWhileIdle;
     }
 
+    /**
+     * Get an extra mapping of key-value pairs.
+     *
+     * @return Optional ImmutableMap of Strings
+     */
     public Optional<ImmutableMap<String, String>> getExtra() {
         return extra;
     }
 
+    /**
+     * Get the interactive notification payload.
+     *
+     * @return Optional Interactive object
+     */
     public Optional<Interactive> getInteractive() {
         return interactive;
     }
 
+    /**
+     * Get the title string.
+     *
+     * @return Optional String title
+     */
+    public Optional<String> getTitle() {
+        return title;
+    }
+
+    /**
+     * Get the local only flag.
+     *
+     * @return Optional Boolean local only flag.
+     */
+    public Optional<Boolean> getLocalOnly() {
+        return localOnly;
+    }
+
+    /**
+     * Get the wearable payload.
+     *
+     * @return Optional Wearable object.
+     */
+    public Optional<Wearable> getWearable() {
+        return wearable;
+    }
+
+    /**
+     * Get the summary string.
+     *
+     * @return Optional String summary
+     */
+    public Optional<String> getSummary() {
+        return summary;
+    }
+
+    /**
+     * Get the style payload.
+     *
+     * @return Optional Style object
+     */
+    public Optional<Style> getStyle() {
+        return style;
+    }
+
+    /**
+     * Get the sound string.
+     *
+     * @return Optional String sound
+     */
+    public Optional<String> getSound() {
+        return sound;
+    }
+
+    /**
+     * Get the priority specifier.
+     *
+     * @return Optional integer between -2 and 2.
+     */
+    public Optional<Integer> getPriority() {
+        return priority;
+    }
+
+    /**
+     * Get the category specifier.
+     *
+     * @return Optional Category object.
+     */
+    public Optional<Category> getCategory() {
+        return category;
+    }
+
+    /**
+     * Get the visibility specifier.
+     *
+     * @return Optional integer between -1 and 1
+     */
+    public Optional<Integer> getVisibility() {
+        return visibility;
+    }
+
+    /**
+     * Get the public notification payload.
+     *
+     * @return Optional PublicNotification object.
+     */
+    public Optional<PublicNotification> getPublicNotification() {
+        return publicNotification;
+    }
+
+    @Override
+    public String toString() {
+        return "AndroidDevicePayload{" +
+                "alert=" + alert +
+                ", collapseKey=" + collapseKey +
+                ", timeToLive=" + timeToLive +
+                ", delayWhileIdle=" + delayWhileIdle +
+                ", deliveryPriority=" + deliveryPriority +
+                ", extra=" + extra +
+                ", interactive=" + interactive +
+                ", title=" + title +
+                ", localOnly=" + localOnly +
+                ", wearable=" + wearable +
+                ", summary=" + summary +
+                ", style=" + style +
+                ", sound=" + sound +
+                ", priority=" + priority +
+                ", category=" + category +
+                ", visibility=" + visibility +
+                ", publicNotification=" + publicNotification +
+                '}';
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        AndroidDevicePayload that = (AndroidDevicePayload)o;
-        if (alert != null ? !alert.equals(that.alert) : that.alert != null) {
-            return false;
-        }
-        if (collapseKey != null ? !collapseKey.equals(that.collapseKey) : that.collapseKey != null) {
-            return false;
-        }
-        if (timeToLive != null ? !timeToLive.equals(that.timeToLive) : that.timeToLive != null) {
-            return false;
-        }
-        if (delayWhileIdle != null ? !delayWhileIdle.equals(that.delayWhileIdle) : that.delayWhileIdle != null) {
-            return false;
-        }
-        if (extra != null ? !extra.equals(that.extra) : that.extra != null) {
-            return false;
-        }
-        if (interactive != null ? !interactive.equals(that.interactive) : that.interactive != null) {
-            return false;
-        }
+        AndroidDevicePayload that = (AndroidDevicePayload) o;
+
+        if (!alert.equals(that.alert)) return false;
+        if (!category.equals(that.category)) return false;
+        if (!collapseKey.equals(that.collapseKey)) return false;
+        if (!delayWhileIdle.equals(that.delayWhileIdle)) return false;
+        if (!deliveryPriority.equals(that.deliveryPriority)) return false;
+        if (!extra.equals(that.extra)) return false;
+        if (!interactive.equals(that.interactive)) return false;
+        if (!localOnly.equals(that.localOnly)) return false;
+        if (!priority.equals(that.priority)) return false;
+        if (!style.equals(that.style)) return false;
+        if (!sound.equals(that.sound)) return false;
+        if (!summary.equals(that.summary)) return false;
+        if (!timeToLive.equals(that.timeToLive)) return false;
+        if (!title.equals(that.title)) return false;
+        if (!visibility.equals(that.visibility)) return false;
+        if (!wearable.equals(that.wearable)) return false;
+        if (!publicNotification.equals(this.publicNotification)) return false;
+
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = (alert != null ? alert.hashCode() : 0);
-        result = 31 * result + (collapseKey != null ? collapseKey.hashCode() : 0);
-        result = 31 * result + (timeToLive != null ? timeToLive.hashCode() : 0);
-        result = 31 * result + (delayWhileIdle != null ? delayWhileIdle.hashCode() : 0);
-        result = 31 * result + (extra != null ? extra.hashCode() : 0);
-        result = 31 * result + (interactive != null ? interactive.hashCode() : 0);
+        int result = alert.hashCode();
+        result = 31 * result + collapseKey.hashCode();
+        result = 31 * result + timeToLive.hashCode();
+        result = 31 * result + delayWhileIdle.hashCode();
+        result = 31 * result + deliveryPriority.hashCode();
+        result = 31 * result + extra.hashCode();
+        result = 31 * result + interactive.hashCode();
+        result = 31 * result + title.hashCode();
+        result = 31 * result + localOnly.hashCode();
+        result = 31 * result + wearable.hashCode();
+        result = 31 * result + summary.hashCode();
+        result = 31 * result + style.hashCode();
+        result = 31 * result + sound.hashCode();
+        result = 31 * result + priority.hashCode();
+        result = 31 * result + category.hashCode();
+        result = 31 * result + visibility.hashCode();
+        result = 31 * result + publicNotification.hashCode();
+
         return result;
     }
 
@@ -119,59 +312,235 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         private String collapseKey = null;
         private PushExpiry timeToLive = null;
         private Boolean delayWhileIdle = null;
-        private ImmutableMap.Builder<String, String> extra = null;
+        private String deliveryPriority = null;
+        private ImmutableMap.Builder<String, String> extra = ImmutableMap.builder();
         private Interactive interactive = null;
+        private String title = null;
+        private Boolean localOnly = null;
+        private Wearable wearable = null;
+        private String summary = null;
+        private Style style = null;
+        private String sound = null;
+        // Android L features
+        private Integer priority = null;
+        private Category category = null;
+        private Integer visibility = null;
+        private PublicNotification publicNotification = null;
 
         private Builder() { }
 
+        /**
+         * Set the alert string.
+         *
+         * @param alert String
+         * @return Builder
+         */
         public Builder setAlert(String alert) {
             this.alert = alert;
             return this;
         }
 
+        /**
+         * Set the collapse key string.
+         *
+         * @param collapseKey String
+         * @return Builder
+         */
         public Builder setCollapseKey(String collapseKey) {
             this.collapseKey = collapseKey;
             return this;
         }
 
+        /**
+         * Set the push expiry.
+         *
+         * @param value PushExpiry
+         * @return Builder
+         */
         public Builder setTimeToLive(PushExpiry value) {
             this.timeToLive = value;
             return this;
         }
 
+        /**
+         * Set the delivery priority.
+         *
+         * @param deliveryPriority String
+         * @return Builder
+         */
+        public Builder setDeliveryPriority(String deliveryPriority) {
+            Preconditions.checkArgument(
+                    deliveryPriority.equals("high") || deliveryPriority.equals("normal"),
+                    "Delivery priority must be one of \"high\" or \"normal\"."
+            );
+            this.deliveryPriority = deliveryPriority;
+            return this;
+        }
+
+        /**
+         * Set the delay while idle flag.
+         *
+         * @param value boolean
+         * @return Builder
+         */
         public Builder setDelayWhileIdle(boolean value) {
             this.delayWhileIdle = value;
             return this;
         }
 
+        /**
+         * Add an extra key-value pair.
+         *
+         * @param key String
+         * @param value String
+         * @return Builder
+         */
         public Builder addExtraEntry(String key, String value) {
-            if (extra == null) {
-                extra = ImmutableMap.builder();
-            }
             this.extra.put(key, value);
             return this;
         }
 
+        /**
+         * Add a Map of key-value pairs.
+         *
+         * @param entries A Map of Strings
+         * @return Builder
+         */
         public Builder addAllExtraEntries(Map<String, String> entries) {
-            if (extra == null) {
-                extra = ImmutableMap.builder();
-            }
             this.extra.putAll(entries);
             return this;
         }
 
+        /**
+         * Set the interactive payload.
+         *
+         * @param value Interactive
+         * @return Builder
+         */
         public Builder setInteractive(Interactive value) {
             this.interactive = value;
             return this;
         }
 
+        /**
+         * Set the title string.
+         *
+         * @param value String
+         * @return Builder
+         */
+        public Builder setTitle(String value) {
+            this.title = value;
+            return this;
+        }
+
+        /**
+         * Set the local only flag.
+         *
+         * @param value Boolean
+         * @return Builder
+         */
+        public Builder setLocalOnly(Boolean value) {
+            this.localOnly = value;
+            return this;
+        }
+
+        /**
+         * Set the wearable payload.
+         *
+         * @param value Wearable
+         * @return Builder
+         */
+        public Builder setWearable(Wearable value) {
+            this.wearable = value;
+            return this;
+        }
+
+        /**
+         * Set the summary string.
+         *
+         * @param value String
+         * @return Builder
+         */
+        public Builder setSummary(String value) {
+            this.summary = value;
+            return this;
+        }
+
+        /**
+         * Set the style payload.
+         *
+         * @param value Style
+         * @return Builder
+         */
+        public Builder setStyle(Style value) {
+            this.style = value;
+            return this;
+        }
+
+        /**
+         * Set the sound string.
+         *
+         * @param sound String
+         * @return Builder
+         */
+        public Builder setSound(String sound) {
+            this.sound = sound;
+            return this;
+        }
+
+        /**
+         * Set the priority specifier.
+         *
+         * @param value Integer
+         * @return Builder
+         */
+        public Builder setPriority(Integer value) {
+            Preconditions.checkArgument(value < 3 && value > -3, "priority must be an integer between -2 and 2");
+            this.priority = value;
+            return this;
+        }
+
+        /**
+         * Set the category specifier.
+         *
+         * @param value Category
+         * @return Builder
+         */
+        public Builder setCategory(Category value) {
+            this.category = value;
+            return this;
+        }
+
+        /**
+         * Set the visibility specifier.
+         *
+         * @param value Integer
+         * @return Builder
+         */
+        public Builder setVisibility(Integer value) {
+            Preconditions.checkArgument(value < 2 && value > -2, "visibility must be an integer between -2 and 2");
+            this.visibility = value;
+            return this;
+        }
+
+        /**
+         * Set the public notification payload.
+         *
+         * @param publicNotification PublicNotification
+         * @return Builder
+         */
+        public Builder setPublicNotification(PublicNotification publicNotification) {
+            this.publicNotification = publicNotification;
+            return this;
+        }
+
+        /**
+         * Build the AndroidDevicePayload object.
+         *
+         * @return AndroidDevicePayload
+         */
         public AndroidDevicePayload build() {
-            return new AndroidDevicePayload(Optional.fromNullable(alert),
-                                            Optional.fromNullable(collapseKey),
-                                            Optional.fromNullable(timeToLive),
-                                            Optional.fromNullable(delayWhileIdle),
-                                            extra == null ? Optional.<ImmutableMap<String,String>>absent() : Optional.fromNullable(extra.build()),
-                                            Optional.fromNullable(interactive));
+            return new AndroidDevicePayload(this);
         }
     }
 }

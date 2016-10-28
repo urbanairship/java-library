@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2013-2015.  Urban Airship and Contributors
+ * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.client.parse;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
-import com.urbanairship.api.client.APIErrorDetails;
+import com.urbanairship.api.client.RequestErrorDetails;
 import com.urbanairship.api.common.parse.FieldParser;
 import com.urbanairship.api.common.parse.FieldParserRegistry;
 import com.urbanairship.api.common.parse.MapFieldParserRegistry;
@@ -24,10 +24,10 @@ the boilerplate necessary for Jackson stream parsing, which is essentially what
  If you're using Intellij, be sure and toggle open the code that's
  been collapsed.
  */
-class StreamLocationDeserializer extends JsonDeserializer<APIErrorDetails.Location> {
+class StreamLocationDeserializer extends JsonDeserializer<RequestErrorDetails.Location> {
 
-    private static final FieldParserRegistry<APIErrorDetails.Location, StreamLocationReader> FIELD_PARSERS =
-            new MapFieldParserRegistry<APIErrorDetails.Location, StreamLocationReader>(
+    private static final FieldParserRegistry<RequestErrorDetails.Location, StreamLocationReader> FIELD_PARSERS =
+            new MapFieldParserRegistry<RequestErrorDetails.Location, StreamLocationReader>(
                     ImmutableMap.<String, FieldParser<StreamLocationReader>>builder()
                             .put("line", new FieldParser<StreamLocationReader>() {
                                 @Override
@@ -44,11 +44,11 @@ class StreamLocationDeserializer extends JsonDeserializer<APIErrorDetails.Locati
                             .build()
             );
 
-    private final StandardObjectDeserializer<APIErrorDetails.Location, ?> deserializer;
+    private final StandardObjectDeserializer<RequestErrorDetails.Location, ?> deserializer;
 
     // See Google Guava for Supplier details
     public StreamLocationDeserializer() {
-        deserializer = new StandardObjectDeserializer<APIErrorDetails.Location, StreamLocationReader>(
+        deserializer = new StandardObjectDeserializer<RequestErrorDetails.Location, StreamLocationReader>(
                 FIELD_PARSERS,
                 new Supplier<StreamLocationReader>() {
                     @Override
@@ -60,7 +60,7 @@ class StreamLocationDeserializer extends JsonDeserializer<APIErrorDetails.Locati
     }
 
     @Override
-    public APIErrorDetails.Location deserialize(JsonParser parser, DeserializationContext deserializationContext)
+    public RequestErrorDetails.Location deserialize(JsonParser parser, DeserializationContext deserializationContext)
             throws IOException {
         return deserializer.deserialize(parser, deserializationContext);
     }

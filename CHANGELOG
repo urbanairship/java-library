@@ -1,3 +1,36 @@
+-------------------------
+1.1.0 19OCT16
+-------------------------
+- iOS 10 rich media support.
+- Static List download support.
+- Static List selector support.
+- In-App Message support.
+- Add next page handlers for listing requests.
+- Update Android payload with the following fields: "delivery_priority",
+  "local_only", "wearable", "summary", "style", "sound", "priority",
+  "category", "visibility", and "public_notification".
+
+-------------------------
+1.0.0 09MAY16
+-------------------------
+- Named user API: associate, disassociate, and tag mutations
+- Static list API: create, update, upload, lookup, listing, and
+  delete
+- Tag groups support: channel listings, segments, push audience
+- Channels API: tag mutations
+- UrbanAirshipClient replaced APIClient to supports async requests and response callbacks
+- All request payloads refactored to leverage the Request interface
+- Title field for iOS and Android payloads
+
+-------------------------
+0.4.2 12APR16
+-------------------------
+- Updated library to use Guava 19 and Jersey 2.22.2
+
+-------------------------
+0.4.1 07MAR16
+-------------------------
+- Removed Apache Commons Collections 3.2.1 due to a security vulnerability https://commons.apache.org/proper/commons-collections/security-reports.html
 
 -------------------------
 0.4 04JUN15
