@@ -1,4 +1,11 @@
+version: 1.1.0
+config:
+  type: 'java-compile'
+  email: 'mib@zillow.com'
 source:
+  build-job-config:
+    default:
+      enabled: true
   config:
     type: java-compile
   release-platform-config:
