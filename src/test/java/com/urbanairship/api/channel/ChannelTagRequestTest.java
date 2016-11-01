@@ -2,6 +2,7 @@ package com.urbanairship.api.channel;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.net.HttpHeaders;
+import com.urbanairship.api.channel.parse.ChannelObjectMapper;
 import com.urbanairship.api.client.Request;
 import org.apache.http.entity.ContentType;
 import org.junit.Test;
@@ -42,7 +43,10 @@ public class ChannelTagRequestTest {
             .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
             .addTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"));
 
-        assertEquals(expected, request.getRequestBody());
+        // the order of keys of map changes, so compare two maps instead of string
+        Map<String, Object> expectedRequest = ChannelObjectMapper.getInstance().readValue(expected, Map.class);
+        Map<String, Object> actualRequest = ChannelObjectMapper.getInstance().readValue(request.getRequestBody(), Map.class);
+        assertEquals(expectedRequest, actualRequest);
     }
 
     @Test
@@ -72,7 +76,10 @@ public class ChannelTagRequestTest {
             .removeTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
             .removeTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"));
 
-        assertEquals(expected, request.getRequestBody());
+        // the order of keys of map changes, so compare two maps instead of string
+        Map<String, Object> expectedRequest = ChannelObjectMapper.getInstance().readValue(expected, Map.class);
+        Map<String, Object> actualRequest = ChannelObjectMapper.getInstance().readValue(request.getRequestBody(), Map.class);
+        assertEquals(expectedRequest, actualRequest);
     }
 
     @Test
@@ -102,7 +109,10 @@ public class ChannelTagRequestTest {
             .setTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
             .setTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"));
 
-        assertEquals(expected, request.getRequestBody());
+        // the order of keys of map changes, so compare two maps instead of string
+        Map<String, Object> expectedRequest = ChannelObjectMapper.getInstance().readValue(expected, Map.class);
+        Map<String, Object> actualRequest = ChannelObjectMapper.getInstance().readValue(request.getRequestBody(), Map.class);
+        assertEquals(expectedRequest, actualRequest);
     }
 
     @Test
@@ -140,7 +150,10 @@ public class ChannelTagRequestTest {
             .removeTags("tag_group2", ImmutableSet.of("tag4", "tag5", "tag6"))
             .removeTags("tag_group3", ImmutableSet.of("tag4", "tag5", "tag6"));
 
-        assertEquals(expected, request.getRequestBody());
+        // the order of keys of map changes, so compare two maps instead of string
+        Map<String, Object> expectedRequest = ChannelObjectMapper.getInstance().readValue(expected, Map.class);
+        Map<String, Object> actualRequest = ChannelObjectMapper.getInstance().readValue(request.getRequestBody(), Map.class);
+        assertEquals(expectedRequest, actualRequest);
     }
 
     @Test (expected = IllegalArgumentException.class)

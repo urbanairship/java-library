@@ -202,7 +202,7 @@ public class ChannelResponseTest {
             assertEquals("21F34C9ED37EAF8D7DC43561C07AA398CA5C6F503196C9E8230C50C0959B8653", four.getPushAddress().get());
             assertEquals("[kablam, version_1.3]", four.getTags().toString());
             assertTrue(four.getTagGroups().containsKey("testGroup03"));
-            assertEquals("[testGroup03Tag01, testGroup03Tag03, testGroup03Tag02]", four.getTagGroups().get("testGroup03").toString());
+            assertEquals("[testGroup03Tag01, testGroup03Tag02, testGroup03Tag03]", four.getTagGroups().get("testGroup03").toString());
             assertTrue(four.getTagGroups().containsKey("testGroup04"));
             assertEquals("[testGroup04Tag01]", four.getTagGroups().get("testGroup04").toString());
             assertFalse(four.isInstalled());

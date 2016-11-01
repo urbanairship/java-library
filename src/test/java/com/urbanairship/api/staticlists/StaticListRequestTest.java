@@ -91,10 +91,10 @@ public class StaticListRequestTest {
         updateExtras.put("key4", "val4");
         updatePayload.put(EXTRAS_KEY, updateExtras);
 
-        assertEquals(mapper.writeValueAsString(createPayload), createString);
-        assertEquals(mapper.writeValueAsString(updatePayload), updateString);
-        assertEquals(createRequest.getRequestBody(), mapper.writeValueAsString(createPayload));
-        assertEquals(updateRequest.getRequestBody(), mapper.writeValueAsString(updatePayload));
+        assertEquals(createPayload, mapper.readValue(createString, Map.class));
+        assertEquals(updatePayload, mapper.readValue(updateString, Map.class));
+        assertEquals(mapper.readValue(createRequest.getRequestBody(), Map.class), createPayload);
+        assertEquals(mapper.readValue(updateRequest.getRequestBody(), Map.class), updatePayload);
     }
 
     @Test
