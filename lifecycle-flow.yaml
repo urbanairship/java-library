@@ -1,0 +1,6 @@
+source:
+  config:
+    type: java-compile
+  release-platform-config:
+  - branch: compile-for-zillow-1.1.0
+    platform: mobile_promote.latest
