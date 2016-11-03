@@ -7,7 +7,7 @@ import com.google.common.net.HttpHeaders;
 
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
-import com.urbanairship.api.feedback.model.APIApidsFeedbackResponse;
+import com.urbanairship.api.feedback.model.ApidsFeedbackResponse;
 import com.urbanairship.api.feedback.model.FeedbackPayload;
 import com.urbanairship.api.feedback.parse.FeedbackObjectMapper;
 
@@ -63,11 +63,11 @@ public class ListApidsFeedbackRequestTest {
 
     @Test
     public void testFeedbackParser() throws Exception {
-        ResponseParser<List<APIApidsFeedbackResponse>> responseParser =
-            new ResponseParser<List<APIApidsFeedbackResponse>>() {
+        ResponseParser<List<ApidsFeedbackResponse>> responseParser =
+            new ResponseParser<List<ApidsFeedbackResponse>>() {
             @Override
-            public List<APIApidsFeedbackResponse> parse(String response) throws IOException {
-                return FeedbackObjectMapper.getInstance().readValue(response, new TypeReference<List<APIApidsFeedbackResponse>>(){});
+            public List<ApidsFeedbackResponse> parse(String response) throws IOException {
+                return FeedbackObjectMapper.getInstance().readValue(response, new TypeReference<List<ApidsFeedbackResponse>>(){});
             }
         };
         String response = "["+

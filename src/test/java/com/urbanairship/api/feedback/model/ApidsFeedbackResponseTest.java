@@ -16,7 +16,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-public class APIApidsFeedbackResponseTest
+public class ApidsFeedbackResponseTest
 {
     @Test
     public void testAPIApidsFeedbackResponse() {
@@ -37,7 +37,7 @@ public class APIApidsFeedbackResponseTest
                 "]";
         ObjectMapper mapper = FeedbackObjectMapper.getInstance();
         try{
-            List<APIApidsFeedbackResponse> apidsFeedbackResponses = mapper.readValue(twoResponse, new TypeReference<List<APIApidsFeedbackResponse>>(){});
+            List<ApidsFeedbackResponse> apidsFeedbackResponses = mapper.readValue(twoResponse, new TypeReference<List<ApidsFeedbackResponse>>(){});
             assertEquals(2, apidsFeedbackResponses.size());
 
             assertEquals("00000000-0000-0000-0000-000000000000", apidsFeedbackResponses.get(0).getApid());

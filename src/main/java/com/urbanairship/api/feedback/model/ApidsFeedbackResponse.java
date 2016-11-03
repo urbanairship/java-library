@@ -7,7 +7,7 @@ import com.google.common.base.Objects;
 
 import org.joda.time.DateTime;
 
-public class APIApidsFeedbackResponse {
+public class ApidsFeedbackResponse {
     private String apid;
     private String gcmRegistrationId;
     private DateTime markedInactiveOn;
@@ -17,7 +17,7 @@ public class APIApidsFeedbackResponse {
         return new Builder();
     }
 
-    public APIApidsFeedbackResponse(String apid, String gcmRegistrationId, DateTime markedInactiveOn, String alias) {
+    public ApidsFeedbackResponse(String apid, String gcmRegistrationId, DateTime markedInactiveOn, String alias) {
         this.apid = apid;
         this.gcmRegistrationId = gcmRegistrationId;
         this.markedInactiveOn = markedInactiveOn;
@@ -66,7 +66,7 @@ public class APIApidsFeedbackResponse {
 
     @Override
     public String toString() {
-        return "APIApidsFeedbackResponse{" +
+        return "ApidsFeedbackResponse{" +
                 "apid=" + apid +
                 ", gcmRegistrationId=" + gcmRegistrationId +
                 ", markedInactiveOn=" + markedInactiveOn +
@@ -87,7 +87,7 @@ public class APIApidsFeedbackResponse {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final APIApidsFeedbackResponse other = (APIApidsFeedbackResponse) obj;
+        final ApidsFeedbackResponse other = (ApidsFeedbackResponse) obj;
         return Objects.equal(this.apid, other.apid) &&
                 Objects.equal(this.gcmRegistrationId, other.gcmRegistrationId) &&
                 Objects.equal(this.markedInactiveOn, other.markedInactiveOn) &&
@@ -126,8 +126,8 @@ public class APIApidsFeedbackResponse {
             return this;
         }
 
-        public APIApidsFeedbackResponse build() {
-            return new APIApidsFeedbackResponse(apid, gcmRegistrationId, markedInactiveOn, alias);
+        public ApidsFeedbackResponse build() {
+            return new ApidsFeedbackResponse(apid, gcmRegistrationId, markedInactiveOn, alias);
         }
     }
 

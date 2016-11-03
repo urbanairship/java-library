@@ -3,20 +3,21 @@
  */
 package com.urbanairship.api.feedback.parse;
 
-import com.urbanairship.api.feedback.model.APIApidsFeedbackResponse;
+import com.urbanairship.api.feedback.model.ApidsFeedbackResponse;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
+
 import org.codehaus.jackson.JsonParser;
 import org.joda.time.DateTime;
 
 import java.io.IOException;
 
-public class ApidsFeedbackResponseReader implements JsonObjectReader<APIApidsFeedbackResponse>
+public class ApidsFeedbackResponseReader implements JsonObjectReader<ApidsFeedbackResponse>
 {
-    private static APIApidsFeedbackResponse.Builder builder;
+    private static ApidsFeedbackResponse.Builder builder;
 
     public ApidsFeedbackResponseReader() {
-        builder = APIApidsFeedbackResponse.newBuilder();
+        builder = ApidsFeedbackResponse.newBuilder();
     }
 
     public void readApid(JsonParser jsonParser) throws IOException
@@ -38,7 +39,7 @@ public class ApidsFeedbackResponseReader implements JsonObjectReader<APIApidsFee
     }
 
     @Override
-    public APIApidsFeedbackResponse validateAndBuild() throws IOException
+    public ApidsFeedbackResponse validateAndBuild() throws IOException
     {
         try {
             return builder.build();

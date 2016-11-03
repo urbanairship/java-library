@@ -8,7 +8,7 @@ import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
-import com.urbanairship.api.feedback.model.APIApidsFeedbackResponse;
+import com.urbanairship.api.feedback.model.ApidsFeedbackResponse;
 import com.urbanairship.api.feedback.model.FeedbackPayload;
 import com.urbanairship.api.feedback.parse.FeedbackObjectMapper;
 
@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ListApidsFeedbackRequest implements Request<List<APIApidsFeedbackResponse>> {
+public class ListApidsFeedbackRequest implements Request<List<ApidsFeedbackResponse>> {
     private final static String API_APIDS_FEEDBACK_PATH = "/api/apids/feedback/";
     private final FeedbackPayload payload;
 
@@ -58,11 +58,11 @@ public class ListApidsFeedbackRequest implements Request<List<APIApidsFeedbackRe
     }
 
     @Override
-    public ResponseParser< List<APIApidsFeedbackResponse> > getResponseParser() {
-        return new ResponseParser<List<APIApidsFeedbackResponse>>() {
+    public ResponseParser< List<ApidsFeedbackResponse> > getResponseParser() {
+        return new ResponseParser<List<ApidsFeedbackResponse>>() {
             @Override
-            public List<APIApidsFeedbackResponse> parse(String response) throws IOException {
-                return FeedbackObjectMapper.getInstance().readValue(response, new TypeReference<List<APIApidsFeedbackResponse>>(){});
+            public List<ApidsFeedbackResponse> parse(String response) throws IOException {
+                return FeedbackObjectMapper.getInstance().readValue(response, new TypeReference<List<ApidsFeedbackResponse>>(){});
             }
         };
     }
