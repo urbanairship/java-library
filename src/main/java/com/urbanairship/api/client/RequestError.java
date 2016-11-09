@@ -24,6 +24,7 @@ public final class RequestError {
     private final static String CONTENT_TYPE_TEXT_HTML = "text/html";
     private final static String CONTENT_TYPE_JSON = "application/json";
     private final static String UA_APPLICATION_JSON = "application/vnd.urbanairship+json";
+    private final static String UA_APPLICATION_JSON_V3 = "application/vnd.urbanairship+json;version=3";
 
     private final boolean ok;
     private final Optional<String> operationId;
@@ -66,7 +67,7 @@ public final class RequestError {
         }
 
         // v3 JSON parsing
-        else if (contentType.equalsIgnoreCase(UA_APPLICATION_JSON)) {
+        else if (contentType.equalsIgnoreCase(UA_APPLICATION_JSON) || contentType.equalsIgnoreCase(UA_APPLICATION_JSON_V3)) {
             ObjectMapper mapper = RequestErrorObjectMapper.getInstance();
             return mapper.readValue(body, RequestError.class);
         }
