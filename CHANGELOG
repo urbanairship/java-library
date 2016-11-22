@@ -4,6 +4,11 @@
 - Collapse ID support for iOS 10
 
 -------------------------
+1.1.1 09NOV16
+-------------------------
+- Fixed a bug related to deserializing error responses.
+
+-------------------------
 1.1.0 19OCT16
 -------------------------
 - iOS 10 rich media support.
