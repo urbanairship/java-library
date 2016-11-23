@@ -48,7 +48,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                              Optional<String> subtitle,
                              Optional<MediaAttachment> mediaAttachment,
                              Optional<Boolean> mutableContent,
-                             Optional<String> collapseID) {
+                             Optional<String> collapseId) {
         this.alert = alert;
         this.sound = sound;
         this.badge = badge;
@@ -62,7 +62,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         this.subtitle = subtitle;
         this.mediaAttachment = mediaAttachment;
         this.mutableContent = mutableContent;
-        this.collapseId = collapseID;
+        this.collapseId = collapseId;
     }
 
     /**
@@ -201,7 +201,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
      * the new message replaces the older message with the same collapse id. Similar to the GCM collapse key. iOS 10.
      * @return Optional String representation of the collapse ID.
      */
-    public Optional<String> getCollapseID() {
+    public Optional<String> getCollapseId() {
         return collapseId;
     }
 
@@ -473,7 +473,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         }
 
         /**
-         * Set the collapseId. When there is a newer message that renders an older, related message irrelevant to the client app, the new message replaces the older message with the same collapse id.
+         * Set the collapseId. When there is a newer message that renders an older, related message irrelevant to the client app, the new message replaces the older message with the same collapse ID.
          * @param value String
          * @return Builder
          */

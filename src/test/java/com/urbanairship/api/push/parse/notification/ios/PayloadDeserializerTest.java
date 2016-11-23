@@ -303,7 +303,7 @@ public class PayloadDeserializerTest {
         assertTrue(payload.getAlert().get().equals("alert"));
 
         //Collapse ID
-        assertTrue(payload.getCollapseID().get().equals("collapseId"));
+        assertTrue(payload.getCollapseId().get().equals("collapseId"));
 
         //Mutable Content
         assertTrue(payload.getMutableContent().get().equals(true));

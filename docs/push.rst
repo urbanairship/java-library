@@ -271,7 +271,7 @@ Which will generate the following JSON payload:
 
 For more information on iOS rich media content see `Media Attachment <https://docs.urbanairship.com/api/ua.html#media-attachment>`__.
 
-Here is an example of a notification with a collapse ID:
+Here is an example of sending a push with a collapse ID:
 
 .. code-block:: java
 
