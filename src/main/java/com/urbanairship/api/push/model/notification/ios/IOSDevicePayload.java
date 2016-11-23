@@ -473,7 +473,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         }
 
         /**
-         * Set the collapseId. When there is a newer message that renders an older, related message irrelevant to the client app, the new message replaces the older message with the same collapse ID.
+         * Set the collapse ID. When there is a newer message that renders an older, related message irrelevant to the client app, the new message replaces the older message with the same collapse ID.
          * @param value String
          * @return Builder
          */
