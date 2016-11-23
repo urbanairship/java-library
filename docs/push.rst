@@ -271,6 +271,21 @@ Which will generate the following JSON payload:
 
 For more information on iOS rich media content see `Media Attachment <https://docs.urbanairship.com/api/ua.html#media-attachment>`__.
 
+Here is an example of a notification with a collapse ID:
+
+.. code-block:: java
+
+    IOSDevicePayload iosPayload = IOSDevicePayload.newBuilder()
+        .setAlert("alert")
+        .setCollapseId("collapseId")
+        .build();
+
+    PushPayload payload = PushPayload.newBuilder()
+        .setAudience(Selectors.tag("devin"))
+        .setNotification(Notifications.notification(iosPayload))
+        .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+        .build();
+
 DeviceTypes
 ===========
 
