@@ -198,7 +198,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get the Collapse ID String. When there is a newer message that renders an older, related message irrelevant to the client app,
-     * the new message replaces the older message with the same collapse id. Similar to the GCM collapse key. iOS 10.
+     * the new message replaces the older message with the same collapse ID. Similar to the GCM collapse key. iOS 10.
      * @return Optional String representation of the collapse ID.
      */
     public Optional<String> getCollapseId() {
