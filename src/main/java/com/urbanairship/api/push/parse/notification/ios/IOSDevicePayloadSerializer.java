@@ -69,7 +69,7 @@ public class IOSDevicePayloadSerializer extends JsonSerializer<IOSDevicePayload>
         }
 
         if (payload.getCollapseID().isPresent()) {
-            jgen.writeObjectField("collapse_id", payload.getCollapseID().get());
+            jgen.writeStringField("collapse_id", payload.getCollapseID().get());
         }
 
         jgen.writeEndObject();
