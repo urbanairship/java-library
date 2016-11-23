@@ -281,7 +281,7 @@ Here is an example of sending a push with a collapse ID:
         .build();
 
     PushPayload payload = PushPayload.newBuilder()
-        .setAudience(Selectors.tag("devin"))
+        .setAudience(Selectors.tag("tag1"))
         .setNotification(Notifications.notification(iosPayload))
         .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
         .build();
