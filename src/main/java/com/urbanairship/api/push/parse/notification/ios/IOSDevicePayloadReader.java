@@ -78,6 +78,10 @@ public class IOSDevicePayloadReader implements JsonObjectReader<IOSDevicePayload
         builder.setMediaAttachment(mediaAttachmentDS.deserialize(parser, context));
     }
 
+    public void readCollapseId(JsonParser parser) throws IOException {
+        builder.setCollapseId(StringFieldDeserializer.INSTANCE.deserialize(parser, "collapse_id"));
+    }
+
     @Override
     public IOSDevicePayload validateAndBuild() throws IOException {
         try {
