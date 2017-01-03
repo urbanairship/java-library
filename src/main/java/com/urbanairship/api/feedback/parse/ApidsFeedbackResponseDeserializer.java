@@ -9,17 +9,18 @@ import com.urbanairship.api.common.parse.FieldParser;
 import com.urbanairship.api.common.parse.FieldParserRegistry;
 import com.urbanairship.api.common.parse.MapFieldParserRegistry;
 import com.urbanairship.api.common.parse.StandardObjectDeserializer;
-import com.urbanairship.api.feedback.model.APIApidsFeedbackResponse;
+import com.urbanairship.api.feedback.model.ApidsFeedbackResponse;
+
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
 
 import java.io.IOException;
 
-public class ApidsFeedbackResponseDeserializer extends JsonDeserializer<APIApidsFeedbackResponse>
+public class ApidsFeedbackResponseDeserializer extends JsonDeserializer<ApidsFeedbackResponse>
 {
-    private static final FieldParserRegistry<APIApidsFeedbackResponse, ApidsFeedbackResponseReader> FIELD_PARSER =
-            new MapFieldParserRegistry<APIApidsFeedbackResponse, ApidsFeedbackResponseReader>(
+    private static final FieldParserRegistry<ApidsFeedbackResponse, ApidsFeedbackResponseReader> FIELD_PARSER =
+            new MapFieldParserRegistry<ApidsFeedbackResponse, ApidsFeedbackResponseReader>(
                     ImmutableMap.<String, FieldParser<ApidsFeedbackResponseReader>>builder()
                     .put("apid", new FieldParser<ApidsFeedbackResponseReader>(){
                         @Override
@@ -55,10 +56,10 @@ public class ApidsFeedbackResponseDeserializer extends JsonDeserializer<APIApids
                     }).build()
             );
 
-    private final StandardObjectDeserializer<APIApidsFeedbackResponse, ?> deserializer;
+    private final StandardObjectDeserializer<ApidsFeedbackResponse, ?> deserializer;
 
     public ApidsFeedbackResponseDeserializer() {
-        this.deserializer = new StandardObjectDeserializer<APIApidsFeedbackResponse, ApidsFeedbackResponseReader>(
+        this.deserializer = new StandardObjectDeserializer<ApidsFeedbackResponse, ApidsFeedbackResponseReader>(
                 FIELD_PARSER,
                 new Supplier<ApidsFeedbackResponseReader>() {
                     @Override
@@ -70,7 +71,7 @@ public class ApidsFeedbackResponseDeserializer extends JsonDeserializer<APIApids
     }
 
     @Override
-    public APIApidsFeedbackResponse deserialize(JsonParser jsonParser, DeserializationContext
+    public ApidsFeedbackResponse deserialize(JsonParser jsonParser, DeserializationContext
             deserializationContext)
             throws IOException {
         return deserializer.deserialize(jsonParser, deserializationContext);

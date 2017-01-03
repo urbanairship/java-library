@@ -3,9 +3,8 @@
  */
 package com.urbanairship.api.feedback.parse;
 
-import com.urbanairship.api.feedback.model.APIApidsFeedbackResponse;
+import com.urbanairship.api.feedback.model.ApidsFeedbackResponse;
 import com.urbanairship.api.feedback.model.DeviceTokensFeedbackResponse;
-import com.urbanairship.api.feedback.model.FeedbackPayload;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 
 import org.codehaus.jackson.Version;
@@ -18,9 +17,8 @@ public class FeedbackObjectMapper {
     private static final SimpleModule MODULE = new SimpleModule("Feedback API Module", new Version(1, 0, 0, null));
 
     static {
-    MODULE.addDeserializer(APIApidsFeedbackResponse.class, new ApidsFeedbackResponseDeserializer());
+    MODULE.addDeserializer(ApidsFeedbackResponse.class, new ApidsFeedbackResponseDeserializer());
     MODULE.addDeserializer(DeviceTokensFeedbackResponse.class, new DeviceTokensFeedbackResponseDeserializer());
-    MODULE.addSerializer(FeedbackPayload.class, new FeedbackPayloadSerializer());
 
     MAPPER.registerModule(MODULE);
     MAPPER.registerModule(PushObjectMapper.getModule());

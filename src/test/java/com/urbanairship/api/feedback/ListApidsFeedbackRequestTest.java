@@ -7,10 +7,11 @@ import com.google.common.net.HttpHeaders;
 
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
-import com.urbanairship.api.feedback.model.APIApidsFeedbackResponse;
-import com.urbanairship.api.feedback.model.FeedbackPayload;
+import com.urbanairship.api.common.parse.DateFormats;
+import com.urbanairship.api.feedback.model.ApidsFeedbackResponse;
 import com.urbanairship.api.feedback.parse.FeedbackObjectMapper;
 
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.DateTime;
@@ -26,8 +27,8 @@ import static org.junit.Assert.assertEquals;
 
 public class ListApidsFeedbackRequestTest {
 
-    FeedbackPayload payload = FeedbackPayload.newBuilder().setSince(DateTime.now()).build();
-    ListApidsFeedbackRequest listApidsFeedbackRequest = new ListApidsFeedbackRequest(payload);
+    DateTime now = DateTime.now();
+    ListApidsFeedbackRequest listApidsFeedbackRequest = new ListApidsFeedbackRequest(now);
 
     @Test
     public void testContentType() throws Exception {
@@ -41,7 +42,7 @@ public class ListApidsFeedbackRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(listApidsFeedbackRequest.getRequestBody(), payload.toJSON());
+        assertEquals(listApidsFeedbackRequest.getRequestBody(), null);
     }
 
     @Test
@@ -56,31 +57,32 @@ public class ListApidsFeedbackRequestTest {
     @Test
     public void testURI() throws Exception {
         URI baseURI = URI.create("https://go.urbanairship.com");
-        URI expectedURI = URI.create("https://go.urbanairship.com/api/apids/feedback/");
-
-        assertEquals(listApidsFeedbackRequest.getUri(baseURI), expectedURI);
+        URIBuilder builder = new URIBuilder(new URI("https://go.urbanairship.com/api/apids/feedback/"));
+        builder.addParameter("since", DateFormats.DATE_ONLY_FORMATTER.print(now));
+        URI expectedURI = builder.build();
+        assertEquals(expectedURI, listApidsFeedbackRequest.getUri(baseURI));
     }
 
     @Test
     public void testFeedbackParser() throws Exception {
-        ResponseParser<List<APIApidsFeedbackResponse>> responseParser =
-            new ResponseParser<List<APIApidsFeedbackResponse>>() {
+        ResponseParser<List<ApidsFeedbackResponse>> responseParser =
+            new ResponseParser<List<ApidsFeedbackResponse>>() {
             @Override
-            public List<APIApidsFeedbackResponse> parse(String response) throws IOException {
-                return FeedbackObjectMapper.getInstance().readValue(response, new TypeReference<List<APIApidsFeedbackResponse>>(){});
+            public List<ApidsFeedbackResponse> parse(String response) throws IOException {
+                return FeedbackObjectMapper.getInstance().readValue(response, new TypeReference<List<ApidsFeedbackResponse>>(){});
             }
         };
         String response = "["+
                 "{" +
                 "\"apid\": \"00000000-0000-0000-0000-000000000000\"," +
                 "\"gcm_registration_id\": \"abcdefghijklmn\", "+
-                "\"marked_inactive_on\": \"2009-06-22T10:05:00\"," +
+                "\"marked_inactive_on\": \"2009-06-22 10:05:00\"," +
                 "\"alias\": \"bob\"" +
                 "}," +
                 "{" +
                 "\"apid\": \"00000000-0000-0000-0000-000000000001\"," +
                 "\"gcm_registration_id\": \"opqrstuvmxyz\", "+
-                "\"marked_inactive_on\": \"2009-06-22T10:07:00\"," +
+                "\"marked_inactive_on\": \"2009-06-22 10:07:00\"," +
                 "\"alias\": \"Alice\"" +
                 "}" +
                 "]";

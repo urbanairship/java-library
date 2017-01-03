@@ -7,9 +7,11 @@ import com.urbanairship.api.feedback.model.DeviceTokensFeedbackResponse;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import org.codehaus.jackson.JsonParser;
-import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
 import java.io.IOException;
+
+import static com.urbanairship.api.common.parse.DateFormats.DATETIME_FORMAT_PATTERN;
 
 public class DeviceTokensFeedbackResponseReader implements JsonObjectReader<DeviceTokensFeedbackResponse>
 {
@@ -24,7 +26,7 @@ public class DeviceTokensFeedbackResponseReader implements JsonObjectReader<Devi
     }
 
     public void readMarkedInactiveOn(JsonParser jsonParser) throws IOException {
-        builder.setMarkedInactiveOn(jsonParser.readValueAs(DateTime.class));
+        builder.setMarkedInactiveOn(DateTimeFormat.forPattern(DATETIME_FORMAT_PATTERN).parseDateTime(jsonParser.getText()));
     }
 
     public void readAlias(JsonParser jsonParser) throws IOException {

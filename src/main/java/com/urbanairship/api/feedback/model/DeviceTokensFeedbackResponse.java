@@ -55,7 +55,7 @@ public class DeviceTokensFeedbackResponse
 
     @Override
     public String toString() {
-        return "APIApidsFeedbackResponse{" +
+        return "ApidsFeedbackResponse{" +
                 "deviceToken=" + deviceToken +
                 ", markedInactiveOn=" + markedInactiveOn +
                 ", alias=" + alias +
