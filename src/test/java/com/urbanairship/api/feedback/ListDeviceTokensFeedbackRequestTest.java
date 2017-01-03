@@ -7,10 +7,11 @@ import com.google.common.net.HttpHeaders;
 
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
+import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.feedback.model.DeviceTokensFeedbackResponse;
-import com.urbanairship.api.feedback.model.FeedbackPayload;
 import com.urbanairship.api.feedback.parse.FeedbackObjectMapper;
 
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.DateTime;
@@ -25,8 +26,8 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
 public class ListDeviceTokensFeedbackRequestTest {
-    FeedbackPayload payload = FeedbackPayload.newBuilder().setSince(DateTime.now()).build();
-    ListDeviceTokensFeedbackRequest listDeviceTokensFeedbackRequest = new ListDeviceTokensFeedbackRequest(payload);
+    DateTime now = DateTime.now();
+    ListDeviceTokensFeedbackRequest listDeviceTokensFeedbackRequest = new ListDeviceTokensFeedbackRequest(now);
 
     @Test
     public void testContentType() throws Exception {
@@ -40,7 +41,7 @@ public class ListDeviceTokensFeedbackRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(listDeviceTokensFeedbackRequest.getRequestBody(), payload.toJSON());
+        assertEquals(listDeviceTokensFeedbackRequest.getRequestBody(), null);
     }
 
     @Test
@@ -55,9 +56,10 @@ public class ListDeviceTokensFeedbackRequestTest {
     @Test
     public void testURI() throws Exception {
         URI baseURI = URI.create("https://go.urbanairship.com");
-        URI expectedURI = URI.create("https://go.urbanairship.com/api/device_tokens/feedback/");
-
-        assertEquals(listDeviceTokensFeedbackRequest.getUri(baseURI), expectedURI);
+        URIBuilder builder = new URIBuilder(new URI("https://go.urbanairship.com/api/device_tokens/feedback/"));
+        builder.addParameter("since", DateFormats.DATE_ONLY_FORMATTER.print(now));
+        URI expectedURI = builder.build();
+        assertEquals(expectedURI, listDeviceTokensFeedbackRequest.getUri(baseURI));
     }
 
     @Test
@@ -72,12 +74,12 @@ public class ListDeviceTokensFeedbackRequestTest {
                 };
         String response = "[{" +
                 "\"device_token\": \"1234123412341234123412341234123412341234123412341234123412341234\"," +
-                "\"marked_inactive_on\": \"2009-06-22T10:05:00\"," +
+                "\"marked_inactive_on\": \"2009-06-22 10:05:00\"," +
                 "\"alias\": \"bob\"" +
                 "}," +
                 "{" +
                 "\"device_token\": \"ABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCD\"," +
-                "\"marked_inactive_on\": \"2009-06-22T10:07:00\"," +
+                "\"marked_inactive_on\": \"2009-06-22 10:07:00\"," +
                 "\"alias\": \"Alice\"" +
                 "}]";
         assertEquals(listDeviceTokensFeedbackRequest.getResponseParser().parse(response), responseParser.parse(response));

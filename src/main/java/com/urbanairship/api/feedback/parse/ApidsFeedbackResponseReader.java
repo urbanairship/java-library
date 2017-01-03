@@ -6,11 +6,12 @@ package com.urbanairship.api.feedback.parse;
 import com.urbanairship.api.feedback.model.ApidsFeedbackResponse;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
-
 import org.codehaus.jackson.JsonParser;
-import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
 import java.io.IOException;
+
+import static com.urbanairship.api.common.parse.DateFormats.DATETIME_FORMAT_PATTERN;
 
 public class ApidsFeedbackResponseReader implements JsonObjectReader<ApidsFeedbackResponse>
 {
@@ -31,7 +32,7 @@ public class ApidsFeedbackResponseReader implements JsonObjectReader<ApidsFeedba
     }
 
     public void readMarkedInactiveOn(JsonParser jsonParser) throws IOException {
-        builder.setMarkedInactiveOn(jsonParser.readValueAs(DateTime.class));
+        builder.setMarkedInactiveOn(DateTimeFormat.forPattern(DATETIME_FORMAT_PATTERN).parseDateTime(jsonParser.getText()));
     }
 
     public void readAlias(JsonParser jsonParser) throws IOException {
