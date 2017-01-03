@@ -4,6 +4,8 @@ import com.urbanairship.api.templates.model.TemplateSelector;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
+import java.util.Map;
+
 import static junit.framework.Assert.assertEquals;
 
 public class TemplateSelectorSerializerTest {
@@ -29,6 +31,8 @@ public class TemplateSelectorSerializerTest {
                 "}";
 
         String templateSelectorSerialized = MAPPER.writeValueAsString(templateSelector);
-        assertEquals(templateSelectorJson, templateSelectorSerialized);
+        Map<String, Object> expectedMap = MAPPER.readValue(templateSelectorJson, Map.class);
+        Map<String, Object> actualMap = MAPPER.readValue(templateSelectorSerialized, Map.class);
+        assertEquals(expectedMap, actualMap);
     }
 }

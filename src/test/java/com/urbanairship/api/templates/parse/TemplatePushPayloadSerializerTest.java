@@ -8,6 +8,8 @@ import com.urbanairship.api.templates.model.TemplateSelector;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
+import java.util.Map;
+
 import static junit.framework.Assert.assertEquals;
 
 public class TemplatePushPayloadSerializerTest {
@@ -43,6 +45,8 @@ public class TemplatePushPayloadSerializerTest {
                     "}" +
                 "}";
 
-        assertEquals(templatePushPayloadSerialized, templatePushPayloadString);
+        Map<String, Object> expectedMap = MAPPER.readValue(templatePushPayloadString, Map.class);
+        Map<String, Object> actualMap = MAPPER.readValue(templatePushPayloadSerialized, Map.class);
+        assertEquals(expectedMap, actualMap);
     }
 }

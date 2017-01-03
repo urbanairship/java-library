@@ -14,6 +14,10 @@ import com.urbanairship.api.channel.ChannelTagRequest;
 import com.urbanairship.api.channel.model.ChannelResponse;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.common.parse.DateFormats;
+import com.urbanairship.api.feedback.ListApidsFeedbackRequest;
+import com.urbanairship.api.feedback.ListDeviceTokensFeedbackRequest;
+import com.urbanairship.api.feedback.model.ApidsFeedbackResponse;
+import com.urbanairship.api.feedback.model.DeviceTokensFeedbackResponse;
 import com.urbanairship.api.location.LocationRequest;
 import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.LocationResponse;
@@ -81,6 +85,7 @@ import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Period;
+import org.joda.time.format.DateTimeFormat;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -115,6 +120,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
+import static com.urbanairship.api.common.parse.DateFormats.DATETIME_FORMAT_PATTERN;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -3042,6 +3048,76 @@ public class UrbanAirshipClientTest {
         } catch (Exception ex) {
             fail("Exception " + ex);
         }
+    }
+
+    @Test
+    public void testListDeviceTokensFeedback() throws Exception {
+        DateTime now = DateTime.now();
+        String responseString =
+                "[{" +
+                        "\"device_token\": \"1234123412341234123412341234123412341234123412341234123412341234\"," +
+                        "\"marked_inactive_on\": \"2009-06-22 10:05:00\"," +
+                        "\"alias\": \"bob\"" +
+                        "}," +
+                        "{" +
+                        "\"device_token\": \"ABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCD\"," +
+                        "\"marked_inactive_on\": \"2009-06-22 10:07:00\"," +
+                        "\"alias\": \"Alice\"" +
+                        "}]";
+        String queryPathString = "/api/device_tokens/feedback/?since=" + DateFormats.DATE_ONLY_FORMATTER.print(now);
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseString)
+                        .withStatus(200)));
+        Response<List<DeviceTokensFeedbackResponse>> response = client.execute(new ListDeviceTokensFeedbackRequest(DateTime.now()));
+        List<DeviceTokensFeedbackResponse> deviceTokesFeedbackResponses = response.getBody().get();
+
+        assertEquals(2, deviceTokesFeedbackResponses.size());
+        assertEquals("1234123412341234123412341234123412341234123412341234123412341234", deviceTokesFeedbackResponses.get(0).getDeviceToken());
+        assertEquals("2009-06-22 10:05:00", DateTimeFormat.forPattern(DATETIME_FORMAT_PATTERN).print(deviceTokesFeedbackResponses.get(0).getMarkedInactiveOn()));
+        assertEquals("bob", deviceTokesFeedbackResponses.get(0).getAlias());
+
+        assertEquals("ABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCD", deviceTokesFeedbackResponses.get(1).getDeviceToken());
+        assertEquals("2009-06-22 10:07:00", DateTimeFormat.forPattern(DATETIME_FORMAT_PATTERN).print(deviceTokesFeedbackResponses.get(1).getMarkedInactiveOn()));
+        assertEquals("Alice", deviceTokesFeedbackResponses.get(1).getAlias());
+    }
+
+    @Test
+    public void testListApidsFeedback() throws Exception {
+        DateTime now = DateTime.now();
+        String responseString =
+                    "["+
+                        "{" +
+                        "\"apid\": \"00000000-0000-0000-0000-000000000000\"," +
+                        "\"gcm_registration_id\": \"abcdefghijklmn\", "+
+                        "\"marked_inactive_on\": \"2009-06-22 10:05:00\"," +
+                        "\"alias\": \"bob\"" +
+                        "}," +
+                        "{" +
+                        "\"apid\": \"00000000-0000-0000-0000-000000000001\"," +
+                        "\"gcm_registration_id\": \"opqrstuvmxyz\", "+
+                        "\"marked_inactive_on\": \"2009-06-22 10:07:00\"," +
+                        "\"alias\": \"Alice\"" +
+                        "}" +
+                        "]";
+        String queryPathString = "/api/apids/feedback/?since=" + DateFormats.DATE_ONLY_FORMATTER.print(now);
+        stubFor(get(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withBody(responseString)
+                        .withStatus(200)));
+        Response<List<ApidsFeedbackResponse>> response = client.execute(new ListApidsFeedbackRequest(DateTime.now()));
+        List<ApidsFeedbackResponse> apidsFeedbackResponses = response.getBody().get();
+
+        assertEquals(2, apidsFeedbackResponses.size());
+        assertEquals("00000000-0000-0000-0000-000000000000", apidsFeedbackResponses.get(0).getApid());
+        assertEquals("abcdefghijklmn", apidsFeedbackResponses.get(0).getGcmRegistrationId());
+        assertEquals("2009-06-22 10:05:00", DateTimeFormat.forPattern(DATETIME_FORMAT_PATTERN).print(apidsFeedbackResponses.get(0).getMarkedInactiveOn()));
+        assertEquals("bob", apidsFeedbackResponses.get(0).getAlias());
+
+        assertEquals("00000000-0000-0000-0000-000000000001", apidsFeedbackResponses.get(1).getApid());
+        assertEquals("opqrstuvmxyz", apidsFeedbackResponses.get(1).getGcmRegistrationId());
+        assertEquals("2009-06-22 10:07:00", DateTimeFormat.forPattern(DATETIME_FORMAT_PATTERN).print(apidsFeedbackResponses.get(1).getMarkedInactiveOn()));
+        assertEquals("Alice", apidsFeedbackResponses.get(1).getAlias());
     }
 
     @Test

@@ -13,6 +13,7 @@ public class DateFormats {
 
     private static final DateTimeParser SPACE_PARSER = new DateTimeFormatterBuilder().appendLiteral(' ').toParser();
     private static final DateTimeParser T_PARSER = new DateTimeFormatterBuilder().appendLiteral('T').toParser();
+    public static final String DATETIME_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
     public static final DateTimeFormatter DATE_PARSER = new DateTimeFormatterBuilder()
             .append(ISODateTimeFormat.date())
@@ -22,6 +23,8 @@ public class DateFormats {
             .withZoneUTC();
 
     public static final DateTimeFormatter DATE_FORMATTER = ISODateTimeFormat.dateHourMinuteSecond().withZoneUTC();
+
+    public static final DateTimeFormatter DATE_ONLY_FORMATTER = ISODateTimeFormat.date().withZoneUTC();
 
     public static final DateTimeFormatter SPACE_FORMATTER = new DateTimeFormatterBuilder().appendLiteral(' ').toFormatter();
 
