@@ -44,9 +44,8 @@ public class TemplatePushPayloadSerializerTest {
                     "}" +
                 "}";
 
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode jsonFromObject = mapper.readTree(templatePushPayloadSerialized);
-        JsonNode jsonFromString = mapper.readTree(templatePushPayloadString);
+        JsonNode jsonFromObject = MAPPER.readTree(templatePushPayloadSerialized);
+        JsonNode jsonFromString = MAPPER.readTree(templatePushPayloadString);
 
         assertEquals(jsonFromObject, jsonFromString);
     }

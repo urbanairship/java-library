@@ -32,9 +32,8 @@ public class TemplateSelectorSerializerTest {
 
         String templateSelectorSerialized = MAPPER.writeValueAsString(templateSelector);
 
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode jsonFromObject = mapper.readTree(templateSelectorSerialized);
-        JsonNode jsonFromString = mapper.readTree(templateSelectorJson);
+        JsonNode jsonFromObject = MAPPER.readTree(templateSelectorSerialized);
+        JsonNode jsonFromString = MAPPER.readTree(templateSelectorJson);
 
         assertEquals(jsonFromObject, jsonFromString);
     }
