@@ -1,6 +1,7 @@
 package com.urbanairship.api.templates.parse;
 
 import com.urbanairship.api.templates.model.TemplateSelector;
+import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
@@ -28,7 +29,13 @@ public class TemplateSelectorSerializerTest {
                     "}" +
                 "}";
 
+
         String templateSelectorSerialized = MAPPER.writeValueAsString(templateSelector);
-        assertEquals(templateSelectorJson, templateSelectorSerialized);
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonFromObject = mapper.readTree(templateSelectorSerialized);
+        JsonNode jsonFromString = mapper.readTree(templateSelectorJson);
+
+        assertEquals(jsonFromObject, jsonFromString);
     }
 }
