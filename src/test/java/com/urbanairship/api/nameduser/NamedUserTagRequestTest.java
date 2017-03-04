@@ -84,9 +84,8 @@ public class NamedUserTagRequestTest {
             .removeTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
             .removeTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"));
 
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode jsonFromObject = mapper.readTree(request.getRequestBody());
-        JsonNode jsonFromString = mapper.readTree(expected);
+        JsonNode jsonFromObject = MAPPER.readTree(request.getRequestBody());
+        JsonNode jsonFromString = MAPPER.readTree(expected);
 
         assertEquals(jsonFromObject, jsonFromString);
     }
