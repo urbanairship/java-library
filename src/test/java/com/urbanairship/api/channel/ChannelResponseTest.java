@@ -1,5 +1,6 @@
 package com.urbanairship.api.channel;
 
+import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.channel.model.ChannelResponse;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.channel.model.ChannelView;
@@ -15,7 +16,7 @@ import static org.junit.Assert.fail;
 
 public class ChannelResponseTest {
 
-    ObjectMapper mapper = ChannelObjectMapper.getInstance();
+    ObjectMapper MAPPER = ChannelObjectMapper.getInstance();
 
     @Test
     public void testAPIListAllChannelsResponse() {
@@ -138,7 +139,8 @@ public class ChannelResponseTest {
 
 
         try {
-            ChannelResponse response = mapper.readValue(fiveresponse, ChannelResponse.class);
+            ChannelResponse response = MAPPER.readValue(fiveresponse, ChannelResponse.class);
+
             assertTrue(response.getOk());
             assertEquals("https://go.urbanairship.com/api/channels?limit=5&start=0143e4d6-724c-4fc8-bbc6-ca647b8993bf", response.getNextPage().get());
             assertEquals(5, response.getChannelObjects().get().size());
@@ -202,7 +204,9 @@ public class ChannelResponseTest {
             assertEquals("21F34C9ED37EAF8D7DC43561C07AA398CA5C6F503196C9E8230C50C0959B8653", four.getPushAddress().get());
             assertEquals("[kablam, version_1.3]", four.getTags().toString());
             assertTrue(four.getTagGroups().containsKey("testGroup03"));
-            assertEquals("[testGroup03Tag01, testGroup03Tag03, testGroup03Tag02]", four.getTagGroups().get("testGroup03").toString());
+
+            ImmutableSet<String> expectedTags = ImmutableSet.of("testGroup03Tag01", "testGroup03Tag03", "testGroup03Tag02");
+            assertEquals(expectedTags, four.getTagGroups().get("testGroup03"));
             assertTrue(four.getTagGroups().containsKey("testGroup04"));
             assertEquals("[testGroup04Tag01]", four.getTagGroups().get("testGroup04").toString());
             assertFalse(four.isInstalled());

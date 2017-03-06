@@ -15,7 +15,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
 public class StaticListRequestTest {
-    private final static ObjectMapper mapper = StaticListsObjectMapper.getInstance();
+    private final static ObjectMapper MAPPER = StaticListsObjectMapper.getInstance();
     private final static String STATIC_LIST_CREATE_PATH = "/api/lists/";
     private final static String STATIC_LIST_UPDATE_PATH = "/api/lists/bleep";
 
@@ -91,10 +91,13 @@ public class StaticListRequestTest {
         updateExtras.put("key4", "val4");
         updatePayload.put(EXTRAS_KEY, updateExtras);
 
-        assertEquals(mapper.writeValueAsString(createPayload), createString);
-        assertEquals(mapper.writeValueAsString(updatePayload), updateString);
-        assertEquals(createRequest.getRequestBody(), mapper.writeValueAsString(createPayload));
-        assertEquals(updateRequest.getRequestBody(), mapper.writeValueAsString(updatePayload));
+        String createPayloadString = MAPPER.writeValueAsString(createPayload);
+        String updatePayloadString = MAPPER.writeValueAsString(updatePayload);
+
+        assertEquals(MAPPER.readTree(createPayloadString), MAPPER.readTree(createString));
+        assertEquals(MAPPER.readTree(updatePayloadString), MAPPER.readTree(updateString));
+        assertEquals(MAPPER.readTree(createRequest.getRequestBody()), MAPPER.readTree(createPayloadString));
+        assertEquals(MAPPER.readTree(updateRequest.getRequestBody()), MAPPER.readTree(updatePayloadString));
     }
 
     @Test
