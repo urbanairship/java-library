@@ -12,19 +12,19 @@ public class WebDevicePayloadSerializer extends JsonSerializer<WebDevicePayload>
     public void serialize(WebDevicePayload payload, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         jgen.writeStartObject();
 
-        if(payload.getAlert().isPresent()) {
+        if (payload.getAlert().isPresent()) {
             jgen.writeStringField("alert", payload.getAlert().get());
         }
 
-        if(payload.getExtra().isPresent()) {
+        if (payload.getExtra().isPresent()) {
             jgen.writeObjectField("extra", payload.getExtra().get());
         }
 
-        if(payload.getWebIcon().isPresent()) {
+        if (payload.getWebIcon().isPresent()) {
             jgen.writeObjectField("icon", payload.getWebIcon().get());
         }
 
-        if(payload.getTitle().isPresent()) {
+        if (payload.getTitle().isPresent()) {
             jgen.writeStringField("title", payload.getTitle().get());
         }
 
