@@ -18,6 +18,10 @@ public final class DeepLinkSerializer extends JsonSerializer<DeepLinkAction> {
         try {
             jgen.writeObjectField("type", "deep_link");
             jgen.writeObjectField("content", value.getLink());
+
+            if (value.getFallbackUrl().isPresent()) {
+                jgen.writeStringField("fallback_url", value.getFallbackUrl().get());
+            }
         }
         finally {
             jgen.writeEndObject();

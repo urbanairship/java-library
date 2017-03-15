@@ -5,38 +5,51 @@
 package com.urbanairship.api.push.model.notification.actions;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 public class DeepLinkAction implements Action.OpenAction<String> {
 
     private final String link;
+    private final Optional<String> fallbackUrl;
 
     public DeepLinkAction(String link) {
+        this(link, Optional.<String>absent());
+    }
+
+    public DeepLinkAction(String link, Optional<String> fallbackUrl) {
         Preconditions.checkNotNull(link, "link should not be null.");
+        Preconditions.checkNotNull(fallbackUrl, "fallbackUrl should not be null.");
         this.link = link;
+        this.fallbackUrl = fallbackUrl;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        DeepLinkAction that = (DeepLinkAction) o;
+
+        return Objects.equal(link, that.link) &&
+                Objects.equal(fallbackUrl, that.fallbackUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(link);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        final DeepLinkAction other = (DeepLinkAction) obj;
-        return Objects.equal(this.link, other.link);
+        return Objects.hashCode(link, fallbackUrl);
     }
 
     @Override
     public String toString() {
         return "DeepLinkAction{" +
                 "link='" + link + '\'' +
+                ", fallbackUrl=" + fallbackUrl +
                 '}';
     }
 
@@ -52,5 +65,9 @@ public class DeepLinkAction implements Action.OpenAction<String> {
 
     public String getLink() {
         return link;
+    }
+
+    public Optional<String> getFallbackUrl() {
+        return fallbackUrl;
     }
 }

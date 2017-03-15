@@ -193,6 +193,12 @@ public class Selectors {
         return compound(SelectorType.OR, SelectorType.DEVICE_TOKEN, deviceTokens);
     }
 
+    /* Channel */
+
+    public static final Selector channel(String channel) {
+        return value(SelectorType.CHANNEL, channel);
+    }
+
     /* iOS channels */
 
     public static final Selector iosChannel(String iosChannel) {
