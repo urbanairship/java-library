@@ -286,6 +286,54 @@ Here is an example of sending a push with a collapse ID:
         .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
         .build();
 
+Here's an example of an a web notification using a web icon:
+
+.. code-block:: java
+
+    WebIcon webIcon = WebIcon.newBuilder()
+            .setUrl("https://i.ytimg.com/vi/PNgykntrIzE/maxresdefault.jpg")
+            .build();
+
+    WebDevicePayload webPayload = WebDevicePayload.newBuilder()
+            .setAlert("Web specific alert")
+            .setTitle("Web title")
+            .addExtraEntry("extrakey", "extravalue")
+            .setWebIcon(webIcon)
+            .build();
+
+
+    //Notifications.notification(webPayload);
+    PushPayload payload = PushPayload.newBuilder()
+            .setAudience(Selectors.tag("testTag"))
+            .setNotification(Notifications.notification(webPayload))
+            .setDeviceTypes(DeviceTypeData.of(DeviceType.WEB))
+            .build();
+
+Which will generate the following JSON payload:
+
+.. code-block:: json
+
+  {
+      "audience": {
+          "tag": "testTag"
+      },
+      "device_types": [
+          "web"
+      ],
+      "notification": {
+          "web": {
+              "alert": "Web specific alert",
+              "extra": {
+                  "extrakey": "extravalue"
+              },
+              "icon": {
+                  "url": "https://i.ytimg.com/vi/PNgykntrIzE/maxresdefault.jpg"
+              },
+              "title": "Web title"
+          }
+      }
+  }
+
 DeviceTypes
 ===========
 

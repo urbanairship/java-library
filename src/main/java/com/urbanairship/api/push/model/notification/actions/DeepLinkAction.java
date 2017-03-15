@@ -5,20 +5,30 @@
 package com.urbanairship.api.push.model.notification.actions;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 public class DeepLinkAction implements Action.OpenAction<String> {
 
     private final String link;
+    private final Optional<String> fallbackUrl;
 
     public DeepLinkAction(String link) {
+        this(link, Optional.<String>absent());
+    }
+
+    public DeepLinkAction(String link, Optional<String> fallbackUrl) {
         Preconditions.checkNotNull(link, "link should not be null.");
+        Preconditions.checkNotNull(fallbackUrl, "fallbackUrl should not be null.");
         this.link = link;
+        this.fallbackUrl = fallbackUrl;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(link);
+        int result = (link != null ? link.hashCode() : 0);
+        result = 31 * result + (fallbackUrl != null ? fallbackUrl.hashCode() : 0);
+        return result;
     }
 
     @Override
@@ -30,6 +40,9 @@ public class DeepLinkAction implements Action.OpenAction<String> {
             return false;
         }
         final DeepLinkAction other = (DeepLinkAction) obj;
+
+        if(!fallbackUrl.equals(other.fallbackUrl)) return false;
+
         return Objects.equal(this.link, other.link);
     }
 
@@ -37,6 +50,7 @@ public class DeepLinkAction implements Action.OpenAction<String> {
     public String toString() {
         return "DeepLinkAction{" +
                 "link='" + link + '\'' +
+                ", fallbackUrl=" + fallbackUrl +
                 '}';
     }
 
@@ -52,5 +66,9 @@ public class DeepLinkAction implements Action.OpenAction<String> {
 
     public String getLink() {
         return link;
+    }
+
+    public Optional<String> getFallbackUrl() {
+        return fallbackUrl;
     }
 }
