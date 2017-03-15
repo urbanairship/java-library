@@ -1,6 +1,5 @@
 package com.urbanairship.api.push.parse.notification.web;
 
-import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 import com.urbanairship.api.push.model.notification.web.WebDevicePayload;
 import com.urbanairship.api.push.model.notification.web.WebIcon;
 import com.urbanairship.api.push.parse.PushObjectMapper;
@@ -72,9 +71,14 @@ public class PayloadDeserializerTest {
                 + "  \"title\": \"title\""
                 + "}";
 
+        WebDevicePayload expected = WebDevicePayload.newBuilder()
+                .setTitle("title")
+                .build();
+
         WebDevicePayload payload = MAPPER.readValue(json, WebDevicePayload.class);
 
         assertTrue(payload.getTitle().get().equals("title"));
+        assertEquals(expected, payload);
     }
 
     @Test

@@ -286,7 +286,7 @@ Here is an example of sending a push with a collapse ID:
         .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
         .build();
 
-Here's an example of an a web notification using a web icon:
+Here's an example of a web notification using a web icon:
 
 .. code-block:: java
 
@@ -301,8 +301,6 @@ Here's an example of an a web notification using a web icon:
             .setWebIcon(webIcon)
             .build();
 
-
-    //Notifications.notification(webPayload);
     PushPayload payload = PushPayload.newBuilder()
             .setAudience(Selectors.tag("testTag"))
             .setNotification(Notifications.notification(webPayload))

@@ -1,5 +1,6 @@
 package com.urbanairship.api.push.model.notification.web;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.DeviceType;
@@ -15,13 +16,14 @@ public class WebDevicePayload extends PushModelObject implements DevicePayloadOv
     private final Optional<ImmutableMap<String, String>> extra;
     private final Optional<WebIcon> webIcon;
 
-    private WebDevicePayload(Builder builder){
+    private WebDevicePayload(Builder builder) {
         this.alert = Optional.fromNullable(builder.alert);
         this.title = Optional.fromNullable(builder.title);
         this.webIcon = Optional.fromNullable(builder.webIcon);
-        if(builder.extra.build().isEmpty()){
+
+        if (builder.extra.build().isEmpty()) {
             this.extra = Optional.absent();
-        } else{
+        } else {
             this.extra = Optional.of(builder.extra.build());
         }
     }
@@ -83,6 +85,27 @@ public class WebDevicePayload extends PushModelObject implements DevicePayloadOv
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        WebDevicePayload payload = (WebDevicePayload) o;
+
+        return Objects.equal(alert, payload.alert) &&
+                Objects.equal(title, payload.title) &&
+                Objects.equal(extra, payload.extra) &&
+                Objects.equal(webIcon, payload.webIcon);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(alert, title, extra, webIcon);
+    }
+
+    @Override
     public String toString() {
         return "WebDevicePayload{" +
                 "alert=" + alert +
@@ -90,31 +113,6 @@ public class WebDevicePayload extends PushModelObject implements DevicePayloadOv
                 ", extra=" + extra +
                 ", webIcon=" + webIcon +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        WebDevicePayload that = (WebDevicePayload)o;
-
-        if(!alert.equals(that.alert)) return false;
-        if(!title.equals(that.title)) return false;
-        if(!extra.equals(that.extra)) return false;
-        if(!webIcon.equals(that.webIcon)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = alert.hashCode();
-        result = 31 * result + title.hashCode();
-        result = 31 * result + extra.hashCode();
-        result = 31 * result + webIcon.hashCode();
-
-        return result;
     }
 
     public static class Builder {

@@ -30,27 +30,29 @@ public class WebIcon extends PushModelObject {
     }
 
     @Override
-    public String toString() {
-        return "WebIcon{" +
-                "url=" + url +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
-        WebIcon that = (WebIcon)o;
+        WebIcon webIcon = (WebIcon) o;
 
-        if(!url.equals(that.url)) return false;
-
-        return true;
+        return Objects.equal(url, webIcon.url);
     }
 
     @Override
     public int hashCode() {
         return Objects.hashCode(url);
+    }
+
+    @Override
+    public String toString() {
+        return "WebIcon{" +
+                "url='" + url + '\'' +
+                '}';
     }
 
     public static class Builder {

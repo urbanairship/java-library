@@ -25,25 +25,24 @@ public class DeepLinkAction implements Action.OpenAction<String> {
     }
 
     @Override
-    public int hashCode() {
-        int result = (link != null ? link.hashCode() : 0);
-        result = 31 * result + (fallbackUrl != null ? fallbackUrl.hashCode() : 0);
-        return result;
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        DeepLinkAction that = (DeepLinkAction) o;
+
+        return Objects.equal(link, that.link) &&
+                Objects.equal(fallbackUrl, that.fallbackUrl);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        final DeepLinkAction other = (DeepLinkAction) obj;
-
-        if(!fallbackUrl.equals(other.fallbackUrl)) return false;
-
-        return Objects.equal(this.link, other.link);
+    public int hashCode() {
+        return Objects.hashCode(link, fallbackUrl);
     }
 
     @Override

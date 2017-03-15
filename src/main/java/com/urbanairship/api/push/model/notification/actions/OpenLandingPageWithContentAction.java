@@ -11,7 +11,7 @@ import com.urbanairship.api.push.model.PushModelObject;
 
 public class OpenLandingPageWithContentAction extends PushModelObject implements Action.OpenAction<LandingPageContent> {
     private final LandingPageContent pageContent;
-    private final Optional<String> faillbackUrl;
+    private final Optional<String> fallbackUrl;
 
     public OpenLandingPageWithContentAction(LandingPageContent pageContent) {
         this(pageContent, Optional.<String>absent());
@@ -22,7 +22,7 @@ public class OpenLandingPageWithContentAction extends PushModelObject implements
         Preconditions.checkNotNull(fallbackUrl, "fallbackUrl should not be null.");
 
         this.pageContent = pageContent;
-        this.faillbackUrl = fallbackUrl;
+        this.fallbackUrl = fallbackUrl;
     }
 
     @Override
@@ -31,25 +31,23 @@ public class OpenLandingPageWithContentAction extends PushModelObject implements
     }
 
     @Override
-    public int hashCode() {
-        int result = (pageContent != null ? pageContent.hashCode() : 0);
-        result = 31 * result + (faillbackUrl != null ? faillbackUrl.hashCode() : 0);
-        return result;
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        OpenLandingPageWithContentAction that = (OpenLandingPageWithContentAction) o;
+
+        return Objects.equal(pageContent, that.pageContent) &&
+                Objects.equal(fallbackUrl, that.fallbackUrl);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        final OpenLandingPageWithContentAction other = (OpenLandingPageWithContentAction) obj;
-
-        if(!faillbackUrl.equals(other.faillbackUrl)) return false;
-
-        return Objects.equal(this.pageContent, other.pageContent);
+    public int hashCode() {
+        return Objects.hashCode(pageContent, fallbackUrl);
     }
 
     @Override
@@ -60,8 +58,8 @@ public class OpenLandingPageWithContentAction extends PushModelObject implements
     @Override
     public String toString() {
         return "OpenLandingPageWithContentAction{" +
-                "data=" + pageContent +
-                ", fallbackUrl=" + faillbackUrl +
+                "pageContent=" + pageContent +
+                ", fallbackUrl=" + fallbackUrl +
                 '}';
     }
 }
