@@ -35,19 +35,30 @@ public class BatchPushRequest implements Request<PushResponse> {
     private final List<PushPayload> payload = new ArrayList<>();
     private boolean validateOnly;
 
-    private BatchPushRequest(PushPayload payload) {
+    private BatchPushRequest(List<PushPayload> payload) {
         Preconditions.checkNotNull(payload, "Payload required when creating a push request");
-        this.payload.add(payload);
+        this.payload.addAll(payload);
     }
 
     /**
-     * Create a push request.
+     * Create a batch push request from a single PushPayload.
      *
-     * @param payload PushPayload
+     * @param singlePayload PushPayload
      * @return BatchPushRequest
      */
-    public static BatchPushRequest newRequest(PushPayload payload) {
+    public static BatchPushRequest newRequest(PushPayload singlePayload) {
+        final List<PushPayload> payload = new ArrayList<>();
+        payload.add(singlePayload);
         return new BatchPushRequest(payload);
+    }
+    /**
+     * Create a batch push request from a list of PushPayloads.
+     *
+     * @param payloadList List<PushPayload>
+     * @return BatchPushRequest
+     */
+    public static BatchPushRequest newRequest(List<PushPayload> payloadList) {
+        return new BatchPushRequest(payloadList);
     }
 
     /**
