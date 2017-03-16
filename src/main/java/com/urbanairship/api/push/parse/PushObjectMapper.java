@@ -279,7 +279,7 @@ public class PushObjectMapper {
                 .addSerializer(PublicNotification.class, new PublicNotificationSerializer())
                 .addDeserializer(PublicNotification.class, new PublicNotificationDeserializer())
 
-            /* Web */
+            /* WebSettings */
                 .addSerializer(WebDevicePayload.class, new WebDevicePayloadSerializer())
                 .addDeserializer(WebDevicePayload.class, webPayloadDS)
                 .addSerializer(WebIcon.class, new WebIconSerializer())

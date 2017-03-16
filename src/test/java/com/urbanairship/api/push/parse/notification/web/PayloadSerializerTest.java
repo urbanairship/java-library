@@ -20,17 +20,17 @@ public class PayloadSerializerTest {
                 .build();
 
         WebDevicePayload webPayload = WebDevicePayload.newBuilder()
-                .setAlert("Web specific alert")
-                .setTitle("Web title")
+                .setAlert("WebSettings specific alert")
+                .setTitle("WebSettings title")
                 .addExtraEntry("extrakey", "extravalue")
                 .setWebIcon(webIcon)
                 .build();
 
         String expected = "{" +
-                    "\"alert\":\"Web specific alert\"," +
+                    "\"alert\":\"WebSettings specific alert\"," +
                     "\"extra\":{\"extrakey\":\"extravalue\"}," +
                     "\"icon\":{\"url\":\"https://i.ytimg.com/vi/PNgykntrIzE/maxresdefault.jpg\"}," +
-                    "\"title\":\"Web title\"" +
+                    "\"title\":\"WebSettings title\"" +
                 "}";
 
         String parsedJson = MAPPER.writeValueAsString(webPayload);

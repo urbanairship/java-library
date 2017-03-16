@@ -159,10 +159,10 @@ public class ChannelViewDeserializeTest {
         assertTrue(channel.isOptIn());
         assertEquals(ChannelType.WEB, channel.getChannelType());
 
-        assertTrue(channel.getWeb().isPresent());
-        assertTrue(channel.getWeb().get().getSubscription().isPresent());
+        assertTrue(channel.getWebSettings().isPresent());
+        assertTrue(channel.getWebSettings().get().getSubscription().isPresent());
 
-        Subscription subscription = channel.getWeb().get().getSubscription().get();
+        Subscription subscription = channel.getWebSettings().get().getSubscription().get();
 
         assertEquals("p256dhvalue", subscription.getP256dh().get());
         assertEquals("authvalue", subscription.getAuth().get());

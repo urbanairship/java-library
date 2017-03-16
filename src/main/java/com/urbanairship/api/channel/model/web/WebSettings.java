@@ -2,13 +2,12 @@ package com.urbanairship.api.channel.model.web;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
-import com.urbanairship.api.push.model.notification.web.WebDevicePayload;
 
-public class Web {
+public class WebSettings {
 
     private final Optional<Subscription> subscription;
 
-    private Web(Optional<Subscription> subscription) {
+    private WebSettings(Optional<Subscription> subscription) {
         this.subscription = subscription;
     }
 
@@ -29,8 +28,8 @@ public class Web {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Web web = (Web) o;
-        return Objects.equal(subscription, web.subscription);
+        WebSettings webSettings = (WebSettings) o;
+        return Objects.equal(subscription, webSettings.subscription);
     }
 
     @Override
@@ -40,7 +39,7 @@ public class Web {
 
     @Override
     public String toString() {
-        return "Web{" +
+        return "WebSettings{" +
                 "subscription=" + subscription +
                 '}';
     }
@@ -61,8 +60,8 @@ public class Web {
             return this;
         }
 
-        public Web build() {
-            return new Web(Optional.fromNullable(subscription));
+        public WebSettings build() {
+            return new WebSettings(Optional.fromNullable(subscription));
         }
     }
 }

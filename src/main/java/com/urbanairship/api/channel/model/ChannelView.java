@@ -10,7 +10,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.channel.model.ios.IosSettings;
-import com.urbanairship.api.channel.model.web.Web;
+import com.urbanairship.api.channel.model.web.WebSettings;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 
@@ -33,12 +33,12 @@ public final class ChannelView {
     private final ImmutableSet<String> tags;
     private final ImmutableMap<String, ImmutableSet<String>> tagGroups;
     private final Optional<IosSettings> iosSettings;
-    private final Optional<Web> web;
+    private final Optional<WebSettings> web;
 
     private ChannelView() {
         this(null, null, true, true, Optional.<Boolean>absent(), Optional.<String>absent(), null,
             Optional.<DateTime>absent(), Optional.<String>absent(), null, null, Optional.<IosSettings>absent(),
-                Optional.<Web>absent());
+                Optional.<WebSettings>absent());
     }
 
     private ChannelView(String channelId,
@@ -53,7 +53,7 @@ public final class ChannelView {
                        ImmutableSet<String> tags,
                        ImmutableMap<String, ImmutableSet<String>> tagGroups,
                        Optional<IosSettings> iosSettings,
-                       Optional<Web> web) {
+                       Optional<WebSettings> web) {
         this.channelId = channelId;
         this.channelType = channelType;
         this.installed = installed;
@@ -187,11 +187,11 @@ public final class ChannelView {
     }
 
     /**
-     * Get the Web displayed only for Web channels
+     * Get the WebSettings displayed only for WebSettings channels
      *
-     * @return Optional Web
+     * @return Optional WebSettings
      */
-    public Optional<Web> getWeb() {
+    public Optional<WebSettings> getWebSettings() {
         return web;
     }
 
@@ -210,7 +210,7 @@ public final class ChannelView {
             ", tags=" + tags +
             ", tagGroups=" + tagGroups +
             ", iosSettings=" + iosSettings +
-            ". web=" + web +
+            ". webSettings=" + web +
             '}';
     }
 
@@ -256,7 +256,7 @@ public final class ChannelView {
         private DateTime lastRegistration = null;
         private String alias = null;
         private IosSettings iosSettings = null;
-        private Web web = null;
+        private WebSettings webSettings = null;
 
         private Builder() {
         }
@@ -425,13 +425,13 @@ public final class ChannelView {
         }
 
         /**
-         * Set the web object
+         * Set the webSettings object
          *
-         * @param web Web
+         * @param webSettings WebSettings
          * @return Builder
          */
-        public Builder setWeb(Web web) {
-            this.web = web;
+        public Builder setWebSettings(WebSettings webSettings) {
+            this.webSettings = webSettings;
             return this;
         }
 
@@ -459,7 +459,7 @@ public final class ChannelView {
                 tags.build(),
                 tagGroups.build(),
                 Optional.fromNullable(iosSettings),
-                Optional.fromNullable(web)
+                Optional.fromNullable(webSettings)
             );
         }
     }
