@@ -13,10 +13,20 @@ public class Subscription {
         this.auth = auth;
     }
 
+    /**
+     * Get the p256dh String
+     *
+     * @return p256dh String
+     */
     public Optional<String> getP256dh() {
         return p256dh;
     }
 
+    /**
+     * Get the auth String
+     *
+     * @return auth String
+     */
     public Optional<String> getAuth() {
         return auth;
     }

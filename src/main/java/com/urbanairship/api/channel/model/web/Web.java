@@ -12,6 +12,11 @@ public class Web {
         this.subscription = subscription;
     }
 
+    /**
+     * Get the Subscription object
+     *
+     * @return Subscription
+     */
     public Optional<Subscription> getSubscription() {
         return subscription;
     }

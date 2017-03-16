@@ -100,9 +100,6 @@ public class ChannelViewDeserializeTest {
         assertEquals(expectedTagGroups, channel.getTagGroups());
     }
 
-    /*
-    {"ok":true,"channel":{"channel_id":"f82d3723-09d0-4390-b0ff-690485685e3e","device_type":"web","installed":true,"push_address":"https://fcm.googleapis.com/fcm/send/cdxT9In_1LA:APA91bEk4kmqFDNkhuVtoE_IstvhPUinxSAeFZHmXzM4bQdIwQvqYr_qPmw2Geo8qxLMB6UCpC4aHYyvKRvlEkh7dBL3ss-oxBz3RT4dbmty73NnUlYxWFanX7tg4dkIgYLWV54q41di","named_user_id":null,"alias":null,"tags":["test1"],"tag_groups":{"ua_channel_type":["web"],"ua_web_sdk_version":["0.0.1"],"ua_browser_name":["chrome"],"ua_browser_type":["desktop"],"ua_browser_version":["chrome-56"],"timezone":["America/Los_Angeles"],"ua_locale_country":["US"],"ua_locale_language":["en"],"ua_opt_in":["true"]},"created":"2017-03-07T22:05:38","opt_in":true,"web":{"subscription":{"p256dh":"BFzZ4mOIrqBTjW0AX21nFyKMkNkEUpbUv3DFfpDTc20VKcXeJNS7dWHpqPXBqBQc5HZlC6Ru6r5tbi07QqphUo8=","auth":"XPulHgvqESfJmxfHMz5SeA=="}},"last_registration":"2017-03-09T16:27:20"}}
-     */
     @Test
     public void testWebChannel() throws Exception {
         String json =

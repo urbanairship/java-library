@@ -187,7 +187,7 @@ public final class ChannelView {
     }
 
     /**
-     * Get the Web object
+     * Get the Web displayed only for Web channels
      *
      * @return Optional Web
      */
