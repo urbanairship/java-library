@@ -10,6 +10,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.channel.model.ios.IosSettings;
+import com.urbanairship.api.channel.model.web.Web;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 
@@ -32,10 +33,12 @@ public final class ChannelView {
     private final ImmutableSet<String> tags;
     private final ImmutableMap<String, ImmutableSet<String>> tagGroups;
     private final Optional<IosSettings> iosSettings;
+    private final Optional<Web> web;
 
     private ChannelView() {
         this(null, null, true, true, Optional.<Boolean>absent(), Optional.<String>absent(), null,
-            Optional.<DateTime>absent(), Optional.<String>absent(), null, null, Optional.<IosSettings>absent());
+            Optional.<DateTime>absent(), Optional.<String>absent(), null, null, Optional.<IosSettings>absent(),
+                Optional.<Web>absent());
     }
 
     private ChannelView(String channelId,
@@ -49,7 +52,8 @@ public final class ChannelView {
                        Optional<String> alias,
                        ImmutableSet<String> tags,
                        ImmutableMap<String, ImmutableSet<String>> tagGroups,
-                       Optional<IosSettings> iosSettings) {
+                       Optional<IosSettings> iosSettings,
+                       Optional<Web> web) {
         this.channelId = channelId;
         this.channelType = channelType;
         this.installed = installed;
@@ -62,6 +66,7 @@ public final class ChannelView {
         this.tags = tags;
         this.tagGroups = tagGroups;
         this.iosSettings = iosSettings;
+        this.web = web;
     }
 
     /**
@@ -181,6 +186,15 @@ public final class ChannelView {
         return iosSettings;
     }
 
+    /**
+     * Get the Web object
+     *
+     * @return Optional Web
+     */
+    public Optional<Web> getWeb() {
+        return web;
+    }
+
     @Override
     public String toString() {
         return "ChannelView{" +
@@ -196,12 +210,13 @@ public final class ChannelView {
             ", tags=" + tags +
             ", tagGroups=" + tagGroups +
             ", iosSettings=" + iosSettings +
+            ". web=" + web +
             '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(channelId, channelType, installed, optIn, background, pushAddress, created, lastRegistration, alias, tags, tagGroups, iosSettings);
+        return Objects.hashCode(channelId, channelType, installed, optIn, background, pushAddress, created, lastRegistration, alias, tags, tagGroups, iosSettings, web);
     }
 
     @Override
@@ -224,7 +239,8 @@ public final class ChannelView {
             Objects.equal(this.alias, other.alias) &&
             Objects.equal(this.tags, other.tags) &&
             Objects.equal(this.tagGroups, other.tagGroups) &&
-            Objects.equal(this.iosSettings, other.iosSettings);
+            Objects.equal(this.iosSettings, other.iosSettings) &&
+            Objects.equal(this.web, other.web);
     }
 
     public final static class Builder {
@@ -240,6 +256,7 @@ public final class ChannelView {
         private DateTime lastRegistration = null;
         private String alias = null;
         private IosSettings iosSettings = null;
+        private Web web = null;
 
         private Builder() {
         }
@@ -408,6 +425,17 @@ public final class ChannelView {
         }
 
         /**
+         * Set the web object
+         *
+         * @param web Web
+         * @return Builder
+         */
+        public Builder setWeb(Web web) {
+            this.web = web;
+            return this;
+        }
+
+        /**
          * Build the ChannelView object
          * @return ChannelView
          */
@@ -430,7 +458,8 @@ public final class ChannelView {
                 Optional.fromNullable(alias),
                 tags.build(),
                 tagGroups.build(),
-                Optional.fromNullable(iosSettings)
+                Optional.fromNullable(iosSettings),
+                Optional.fromNullable(web)
             );
         }
     }

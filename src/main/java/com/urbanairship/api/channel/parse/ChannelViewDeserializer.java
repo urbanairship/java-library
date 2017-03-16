@@ -94,6 +94,12 @@ public final class ChannelViewDeserializer extends JsonDeserializer<ChannelView>
                             reader.readIosSettings(jsonParser);
                         }
                     })
+                    .put(Constants.WEB, new FieldParser<ChannelViewReader>() {
+                        @Override
+                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readWeb(jsonParser);
+                        }
+                    })
                     .build()
     );
 
