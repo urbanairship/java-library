@@ -8,11 +8,11 @@ import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
 
-public class WebReader implements JsonObjectReader<WebSettings> {
+public class WebSettingsReader implements JsonObjectReader<WebSettings> {
 
     private final WebSettings.Builder builder;
 
-    public WebReader() {
+    public WebSettingsReader() {
         this.builder = WebSettings.newBuilder();
     }
 

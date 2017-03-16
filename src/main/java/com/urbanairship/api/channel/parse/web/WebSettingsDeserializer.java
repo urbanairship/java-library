@@ -14,12 +14,12 @@ import org.codehaus.jackson.map.JsonDeserializer;
 
 import java.io.IOException;
 
-public class WebDeserializer extends JsonDeserializer<WebSettings> {
-    private static final FieldParserRegistry<WebSettings, WebReader> FIELD_PARSERS = new MapFieldParserRegistry<WebSettings, WebReader>(
-            ImmutableMap.<String, FieldParser<WebReader>>builder()
-                    .put(Constants.SUBSCRIPTION, new FieldParser<WebReader>() {
+public class WebSettingsDeserializer extends JsonDeserializer<WebSettings> {
+    private static final FieldParserRegistry<WebSettings, WebSettingsReader> FIELD_PARSERS = new MapFieldParserRegistry<WebSettings, WebSettingsReader>(
+            ImmutableMap.<String, FieldParser<WebSettingsReader>>builder()
+                    .put(Constants.SUBSCRIPTION, new FieldParser<WebSettingsReader>() {
                         @Override
-                        public void parse(WebReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                        public void parse(WebSettingsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
                             reader.readSubscription(jsonParser);
                         }
                     })
@@ -28,13 +28,13 @@ public class WebDeserializer extends JsonDeserializer<WebSettings> {
 
     private final StandardObjectDeserializer<WebSettings, ?> deserializer;
 
-    public WebDeserializer() {
-        deserializer = new StandardObjectDeserializer<WebSettings, WebReader>(
+    public WebSettingsDeserializer() {
+        deserializer = new StandardObjectDeserializer<WebSettings, WebSettingsReader>(
                 FIELD_PARSERS,
-                new Supplier<WebReader>() {
+                new Supplier<WebSettingsReader>() {
                     @Override
-                    public WebReader get() {
-                        return new WebReader();
+                    public WebSettingsReader get() {
+                        return new WebSettingsReader();
                     }
                 }
         );

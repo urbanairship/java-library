@@ -279,12 +279,12 @@ public class ChannelResponseTest {
             ChannelView six = response.getChannelObjects().get().get(5);
             assertNotNull(six);
             assertFalse(six.getAlias().isPresent());
-            assertFalse(five.getBackground().isPresent());
+            assertFalse(six.getBackground().isPresent());
             assertEquals("f82d3723-09d0-4390-b0ff-690485685e3e", six.getChannelId());
             assertEquals(1359075305000L, six.getCreated().getMillis());
             assertEquals(ChannelType.WEB, six.getChannelType());
             assertFalse(six.getIosSettings().isPresent());
-            assertFalse(five.getLastRegistration().isPresent());
+            assertTrue(six.getLastRegistration().isPresent());
             assertTrue(six.getPushAddress().isPresent());
             assertTrue(six.isInstalled());
             assertTrue(six.isOptIn());
