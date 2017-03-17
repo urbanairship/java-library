@@ -21,7 +21,7 @@ public class ChannelResponseTest {
     @Test
     public void testAPIListAllChannelsResponse() {
 
-        String fiveresponse = "{\n" +
+        String sixresponse = "{\n" +
             "  \"ok\": true,\n" +
             "  \"channels\": [\n" +
             "    {\n" +
@@ -132,18 +132,67 @@ public class ChannelResponseTest {
             "        \n" +
             "      ],\n" +
             "      \"tag_groups\": {}\n" +
-            "    }\n" +
+            "    },\n" +
+            "    {\n" +
+            "        \"channel_id\": \"f82d3723-09d0-4390-b0ff-690485685e3e\",\n" +
+            "        \"device_type\": \"web\",\n" +
+            "        \"installed\": true,\n" +
+            "        \"push_address\": \"webpushaddress\",\n" +
+            "        \"named_user_id\": null,\n" +
+            "        \"alias\": null,\n" +
+            "        \"tags\": [\n" +
+            "            \"test1\"\n" +
+            "        ],\n" +
+            "        \"tag_groups\": {\n" +
+            "            \"ua_channel_type\": [\n" +
+            "                \"web\"\n" +
+            "            ],\n" +
+            "            \"ua_web_sdk_version\": [\n" +
+            "                \"0.0.1\"\n" +
+            "            ],\n" +
+            "            \"ua_browser_name\": [\n" +
+            "                \"chrome\"\n" +
+            "            ],\n" +
+            "            \"ua_browser_type\": [\n" +
+            "                \"desktop\"\n" +
+            "            ],\n" +
+            "            \"ua_browser_version\": [\n" +
+            "                \"chrome-56\"\n" +
+            "            ],\n" +
+            "            \"timezone\": [\n" +
+            "                \"America/Los_Angeles\"\n" +
+            "            ],\n" +
+            "            \"ua_locale_country\": [\n" +
+            "                \"US\"\n" +
+            "            ],\n" +
+            "            \"ua_locale_language\": [\n" +
+            "                \"en\"\n" +
+            "            ],\n" +
+            "            \"ua_opt_in\": [\n" +
+            "                \"true\"\n" +
+            "            ]\n" +
+            "        },\n" +
+            "        \"created\": \"2013-01-25T00:55:05\",\n" +
+            "        \"opt_in\": true,\n" +
+            "        \"web\": {\n" +
+            "            \"subscription\": {\n" +
+            "                \"p256dh\": \"p256dhvalue\",\n" +
+            "                \"auth\": \"authvalue\"\n" +
+            "            }\n" +
+            "        },\n" +
+            "        \"last_registration\": \"2017-03-09T16:27:20\"\n" +
+            "    }" +
             "  ],\n" +
             "  \"next_page\": \"https:\\/\\/go.urbanairship.com\\/api\\/channels?limit=5&start=0143e4d6-724c-4fc8-bbc6-ca647b8993bf\"\n" +
             "}";
 
 
         try {
-            ChannelResponse response = MAPPER.readValue(fiveresponse, ChannelResponse.class);
+            ChannelResponse response = MAPPER.readValue(sixresponse, ChannelResponse.class);
 
             assertTrue(response.getOk());
             assertEquals("https://go.urbanairship.com/api/channels?limit=5&start=0143e4d6-724c-4fc8-bbc6-ca647b8993bf", response.getNextPage().get());
-            assertEquals(5, response.getChannelObjects().get().size());
+            assertEquals(6, response.getChannelObjects().get().size());
 
             ChannelView one = response.getChannelObjects().get().get(0);
             assertNotNull(one);
@@ -226,6 +275,21 @@ public class ChannelResponseTest {
             assertTrue(five.getTagGroups().isEmpty());
             assertFalse(five.isInstalled());
             assertFalse(five.isOptIn());
+
+            ChannelView six = response.getChannelObjects().get().get(5);
+            assertNotNull(six);
+            assertFalse(six.getAlias().isPresent());
+            assertFalse(six.getBackground().isPresent());
+            assertEquals("f82d3723-09d0-4390-b0ff-690485685e3e", six.getChannelId());
+            assertEquals(1359075305000L, six.getCreated().getMillis());
+            assertEquals(ChannelType.WEB, six.getChannelType());
+            assertFalse(six.getIosSettings().isPresent());
+            assertTrue(six.getLastRegistration().isPresent());
+            assertTrue(six.getPushAddress().isPresent());
+            assertTrue(six.isInstalled());
+            assertTrue(six.isOptIn());
+            assertTrue(six.getTags().contains("test1"));
+
 
         } catch (Exception ex) {
             ex.printStackTrace();

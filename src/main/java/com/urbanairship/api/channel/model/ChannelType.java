@@ -13,7 +13,8 @@ public enum ChannelType {
 
     IOS("ios"),
     ADM("amazon"),
-    ANDROID("android");
+    ANDROID("android"),
+    WEB("web");
 
     private final String identifier;
 

@@ -5,7 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class WebDevicePayloadTest {
+public class WebSettingsDevicePayloadTest {
 
     @Test
     public void testBuilder() {
