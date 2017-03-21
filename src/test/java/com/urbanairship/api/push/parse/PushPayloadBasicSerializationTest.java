@@ -12,7 +12,6 @@ import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
 import com.urbanairship.api.push.model.notification.blackberry.BlackberryDevicePayload;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
-import com.urbanairship.api.push.model.notification.mpns.MPNSDevicePayload;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import com.urbanairship.api.push.model.notification.wns.WNSDevicePayload;
 import org.apache.commons.lang.RandomStringUtils;
@@ -168,7 +167,7 @@ public class PushPayloadBasicSerializationTest {
         String json
                 = "{"
                 + "  \"audience\" : \"all\","
-                + "  \"device_types\" : [ \"ios\", \"wns\", \"mpns\", \"android\" ],"
+                + "  \"device_types\" : [ \"ios\", \"wns\", \"android\" ],"
                 + "  \"notification\" : { "
                 + "    \"alert\" : \"wat\","
                 + "    \"ios\" : {"
@@ -176,9 +175,6 @@ public class PushPayloadBasicSerializationTest {
                 + "    },"
                 + "    \"wns\" : {"
                 + "      \"alert\" : \"wns\""
-                + "    },"
-                + "    \"mpns\" : {"
-                + "      \"alert\" : \"mpns\""
                 + "    },"
                 + "    \"android\" : {"
                 + "      \"alert\" : \"droid\""
@@ -195,7 +191,6 @@ public class PushPayloadBasicSerializationTest {
         Notification notification = push.getNotification().get();
         assertTrue(notification.getDeviceTypeOverride(DeviceType.IOS, IOSDevicePayload.class).isPresent());
         assertTrue(notification.getDeviceTypeOverride(DeviceType.WNS, WNSDevicePayload.class).isPresent());
-        assertTrue(notification.getDeviceTypeOverride(DeviceType.MPNS, MPNSDevicePayload.class).isPresent());
         assertTrue(notification.getDeviceTypeOverride(DeviceType.ANDROID, AndroidDevicePayload.class).isPresent());
         assertTrue(notification.getDeviceTypeOverride(DeviceType.BLACKBERRY, BlackberryDevicePayload.class).isPresent());
         assertTrue(notification.getDeviceTypeOverride(DeviceType.AMAZON, ADMDevicePayload.class).isPresent());
@@ -207,10 +202,6 @@ public class PushPayloadBasicSerializationTest {
         WNSDevicePayload wns = notification.getDeviceTypeOverride(DeviceType.WNS, WNSDevicePayload.class).get();
         assertTrue(wns.getAlert().isPresent());
         assertEquals("wns", wns.getAlert().get());
-
-        MPNSDevicePayload mpns = notification.getDeviceTypeOverride(DeviceType.MPNS, MPNSDevicePayload.class).get();
-        assertTrue(mpns.getAlert().isPresent());
-        assertEquals("mpns", mpns.getAlert().get());
 
         AndroidDevicePayload android = notification.getDeviceTypeOverride(DeviceType.ANDROID, AndroidDevicePayload.class).get();
         assertTrue(android.getAlert().isPresent());

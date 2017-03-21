@@ -11,7 +11,6 @@ import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
 import com.urbanairship.api.push.model.notification.blackberry.BlackberryDevicePayload;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
-import com.urbanairship.api.push.model.notification.mpns.MPNSDevicePayload;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import com.urbanairship.api.push.model.notification.web.WebDevicePayload;
 import com.urbanairship.api.push.model.notification.wns.WNSDevicePayload;
@@ -53,8 +52,6 @@ public class Notifications {
             return blackberryAlert(text);
         case WNS:
             return wnsAlert(text);
-        case MPNS:
-            return mpnsAlert(text);
         case AMAZON:
             return admAlert(text);
         case WEB:
@@ -88,11 +85,6 @@ public class Notifications {
             .build();
     }
 
-    public static MPNSDevicePayload mpnsAlert(String text) {
-        return MPNSDevicePayload.newBuilder()
-            .setAlert(text)
-            .build();
-    }
 
     public static ADMDevicePayload admAlert(String text) {
         return ADMDevicePayload.newBuilder()

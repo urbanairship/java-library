@@ -43,10 +43,6 @@ import com.urbanairship.api.push.model.notification.android.PublicNotification;
 import com.urbanairship.api.push.model.notification.android.Wearable;
 import com.urbanairship.api.push.model.notification.blackberry.BlackberryDevicePayload;
 import com.urbanairship.api.push.model.notification.ios.*;
-import com.urbanairship.api.push.model.notification.mpns.MPNSDevicePayload;
-import com.urbanairship.api.push.model.notification.mpns.MPNSPush;
-import com.urbanairship.api.push.model.notification.mpns.MPNSTileData;
-import com.urbanairship.api.push.model.notification.mpns.MPNSToastData;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import com.urbanairship.api.push.model.notification.web.WebDevicePayload;
 import com.urbanairship.api.push.model.notification.web.WebIcon;
@@ -101,14 +97,6 @@ import com.urbanairship.api.push.parse.notification.android.WearableSerializer;
 import com.urbanairship.api.push.parse.notification.blackberry.BlackberryDevicePayloadDeserializer;
 import com.urbanairship.api.push.parse.notification.blackberry.BlackberryDevicePayloadSerializer;
 import com.urbanairship.api.push.parse.notification.ios.*;
-import com.urbanairship.api.push.parse.notification.mpns.MPNSBatchingIntervalDeserializer;
-import com.urbanairship.api.push.parse.notification.mpns.MPNSBatchingIntervalSerializer;
-import com.urbanairship.api.push.parse.notification.mpns.MPNSDevicePayloadDeserializer;
-import com.urbanairship.api.push.parse.notification.mpns.MPNSDevicePayloadSerializer;
-import com.urbanairship.api.push.parse.notification.mpns.MPNSTileDeserializer;
-import com.urbanairship.api.push.parse.notification.mpns.MPNSTileSerializer;
-import com.urbanairship.api.push.parse.notification.mpns.MPNSToastDeserializer;
-import com.urbanairship.api.push.parse.notification.mpns.MPNSToastSerializer;
 import com.urbanairship.api.push.parse.notification.richpush.RichPushMessageDeserializer;
 import com.urbanairship.api.push.parse.notification.richpush.RichPushMessageSerializer;
 import com.urbanairship.api.push.parse.notification.web.WebDevicePayloadDeserializer;
@@ -161,9 +149,6 @@ public class PushObjectMapper {
         WNSTileDeserializer wnsTileDS = new WNSTileDeserializer(bindingDS);
         WNSBadgeDeserializer badgeDS = new WNSBadgeDeserializer();
         WNSDevicePayloadDeserializer wnsPayloadDS = new WNSDevicePayloadDeserializer(wnsToastDS, wnsTileDS, badgeDS);
-        MPNSToastDeserializer mpnsToastDS = new MPNSToastDeserializer();
-        MPNSTileDeserializer mpnsTileDS = new MPNSTileDeserializer();
-        MPNSDevicePayloadDeserializer mpnsPayloadDS = new MPNSDevicePayloadDeserializer(mpnsToastDS, mpnsTileDS);
         IOSDevicePayloadDeserializer iosPayloadDS = new IOSDevicePayloadDeserializer();
         AndroidDevicePayloadDeserializer androidPayloadDS = new AndroidDevicePayloadDeserializer();
         ADMDevicePayloadDeserializer admPayloadDS = new ADMDevicePayloadDeserializer();
@@ -174,7 +159,6 @@ public class PushObjectMapper {
         NotificationDeserializer notificationDeserializer = new NotificationDeserializer(
                 ImmutableMap.<DeviceType, JsonDeserializer<? extends DevicePayloadOverride>>builder()
                         .put(DeviceType.WNS, wnsPayloadDS)
-                        .put(DeviceType.MPNS, mpnsPayloadDS)
                         .put(DeviceType.IOS, iosPayloadDS)
                         .put(DeviceType.ANDROID, androidPayloadDS)
                         .put(DeviceType.BLACKBERRY, blackberryPayloadDS)
@@ -251,18 +235,6 @@ public class PushObjectMapper {
                 .addDeserializer(WNSBadgeData.class, badgeDS)
                 .addSerializer(WNSAudioData.class, new WNSAudioSerializer())
                 .addDeserializer(WNSAudioData.class, audioDS)
-
-            /* MPNS Enums */
-                .addSerializer(MPNSPush.BatchingInterval.class, new MPNSBatchingIntervalSerializer())
-                .addDeserializer(MPNSPush.BatchingInterval.class, new MPNSBatchingIntervalDeserializer())
-
-            /* MPNS composite types */
-                .addSerializer(MPNSDevicePayload.class, new MPNSDevicePayloadSerializer())
-                .addDeserializer(MPNSDevicePayload.class, mpnsPayloadDS)
-                .addSerializer(MPNSToastData.class, new MPNSToastSerializer())
-                .addDeserializer(MPNSToastData.class, mpnsToastDS)
-                .addSerializer(MPNSTileData.class, new MPNSTileSerializer())
-                .addDeserializer(MPNSTileData.class, mpnsTileDS)
 
             /* Android */
                 .addSerializer(AndroidDevicePayload.class, new AndroidDevicePayloadSerializer())

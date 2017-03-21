@@ -269,20 +269,6 @@ public class Selectors {
         return compound(SelectorType.OR, SelectorType.WNS, ids);
     }
 
-    /* MPNS APIDs */
-
-    public static final Selector mpns(String mpns) {
-        return value(SelectorType.MPNS, mpns);
-    }
-
-    public static final Selector mpnsDevices(String ... ids) {
-        return compound(SelectorType.OR, SelectorType.MPNS, ids);
-    }
-
-    public static final Selector mpnsDevices(Collection<String> ids) {
-        return compound(SelectorType.OR, SelectorType.MPNS, ids);
-    }
-
     /* Amazon Channels */
 
     public static final Selector amazon(String id) {
