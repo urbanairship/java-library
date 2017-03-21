@@ -213,20 +213,6 @@ public class Selectors {
         return compound(SelectorType.OR, SelectorType.IOS_CHANNEL, iosChannels);
     }
 
-    /* Device pins */
-
-    public static final Selector devicePin(String devicePin) {
-        return value(SelectorType.DEVICE_PIN, devicePin);
-    }
-
-    public static final Selector devicePins(String ... devicePins) {
-        return compound(SelectorType.OR, SelectorType.DEVICE_PIN, devicePins);
-    }
-
-    public static final Selector devicePins(Collection<String> devicePins) {
-        return compound(SelectorType.OR, SelectorType.DEVICE_PIN, devicePins);
-    }
-
     /* APIDs */
 
     public static final Selector apid(String apid) {

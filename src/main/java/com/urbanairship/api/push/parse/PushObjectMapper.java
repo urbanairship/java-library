@@ -41,7 +41,6 @@ import com.urbanairship.api.push.model.notification.android.Category;
 import com.urbanairship.api.push.model.notification.android.InboxStyle;
 import com.urbanairship.api.push.model.notification.android.PublicNotification;
 import com.urbanairship.api.push.model.notification.android.Wearable;
-import com.urbanairship.api.push.model.notification.blackberry.BlackberryDevicePayload;
 import com.urbanairship.api.push.model.notification.ios.*;
 import com.urbanairship.api.push.model.notification.mpns.MPNSDevicePayload;
 import com.urbanairship.api.push.model.notification.mpns.MPNSPush;
@@ -98,8 +97,6 @@ import com.urbanairship.api.push.parse.notification.android.PublicNotificationDe
 import com.urbanairship.api.push.parse.notification.android.PublicNotificationSerializer;
 import com.urbanairship.api.push.parse.notification.android.WearableDeserializer;
 import com.urbanairship.api.push.parse.notification.android.WearableSerializer;
-import com.urbanairship.api.push.parse.notification.blackberry.BlackberryDevicePayloadDeserializer;
-import com.urbanairship.api.push.parse.notification.blackberry.BlackberryDevicePayloadSerializer;
 import com.urbanairship.api.push.parse.notification.ios.*;
 import com.urbanairship.api.push.parse.notification.mpns.MPNSBatchingIntervalDeserializer;
 import com.urbanairship.api.push.parse.notification.mpns.MPNSBatchingIntervalSerializer;
@@ -167,7 +164,6 @@ public class PushObjectMapper {
         IOSDevicePayloadDeserializer iosPayloadDS = new IOSDevicePayloadDeserializer();
         AndroidDevicePayloadDeserializer androidPayloadDS = new AndroidDevicePayloadDeserializer();
         ADMDevicePayloadDeserializer admPayloadDS = new ADMDevicePayloadDeserializer();
-        BlackberryDevicePayloadDeserializer blackberryPayloadDS = new BlackberryDevicePayloadDeserializer();
         WebDevicePayloadDeserializer webPayloadDS = new WebDevicePayloadDeserializer();
 
 
@@ -177,7 +173,6 @@ public class PushObjectMapper {
                         .put(DeviceType.MPNS, mpnsPayloadDS)
                         .put(DeviceType.IOS, iosPayloadDS)
                         .put(DeviceType.ANDROID, androidPayloadDS)
-                        .put(DeviceType.BLACKBERRY, blackberryPayloadDS)
                         .put(DeviceType.AMAZON, admPayloadDS)
                         .build());
 
@@ -284,10 +279,6 @@ public class PushObjectMapper {
                 .addDeserializer(WebDevicePayload.class, webPayloadDS)
                 .addSerializer(WebIcon.class, new WebIconSerializer())
                 .addDeserializer(WebIcon.class, new WebIconDeserializer())
-
-            /* Blackberry */
-                .addSerializer(BlackberryDevicePayload.class, new BlackberryDevicePayloadSerializer())
-                .addDeserializer(BlackberryDevicePayload.class, blackberryPayloadDS)
 
             /* AMAZON */
                 .addSerializer(ADMDevicePayload.class, new ADMDevicePayloadSerializer())
