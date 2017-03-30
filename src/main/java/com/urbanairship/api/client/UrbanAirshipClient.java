@@ -13,6 +13,7 @@ import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.ProxyServer;
 import com.ning.http.client.filter.FilterContext;
+import com.urbanairship.api.customevents.CustomEventRequest;
 import org.apache.http.entity.ContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,8 @@ import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import static com.google.common.base.Optional.fromNullable;
+
 /**
  * The UrbanAirshipClient class handles HTTP requests to the Urban Airship API.
  */
@@ -35,20 +38,22 @@ public class UrbanAirshipClient implements Closeable {
     private static final Logger log = LoggerFactory.getLogger(UrbanAirshipClient.class);
 
     private final String appKey;
-    private final String appSecret;
+    private final Optional<String> appSecret;
+    private final Optional<String> bearerToken;
     private final URI baseUri;
     private final AsyncHttpClient client;
 
     private UrbanAirshipClient(Builder builder) {
         this.appKey = builder.key;
-        this.appSecret = builder.secret;
+        this.appSecret = fromNullable(builder.secret);
+        this.bearerToken = fromNullable(builder.bearerToken);
         this.baseUri = URI.create(builder.baseUri);
 
         AsyncHttpClientConfig.Builder clientConfigBuilder = builder.clientConfigBuilder;
         clientConfigBuilder.setUserAgent(getUserAgent());
-        clientConfigBuilder.addResponseFilter(new RequestRetryFilter(builder.maxRetries, Optional.fromNullable(builder.retryPredicate)));
+        clientConfigBuilder.addResponseFilter(new RequestRetryFilter(builder.maxRetries, fromNullable(builder.retryPredicate)));
 
-        Optional<ProxyServer> proxyServer = convertProxyInfo(Optional.fromNullable(builder.proxyInfo));
+        Optional<ProxyServer> proxyServer = convertProxyInfo(fromNullable(builder.proxyInfo));
         if (proxyServer.isPresent()) {
             clientConfigBuilder.setProxyServer(proxyServer.get());
         }
@@ -78,8 +83,17 @@ public class UrbanAirshipClient implements Closeable {
      *
      * @return The app secret.
      */
-    public String getAppSecret() {
+    public Optional<String> getAppSecret() {
         return appSecret;
+    }
+
+    /**
+     * Get the bearer token.
+     *
+     * @return The bearer token.
+     */
+    public Optional<String> getBearerToken() {
+        return bearerToken;
     }
 
     /**
@@ -144,14 +158,29 @@ public class UrbanAirshipClient implements Closeable {
             }
         }
 
-        // Auth
-        requestBuilder.setHeader(
-            "Authorization",
-            "Basic " + BaseEncoding.base64().encode((appKey + ":" + appSecret).getBytes())
-        );
+        if (appSecret.isPresent() && request.getClass() != CustomEventRequest.class) {
+            // Push API Auth
+            requestBuilder.setHeader(
+                    "Authorization",
+                    "Basic " + BaseEncoding.base64().encode((appKey + ":" + appSecret.get()).getBytes())
+            );
+        } else if (bearerToken.isPresent() && request.getClass() == CustomEventRequest.class) {
 
 
-        // Body
+            requestBuilder.addHeader(
+                    "X-UA-Appkey",
+                    "" + appKey
+            );
+            // CustomEvent Auth
+            requestBuilder.addHeader(
+                    "Authorization",
+                    "Bearer " + bearerToken.get()
+            );
+        } else {
+            throw new IllegalArgumentException("Bearer token must be set to use Custom Event Requests.");
+        }
+
+        // CustomEventBody
         String body = request.getRequestBody();
         ContentType contentType = request.getContentType();
         if (body != null && contentType != null) {
@@ -159,7 +188,7 @@ public class UrbanAirshipClient implements Closeable {
         }
 
         log.debug(String.format("Executing Urban Airship request to %s with body %s.", uri, request.getRequestBody()));
-        ResponseAsyncHandler<T> handler = new ResponseAsyncHandler<>(Optional.fromNullable(callback), request.getResponseParser());
+        ResponseAsyncHandler<T> handler = new ResponseAsyncHandler<>(fromNullable(callback), request.getResponseParser());
         return requestBuilder.execute(handler);
     }
 
@@ -268,7 +297,7 @@ public class UrbanAirshipClient implements Closeable {
     public String toString() {
         return "UrbanAirshipClient{" +
             "appKey='" + appKey + '\'' +
-            ", appSecret='" + appSecret + '\'' +
+            ", appSecret='" + appSecret.get() + '\'' +
             ", baseUri=" + baseUri +
             ", client=" + client +
             '}';
@@ -305,6 +334,7 @@ public class UrbanAirshipClient implements Closeable {
         private String key;
         private String secret;
         private String baseUri;
+        private String bearerToken;
         private Integer maxRetries = 10;
         private AsyncHttpClientConfig.Builder clientConfigBuilder = new AsyncHttpClientConfig.Builder();
         private ProxyInfo proxyInfo = null;
@@ -331,6 +361,16 @@ public class UrbanAirshipClient implements Closeable {
          */
         public Builder setSecret(String appSecret) {
             this.secret = appSecret;
+            return this;
+        }
+
+        /**
+         * Set the bearer token.
+         * @param bearerToken String bearer token
+         * @return Builder
+         */
+        public Builder setBearerToken(String bearerToken) {
+            this.bearerToken = bearerToken;
             return this;
         }
 
@@ -404,10 +444,13 @@ public class UrbanAirshipClient implements Closeable {
          */
         public UrbanAirshipClient build() {
             Preconditions.checkNotNull(key, "app key needed to build APIClient");
-            Preconditions.checkNotNull(secret, "app secret needed to build APIClient");
             Preconditions.checkNotNull(baseUri, "base URI needed to build APIClient");
             Preconditions.checkNotNull(maxRetries, "max non-POST retries needed to build APIClient");
             Preconditions.checkNotNull(clientConfigBuilder, "Async HTTP client config builder needed to build APIClient");
+
+            if (secret == null && bearerToken == null) {
+                throw new NullPointerException("secret or the bearer token must be set");
+            }
 
             return new UrbanAirshipClient(this);
         }
