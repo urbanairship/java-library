@@ -28,8 +28,14 @@ public class PushRequestTest {
         .setNotification(Notifications.alert("Foo"))
         .build();
 
-    PushRequest pushRequest = PushRequest.newRequest(payload);
-    PushRequest validateRequest = PushRequest.newRequest(payload).setValidateOnly(true);
+    PushPayload payload2 = PushPayload.newBuilder()
+        .setAudience(Selectors.all())
+        .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+        .setNotification(Notifications.alert("Bar"))
+        .build();
+
+    PushRequest pushRequest = PushRequest.newRequest(payload).addPayload(payload2);
+    PushRequest validateRequest = PushRequest.newRequest(payload).addPayload(payload2).setValidateOnly(true);
 
     @Test
     public void testContentType() throws Exception {
@@ -45,8 +51,8 @@ public class PushRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(pushRequest.getRequestBody(), payload.toJSON());
-        assertEquals(validateRequest.getRequestBody(), payload.toJSON());
+        assertEquals(pushRequest.getRequestBody(), "[{\"audience\":\"ALL\",\"device_types\":[\"ios\"],\"notification\":{\"alert\":\"Foo\"}},{\"audience\":\"ALL\",\"device_types\":[\"ios\"],\"notification\":{\"alert\":\"Bar\"}}]");
+        assertEquals(validateRequest.getRequestBody(), "[{\"audience\":\"ALL\",\"device_types\":[\"ios\"],\"notification\":{\"alert\":\"Foo\"}},{\"audience\":\"ALL\",\"device_types\":[\"ios\"],\"notification\":{\"alert\":\"Bar\"}}]");
     }
 
     @Test
@@ -91,7 +97,7 @@ public class PushRequestTest {
                 return PushObjectMapper.getInstance().readValue(response, PushResponse.class);
             }
         };
-        
+
         String response = "{\"ok\" : true}";
         assertEquals(validateRequest.getResponseParser().parse(response), responseParser.parse(response));
     }
