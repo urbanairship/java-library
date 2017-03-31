@@ -9,7 +9,10 @@ import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 
 import java.util.Map;
 
-public class WebDevicePayload extends PushModelObject implements DevicePayloadOverride{
+/**
+ * Represents the payload to be used for sending to web devices.
+ */
+public final class WebDevicePayload extends PushModelObject implements DevicePayloadOverride{
 
     private final Optional<String> alert;
     private final Optional<String> title;
@@ -115,6 +118,9 @@ public class WebDevicePayload extends PushModelObject implements DevicePayloadOv
                 '}';
     }
 
+    /**
+     * WebDevicePayload Builder
+     */
     public static class Builder {
         private String alert = null;
         private String title = null;
