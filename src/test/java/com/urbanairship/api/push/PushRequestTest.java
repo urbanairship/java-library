@@ -69,11 +69,11 @@ public class PushRequestTest {
     public void testURI() throws Exception {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
-        URI expextedURI = URI.create("https://go.urbanairship.com/api/push/");
-        assertEquals(pushRequest.getUri(baseURI), expextedURI);
+        URI expectedURI = URI.create("https://go.urbanairship.com/api/push/");
+        assertEquals(pushRequest.getUri(baseURI), expectedURI);
 
-        expextedURI = URI.create("https://go.urbanairship.com/api/push/validate/");
-        assertEquals(validateRequest.getUri(baseURI), expextedURI);
+        expectedURI = URI.create("https://go.urbanairship.com/api/push/validate/");
+        assertEquals(validateRequest.getUri(baseURI), expectedURI);
     }
 
     @Test
