@@ -16,10 +16,10 @@ import org.apache.http.entity.ContentType;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The PushRequest class builds push and push validation requests to be executed in
@@ -79,7 +79,7 @@ public class PushRequest implements Request<PushResponse> {
 
     /**
      * Add additional payloads to a batch push request
-     * @param newPayload
+     * @param newPayloads
      * @return PushRequest
      */
     public PushRequest addPayloads(List<PushPayload> newPayloads) {
