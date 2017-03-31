@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * The PushRequest class builds push and push validation requests to be executed in
@@ -28,12 +30,20 @@ public class PushRequest implements Request<PushResponse> {
     private final static String API_PUSH_PATH = "/api/push/";
     private final static String API_VALIDATE_PATH = "/api/push/validate/";
 
-    private final PushPayload payload;
+    private final List<PushPayload> payloads = new ArrayList<>();
     private boolean validateOnly;
 
     private PushRequest(PushPayload payload) {
         Preconditions.checkNotNull(payload, "Payload required when creating a push request");
-        this.payload = payload;
+        this.payloads.add(payload);
+    }
+
+    private PushRequest(List<PushPayload> payloadList) {
+        Preconditions.checkNotNull(payloadList, "Payload required when creating a push request");
+        if (payloadList.isEmpty()) {
+            throw new IllegalStateException("Payload list cannot be empty");
+        }
+        this.payloads.addAll(payloadList);
     }
 
     /**
@@ -44,6 +54,41 @@ public class PushRequest implements Request<PushResponse> {
      */
     public static PushRequest newRequest(PushPayload payload) {
         return new PushRequest(payload);
+    }
+
+    /**
+     * Create a push request.
+     *
+     * @param payloadList List<PushPayload>
+     * @return PushRequest
+     */
+    public static PushRequest newRequest(List<PushPayload> payloadList) {
+        return new PushRequest(payloadList);
+    }
+
+    /**
+     * Add additional payloads to a batch push request
+     * @param newPayload
+     * @return PushRequest
+     */
+    public PushRequest addPayload(PushPayload newPayload) {
+        Preconditions.checkNotNull(newPayload, "Payload required when adding to a push request");
+        payloads.add(newPayload);
+        return this;
+    }
+
+    /**
+     * Add additional payloads to a batch push request
+     * @param newPayload
+     * @return PushRequest
+     */
+    public PushRequest addPayloads(List<PushPayload> newPayloads) {
+        Preconditions.checkNotNull(newPayloads, "Payload required when adding to a push request");
+        if (newPayloads.isEmpty()) {
+            throw new IllegalStateException("Payload list cannot be empty");
+        }
+        payloads.addAll(newPayloads);
+        return this;
     }
 
     /**
@@ -77,7 +122,16 @@ public class PushRequest implements Request<PushResponse> {
 
     @Override
     public String getRequestBody() {
-        return payload.toJSON();
+        StringBuilder sb = new StringBuilder("[");
+
+        for (PushPayload pushPayload : this.payloads) {
+            sb.append(pushPayload.toJSON());
+            sb.append(",");
+        }
+        // remove last comma
+        sb.setLength(sb.length() - 1);
+
+        return sb.append("]").toString();
     }
 
     @Override
