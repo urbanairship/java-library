@@ -23,16 +23,16 @@ import static org.junit.Assert.assertEquals;
 public class PushRequestTest {
 
     PushPayload payload = PushPayload.newBuilder()
-        .setAudience(Selectors.all())
-        .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-        .setNotification(Notifications.alert("Foo"))
-        .build();
+            .setAudience(Selectors.all())
+            .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+            .setNotification(Notifications.alert("Foo"))
+            .build();
 
     PushPayload payload2 = PushPayload.newBuilder()
-        .setAudience(Selectors.all())
-        .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-        .setNotification(Notifications.alert("Bar"))
-        .build();
+            .setAudience(Selectors.all())
+            .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+            .setNotification(Notifications.alert("Bar"))
+            .build();
 
     PushRequest pushRequest = PushRequest.newRequest(payload).addPayload(payload2);
     PushRequest validateRequest = PushRequest.newRequest(payload).addPayload(payload2).setValidateOnly(true);

@@ -68,6 +68,7 @@ public class PushRequest implements Request<PushResponse> {
 
     /**
      * Add additional payloads to a batch push request
+     *
      * @param newPayload
      * @return PushRequest
      */
@@ -79,6 +80,7 @@ public class PushRequest implements Request<PushResponse> {
 
     /**
      * Add additional payloads to a batch push request
+     *
      * @param newPayloads
      * @return PushRequest
      */
@@ -136,7 +138,7 @@ public class PushRequest implements Request<PushResponse> {
 
     @Override
     public URI getUri(URI baseUri) {
-        String path  = validateOnly ? API_VALIDATE_PATH : API_PUSH_PATH;
+        String path = validateOnly ? API_VALIDATE_PATH : API_PUSH_PATH;
         return RequestUtils.resolveURI(baseUri, path);
     }
 
