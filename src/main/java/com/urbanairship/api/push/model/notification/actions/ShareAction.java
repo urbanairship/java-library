@@ -5,6 +5,7 @@
 
 package com.urbanairship.api.push.model.notification.actions;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.urbanairship.api.push.model.PushModelObject;
 
@@ -45,7 +46,7 @@ public class ShareAction extends PushModelObject implements Action<String> {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(getClass())
+        return MoreObjects.toStringHelper(getClass())
                 .add("shareText", shareText)
                 .toString();
     }
