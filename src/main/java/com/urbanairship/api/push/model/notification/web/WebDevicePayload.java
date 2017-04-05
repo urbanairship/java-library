@@ -133,7 +133,7 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
          * Set the alert string.
          *
          * @param alert String
-         * @return Builder
+         * @return WebDevicePayload Builder
          */
         public Builder setAlert(String alert) {
             this.alert = alert;
@@ -144,7 +144,7 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
          * Set the title string.
          *
          * @param title String
-         * @return Builder
+         * @return WebDevicePayload Builder
          */
         public Builder setTitle(String title) {
             this.title = title;
@@ -156,7 +156,7 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
          *
          * @param key String
          * @param value String
-         * @return Builder
+         * @return WebDevicePayload Builder
          */
         public Builder addExtraEntry(String key, String value) {
             this.extra.put(key, value);
@@ -167,7 +167,7 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
          * Add a Map of key-value pairs.
          *
          * @param entries A Map of Strings
-         * @return Builder
+         * @return WebDevicePayload Builder
          */
         public Builder addAllExtraEntries(Map<String, String> entries) {
             this.extra.putAll(entries);
@@ -178,7 +178,7 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
          * Set the webIcon payload.
          *
          * @param webIcon WebIcon
-         * @return Builder
+         * @return WebDevicePayload Builder
          */
         public Builder setWebIcon(WebIcon webIcon) {
             this.webIcon = webIcon;

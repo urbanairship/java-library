@@ -76,10 +76,10 @@ public final class Subscription {
         }
 
         /**
-         * Set the p256dh key
+         * Set the p256dh key used in signing the push package.
          *
          * @param p256dh String
-         * @return Builder
+         * @return Subscription Builder
          */
         public Builder setP256dh(String p256dh) {
             this.p256dh = p256dh;
@@ -87,10 +87,10 @@ public final class Subscription {
         }
 
         /**
-         * Set the auth key
+         * Set the auth key used in signing the push package.
          *
          * @param auth String
-         * @return Builder
+         * @return Subscription Builder
          */
         public Builder setAuth(String auth) {
             this.auth = auth;

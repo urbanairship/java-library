@@ -15,7 +15,7 @@ public final class WebSettings {
     }
 
     /**
-     * Get the Subscription object
+     * Get the Subscription object. Required for signing the push package.
      *
      * @return Subscription
      */
@@ -47,6 +47,11 @@ public final class WebSettings {
                 '}';
     }
 
+    /**
+     * New WebSettings Builder.
+     *
+     * @return WebSettings Builder
+     */
     public static Builder newBuilder() {
         return new Builder();
     }
@@ -62,9 +67,9 @@ public final class WebSettings {
         }
 
         /**
-         * Set the subscription object
-         * @param subscription Subscription
-         * @return Builder
+         * Set the subscription object. Required for signing the push package
+         * A web {@link Subscription}
+         * @return WebSettings Builder
          */
         public Builder setSubscription(Subscription subscription) {
             this.subscription = subscription;

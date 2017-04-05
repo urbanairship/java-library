@@ -17,7 +17,7 @@ public final class WebIcon extends PushModelObject {
     /**
      * New WebIcon Builder.
      *
-     * @return Builder
+     * @return WebIcon Builder
      */
     public static Builder newBuilder() {
         return new Builder();
@@ -68,7 +68,7 @@ public final class WebIcon extends PushModelObject {
          * Set the url String used for the WebIcon.
          *
          * @param url String
-         * @return Builder
+         * @return WebIcon Builder
          */
         public Builder setUrl(String url){
             this.url = url;
