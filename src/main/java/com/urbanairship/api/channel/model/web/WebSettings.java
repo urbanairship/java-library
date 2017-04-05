@@ -4,7 +4,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 
 /**
- * Displayed only for Web channels. Describes the non-tag fields from the web subscription submitted in CRA.
+ * Displayed only for Web channels. Describes the fields from the web subscription submitted in CRA.
  */
 public final class WebSettings {
 
@@ -67,8 +67,8 @@ public final class WebSettings {
         }
 
         /**
-         * Set the subscription object. Required for signing the push package
-         * A web {@link Subscription}
+         * Set the subscription object. Required for signing the push package.
+         * @param subscription A web {@link Subscription}
          * @return WebSettings Builder
          */
         public Builder setSubscription(Subscription subscription) {

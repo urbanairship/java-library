@@ -177,7 +177,7 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
         /**
          * Set the webIcon payload.
          *
-         * @param webIcon WebIcon
+         * @param webIcon a {@link WebIcon}
          * @return WebDevicePayload Builder
          */
         public Builder setWebIcon(WebIcon webIcon) {

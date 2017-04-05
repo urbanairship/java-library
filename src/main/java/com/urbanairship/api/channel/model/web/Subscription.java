@@ -35,8 +35,9 @@ public final class Subscription {
     }
 
     /**
+     * New Subscription Builder.
      *
-     * @return
+     * @return Subscription Builder
      */
     public static Builder newBuilder() {
         return new Builder();
