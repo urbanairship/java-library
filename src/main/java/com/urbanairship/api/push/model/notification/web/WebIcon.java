@@ -4,7 +4,10 @@ import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.PushModelObject;
 
-public class WebIcon extends PushModelObject {
+/**
+ * Represents the a icon to be used in web notify.
+ */
+public final class WebIcon extends PushModelObject {
     private final String url;
 
     private WebIcon(String url){
@@ -14,7 +17,7 @@ public class WebIcon extends PushModelObject {
     /**
      * New WebIcon Builder.
      *
-     * @return Builder
+     * @return WebIcon Builder
      */
     public static Builder newBuilder() {
         return new Builder();
@@ -55,6 +58,9 @@ public class WebIcon extends PushModelObject {
                 '}';
     }
 
+    /**
+     * WebIcon Builder.
+     */
     public static class Builder {
         private String url;
 
@@ -62,7 +68,7 @@ public class WebIcon extends PushModelObject {
          * Set the url String used for the WebIcon.
          *
          * @param url String
-         * @return Builder
+         * @return WebIcon Builder
          */
         public Builder setUrl(String url){
             this.url = url;
