@@ -59,7 +59,7 @@ public final class WebIcon extends PushModelObject {
     }
 
     /**
-     * WebIcon Builder
+     * WebIcon Builder.
      */
     public static class Builder {
         private String url;

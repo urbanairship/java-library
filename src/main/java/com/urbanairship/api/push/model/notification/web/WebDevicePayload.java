@@ -119,7 +119,7 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
     }
 
     /**
-     * WebDevicePayload Builder
+     * WebDevicePayload Builder.
      */
     public static class Builder {
         private String alert = null;

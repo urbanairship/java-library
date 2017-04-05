@@ -34,6 +34,10 @@ public final class Subscription {
         return auth;
     }
 
+    /**
+     *
+     * @return
+     */
     public static Builder newBuilder() {
         return new Builder();
     }
@@ -66,7 +70,7 @@ public final class Subscription {
     }
 
     /**
-     * Subscription Builder
+     * Subscription Builder.
      */
     public final static class Builder {
         private String p256dh = null;
@@ -78,7 +82,7 @@ public final class Subscription {
         /**
          * Set the p256dh key used in signing the push package.
          *
-         * @param p256dh String
+         * @param p256dh String key
          * @return Subscription Builder
          */
         public Builder setP256dh(String p256dh) {
@@ -89,7 +93,7 @@ public final class Subscription {
         /**
          * Set the auth key used in signing the push package.
          *
-         * @param auth String
+         * @param auth String key
          * @return Subscription Builder
          */
         public Builder setAuth(String auth) {
