@@ -17,16 +17,16 @@ public class DeepLinkAction implements Action.OpenAction<String> {
         this(link, Optional.<String>absent());
     }
 
-    public DeepLinkAction(String link, String fallbackURL) {
-        this(link, Optional.fromNullable(fallbackURL));
+    public DeepLinkAction(String link, String fallbackUrl) {
+        this(link, Optional.fromNullable(fallbackUrl));
     }
 
-    private DeepLinkAction(String link, Optional<String> fallbackURL) {
+    private DeepLinkAction(String link, Optional<String> fallbackUrl) {
         Preconditions.checkNotNull(link, "link should not be null.");
-        Preconditions.checkNotNull(fallbackURL, "fallbackURL should not be null.");
+        Preconditions.checkNotNull(fallbackUrl, "fallbackUrl should not be null.");
 
         this.link = link;
-        this.fallbackUrl = fallbackURL;
+        this.fallbackUrl = fallbackUrl;
     }
 
     @Override
