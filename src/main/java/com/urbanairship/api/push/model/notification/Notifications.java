@@ -88,6 +88,10 @@ public class Notifications {
             .build();
     }
 
+    /**
+     * @deprecated Marked to be removed in 2.0.0. MPNS is no longer supported by the Urban Airship API.
+     */
+    @Deprecated
     public static MPNSDevicePayload mpnsAlert(String text) {
         return MPNSDevicePayload.newBuilder()
             .setAlert(text)
