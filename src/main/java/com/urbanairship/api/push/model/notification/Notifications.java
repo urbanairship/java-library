@@ -76,6 +76,7 @@ public class Notifications {
             .build();
     }
 
+    @Deprecated
     public static BlackberryDevicePayload blackberryAlert(String text) {
         return BlackberryDevicePayload.newBuilder()
             .setAlert(text)
