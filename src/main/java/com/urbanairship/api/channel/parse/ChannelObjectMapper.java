@@ -8,8 +8,12 @@ import com.urbanairship.api.channel.model.ChannelResponse;
 import com.urbanairship.api.channel.model.ChannelView;
 import com.urbanairship.api.channel.model.ios.IosSettings;
 import com.urbanairship.api.channel.model.ios.QuietTime;
+import com.urbanairship.api.channel.model.web.Subscription;
+import com.urbanairship.api.channel.model.web.WebSettings;
 import com.urbanairship.api.channel.parse.ios.IosSettingsDeserializer;
 import com.urbanairship.api.channel.parse.ios.QuietTimeDeserializer;
+import com.urbanairship.api.channel.parse.web.SubscriptionDeserializer;
+import com.urbanairship.api.channel.parse.web.WebSettingsDeserializer;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.DeserializationConfig;
@@ -26,6 +30,8 @@ public class ChannelObjectMapper {
         MODULE.addDeserializer(QuietTime.class, new QuietTimeDeserializer());
         MODULE.addDeserializer(ChannelView.class, new ChannelViewDeserializer());
         MODULE.addDeserializer(ChannelResponse.class, new ChannelsResponseDeserializer());
+        MODULE.addDeserializer(Subscription.class, new SubscriptionDeserializer());
+        MODULE.addDeserializer(WebSettings.class, new WebSettingsDeserializer());
 
 
         MAPPER.registerModule(MODULE);

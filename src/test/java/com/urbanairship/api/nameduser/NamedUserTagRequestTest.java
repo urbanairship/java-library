@@ -3,8 +3,11 @@ package com.urbanairship.api.nameduser;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
+import com.urbanairship.api.nameduser.parse.NamedUserObjectMapper;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.http.entity.ContentType;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,6 +24,8 @@ public class NamedUserTagRequestTest {
     private String namedUserId2;
     private Set<String> namedUserIds;
     private NamedUserTagRequest defaultRequest;
+
+    private static final ObjectMapper MAPPER = NamedUserObjectMapper.getInstance();
 
     @Before
     public void setup() {
@@ -53,7 +58,11 @@ public class NamedUserTagRequestTest {
             .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
             .addTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"));
 
-        assertEquals(expected, request.getRequestBody());
+
+        JsonNode jsonFromObject = MAPPER.readTree(request.getRequestBody());
+        JsonNode jsonFromString = MAPPER.readTree(expected);
+
+        assertEquals(jsonFromObject, jsonFromString);
     }
 
     @Test
@@ -75,7 +84,10 @@ public class NamedUserTagRequestTest {
             .removeTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
             .removeTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"));
 
-        assertEquals(expected, request.getRequestBody());
+        JsonNode jsonFromObject = MAPPER.readTree(request.getRequestBody());
+        JsonNode jsonFromString = MAPPER.readTree(expected);
+
+        assertEquals(jsonFromObject, jsonFromString);
     }
 
     @Test
@@ -97,7 +109,11 @@ public class NamedUserTagRequestTest {
             .setTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
             .setTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"));
 
-        assertEquals(expected, request.getRequestBody());
+
+        JsonNode jsonFromObject = MAPPER.readTree(request.getRequestBody());
+        JsonNode jsonFromString = MAPPER.readTree(expected);
+
+        assertEquals(jsonFromObject, jsonFromString);
     }
 
     @Test
@@ -127,7 +143,10 @@ public class NamedUserTagRequestTest {
             .removeTags("tag_group2", ImmutableSet.of("tag4", "tag5", "tag6"))
             .removeTags("tag_group3", ImmutableSet.of("tag4", "tag5", "tag6"));
 
-        assertEquals(expected, request.getRequestBody());
+        JsonNode jsonFromObject = MAPPER.readTree(request.getRequestBody());
+        JsonNode jsonFromString = MAPPER.readTree(expected);
+
+        assertEquals(jsonFromObject, jsonFromString);
     }
 
     @Test (expected = IllegalArgumentException.class)

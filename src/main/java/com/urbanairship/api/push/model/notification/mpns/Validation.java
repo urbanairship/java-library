@@ -8,6 +8,10 @@ import org.apache.commons.lang.StringUtils;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
+/**
+ * @deprecated Marked to be removed in 2.0.0. MPNS is no longer supported by the Urban Airship API.
+ */
+@Deprecated
 public class Validation
 {
     public static final int MAX_STRING_LENGTH = 255;

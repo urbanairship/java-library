@@ -6,6 +6,10 @@ package com.urbanairship.api.push.model.notification.mpns;
 
 import com.google.common.base.Optional;
 
+/**
+ * @deprecated Marked to be removed in 2.0.0. MPNS is no longer supported by the Urban Airship API.
+ */
+@Deprecated
 public abstract class MPNSTileData
 {
     private final Optional<String> id;

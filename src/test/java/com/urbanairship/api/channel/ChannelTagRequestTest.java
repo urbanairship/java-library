@@ -2,8 +2,11 @@ package com.urbanairship.api.channel;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.net.HttpHeaders;
+import com.urbanairship.api.channel.parse.ChannelObjectMapper;
 import com.urbanairship.api.client.Request;
 import org.apache.http.entity.ContentType;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import java.net.URI;
@@ -15,6 +18,8 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 
 public class ChannelTagRequestTest {
+
+    private static final ObjectMapper MAPPER = ChannelObjectMapper.getInstance();
 
     @Test
     public void testAddTagsBody() throws Exception {
@@ -42,7 +47,10 @@ public class ChannelTagRequestTest {
             .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
             .addTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"));
 
-        assertEquals(expected, request.getRequestBody());
+        JsonNode jsonFromObject = MAPPER.readTree(request.getRequestBody());
+        JsonNode jsonFromString = MAPPER.readTree(expected);
+
+        assertEquals(jsonFromObject, jsonFromString);
     }
 
     @Test
@@ -72,7 +80,10 @@ public class ChannelTagRequestTest {
             .removeTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
             .removeTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"));
 
-        assertEquals(expected, request.getRequestBody());
+        JsonNode jsonFromObject = MAPPER.readTree(request.getRequestBody());
+        JsonNode jsonFromString = MAPPER.readTree(expected);
+
+        assertEquals(jsonFromObject, jsonFromString);
     }
 
     @Test
@@ -102,7 +113,10 @@ public class ChannelTagRequestTest {
             .setTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
             .setTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"));
 
-        assertEquals(expected, request.getRequestBody());
+        JsonNode jsonFromObject = MAPPER.readTree(request.getRequestBody());
+        JsonNode jsonFromString = MAPPER.readTree(expected);
+
+        assertEquals(jsonFromObject, jsonFromString);
     }
 
     @Test
@@ -140,7 +154,11 @@ public class ChannelTagRequestTest {
             .removeTags("tag_group2", ImmutableSet.of("tag4", "tag5", "tag6"))
             .removeTags("tag_group3", ImmutableSet.of("tag4", "tag5", "tag6"));
 
-        assertEquals(expected, request.getRequestBody());
+
+        JsonNode jsonFromObject = MAPPER.readTree(request.getRequestBody());
+        JsonNode jsonFromString = MAPPER.readTree(expected);
+
+        assertEquals(jsonFromObject, jsonFromString);
     }
 
     @Test (expected = IllegalArgumentException.class)

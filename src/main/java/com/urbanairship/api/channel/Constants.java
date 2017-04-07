@@ -29,6 +29,10 @@ public class Constants {
     public static final String END = "end";
     public static final String TZ = "tz";
     public static final String CHANNEL_ID = "channel_id";
+    public static final String WEB = "web";
+    public static final String AUTH = "auth";
+    public static final String P256DH = "p256dh";
+    public static final String SUBSCRIPTION = "subscription";
 
     private Constants() {
     }

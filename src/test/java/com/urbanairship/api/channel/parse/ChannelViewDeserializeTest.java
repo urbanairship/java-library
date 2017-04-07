@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.channel.model.ChannelView;
+import com.urbanairship.api.channel.model.web.Subscription;
 import com.urbanairship.api.common.parse.APIParsingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -97,6 +98,79 @@ public class ChannelViewDeserializeTest {
                 .addAll(Sets.newHashSet("tag1OfGroup2", "tag2OfGroup2")).build())
             .build();
         assertEquals(expectedTagGroups, channel.getTagGroups());
+    }
+
+    @Test
+    public void testWebChannel() throws Exception {
+        String json =
+                "{" +
+                    "\"channel_id\": \"f82d3723-09d0-4390-b0ff-690485685e3e\"," +
+                    "\"device_type\": \"web\"," +
+                    "\"installed\": true," +
+                    "\"push_address\": \"address\"," +
+                    "\"named_user_id\": null," +
+                    "\"alias\": null," +
+                    "\"tags\": [" +
+                        "\"tag1\"," +
+                        "\"tag2\"" +
+                    "]," +
+                    "\"tag_groups\": {" +
+                        "\"ua_channel_type\": [" +
+                            "\"web\"" +
+                        "]," +
+                        "\"ua_web_sdk_version\": [" +
+                            "\"0.0.1\"" +
+                        "]," +
+                        "\"ua_browser_name\": [" +
+                            "\"chrome\"" +
+                        "]," +
+                        "\"ua_browser_type\": [" +
+                            "\"desktop\"" +
+                        "]," +
+                        "\"ua_browser_version\": [" +
+                            "\"chrome-56\"" +
+                        "]," +
+                        "\"timezone\": [" +
+                            "\"America/Los_Angeles\"" +
+                        "]," +
+                        "\"ua_locale_country\": [" +
+                            "\"US\"" +
+                        "]," +
+                        "\"ua_locale_language\": [" +
+                            "\"en\"" +
+                        "]," +
+                        "\"ua_opt_in\": [" +
+                            "\"true\"" +
+                        "]" +
+                    "}," +
+                    "\"created\": \"2017-03-07T22:05:38\"," +
+                    "\"opt_in\": true," +
+                    "\"web\": {" +
+                        "\"subscription\": {" +
+                            "\"p256dh\": \"p256dhvalue\"," +
+                            "\"auth\": \"authvalue\"" +
+                        "}" +
+                    "}," +
+                    "\"last_registration\": \"2017-03-09T16:27:20\"" +
+                "}";
+
+        ChannelView channel = mapper.readValue(json, ChannelView.class);
+
+        assertTrue(channel.isOptIn());
+        assertEquals(ChannelType.WEB, channel.getChannelType());
+
+        assertTrue(channel.getWebSettings().isPresent());
+        assertTrue(channel.getWebSettings().get().getSubscription().isPresent());
+
+        Subscription subscription = channel.getWebSettings().get().getSubscription().get();
+
+        assertEquals("p256dhvalue", subscription.getP256dh().get());
+        assertEquals("authvalue", subscription.getAuth().get());
+
+        assertEquals("address", channel.getPushAddress().get());
+        ImmutableSet<String> expectedTags = new ImmutableSet.Builder<String>()
+                .addAll(Sets.newHashSet("tag1", "tag2")).build();
+        assertEquals(expectedTags, channel.getTags());
     }
 
     @Test

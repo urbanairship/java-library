@@ -5,6 +5,7 @@ import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.templates.model.TemplatePushPayload;
 import com.urbanairship.api.templates.model.TemplateSelector;
+import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
@@ -43,6 +44,9 @@ public class TemplatePushPayloadSerializerTest {
                     "}" +
                 "}";
 
-        assertEquals(templatePushPayloadSerialized, templatePushPayloadString);
+        JsonNode jsonFromObject = MAPPER.readTree(templatePushPayloadSerialized);
+        JsonNode jsonFromString = MAPPER.readTree(templatePushPayloadString);
+
+        assertEquals(jsonFromObject, jsonFromString);
     }
 }

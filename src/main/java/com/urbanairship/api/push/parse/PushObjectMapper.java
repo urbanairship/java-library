@@ -48,6 +48,8 @@ import com.urbanairship.api.push.model.notification.mpns.MPNSPush;
 import com.urbanairship.api.push.model.notification.mpns.MPNSTileData;
 import com.urbanairship.api.push.model.notification.mpns.MPNSToastData;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
+import com.urbanairship.api.push.model.notification.web.WebDevicePayload;
+import com.urbanairship.api.push.model.notification.web.WebIcon;
 import com.urbanairship.api.push.model.notification.wns.WNSAudioData;
 import com.urbanairship.api.push.model.notification.wns.WNSBadgeData;
 import com.urbanairship.api.push.model.notification.wns.WNSBinding;
@@ -109,6 +111,10 @@ import com.urbanairship.api.push.parse.notification.mpns.MPNSToastDeserializer;
 import com.urbanairship.api.push.parse.notification.mpns.MPNSToastSerializer;
 import com.urbanairship.api.push.parse.notification.richpush.RichPushMessageDeserializer;
 import com.urbanairship.api.push.parse.notification.richpush.RichPushMessageSerializer;
+import com.urbanairship.api.push.parse.notification.web.WebDevicePayloadDeserializer;
+import com.urbanairship.api.push.parse.notification.web.WebDevicePayloadSerializer;
+import com.urbanairship.api.push.parse.notification.web.WebIconDeserializer;
+import com.urbanairship.api.push.parse.notification.web.WebIconSerializer;
 import com.urbanairship.api.push.parse.notification.wns.WNSAudioDeserializer;
 import com.urbanairship.api.push.parse.notification.wns.WNSAudioSerializer;
 import com.urbanairship.api.push.parse.notification.wns.WNSBadgeDeserializer;
@@ -162,6 +168,7 @@ public class PushObjectMapper {
         AndroidDevicePayloadDeserializer androidPayloadDS = new AndroidDevicePayloadDeserializer();
         ADMDevicePayloadDeserializer admPayloadDS = new ADMDevicePayloadDeserializer();
         BlackberryDevicePayloadDeserializer blackberryPayloadDS = new BlackberryDevicePayloadDeserializer();
+        WebDevicePayloadDeserializer webPayloadDS = new WebDevicePayloadDeserializer();
 
 
         NotificationDeserializer notificationDeserializer = new NotificationDeserializer(
@@ -272,6 +279,11 @@ public class PushObjectMapper {
                 .addSerializer(PublicNotification.class, new PublicNotificationSerializer())
                 .addDeserializer(PublicNotification.class, new PublicNotificationDeserializer())
 
+            /* WebSettings */
+                .addSerializer(WebDevicePayload.class, new WebDevicePayloadSerializer())
+                .addDeserializer(WebDevicePayload.class, webPayloadDS)
+                .addSerializer(WebIcon.class, new WebIconSerializer())
+                .addDeserializer(WebIcon.class, new WebIconDeserializer())
 
             /* Blackberry */
                 .addSerializer(BlackberryDevicePayload.class, new BlackberryDevicePayloadSerializer())
