@@ -1,4 +1,11 @@
 -------------------------
+1.3.0 APR17
+-------------------------
+- Web Notify Support.
+- Deprecated MPNS push.
+- Deprecated Blackberry push.
+
+-------------------------
 1.2.0 23NOV16
 -------------------------
 - Collapse ID support for iOS 10
