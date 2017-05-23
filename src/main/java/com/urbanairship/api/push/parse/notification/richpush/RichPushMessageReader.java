@@ -9,6 +9,7 @@ import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.common.parse.MapOfStringsDeserializer;
 import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import com.urbanairship.api.push.model.PushExpiry;
+import com.urbanairship.api.push.model.notification.richpush.RichPushIcon;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import org.codehaus.jackson.JsonParser;
 
@@ -43,6 +44,10 @@ public class RichPushMessageReader implements JsonObjectReader<RichPushMessage> 
 
     public void readExpiry(JsonParser parser) throws IOException {
         builder.setExpiry(parser.readValueAs(PushExpiry.class));
+    }
+
+    public void readIcons(JsonParser parser) throws IOException {
+        builder.setIcons(parser.readValueAs(RichPushIcon.class));
     }
 
     @Override
