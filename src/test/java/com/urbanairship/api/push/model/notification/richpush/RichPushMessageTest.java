@@ -12,10 +12,12 @@ public class RichPushMessageTest {
         assertEquals(RichPushMessage.newBuilder()
                         .setTitle("T")
                         .setBody("B")
+                        .setIcons(RichPushIcon.newBuilder().setListIcon("L").build())
                         .build(),
                 RichPushMessage.newBuilder()
                         .setBody("B")
                         .setTitle("T")
+                        .setIcons(RichPushIcon.newBuilder().setListIcon("L").build())
                         .build());
     }
 
@@ -24,11 +26,13 @@ public class RichPushMessageTest {
         assertEquals(RichPushMessage.newBuilder()
                         .setTitle("T")
                         .setBody("B")
+                        .setIcons(RichPushIcon.newBuilder().setListIcon("L").build())
                         .build()
                         .hashCode(),
                 RichPushMessage.newBuilder()
                         .setBody("B")
                         .setTitle("T")
+                        .setIcons(RichPushIcon.newBuilder().setListIcon("L").build())
                         .build()
                         .hashCode());
     }
@@ -36,7 +40,7 @@ public class RichPushMessageTest {
     @Test
     public void testDefaults() {
         RichPushMessage m = RichPushMessage.newBuilder()
-                .setTitle("T").setBody("B").build();
+                .setTitle("T").setBody("B").setIcons(RichPushIcon.newBuilder().setListIcon("L").build()).build();
         assertEquals("text/html", m.getContentType());
         assertEquals("utf8", m.getContentEncoding());
     }
@@ -50,6 +54,7 @@ public class RichPushMessageTest {
                 .setContentEncoding("base64")
                 .setExpiry(PushExpiry.newBuilder().setExpirySeconds(3600).build())
                 .addExtraEntry("this", "that")
+                .setIcons(RichPushIcon.newBuilder().setListIcon("L").build())
                 .build();
         assertEquals("T", m.getTitle());
         assertEquals("B", m.getBody());
@@ -60,6 +65,7 @@ public class RichPushMessageTest {
         assertTrue(m.getExtra().get().containsKey("this"));
         assertEquals("that", m.getExtra().get().get("this"));
         assertTrue(m.getExpiry().get().getExpirySeconds().isPresent());
+        assertEquals("L", m.getIcons().get().getListIcon());
 
     }
 
