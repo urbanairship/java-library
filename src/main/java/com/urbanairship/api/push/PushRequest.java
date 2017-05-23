@@ -128,9 +128,6 @@ public class PushRequest implements Request<PushResponse> {
             return this.payloads.get(0).toJSON();
         }
 
-        /*
-        Figure out how to do the proper jackson array.
-         */
         StringBuilder sb = new StringBuilder("[");
 
         for (PushPayload pushPayload : this.payloads) {
