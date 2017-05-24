@@ -13,27 +13,57 @@ public class CustomEventUser extends PushModelObject {
         this.channel = builder.channel;
     }
 
+    /**
+     * New CustomEventUser Builder
+     *
+     * @return Builder
+     */
     public static Builder newBuilder() {
         return new Builder();
     }
 
+    /**
+     * Get the channel type.
+     *
+     * @return CustomEventChannelType
+     */
     public CustomEventChannelType getChannelType() {
         return channelType;
     }
 
+    /**
+     * Get the Urban Airship channel identifier for the user who triggered the event.
+     *
+     * @return String
+     */
     public String getChannel() {
         return channel;
     }
 
+    /**
+     * CustomEventUser Builder
+     */
     public static class Builder {
         private String channel = null;
         private CustomEventChannelType channelType = null;
 
+        /**
+         * Set the Urban Airship channel identifier for the user who triggered the event.
+         *
+         * @param channel String
+         * @return CustomEventUser Builder
+         */
         public Builder setChannel(String channel) {
             this.channel = channel;
             return this;
         }
 
+        /**
+         * Set the channel type.
+         *
+         * @param channelType CustomEventChannelType
+         * @return CustomEventUser Builder
+         */
         public Builder setCustomEventChannelType(CustomEventChannelType channelType) {
             this.channelType = channelType;
             return this;
