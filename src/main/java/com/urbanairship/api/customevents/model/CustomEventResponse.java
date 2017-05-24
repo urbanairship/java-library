@@ -11,10 +11,21 @@ public class CustomEventResponse {
         this.ok = ok;
     }
 
+    /**
+     * Get the operation id for this response. This is used by Urban Airship
+     * to track an operation through our system, and should be used when support
+     * is needed.
+     *
+     * @return Operation id for this API request
+     */
     public Optional<String> getOperationId() {
         return operationId;
     }
 
+    /**
+     * Get the response status as a boolean
+     * @return Response status
+     */
     public boolean isOk() {
         return ok;
     }
