@@ -1,5 +1,6 @@
 package com.urbanairship.api.customevents.model;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
@@ -106,6 +107,33 @@ public class CustomEventBody {
      */
     public Optional<ImmutableMap<String, String>> getProperties() {
         return properties;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        CustomEventBody that = (CustomEventBody) o;
+
+        return Objects.equal(name, that.name) &&
+                Objects.equal(value, that.value) &&
+                Objects.equal(transaction, that.transaction) &&
+                Objects.equal(interactionId, that.interactionId) &&
+                Objects.equal(interactionType, that.interactionType) &&
+                Objects.equal(properties, that.properties) &&
+                Objects.equal(sessionId, that.sessionId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(name, value, transaction, interactionId,
+                interactionType, properties, sessionId);
     }
 
     /**
