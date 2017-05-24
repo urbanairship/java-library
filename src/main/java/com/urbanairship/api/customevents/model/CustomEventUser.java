@@ -1,5 +1,6 @@
 package com.urbanairship.api.customevents.model;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.PushModelObject;
 
@@ -31,10 +32,32 @@ public class CustomEventUser extends PushModelObject {
         return channelType;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        CustomEventUser that = (CustomEventUser) o;
+
+        return channelType == that.channelType &&
+                Objects.equal(channel, that.channel);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(channelType, channel);
+    }
+
     /**
      * Get the Urban Airship channel identifier for the user who triggered the event.
      *
      * @return String
+
      */
     public String getChannel() {
         return channel;

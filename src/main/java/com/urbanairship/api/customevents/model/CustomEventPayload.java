@@ -1,5 +1,6 @@
 package com.urbanairship.api.customevents.model;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.PushModelObject;
 import org.joda.time.DateTime;
@@ -42,11 +43,34 @@ public class CustomEventPayload extends PushModelObject {
         return customEventBody;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        CustomEventPayload payload = (CustomEventPayload) o;
+
+        return Objects.equal(occurred, payload.occurred) &&
+                Objects.equal(customEventBody, payload.customEventBody) &&
+                Objects.equal(customEventUser, payload.customEventUser);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(occurred, customEventBody, customEventUser);
+    }
+
     /**
      * Get the CustomEventUser that is an object containing the
      * Urban Airship channel identifier for the user who triggered the event.
      *
      * @return CustomEventUser
+
      */
     public CustomEventUser getCustomEventUser() {
         return customEventUser;
