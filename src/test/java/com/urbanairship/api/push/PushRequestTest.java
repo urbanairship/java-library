@@ -23,13 +23,19 @@ import static org.junit.Assert.assertEquals;
 public class PushRequestTest {
 
     PushPayload payload = PushPayload.newBuilder()
-        .setAudience(Selectors.all())
-        .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-        .setNotification(Notifications.alert("Foo"))
-        .build();
+            .setAudience(Selectors.all())
+            .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+            .setNotification(Notifications.alert("Foo"))
+            .build();
 
-    PushRequest pushRequest = PushRequest.newRequest(payload);
-    PushRequest validateRequest = PushRequest.newRequest(payload).setValidateOnly(true);
+    PushPayload payload2 = PushPayload.newBuilder()
+            .setAudience(Selectors.all())
+            .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+            .setNotification(Notifications.alert("Bar"))
+            .build();
+
+    PushRequest pushRequest = PushRequest.newRequest(payload).addPayload(payload2);
+    PushRequest validateRequest = PushRequest.newRequest(payload).addPayload(payload2).setValidateOnly(true);
 
     @Test
     public void testContentType() throws Exception {
@@ -45,8 +51,8 @@ public class PushRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(pushRequest.getRequestBody(), payload.toJSON());
-        assertEquals(validateRequest.getRequestBody(), payload.toJSON());
+        assertEquals(pushRequest.getRequestBody(), "[{\"audience\":\"ALL\",\"device_types\":[\"ios\"],\"notification\":{\"alert\":\"Foo\"}},{\"audience\":\"ALL\",\"device_types\":[\"ios\"],\"notification\":{\"alert\":\"Bar\"}}]");
+        assertEquals(validateRequest.getRequestBody(), "[{\"audience\":\"ALL\",\"device_types\":[\"ios\"],\"notification\":{\"alert\":\"Foo\"}},{\"audience\":\"ALL\",\"device_types\":[\"ios\"],\"notification\":{\"alert\":\"Bar\"}}]");
     }
 
     @Test
@@ -63,11 +69,11 @@ public class PushRequestTest {
     public void testURI() throws Exception {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
-        URI expextedURI = URI.create("https://go.urbanairship.com/api/push/");
-        assertEquals(pushRequest.getUri(baseURI), expextedURI);
+        URI expectedURI = URI.create("https://go.urbanairship.com/api/push/");
+        assertEquals(pushRequest.getUri(baseURI), expectedURI);
 
-        expextedURI = URI.create("https://go.urbanairship.com/api/push/validate/");
-        assertEquals(validateRequest.getUri(baseURI), expextedURI);
+        expectedURI = URI.create("https://go.urbanairship.com/api/push/validate/");
+        assertEquals(validateRequest.getUri(baseURI), expectedURI);
     }
 
     @Test
@@ -91,7 +97,7 @@ public class PushRequestTest {
                 return PushObjectMapper.getInstance().readValue(response, PushResponse.class);
             }
         };
-        
+
         String response = "{\"ok\" : true}";
         assertEquals(validateRequest.getResponseParser().parse(response), responseParser.parse(response));
     }

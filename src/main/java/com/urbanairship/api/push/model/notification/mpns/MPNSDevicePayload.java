@@ -9,6 +9,10 @@ import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 
+/**
+ * @deprecated Marked to be removed in 2.0.0. MPNS is no longer supported by the Urban Airship API.
+ */
+@Deprecated
 public final class MPNSDevicePayload extends PushModelObject implements DevicePayloadOverride {
 
     private final Optional<MPNSPush> body;

@@ -81,7 +81,8 @@ public final class PushInfoResponse {
 
     /**
      * Get the type of push -- can be one of {@code UNICAST_PUSH},
-     * {@code BROADCAST_PUSH}, {@code TAG_PUSH}, or {@code SCHEDULED_PUSH}.
+     * {@code BROADCAST_PUSH}, {@code TAG_PUSH}, {@code SCHEDULED_PUSH},
+     * or {@code SEGMENTS_PUSH}.
      *
      * @return String push type
      */
@@ -140,7 +141,8 @@ public final class PushInfoResponse {
         UNICAST_PUSH,
         BROADCAST_PUSH,
         TAG_PUSH,
-        SCHEDULED_PUSH
+        SCHEDULED_PUSH,
+        SEGMENTS_PUSH
     }
 
     public final static class Builder {
