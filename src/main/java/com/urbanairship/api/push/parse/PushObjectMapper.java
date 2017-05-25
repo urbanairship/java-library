@@ -43,6 +43,7 @@ import com.urbanairship.api.push.model.notification.android.PublicNotification;
 import com.urbanairship.api.push.model.notification.android.Wearable;
 import com.urbanairship.api.push.model.notification.blackberry.BlackberryDevicePayload;
 import com.urbanairship.api.push.model.notification.ios.*;
+import com.urbanairship.api.push.model.notification.richpush.RichPushIcon;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import com.urbanairship.api.push.model.notification.web.WebDevicePayload;
 import com.urbanairship.api.push.model.notification.web.WebIcon;
@@ -97,6 +98,8 @@ import com.urbanairship.api.push.parse.notification.android.WearableSerializer;
 import com.urbanairship.api.push.parse.notification.blackberry.BlackberryDevicePayloadDeserializer;
 import com.urbanairship.api.push.parse.notification.blackberry.BlackberryDevicePayloadSerializer;
 import com.urbanairship.api.push.parse.notification.ios.*;
+import com.urbanairship.api.push.parse.notification.richpush.RichPushIconDeserializer;
+import com.urbanairship.api.push.parse.notification.richpush.RichPushIconSerializer;
 import com.urbanairship.api.push.parse.notification.richpush.RichPushMessageDeserializer;
 import com.urbanairship.api.push.parse.notification.richpush.RichPushMessageSerializer;
 import com.urbanairship.api.push.parse.notification.web.WebDevicePayloadDeserializer;
@@ -268,6 +271,8 @@ public class PushObjectMapper {
             /* Rich Push */
                 .addSerializer(RichPushMessage.class, new RichPushMessageSerializer())
                 .addDeserializer(RichPushMessage.class, new RichPushMessageDeserializer())
+                .addSerializer(RichPushIcon.class, new RichPushIconSerializer())
+                .addDeserializer(RichPushIcon.class, new RichPushIconDeserializer())
 
             /* Schedules */
                 .addDeserializer(SchedulePayload.class, SchedulePayloadDeserializer.INSTANCE)

@@ -3,7 +3,10 @@ package com.urbanairship.api.channel.model.web;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 
-public class WebSettings {
+/**
+ * Displayed only for Web channels. Describes the fields from the web subscription submitted in CRA.
+ */
+public final class WebSettings {
 
     private final Optional<Subscription> subscription;
 
@@ -12,7 +15,7 @@ public class WebSettings {
     }
 
     /**
-     * Get the Subscription object
+     * Get the Subscription object. Required for signing the push package.
      *
      * @return Subscription
      */
@@ -44,10 +47,18 @@ public class WebSettings {
                 '}';
     }
 
+    /**
+     * New WebSettings Builder.
+     *
+     * @return WebSettings Builder
+     */
     public static Builder newBuilder() {
         return new Builder();
     }
 
+    /**
+     * WebSettings Builder
+     */
     public final static class Builder {
 
         private Subscription subscription = null;
@@ -55,6 +66,11 @@ public class WebSettings {
         private Builder() {
         }
 
+        /**
+         * Set the subscription object. Required for signing the push package.
+         * @param subscription A web {@link Subscription}
+         * @return WebSettings Builder
+         */
         public Builder setSubscription(Subscription subscription) {
             this.subscription = subscription;
             return this;

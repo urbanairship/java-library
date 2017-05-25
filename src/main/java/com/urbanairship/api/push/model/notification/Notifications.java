@@ -73,6 +73,7 @@ public class Notifications {
             .build();
     }
 
+    @Deprecated
     public static BlackberryDevicePayload blackberryAlert(String text) {
         return BlackberryDevicePayload.newBuilder()
             .setAlert(text)
@@ -84,7 +85,6 @@ public class Notifications {
             .setAlert(text)
             .build();
     }
-
 
     public static ADMDevicePayload admAlert(String text) {
         return ADMDevicePayload.newBuilder()

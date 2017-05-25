@@ -9,6 +9,10 @@ import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 
+/**
+ * @deprecated Marked to be removed in 2.0.0. Blackberry is no longer supported by the Urban Airship API.
+ */
+@Deprecated
 public final class BlackberryDevicePayload extends PushModelObject implements DevicePayloadOverride {
 
     private final Optional<String> alert;
@@ -36,7 +40,6 @@ public final class BlackberryDevicePayload extends PushModelObject implements De
     public Optional<String> getAlert() {
         return alert;
     }
-
 
     public Optional<String> getBody() {
         return body;
