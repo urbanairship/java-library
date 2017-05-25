@@ -7,6 +7,10 @@ package com.urbanairship.api.push.model.notification.mpns;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
+/**
+ * @deprecated Marked to be removed in 2.0.0. MPNS is no longer supported by the Urban Airship API.
+ */
+@Deprecated
 public class MPNSCycleTileData extends MPNSTileData
 {
     private final Optional<String> smallBackgroundImage;

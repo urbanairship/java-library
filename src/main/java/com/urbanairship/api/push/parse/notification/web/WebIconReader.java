@@ -4,7 +4,6 @@ import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import com.urbanairship.api.push.model.notification.web.WebIcon;
-import jdk.nashorn.internal.parser.JSONParser;
 import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;

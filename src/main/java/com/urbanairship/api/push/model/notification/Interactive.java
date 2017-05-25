@@ -4,6 +4,7 @@
 
 package com.urbanairship.api.push.model.notification;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
@@ -52,7 +53,7 @@ public class Interactive {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(getClass())
+        return MoreObjects.toStringHelper(getClass())
             .add("type", type)
             .add("buttonActions", buttonActions)
             .toString();

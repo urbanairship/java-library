@@ -46,6 +46,7 @@ import com.urbanairship.api.push.model.notification.mpns.MPNSDevicePayload;
 import com.urbanairship.api.push.model.notification.mpns.MPNSPush;
 import com.urbanairship.api.push.model.notification.mpns.MPNSTileData;
 import com.urbanairship.api.push.model.notification.mpns.MPNSToastData;
+import com.urbanairship.api.push.model.notification.richpush.RichPushIcon;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import com.urbanairship.api.push.model.notification.web.WebDevicePayload;
 import com.urbanairship.api.push.model.notification.web.WebIcon;
@@ -106,6 +107,8 @@ import com.urbanairship.api.push.parse.notification.mpns.MPNSTileDeserializer;
 import com.urbanairship.api.push.parse.notification.mpns.MPNSTileSerializer;
 import com.urbanairship.api.push.parse.notification.mpns.MPNSToastDeserializer;
 import com.urbanairship.api.push.parse.notification.mpns.MPNSToastSerializer;
+import com.urbanairship.api.push.parse.notification.richpush.RichPushIconDeserializer;
+import com.urbanairship.api.push.parse.notification.richpush.RichPushIconSerializer;
 import com.urbanairship.api.push.parse.notification.richpush.RichPushMessageDeserializer;
 import com.urbanairship.api.push.parse.notification.richpush.RichPushMessageSerializer;
 import com.urbanairship.api.push.parse.notification.web.WebDevicePayloadDeserializer;
@@ -287,6 +290,8 @@ public class PushObjectMapper {
             /* Rich Push */
                 .addSerializer(RichPushMessage.class, new RichPushMessageSerializer())
                 .addDeserializer(RichPushMessage.class, new RichPushMessageDeserializer())
+                .addSerializer(RichPushIcon.class, new RichPushIconSerializer())
+                .addDeserializer(RichPushIcon.class, new RichPushIconDeserializer())
 
             /* Schedules */
                 .addDeserializer(SchedulePayload.class, SchedulePayloadDeserializer.INSTANCE)

@@ -60,6 +60,10 @@ public class RichPushMessageDeserializer extends JsonDeserializer<RichPushMessag
                     public void parse(RichPushMessageReader reader, JsonParser json, DeserializationContext context) throws IOException {
                         reader.readExpiry(json);
                     }
+            }).put("icons", new FieldParser<RichPushMessageReader>() {
+                public void parse(RichPushMessageReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                    reader.readIcons(json);
+                }
             })
             .build()
             );

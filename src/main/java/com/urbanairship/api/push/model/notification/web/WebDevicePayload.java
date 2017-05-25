@@ -9,7 +9,10 @@ import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 
 import java.util.Map;
 
-public class WebDevicePayload extends PushModelObject implements DevicePayloadOverride{
+/**
+ * Represents the payload to be used for sending to web devices.
+ */
+public final class WebDevicePayload extends PushModelObject implements DevicePayloadOverride{
 
     private final Optional<String> alert;
     private final Optional<String> title;
@@ -115,6 +118,9 @@ public class WebDevicePayload extends PushModelObject implements DevicePayloadOv
                 '}';
     }
 
+    /**
+     * WebDevicePayload Builder.
+     */
     public static class Builder {
         private String alert = null;
         private String title = null;
@@ -127,7 +133,7 @@ public class WebDevicePayload extends PushModelObject implements DevicePayloadOv
          * Set the alert string.
          *
          * @param alert String
-         * @return Builder
+         * @return WebDevicePayload Builder
          */
         public Builder setAlert(String alert) {
             this.alert = alert;
@@ -138,7 +144,7 @@ public class WebDevicePayload extends PushModelObject implements DevicePayloadOv
          * Set the title string.
          *
          * @param title String
-         * @return Builder
+         * @return WebDevicePayload Builder
          */
         public Builder setTitle(String title) {
             this.title = title;
@@ -150,7 +156,7 @@ public class WebDevicePayload extends PushModelObject implements DevicePayloadOv
          *
          * @param key String
          * @param value String
-         * @return Builder
+         * @return WebDevicePayload Builder
          */
         public Builder addExtraEntry(String key, String value) {
             this.extra.put(key, value);
@@ -161,7 +167,7 @@ public class WebDevicePayload extends PushModelObject implements DevicePayloadOv
          * Add a Map of key-value pairs.
          *
          * @param entries A Map of Strings
-         * @return Builder
+         * @return WebDevicePayload Builder
          */
         public Builder addAllExtraEntries(Map<String, String> entries) {
             this.extra.putAll(entries);
@@ -171,8 +177,8 @@ public class WebDevicePayload extends PushModelObject implements DevicePayloadOv
         /**
          * Set the webIcon payload.
          *
-         * @param webIcon WebIcon
-         * @return Builder
+         * @param webIcon a {@link WebIcon}
+         * @return WebDevicePayload Builder
          */
         public Builder setWebIcon(WebIcon webIcon) {
             this.webIcon = webIcon;

@@ -8,6 +8,10 @@ import com.google.common.base.Optional;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
+/**
+ * @deprecated Marked to be removed in 2.0.0. MPNS is no longer supported by the Urban Airship API.
+ */
+@Deprecated
 public class MPNSIconicTileData extends MPNSTileData
 {
     private final Optional<String> iconImage;

@@ -1,9 +1,9 @@
 -------------------------
-1.3.0 APR TBD
+1.3.0 07APR17
 -------------------------
-- Added support for Web Push.
-- Fixed a bug in device lookups that contained web devices.
-- Removed support for Blackberry.
+- Web Notify Support.
+- Deprecated MPNS push.
+- Deprecated Blackberry push.
 
 -------------------------
 1.2.0 23NOV16

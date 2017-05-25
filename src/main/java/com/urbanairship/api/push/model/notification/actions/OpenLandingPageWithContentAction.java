@@ -11,13 +11,18 @@ import com.urbanairship.api.push.model.PushModelObject;
 
 public class OpenLandingPageWithContentAction extends PushModelObject implements Action.OpenAction<LandingPageContent> {
     private final LandingPageContent pageContent;
+
     private final Optional<String> fallbackUrl;
 
     public OpenLandingPageWithContentAction(LandingPageContent pageContent) {
         this(pageContent, Optional.<String>absent());
     }
 
-    public OpenLandingPageWithContentAction(LandingPageContent pageContent, Optional<String> fallbackUrl){
+    public OpenLandingPageWithContentAction(LandingPageContent pageContent, String fallbackUrl) {
+        this(pageContent, Optional.fromNullable(fallbackUrl));
+    }
+
+    private OpenLandingPageWithContentAction(LandingPageContent pageContent, Optional<String> fallbackUrl){
         Preconditions.checkNotNull(pageContent, "pageContent should not be null.");
         Preconditions.checkNotNull(fallbackUrl, "fallbackUrl should not be null.");
 
@@ -28,6 +33,10 @@ public class OpenLandingPageWithContentAction extends PushModelObject implements
     @Override
     public LandingPageContent getValue() {
         return pageContent;
+    }
+
+    public Optional<String> getFallbackUrl() {
+        return fallbackUrl;
     }
 
     @Override
