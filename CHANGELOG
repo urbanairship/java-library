@@ -1,7 +1,9 @@
 -------------------------
-1.3.0 APR TBD
+1.3.0 07APR17
 -------------------------
-- Removed push support for mpns
+- Web Notify Support.
+- Deprecated MPNS push.
+- Deprecated Blackberry push.
 
 -------------------------
 1.2.0 23NOV16

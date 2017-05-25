@@ -25,6 +25,9 @@ public class RichPushMessageSerializer extends JsonSerializer<RichPushMessage> {
         if (message.getExtra().isPresent()) {
             jgen.writeObjectField("extra", message.getExtra().get());
         }
+        if (message.getIcons().isPresent()) {
+            jgen.writeObjectField("icons", message.getIcons().get());
+        }
         jgen.writeEndObject();
     }
 }
