@@ -142,4 +142,9 @@ public class StaticListRequest implements Request<String> {
             }
         };
     }
+
+    @Override
+    public boolean bearerTokenAuthRequired() {
+        return false;
+    }
 }

@@ -28,7 +28,7 @@ import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import static com.google.common.base.Optional.fromNullable;
+import static com.google.common.base.Optional.*;
 
 /**
  * The UrbanAirshipClient class handles HTTP requests to the Urban Airship API.
@@ -158,15 +158,13 @@ public class UrbanAirshipClient implements Closeable {
             }
         }
 
-        if (appSecret.isPresent() && request.getClass() != CustomEventRequest.class) {
+        if (appSecret.isPresent() && request.bearerTokenAuthRequired() == false) {
             // Push API Auth
             requestBuilder.setHeader(
                     "Authorization",
                     "Basic " + BaseEncoding.base64().encode((appKey + ":" + appSecret.get()).getBytes())
             );
-        } else if (bearerToken.isPresent() && request.getClass() == CustomEventRequest.class) {
-
-
+        } else if (bearerToken.isPresent() && request.bearerTokenAuthRequired() == true) {
             requestBuilder.addHeader(
                     "X-UA-Appkey",
                     "" + appKey

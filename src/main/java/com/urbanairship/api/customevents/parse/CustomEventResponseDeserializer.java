@@ -22,7 +22,7 @@ public class CustomEventResponseDeserializer extends JsonDeserializer<CustomEven
                     reader.readOk(jsonParser);
                 }
             })
-            .put("operation_id", new FieldParser<CustomEventResponseReader>() {
+            .put("operationId", new FieldParser<CustomEventResponseReader>() {
                 @Override
                 public void parse(CustomEventResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
                     reader.readOperationId(jsonParser);

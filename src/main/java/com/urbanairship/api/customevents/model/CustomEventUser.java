@@ -2,9 +2,8 @@ package com.urbanairship.api.customevents.model;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.urbanairship.api.push.model.PushModelObject;
 
-public class CustomEventUser extends PushModelObject {
+public class CustomEventUser {
 
     private final CustomEventChannelType channelType;
     private final String channel;

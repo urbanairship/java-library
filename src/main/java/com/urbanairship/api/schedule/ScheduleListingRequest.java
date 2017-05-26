@@ -129,4 +129,9 @@ public class ScheduleListingRequest implements Request<ListAllSchedulesResponse>
     public ResponseParser<ListAllSchedulesResponse> getResponseParser() {
         return parser;
     }
+
+    @Override
+    public boolean bearerTokenAuthRequired() {
+        return false;
+    }
 }
