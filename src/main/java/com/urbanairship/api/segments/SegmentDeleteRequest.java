@@ -76,4 +76,9 @@ public class SegmentDeleteRequest implements Request<String> {
             }
         };
     }
+
+    @Override
+    public boolean bearerTokenAuthRequired() {
+        return false;
+    }
 }

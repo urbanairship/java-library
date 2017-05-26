@@ -130,4 +130,9 @@ public class NamedUserRequest implements Request<String> {
         };
     }
 
+    @Override
+    public boolean bearerTokenAuthRequired() {
+        return false;
+    }
+
 }

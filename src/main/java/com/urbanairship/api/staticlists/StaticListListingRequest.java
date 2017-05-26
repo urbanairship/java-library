@@ -97,4 +97,9 @@ public class StaticListListingRequest implements Request<StaticListListingRespon
             }
         };
     }
+
+    @Override
+    public boolean bearerTokenAuthRequired() {
+        return false;
+    }
 }

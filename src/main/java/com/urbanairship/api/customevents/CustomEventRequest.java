@@ -68,4 +68,9 @@ public class CustomEventRequest implements Request<CustomEventResponse> {
             }
         };
     }
+
+    @Override
+    public boolean bearerTokenAuthRequired() {
+        return true;
+    }
 }
