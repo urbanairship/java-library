@@ -7,10 +7,10 @@ package com.urbanairship.api.push.model;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import org.apache.commons.lang.StringUtils;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.urbanairship.api.push.model.audience.Selector;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -20,29 +20,86 @@ import java.util.List;
  */
 public final class Experiment {
 
-    private final String experimentPayload;
+    private final Optional<String> name;
+    private final Optional<String> description;
+    private final Optional<BigDecimal> control;
+    private final Selector audience;
+    private final DeviceTypeData deviceTypes;
     private final List<Variant> variants;
 
+    /**
+     * Experiment builder
+     * @return Builder
+     */
     public static Builder newBuilder() {
         return new Builder();
     }
 
-    private Experiment(String experimentPayload, ImmutableList<Variant> variants) {
-        this.experimentPayload = experimentPayload;
+    private Experiment(Optional<String> name,
+                       Optional<String> description,
+                       Optional<BigDecimal> control,
+                       Selector audience,
+                       DeviceTypeData deviceTypes,
+                       ImmutableList<Variant> variants) {
+        this.name = name;
+        this.description = description;
+        this.control = control;
+        this.audience = audience;
+        this.deviceTypes = deviceTypes;
         this.variants = variants;
     }
 
-    public String getExperimentPayload() {
-        return experimentPayload;
+    /**
+     * Get the name of the experiment. This is optional.
+     * @return name
+     */
+    public Optional<String> getName() {
+        return name;
     }
 
+    /**
+     * Get the description for the experiment. This is optional.
+     * @return description
+     */
+    public Optional<String> getDescription() {
+        return description;
+    }
+
+    /**
+     * Get the control group. This is optional.
+     * @return control
+     */
+    public Optional<BigDecimal> getControl() {
+        return control;
+    }
+
+    /**
+     * Get the audience
+     * @return audience
+     */
+    public Selector getAudience() {
+        return audience;
+    }
+
+    /**
+     * Get the deviceTypes
+     * @return DeviceTypeData
+     */
+    public DeviceTypeData getDeviceTypes() {
+        return deviceTypes;
+    }
+
+    /**
+     * Get the variants.
+     * @return variants
+     */
     public List<Variant> getVariants() {
         return variants;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(experimentPayload, variants);
+        return Objects.hashCode(name, description, control, audience, deviceTypes, variants);
     }
 
     @Override
@@ -54,41 +111,96 @@ public final class Experiment {
             return false;
         }
         final Experiment other = (Experiment) obj;
-
-        if (experimentPayload != null ? !experimentPayload.equals(other.experimentPayload) : other.experimentPayload != null) {
-            return false;
-        }
-        if (variants != null ? !variants.equals(other.variants) : other.variants != null) {
-            return false;
-        }
-
-        return true;
+        return Objects.equal(this.name, other.name)
+                && Objects.equal(this.description, other.description)
+                && Objects.equal(this.control, other.control)
+                && Objects.equal(this.audience, other.audience)
+                && Objects.equal(this.deviceTypes, other.deviceTypes)
+                && Objects.equal(this.variants, other.variants);
     }
 
     @Override
     public String toString() {
         return "Experiment{" +
-                "experimentPayload='" + experimentPayload + '\'' +
+                "name=" + name +
+                ", description=" + description +
+                ", control=" + control +
+                ", audience=" + audience +
+                ", deviceTypes=" + deviceTypes +
                 ", variants=" + variants +
                 '}';
-
     }
 
     public static class Builder {
 
-        private String experimentPayload;
-        private List<Variant> variants;
+        private String name = null;
+        private String description = null;
+        private BigDecimal control = null;
+        private Selector audience = null;
+        private DeviceTypeData deviceTypes = null;
+        private List<Variant> variants = null;
 
-        public Builder setExperimentPayload(String experimentPayload) {
-            this.experimentPayload = experimentPayload;
+        private Builder() { }
+
+        /**
+         * Set the experiment name.
+         * @param name String
+         * @return Builder
+         */
+        public Builder setName(String name) {
+            this.name = name;
             return this;
         }
 
+        /**
+         * Set the experiment description.
+         * @param description String
+         * @return Builder
+         */
+        public Builder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        /**
+         * Set the control group.
+         * @param control BigDecimal
+         * @return Builder
+         */
+        public Builder setControl(BigDecimal control) {
+            this.control = control;
+            return this;
+        }
+
+        /**
+         * Set the Audience.
+         * @param audience Selector
+         * @return Builder
+         */
+        public Builder setAudience(Selector audience) {
+            this.audience = audience;
+            return this;
+        }
+
+        /**
+         * Set the Device Type data.
+         * @param deviceTypes DeviceTypeData
+         * @return Builder
+         */
+        public Builder setDeviceTypes(DeviceTypeData deviceTypes) {
+            this.deviceTypes = deviceTypes;
+            return this;
+        }
+
+        /**
+         * Set the variants.
+         * @param variant List<Variant>
+         * @return Builder
+         */
         public <V extends Variant> Builder addVariant(V variant) {
             if (variants == null) {
                 variants = Lists.newArrayList();
             }
-
             variants.add(variant);
             return this;
         }
@@ -98,26 +210,50 @@ public final class Experiment {
             return this;
         }
 
+        /**
+         * Build an Experiment object. Will fail if any of the following
+         * preconditions are not met.
+         * <pre>
+         * 1. Audience must be set.
+         * 2. DeviceTypes (device types) must be set.
+         * 3. At least one variant must be present.
+         * </pre>
+         *
+         * @throws IllegalArgumentException
+         * @throws NullPointerException
+         * @return Experiment
+         */
         public Experiment build() {
-            Preconditions.checkArgument(StringUtils.isNotEmpty(experimentPayload),
-                    "An experiment payload must be provided.");
+            Preconditions.checkNotNull(audience, "'audience' must be set");
+            Preconditions.checkNotNull(deviceTypes, "'device_types' must be set");
             Preconditions.checkNotNull(variants, "An experiment requires at least one variant.");
             Preconditions.checkArgument(variants.size() > 0, "At least one variant must be present.");
 
-            return new Experiment(experimentPayload, ImmutableList.copyOf(variants));
+            return new Experiment(
+                    Optional.fromNullable(name),
+                    Optional.fromNullable(description),
+                    Optional.fromNullable(control),
+                    audience,
+                    deviceTypes,
+                    ImmutableList.copyOf(variants));
         }
     }
 
     public static class Variant {
 
-        private int id;
-        private Optional<BigDecimal> weight;
+        private Optional<String> name;
+        private Optional<String> description;
         private final Notification notification;
+        private Optional<BigDecimal> weight;
 
-        private Variant(int id,  Optional<BigDecimal> weight, Notification notification) {
-            this.id = id;
-            this.weight = weight;
+        private Variant(Optional<String> name,
+                        Optional<String> description,
+                        Notification notification,
+                        Optional<BigDecimal> weight) {
+            this.name = name;
+            this.description = description;
             this.notification = notification;
+            this.weight = weight;
         }
 
         public static Builder newBuilder() {
@@ -125,25 +261,40 @@ public final class Experiment {
         }
 
         /**
-         * ID of the variant. Should be unique within the experiment.
-         *
-         * @return
+         * Get the name of the variant. This is optional.
+         * @return name
          */
-        public int getId() {
-            return id;
+        public Optional<String> getName() {
+            return name;
         }
 
-        public  Optional<BigDecimal> getWeight() {
-            return weight;
+        /**
+         * Get the description of the experiment. This is optional.
+         * @return description
+         */
+        public Optional<String> getDescription() {
+            return description;
         }
 
+        /**
+         * Get the partial push notification object.
+         * @return Notification
+         */
         public Notification getNotification() {
             return notification;
         }
 
+        /**
+         * Get the weight of the variant. This is optional.
+         * @return weight
+         */
+        public  Optional<BigDecimal> getWeight() {
+            return weight;
+        }
+
         @Override
         public int hashCode() {
-            return Objects.hashCode(id, weight, notification);
+            return Objects.hashCode(name, description, notification, weight);
         }
 
         @Override
@@ -155,15 +306,17 @@ public final class Experiment {
                 return false;
             }
             final Variant other = (Variant) obj;
-            return Objects.equal(this.id, other.id)
-                    && Objects.equal(this.weight, other.weight)
-                    && Objects.equal(this.notification, other.notification);
+            return Objects.equal(this.name, other.name)
+                    && Objects.equal(this.description, other.description)
+                    && Objects.equal(this.notification, other.notification)
+                    && Objects.equal(this.weight, other.weight);
         }
 
         @Override
         public String toString() {
             return "Variant{" +
-                    "id=" + id +
+                    "name=" + name +
+                    ", description=" + description +
                     ", notification=" + notification +
                     ", weight=" + weight.get() +
                     '}';
@@ -171,27 +324,70 @@ public final class Experiment {
 
         public static class Builder {
 
-            private Integer id;
-            private Optional<BigDecimal> weight;
+            private String name;
+            private String description;
             private Notification notification;
+            private BigDecimal weight;
 
-            public Builder setId(int id) {
-                this.id = id;
+            /**
+             * Set the variant name.
+             * @param name String
+             * @return Builder
+             */
+            public Builder setName(String name) {
+                this.name = name;
                 return this;
             }
 
+            /**
+             * Set the variant description.
+             * @param description String
+             * @return Builder
+             */
+            public Builder setDescription(String description) {
+                this.description = description;
+                return this;
+            }
+
+            /**
+             * Set the partial push notification object.
+             * @param notification Notification
+             * @return Builder
+             */
             public Builder setNotification(Notification notification) {
                 this.notification = notification;
                 return this;
             }
 
+            /**
+             * Set the weight of the variant.
+             * @param weight BigDecimal
+             * @return Builder
+             */
+            public Builder setWeight(BigDecimal weight) {
+                this.weight = weight;
+                return this;
+            }
+
+            /**
+             * Build a Variant object. Will fail if the following
+             * precondition is not met.
+             * <pre>
+             * 1. Partial push notification object must be specified.
+             * </pre>
+             *
+             * @throws NullPointerException
+             * @return Variant
+             */
             public Variant build() {
-                Preconditions.checkNotNull(id, "An ID must be provided.");
-                Preconditions.checkNotNull(notification, "A notification must be provided.");
-                Preconditions.checkNotNull(weight.get(), "A weight must be provided.");
+                Preconditions.checkNotNull(notification,
+                        "A partial push notification object must be provided.");
 
-
-                return new Variant(id, weight, notification);
+                return new Variant(
+                        Optional.fromNullable(name),
+                        Optional.fromNullable(description),
+                        notification,
+                        Optional.fromNullable(weight));
             }
         }
 
