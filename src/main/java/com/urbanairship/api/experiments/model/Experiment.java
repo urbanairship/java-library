@@ -2,11 +2,13 @@
  * Copyright (c) 2013-2017.  Urban Airship and Contributors
  */
 
-package com.urbanairship.api.push.model;
+package com.urbanairship.api.experiments.model;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.urbanairship.api.push.model.DeviceTypeData;
+import com.urbanairship.api.push.model.audience.SelectorType;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -82,10 +84,18 @@ public final class Experiment {
     }
 
     /**
+     * Boolean indicating whether audience is SelectorType.ALL
+     * @return audience is all
+     */
+    public boolean isBroadcast() {
+        return audience.getType().equals(SelectorType.ALL);
+    }
+
+    /**
      * Get the deviceTypes
      * @return DeviceTypeData
      */
-    public DeviceTypeData getDeviceTypes() {
+    public DeviceTypeData getDeviceType() {
         return deviceTypes;
     }
 
@@ -187,7 +197,7 @@ public final class Experiment {
          * @param deviceTypes DeviceTypeData
          * @return Builder
          */
-        public Builder setDeviceTypes(DeviceTypeData deviceTypes) {
+        public Builder setDeviceType(DeviceTypeData deviceTypes) {
             this.deviceTypes = deviceTypes;
             return this;
         }
