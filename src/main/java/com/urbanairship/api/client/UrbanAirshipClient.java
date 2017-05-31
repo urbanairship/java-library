@@ -175,10 +175,10 @@ public class UrbanAirshipClient implements Closeable {
                     "Bearer " + bearerToken.get()
             );
         } else {
-            throw new IllegalArgumentException("Bearer token must be set to use Custom Event Requests.");
+            throw new IllegalArgumentException("Request: " + request + " requires bearer auth.");
         }
 
-        // CustomEventBody
+        // Body
         String body = request.getRequestBody();
         ContentType contentType = request.getContentType();
         if (body != null && contentType != null) {
