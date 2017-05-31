@@ -207,7 +207,7 @@ public final class Experiment {
          * @param variant List<Variant>
          * @return Builder
          */
-        public <V extends Variant> Builder addVariant(V variant) {
+        public Builder addVariant(Variant variant) {
             if (variants == null) {
                 variants = Lists.newArrayList();
             }
@@ -215,7 +215,7 @@ public final class Experiment {
             return this;
         }
 
-        public Builder addAllVariants(List<? extends Variant> variants) {
+        public Builder addAllVariants(List<Variant> variants) {
             this.variants = Lists.newArrayList(variants);
             return this;
         }
