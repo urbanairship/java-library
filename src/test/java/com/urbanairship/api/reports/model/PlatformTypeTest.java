@@ -34,6 +34,14 @@ public class PlatformTypeTest {
     }
 
     @Test
+    public void testWebPlatformType() {
+        PlatformType obj = PlatformType.find("web").get();
+        assertNotNull(obj);
+        assertEquals(PlatformType.WEB, obj);
+        assertEquals("web", obj.getIdentifier());
+    }
+
+    @Test
     public void testAllPlatformType() {
         PlatformType obj = PlatformType.find("all").get();
         assertNotNull(obj);

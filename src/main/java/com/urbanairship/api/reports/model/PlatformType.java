@@ -11,6 +11,7 @@ public enum PlatformType {
     IOS("ios"),
     AMAZON("amazon"),
     ANDROID("android"),
+    WEB("web"),
     ALL("all"),
     VARIANT("variant");
 
