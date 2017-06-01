@@ -19,6 +19,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * @deprecated Marked to be removed in 2.0.0. Urban Airship stopped recommending use of these endpoints in October 2015,
+ * so we are now completing their removal from our libraries.
+ */
+@Deprecated
 public class PushDetailRequest implements Request<List<PushDetailResponse>> {
     private final static String API_PER_PUSH_DETAIL = "/api/reports/perpush/detail/";
     private final static String PUSH_IDS_KEY = "push_ids";
