@@ -7,6 +7,11 @@ package com.urbanairship.api.reports.model;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
+/**
+ * @deprecated Marked to be removed in 2.0.0. Urban Airship stopped recommending use of these endpoints in October 2015,
+ * so we are now completing their removal from our libraries.
+ */
+@Deprecated
 public final class RichPerPushCounts {
 
     private long responses;

@@ -20,6 +20,11 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @deprecated Marked to be removed in 2.0.0. Urban Airship stopped recommending use of these endpoints in October 2015,
+ * so we are now completing their removal from our libraries.
+ */
+@Deprecated
 public class PushSeriesRequest implements Request<PushSeriesResponse> {
     private final static String API_PER_PUSH_SERIES = "/api/reports/perpush/series/";
 
