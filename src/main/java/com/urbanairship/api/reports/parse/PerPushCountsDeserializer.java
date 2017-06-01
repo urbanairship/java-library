@@ -17,6 +17,11 @@ import org.codehaus.jackson.map.JsonDeserializer;
 
 import java.io.IOException;
 
+/**
+ * @deprecated Marked to be removed in 2.0.0. Urban Airship stopped recommending use of these endpoints in October 2015,
+ * so we are now completing their removal from our libraries.
+ */
+@Deprecated
 public final class PerPushCountsDeserializer extends JsonDeserializer<PerPushCounts> {
 
     private static final FieldParserRegistry<PerPushCounts, PerPushCountsReader> FIELD_PARSERS =
