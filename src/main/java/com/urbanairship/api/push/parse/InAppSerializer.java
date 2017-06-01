@@ -1,5 +1,6 @@
 package com.urbanairship.api.push.parse;
 
+import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.push.model.InApp;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
@@ -17,7 +18,7 @@ public class InAppSerializer extends JsonSerializer<InApp> {
         jsonGenerator.writeStringField("display_type", inApp.getDisplayType());
 
         if (inApp.getExpiry().isPresent()) {
-            jsonGenerator.writeStringField("expiry", inApp.getExpiry().get().toString());
+            jsonGenerator.writeStringField("expiry", (DateFormats.DATE_FORMATTER.print(inApp.getExpiry().get())));
         }
 
         if (inApp.getDisplay().isPresent()) {

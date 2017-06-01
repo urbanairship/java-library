@@ -1,7 +1,10 @@
 -------------------------
-X.X TBD
+1.4.0 02JUN17
 -------------------------
+- Added icon support for rich inbox messaging.
 - Added support for batch push API requests.
+- Deprecated per push reports.
+- Fixed bug in PushDetailResponseReader.
 
 -------------------------
 1.3.0 07APR17

@@ -49,7 +49,7 @@ public class PushInfoResponseDeserializerTest {
                 "{\n" +
                         "\"push_uuid\":\"df31cae0-fa3c-11e2-97ce-14feb5d317b8\",\n" +
                         "\"push_time\":\"2013-07-31 23:56:52\",\n" +
-                        "\"push_type\":\"BROADCAST_PUSH\",\n" +
+                        "\"push_type\":\"SEGMENTS_PUSH\",\n" +
                         "\"direct_responses\":0,\n" +
                         "\"sends\":1\n" +
                         "}";
@@ -61,7 +61,7 @@ public class PushInfoResponseDeserializerTest {
             assertEquals("df31cae0-fa3c-11e2-97ce-14feb5d317b8", obj.getPushId().toString());
             assertEquals(0, obj.getDirectResponses());
             assertEquals(1, obj.getSends());
-            assertEquals(PushInfoResponse.PushType.BROADCAST_PUSH, obj.getPushType());
+            assertEquals(PushInfoResponse.PushType.SEGMENTS_PUSH, obj.getPushType());
             assertFalse(obj.getGroupID().isPresent());
         } catch (Exception ex) {
             ex.printStackTrace();
