@@ -6,6 +6,11 @@ package com.urbanairship.api.reports.model;
 
 import com.google.common.base.Optional;
 
+/**
+ * @deprecated Marked to be removed in 2.0.0. Urban Airship stopped recommending use of these endpoints in October 2015,
+ * so we are now completing their removal from our libraries.
+ */
+@Deprecated
 public enum PlatformType {
 
     IOS("ios"),
