@@ -13,6 +13,9 @@ import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.PushResponse;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.apache.http.entity.ContentType;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
 
 import java.io.IOException;
 import java.net.URI;
@@ -128,16 +131,20 @@ public class PushRequest implements Request<PushResponse> {
             return this.payloads.get(0).toJSON();
         }
 
-        StringBuilder sb = new StringBuilder("[");
+        ObjectMapper mapper = new ObjectMapper();
+
+        ArrayNode arrayNode = mapper.createArrayNode();
 
         for (PushPayload pushPayload : this.payloads) {
-            sb.append(pushPayload.toJSON());
-            sb.append(",");
+            try {
+                JsonNode pushJson = mapper.readTree(pushPayload.toJSON());
+                arrayNode.add(pushJson);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        // remove last comma
-        sb.setLength(sb.length() - 1);
 
-        return sb.append("]").toString();
+        return arrayNode.toString();
     }
 
     @Override
