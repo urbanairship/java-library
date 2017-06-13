@@ -600,6 +600,7 @@ public class UrbanAirshipClientTest {
         latch.await();
     }
 
+    @Test
     @SuppressWarnings("unchecked")
     public void testServerExceptionNonJSONfor500() throws Exception {
 
@@ -632,6 +633,7 @@ public class UrbanAirshipClientTest {
         latch.await();
     }
 
+    @Test
     @SuppressWarnings("unchecked")
     public void testServerExceptionNonJSONfor503() throws Exception {
 
