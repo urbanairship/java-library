@@ -569,7 +569,7 @@ public class UrbanAirshipClientTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testServerException() throws Exception {
+    public void testServerExceptionJSON() throws Exception {
 
         PushPayload payload = PushPayload.newBuilder()
             .setAudience(Selectors.all())
@@ -583,6 +583,70 @@ public class UrbanAirshipClientTest {
             .willReturn(aResponse()
                 .withHeader(CONTENT_TYPE_KEY, "application/vnd.urbanairship+json")
                 .withStatus(503)));
+
+        final CountDownLatch latch = new CountDownLatch(1);
+        client.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
+            @Override
+            public void completed(Response response) {
+            }
+
+            @Override
+            public void error(Throwable throwable) {
+                assertTrue(throwable instanceof ServerException);
+                latch.countDown();
+            }
+        });
+
+        latch.await();
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testServerExceptionNonJSONfor500() throws Exception {
+
+        PushPayload payload = PushPayload.newBuilder()
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setNotification(Notifications.alert("Foo"))
+                .build();
+
+
+        // Setup a stubbed response for the server
+        stubFor(post(urlEqualTo("/api/push/"))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "text/html")
+                        .withStatus(500)));
+
+        final CountDownLatch latch = new CountDownLatch(1);
+        client.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
+            @Override
+            public void completed(Response response) {
+            }
+
+            @Override
+            public void error(Throwable throwable) {
+                assertTrue(throwable instanceof ServerException);
+                latch.countDown();
+            }
+        });
+
+        latch.await();
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testServerExceptionNonJSONfor503() throws Exception {
+
+        PushPayload payload = PushPayload.newBuilder()
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setNotification(Notifications.alert("Foo"))
+                .build();
+
+
+        // Setup a stubbed response for the server
+        stubFor(post(urlEqualTo("/api/push/"))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "text/html")
+                        .withStatus(503)));
 
         final CountDownLatch latch = new CountDownLatch(1);
         client.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
