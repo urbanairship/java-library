@@ -104,6 +104,20 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.9.1</version>
+                <configuration>
+                    <docletArtifact>
+                        <groupId>com.google.doclava</groupId>
+                        <artifactId>doclava</artifactId>
+                        <version>1.0.6</version>
+                    </docletArtifact>
+                    <doclet>com.google.doclava.Doclava</doclet>
+                    <!-- | bootclasspath required by Sun's JVM -->
+                    <bootclasspath>${sun.boot.class.path}</bootclasspath>
+                    <additionalparam> -quiet -federate JDK http://download.oracle.com/javase/6/docs/api/index.html? -federationxml JDK http://doclava.googlecode.com/svn/static/api/openjdk-6.xml -hdf project.name "${project.name}" -d ${project.build.directory}/apidocs </additionalparam>
+                    <useStandardDocletOptions>false</useStandardDocletOptions>
+                    <!-- | Apple's JVM sometimes requires more memory -->
+                    <additionalJOption>-J-Xmx1024m</additionalJOption>
+                </configuration>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -171,6 +185,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
             <version>${jackson.version}</version>
@@ -195,6 +215,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.joda</groupId>
+            <artifactId>joda-convert</artifactId>
+            <version>1.8.1</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>fluent-hc</artifactId>
             <version>4.5.2</version>
@@ -210,6 +236,12 @@
             <groupId>com.ning</groupId>
             <artifactId>async-http-client</artifactId>
             <version>1.9.31</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.doclava</groupId>
+            <artifactId>doclava</artifactId>
+            <version>1.0.6</version>
         </dependency>
 
         <dependency>
