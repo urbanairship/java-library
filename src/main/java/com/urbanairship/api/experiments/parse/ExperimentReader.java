@@ -6,7 +6,7 @@ import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.experiments.model.Experiment;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.audience.Selector;
-import com.urbanairship.api.experiments.model.Experiment.Variant;
+import com.urbanairship.api.experiments.model.Variant;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.type.TypeReference;
 

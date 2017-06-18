@@ -14,6 +14,12 @@ import com.urbanairship.api.channel.ChannelTagRequest;
 import com.urbanairship.api.channel.model.ChannelResponse;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.common.parse.DateFormats;
+import com.urbanairship.api.experiments.ExperimentRequest;
+import com.urbanairship.api.experiments.model.Experiment;
+import com.urbanairship.api.experiments.model.ExperimentResponse;
+import com.urbanairship.api.experiments.model.PartialPushPayload;
+import com.urbanairship.api.experiments.model.Variant;
+import com.urbanairship.api.experiments.parse.ExperimentObjectMapper;
 import com.urbanairship.api.location.LocationRequest;
 import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.LocationResponse;
@@ -29,6 +35,7 @@ import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.PushResponse;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.Selectors;
+import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.reports.PlatformStatsRequest;
@@ -80,6 +87,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Partial;
 import org.joda.time.Period;
 import org.junit.After;
 import org.junit.Before;
@@ -3499,5 +3507,91 @@ public class UrbanAirshipClientTest {
         assertNotNull(response.getBody().get().getTemplates().get());
         assertNotNull(response.getBody().get().getNextPage());
         assertNotNull(response.getBody().get().getPrevPage());
+    }
+
+    @Test
+    public void testCreateExperiment() throws Exception {
+        String queryPathString = "/api/experiments/";
+        String responseJson =
+                "{" +
+                        "\"ok\": true," +
+                        "\"operation_id\": \"df6a6b50-9843-0304-d5a5-743f246a4946\"," +
+                        "\"experiment_id\": \"1cbfbfa2-08d1-92c2-7119-f8f7f670f5f6\"" +
+                        "}";
+
+        stubFor(post(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withStatus(201)
+                        .withBody(responseJson)));
+
+        Variant variantOne = Variant.newBuilder()
+                .setPushPayload(PartialPushPayload.newBuilder()
+                        .setNotification(Notification.newBuilder()
+                                .setAlert("Hello Jenn!")
+                                .build()
+                )
+                .build())
+                .build();
+
+        Experiment experiment = Experiment.newBuilder()
+                .setName("Jenn's experiment!")
+                .setDescription("It's a test, hoo boy!")
+                .setDeviceType(DeviceTypeData.of(DeviceType.IOS))
+                .setAudience(Selectors.namedUser("birdperson"))
+                .addVariant(variantOne)
+                .build();
+
+        System.out.printf("\n Built experiment! \n\n");
+
+        try {
+            final CountDownLatch latch = new CountDownLatch(1);
+            Response<ExperimentResponse> response = client.execute(ExperimentRequest.newRequest(experiment), new ResponseCallback() {
+                @Override
+                public void completed(Response response) {
+                    latch.countDown();
+                }
+
+                @Override
+                public void error(Throwable throwable) {
+
+                }
+            });
+            latch.await();
+
+//            // Verify components of the underlying HttpRequest
+//            verify(postRequestedFor(urlEqualTo("/api/experiments/"))
+//                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+//            List<LoggedRequest> requests = findAll(postRequestedFor(
+//                    urlEqualTo("/api/experiments/")));
+//            // There should only be one request
+//            assertEquals(requests.size(), 1);
+//            // Parse the request using the server side deserializer and check
+//            // results
+//            String requestPayload = requests.get(0).getBodyAsString();
+//            ObjectMapper mapper = ExperimentObjectMapper.getInstance();
+//            Map<String, Object> result =
+//                    mapper.readValue(requestPayload,
+//                            new TypeReference<Map<String, Object>>() {
+//                            });
+//            // Audience
+//            String audience = (String) result.get("audience");
+//            assertTrue(audience.equals("ALL"));
+//
+//            // DeviceType
+//            List<String> deviceTypeData = (List<String>) result.get("device_types");
+//            assertTrue(deviceTypeData.get(0).equals("ios"));
+//            assertEquals(DeviceType.find(deviceTypeData.get(0)).get(), DeviceType.IOS);
+//
+//            // Notification
+//            Map<String, String> notification =
+//                    (Map<String, String>) result.get("notification");
+//            assertTrue(notification.get("alert").equals("Foo"));
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            fail("Exception thrown " + ex);
+        }
     }
 }

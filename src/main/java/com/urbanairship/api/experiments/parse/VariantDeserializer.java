@@ -6,7 +6,7 @@ import com.urbanairship.api.common.parse.FieldParser;
 import com.urbanairship.api.common.parse.FieldParserRegistry;
 import com.urbanairship.api.common.parse.MapFieldParserRegistry;
 import com.urbanairship.api.common.parse.StandardObjectDeserializer;
-import com.urbanairship.api.experiments.model.Experiment.Variant;
+import com.urbanairship.api.experiments.model.Variant;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
@@ -35,7 +35,7 @@ public class VariantDeserializer extends JsonDeserializer<Variant> {
                                 reader.readWeight(jsonParser);
                             }
                     })
-                    .put("notification", new FieldParser<VariantReader>() {
+                    .put("push", new FieldParser<VariantReader>() {
                             @Override
                             public void parse(VariantReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
                                 reader.readPartialPushPayload(jsonParser);

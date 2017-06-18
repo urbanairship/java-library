@@ -57,8 +57,6 @@ public class ExperimentDeserializer extends JsonDeserializer<Experiment> {
                     .build()
     );
 
-    public static final ExperimentDeserializer INSTANCE = new ExperimentDeserializer();
-
     private final StandardObjectDeserializer<Experiment, ?> deserializer;
 
     public ExperimentDeserializer() {

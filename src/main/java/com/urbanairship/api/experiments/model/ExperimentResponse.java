@@ -13,20 +13,20 @@ public final class ExperimentResponse {
     private final Optional<String> operationId;
     private final Optional<ImmutableList<String>> pushIds;
     private final boolean ok;
-    private final Optional<ImmutableList<String>> experimentId;
+    private final Optional<String> experimentId;
 
     public ExperimentResponse(String operationId,
                               ImmutableList<String> pushIds,
                               boolean ok,
-                              ImmutableList<String> experimentIds) {
+                              String experimentId) {
         this.operationId = Optional.fromNullable(operationId);
         this.pushIds = Optional.fromNullable(pushIds);
         this.ok = ok;
-        this.experimentId = Optional.fromNullable(experimentIds);
+        this.experimentId = Optional.fromNullable(experimentId);
     }
 
-    public static ExperimentResponse.Builder newBuilder() {
-        return new ExperimentResponse.Builder();
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
     /**
@@ -59,7 +59,7 @@ public final class ExperimentResponse {
         return ok;
     }
 
-    public Optional<ImmutableList<String>> getExperimentId() {
+    public Optional<String> getExperimentId() {
         return experimentId;
     }
 
@@ -98,42 +98,47 @@ public final class ExperimentResponse {
      * ExperimentResponse Builder
      */
     public static class Builder {
-        private String operationId;
+
+        private String operationId = null;
         private ImmutableList.Builder<String> pushIds = ImmutableList.builder();
         private boolean ok = false;
-        private ImmutableList.Builder<String> experimentId = ImmutableList.builder();
+        private String experimentId = null;
 
-        public static Builder newBuilder() {
-            return new Builder();
+        private Builder() {
         }
 
-        public ExperimentResponse.Builder setOperationId(String operationId) {
+        public Builder setOperationId(String operationId) {
             this.operationId = operationId;
             return this;
         }
 
-        public ExperimentResponse.Builder addPushId(String pushId) {
+        public Builder addPushId(String pushId) {
             this.pushIds.add(pushId);
             return this;
         }
 
-        public ExperimentResponse.Builder addAllPushIds(Iterable<? extends String> pushIds) {
+        public Builder addAllPushIds(Iterable<? extends String> pushIds) {
             this.pushIds.addAll(pushIds);
             return this;
         }
 
-        public ExperimentResponse.Builder setOk(boolean ok) {
+        public Builder setOk(boolean ok) {
             this.ok = ok;
             return this;
         }
 
-        public ExperimentResponse.Builder addExperimentId(String experimentId) {
-            this.experimentId.add(experimentId);
+        public Builder setExperimentId(String experimentId) {
+            this.experimentId = experimentId;
             return this;
         }
 
+        /**
+         * Build the ExperimentResponse object.
+         *
+         * @return ExperimentResponse
+         */
         public ExperimentResponse build() {
-            return new ExperimentResponse(operationId, pushIds.build(), ok, experimentId.build());
+            return new ExperimentResponse(operationId, pushIds.build(), ok, experimentId);
 
         }
 

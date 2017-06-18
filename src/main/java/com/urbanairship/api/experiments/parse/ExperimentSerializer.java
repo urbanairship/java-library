@@ -13,8 +13,6 @@ import java.io.IOException;
 
 public class ExperimentSerializer extends JsonSerializer<Experiment> {
 
-    public static final ExperimentSerializer INSTANCE = new ExperimentSerializer();
-
     @Override
     public void serialize(Experiment experiment, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         jgen.writeStartObject();
