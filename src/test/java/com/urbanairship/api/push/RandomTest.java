@@ -1,17 +1,26 @@
 package com.urbanairship.api.push;
 
 import com.urbanairship.api.client.*;
+import com.urbanairship.api.experiments.ExperimentRequest;
 import com.urbanairship.api.experiments.model.Experiment;
+import com.urbanairship.api.experiments.model.ExperimentResponse;
 import com.urbanairship.api.experiments.model.PartialPushPayload;
+import com.urbanairship.api.experiments.model.Variant;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.notification.Notification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 /**
  * Created by jennifermiller on 5/28/17.
  */
 public class RandomTest {
+
+    private static final Logger log = LoggerFactory.getLogger(UrbanAirshipClient.class);
 
     public static void main(String args[]) {
         RandomTest test = new RandomTest();
@@ -21,35 +30,32 @@ public class RandomTest {
     public void createExperiment() {
 
         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-                .setKey("CxEeUYM6TqCEAY9FaVHTVw")
-                .setSecret("g9JW4M4uRLmWUoaM-mZE6g")
+                .setKey("ISex_TTJRuarzs9-o_Gkhg")
+                .setSecret("nDq-bQ3CT92PqCIXNtQyCQ")
                 .build();
 
-        PartialPushPayload variantOne = PartialPushPayload.newBuilder()
-                .setNotification(Notification.newBuilder()
-                        .setAlert("Hello Jenn!")
-                        .build()
-                )
+        Variant variantOne = Variant.newBuilder()
+                .setPushPayload(PartialPushPayload.newBuilder()
+                        .setNotification(Notification.newBuilder()
+                                .setAlert("Hello Jenn!")
+                                .build()
+                        )
+                        .build())
                 .build();
 
         Experiment experiment = Experiment.newBuilder()
                 .setName("Jenn's experiment!")
                 .setDescription("It's a test, hoo boy!")
-                .setDeviceType(DeviceTypeData.of(DeviceType.IOS, DeviceType.ANDROID))
-                .setAudience(Selectors.all())
-                .addVariant(Experiment.Variant.newBuilder().
-                        setPushPayload(variantOne).build())
+                .setDeviceType(DeviceTypeData.of(DeviceType.IOS))
+                .setAudience(Selectors.namedUser("birdperson"))
+                .addVariant(variantOne)
                 .build();
-
-//        PushRequest request = PushRequest.newRequest(experiment);
-
-//        Response<PushResponse> response = null;
-//        try {
-//            response = client.execute(request);
-//            logger.debug(String.format("Response %s", response.toString()));
-//        } catch (IOException e) {
-//            logger.error("IOException in API request " + e.getMessage());
-//        }
+        try {
+            Response<ExperimentResponse> response = client.execute(ExperimentRequest.newRequest(experiment));
+            log.debug(String.format("Response %s", response.toString()));
+        } catch (IOException e) {
+            log.error("IOException in API request " + e.getMessage());
+        }
 
         client.close();
 

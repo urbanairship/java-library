@@ -4,12 +4,15 @@
 
 package com.urbanairship.api.experiments;
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.experiments.model.Experiment;
 import com.urbanairship.api.experiments.model.ExperimentResponse;
+import com.urbanairship.api.experiments.model.Variant;
 import com.urbanairship.api.experiments.parse.ExperimentObjectMapper;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.audience.Selector;
@@ -24,17 +27,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The ExperimentRequest class builds experiment requests to be executed in
+ * the {@link com.urbanairship.api.client.UrbanAirshipClient}.
+ */
 public class ExperimentRequest implements Request<ExperimentResponse> {
 
     private final static String EXPERIMENT_PATH = "/api/experiments/";
     private final static String EXPERIMENT_VALIDATE_PATH = "/api/experiments/validate/";
 
-    private final Experiment.Builder builder = Experiment.newBuilder();
-    private final String path;
+    private final Experiment experiment;
     private boolean validateOnly;
 
-    private ExperimentRequest(String path) {
-        this.path = path;
+    private ExperimentRequest(Experiment experiment) {
+        Preconditions.checkNotNull(experiment, "Experiment payload required when creating a push request");
+        this.experiment = experiment;
     }
 
     /**
@@ -42,8 +49,8 @@ public class ExperimentRequest implements Request<ExperimentResponse> {
      *
      * @return ExperimentRequest
      */
-    public static ExperimentRequest newRequest() {
-        return new ExperimentRequest(EXPERIMENT_PATH);
+    public static ExperimentRequest newRequest(Experiment experiment) {
+        return new ExperimentRequest(experiment);
     }
 
     /**
@@ -54,83 +61,6 @@ public class ExperimentRequest implements Request<ExperimentResponse> {
      */
     public ExperimentRequest setValidateOnly(boolean validateOnly) {
         this.validateOnly = validateOnly;
-        return this;
-    }
-
-    /**
-     * Set the experiment name.
-     *
-     * @param name A string.
-     * @return ExperimentRequest
-     */
-    public ExperimentRequest setName(String name) {
-        this.builder.setName(name);
-        return this;
-    }
-
-    /**
-     * Set the experiment description.
-     *
-     * @param description A string
-     * @return ExperimentRequest
-     */
-    public ExperimentRequest setDescription(String description) {
-        this.builder.setDescription(description);
-        return this;
-    }
-
-    /**
-     * Set the experiment control group.
-     *
-     * @param control A control group for the experiment.
-     * @return TemplateRequest
-     */
-    public ExperimentRequest setControl(BigDecimal control) {
-        this.builder.setControl(control);
-        return this;
-    }
-
-    /**
-     * Set the audience for the experiment.
-     *
-     * @param audience The target audience for the experiment.
-     * @return ExperimentRequest
-     */
-    public ExperimentRequest setAudience(Selector audience) {
-        this.builder.setAudience(audience);
-        return this;
-    }
-
-    /**
-     * Set the device types for the experiment.
-     *
-     * @param deviceTypes The target audience for the experiment.
-     * @return ExperimentRequest
-     */
-    public ExperimentRequest setDeviceType(DeviceTypeData deviceTypes) {
-        this.builder.setDeviceType(deviceTypes);
-        return this;
-    }
-
-    /**
-     * Add a variant to the experiment.
-     *
-     * @param variant Variant object.
-     * @return ExperimentRequest
-     */
-    public ExperimentRequest addVariant(Experiment.Variant variant) {
-        this.builder.addVariant(variant);
-        return this;
-    }
-
-    /**
-     * Add a list of variants to the template.
-     *
-     * @param variants A list of variant objects.
-     * @return ExperimentRequest
-     */
-    public ExperimentRequest addAllVariants(List<Experiment.Variant> variants) {
-        this.builder.addAllVariants(variants);
         return this;
     }
 
@@ -154,12 +84,7 @@ public class ExperimentRequest implements Request<ExperimentResponse> {
 
     @Override
     public String getRequestBody() {
-        ObjectMapper mapper = ExperimentObjectMapper.getInstance().setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
-        try {
-            return mapper.writeValueAsString(this.builder.build());
-        } catch (Exception ex) {
-            return "{ \"exception\" : \"" + ex.getClass().getName() + "\", \"message\" : \"" + ex.getMessage() + "\" }";
-        }
+        return experiment.toJSON();
     }
 
     @Override

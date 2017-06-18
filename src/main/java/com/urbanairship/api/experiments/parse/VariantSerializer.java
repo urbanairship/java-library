@@ -4,7 +4,7 @@
 
 package com.urbanairship.api.experiments.parse;
 
-import com.urbanairship.api.experiments.model.Experiment.Variant;
+import com.urbanairship.api.experiments.model.Variant;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
