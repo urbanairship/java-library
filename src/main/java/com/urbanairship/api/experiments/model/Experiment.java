@@ -9,7 +9,6 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.audience.SelectorType;
-import com.urbanairship.api.push.model.notification.Notification;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.urbanairship.api.push.model.audience.Selector;
@@ -148,7 +147,7 @@ public final class Experiment {
         private BigDecimal control = null;
         private Selector audience = null;
         private DeviceTypeData deviceTypes = null;
-        private List<Variant> variants = null;
+        private List<Variant> variants = Lists.newArrayList();
 
         private Builder() { }
 
@@ -203,20 +202,17 @@ public final class Experiment {
         }
 
         /**
-         * Set the variants.
+         * Add a variant.
          * @param variant List<Variant>
          * @return Builder
          */
         public Builder addVariant(Variant variant) {
-            if (variants == null) {
-                variants = Lists.newArrayList();
-            }
             variants.add(variant);
             return this;
         }
 
         public Builder addAllVariants(List<Variant> variants) {
-            this.variants = Lists.newArrayList(variants);
+            this.variants.addAll(variants);
             return this;
         }
 
@@ -253,16 +249,16 @@ public final class Experiment {
 
         private Optional<String> name;
         private Optional<String> description;
-        private final Notification notification;
+        private final PartialPushPayload partialPushPayload;
         private Optional<BigDecimal> weight;
 
         private Variant(Optional<String> name,
                         Optional<String> description,
-                        Notification notification,
+                        PartialPushPayload partialPushPayload,
                         Optional<BigDecimal> weight) {
             this.name = name;
             this.description = description;
-            this.notification = notification;
+            this.partialPushPayload = partialPushPayload;
             this.weight = weight;
         }
 
@@ -290,8 +286,8 @@ public final class Experiment {
          * Get the partial push notification object.
          * @return Notification
          */
-        public Notification getNotification() {
-            return notification;
+        public PartialPushPayload getPartialPushPayload() {
+            return partialPushPayload;
         }
 
         /**
@@ -304,7 +300,7 @@ public final class Experiment {
 
         @Override
         public int hashCode() {
-            return Objects.hashCode(name, description, notification, weight);
+            return Objects.hashCode(name, description, partialPushPayload, weight);
         }
 
         @Override
@@ -318,7 +314,7 @@ public final class Experiment {
             final Variant other = (Variant) obj;
             return Objects.equal(this.name, other.name)
                     && Objects.equal(this.description, other.description)
-                    && Objects.equal(this.notification, other.notification)
+                    && Objects.equal(this.partialPushPayload, other.partialPushPayload)
                     && Objects.equal(this.weight, other.weight);
         }
 
@@ -327,7 +323,7 @@ public final class Experiment {
             return "Variant{" +
                     "name=" + name +
                     ", description=" + description +
-                    ", notification=" + notification +
+                    ", push=" + partialPushPayload +
                     ", weight=" + weight.get() +
                     '}';
         }
@@ -336,7 +332,7 @@ public final class Experiment {
 
             private String name;
             private String description;
-            private Notification notification;
+            private PartialPushPayload partialPushPayload;
             private BigDecimal weight;
 
             /**
@@ -361,11 +357,11 @@ public final class Experiment {
 
             /**
              * Set the partial push notification object.
-             * @param notification Notification
+             * @param partialPushPayload PartialPushPayload
              * @return Builder
              */
-            public Builder setNotification(Notification notification) {
-                this.notification = notification;
+            public Builder setPushPayload(PartialPushPayload partialPushPayload) {
+                this.partialPushPayload = partialPushPayload;
                 return this;
             }
 
@@ -390,13 +386,13 @@ public final class Experiment {
              * @return Variant
              */
             public Variant build() {
-                Preconditions.checkNotNull(notification,
+                Preconditions.checkNotNull(partialPushPayload,
                         "A partial push notification object must be provided.");
 
                 return new Variant(
                         Optional.fromNullable(name),
                         Optional.fromNullable(description),
-                        notification,
+                        partialPushPayload,
                         Optional.fromNullable(weight));
             }
         }
