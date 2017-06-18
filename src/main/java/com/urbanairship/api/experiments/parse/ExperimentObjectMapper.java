@@ -21,8 +21,8 @@ public class ExperimentObjectMapper {
                 .addDeserializer(Experiment.class, ExperimentDeserializer.INSTANCE)
                 .addSerializer(Experiment.class, ExperimentSerializer.INSTANCE)
                 .addDeserializer(Experiment.Variant.class, new VariantDeserializer())
-                .addSerializer(Experiment.Variant.class, new VariantSerializer());
-                .addDeserializer(PartialPushPayload.class, new PartialPushPayloadDeserializer);
+                .addSerializer(Experiment.Variant.class, new VariantSerializer())
+                .addDeserializer(PartialPushPayload.class, new PartialPushPayloadDeserializer())
                 .addSerializer(PartialPushPayload.class, new PartialPushPayloadSerializer());
 
         MAPPER.registerModule(MODULE);
