@@ -2,10 +2,11 @@ package com.urbanairship.api.push;
 
 import com.urbanairship.api.client.*;
 import com.urbanairship.api.experiments.model.Experiment;
+import com.urbanairship.api.experiments.model.PartialPushPayload;
 import com.urbanairship.api.push.model.audience.Selectors;
-import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
+import com.urbanairship.api.push.model.notification.Notification;
 
 /**
  * Created by jennifermiller on 5/28/17.
@@ -24,8 +25,11 @@ public class RandomTest {
                 .setSecret("g9JW4M4uRLmWUoaM-mZE6g")
                 .build();
 
-        Notification variantOne = Notification.newBuilder()
-                .setAlert("Hello, Jenn!")
+        PartialPushPayload variantOne = PartialPushPayload.newBuilder()
+                .setNotification(Notification.newBuilder()
+                        .setAlert("Hello Jenn!")
+                        .build()
+                )
                 .build();
 
         Experiment experiment = Experiment.newBuilder()
@@ -34,7 +38,7 @@ public class RandomTest {
                 .setDeviceType(DeviceTypeData.of(DeviceType.IOS, DeviceType.ANDROID))
                 .setAudience(Selectors.all())
                 .addVariant(Experiment.Variant.newBuilder().
-                        setNotification(variantOne).build())
+                        setPushPayload(variantOne).build())
                 .build();
 
 //        PushRequest request = PushRequest.newRequest(experiment);

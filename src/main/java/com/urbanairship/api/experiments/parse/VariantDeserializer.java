@@ -13,9 +13,6 @@ import org.codehaus.jackson.map.JsonDeserializer;
 
 import java.io.IOException;
 
-/**
- * Created by jennifermiller on 5/28/17.
- */
 public class VariantDeserializer extends JsonDeserializer<Variant> {
 
     private static final FieldParserRegistry<Variant, VariantReader> FIELD_PARSERS = new MapFieldParserRegistry<Variant, VariantReader>(
@@ -41,7 +38,7 @@ public class VariantDeserializer extends JsonDeserializer<Variant> {
                     .put("notification", new FieldParser<VariantReader>() {
                             @Override
                             public void parse(VariantReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                reader.readNotification(jsonParser);
+                                reader.readPartialPushPayload(jsonParser);
                             }
                     })
                     .build()

@@ -13,7 +13,7 @@ public final class ExperimentResponse {
     private final Optional<String> operationId;
     private final Optional<ImmutableList<String>> pushIds;
     private final boolean ok;
-    private final Optional<ImmutableList<String>> experimentIds;
+    private final Optional<ImmutableList<String>> experimentId;
 
     public ExperimentResponse(String operationId,
                               ImmutableList<String> pushIds,
@@ -22,7 +22,7 @@ public final class ExperimentResponse {
         this.operationId = Optional.fromNullable(operationId);
         this.pushIds = Optional.fromNullable(pushIds);
         this.ok = ok;
-        this.experimentIds = Optional.fromNullable(experimentIds);
+        this.experimentId = Optional.fromNullable(experimentIds);
     }
 
     public static ExperimentResponse.Builder newBuilder() {
@@ -59,8 +59,8 @@ public final class ExperimentResponse {
         return ok;
     }
 
-    public Optional<ImmutableList<String>> getExperimentIds() {
-        return experimentIds;
+    public Optional<ImmutableList<String>> getExperimentId() {
+        return experimentId;
     }
 
     @Override
@@ -69,13 +69,13 @@ public final class ExperimentResponse {
                 "operationId=" + operationId +
                 ", pushId=" + pushIds +
                 ", ok=" + ok +
-                ", experimentIds=" + experimentIds +
+                ", experimentId=" + experimentId +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(operationId, pushIds, ok, experimentIds);
+        return Objects.hashCode(operationId, pushIds, ok, experimentId);
     }
 
     @Override
@@ -90,7 +90,7 @@ public final class ExperimentResponse {
         return Objects.equal(this.operationId, other.operationId)
                 && Objects.equal(this.pushIds, other.pushIds)
                 && Objects.equal(this.ok, other.ok)
-                && Objects.equal(this.experimentIds, other.experimentIds);
+                && Objects.equal(this.experimentId, other.experimentId);
     }
 
 
@@ -101,7 +101,7 @@ public final class ExperimentResponse {
         private String operationId;
         private ImmutableList.Builder<String> pushIds = ImmutableList.builder();
         private boolean ok = false;
-        private ImmutableList.Builder<String> experimentIds = ImmutableList.builder();
+        private ImmutableList.Builder<String> experimentId = ImmutableList.builder();
 
         public static Builder newBuilder() {
             return new Builder();
@@ -128,17 +128,14 @@ public final class ExperimentResponse {
         }
 
         public ExperimentResponse.Builder addExperimentId(String experimentId) {
-            this.experimentIds.add(experimentId);
-            return this;
-        }
-
-        public ExperimentResponse.Builder addAllExperimentIds(Iterable<? extends String> experimentIds) {
-            this.experimentIds.addAll(experimentIds);
+            this.experimentId.add(experimentId);
             return this;
         }
 
         public ExperimentResponse build() {
-            return new ExperimentResponse(operationId, pushIds.build(), ok, experimentIds.build());
+            return new ExperimentResponse(operationId, pushIds.build(), ok, experimentId.build());
 
         }
+
+    }
 }

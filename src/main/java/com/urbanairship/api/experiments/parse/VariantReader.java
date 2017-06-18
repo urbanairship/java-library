@@ -3,6 +3,7 @@ package com.urbanairship.api.experiments.parse;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.experiments.model.Experiment.Variant;
+import com.urbanairship.api.experiments.model.PartialPushPayload;
 import com.urbanairship.api.push.model.notification.Notification;
 import org.codehaus.jackson.JsonParser;
 
@@ -30,8 +31,8 @@ public class VariantReader implements JsonObjectReader<Variant> {
         builder.setWeight(jsonParser.readValueAs(BigDecimal.class));
     }
 
-    public void readNotification(JsonParser parser) throws IOException {
-        builder.setNotification(parser.readValueAs(Notification.class));
+    public void readPartialPushPayload(JsonParser parser) throws IOException {
+        builder.setPushPayload(parser.readValueAs(PartialPushPayload.class));
     }
 
     @Override
