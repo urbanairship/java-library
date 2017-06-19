@@ -319,6 +319,8 @@ public class UrbanAirshipClientTest {
             .setNotification(Notifications.alert("Foo"))
             .build();
 
+        System.out.printf(payload.toString());
+
         // Setup a stubbed response for the server
         String pushJSON = "{\"ok\" : true,\"operation_id\" : \"df6a6b50\", \"push_ids\":[\"PushID\"]}";
         stubFor(post(urlEqualTo("/api/push/"))
@@ -3540,8 +3542,6 @@ public class UrbanAirshipClientTest {
                 .setAudience(Selectors.namedUser("birdperson"))
                 .addVariant(variantOne)
                 .build();
-
-        System.out.printf("\n Built experiment! \n\n");
 
         try {
             final CountDownLatch latch = new CountDownLatch(1);

@@ -37,19 +37,33 @@ public class RandomTest {
         Variant variantOne = Variant.newBuilder()
                 .setPushPayload(PartialPushPayload.newBuilder()
                         .setNotification(Notification.newBuilder()
-                                .setAlert("Hello Jenn!")
+                                .setAlert("Hello Jenn")
+                                .build()
+                        )
+                        .build())
+                .build();
+
+        Variant variantTwo = Variant.newBuilder()
+                .setPushPayload(PartialPushPayload.newBuilder()
+                        .setNotification(Notification.newBuilder()
+                                .setAlert("Boogaloo")
                                 .build()
                         )
                         .build())
                 .build();
 
         Experiment experiment = Experiment.newBuilder()
-                .setName("Jenn's experiment!")
-                .setDescription("It's a test, hoo boy!")
+                .setName("Test experiment")
+                .setDescription("Its a test hoo boy")
                 .setDeviceType(DeviceTypeData.of(DeviceType.IOS))
                 .setAudience(Selectors.namedUser("birdperson"))
                 .addVariant(variantOne)
+                .addVariant(variantTwo)
                 .build();
+
+        ExperimentRequest req = ExperimentRequest.newRequest(experiment);
+        System.out.println("EXPERIMENT BODY: " + req.getRequestBody());
+
         try {
             Response<ExperimentResponse> response = client.execute(ExperimentRequest.newRequest(experiment));
             log.debug(String.format("Response %s", response.toString()));
