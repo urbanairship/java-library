@@ -51,7 +51,7 @@ public final class Experiment extends ExperimentModelObject {
     }
 
     /**
-     * Get the name of the experiment. This is optional.
+     * Get the name of the experiment.
      * @return name
      */
     public Optional<String> getName() {
@@ -59,7 +59,7 @@ public final class Experiment extends ExperimentModelObject {
     }
 
     /**
-     * Get the description for the experiment. This is optional.
+     * Get the description for the experiment.
      * @return description
      */
     public Optional<String> getDescription() {
@@ -67,7 +67,9 @@ public final class Experiment extends ExperimentModelObject {
     }
 
     /**
-     * Get the control group. This is optional.
+     * Get the control group for the experiment. A control is a float between 0 and 1, e.g., 0.4,
+     * representing the proportion of the audience that will not receive a push.
+     * The remaining audience is split between the variants.
      * @return control
      */
     public Optional<BigDecimal> getControl() {
@@ -75,7 +77,7 @@ public final class Experiment extends ExperimentModelObject {
     }
 
     /**
-     * Get the audience
+     * Get the audience for the experiment.
      * @return audience
      */
     public Selector getAudience() {
@@ -91,15 +93,16 @@ public final class Experiment extends ExperimentModelObject {
     }
 
     /**
-     * Get the deviceTypes
+     * Get the device types for the experiment.
      * @return DeviceTypeData
      */
-    public DeviceTypeData getDeviceType() {
+    public DeviceTypeData getDeviceTypes() {
         return deviceTypes;
     }
 
     /**
-     * Get the variants.
+     * Get the variants for the experiment. A variant defines a push that will be sent to a subset of the experiment's
+     * audience.
      * @return variants
      */
     public List<Variant> getVariants() {
@@ -140,6 +143,9 @@ public final class Experiment extends ExperimentModelObject {
                 '}';
     }
 
+    /**
+     * Experiment Builder
+     */
     public static class Builder {
 
         private String name = null;
@@ -172,7 +178,9 @@ public final class Experiment extends ExperimentModelObject {
         }
 
         /**
-         * Set the control group.
+         * Set the control group for the experiment. A control is a float between 0 and 1, e.g., 0.4,
+         * representing the proportion of the audience that will not receive a push.
+         * The remaining audience is split between the variants.
          * @param control BigDecimal
          * @return Builder
          */
@@ -182,7 +190,7 @@ public final class Experiment extends ExperimentModelObject {
         }
 
         /**
-         * Set the Audience.
+         * Set the audience for the experiment.
          * @param audience Selector
          * @return Builder
          */
@@ -192,17 +200,18 @@ public final class Experiment extends ExperimentModelObject {
         }
 
         /**
-         * Set the Device Type data.
+         * Set the device types for the experiment.
          * @param deviceTypes DeviceTypeData
          * @return Builder
          */
-        public Builder setDeviceType(DeviceTypeData deviceTypes) {
+        public Builder setDeviceTypes(DeviceTypeData deviceTypes) {
             this.deviceTypes = deviceTypes;
             return this;
         }
 
         /**
-         * Add a variant.
+         * Add a variant to the experiment. A variant defines a push that will be sent to a subset of the experiment's
+         * audience.
          * @param variant List<Variant>
          * @return Builder
          */

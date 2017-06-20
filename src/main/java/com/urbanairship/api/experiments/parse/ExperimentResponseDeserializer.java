@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2013-2017.  Urban Airship and Contributors
+ */
+
 package com.urbanairship.api.experiments.parse;
 
 import com.google.common.collect.ImmutableMap;

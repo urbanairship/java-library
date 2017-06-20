@@ -46,7 +46,7 @@ public class PartialPushPayload {
     }
 
     /**
-     * Get the push options object.
+     * Get the push options object. Specifies delivery options for the push.
      *
      * @return An optional PushOptions object
      */
@@ -91,6 +91,9 @@ public class PartialPushPayload {
                 && Objects.equals(this.inApp, other.inApp);
     }
 
+    /**
+     * PartialPushPayload Builder
+     */
     public static class Builder {
         private Notification notification = null;
         private PushOptions pushOptions = null;
@@ -108,7 +111,7 @@ public class PartialPushPayload {
         }
 
         /**
-         * Set push options.
+         * Set push options. A place to specify delivery options for the push.
          *
          * @param pushOptions A PushOptions object
          * @return Builder
