@@ -6,6 +6,7 @@ import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,27 +18,32 @@ public class ExperimentTest {
     @Test
     public void testExperiment() {
 
+        PartialPushPayload payloadOne = PartialPushPayload.newBuilder()
+                .setNotification(Notification.newBuilder()
+                        .setAlert("Hello")
+                        .build()
+                )
+                .build();
+
         Variant variantOne = Variant.newBuilder()
-                .setPushPayload(PartialPushPayload.newBuilder()
-                        .setNotification(Notification.newBuilder()
-                                .setAlert("Hello Jenn")
-                                .build()
-                        )
-                        .build())
+                .setPushPayload(payloadOne)
+                .build();
+
+        PartialPushPayload payloadTwo = PartialPushPayload.newBuilder()
+                .setNotification(Notification.newBuilder()
+                        .setAlert("Goodbye")
+                        .build()
+                )
                 .build();
 
         Variant variantTwo = Variant.newBuilder()
-                .setPushPayload(PartialPushPayload.newBuilder()
-                        .setNotification(Notification.newBuilder()
-                                .setAlert("Boogaloo")
-                                .build()
-                        )
-                        .build())
+                .setPushPayload(payloadTwo)
                 .build();
 
         Experiment experiment = Experiment.newBuilder()
-                .setName("Another test")
-                .setDescription("Its a test hoo boy")
+                .setName("name")
+                .setDescription("description")
+                .setControl(new BigDecimal(0.1))
                 .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
                 .setAudience(Selectors.namedUser("birdperson"))
                 .addVariant(variantOne)
@@ -49,6 +55,9 @@ public class ExperimentTest {
         variants.add(variantTwo);
 
         assertNotNull(experiment);
+        assertEquals(experiment.getName().get(), "name");
+        assertEquals(experiment.getDescription().get(), "description");
+        assertEquals(experiment.getControl().get(), new BigDecimal(0.1));
         assertEquals(experiment.getAudience(), Selectors.namedUser("birdperson"));
         assertEquals(experiment.getDeviceTypes(), DeviceTypeData.of(DeviceType.IOS));
         assertEquals(experiment.getVariants(), variants);
