@@ -19,6 +19,7 @@ import com.urbanairship.api.experiments.model.Experiment;
 import com.urbanairship.api.experiments.model.ExperimentResponse;
 import com.urbanairship.api.experiments.model.PartialPushPayload;
 import com.urbanairship.api.experiments.model.Variant;
+import com.urbanairship.api.experiments.parse.ExperimentObjectMapper;
 import com.urbanairship.api.location.LocationRequest;
 import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.LocationResponse;
@@ -96,6 +97,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -3524,21 +3526,36 @@ public class UrbanAirshipClientTest {
                         .withStatus(201)
                         .withBody(responseJson)));
 
-        Variant variantOne = Variant.newBuilder()
-                .setPushPayload(PartialPushPayload.newBuilder()
-                        .setNotification(Notification.newBuilder()
-                                .setAlert("Hello Jenn!")
-                                .build()
+        PartialPushPayload payloadOne = PartialPushPayload.newBuilder()
+                .setNotification(Notification.newBuilder()
+                        .setAlert("Hello")
+                        .build()
                 )
-                .build())
+                .build();
+
+        Variant variantOne = Variant.newBuilder()
+                .setPushPayload(payloadOne)
+                .build();
+
+        PartialPushPayload payloadTwo = PartialPushPayload.newBuilder()
+                .setNotification(Notification.newBuilder()
+                        .setAlert("Goodbye")
+                        .build()
+                )
+                .build();
+
+        Variant variantTwo = Variant.newBuilder()
+                .setPushPayload(payloadTwo)
                 .build();
 
         Experiment experiment = Experiment.newBuilder()
-                .setName("Jenn's experiment!")
-                .setDescription("It's a test, hoo boy!")
+                .setName("name")
+                .setDescription("description")
+                .setControl(new BigDecimal(0.1))
                 .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-                .setAudience(Selectors.namedUser("birdperson"))
+                .setAudience(Selectors.all())
                 .addVariant(variantOne)
+                .addVariant(variantTwo)
                 .build();
 
         try {
@@ -3556,6 +3573,13 @@ public class UrbanAirshipClientTest {
             });
             latch.await();
 
+            // Verify components of the underlying HttpRequest
+            verify(postRequestedFor(urlEqualTo("/api/experiments/"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+            List<LoggedRequest> requests = findAll(postRequestedFor(
+                    urlEqualTo("/api/experiments/")));
+            // There should only be one request
+            assertEquals(requests.size(), 1);
             assertNotNull(response);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -3566,24 +3590,50 @@ public class UrbanAirshipClientTest {
     @Test
     public void testExperimentValidate() {
 
-        PushPayload payload = PushPayload.newBuilder()
-                .setAudience(Selectors.all())
+        PartialPushPayload payloadOne = PartialPushPayload.newBuilder()
+                .setNotification(Notification.newBuilder()
+                        .setAlert("Hello")
+                        .build()
+                )
+                .build();
+
+        Variant variantOne = Variant.newBuilder()
+                .setPushPayload(payloadOne)
+                .build();
+
+        PartialPushPayload payloadTwo = PartialPushPayload.newBuilder()
+                .setNotification(Notification.newBuilder()
+                        .setAlert("Goodbye")
+                        .build()
+                )
+                .build();
+
+        Variant variantTwo = Variant.newBuilder()
+                .setPushPayload(payloadTwo)
+                .build();
+
+        Experiment experiment = Experiment.newBuilder()
+                .setName("name")
+                .setDescription("description")
+                .setControl(new BigDecimal(0.1))
                 .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-                .setNotification(Notifications.alert("Foo"))
+                .setAudience(Selectors.namedUser("birdperson"))
+                .addVariant(variantOne)
+                .addVariant(variantTwo)
                 .build();
 
         // Setup a stubbed response for the server
-        String pushJSON = "{\"ok\" : true,\"operation_id\" : \"df6a6b50\", \"push_ids\":[\"PushID\"]}";
-        stubFor(post(urlEqualTo("/api/push/validate/"))
+        String experimentJSON = "{\"ok\" : true,\"operation_id\" : \"df6a6b50\", \"experiment_id\": \"ExperimentID\"}";
+        stubFor(post(urlEqualTo("/api/experiments/validate/"))
                 .willReturn(aResponse()
                         .withHeader(CONTENT_TYPE_KEY, "application/json")
-                        .withBody(pushJSON)
+                        .withBody(experimentJSON)
                         .withStatus(201)));
         try {
-            Response<PushResponse> response = client.execute(PushRequest.newRequest(payload).setValidateOnly(true));
+            Response<ExperimentResponse> response = client.execute(ExperimentRequest.newRequest(experiment).setValidateOnly(true));
 
             // Verify components of the underlying HttpRequest
-            verify(postRequestedFor(urlEqualTo("/api/push/validate/"))
+            verify(postRequestedFor(urlEqualTo("/api/experiments/validate/"))
                     .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             assertNotNull(response);
         } catch (Exception ex) {

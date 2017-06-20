@@ -3,6 +3,8 @@ package com.urbanairship.api.experiments.model;
 import com.urbanairship.api.push.model.notification.Notification;
 import org.junit.Test;
 
+import java.math.BigDecimal;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -19,10 +21,16 @@ public class VariantTest {
                 .build();
 
         Variant variant = Variant.newBuilder()
+                .setName("name")
+                .setDescription("description")
                 .setPushPayload(payload)
+                .setWeight(new BigDecimal(0.1))
                 .build();
 
         assertNotNull(variant);
+        assertEquals(variant.getName().get(), "name");
+        assertEquals(variant.getDescription().get(), "description");
+        assertEquals(variant.getWeight().get(), new BigDecimal(0.1));
         assertEquals(variant.getPartialPushPayload(), payload);
 
     }
