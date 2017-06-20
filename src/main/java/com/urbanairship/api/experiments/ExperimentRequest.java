@@ -1,30 +1,22 @@
 /*
- * Copyright (c) 2013-2016.  Urban Airship and Contributors
+ * Copyright (c) 2013-2017.  Urban Airship and Contributors
  */
 
 package com.urbanairship.api.experiments;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.experiments.model.Experiment;
 import com.urbanairship.api.experiments.model.ExperimentResponse;
-import com.urbanairship.api.experiments.model.Variant;
 import com.urbanairship.api.experiments.parse.ExperimentObjectMapper;
-import com.urbanairship.api.push.model.DeviceTypeData;
-import com.urbanairship.api.push.model.audience.Selector;
 import org.apache.http.entity.ContentType;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URI;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

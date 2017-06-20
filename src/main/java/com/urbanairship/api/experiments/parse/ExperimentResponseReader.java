@@ -1,5 +1,8 @@
-package com.urbanairship.api.experiments.parse;
+/*
+ * Copyright (c) 2013-2017.  Urban Airship and Contributors
+ */
 
+package com.urbanairship.api.experiments.parse;
 
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;

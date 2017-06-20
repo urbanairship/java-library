@@ -1,15 +1,17 @@
+/*
+ * Copyright (c) 2013-2017.  Urban Airship and Contributors
+ */
+
 package com.urbanairship.api.experiments.parse;
 
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.experiments.model.Variant;
 import com.urbanairship.api.experiments.model.PartialPushPayload;
-import com.urbanairship.api.push.model.notification.Notification;
 import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-
 
 public class VariantReader implements JsonObjectReader<Variant> {
 

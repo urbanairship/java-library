@@ -18,10 +18,10 @@ public class ExperimentSerializer extends JsonSerializer<Experiment> {
         jgen.writeStartObject();
 
         jgen.writeObjectField("audience", experiment.getAudience());
-        if (experiment.getDeviceType().isAll()) {
+        if (experiment.getDeviceTypes().isAll()) {
             jgen.writeStringField("device_types", "all");
         } else {
-            jgen.writeObjectField("device_types", experiment.getDeviceType().getDeviceTypes().get());
+            jgen.writeObjectField("device_types", experiment.getDeviceTypes().getDeviceTypes().get());
         }
         jgen.writeObjectField("variants", experiment.getVariants());
         if (experiment.getName().isPresent()) {

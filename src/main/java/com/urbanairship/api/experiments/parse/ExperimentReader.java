@@ -1,5 +1,8 @@
-package com.urbanairship.api.experiments.parse;
+/*
+ * Copyright (c) 2013-2017.  Urban Airship and Contributors
+ */
 
+package com.urbanairship.api.experiments.parse;
 
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
@@ -39,7 +42,7 @@ public class ExperimentReader implements JsonObjectReader<Experiment> {
     }
 
     public void readDeviceTypes(JsonParser parser) throws IOException {
-        builder.setDeviceType(parser.readValueAs(DeviceTypeData.class));
+        builder.setDeviceTypes(parser.readValueAs(DeviceTypeData.class));
     }
 
     public void readVariants(JsonParser jsonParser) throws IOException {

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2013-2017.  Urban Airship and Contributors
+ */
+
 package com.urbanairship.api.experiments.model;
 
 import com.google.common.base.Objects;
@@ -6,12 +10,23 @@ import com.google.common.base.Preconditions;
 
 import java.math.BigDecimal;
 
+/**
+ * Defines a push that will be sent to a subset of an experiment's audience.
+ */
 public class Variant {
 
     private Optional<String> name;
     private Optional<String> description;
     private final PartialPushPayload partialPushPayload;
     private Optional<BigDecimal> weight;
+
+    /**
+     * Experiment builder
+     * @return Builder
+     */
+    public static Builder newBuilder() {
+        return new Builder();
+    }
 
     private Variant(Optional<String> name,
                     Optional<String> description,
@@ -23,12 +38,8 @@ public class Variant {
         this.weight = weight;
     }
 
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     /**
-     * Get the name of the variant. This is optional.
+     * Get the name of the variant.
      * @return name
      */
     public Optional<String> getName() {
@@ -36,7 +47,7 @@ public class Variant {
     }
 
     /**
-     * Get the description of the experiment. This is optional.
+     * Get the description of the experiment.
      * @return description
      */
     public Optional<String> getDescription() {
@@ -44,15 +55,18 @@ public class Variant {
     }
 
     /**
-     * Get the partial push notification object.
-     * @return Notification
+     * Get the partial push notification associated with the variant. A partial push notification object
+     * represents a Push payload, excepting the audience and device_types fields because they are defined in the
+     * experiment object. Message Center messages are also not included in the partial push payload object.
+     * @return PartialPushPayload
      */
     public PartialPushPayload getPartialPushPayload() {
         return partialPushPayload;
     }
 
     /**
-     * Get the weight of the variant. This is optional.
+     * Get the weight of the variant. Defaults to 1. A whole number, representing the proportion of the audience
+     * that will receive the variant.
      * @return weight
      */
     public  Optional<BigDecimal> getWeight() {
@@ -89,6 +103,9 @@ public class Variant {
                 '}';
     }
 
+    /**
+     * Variant Builder
+     */
     public static class Builder {
 
         private String name;
@@ -117,7 +134,9 @@ public class Variant {
         }
 
         /**
-         * Set the partial push notification object.
+         * Set the partial push notification associated with the variant. A partial push notification object
+         * represents a Push payload, excepting the audience and device_types fields because they are defined in the
+         * experiment object. Message Center messages are also not included in the partial push payload object.
          * @param partialPushPayload PartialPushPayload
          * @return Builder
          */
@@ -127,7 +146,8 @@ public class Variant {
         }
 
         /**
-         * Set the weight of the variant.
+         * Set the weight of the variant. Defaults to 1. A whole number, representing the proportion of the audience
+         * that will receive the variant.
          * @param weight BigDecimal
          * @return Builder
          */
