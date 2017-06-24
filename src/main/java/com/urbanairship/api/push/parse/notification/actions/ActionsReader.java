@@ -5,6 +5,11 @@
 
 package com.urbanairship.api.push.parse.notification.actions;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.BaseEncoding;
@@ -25,11 +30,6 @@ import com.urbanairship.api.push.model.notification.actions.ShareAction;
 import com.urbanairship.api.push.model.notification.actions.TagActionData;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ObjectNode;
 
 import java.io.IOException;
 import java.net.URI;
@@ -66,7 +66,7 @@ public final class ActionsReader implements JsonObjectReader<Actions> {
                         throw new APIParsingException("The content attribute must be present and it must be a string.");
                     }
 
-                    return new DeepLinkAction(content.getTextValue());
+                    return new DeepLinkAction(content.textValue());
                 }
             })
             .build();
@@ -112,20 +112,20 @@ public final class ActionsReader implements JsonObjectReader<Actions> {
         }
 
         {
-            String typeSubtype = contentType.getTextValue().split(";")[0].trim().toLowerCase();
+            String typeSubtype = contentType.textValue().split(";")[0].trim().toLowerCase();
             if (!LandingPageContent.ALLOWED_CONTENT_TYPES.contains(typeSubtype)) {
                 throw new APIParsingException("The content type '" + typeSubtype + "' is not allowed.");
             }
         }
 
         if (!contentEncoding.isMissingNode()) {
-            if (!contentEncoding.isTextual() || (!contentEncoding.getTextValue().equals("utf-8") &&
-                    !contentEncoding.getTextValue().equals("base64"))) {
+            if (!contentEncoding.isTextual() || (!contentEncoding.textValue().equals("utf-8") &&
+                    !contentEncoding.textValue().equals("base64"))) {
                 throw new APIParsingException("The content encoding attribute must be either 'utf-8' or 'base64'");
 
-            } else if (!contentEncoding.isMissingNode() && contentEncoding.getTextValue().equals("base64")) {
+            } else if (!contentEncoding.isMissingNode() && contentEncoding.textValue().equals("base64")) {
                 try {
-                    BaseEncoding.base64().decode(body.getTextValue());
+                    BaseEncoding.base64().decode(body.textValue());
                 } catch (IllegalArgumentException e) {
                     throw new APIParsingException("Content contains invalid data that is not valid for base64 encoding.");
                 }
@@ -134,11 +134,11 @@ public final class ActionsReader implements JsonObjectReader<Actions> {
 
         Optional<LandingPageContent.Encoding> optEncoding = contentEncoding.isMissingNode() ?
                 Optional.<LandingPageContent.Encoding>absent() :
-                Optional.of(contentEncoding.getTextValue().equals("base64") ?
+                Optional.of(contentEncoding.textValue().equals("base64") ?
                         LandingPageContent.Encoding.Base64 :
                         LandingPageContent.Encoding.UTF8);
 
-        String bodyString = body.getTextValue();
+        String bodyString = body.textValue();
         if (bodyString != null) {
             int max_size = optEncoding.isPresent() && optEncoding.get() == LandingPageContent.Encoding.Base64 ?
                     LandingPageContent.MAX_BODY_SIZE_BASE64 : LandingPageContent.MAX_BODY_SIZE_BYTES;
@@ -147,7 +147,7 @@ public final class ActionsReader implements JsonObjectReader<Actions> {
             }
         }
 
-        return new OpenLandingPageWithContentAction(LandingPageContent.newBuilder().setContentType(contentType.getTextValue())
+        return new OpenLandingPageWithContentAction(LandingPageContent.newBuilder().setContentType(contentType.textValue())
                 .setBody(bodyString)
                 .setEncoding(optEncoding)
                 .build());
@@ -161,7 +161,7 @@ public final class ActionsReader implements JsonObjectReader<Actions> {
 
         URI url;
         try {
-            url = new URI(content.getTextValue());
+            url = new URI(content.textValue());
         } catch (URISyntaxException e) {
             throw new APIParsingException("The content attribute for a url action must be a URL.");
         }
@@ -200,7 +200,7 @@ public final class ActionsReader implements JsonObjectReader<Actions> {
         }
 
         ObjectNode appDefinedObject = (ObjectNode) jsonNode;
-        if (!appDefinedObject.getFieldNames().hasNext()) {
+        if (!appDefinedObject.fieldNames().hasNext()) {
             throw new APIParsingException("The app_defined actions object MUST not be empty.");
         }
 
@@ -215,9 +215,9 @@ public final class ActionsReader implements JsonObjectReader<Actions> {
             throw new APIParsingException("The open object MUST have a 'type' attribute.");
         }
 
-        OpenActionReader reader = OPEN_ACTIONS.get(type.getTextValue());
+        OpenActionReader reader = OPEN_ACTIONS.get(type.textValue());
         if (reader == null) {
-            throw new APIParsingException("The type attribute '" + type.getTextValue() +
+            throw new APIParsingException("The type attribute '" + type.textValue() +
                     "' was not recognized.");
         }
 

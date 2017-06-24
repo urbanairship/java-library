@@ -4,11 +4,11 @@
 
 package com.urbanairship.api.push.parse.notification.ios;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.notification.ios.IOSBadgeData;
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonToken;
 
 import java.io.IOException;
 

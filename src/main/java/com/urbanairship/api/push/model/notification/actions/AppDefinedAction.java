@@ -4,10 +4,10 @@
 
 package com.urbanairship.api.push.model.notification.actions;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.PushModelObject;
-import org.codehaus.jackson.node.ObjectNode;
 
 public final class AppDefinedAction extends PushModelObject implements Action<ObjectNode> {
 

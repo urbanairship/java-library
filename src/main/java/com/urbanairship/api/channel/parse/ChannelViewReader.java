@@ -4,6 +4,8 @@
 
 package com.urbanairship.api.channel.parse;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -18,8 +20,6 @@ import com.urbanairship.api.common.parse.BooleanFieldDeserializer;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.common.parse.ListOfStringsDeserializer;
 import com.urbanairship.api.common.parse.StringFieldDeserializer;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

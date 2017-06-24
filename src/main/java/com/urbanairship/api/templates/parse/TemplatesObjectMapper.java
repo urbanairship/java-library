@@ -4,6 +4,9 @@
 
 package com.urbanairship.api.templates.parse;
 
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.templates.model.PartialPushPayload;
 import com.urbanairship.api.templates.model.TemplateListingResponse;
@@ -12,9 +15,6 @@ import com.urbanairship.api.templates.model.TemplateResponse;
 import com.urbanairship.api.templates.model.TemplateSelector;
 import com.urbanairship.api.templates.model.TemplateVariable;
 import com.urbanairship.api.templates.model.TemplateView;
-import org.codehaus.jackson.Version;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.module.SimpleModule;
 
 public class TemplatesObjectMapper {
     private static final ObjectMapper MAPPER = new ObjectMapper();

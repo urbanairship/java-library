@@ -4,11 +4,11 @@
 
 package com.urbanairship.api.location.model;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.JsonNode;
 
 import java.util.List;
 
