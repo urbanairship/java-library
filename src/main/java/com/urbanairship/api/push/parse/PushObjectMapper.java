@@ -4,6 +4,11 @@
 
 package com.urbanairship.api.push.parse;
 
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.CommonObjectMapper;
 import com.urbanairship.api.push.model.DeviceType;
@@ -131,11 +136,6 @@ import com.urbanairship.api.schedule.parse.ScheduleDetailsSerializer;
 import com.urbanairship.api.schedule.parse.SchedulePayloadDeserializer;
 import com.urbanairship.api.schedule.parse.ScheduleSerializer;
 import com.urbanairship.api.schedule.parse.ScheduledPayloadSerializer;
-import org.codehaus.jackson.Version;
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.JsonDeserializer;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.module.SimpleModule;
 
 public class PushObjectMapper {
 
@@ -294,7 +294,7 @@ public class PushObjectMapper {
 
         MAPPER.registerModule(MODULE);
         MAPPER.registerModule(CommonObjectMapper.getModule());
-        MAPPER.configure(DeserializationConfig.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+        MAPPER.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
     }
 
     public static SimpleModule getModule() {

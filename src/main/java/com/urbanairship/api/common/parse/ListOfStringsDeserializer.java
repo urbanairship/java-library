@@ -4,8 +4,9 @@
 
 package com.urbanairship.api.common.parse;
 
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.type.TypeReference;
+
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.io.IOException;
 import java.util.List;

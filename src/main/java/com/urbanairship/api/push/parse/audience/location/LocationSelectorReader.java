@@ -4,13 +4,13 @@
 
 package com.urbanairship.api.push.parse.audience.location;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.push.model.audience.location.DateRange;
 import com.urbanairship.api.push.model.audience.location.LocationAlias;
 import com.urbanairship.api.push.model.audience.location.LocationIdentifier;
 import com.urbanairship.api.push.model.audience.location.LocationSelector;
-import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
 

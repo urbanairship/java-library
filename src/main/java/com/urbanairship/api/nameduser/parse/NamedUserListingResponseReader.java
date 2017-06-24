@@ -4,12 +4,12 @@
 
 package com.urbanairship.api.nameduser.parse;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.nameduser.model.NamedUserListingResponse;
 import com.urbanairship.api.nameduser.model.NamedUserView;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.type.TypeReference;
 
 import java.io.IOException;
 import java.util.List;

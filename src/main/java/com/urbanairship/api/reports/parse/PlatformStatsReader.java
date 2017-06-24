@@ -4,11 +4,11 @@
 
 package com.urbanairship.api.reports.parse;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.reports.model.PlatformStats;
-import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
 
