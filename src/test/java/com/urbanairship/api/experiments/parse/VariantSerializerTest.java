@@ -1,6 +1,6 @@
 package com.urbanairship.api.experiments.parse;
 
-import com.urbanairship.api.experiments.model.PartialPushPayload;
+import com.urbanairship.api.experiments.model.VariantPushPayload;
 import com.urbanairship.api.experiments.model.Variant;
 import com.urbanairship.api.push.model.notification.Notification;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -16,7 +16,7 @@ public class VariantSerializerTest {
     public void testVariantSerializer() throws Exception {
 
         Variant variant = Variant.newBuilder()
-                .setPushPayload(PartialPushPayload.newBuilder()
+                .setPushPayload(VariantPushPayload.newBuilder()
                         .setNotification(Notification.newBuilder()
                                 .setAlert("Hello Jenn")
                                 .build()

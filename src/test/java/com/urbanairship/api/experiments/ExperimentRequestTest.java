@@ -5,6 +5,7 @@ import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.experiments.model.Experiment;
 import com.urbanairship.api.experiments.model.ExperimentResponse;
 import com.urbanairship.api.experiments.model.Variant;
+import com.urbanairship.api.experiments.model.VariantPushPayload;
 import com.urbanairship.api.experiments.parse.ExperimentObjectMapper;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
@@ -36,7 +37,7 @@ public class ExperimentRequestTest {
     @Before
     public void setup() throws Exception {
         Variant variantOne = Variant.newBuilder()
-                .setPushPayload(com.urbanairship.api.experiments.model.PartialPushPayload.newBuilder()
+                .setPushPayload(VariantPushPayload.newBuilder()
                         .setNotification(Notification.newBuilder()
                                 .setAlert("Hello Jenn")
                                 .build()
@@ -45,7 +46,7 @@ public class ExperimentRequestTest {
                 .build();
 
         Variant variantTwo = Variant.newBuilder()
-                .setPushPayload(com.urbanairship.api.experiments.model.PartialPushPayload.newBuilder()
+                .setPushPayload(VariantPushPayload.newBuilder()
                         .setNotification(Notification.newBuilder()
                                 .setAlert("Boogaloo")
                                 .build()

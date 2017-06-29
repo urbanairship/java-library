@@ -13,7 +13,7 @@ public class VariantTest {
     @Test
     public void testVariant() {
 
-        PartialPushPayload payload = PartialPushPayload.newBuilder()
+        VariantPushPayload payload = VariantPushPayload.newBuilder()
                 .setNotification(Notification.newBuilder()
                         .setAlert("Hello Jenn")
                         .build()
@@ -31,7 +31,7 @@ public class VariantTest {
         assertEquals(variant.getName().get(), "name");
         assertEquals(variant.getDescription().get(), "description");
         assertEquals(variant.getWeight().get(), new BigDecimal(0.1));
-        assertEquals(variant.getPartialPushPayload(), payload);
+        assertEquals(variant.getVariantPushPayload(), payload);
 
     }
 

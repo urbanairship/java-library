@@ -28,7 +28,7 @@ public class VariantSerializer extends JsonSerializer<Variant>{
         if (variant.getWeight().isPresent()) {
             jgen.writeObjectField("weight", variant.getWeight().get());
         }
-        jgen.writeObjectField("push", variant.getPartialPushPayload());
+        jgen.writeObjectField("push", variant.getVariantPushPayload());
 
         jgen.writeEndObject();
     }

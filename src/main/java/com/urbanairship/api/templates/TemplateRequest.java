@@ -106,7 +106,7 @@ public class TemplateRequest implements Request<TemplateResponse> {
     /**
      * Set the template partial push payload.
      *
-     * @param push A PartialPushPayload object
+     * @param push A VariantPushPayload object
      * @return TemplateRequest
      */
     public TemplateRequest setPush(PartialPushPayload push) {

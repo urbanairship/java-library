@@ -20,7 +20,7 @@ public class VariantDeserializerTest {
 
         Variant variant = MAPPER.readValue(variantString, Variant.class);
         assertNotNull(variant);
-        assertTrue(variant.getPartialPushPayload().getNotification().isPresent());
+        assertTrue(variant.getVariantPushPayload().getNotification().isPresent());
     }
 
     @Test(expected = Exception.class)

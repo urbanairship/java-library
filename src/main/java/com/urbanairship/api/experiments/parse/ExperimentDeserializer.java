@@ -20,7 +20,6 @@ import java.io.IOException;
 public class ExperimentDeserializer extends JsonDeserializer<Experiment> {
 
     private static final FieldParserRegistry<Experiment, ExperimentReader> FIELD_PARSERS = new MapFieldParserRegistry<Experiment, ExperimentReader>(
-
             ImmutableMap.<String, FieldParser<ExperimentReader>>builder()
                     .put("name", new FieldParser<ExperimentReader>() {
                         @Override

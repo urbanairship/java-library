@@ -12,7 +12,7 @@ import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 
 /**
- * A PartialPushPayload object, used when creating a template push.
+ * A VariantPushPayload object, used when creating a template push.
  */
 public class PartialPushPayload {
 
@@ -29,7 +29,7 @@ public class PartialPushPayload {
     }
 
     /**
-     * Create a new PartialPushPayload Builder object.
+     * Create a new VariantPushPayload Builder object.
      *
      * @return Builder
      */
@@ -75,7 +75,7 @@ public class PartialPushPayload {
 
     @Override
     public String toString() {
-        return "PartialPushPayload{" +
+        return "VariantPushPayload{" +
                 "notification=" + notification +
                 ", pushOptions=" + pushOptions +
                 ", richPushMessage=" + richPushMessage +
@@ -164,7 +164,7 @@ public class PartialPushPayload {
          *     1. Either an in-app message, rich push message, or notification must be set.
          * </pre>
          *
-         * @return PartialPushPayload
+         * @return VariantPushPayload
          */
         public PartialPushPayload build() {
             Preconditions.checkArgument(!(notification == null && richPushMessage == null && inApp == null),
