@@ -18,7 +18,7 @@ public class ExperimentTest {
     @Test
     public void testExperiment() {
 
-        PartialPushPayload payloadOne = PartialPushPayload.newBuilder()
+        VariantPushPayload payloadOne = VariantPushPayload.newBuilder()
                 .setNotification(Notification.newBuilder()
                         .setAlert("Hello")
                         .build()
@@ -29,7 +29,7 @@ public class ExperimentTest {
                 .setPushPayload(payloadOne)
                 .build();
 
-        PartialPushPayload payloadTwo = PartialPushPayload.newBuilder()
+        VariantPushPayload payloadTwo = VariantPushPayload.newBuilder()
                 .setNotification(Notification.newBuilder()
                         .setAlert("Goodbye")
                         .build()

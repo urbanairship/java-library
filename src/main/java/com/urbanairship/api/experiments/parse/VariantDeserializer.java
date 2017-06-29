@@ -42,7 +42,7 @@ public class VariantDeserializer extends JsonDeserializer<Variant> {
                     .put("push", new FieldParser<VariantReader>() {
                             @Override
                             public void parse(VariantReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                reader.readPartialPushPayload(jsonParser);
+                                reader.readVariantPushPayload(jsonParser);
                             }
                     })
                     .build()

@@ -105,7 +105,7 @@ public class TemplateView {
     /**
      * Get the partial push payload associated with this template.
      *
-     * @return A PartialPushPayload object
+     * @return A VariantPushPayload object
      */
     public Optional<PartialPushPayload> getPartialPushPayload() {
         return partialPushPayload;
@@ -259,7 +259,7 @@ public class TemplateView {
         /**
          * Set the push payload of the template.
          *
-         * @param partialPushPayload A PartialPushPayload object
+         * @param partialPushPayload A VariantPushPayload object
          * @return Builder
          */
         public Builder setPushPayload(PartialPushPayload partialPushPayload) {

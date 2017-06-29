@@ -17,8 +17,15 @@ public class Variant {
 
     private Optional<String> name;
     private Optional<String> description;
-    private final PartialPushPayload partialPushPayload;
+    private final VariantPushPayload variantPushPayload;
     private Optional<BigDecimal> weight;
+
+    private Variant(Builder builder) {
+        this.name = Optional.fromNullable(builder.name);
+        this.description = Optional.fromNullable(builder.description);
+        this.variantPushPayload = builder.variantPushPayload;
+        this.weight = Optional.fromNullable(builder.weight);
+    }
 
     /**
      * Experiment builder
@@ -26,16 +33,6 @@ public class Variant {
      */
     public static Builder newBuilder() {
         return new Builder();
-    }
-
-    private Variant(Optional<String> name,
-                    Optional<String> description,
-                    PartialPushPayload partialPushPayload,
-                    Optional<BigDecimal> weight) {
-        this.name = name;
-        this.description = description;
-        this.partialPushPayload = partialPushPayload;
-        this.weight = weight;
     }
 
     /**
@@ -58,10 +55,10 @@ public class Variant {
      * Get the partial push notification associated with the variant. A partial push notification object
      * represents a Push payload, excepting the audience and device_types fields because they are defined in the
      * experiment object. Message Center messages are also not included in the partial push payload object.
-     * @return PartialPushPayload
+     * @return VariantPushPayload
      */
-    public PartialPushPayload getPartialPushPayload() {
-        return partialPushPayload;
+    public VariantPushPayload getVariantPushPayload() {
+        return variantPushPayload;
     }
 
     /**
@@ -75,7 +72,7 @@ public class Variant {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(name, description, partialPushPayload, weight);
+        return Objects.hashCode(name, description, variantPushPayload, weight);
     }
 
     @Override
@@ -89,7 +86,7 @@ public class Variant {
         final Variant other = (Variant) obj;
         return Objects.equal(this.name, other.name)
                 && Objects.equal(this.description, other.description)
-                && Objects.equal(this.partialPushPayload, other.partialPushPayload)
+                && Objects.equal(this.variantPushPayload, other.variantPushPayload)
                 && Objects.equal(this.weight, other.weight);
     }
 
@@ -98,7 +95,7 @@ public class Variant {
         return "Variant{" +
                 "name=" + name +
                 ", description=" + description +
-                ", partialPushPayload=" + partialPushPayload +
+                ", variantPushPayload=" + variantPushPayload +
                 ", weight=" + weight +
                 '}';
     }
@@ -110,7 +107,7 @@ public class Variant {
 
         private String name;
         private String description;
-        private PartialPushPayload partialPushPayload;
+        private VariantPushPayload variantPushPayload;
         private BigDecimal weight;
 
         /**
@@ -137,11 +134,11 @@ public class Variant {
          * Set the partial push notification associated with the variant. A partial push notification object
          * represents a Push payload, excepting the audience and device_types fields because they are defined in the
          * experiment object. Message Center messages are also not included in the partial push payload object.
-         * @param partialPushPayload PartialPushPayload
+         * @param variantPushPayload VariantPushPayload
          * @return Builder
          */
-        public Builder setPushPayload(PartialPushPayload partialPushPayload) {
-            this.partialPushPayload = partialPushPayload;
+        public Builder setPushPayload(VariantPushPayload variantPushPayload) {
+            this.variantPushPayload = variantPushPayload;
             return this;
         }
 
@@ -167,14 +164,10 @@ public class Variant {
          * @return Variant
          */
         public Variant build() {
-            Preconditions.checkNotNull(partialPushPayload,
+            Preconditions.checkNotNull(variantPushPayload,
                     "A partial push notification object must be provided.");
 
-            return new Variant(
-                    Optional.fromNullable(name),
-                    Optional.fromNullable(description),
-                    partialPushPayload,
-                    Optional.fromNullable(weight));
+            return new Variant(this);
         }
     }
 }

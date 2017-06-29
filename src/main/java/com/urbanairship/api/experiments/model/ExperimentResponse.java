@@ -18,7 +18,7 @@ public final class ExperimentResponse {
     private final Optional<String> experimentId;
     private final Optional<ImmutableList<String>> pushIds;
 
-    public ExperimentResponse(boolean ok,
+    private ExperimentResponse(boolean ok,
                               String operationId,
                               String experimentId,
                               ImmutableList<String> pushIds) {
@@ -182,8 +182,6 @@ public final class ExperimentResponse {
          */
         public ExperimentResponse build() {
             return new ExperimentResponse(ok, operationId, experimentId, pushIds.build());
-
         }
-
     }
 }

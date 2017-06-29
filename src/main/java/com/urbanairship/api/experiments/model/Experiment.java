@@ -9,7 +9,6 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.audience.SelectorType;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.urbanairship.api.push.model.audience.Selector;
 
@@ -28,26 +27,21 @@ public final class Experiment extends ExperimentModelObject {
     private final DeviceTypeData deviceTypes;
     private final List<Variant> variants;
 
+    private Experiment(Builder builder) {
+        this.name = Optional.fromNullable(builder.name);
+        this.description = Optional.fromNullable(builder.description);
+        this.control = Optional.fromNullable(builder.control);
+        this.audience = builder.audience;
+        this.deviceTypes = builder.deviceTypes;
+        this.variants = builder.variants;
+    }
+
     /**
      * Experiment builder
      * @return Builder
      */
     public static Builder newBuilder() {
         return new Builder();
-    }
-
-    private Experiment(Optional<String> name,
-                       Optional<String> description,
-                       Optional<BigDecimal> control,
-                       Selector audience,
-                       DeviceTypeData deviceTypes,
-                       ImmutableList<Variant> variants) {
-        this.name = name;
-        this.description = description;
-        this.control = control;
-        this.audience = audience;
-        this.deviceTypes = deviceTypes;
-        this.variants = variants;
     }
 
     /**
@@ -244,13 +238,7 @@ public final class Experiment extends ExperimentModelObject {
             Preconditions.checkNotNull(variants, "An experiment requires at least one variant.");
             Preconditions.checkArgument(variants.size() > 0, "At least one variant must be present.");
 
-            return new Experiment(
-                    Optional.fromNullable(name),
-                    Optional.fromNullable(description),
-                    Optional.fromNullable(control),
-                    audience,
-                    deviceTypes,
-                    ImmutableList.copyOf(variants));
+            return new Experiment(this);
         }
     }
 }

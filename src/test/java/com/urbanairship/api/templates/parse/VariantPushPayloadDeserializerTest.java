@@ -1,6 +1,6 @@
-package com.urbanairship.api.experiments.parse;
+package com.urbanairship.api.templates.parse;
 
-import com.urbanairship.api.experiments.model.PartialPushPayload;
+import com.urbanairship.api.templates.model.PartialPushPayload;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
@@ -8,24 +8,25 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class PartialPushPayloadDeserializerTest {
+public class VariantPushPayloadDeserializerTest {
 
-    private static final ObjectMapper MAPPER = ExperimentObjectMapper.getInstance();
+    private static final ObjectMapper MAPPER = TemplatesObjectMapper.getInstance();
 
     @Test
     public void testPartialPushPayload() throws Exception {
         String partialPushPayloadString =
                 "{" +
-                        "\"notification\": {\"alert\": \"hello everyone\"}," +
-                        "\"in_app\": {" +
+                    "\"notification\": {\"alert\": \"hello everyone\"}," +
+                    "\"in_app\": {" +
                         "\"alert\": \"This is in-app!\"" +
-                        "}" +
-                        "}";
+                    "}" +
+                "}";
 
         PartialPushPayload payload = MAPPER.readValue(partialPushPayloadString, PartialPushPayload.class);
         assertNotNull(payload);
         assertTrue(payload.getNotification().isPresent());
         assertTrue(payload.getInApp().isPresent());
+        assertFalse(payload.getRichPushMessage().isPresent());
         assertFalse(payload.getPushOptions().isPresent());
     }
 
@@ -33,5 +34,4 @@ public class PartialPushPayloadDeserializerTest {
     public void testEmptyPartialPushPayload() {
         PartialPushPayload payload = PartialPushPayload.newBuilder().build();
     }
-
 }

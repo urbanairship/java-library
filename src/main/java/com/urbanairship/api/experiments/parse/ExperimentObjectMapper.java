@@ -6,7 +6,7 @@ package com.urbanairship.api.experiments.parse;
 
 import com.urbanairship.api.experiments.model.Experiment;
 import com.urbanairship.api.experiments.model.ExperimentResponse;
-import com.urbanairship.api.experiments.model.PartialPushPayload;
+import com.urbanairship.api.experiments.model.VariantPushPayload;
 import com.urbanairship.api.experiments.model.Variant;
 import com.urbanairship.api.push.parse.*;
 import org.codehaus.jackson.Version;
@@ -25,9 +25,9 @@ public class ExperimentObjectMapper {
                 .addSerializer(Experiment.class, new ExperimentSerializer())
                 .addDeserializer(Variant.class, new VariantDeserializer())
                 .addSerializer(Variant.class, new VariantSerializer())
-                .addDeserializer(PartialPushPayload.class, new PartialPushPayloadDeserializer())
+                .addDeserializer(VariantPushPayload.class, new VariantPushPayloadDeserializer())
                 .addDeserializer(ExperimentResponse.class, new ExperimentResponseDeserializer())
-                .addSerializer(PartialPushPayload.class, new PartialPushPayloadSerializer());
+                .addSerializer(VariantPushPayload.class, new VariantPushPayloadSerializer());
 
         MAPPER.registerModule(MODULE);
         MAPPER.registerModule(PushObjectMapper.getModule());

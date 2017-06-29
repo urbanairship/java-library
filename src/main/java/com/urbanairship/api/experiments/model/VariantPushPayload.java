@@ -13,22 +13,24 @@ import com.urbanairship.api.push.model.notification.Notification;
 import java.util.Objects;
 
 /**
- * A PartialPushPayload object, used when creating an A/B test.
+ * A VariantPushPayload object, used when creating an A/B test. A partial push notification object
+ * represents a Push payload, excepting the audience and device_types fields because they are defined in the
+ * experiment object. Message Center messages are also not included in the partial push payload object.
  */
-public class PartialPushPayload {
+public class VariantPushPayload {
 
     private final Optional<Notification> notification;
     private final Optional<PushOptions> pushOptions;
     private final Optional<InApp> inApp;
 
-    private PartialPushPayload(Builder builder) {
+    private VariantPushPayload(Builder builder) {
         this.notification = Optional.fromNullable(builder.notification);
         this.pushOptions = Optional.fromNullable(builder.pushOptions);
         this.inApp = Optional.fromNullable(builder.inApp);
     }
 
     /**
-     * Create a new PartialPushPayload Builder object.
+     * Create a new VariantPushPayload Builder object.
      *
      * @return Builder
      */
@@ -65,7 +67,7 @@ public class PartialPushPayload {
 
     @Override
     public String toString() {
-        return "PartialPushPayload{" +
+        return "VariantPushPayload{" +
                 "notification=" + notification +
                 ", pushOptions=" + pushOptions +
                 ", inApp=" + inApp +
@@ -85,14 +87,14 @@ public class PartialPushPayload {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final PartialPushPayload other = (PartialPushPayload) obj;
+        final VariantPushPayload other = (VariantPushPayload) obj;
         return Objects.equals(this.notification, other.notification)
                 && Objects.equals(this.pushOptions, other.pushOptions)
                 && Objects.equals(this.inApp, other.inApp);
     }
 
     /**
-     * PartialPushPayload Builder
+     * VariantPushPayload Builder
      */
     public static class Builder {
         private Notification notification = null;
@@ -139,13 +141,13 @@ public class PartialPushPayload {
          *     1. Either an in-app message or notification must be set.
          * </pre>
          *
-         * @return PartialPushPayload
+         * @return VariantPushPayload
          */
-        public PartialPushPayload build() {
+        public VariantPushPayload build() {
             Preconditions.checkArgument(!(notification == null && inApp == null),
                     "At least one of 'notification' or 'inApp' must be set.");
 
-            return new PartialPushPayload(this);
+            return new VariantPushPayload(this);
         }
     }
 }

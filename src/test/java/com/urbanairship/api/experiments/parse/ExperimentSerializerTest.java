@@ -1,7 +1,7 @@
 package com.urbanairship.api.experiments.parse;
 
 import com.urbanairship.api.experiments.model.Experiment;
-import com.urbanairship.api.experiments.model.PartialPushPayload;
+import com.urbanairship.api.experiments.model.VariantPushPayload;
 import com.urbanairship.api.experiments.model.Variant;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
@@ -20,7 +20,7 @@ public class ExperimentSerializerTest {
     public void testExperimentSerializer() throws Exception {
 
         Variant variantOne = Variant.newBuilder()
-                .setPushPayload(PartialPushPayload.newBuilder()
+                .setPushPayload(VariantPushPayload.newBuilder()
                         .setNotification(Notification.newBuilder()
                                 .setAlert("Hello Jenn")
                                 .build()
@@ -29,7 +29,7 @@ public class ExperimentSerializerTest {
                 .build();
 
         Variant variantTwo = Variant.newBuilder()
-                .setPushPayload(PartialPushPayload.newBuilder()
+                .setPushPayload(VariantPushPayload.newBuilder()
                         .setNotification(Notification.newBuilder()
                                 .setAlert("Boogaloo")
                                 .build()

@@ -1,20 +1,22 @@
-package com.urbanairship.api.templates.parse;
+package com.urbanairship.api.experiments.parse;
 
+
+import com.urbanairship.api.experiments.model.VariantPushPayload;
 import com.urbanairship.api.push.model.InApp;
 import com.urbanairship.api.push.model.notification.Notification;
-import com.urbanairship.api.templates.model.PartialPushPayload;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
 
-public class PartialPushPayloadSerializerTest {
-    private static final ObjectMapper MAPPER = TemplatesObjectMapper.getInstance();
+public class VariantPushPayloadSerializerTest {
+
+    private static final ObjectMapper MAPPER = ExperimentObjectMapper.getInstance();
 
     @Test
     public void testPartialPushPayloadSerializer() throws Exception {
 
-        PartialPushPayload partialPushPayload = PartialPushPayload.newBuilder()
+        VariantPushPayload partialPushPayload = VariantPushPayload.newBuilder()
                 .setNotification(Notification.newBuilder()
                         .setAlert("hello everyone")
                         .build())
@@ -26,9 +28,9 @@ public class PartialPushPayloadSerializerTest {
         String partialPushPayloadSerialized = MAPPER.writeValueAsString(partialPushPayload);
         String partialPushPayloadString =
                 "{" +
-                    "\"notification\":{\"alert\":\"hello everyone\"}," +
-                    "\"in_app\":{\"alert\":\"This is in-app!\",\"display_type\":\"banner\"}" +
-                "}";
+                        "\"notification\":{\"alert\":\"hello everyone\"}," +
+                        "\"in_app\":{\"alert\":\"This is in-app!\",\"display_type\":\"banner\"}" +
+                        "}";
 
         assertEquals(partialPushPayloadSerialized, partialPushPayloadString);
     }

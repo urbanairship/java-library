@@ -17,9 +17,8 @@ import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.experiments.ExperimentRequest;
 import com.urbanairship.api.experiments.model.Experiment;
 import com.urbanairship.api.experiments.model.ExperimentResponse;
-import com.urbanairship.api.experiments.model.PartialPushPayload;
+import com.urbanairship.api.experiments.model.VariantPushPayload;
 import com.urbanairship.api.experiments.model.Variant;
-import com.urbanairship.api.experiments.parse.ExperimentObjectMapper;
 import com.urbanairship.api.location.LocationRequest;
 import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.LocationResponse;
@@ -318,8 +317,6 @@ public class UrbanAirshipClientTest {
             .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
             .setNotification(Notifications.alert("Foo"))
             .build();
-
-        System.out.printf(payload.toString());
 
         // Setup a stubbed response for the server
         String pushJSON = "{\"ok\" : true,\"operation_id\" : \"df6a6b50\", \"push_ids\":[\"PushID\"]}";
@@ -3526,7 +3523,7 @@ public class UrbanAirshipClientTest {
                         .withStatus(201)
                         .withBody(responseJson)));
 
-        PartialPushPayload payloadOne = PartialPushPayload.newBuilder()
+        VariantPushPayload payloadOne = VariantPushPayload.newBuilder()
                 .setNotification(Notification.newBuilder()
                         .setAlert("Hello")
                         .build()
@@ -3537,7 +3534,7 @@ public class UrbanAirshipClientTest {
                 .setPushPayload(payloadOne)
                 .build();
 
-        PartialPushPayload payloadTwo = PartialPushPayload.newBuilder()
+        VariantPushPayload payloadTwo = VariantPushPayload.newBuilder()
                 .setNotification(Notification.newBuilder()
                         .setAlert("Goodbye")
                         .build()
@@ -3590,7 +3587,7 @@ public class UrbanAirshipClientTest {
     @Test
     public void testExperimentValidate() {
 
-        PartialPushPayload payloadOne = PartialPushPayload.newBuilder()
+        VariantPushPayload payloadOne = VariantPushPayload.newBuilder()
                 .setNotification(Notification.newBuilder()
                         .setAlert("Hello")
                         .build()
@@ -3601,7 +3598,7 @@ public class UrbanAirshipClientTest {
                 .setPushPayload(payloadOne)
                 .build();
 
-        PartialPushPayload payloadTwo = PartialPushPayload.newBuilder()
+        VariantPushPayload payloadTwo = VariantPushPayload.newBuilder()
                 .setNotification(Notification.newBuilder()
                         .setAlert("Goodbye")
                         .build()

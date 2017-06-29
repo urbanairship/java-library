@@ -10,36 +10,37 @@ import com.urbanairship.api.common.parse.FieldParser;
 import com.urbanairship.api.common.parse.FieldParserRegistry;
 import com.urbanairship.api.common.parse.MapFieldParserRegistry;
 import com.urbanairship.api.common.parse.StandardObjectDeserializer;
-import com.urbanairship.api.experiments.model.PartialPushPayload;
+import com.urbanairship.api.experiments.model.VariantPushPayload;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
 
 import java.io.IOException;
 
-public class PartialPushPayloadDeserializer extends JsonDeserializer<PartialPushPayload> {
-    private static final FieldParserRegistry<PartialPushPayload, PartialPushPayloadReader> FIELD_PARSER =
-            new MapFieldParserRegistry<PartialPushPayload, PartialPushPayloadReader>(
-                    ImmutableMap.<String, FieldParser<PartialPushPayloadReader>>builder()
-                            .put("notification", new FieldParser<PartialPushPayloadReader>() {
+public class VariantPushPayloadDeserializer extends JsonDeserializer<VariantPushPayload> {
+
+    private static final FieldParserRegistry<VariantPushPayload, VariantPushPayloadReader> FIELD_PARSER =
+            new MapFieldParserRegistry<VariantPushPayload, VariantPushPayloadReader>(
+                    ImmutableMap.<String, FieldParser<VariantPushPayloadReader>>builder()
+                            .put("notification", new FieldParser<VariantPushPayloadReader>() {
                                 @Override
-                                public void parse(PartialPushPayloadReader reader,
+                                public void parse(VariantPushPayloadReader reader,
                                                   JsonParser jsonParser,
                                                   DeserializationContext deserializationContext) throws IOException {
                                     reader.readNotification(jsonParser);
                                 }
                             })
-                            .put("options", new FieldParser<PartialPushPayloadReader>() {
+                            .put("options", new FieldParser<VariantPushPayloadReader>() {
                                 @Override
-                                public void parse(PartialPushPayloadReader reader,
+                                public void parse(VariantPushPayloadReader reader,
                                                   JsonParser jsonParser,
                                                   DeserializationContext deserializationContext) throws IOException {
                                     reader.readPushOptions(jsonParser);
                                 }
                             })
-                            .put("in_app", new FieldParser<PartialPushPayloadReader>() {
+                            .put("in_app", new FieldParser<VariantPushPayloadReader>() {
                                 @Override
-                                public void parse(PartialPushPayloadReader reader,
+                                public void parse(VariantPushPayloadReader reader,
                                                   JsonParser jsonParser,
                                                   DeserializationContext deserializationContext) throws IOException {
                                     reader.readInApp(jsonParser);
@@ -48,22 +49,22 @@ public class PartialPushPayloadDeserializer extends JsonDeserializer<PartialPush
                             .build()
             );
 
-    private final StandardObjectDeserializer<PartialPushPayload, ?> deserializer;
+    private final StandardObjectDeserializer<VariantPushPayload, ?> deserializer;
 
-    public PartialPushPayloadDeserializer() {
-        this.deserializer = new StandardObjectDeserializer<PartialPushPayload, PartialPushPayloadReader>(
+    public VariantPushPayloadDeserializer() {
+        this.deserializer = new StandardObjectDeserializer<VariantPushPayload, VariantPushPayloadReader>(
                 FIELD_PARSER,
-                new Supplier<PartialPushPayloadReader>() {
+                new Supplier<VariantPushPayloadReader>() {
                     @Override
-                    public PartialPushPayloadReader get() {
-                        return new PartialPushPayloadReader();
+                    public VariantPushPayloadReader get() {
+                        return new VariantPushPayloadReader();
                     }
                 }
         );
     }
 
     @Override
-    public PartialPushPayload deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
+    public VariantPushPayload deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
             throws IOException {
         return deserializer.deserialize(jsonParser, deserializationContext);
     }
