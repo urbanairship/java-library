@@ -8,7 +8,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class VariantPushPayloadDeserializerTest {
+public class PartialPushPayloadDeserializerTest {
 
     private static final ObjectMapper MAPPER = TemplatesObjectMapper.getInstance();
 

@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
 
-public class VariantPushPayloadSerializerTest {
+public class PartialPushPayloadSerializerTest {
     private static final ObjectMapper MAPPER = TemplatesObjectMapper.getInstance();
 
     @Test

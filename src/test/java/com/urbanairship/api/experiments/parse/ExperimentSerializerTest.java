@@ -7,6 +7,7 @@ import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
+import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
@@ -22,7 +23,7 @@ public class ExperimentSerializerTest {
         Variant variantOne = Variant.newBuilder()
                 .setPushPayload(VariantPushPayload.newBuilder()
                         .setNotification(Notification.newBuilder()
-                                .setAlert("Hello Jenn")
+                                .setAlert("Hello there")
                                 .build()
                         )
                         .build())
@@ -47,17 +48,23 @@ public class ExperimentSerializerTest {
                 .build();
 
         String experimentSerialized = MAPPER.writeValueAsString(experiment);
+        Experiment experimentFromJson = MAPPER.readValue(experimentSerialized, Experiment.class);
+
         String experimentString =
                 "{" +
                         "\"audience\":{\"named_user\":\"birdperson\"}," +
                         "\"device_types\":[\"ios\"]," +
                         "\"variants\":[" +
-                        "{\"push\":{\"notification\":{\"alert\":\"Hello Jenn\"}}}," +
+                        "{\"push\":{\"notification\":{\"alert\":\"Hello there\"}}}," +
                         "{\"push\":{\"notification\":{\"alert\":\"Boogaloo\"}}}]," +
                         "\"name\":\"Another test\"," +
                         "\"description\":\"Its a test hoo boy\"" +
                 "}";
 
-        assertEquals(experimentSerialized, experimentString);
+        JsonNode fromObject = MAPPER.readTree(experimentSerialized);
+        JsonNode fromString = MAPPER.readTree(experimentString);
+
+        assertEquals(fromObject, fromString);
+        assertEquals(experimentFromJson, experiment);
     }
 }

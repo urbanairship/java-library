@@ -165,7 +165,7 @@ public class Variant {
          */
         public Variant build() {
             Preconditions.checkNotNull(variantPushPayload,
-                    "A partial push notification object must be provided.");
+                    "'variant_push_payload' must be provided.");
 
             return new Variant(this);
         }

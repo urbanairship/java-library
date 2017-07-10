@@ -1,9 +1,9 @@
 package com.urbanairship.api.experiments.parse;
 
-
 import com.urbanairship.api.experiments.model.VariantPushPayload;
 import com.urbanairship.api.push.model.InApp;
 import com.urbanairship.api.push.model.notification.Notification;
+import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
@@ -26,12 +26,18 @@ public class VariantPushPayloadSerializerTest {
                 .build();
 
         String partialPushPayloadSerialized = MAPPER.writeValueAsString(partialPushPayload);
+        VariantPushPayload partialPushPayloadFromJson = MAPPER.readValue(partialPushPayloadSerialized, VariantPushPayload.class);
+
         String partialPushPayloadString =
                 "{" +
                         "\"notification\":{\"alert\":\"hello everyone\"}," +
                         "\"in_app\":{\"alert\":\"This is in-app!\",\"display_type\":\"banner\"}" +
                         "}";
 
-        assertEquals(partialPushPayloadSerialized, partialPushPayloadString);
+        JsonNode fromObject = MAPPER.readTree(partialPushPayloadSerialized);
+        JsonNode fromString = MAPPER.readTree(partialPushPayloadString);
+
+        assertEquals(fromObject, fromString);
+        assertEquals(partialPushPayloadFromJson, partialPushPayload);
     }
 }
