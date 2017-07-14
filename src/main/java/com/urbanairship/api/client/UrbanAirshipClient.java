@@ -158,27 +158,18 @@ public class UrbanAirshipClient implements Closeable {
             }
         }
 
-        if (appSecret.isPresent() && request.bearerTokenAuthRequired() == false) {
-            // Push API Auth
-            requestBuilder.setHeader(
-                    "Authorization",
-                    "Basic " + BaseEncoding.base64().encode((appKey + ":" + appSecret.get()).getBytes())
-            );
-        } else if (bearerToken.isPresent() && request.bearerTokenAuthRequired() == true) {
-            requestBuilder.addHeader(
-                    "X-UA-Appkey",
-                    "" + appKey
-            );
-            // CustomEvent Auth
-            requestBuilder.addHeader(
-                    "Authorization",
-                    "Bearer " + bearerToken.get()
-            );
-        } else if (appSecret.isPresent() == false && request.bearerTokenAuthRequired() == false){
-            throw new IllegalArgumentException("Request: " + request + " requires app secret.");
+        String auth;
+
+        if (request.bearerTokenAuthRequired()) {
+           Preconditions.checkNotNull(bearerToken.get(), "Bearer token required for request: " + request);
+           auth = "Bearer " + bearerToken.get();
         } else {
-            throw new IllegalArgumentException("Request: " + request + " requires bearer auth.");
+            Preconditions.checkNotNull(appSecret.get(), "App secret required for request: " + request);
+            auth = "Basic " + BaseEncoding.base64().encode((appKey + ":" + appSecret.get()).getBytes());
         }
+
+        requestBuilder.addHeader("Authorization", auth)
+                      .addHeader("X-UA-Appkey", appKey);
 
         // Body
         String body = request.getRequestBody();
