@@ -174,6 +174,8 @@ public class UrbanAirshipClient implements Closeable {
                     "Authorization",
                     "Bearer " + bearerToken.get()
             );
+        } else if (appSecret.isPresent() == false && request.bearerTokenAuthRequired() == false){
+            throw new IllegalArgumentException("Request: " + request + " requires app secret.");
         } else {
             throw new IllegalArgumentException("Request: " + request + " requires bearer auth.");
         }
