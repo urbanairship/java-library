@@ -28,16 +28,6 @@ public class VariantPushPayloadSerializerTest {
         String partialPushPayloadSerialized = MAPPER.writeValueAsString(partialPushPayload);
         VariantPushPayload partialPushPayloadFromJson = MAPPER.readValue(partialPushPayloadSerialized, VariantPushPayload.class);
 
-        String partialPushPayloadString =
-                "{" +
-                        "\"notification\":{\"alert\":\"hello everyone\"}," +
-                        "\"in_app\":{\"alert\":\"This is in-app!\",\"display_type\":\"banner\"}" +
-                        "}";
-
-        JsonNode fromObject = MAPPER.readTree(partialPushPayloadSerialized);
-        JsonNode fromString = MAPPER.readTree(partialPushPayloadString);
-
-        assertEquals(fromObject, fromString);
         assertEquals(partialPushPayloadFromJson, partialPushPayload);
     }
 }

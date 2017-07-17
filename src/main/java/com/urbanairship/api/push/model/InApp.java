@@ -13,6 +13,7 @@ import com.urbanairship.api.push.model.notification.actions.Actions;
 import org.joda.time.DateTime;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Represents a single InApp message object.
@@ -122,6 +123,29 @@ public class InApp {
                 ", interactive=" + interactive +
                 ", extra=" + extra +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(alert, displayType, expiry, display, actions, interactive, extra);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final InApp other = (InApp) obj;
+        return Objects.equals(this.alert, other.alert)
+                && Objects.equals(this.displayType, other.displayType)
+                && Objects.equals(this.expiry, other.expiry)
+                && Objects.equals(this.display, other.display)
+                && Objects.equals(this.actions, other.actions)
+                && Objects.equals(this.interactive, other.interactive)
+                && Objects.equals(this.extra, other.extra);
     }
 
     public static class Builder {

@@ -28,15 +28,6 @@ public class VariantSerializerTest {
         String variantSerialized = MAPPER.writeValueAsString(variant);
         Variant variantFromJson = MAPPER.readValue(variantSerialized, Variant.class);
 
-        String variantString =
-                "{" +
-                        "\"push\":{\"notification\":{\"alert\":\"Hello there\"}}" +
-                        "}";
-
-        JsonNode fromObject = MAPPER.readTree(variantSerialized);
-        JsonNode fromString = MAPPER.readTree(variantString);
-
-        assertEquals(fromObject, fromString);
         assertEquals(variantFromJson, variant);
     }
 }

@@ -50,21 +50,6 @@ public class ExperimentSerializerTest {
         String experimentSerialized = MAPPER.writeValueAsString(experiment);
         Experiment experimentFromJson = MAPPER.readValue(experimentSerialized, Experiment.class);
 
-        String experimentString =
-                "{" +
-                        "\"audience\":{\"named_user\":\"birdperson\"}," +
-                        "\"device_types\":[\"ios\"]," +
-                        "\"variants\":[" +
-                        "{\"push\":{\"notification\":{\"alert\":\"Hello there\"}}}," +
-                        "{\"push\":{\"notification\":{\"alert\":\"Boogaloo\"}}}]," +
-                        "\"name\":\"Another test\"," +
-                        "\"description\":\"Its a test hoo boy\"" +
-                "}";
-
-        JsonNode fromObject = MAPPER.readTree(experimentSerialized);
-        JsonNode fromString = MAPPER.readTree(experimentString);
-
-        assertEquals(fromObject, fromString);
         assertEquals(experimentFromJson, experiment);
     }
 }
