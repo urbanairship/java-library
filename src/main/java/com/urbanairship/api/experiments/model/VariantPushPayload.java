@@ -135,7 +135,7 @@ public class VariantPushPayload {
         }
 
         /**
-         * Build the partial push object.
+         * Build the variant push object.
          *
          * <pre>
          *     1. Either an in-app message or notification must be set.

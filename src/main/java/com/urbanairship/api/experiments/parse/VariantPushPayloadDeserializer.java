@@ -19,7 +19,7 @@ import java.io.IOException;
 
 public class VariantPushPayloadDeserializer extends JsonDeserializer<VariantPushPayload> {
 
-    private static final FieldParserRegistry<VariantPushPayload, VariantPushPayloadReader> FIELD_PARSER =
+    private static final FieldParserRegistry<VariantPushPayload, VariantPushPayloadReader> FIELD_PARSERS =
             new MapFieldParserRegistry<VariantPushPayload, VariantPushPayloadReader>(
                     ImmutableMap.<String, FieldParser<VariantPushPayloadReader>>builder()
                             .put("notification", new FieldParser<VariantPushPayloadReader>() {
@@ -53,7 +53,7 @@ public class VariantPushPayloadDeserializer extends JsonDeserializer<VariantPush
 
     public VariantPushPayloadDeserializer() {
         this.deserializer = new StandardObjectDeserializer<VariantPushPayload, VariantPushPayloadReader>(
-                FIELD_PARSER,
+                FIELD_PARSERS,
                 new Supplier<VariantPushPayloadReader>() {
                     @Override
                     public VariantPushPayloadReader get() {
