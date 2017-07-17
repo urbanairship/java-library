@@ -11,7 +11,7 @@ import org.codehaus.jackson.map.SerializerProvider;
 
 import java.io.IOException;
 
-public final class VariantPushPayloadSerializer extends JsonSerializer<VariantPushPayload> {
+public class VariantPushPayloadSerializer extends JsonSerializer<VariantPushPayload> {
 
     @Override
     public void serialize(VariantPushPayload value, JsonGenerator jgen, SerializerProvider provider) throws IOException {

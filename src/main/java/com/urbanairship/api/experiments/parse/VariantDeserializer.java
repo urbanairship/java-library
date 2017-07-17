@@ -48,8 +48,6 @@ public class VariantDeserializer extends JsonDeserializer<Variant> {
                     .build()
             );
 
-    public static final VariantDeserializer INSTANCE = new VariantDeserializer();
-
     private final StandardObjectDeserializer<Variant, ?> deserializer;
 
     public VariantDeserializer() {

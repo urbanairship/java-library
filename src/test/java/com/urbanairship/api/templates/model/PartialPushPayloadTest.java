@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
-public class VariantPushPayloadTest {
+public class PartialPushPayloadTest {
     @Test
     public void testPartialPushPayload() {
         Notification notification = Notification.newBuilder()

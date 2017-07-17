@@ -13,8 +13,6 @@ import java.io.IOException;
 
 public class VariantSerializer extends JsonSerializer<Variant>{
 
-    public static final VariantSerializer INSTANCE = new VariantSerializer();
-
     @Override
     public void serialize(Variant variant, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         jgen.writeStartObject();
