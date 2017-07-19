@@ -10,7 +10,6 @@ import static com.urbanairship.api.push.model.audience.Selectors.androidChannel;
 import static com.urbanairship.api.push.model.audience.Selectors.apid;
 import static com.urbanairship.api.push.model.audience.Selectors.deviceToken;
 import static com.urbanairship.api.push.model.audience.Selectors.iosChannel;
-import static com.urbanairship.api.push.model.audience.Selectors.mpns;
 import static com.urbanairship.api.push.model.audience.Selectors.not;
 import static com.urbanairship.api.push.model.audience.Selectors.or;
 import static com.urbanairship.api.push.model.audience.Selectors.tag;
@@ -34,7 +33,6 @@ public class ChannelTypeDataTest {
         assertTrue(data.getDeviceTypes().get().contains(DeviceType.ANDROID));
         assertTrue(data.getDeviceTypes().get().contains(DeviceType.AMAZON));
         assertFalse(data.getDeviceTypes().get().contains(DeviceType.WNS));
-        assertFalse(data.getDeviceTypes().get().contains(DeviceType.MPNS));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -85,7 +83,6 @@ public class ChannelTypeDataTest {
         assertEquals(DeviceTypeData.of(DeviceType.IOS), iosChannel("8516d389-88fb-1fa8-474b-bcf2464cc997").getApplicableDeviceTypes());
         assertEquals(DeviceTypeData.of(DeviceType.ANDROID), apid("8516d389-88fb-1fa8-474b-bcf2464cc997").getApplicableDeviceTypes());
         assertEquals(DeviceTypeData.of(DeviceType.ANDROID), androidChannel("8516d389-88fb-1fa8-474b-bcf2464cc997").getApplicableDeviceTypes());
-        assertEquals(DeviceTypeData.of(DeviceType.MPNS), mpns("8516d389-88fb-1fa8-474b-bcf2464cc997").getApplicableDeviceTypes());
         assertEquals(DeviceTypeData.of(DeviceType.WNS), wns("8516d389-88fb-1fa8-474b-bcf2464cc997").getApplicableDeviceTypes());
         assertEquals(DeviceTypeData.all(), all().getApplicableDeviceTypes());
         assertEquals(DeviceTypeData.all(), triggered().getApplicableDeviceTypes());

@@ -18,7 +18,6 @@ public enum SelectorType {
     DEVICE_TOKEN("device_token", SelectorCategory.VALUE, true, DeviceType.IOS),
     APID("apid", SelectorCategory.VALUE, true, DeviceType.ANDROID),
     WNS("wns", SelectorCategory.VALUE, true, DeviceType.WNS),
-    MPNS("mpns", SelectorCategory.VALUE, true, DeviceType.MPNS),
     AMAZON_CHANNEL("amazon_channel", SelectorCategory.VALUE, true, true, DeviceType.AMAZON),
     IOS_CHANNEL("ios_channel", SelectorCategory.VALUE, true, true, DeviceType.IOS),
     ANDROID_CHANNEL("android_channel", SelectorCategory.VALUE, true, true, DeviceType.ANDROID),
