@@ -22,13 +22,15 @@ public final class RichPushMessage {
     private final String contentEncoding;
     private final Optional<ImmutableMap<String, String>> extra;
     private final Optional<PushExpiry> expiry;
+    private final Optional<RichPushIcon> icons;
 
     private RichPushMessage(String title,
                             String body,
                             String contentType,
                             String contentEncoding,
                             Optional<ImmutableMap<String, String>> extra,
-                            Optional<PushExpiry> expiry)
+                            Optional<PushExpiry> expiry,
+                            Optional<RichPushIcon> icons)
     {
         this.title = title;
         this.body = body;
@@ -36,6 +38,7 @@ public final class RichPushMessage {
         this.contentEncoding = contentEncoding;
         this.extra = extra;
         this.expiry = expiry;
+        this.icons = icons;
     }
 
     public static Builder newBuilder() {
@@ -66,6 +69,10 @@ public final class RichPushMessage {
         return expiry;
     }
 
+    public Optional<RichPushIcon> getIcons() {
+        return icons;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -94,6 +101,9 @@ public final class RichPushMessage {
         if (expiry != null ? !expiry.equals(that.expiry) : that.expiry != null) {
             return false;
         }
+        if (icons != null ? !icons.equals(that.icons) : that.icons != null) {
+            return false;
+        }
         return true;
     }
 
@@ -105,6 +115,7 @@ public final class RichPushMessage {
         result = 31 * result + (contentEncoding != null ? contentEncoding.hashCode() : 0);
         result = 31 * result + (extra != null ? extra.hashCode() : 0);
         result = 31 * result + (expiry != null ? expiry.hashCode() : 0);
+        result = 31 * result + (icons != null ? icons.hashCode() : 0);
         return result;
     }
 
@@ -117,6 +128,7 @@ public final class RichPushMessage {
                 ", contentEncoding=" + contentEncoding +
                 ", extra=" + extra +
                 ", expiry=" + expiry +
+                ", icons=" + icons +
                 '}';
     }
 
@@ -127,6 +139,7 @@ public final class RichPushMessage {
         private String contentEncoding = null;
         private ImmutableMap.Builder<String, String> extra = null;
         private PushExpiry expiry = null;
+        private RichPushIcon icons = null;
 
         private Builder() { }
 
@@ -171,6 +184,11 @@ public final class RichPushMessage {
             return this;
         }
 
+        public Builder setIcons (RichPushIcon value) {
+            this.icons = value;
+            return this;
+        }
+
         public RichPushMessage build() {
             Preconditions.checkNotNull(title, "Must supply a value for 'title'");
             Preconditions.checkNotNull(body, "Must supply a value for 'body'");
@@ -179,7 +197,8 @@ public final class RichPushMessage {
                     contentType != null ? contentType : CONTENT_TYPE_DEFAULT,
                     contentEncoding != null ? contentEncoding : CONTENT_ENCODING_DEFAULT,
                     extra != null ? Optional.fromNullable(extra.build()) : Optional.<ImmutableMap<String, String>>absent(),
-                    Optional.fromNullable(expiry));
+                    Optional.fromNullable(expiry),
+                    Optional.fromNullable(icons));
         }
     }
 }
