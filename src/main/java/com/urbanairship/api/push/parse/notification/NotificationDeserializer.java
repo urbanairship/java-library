@@ -37,12 +37,6 @@ public class NotificationDeserializer extends JsonDeserializer<Notification> {
                         reader.readPlatformDevicePayloadOverride(DeviceType.WNS, jsonParser, deserializationContext);
                     }
                 })
-            .put("mpns", new FieldParser<NotificationReader>() {
-                    @Override
-                    public void parse(NotificationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                        reader.readPlatformDevicePayloadOverride(DeviceType.MPNS, jsonParser, deserializationContext);
-                    }
-                })
             .put("ios", new FieldParser<NotificationReader>() {
                     @Override
                     public void parse(NotificationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {

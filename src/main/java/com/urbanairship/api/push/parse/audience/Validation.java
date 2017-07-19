@@ -28,7 +28,6 @@ public class Validation {
         switch (v.getType()) {
           case APID:
           case WNS:
-          case MPNS:
               // TODO: make this better
               if (v.getValue().length() < 16) {
                   throw new APIParsingException("Invalid APID");
