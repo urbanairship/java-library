@@ -17,6 +17,11 @@ import org.codehaus.jackson.type.TypeReference;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * @deprecated Marked to be removed in 2.0.0. Urban Airship stopped recommending use of these endpoints in October 2015,
+ * so we are now completing their removal from our libraries.
+ */
+@Deprecated
 public class PlatformCountsReader implements JsonObjectReader<PlatformCounts> {
 
     private final PlatformCounts.Builder builder;

@@ -10,7 +10,6 @@ import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
-import com.urbanairship.api.push.model.notification.blackberry.BlackberryDevicePayload;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import com.urbanairship.api.push.model.notification.wns.WNSDevicePayload;
@@ -179,9 +178,6 @@ public class PushPayloadBasicSerializationTest {
                 + "    \"android\" : {"
                 + "      \"alert\" : \"droid\""
                 + "    },"
-                + "    \"blackberry\" : {"
-                + "      \"alert\" : \"doomed\""
-                + "    },"
                 + "    \"amazon\" : {"
                 + "      \"alert\" : \"phoenix\""
                 + "    }"
@@ -192,7 +188,6 @@ public class PushPayloadBasicSerializationTest {
         assertTrue(notification.getDeviceTypeOverride(DeviceType.IOS, IOSDevicePayload.class).isPresent());
         assertTrue(notification.getDeviceTypeOverride(DeviceType.WNS, WNSDevicePayload.class).isPresent());
         assertTrue(notification.getDeviceTypeOverride(DeviceType.ANDROID, AndroidDevicePayload.class).isPresent());
-        assertTrue(notification.getDeviceTypeOverride(DeviceType.BLACKBERRY, BlackberryDevicePayload.class).isPresent());
         assertTrue(notification.getDeviceTypeOverride(DeviceType.AMAZON, ADMDevicePayload.class).isPresent());
 
         IOSDevicePayload ios = notification.getDeviceTypeOverride(DeviceType.IOS, IOSDevicePayload.class).get();
@@ -206,10 +201,6 @@ public class PushPayloadBasicSerializationTest {
         AndroidDevicePayload android = notification.getDeviceTypeOverride(DeviceType.ANDROID, AndroidDevicePayload.class).get();
         assertTrue(android.getAlert().isPresent());
         assertEquals("droid", android.getAlert().get());
-
-        BlackberryDevicePayload bb = notification.getDeviceTypeOverride(DeviceType.BLACKBERRY, BlackberryDevicePayload.class).get();
-        assertTrue(bb.getAlert().isPresent());
-        assertEquals("doomed", bb.getAlert().get());
 
         ADMDevicePayload adm = notification.getDeviceTypeOverride(DeviceType.AMAZON, ADMDevicePayload.class).get();
         assertTrue(adm.getAlert().isPresent());
