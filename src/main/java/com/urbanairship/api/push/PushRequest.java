@@ -13,10 +13,15 @@ import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.PushResponse;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.apache.http.entity.ContentType;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,12 +33,20 @@ public class PushRequest implements Request<PushResponse> {
     private final static String API_PUSH_PATH = "/api/push/";
     private final static String API_VALIDATE_PATH = "/api/push/validate/";
 
-    private final PushPayload payload;
+    private final List<PushPayload> payloads = new ArrayList<>();
     private boolean validateOnly;
 
     private PushRequest(PushPayload payload) {
         Preconditions.checkNotNull(payload, "Payload required when creating a push request");
-        this.payload = payload;
+        this.payloads.add(payload);
+    }
+
+    private PushRequest(List<PushPayload> payloadList) {
+        Preconditions.checkNotNull(payloadList, "Payload required when creating a push request");
+        if (payloadList.isEmpty()) {
+            throw new IllegalStateException("Payload list cannot be empty");
+        }
+        this.payloads.addAll(payloadList);
     }
 
     /**
@@ -44,6 +57,43 @@ public class PushRequest implements Request<PushResponse> {
      */
     public static PushRequest newRequest(PushPayload payload) {
         return new PushRequest(payload);
+    }
+
+    /**
+     * Create a push request.
+     *
+     * @param payloadList List<PushPayload>
+     * @return PushRequest
+     */
+    public static PushRequest newRequest(List<PushPayload> payloadList) {
+        return new PushRequest(payloadList);
+    }
+
+    /**
+     * Add additional payloads to a batch push request
+     *
+     * @param newPayload
+     * @return PushRequest
+     */
+    public PushRequest addPayload(PushPayload newPayload) {
+        Preconditions.checkNotNull(newPayload, "Payload required when adding to a push request");
+        payloads.add(newPayload);
+        return this;
+    }
+
+    /**
+     * Add additional payloads to a batch push request
+     *
+     * @param newPayloads
+     * @return PushRequest
+     */
+    public PushRequest addPayloads(List<PushPayload> newPayloads) {
+        Preconditions.checkNotNull(newPayloads, "Payload required when adding to a push request");
+        if (newPayloads.isEmpty()) {
+            throw new IllegalStateException("Payload list cannot be empty");
+        }
+        payloads.addAll(newPayloads);
+        return this;
     }
 
     /**
@@ -77,12 +127,29 @@ public class PushRequest implements Request<PushResponse> {
 
     @Override
     public String getRequestBody() {
-        return payload.toJSON();
+        if (this.payloads.size() == 1) {
+            return this.payloads.get(0).toJSON();
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        ArrayNode arrayNode = mapper.createArrayNode();
+
+        for (PushPayload pushPayload : this.payloads) {
+            try {
+                JsonNode pushJson = mapper.readTree(pushPayload.toJSON());
+                arrayNode.add(pushJson);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return arrayNode.toString();
     }
 
     @Override
     public URI getUri(URI baseUri) {
-        String path  = validateOnly ? API_VALIDATE_PATH : API_PUSH_PATH;
+        String path = validateOnly ? API_VALIDATE_PATH : API_PUSH_PATH;
         return RequestUtils.resolveURI(baseUri, path);
     }
 
