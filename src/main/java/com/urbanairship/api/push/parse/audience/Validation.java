@@ -37,9 +37,6 @@ public class Validation {
           case DEVICE_TOKEN:
               // TODO: validate Apple device tokens
               break;
-          case DEVICE_PIN:
-              // TODO: validate blackberry device pins
-              break;
           case TAG:
           case ALIAS:
           case STATIC_LIST:
