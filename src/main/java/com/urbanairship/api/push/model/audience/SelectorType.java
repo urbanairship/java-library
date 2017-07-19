@@ -16,7 +16,6 @@ public enum SelectorType {
     STATIC_LIST("static_list", SelectorCategory.VALUE),
 
     DEVICE_TOKEN("device_token", SelectorCategory.VALUE, true, DeviceType.IOS),
-    DEVICE_PIN("device_pin", SelectorCategory.VALUE, true, DeviceType.BLACKBERRY),
     APID("apid", SelectorCategory.VALUE, true, DeviceType.ANDROID),
     WNS("wns", SelectorCategory.VALUE, true, DeviceType.WNS),
     MPNS("mpns", SelectorCategory.VALUE, true, DeviceType.MPNS),
