@@ -6,6 +6,9 @@ package com.urbanairship.api.push.model.notification.richpush;
 
 import com.google.common.base.Preconditions;
 
+/**
+ * Represents the a icon to be used in a rich push message.
+ */
 public final class RichPushIcon {
 
 
@@ -15,10 +18,20 @@ public final class RichPushIcon {
         this.listIcon = listIcon;
     }
 
+    /**
+     * New RichPushIcon Builder
+     *
+     * @return Builder
+     */
     public static Builder newBuilder() {
         return new Builder();
     }
 
+    /**
+     * Get the listIcon string representation of the URI/URL to the icon resource.
+     *
+     * @return String
+     */
     public String getListIcon() {
         return listIcon;
     }
@@ -45,12 +58,21 @@ public final class RichPushIcon {
                 '}';
     }
 
+    /**
+     * RichPushIcon Builder
+     */
     public static final class Builder {
         private String listIcon;
 
         private Builder() {
         }
 
+        /**
+         * Set the listIcon string representation of the URI/URL to the icon resource.
+         *
+         * @param value String
+         * @return RichPushIcon Builder
+         */
         public Builder setListIcon(String value) {
             this.listIcon = value;
             return this;

@@ -123,12 +123,6 @@ public class SelectorDeserializer extends JsonDeserializer<Selector> {
                         reader.readValueSelector(SelectorType.DEVICE_TOKEN, parser, context);
                     }
                 })
-                .put("device_pin", new FieldParser<SelectorReader>() {
-                    @Override
-                    public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                        reader.readValueSelector(SelectorType.DEVICE_PIN, parser, context);
-                    }
-                })
                 .put("apid", new FieldParser<SelectorReader>() {
                     @Override
                     public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {

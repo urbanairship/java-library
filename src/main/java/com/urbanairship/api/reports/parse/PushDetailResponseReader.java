@@ -20,6 +20,11 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * @deprecated Marked to be removed in 2.0.0. Urban Airship stopped recommending use of these endpoints in October 2015,
+ * so we are now completing their removal from our libraries.
+ */
+@Deprecated
 public class PushDetailResponseReader implements JsonObjectReader<PushDetailResponse> {
 
     private final PushDetailResponse.Builder builder;

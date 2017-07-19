@@ -7,6 +7,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
+/**
+ * @deprecated Marked to be removed in 2.0.0. Urban Airship stopped recommending use of these endpoints in October 2015,
+ * so we are now completing their removal from our libraries.
+ */
+@Deprecated
 public class PlatformTypeTest {
 
     @Test
@@ -31,6 +36,14 @@ public class PlatformTypeTest {
         assertNotNull(obj);
         assertEquals(PlatformType.AMAZON, obj);
         assertEquals("amazon", obj.getIdentifier());
+    }
+
+    @Test
+    public void testWebPlatformType() {
+        PlatformType obj = PlatformType.find("web").get();
+        assertNotNull(obj);
+        assertEquals(PlatformType.WEB, obj);
+        assertEquals("web", obj.getIdentifier());
     }
 
     @Test
