@@ -1,8 +1,8 @@
 package com.urbanairship.api.schedule;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.schedule.model.ScheduleResponse;
 import com.urbanairship.api.schedule.parse.ScheduleObjectMapper;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;

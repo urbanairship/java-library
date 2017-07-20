@@ -7,6 +7,7 @@ package com.urbanairship.api.staticlists.parse;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.urbanairship.api.staticlists.model.StaticListListingResponse;
 import com.urbanairship.api.staticlists.model.StaticListView;
 
@@ -19,6 +20,7 @@ public class StaticListsObjectMapper {
         MODULE.addDeserializer(StaticListListingResponse.class, new StaticListListingResponseDeserializer());
 
         MAPPER.registerModule(MODULE);
+        MAPPER.registerModule(new JodaModule());
     }
 
     public static SimpleModule getModule() {

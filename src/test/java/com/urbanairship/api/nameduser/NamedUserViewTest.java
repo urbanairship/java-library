@@ -1,5 +1,6 @@
 package com.urbanairship.api.nameduser;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
@@ -7,7 +8,6 @@ import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.channel.model.ChannelView;
 import com.urbanairship.api.nameduser.model.NamedUserView;
 import com.urbanairship.api.nameduser.parse.NamedUserObjectMapper;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
 
