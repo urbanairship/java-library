@@ -7,6 +7,7 @@ package com.urbanairship.api.templates.parse;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.templates.model.PartialPushPayload;
 import com.urbanairship.api.templates.model.TemplateListingResponse;
@@ -33,6 +34,7 @@ public class TemplatesObjectMapper {
         MODULE.addDeserializer(TemplateResponse.class, new TemplateResponseDeserializer());
 
         MAPPER.registerModule(MODULE);
+        MAPPER.registerModule(new JodaModule());
         MAPPER.registerModule(PushObjectMapper.getModule());
     }
 

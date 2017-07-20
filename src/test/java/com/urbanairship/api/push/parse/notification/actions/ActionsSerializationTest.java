@@ -1,5 +1,7 @@
 package com.urbanairship.api.push.parse.notification.actions;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.urbanairship.api.push.model.notification.actions.Actions;
 import com.urbanairship.api.push.model.notification.actions.AddTagAction;
 import com.urbanairship.api.push.model.notification.actions.AppDefinedAction;
@@ -9,8 +11,6 @@ import com.urbanairship.api.push.model.notification.actions.OpenLandingPageWithC
 import com.urbanairship.api.push.model.notification.actions.ShareAction;
 import com.urbanairship.api.push.model.notification.actions.TagActionData;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ObjectNode;
 import org.junit.Test;
 
 import java.io.IOException;

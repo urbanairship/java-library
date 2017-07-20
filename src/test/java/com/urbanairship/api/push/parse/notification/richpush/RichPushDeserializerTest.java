@@ -1,9 +1,9 @@
 package com.urbanairship.api.push.parse.notification.richpush;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Test;

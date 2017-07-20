@@ -1,6 +1,8 @@
 package com.urbanairship.api.push.parse.notification.android;
 
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.notification.Interactive;
@@ -15,7 +17,6 @@ import com.urbanairship.api.push.model.notification.android.PublicNotification;
 import com.urbanairship.api.push.model.notification.android.Style;
 import com.urbanairship.api.push.model.notification.android.Wearable;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -138,6 +139,9 @@ public class PayloadSerializerTest {
                 "\"visibility\":1" +
         "}";
         String parsedJson = MAPPER.writeValueAsString(payload);
-        assertEquals(json,parsedJson);
+
+        JsonNode parsedJsonNode = MAPPER.readTree(parsedJson);
+        JsonNode jsonNode = MAPPER.readTree(json);
+        assertEquals(parsedJsonNode, jsonNode);
     }
 }

@@ -178,7 +178,7 @@ public final class Notification extends PushModelObject {
                 for (Action a : actions.allActions()) {
 
                     if (a.getActionType() == ActionType.APP_DEFINED) {
-                        Iterator<String> fieldNames = ((AppDefinedAction) a).getValue().getFieldNames();
+                        Iterator<String> fieldNames = ((AppDefinedAction) a).getValue().fieldNames();
                         while (fieldNames.hasNext()) {
                             String field = fieldNames.next();
                             Preconditions.checkArgument(!extras.containsKey(field), "The iOS extra key '" + field

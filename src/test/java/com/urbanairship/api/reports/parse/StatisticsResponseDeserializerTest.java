@@ -1,11 +1,11 @@
 package com.urbanairship.api.reports.parse;
 
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.reports.model.StatisticsResponse;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 import org.junit.Test;
 
 import java.util.List;

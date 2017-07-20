@@ -1,10 +1,10 @@
 package com.urbanairship.api.templates.parse;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.templates.model.PartialPushPayload;
 import com.urbanairship.api.templates.model.TemplateVariable;
 import com.urbanairship.api.templates.model.TemplateView;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;

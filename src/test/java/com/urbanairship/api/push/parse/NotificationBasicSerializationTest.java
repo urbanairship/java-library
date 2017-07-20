@@ -1,9 +1,9 @@
 package com.urbanairship.api.push.parse;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.notification.Notification;
 import org.apache.commons.lang.RandomStringUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

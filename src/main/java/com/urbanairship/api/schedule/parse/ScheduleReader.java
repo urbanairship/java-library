@@ -21,6 +21,7 @@ public final class ScheduleReader implements JsonObjectReader<Schedule> {
     }
 
     public void readScheduledTime(JsonParser jsonParser) throws IOException {
+        String time = jsonParser.readValuesAs(DateTime.class).toString();
         builder.setScheduledTimestamp(jsonParser.readValueAs(DateTime.class));
     }
 

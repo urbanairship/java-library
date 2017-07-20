@@ -1,8 +1,8 @@
 package com.urbanairship.api.reports.parse;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.reports.model.PlatformStats;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
