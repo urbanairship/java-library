@@ -33,6 +33,12 @@ public class VariantDeserializer extends JsonDeserializer<Variant> {
                                 reader.readDescription(jsonParser);
                             }
                     })
+                    .put("schedule", new FieldParser<VariantReader>() {
+                        @Override
+                        public void parse(VariantReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readSchedule(jsonParser);
+                        }
+                    })
                     .put("weight", new FieldParser<VariantReader>() {
                             @Override
                             public void parse(VariantReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {

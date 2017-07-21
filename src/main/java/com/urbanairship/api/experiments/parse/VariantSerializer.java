@@ -23,6 +23,9 @@ public class VariantSerializer extends JsonSerializer<Variant>{
         if (variant.getDescription().isPresent()) {
             jgen.writeObjectField("description", variant.getDescription().get());
         }
+        if (variant.getSchedule().isPresent()) {
+            jgen.writeObjectField("schedule", variant.getSchedule().get());
+        }
         if (variant.getWeight().isPresent()) {
             jgen.writeObjectField("weight", variant.getWeight().get());
         }

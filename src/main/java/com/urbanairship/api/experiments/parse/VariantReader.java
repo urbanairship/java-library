@@ -8,6 +8,7 @@ import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.experiments.model.Variant;
 import com.urbanairship.api.experiments.model.VariantPushPayload;
+import com.urbanairship.api.schedule.model.Schedule;
 import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
@@ -27,6 +28,10 @@ public class VariantReader implements JsonObjectReader<Variant> {
 
     public void readDescription(JsonParser jsonParser) throws IOException {
         builder.setDescription(jsonParser.readValueAs(String.class));
+    }
+
+    public void readSchedule(JsonParser jsonParser) throws IOException {
+        builder.setSchedule(jsonParser.readValueAs(Schedule.class));
     }
 
     public void readWeight(JsonParser jsonParser) throws IOException {

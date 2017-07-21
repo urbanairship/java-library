@@ -41,9 +41,9 @@ public final class Schedule extends ScheduleModelObject {
     public String toString() {
         return "Schedule{" +
                 "scheduledTimestamp=" + scheduledTimestamp +
+                ", localTimePresent=" + localTimePresent +
                 '}';
     }
-
 
     /**
      * Get new Schedule Builder
@@ -67,7 +67,8 @@ public final class Schedule extends ScheduleModelObject {
             return false;
         }
         final Schedule other = (Schedule) obj;
-        return Objects.equal(this.scheduledTimestamp, other.scheduledTimestamp) && Objects.equal(this.localTimePresent, other.localTimePresent);
+        return Objects.equal(this.scheduledTimestamp, other.scheduledTimestamp)
+                && Objects.equal(this.localTimePresent, other.localTimePresent);
     }
 
     /**
