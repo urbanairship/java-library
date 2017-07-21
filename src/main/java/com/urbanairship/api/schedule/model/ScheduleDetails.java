@@ -29,12 +29,11 @@ public final class ScheduleDetails extends ScheduleModelObject {
         return jobId;
     }
 
-
     @Override
     public String toString() {
         return "ScheduleDetails{" +
                 "jobId='" + jobId + '\'' +
-                ", schedulePayload='" + schedulePayload + '\'' +
+                ", schedulePayload=" + schedulePayload +
                 '}';
     }
 
@@ -52,7 +51,8 @@ public final class ScheduleDetails extends ScheduleModelObject {
             return false;
         }
         final ScheduleDetails other = (ScheduleDetails) obj;
-        return Objects.equal(this.jobId, other.jobId) && Objects.equal(this.schedulePayload, other.schedulePayload);
+        return Objects.equal(this.jobId, other.jobId)
+                && Objects.equal(this.schedulePayload, other.schedulePayload);
     }
 
     public static final class Builder {

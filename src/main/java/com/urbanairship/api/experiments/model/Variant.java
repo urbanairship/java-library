@@ -7,6 +7,7 @@ package com.urbanairship.api.experiments.model;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.urbanairship.api.schedule.model.Schedule;
 
 import java.math.BigDecimal;
 
@@ -17,12 +18,14 @@ public class Variant {
 
     private Optional<String> name;
     private Optional<String> description;
+    private Optional<Schedule> schedule;
     private final VariantPushPayload variantPushPayload;
     private Optional<BigDecimal> weight;
 
     private Variant(Builder builder) {
         this.name = Optional.fromNullable(builder.name);
         this.description = Optional.fromNullable(builder.description);
+        this.schedule = Optional.fromNullable(builder.schedule);
         this.variantPushPayload = builder.variantPushPayload;
         this.weight = Optional.fromNullable(builder.weight);
     }
@@ -52,6 +55,14 @@ public class Variant {
     }
 
     /**
+     * Get the scheduled delivery time for the variant push.
+     * @return schedule
+     */
+    public Optional<Schedule> getSchedule() {
+        return schedule;
+    }
+
+    /**
      * Get the partial push notification associated with the variant. A partial push notification object
      * represents a Push payload, excepting the audience and device_types fields because they are defined in the
      * experiment object. Message Center messages are also not included in the partial push payload object.
@@ -72,7 +83,7 @@ public class Variant {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(name, description, variantPushPayload, weight);
+        return Objects.hashCode(name, description, schedule, variantPushPayload, weight);
     }
 
     @Override
@@ -86,6 +97,7 @@ public class Variant {
         final Variant other = (Variant) obj;
         return Objects.equal(this.name, other.name)
                 && Objects.equal(this.description, other.description)
+                && Objects.equal(this.schedule, other.schedule)
                 && Objects.equal(this.variantPushPayload, other.variantPushPayload)
                 && Objects.equal(this.weight, other.weight);
     }
@@ -95,6 +107,7 @@ public class Variant {
         return "Variant{" +
                 "name=" + name +
                 ", description=" + description +
+                ", schedule=" + schedule +
                 ", variantPushPayload=" + variantPushPayload +
                 ", weight=" + weight +
                 '}';
@@ -107,6 +120,7 @@ public class Variant {
 
         private String name;
         private String description;
+        private Schedule schedule;
         private VariantPushPayload variantPushPayload;
         private BigDecimal weight;
 
@@ -127,6 +141,16 @@ public class Variant {
          */
         public Builder setDescription(String description) {
             this.description = description;
+            return this;
+        }
+
+        /**
+         * Set the time at which the variant push should be sent.
+         * @param schedule Schedule
+         * @return Builder
+         */
+        public Builder setSchedule(Schedule schedule) {
+            this.schedule = schedule;
             return this;
         }
 
