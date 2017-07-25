@@ -1,6 +1,9 @@
 package com.urbanairship.api.experiments.model;
 
 import com.urbanairship.api.push.model.notification.Notification;
+import com.urbanairship.api.schedule.model.Schedule;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.junit.Test;
 
 import java.math.BigDecimal;
