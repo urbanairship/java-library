@@ -40,7 +40,7 @@ public class Variant {
 
     /**
      * Get the name of the variant.
-     * @return name
+     * @return an Optional String
      */
     public Optional<String> getName() {
         return name;
@@ -48,7 +48,7 @@ public class Variant {
 
     /**
      * Get the description of the experiment.
-     * @return description
+     * @return an Optional String
      */
     public Optional<String> getDescription() {
         return description;
@@ -56,7 +56,7 @@ public class Variant {
 
     /**
      * Get the scheduled delivery time for the variant push.
-     * @return schedule
+     * @return an Optional Schedule object
      */
     public Optional<Schedule> getSchedule() {
         return schedule;
@@ -66,7 +66,7 @@ public class Variant {
      * Get the partial push notification associated with the variant. A partial push notification object
      * represents a Push payload, excepting the audience and device_types fields because they are defined in the
      * experiment object. Message Center messages are also not included in the partial push payload object.
-     * @return VariantPushPayload
+     * @return VariantPushPayload object
      */
     public VariantPushPayload getVariantPushPayload() {
         return variantPushPayload;
@@ -75,7 +75,7 @@ public class Variant {
     /**
      * Get the weight of the variant. Defaults to 1. A whole number, representing the proportion of the audience
      * that will receive the variant.
-     * @return weight
+     * @return an Optional BigDecimal
      */
     public  Optional<BigDecimal> getWeight() {
         return weight;

@@ -46,7 +46,7 @@ public final class Experiment extends ExperimentModelObject {
 
     /**
      * Get the name of the experiment.
-     * @return name
+     * @return an Optional String
      */
     public Optional<String> getName() {
         return name;
@@ -54,7 +54,7 @@ public final class Experiment extends ExperimentModelObject {
 
     /**
      * Get the description for the experiment.
-     * @return description
+     * @return an Optional String
      */
     public Optional<String> getDescription() {
         return description;
@@ -64,7 +64,7 @@ public final class Experiment extends ExperimentModelObject {
      * Get the control group for the experiment. A control is a float between 0 and 1, e.g., 0.4,
      * representing the proportion of the audience that will not receive a push.
      * The remaining audience is split between the variants.
-     * @return control
+     * @return an Optional BigDecimal
      */
     public Optional<BigDecimal> getControl() {
         return control;
@@ -72,7 +72,7 @@ public final class Experiment extends ExperimentModelObject {
 
     /**
      * Get the audience for the experiment.
-     * @return audience
+     * @return an Audience object
      */
     public Selector getAudience() {
         return audience;
@@ -80,7 +80,7 @@ public final class Experiment extends ExperimentModelObject {
 
     /**
      * Boolean indicating whether audience is SelectorType.ALL
-     * @return audience is all
+     * @return Boolean
      */
     public boolean isBroadcast() {
         return audience.getType().equals(SelectorType.ALL);
@@ -88,7 +88,7 @@ public final class Experiment extends ExperimentModelObject {
 
     /**
      * Get the device types for the experiment.
-     * @return DeviceTypeData
+     * @return a DeviceTypeData object
      */
     public DeviceTypeData getDeviceTypes() {
         return deviceTypes;
@@ -97,7 +97,7 @@ public final class Experiment extends ExperimentModelObject {
     /**
      * Get the variants for the experiment. A variant defines a push that will be sent to a subset of the experiment's
      * audience.
-     * @return variants
+     * @return variants List<Variant>
      */
     public List<Variant> getVariants() {
         return variants;
