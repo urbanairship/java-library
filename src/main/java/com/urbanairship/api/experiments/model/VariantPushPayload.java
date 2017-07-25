@@ -31,7 +31,6 @@ public class VariantPushPayload {
 
     /**
      * Create a new VariantPushPayload Builder object.
-     *
      * @return Builder
      */
     public static Builder newBuilder() {
@@ -40,7 +39,6 @@ public class VariantPushPayload {
 
     /**
      * Get the push notification object.
-     *
      * @return An optional Notification object
      */
     public Optional<Notification> getNotification() {
@@ -49,7 +47,6 @@ public class VariantPushPayload {
 
     /**
      * Get the push options object. Specifies delivery options for the push.
-     *
      * @return An optional PushOptions object
      */
     public Optional<PushOptions> getPushOptions() {
@@ -58,7 +55,6 @@ public class VariantPushPayload {
 
     /**
      * Get the in-app message object.
-     *
      * @return An optional InApp object
      */
     public Optional<InApp> getInApp() {
@@ -103,7 +99,6 @@ public class VariantPushPayload {
 
         /**
          * Set the push notification.
-         *
          * @param notification A Notification object
          * @return Builder
          */
@@ -114,7 +109,6 @@ public class VariantPushPayload {
 
         /**
          * Set push options. A place to specify delivery options for the push.
-         *
          * @param pushOptions A PushOptions object
          * @return Builder
          */
@@ -125,7 +119,6 @@ public class VariantPushPayload {
 
         /**
          * Set the in-app message object.
-         *
          * @param inApp An InApp message object
          * @return Builder
          */
@@ -136,7 +129,6 @@ public class VariantPushPayload {
 
         /**
          * Build the variant push object.
-         *
          * <pre>
          *     1. Either an in-app message or notification must be set.
          * </pre>
