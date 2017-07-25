@@ -13,7 +13,6 @@ import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.ProxyServer;
 import com.ning.http.client.filter.FilterContext;
-import com.urbanairship.api.customevents.CustomEventRequest;
 import org.apache.http.entity.ContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +26,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-
-import static com.google.common.base.Optional.*;
 
 /**
  * The UrbanAirshipClient class handles HTTP requests to the Urban Airship API.
@@ -45,15 +42,15 @@ public class UrbanAirshipClient implements Closeable {
 
     private UrbanAirshipClient(Builder builder) {
         this.appKey = builder.key;
-        this.appSecret = fromNullable(builder.secret);
-        this.bearerToken = fromNullable(builder.bearerToken);
+        this.appSecret = Optional.fromNullable(builder.secret);
+        this.bearerToken = Optional.fromNullable(builder.bearerToken);
         this.baseUri = URI.create(builder.baseUri);
 
         AsyncHttpClientConfig.Builder clientConfigBuilder = builder.clientConfigBuilder;
         clientConfigBuilder.setUserAgent(getUserAgent());
-        clientConfigBuilder.addResponseFilter(new RequestRetryFilter(builder.maxRetries, fromNullable(builder.retryPredicate)));
+        clientConfigBuilder.addResponseFilter(new RequestRetryFilter(builder.maxRetries, Optional.fromNullable(builder.retryPredicate)));
 
-        Optional<ProxyServer> proxyServer = convertProxyInfo(fromNullable(builder.proxyInfo));
+        Optional<ProxyServer> proxyServer = convertProxyInfo(Optional.fromNullable(builder.proxyInfo));
         if (proxyServer.isPresent()) {
             clientConfigBuilder.setProxyServer(proxyServer.get());
         }
@@ -179,7 +176,7 @@ public class UrbanAirshipClient implements Closeable {
         }
 
         log.debug(String.format("Executing Urban Airship request to %s with body %s.", uri, request.getRequestBody()));
-        ResponseAsyncHandler<T> handler = new ResponseAsyncHandler<>(fromNullable(callback), request.getResponseParser());
+        ResponseAsyncHandler<T> handler = new ResponseAsyncHandler<>(Optional.fromNullable(callback), request.getResponseParser());
         return requestBuilder.execute(handler);
     }
 
