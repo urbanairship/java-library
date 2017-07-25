@@ -21,7 +21,7 @@ public class ChannelResponseTest {
     @Test
     public void testAPIListAllChannelsResponse() {
 
-        String sixresponse = "{\n" +
+        String sevenresponse = "{\n" +
             "  \"ok\": true,\n" +
             "  \"channels\": [\n" +
             "    {\n" +
@@ -181,18 +181,44 @@ public class ChannelResponseTest {
             "            }\n" +
             "        },\n" +
             "        \"last_registration\": \"2017-03-09T16:27:20\"\n" +
+            "    },\n" +
+            "    {\n" +
+            "       \"channel_id\": \"666897e4-84c3-4c76-af86-9ece6290egth\",\n" +
+            "       \"device_type\": \"open\",\n" +
+            "       \"installed\": true,\n" +
+            "       \"named_user_id\": null,\n" +
+            "       \"alias\": null,\n" +
+            "       \"tags\": [ ],\n" +
+            "       \"tag_groups\": {\n" +
+            "           \"ua_channel_type\": [\n" +
+            "               \"e7fd997e-0010-4b05-995e-93aa3f7f2fte\"\n" +
+            "           ],\n" +
+            "           \"ua_opt_in\": [\n" +
+            "                \"true\"\n" +
+            "           ]\n" +
+            "       },\n" +
+            "       \"created\": \"2017-06-29T19:25:31\",\n" +
+            "       \"address\": \"`uuid`\",\n" +
+            "       \"opt_in\": true,\n" +
+            "       \"open\": {\n" +
+            "            \"open_platform_name\": \"open platform name\",\n" +
+            "           \"old_address\": \"old address\",\n" +
+            "           \"identifiers\": {\n" +
+            "                \"demo\": \"foo\",\n" +
+            "               \"customer_uuid\": \"`uuid`\"\n" +
+            "           }\n" +
+            "       },\n" +
+            "       \"last_registration\": \"2017-06-29T19:25:31\"\n" +
             "    }" +
             "  ],\n" +
             "  \"next_page\": \"https:\\/\\/go.urbanairship.com\\/api\\/channels?limit=5&start=0143e4d6-724c-4fc8-bbc6-ca647b8993bf\"\n" +
             "}";
-
-
         try {
-            ChannelResponse response = MAPPER.readValue(sixresponse, ChannelResponse.class);
+            ChannelResponse response = MAPPER.readValue(sevenresponse, ChannelResponse.class);
 
             assertTrue(response.getOk());
             assertEquals("https://go.urbanairship.com/api/channels?limit=5&start=0143e4d6-724c-4fc8-bbc6-ca647b8993bf", response.getNextPage().get());
-            assertEquals(6, response.getChannelObjects().get().size());
+            assertEquals(7, response.getChannelObjects().get().size());
 
             ChannelView one = response.getChannelObjects().get().get(0);
             assertNotNull(one);
@@ -290,6 +316,12 @@ public class ChannelResponseTest {
             assertTrue(six.isOptIn());
             assertTrue(six.getTags().contains("test1"));
 
+            ChannelView seven = response.getChannelObjects().get().get(6);
+            assertNotNull(seven);
+            assertEquals(ChannelType.OPEN, seven.getChannelType());
+            assertEquals(2, seven.getOpen().get().getIdentifiers().get().size());
+            assertEquals("open platform name", seven.getOpen().get().getOpenPlatformName());
+            assertEquals("old address", seven.getOpen().get().getOldAddress().get());
 
         } catch (Exception ex) {
             ex.printStackTrace();
