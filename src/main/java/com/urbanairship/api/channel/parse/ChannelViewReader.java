@@ -11,6 +11,7 @@ import com.urbanairship.api.channel.Constants;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.channel.model.ChannelView;
 import com.urbanairship.api.channel.model.ios.IosSettings;
+import com.urbanairship.api.channel.model.open.OpenChannel;
 import com.urbanairship.api.channel.model.web.WebSettings;
 import com.urbanairship.api.client.UrbanAirshipClient;
 import com.urbanairship.api.common.parse.APIParsingException;
@@ -97,6 +98,10 @@ public final class ChannelViewReader implements JsonObjectReader<ChannelView> {
 
     public void readWeb(JsonParser jsonParser) throws IOException {
         builder.setWebSettings(jsonParser.readValueAs(WebSettings.class));
+    }
+
+    public void readOpenChannel(JsonParser jsonParser) throws IOException {
+        builder.setOpenChannel(jsonParser.readValueAs(OpenChannel.class));
     }
 
     @Override
