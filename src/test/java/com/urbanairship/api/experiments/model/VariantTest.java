@@ -18,7 +18,7 @@ public class VariantTest {
 
         VariantPushPayload payload = VariantPushPayload.newBuilder()
                 .setNotification(Notification.newBuilder()
-                        .setAlert("Hello Jenn")
+                        .setAlert("Hello there!")
                         .build()
                 )
                 .build();

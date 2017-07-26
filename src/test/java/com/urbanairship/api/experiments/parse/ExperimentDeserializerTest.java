@@ -27,7 +27,7 @@ public class ExperimentDeserializerTest {
                         "\"audience\":{\"named_user\":\"birdperson\"}," +
                         "\"device_types\":[\"ios\"]," +
                         "\"variants\":[" +
-                        "{\"push\":{\"notification\":{\"alert\":\"Hello Jenn\"}}}," +
+                        "{\"push\":{\"notification\":{\"alert\":\"Hello there\"}}}," +
                         "{\"push\":{\"notification\":{\"alert\":\"Boogaloo\"}}}]," +
                         "\"name\":\"Another test\"," +
                         "\"description\":\"Its a test hoo boy\"" +
@@ -52,7 +52,7 @@ public class ExperimentDeserializerTest {
                 "{" +
                         "\"device_types\":[\"ios\"]," +
                         "\"variants\":[" +
-                        "{\"push\":{\"notification\":{\"alert\":\"Hello Jenn\"}}}," +
+                        "{\"push\":{\"notification\":{\"alert\":\"Hello there\"}}}," +
                         "{\"push\":{\"notification\":{\"alert\":\"Boogaloo\"}}}]," +
                         "\"name\":\"Another test\"," +
                         "\"description\":\"Its a test hoo boy\"" +
@@ -70,7 +70,7 @@ public class ExperimentDeserializerTest {
                 "{" +
                         "\"audience\":{\"named_user\":\"birdperson\"}," +
                         "\"variants\":[" +
-                        "{\"push\":{\"notification\":{\"alert\":\"Hello Jenn\"}}}," +
+                        "{\"push\":{\"notification\":{\"alert\":\"Hello there\"}}}," +
                         "{\"push\":{\"notification\":{\"alert\":\"Boogaloo\"}}}]," +
                         "\"name\":\"Another test\"," +
                         "\"description\":\"Its a test hoo boy\"" +
