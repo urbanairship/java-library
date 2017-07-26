@@ -320,6 +320,7 @@ public class ChannelResponseTest {
             assertNotNull(seven);
             assertEquals(ChannelType.OPEN, seven.getChannelType());
             assertEquals(2, seven.getOpen().get().getIdentifiers().get().size());
+            assertEquals("foo", seven.getOpen().get().getIdentifiers().get().get("demo"));
             assertEquals("open platform name", seven.getOpen().get().getOpenPlatformName());
             assertEquals("old address", seven.getOpen().get().getOldAddress().get());
 
