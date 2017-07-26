@@ -39,7 +39,7 @@ public class ExperimentRequestTest {
         Variant variantOne = Variant.newBuilder()
                 .setPushPayload(VariantPushPayload.newBuilder()
                         .setNotification(Notification.newBuilder()
-                                .setAlert("Hello Jenn")
+                                .setAlert("Hello there!")
                                 .build()
                         )
                         .build())
@@ -56,7 +56,7 @@ public class ExperimentRequestTest {
 
         Experiment experiment = Experiment.newBuilder()
                 .setName("Another test")
-                .setDescription("Its a test hoo boy")
+                .setDescription("Its a test!")
                 .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
                 .setAudience(Selectors.namedUser("birdperson"))
                 .addVariant(variantOne)
