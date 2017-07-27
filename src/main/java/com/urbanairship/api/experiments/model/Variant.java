@@ -9,8 +9,6 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.schedule.model.Schedule;
 
-import java.math.BigDecimal;
-
 /**
  * Defines a push that will be sent to a subset of an experiment's audience.
  */
@@ -20,7 +18,7 @@ public class Variant {
     private Optional<String> description;
     private Optional<Schedule> schedule;
     private final VariantPushPayload variantPushPayload;
-    private Optional<BigDecimal> weight;
+    private Optional<Integer> weight;
 
     private Variant(Builder builder) {
         this.name = Optional.fromNullable(builder.name);
@@ -75,9 +73,9 @@ public class Variant {
     /**
      * Get the weight of the variant. Defaults to 1. A whole number, representing the proportion of the audience
      * that will receive the variant.
-     * @return an Optional BigDecimal
+     * @return an Optional Integer
      */
-    public  Optional<BigDecimal> getWeight() {
+    public  Optional<Integer> getWeight() {
         return weight;
     }
 
@@ -122,7 +120,7 @@ public class Variant {
         private String description;
         private Schedule schedule;
         private VariantPushPayload variantPushPayload;
-        private BigDecimal weight;
+        private Integer weight;
 
         /**
          * Set the variant name.
@@ -169,10 +167,10 @@ public class Variant {
         /**
          * Set the weight of the variant. Defaults to 1. A whole number, representing the proportion of the audience
          * that will receive the variant.
-         * @param weight BigDecimal
+         * @param weight Integer
          * @return Builder
          */
-        public Builder setWeight(BigDecimal weight) {
+        public Builder setWeight(Integer weight) {
             this.weight = weight;
             return this;
         }
