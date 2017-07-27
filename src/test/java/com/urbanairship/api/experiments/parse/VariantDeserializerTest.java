@@ -1,8 +1,10 @@
 package com.urbanairship.api.experiments.parse;
 
 import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.experiments.model.Variant;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.joda.time.DateTime;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -20,11 +22,21 @@ public class VariantDeserializerTest {
     public void testVariant() throws Exception {
         String variantString =
                 "{" +
-                        "\"push\":{\"notification\":{\"alert\":\"Hello there\"}}" +
+                        "\"schedule\": {" +
+                        "\"scheduled_time\": \"2017-07-27T18:27:25.000Z\"" +
+                        "}," +
+                        "\"push\":{\"notification\":{\"alert\":\"Hello there\"}}," +
+                        "\"name\":\"A name\"," +
+                        "\"description\":\"A description\"," +
+                        "\"weight\":\"4\"" +
                         "}";
 
         Variant variant = MAPPER.readValue(variantString, Variant.class);
         assertNotNull(variant);
+        assertTrue(variant.getSchedule().isPresent());
+        assertTrue(variant.getName().isPresent());
+        assertTrue(variant.getDescription().isPresent());
+        assertTrue(variant.getWeight().isPresent());
         assertTrue(variant.getVariantPushPayload().getNotification().isPresent());
     }
 
