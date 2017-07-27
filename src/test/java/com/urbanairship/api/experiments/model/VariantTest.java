@@ -27,13 +27,13 @@ public class VariantTest {
                 .setName("name")
                 .setDescription("description")
                 .setPushPayload(payload)
-                .setWeight(new BigDecimal(0.1))
+                .setWeight(new Integer(1))
                 .build();
 
         assertNotNull(variant);
         assertEquals(variant.getName().get(), "name");
         assertEquals(variant.getDescription().get(), "description");
-        assertEquals(variant.getWeight().get(), new BigDecimal(0.1));
+        assertEquals(variant.getWeight().get(), new Integer(1));
         assertEquals(variant.getVariantPushPayload(), payload);
 
     }

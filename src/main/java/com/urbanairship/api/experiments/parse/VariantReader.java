@@ -12,7 +12,6 @@ import com.urbanairship.api.schedule.model.Schedule;
 import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 
 public class VariantReader implements JsonObjectReader<Variant> {
 
@@ -35,7 +34,7 @@ public class VariantReader implements JsonObjectReader<Variant> {
     }
 
     public void readWeight(JsonParser jsonParser) throws IOException {
-        builder.setWeight(jsonParser.readValueAs(BigDecimal.class));
+        builder.setWeight(jsonParser.readValueAs(Integer.class));
     }
 
     public void readVariantPushPayload(JsonParser parser) throws IOException {
