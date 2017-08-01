@@ -28,10 +28,10 @@ public class ExperimentResponseDeserializer extends JsonDeserializer<ExperimentR
                                     reader.readOperationId(jsonParser);
                                 }
                             })
-                            .put("push_ids", new FieldParser<ExperimentResponseReader>() {
+                            .put("push_id", new FieldParser<ExperimentResponseReader>() {
                                 @Override
                                 public void parse(ExperimentResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readPushIds(jsonParser);
+                                    reader.readPushId(jsonParser);
                                 }
                             })
                             .put("ok", new FieldParser<ExperimentResponseReader>() {

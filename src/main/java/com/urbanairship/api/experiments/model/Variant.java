@@ -4,6 +4,7 @@
 
 package com.urbanairship.api.experiments.model;
 
+
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -155,7 +156,8 @@ public class Variant {
         /**
          * Set the partial push notification associated with the variant. A partial push notification object
          * represents a Push payload, excepting the audience and device_types fields because they are defined in the
-         * experiment object. Message Center messages are also not included in the partial push payload object.
+         * experiment object. Message Center messages are not supported by the Experiments API so they are also not
+         * included in the partial push payload object.
          * @param variantPushPayload VariantPushPayload
          * @return Builder
          */

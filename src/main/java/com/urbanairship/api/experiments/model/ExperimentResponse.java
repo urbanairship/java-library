@@ -16,17 +16,17 @@ public final class ExperimentResponse {
     private final boolean ok;
     private final Optional<String> operationId;
     private final Optional<String> experimentId;
-    private final Optional<ImmutableList<String>> pushIds;
+    private final Optional<String> pushId;
 
     private ExperimentResponse(boolean ok,
                               String operationId,
                               String experimentId,
-                              ImmutableList<String> pushIds) {
+                              String pushId) {
 
         this.ok = ok;
         this.operationId = Optional.fromNullable(operationId);
         this.experimentId = Optional.fromNullable(experimentId);
-        this.pushIds = Optional.fromNullable(pushIds);
+        this.pushId = Optional.fromNullable(pushId);
     }
 
     /**
@@ -73,8 +73,8 @@ public final class ExperimentResponse {
      *
      * @return Optional push id for this API request.
      */
-    public Optional<ImmutableList<String>> getPushIds() {
-        return pushIds;
+    public Optional<String> getPushId() {
+        return pushId;
     }
 
     @Override
@@ -83,13 +83,13 @@ public final class ExperimentResponse {
                 "ok=" + ok +
                 ", operationId=" + operationId +
                 ", experimentId=" + experimentId +
-                ", pushId=" + pushIds +
+                ", pushId=" + pushId +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(operationId, pushIds, ok, experimentId);
+        return Objects.hashCode(operationId, pushId, ok, experimentId);
     }
 
     @Override
@@ -102,7 +102,7 @@ public final class ExperimentResponse {
         }
         final ExperimentResponse other = (ExperimentResponse) obj;
         return Objects.equal(this.operationId, other.operationId)
-                && Objects.equal(this.pushIds, other.pushIds)
+                && Objects.equal(this.pushId, other.pushId)
                 && Objects.equal(this.ok, other.ok)
                 && Objects.equal(this.experimentId, other.experimentId);
     }
@@ -113,7 +113,7 @@ public final class ExperimentResponse {
     public static class Builder {
 
         private String operationId = null;
-        private ImmutableList.Builder<String> pushIds = ImmutableList.builder();
+        private String pushId = null;
         private boolean ok = false;
         private String experimentId = null;
 
@@ -154,24 +154,13 @@ public final class ExperimentResponse {
         }
 
         /**
-         * Add a single push ID.
+         * Set the push ID.
          *
          * @param pushId A string
          * @return Builder
          */
-        public Builder addPushId(String pushId) {
-            this.pushIds.add(pushId);
-            return this;
-        }
-
-        /**
-         * Add a list of push IDs.
-         *
-         * @param pushIds A list of strings.
-         * @return Builder
-         */
-        public Builder addAllPushIds(Iterable<? extends String> pushIds) {
-            this.pushIds.addAll(pushIds);
+        public Builder setPushId(String pushId) {
+            this.pushId = pushId;
             return this;
         }
 
@@ -181,7 +170,7 @@ public final class ExperimentResponse {
          * @return ExperimentResponse
          */
         public ExperimentResponse build() {
-            return new ExperimentResponse(ok, operationId, experimentId, pushIds.build());
+            return new ExperimentResponse(ok, operationId, experimentId, pushId);
         }
     }
 }

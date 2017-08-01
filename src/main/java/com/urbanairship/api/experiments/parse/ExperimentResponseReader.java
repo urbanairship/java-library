@@ -8,10 +8,8 @@ import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.experiments.model.ExperimentResponse;
 import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.type.TypeReference;
 
 import java.io.IOException;
-import java.util.List;
 
 public class ExperimentResponseReader implements JsonObjectReader<ExperimentResponse> {
 
@@ -25,9 +23,8 @@ public class ExperimentResponseReader implements JsonObjectReader<ExperimentResp
         builder.setOperationId(jsonParser.readValueAs(String.class));
     }
 
-    public void readPushIds(JsonParser jsonParser) throws IOException {
-        List<String> list = jsonParser.readValueAs(new TypeReference<List<String>>() {});
-        builder.addAllPushIds(list);
+    public void readPushId(JsonParser jsonParser) throws IOException {
+        builder.setPushId(jsonParser.readValueAs(String.class));
     }
 
     public void readOk(JsonParser jsonParser) throws IOException {

@@ -4,18 +4,19 @@
 
 package com.urbanairship.api.experiments.model;
 
+
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.InApp;
 import com.urbanairship.api.push.model.PushOptions;
 import com.urbanairship.api.push.model.notification.Notification;
 
-import java.util.Objects;
-
 /**
  * A VariantPushPayload object, used when creating an A/B test. A partial push notification object
  * represents a Push payload, excepting the audience and device_types fields because they are defined in the
- * experiment object. Message Center messages are also not included in the partial push payload object.
+ * experiment object. MMessage Center messages are not supported by the Experiments API so they are also not
+ * included in the partial push payload object.
  */
 public class VariantPushPayload {
 
@@ -72,7 +73,7 @@ public class VariantPushPayload {
 
     @Override
     public int hashCode() {
-        return Objects.hash(notification, pushOptions, inApp);
+        return Objects.hashCode(notification, pushOptions, inApp);
     }
 
     @Override
@@ -84,9 +85,9 @@ public class VariantPushPayload {
             return false;
         }
         final VariantPushPayload other = (VariantPushPayload) obj;
-        return Objects.equals(this.notification, other.notification)
-                && Objects.equals(this.pushOptions, other.pushOptions)
-                && Objects.equals(this.inApp, other.inApp);
+        return Objects.equal(this.notification, other.notification)
+                && Objects.equal(this.pushOptions, other.pushOptions)
+                && Objects.equal(this.inApp, other.inApp);
     }
 
     /**

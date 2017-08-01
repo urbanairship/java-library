@@ -13,17 +13,13 @@ public class ExperimentResponseTest {
         ExperimentResponse response = ExperimentResponse.newBuilder()
                 .setOk(true)
                 .setOperationId("op123")
-                .addPushId("id1")
-                .addPushId("id2")
-                .addPushId("id3")
+                .setPushId("id1")
                 .build();
 
         assertNotNull(response);
         assertEquals(response.getOk(), true);
         assertEquals(response.getOperationId().get(), "op123");
-        assertEquals(response.getPushIds().get().get(0), "id1");
-        assertEquals(response.getPushIds().get().get(1), "id2");
-        assertEquals(response.getPushIds().get().get(2), "id3");
+        assertEquals(response.getPushId().get(), "id1");
         assertFalse(response.getExperimentId().isPresent());
     }
 }
