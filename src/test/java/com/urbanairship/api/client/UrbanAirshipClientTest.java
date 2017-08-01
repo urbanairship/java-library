@@ -14,6 +14,11 @@ import com.urbanairship.api.channel.ChannelTagRequest;
 import com.urbanairship.api.channel.model.ChannelResponse;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.common.parse.DateFormats;
+import com.urbanairship.api.experiments.ExperimentRequest;
+import com.urbanairship.api.experiments.model.Experiment;
+import com.urbanairship.api.experiments.model.ExperimentResponse;
+import com.urbanairship.api.experiments.model.VariantPushPayload;
+import com.urbanairship.api.experiments.model.Variant;
 import com.urbanairship.api.location.LocationRequest;
 import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.LocationResponse;
@@ -29,6 +34,7 @@ import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.PushResponse;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.Selectors;
+import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.reports.PlatformStatsRequest;
@@ -86,6 +92,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -3091,5 +3098,136 @@ public class UrbanAirshipClientTest {
         assertNotNull(response.getBody().get().getTemplates().get());
         assertNotNull(response.getBody().get().getNextPage());
         assertNotNull(response.getBody().get().getPrevPage());
+    }
+
+    @Test
+    public void testCreateExperiment() throws Exception {
+        String queryPathString = "/api/experiments/";
+        String responseJson =
+                "{" +
+                        "\"ok\": true," +
+                        "\"operation_id\": \"df6a6b50-9843-0304-d5a5-743f246a4946\"," +
+                        "\"experiment_id\": \"1cbfbfa2-08d1-92c2-7119-f8f7f670f5f6\"" +
+                        "}";
+
+        stubFor(post(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withStatus(201)
+                        .withBody(responseJson)));
+
+        VariantPushPayload payloadOne = VariantPushPayload.newBuilder()
+                .setNotification(Notification.newBuilder()
+                        .setAlert("Hello")
+                        .build()
+                )
+                .build();
+
+        Variant variantOne = Variant.newBuilder()
+                .setPushPayload(payloadOne)
+                .build();
+
+        VariantPushPayload payloadTwo = VariantPushPayload.newBuilder()
+                .setNotification(Notification.newBuilder()
+                        .setAlert("Goodbye")
+                        .build()
+                )
+                .build();
+
+        Variant variantTwo = Variant.newBuilder()
+                .setPushPayload(payloadTwo)
+                .build();
+
+        Experiment experiment = Experiment.newBuilder()
+                .setName("name")
+                .setDescription("description")
+                .setControl(new BigDecimal(0.1))
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setAudience(Selectors.all())
+                .addVariant(variantOne)
+                .addVariant(variantTwo)
+                .build();
+
+        try {
+            final CountDownLatch latch = new CountDownLatch(1);
+            Response<ExperimentResponse> response = client.execute(ExperimentRequest.newRequest(experiment), new ResponseCallback() {
+                @Override
+                public void completed(Response response) {
+                    latch.countDown();
+                }
+
+                @Override
+                public void error(Throwable throwable) {
+
+                }
+            });
+            latch.await();
+
+            // Verify components of the underlying HttpRequest
+            verify(postRequestedFor(urlEqualTo("/api/experiments/"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+            List<LoggedRequest> requests = findAll(postRequestedFor(
+                    urlEqualTo("/api/experiments/")));
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+            assertNotNull(response);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testExperimentValidate() {
+
+        VariantPushPayload payloadOne = VariantPushPayload.newBuilder()
+                .setNotification(Notification.newBuilder()
+                        .setAlert("Hello")
+                        .build()
+                )
+                .build();
+
+        Variant variantOne = Variant.newBuilder()
+                .setPushPayload(payloadOne)
+                .build();
+
+        VariantPushPayload payloadTwo = VariantPushPayload.newBuilder()
+                .setNotification(Notification.newBuilder()
+                        .setAlert("Goodbye")
+                        .build()
+                )
+                .build();
+
+        Variant variantTwo = Variant.newBuilder()
+                .setPushPayload(payloadTwo)
+                .build();
+
+        Experiment experiment = Experiment.newBuilder()
+                .setName("name")
+                .setDescription("description")
+                .setControl(new BigDecimal(0.1))
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setAudience(Selectors.namedUser("birdperson"))
+                .addVariant(variantOne)
+                .addVariant(variantTwo)
+                .build();
+
+        // Setup a stubbed response for the server
+        String experimentJSON = "{\"ok\" : true,\"operation_id\" : \"df6a6b50\", \"experiment_id\": \"ExperimentID\"}";
+        stubFor(post(urlEqualTo("/api/experiments/validate/"))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withBody(experimentJSON)
+                        .withStatus(201)));
+        try {
+            Response<ExperimentResponse> response = client.execute(ExperimentRequest.newRequest(experiment).setValidateOnly(true));
+
+            // Verify components of the underlying HttpRequest
+            verify(postRequestedFor(urlEqualTo("/api/experiments/validate/"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+            assertNotNull(response);
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
+
     }
 }
