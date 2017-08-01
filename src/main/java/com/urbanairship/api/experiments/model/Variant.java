@@ -167,8 +167,8 @@ public class Variant {
         }
 
         /**
-         * Set the weight of the variant. Defaults to 1. A whole number, representing the proportion of the audience
-         * that will receive the variant.
+         * Set the weight of the variant. Defaults to 1. A whole number, which we use to compute the proportion of the
+         * audience that will receive this variant.
          * @param weight Integer
          * @return Builder
          */
