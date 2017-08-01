@@ -15,7 +15,7 @@ import com.urbanairship.api.push.model.notification.Notification;
 /**
  * A VariantPushPayload object, used when creating an A/B test. A partial push notification object
  * represents a Push payload, excepting the audience and device_types fields because they are defined in the
- * experiment object. MMessage Center messages are not supported by the Experiments API so they are also not
+ * experiment object. Message Center messages are not supported by the Experiments API so they are also not
  * included in the partial push payload object.
  */
 public class VariantPushPayload {
