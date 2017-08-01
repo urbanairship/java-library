@@ -236,6 +236,7 @@ public final class Experiment extends ExperimentModelObject {
             Preconditions.checkNotNull(audience, "'audience' must be set");
             Preconditions.checkNotNull(deviceTypes, "'device_types' must be set");
             Preconditions.checkNotNull(variants, "An experiment requires at least one variant.");
+            Preconditions.checkArgument(variants.size() > 0, "At least one variant must be present.");
 
             return new Experiment(this);
         }
