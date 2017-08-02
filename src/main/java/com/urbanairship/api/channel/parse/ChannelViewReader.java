@@ -43,15 +43,7 @@ public final class ChannelViewReader implements JsonObjectReader<ChannelView> {
     }
 
     public void readDeviceType(JsonParser jsonParser) throws IOException {
-        String deviceTypeString = jsonParser.getText();
-        Optional<ChannelType> deviceTypeOpt = ChannelType.find(deviceTypeString);
-
-        if (!deviceTypeOpt.isPresent()) {
-            log.error("Unrecognized device type " + deviceTypeString);
-            return;
-        }
-
-        builder.setChannelType(deviceTypeOpt.get());
+        builder.setChannelType(StringFieldDeserializer.INSTANCE.deserialize(jsonParser, Constants.DEVICE_TYPE));
     }
 
     public void readInstalled(JsonParser jsonParser) throws IOException {
