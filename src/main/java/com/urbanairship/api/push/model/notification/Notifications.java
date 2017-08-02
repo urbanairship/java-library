@@ -9,9 +9,7 @@ import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
-import com.urbanairship.api.push.model.notification.blackberry.BlackberryDevicePayload;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
-import com.urbanairship.api.push.model.notification.mpns.MPNSDevicePayload;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import com.urbanairship.api.push.model.notification.web.WebDevicePayload;
 import com.urbanairship.api.push.model.notification.wns.WNSDevicePayload;
@@ -49,12 +47,8 @@ public class Notifications {
             return iosAlert(text);
         case ANDROID:
             return androidAlert(text);
-        case BLACKBERRY:
-            return blackberryAlert(text);
         case WNS:
             return wnsAlert(text);
-        case MPNS:
-            return mpnsAlert(text);
         case AMAZON:
             return admAlert(text);
         case WEB:
@@ -76,25 +70,8 @@ public class Notifications {
             .build();
     }
 
-    @Deprecated
-    public static BlackberryDevicePayload blackberryAlert(String text) {
-        return BlackberryDevicePayload.newBuilder()
-            .setAlert(text)
-            .build();
-    }
-
     public static WNSDevicePayload wnsAlert(String text) {
         return WNSDevicePayload.newBuilder()
-            .setAlert(text)
-            .build();
-    }
-
-    /**
-     * @deprecated Marked to be removed in 2.0.0. MPNS is no longer supported by the Urban Airship API.
-     */
-    @Deprecated
-    public static MPNSDevicePayload mpnsAlert(String text) {
-        return MPNSDevicePayload.newBuilder()
             .setAlert(text)
             .build();
     }

@@ -28,7 +28,6 @@ public class Validation {
         switch (v.getType()) {
           case APID:
           case WNS:
-          case MPNS:
               // TODO: make this better
               if (v.getValue().length() < 16) {
                   throw new APIParsingException("Invalid APID");
@@ -36,9 +35,6 @@ public class Validation {
               break;
           case DEVICE_TOKEN:
               // TODO: validate Apple device tokens
-              break;
-          case DEVICE_PIN:
-              // TODO: validate blackberry device pins
               break;
           case TAG:
           case ALIAS:

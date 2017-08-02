@@ -11,9 +11,7 @@ public enum DeviceType {
 
     IOS("ios"),
     WNS("wns"),
-    MPNS("mpns"),
     ANDROID("android"),
-    BLACKBERRY("blackberry"),
     AMAZON("amazon"),
     WEB("web");
 
