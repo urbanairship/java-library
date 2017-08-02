@@ -89,7 +89,11 @@ public final class SchedulePayload extends ScheduleModelObject {
             return false;
         }
         final SchedulePayload other = (SchedulePayload) obj;
-        return Objects.equal(this.schedule, other.schedule) && Objects.equal(this.url, other.url) && Objects.equal(this.name, other.name) && Objects.equal(this.pushPayload, other.pushPayload) && Objects.equal(this.pushIds, other.pushIds);
+        return Objects.equal(this.schedule, other.schedule)
+                && Objects.equal(this.url, other.url)
+                && Objects.equal(this.name, other.name)
+                && Objects.equal(this.pushPayload, other.pushPayload)
+                && Objects.equal(this.pushIds, other.pushIds);
     }
 
     public static class Builder {

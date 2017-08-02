@@ -44,16 +44,4 @@ public class ChannelTypeDeserializerTest {
         assertEquals(1, parsed.size());
         assertEquals(DeviceType.ANDROID, Iterables.getOnlyElement(parsed));
     }
-
-    @Test
-    public void testDeserializeBlackberry() throws Exception {
-        String json = "[\"blackberry\"]";
-
-        Set<DeviceType> parsed = mapper.readValue(json, new TypeReference<Set<DeviceType>>() {
-        });
-
-        assertEquals(1, parsed.size());
-        assertEquals(DeviceType.BLACKBERRY, Iterables.getOnlyElement(parsed));
-    }
-
 }
