@@ -23,7 +23,7 @@ import java.util.Map;
 public final class ChannelView {
 
     private final String channelId;
-    private final ChannelType channelType;
+    private final String channelType;
     private final boolean installed;
     private final boolean optIn;
     private final Optional<Boolean> background;
@@ -44,7 +44,7 @@ public final class ChannelView {
     }
 
     private ChannelView(String channelId,
-                       ChannelType channelType,
+                       String channelType,
                        boolean installed,
                        boolean optIn,
                        Optional<Boolean> background,
@@ -94,9 +94,9 @@ public final class ChannelView {
     /**
      * Get the channel type
      *
-     * @return ChannelType
+     * @return String channelType
      */
-    public ChannelType getChannelType() {
+    public String getChannelType() {
         return channelType;
     }
 
@@ -262,7 +262,7 @@ public final class ChannelView {
         private final ImmutableSet.Builder<String> tags = ImmutableSet.builder();
         private final ImmutableMap.Builder<String, ImmutableSet<String>> tagGroups = ImmutableMap.builder();
         private String channelId = null;
-        private ChannelType channelType = null;
+        private String channelType = null;
         private Boolean optIn = null;
         private Boolean installed = null;
         private Boolean background = null;
@@ -291,10 +291,10 @@ public final class ChannelView {
         /**
          * Set the channel type
          *
-         * @param channelType ChannelType
+         * @param channelType String
          * @return Builder
          */
-        public Builder setChannelType(ChannelType channelType) {
+        public Builder setChannelType(String channelType) {
             this.channelType = channelType;
             return this;
         }

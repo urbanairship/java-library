@@ -61,7 +61,7 @@ public class NamedUserListingResponseTest {
         ChannelView channel = namedUserView.getChannelViews().iterator().next();
         assertTrue(channel.isOptIn());
         assertFalse(channel.getBackground().isPresent());
-        assertEquals(ChannelType.IOS, channel.getChannelType());
+        assertEquals(ChannelType.IOS.getIdentifier(), channel.getChannelType());
         assertTrue(channel.getIosSettings().isPresent());
         assertEquals(DateTime.parse("2013-08-08T20:41:06.000Z"), channel.getCreated());
         assertTrue(channel.getLastRegistration().isPresent());
@@ -130,7 +130,7 @@ public class NamedUserListingResponseTest {
         ChannelView channel = namedUserView1.getChannelViews().iterator().next();
         assertTrue(channel.isOptIn());
         assertFalse(channel.getBackground().isPresent());
-        assertEquals(ChannelType.IOS, channel.getChannelType());
+        assertEquals(ChannelType.IOS.getIdentifier(), channel.getChannelType());
         assertTrue(channel.getIosSettings().isPresent());
         assertEquals(DateTime.parse("2013-08-08T20:41:06.000Z"), channel.getCreated());
         assertTrue(channel.getLastRegistration().isPresent());
