@@ -1,7 +1,7 @@
 package com.urbanairship.api.experiments;
 
 /*
- * Copyright (c) 2013-2016.  Urban Airship and Contributors
+ * Copyright (c) 2013-2017.  Urban Airship and Contributors
  */
 
 import com.google.common.base.Preconditions;
