@@ -40,8 +40,7 @@ class ResponseAsyncHandler<T> implements AsyncHandler<Response> {
     private AtomicInteger retryCount = new AtomicInteger(0);
     private String exceptionContentType;
     private boolean isSuccessful;
-    private boolean is5XXError;
-
+    private Integer statusCode;
     /**
      * ResponseAsyncHandler constructor.
      *
@@ -55,7 +54,7 @@ class ResponseAsyncHandler<T> implements AsyncHandler<Response> {
 
     @Override
     public STATE onStatusReceived(HttpResponseStatus responseStatus) throws Exception {
-        Integer statusCode = responseStatus.getStatusCode();
+        statusCode = responseStatus.getStatusCode();
 
         if (statusCode >= 200 && statusCode < 300) {
             responseBuilder.setStatus(responseStatus.getStatusCode());
@@ -64,7 +63,6 @@ class ResponseAsyncHandler<T> implements AsyncHandler<Response> {
             serverExceptionBuilder.setStatusCode(statusCode);
             serverExceptionBuilder.setMessage(responseStatus.getStatusText());
             isSuccessful = false;
-            is5XXError = true;
         } else {
             exceptionBuilder.setMessage(responseStatus.getStatusText());
             exceptionBuilder.setStatusCode(statusCode);
@@ -93,7 +91,7 @@ class ResponseAsyncHandler<T> implements AsyncHandler<Response> {
         if (!isSuccessful) {
             // The response body for an error won't be very big, so we can throw here without needing to aggregate.
             RequestError error = RequestError.errorFromResponse(body, exceptionContentType);
-            if(is5XXError) {
+            if (statusCode >= 500) {
                 serverExceptionBuilder.setRequestError(error);
                 throw serverExceptionBuilder.build();
             } else {
