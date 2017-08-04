@@ -66,7 +66,7 @@ public class RequestRetryFilter implements ResponseFilter {
             if (asyncHandler.getRetryCount() >= maxRetries && retryPredicate.apply(ctx)) {
                 log.warn(String.format("Request failed with status code %s after %s attempts", statusCode, asyncHandler.getRetryCount()));
                 throw new ServerException.Builder()
-                        .setMessage(ctx.getResponseStatus().getStatusText())
+                        .setStatusText(ctx.getResponseStatus().getStatusText())
                         .setStatusCode(statusCode)
                         .build();
             }
