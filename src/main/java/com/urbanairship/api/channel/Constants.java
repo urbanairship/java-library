@@ -33,6 +33,10 @@ public class Constants {
     public static final String AUTH = "auth";
     public static final String P256DH = "p256dh";
     public static final String SUBSCRIPTION = "subscription";
+    public static final String OPEN_CHANNEL = "open";
+    public static final String OPEN_PLATFORM_NAME = "open_platform_name";
+    public static final String OLD_ADDRESS = "old_address";
+    public static final String IDENTIFIERS = "identifiers";
 
     private Constants() {
     }
