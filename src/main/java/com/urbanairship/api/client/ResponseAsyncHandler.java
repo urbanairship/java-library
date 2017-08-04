@@ -30,6 +30,8 @@ class ResponseAsyncHandler<T> implements AsyncHandler<Response> {
 
     private final Response.Builder<T> responseBuilder = new Response.Builder<>();
     private final ClientException.Builder exceptionBuilder = ClientException.newBuilder();
+    private final ServerException.Builder serverExceptionBuilder = ServerException.newBuilder();
+
 
     private final Optional<ResponseCallback> clientCallback;
     private final ResponseParser<T> parser;
@@ -38,7 +40,7 @@ class ResponseAsyncHandler<T> implements AsyncHandler<Response> {
     private AtomicInteger retryCount = new AtomicInteger(0);
     private String exceptionContentType;
     private boolean isSuccessful;
-
+    private Integer statusCode;
     /**
      * ResponseAsyncHandler constructor.
      *
@@ -52,13 +54,17 @@ class ResponseAsyncHandler<T> implements AsyncHandler<Response> {
 
     @Override
     public STATE onStatusReceived(HttpResponseStatus responseStatus) throws Exception {
-        Integer statusCode = responseStatus.getStatusCode();
+        statusCode = responseStatus.getStatusCode();
 
         if (statusCode >= 200 && statusCode < 300) {
             responseBuilder.setStatus(responseStatus.getStatusCode());
             isSuccessful = true;
+        } else if (statusCode >= 500) {
+            serverExceptionBuilder.setStatusCode(statusCode);
+            serverExceptionBuilder.setStatusText(responseStatus.getStatusText());
+            isSuccessful = false;
         } else {
-            exceptionBuilder.setMessage(responseStatus.getStatusText());
+            exceptionBuilder.setStatusText(responseStatus.getStatusText());
             exceptionBuilder.setStatusCode(statusCode);
             isSuccessful = false;
         }
@@ -85,8 +91,13 @@ class ResponseAsyncHandler<T> implements AsyncHandler<Response> {
         if (!isSuccessful) {
             // The response body for an error won't be very big, so we can throw here without needing to aggregate.
             RequestError error = RequestError.errorFromResponse(body, exceptionContentType);
-            exceptionBuilder.setRequestError(error);
-            throw exceptionBuilder.build();
+            if (statusCode >= 500) {
+                serverExceptionBuilder.setRequestError(error);
+                throw serverExceptionBuilder.build();
+            } else {
+                exceptionBuilder.setRequestError(error);
+                throw exceptionBuilder.build();
+            }
         }
 
         bodyBuilder.append(body);
