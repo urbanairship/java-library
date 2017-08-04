@@ -15,11 +15,11 @@ public class ServerException extends RuntimeException {
     private final Integer statusCode;
     private final Optional<RequestError> error;
 
-    private ServerException(String message,
+    private ServerException(String statusText,
                             Integer statusCode,
                             Optional<RequestError> error) {
-        super(message);
-        statusText = message;
+        super(statusText);
+        this.statusText = statusText;
         this.statusCode = statusCode;
         this.error = error;
     }
@@ -36,7 +36,7 @@ public class ServerException extends RuntimeException {
     /**
      * Get the reason phrase from the API response status line.
      *
-     * @return HTTP status message
+     * @return HTTP status statusText
      */
     public String getStatusText() {
         return statusText;
@@ -79,17 +79,17 @@ public class ServerException extends RuntimeException {
 
     public static class Builder {
         private Integer statusCode;
-        private String message;
+        private String statusText;
         private RequestError requestError = null;
 
         /**
-         * Set the error message.
+         * Set the error statusText.
          *
-         * @param message The message.
+         * @param statusText The statusText.
          * @return Builder
          */
-        public Builder setMessage(String message) {
-            this.message = message;
+        public Builder setStatusText(String statusText) {
+            this.statusText = statusText;
             return this;
         }
 
@@ -122,7 +122,7 @@ public class ServerException extends RuntimeException {
          * @return ClientException
          */
         public ServerException build() {
-            return new ServerException(message,
+            return new ServerException(statusText,
                     statusCode,
                     Optional.fromNullable(requestError));
         }

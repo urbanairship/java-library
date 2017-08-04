@@ -61,10 +61,10 @@ class ResponseAsyncHandler<T> implements AsyncHandler<Response> {
             isSuccessful = true;
         } else if (statusCode >= 500) {
             serverExceptionBuilder.setStatusCode(statusCode);
-            serverExceptionBuilder.setMessage(responseStatus.getStatusText());
+            serverExceptionBuilder.setStatusText(responseStatus.getStatusText());
             isSuccessful = false;
         } else {
-            exceptionBuilder.setMessage(responseStatus.getStatusText());
+            exceptionBuilder.setStatusText(responseStatus.getStatusText());
             exceptionBuilder.setStatusCode(statusCode);
             isSuccessful = false;
         }
