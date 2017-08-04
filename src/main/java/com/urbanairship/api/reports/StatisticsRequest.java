@@ -86,4 +86,9 @@ public class StatisticsRequest implements Request<List<StatisticsResponse>> {
         };
     }
 
+    @Override
+    public boolean bearerTokenAuthRequired() {
+        return false;
+    }
+
 }
