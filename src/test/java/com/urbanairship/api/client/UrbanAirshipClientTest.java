@@ -185,7 +185,7 @@ public class UrbanAirshipClientTest {
             .setSecret("secret")
             .build();
         assertEquals("App key incorrect", "key", client.getAppKey());
-        assertEquals("App secret incorrect", "secret", client.getAppSecret());
+        assertEquals("App secret incorrect", "secret", client.getAppSecret().get());
         client.close();
     }
 

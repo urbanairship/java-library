@@ -121,4 +121,9 @@ public class TemplatePushRequest implements Request<TemplateResponse> {
             }
         };
     }
+
+    @Override
+    public boolean bearerTokenAuthRequired() {
+        return false;
+    }
 }

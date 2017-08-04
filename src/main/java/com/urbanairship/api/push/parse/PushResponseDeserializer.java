@@ -74,7 +74,6 @@ public final class PushResponseDeserializer extends JsonDeserializer<PushRespons
                         return new PushResponseReader();
                     }
                 }
-
         );
     }
 

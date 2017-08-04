@@ -119,4 +119,9 @@ public class SegmentRequest implements Request<String> {
             }
         };
     }
+
+    @Override
+    public boolean bearerTokenAuthRequired() {
+        return false;
+    }
 }

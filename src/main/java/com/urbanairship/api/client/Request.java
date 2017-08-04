@@ -40,4 +40,6 @@ public interface Request<T> {
     URI getUri(URI baseUri) throws URISyntaxException;
 
     ResponseParser<T> getResponseParser();
+
+    boolean bearerTokenAuthRequired();
 }

@@ -78,4 +78,9 @@ public class StaticListLookupRequest implements Request<StaticListView> {
             }
         };
     }
+
+    @Override
+    public boolean bearerTokenAuthRequired() {
+        return false;
+    }
 }
