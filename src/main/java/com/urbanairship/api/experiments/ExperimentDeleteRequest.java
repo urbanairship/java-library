@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The ExperimentDeleteRequest class builds experiment requests to be executed in
+ * The ExperimentRequest class builds delete experiment requests to be executed in
  * the {@link com.urbanairship.api.client.UrbanAirshipClient}.
  */
 public class ExperimentDeleteRequest implements Request<String> {
