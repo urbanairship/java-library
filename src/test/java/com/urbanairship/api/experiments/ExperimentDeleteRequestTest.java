@@ -48,7 +48,7 @@ public class ExperimentDeleteRequestTest {
     }
 
     @Test
-    public void testScheduleParser() throws Exception {
+    public void testExperimentParser() throws Exception {
         ResponseParser responseParser = new ResponseParser<String>() {
             @Override
             public String parse(String response) throws IOException {
