@@ -125,9 +125,33 @@ public class PushListingRequestTest {
                 "      \"push_type\":\"BROADCAST_PUSH\",\n" +
                 "      \"direct_responses\":0,\n" +
                 "      \"sends\":1\n" +
-                "    }\n" +
+                "    },\n" +
+                "   {\n" +
+                "       \"push_uuid\": \"f133a7c8-d750-11e1-a6cf-e06995b6c872\",\n" +
+                "       \"direct_responses\": \"45\",\n" +
+                "       \"sends\": 123,\n" +
+                "       \"push_type\": \"UNICAST_PUSH\",\n" +
+                "       \"push_time\": \"2012-07-31 12:34:56\",\n" +
+                "       \"open_channels_sends\": {\n" +
+                "           \"platforms\": [\n" +
+                "               {\n" +
+                "                   \"id\": \"PLATFORM_NAME_1\",\n" +
+                "                   \"sends\": 13\n" +
+                "               },\n" +
+                "               {\n" +
+                "                   \"id\": \"PLATFORM_NAME_2\",\n" +
+                "                   \"sends\": 31\n" +
+                "               },\n" +
+                "               {\n" +
+                "                   \"id\": \"PLATFORM_NAME_3\",\n" +
+                "                   \"sends\": 26\n" +
+                "               }\n" +
+                "           ]\n" +
+                "       }\n" +
+                "   }\n" +
                 "  ]\n" +
                 "}";
+
 
         assertEquals(listingRequest.getResponseParser().parse(response), responseParser.parse(response));
         assertEquals(listingNextPageRequest.getResponseParser().parse(response), responseParser.parse(response));

@@ -157,4 +157,9 @@ public class TemplateRequest implements Request<TemplateResponse> {
             }
         };
     }
+
+    @Override
+    public boolean bearerTokenAuthRequired() {
+        return false;
+    }
 }

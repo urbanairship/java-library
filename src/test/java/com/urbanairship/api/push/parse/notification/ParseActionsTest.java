@@ -226,7 +226,7 @@ public class ParseActionsTest {
             Optional<OpenLandingPageWithContentAction> optOpen = getAction(actions, ActionType.OPEN_LANDING_PAGE_WITH_CONTENT, OpenLandingPageWithContentAction.class);
             assertTrue("Open landing page action should be present.", optOpen.isPresent());
             LandingPageContent actual = optOpen.get().getValue();
-            assertEquals("Body of content not round-tripped.", expected.getBody(), actual.getBody());
+            assertEquals("CustomEventBody of content not round-tripped.", expected.getBody(), actual.getBody());
             assertEquals("Content-type not round-tripped.", expected.getContentType(), actual.getContentType());
             assertEquals("Content-encoding not round-tripped.", expected.getEncoding().get(), actual.getEncoding().get());
         }

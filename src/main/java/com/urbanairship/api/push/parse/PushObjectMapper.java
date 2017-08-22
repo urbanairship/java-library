@@ -12,6 +12,14 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.CommonObjectMapper;
+import com.urbanairship.api.customevents.model.CustomEventPayload;
+import com.urbanairship.api.customevents.model.CustomEventBody;
+import com.urbanairship.api.customevents.model.CustomEventResponse;
+import com.urbanairship.api.customevents.model.CustomEventUser;
+import com.urbanairship.api.customevents.parse.CustomEventBodySerializer;
+import com.urbanairship.api.customevents.parse.CustomEventResponseDeserializer;
+import com.urbanairship.api.customevents.parse.CustomEventSerializer;
+import com.urbanairship.api.customevents.parse.CustomEventUserSerializer;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.Display;
@@ -156,6 +164,7 @@ public class PushObjectMapper {
         WebDevicePayloadDeserializer webPayloadDS = new WebDevicePayloadDeserializer();
 
 
+
         NotificationDeserializer notificationDeserializer = new NotificationDeserializer(
                 ImmutableMap.<DeviceType, JsonDeserializer<? extends DevicePayloadOverride>>builder()
                         .put(DeviceType.WNS, wnsPayloadDS)
@@ -193,7 +202,6 @@ public class PushObjectMapper {
                 .addSerializer(PushExpiry.class, new PushExpirySerializer())
                 .addDeserializer(PushExpiry.class, new PushExpiryDeserializer())
                 .addDeserializer(PushResponse.class, new PushResponseDeserializer())
-
 
 
             /* IOS */
@@ -289,8 +297,16 @@ public class PushObjectMapper {
 
                 .addDeserializer(TagActionData.class, new TagActionDataDeserializer())
 
+            /* Custom Events */
+                .addSerializer(CustomEventUser.class, new CustomEventUserSerializer())
+                .addSerializer(CustomEventPayload.class, new CustomEventSerializer())
+                .addSerializer(CustomEventBody.class, new CustomEventBodySerializer())
+
+                .addDeserializer(CustomEventResponse.class, new CustomEventResponseDeserializer())
+
             /* Segments */
                 .addDeserializer(SegmentDefinition.class, new SegmentDefinitionDeserializer());
+
 
 
         MAPPER.registerModule(MODULE);

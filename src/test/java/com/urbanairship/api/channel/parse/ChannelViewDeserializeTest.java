@@ -34,7 +34,7 @@ public class ChannelViewDeserializeTest {
         ChannelView channel = mapper.readValue(json, ChannelView.class);
         Assert.assertFalse(channel.isOptIn());
         Assert.assertFalse(channel.getBackground().isPresent());
-        assertEquals(ChannelType.IOS, channel.getChannelType());
+        assertEquals(ChannelType.IOS.getIdentifier(), channel.getChannelType());
         Assert.assertFalse(channel.getAlias().isPresent());
         Assert.assertFalse(channel.getIosSettings().isPresent());
         Assert.assertFalse(channel.getPushAddress().isPresent());
@@ -80,7 +80,7 @@ public class ChannelViewDeserializeTest {
         assertTrue(channel.isOptIn());
         assertTrue(channel.getBackground().isPresent());
         assertTrue(channel.getBackground().get());
-        assertEquals(ChannelType.IOS, channel.getChannelType());
+        assertEquals(ChannelType.IOS.getIdentifier(), channel.getChannelType());
         assertTrue(channel.getIosSettings().isPresent());
         assertEquals(0, channel.getIosSettings().get().getBadge());
         assertEquals("22:00", channel.getIosSettings().get().getQuietTime().get().getStart());
@@ -157,7 +157,7 @@ public class ChannelViewDeserializeTest {
         ChannelView channel = mapper.readValue(json, ChannelView.class);
 
         assertTrue(channel.isOptIn());
-        assertEquals(ChannelType.WEB, channel.getChannelType());
+        assertEquals(ChannelType.WEB.getIdentifier(), channel.getChannelType());
 
         assertTrue(channel.getWebSettings().isPresent());
         assertTrue(channel.getWebSettings().get().getSubscription().isPresent());
@@ -221,7 +221,7 @@ public class ChannelViewDeserializeTest {
             ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {
             });
             Assert.assertFalse(channel.isOptIn());
-            assertEquals(channelType, channel.getChannelType());
+            assertEquals(channelType.getIdentifier(), channel.getChannelType());
             Assert.assertFalse(channel.getAlias().isPresent());
             Assert.assertFalse(channel.getIosSettings().isPresent());
             Assert.assertFalse(channel.getPushAddress().isPresent());

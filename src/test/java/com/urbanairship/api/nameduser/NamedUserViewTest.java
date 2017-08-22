@@ -51,7 +51,7 @@ public class NamedUserViewTest {
         ChannelView channel = namedUserView.getChannelViews().iterator().next();
         Assert.assertFalse(channel.isOptIn());
         Assert.assertFalse(channel.getBackground().isPresent());
-        assertEquals(ChannelType.IOS, channel.getChannelType());
+        assertEquals(ChannelType.IOS.getIdentifier(), channel.getChannelType());
         Assert.assertFalse(channel.getAlias().isPresent());
         Assert.assertFalse(channel.getIosSettings().isPresent());
         Assert.assertFalse(channel.getPushAddress().isPresent());
@@ -127,7 +127,7 @@ public class NamedUserViewTest {
         assertTrue(firstChannel.isOptIn());
         assertTrue(firstChannel.getBackground().isPresent());
         assertTrue(firstChannel.getBackground().get());
-        assertEquals(ChannelType.IOS, firstChannel.getChannelType());
+        assertEquals(ChannelType.IOS.getIdentifier(), firstChannel.getChannelType());
         assertTrue(firstChannel.getIosSettings().isPresent());
         assertEquals(0, firstChannel.getIosSettings().get().getBadge());
         assertEquals("22:00", firstChannel.getIosSettings().get().getQuietTime().get().getStart());
@@ -147,7 +147,7 @@ public class NamedUserViewTest {
         assertEquals(expectedTagGroups, firstChannel.getTagGroups());
         Assert.assertFalse(secondChannel.isOptIn());
         Assert.assertFalse(secondChannel.getBackground().isPresent());
-        assertEquals(ChannelType.IOS, secondChannel.getChannelType());
+        assertEquals(ChannelType.IOS.getIdentifier(), secondChannel.getChannelType());
         Assert.assertFalse(secondChannel.getAlias().isPresent());
         Assert.assertFalse(secondChannel.getIosSettings().isPresent());
         Assert.assertFalse(secondChannel.getPushAddress().isPresent());
