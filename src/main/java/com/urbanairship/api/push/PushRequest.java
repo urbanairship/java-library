@@ -162,4 +162,9 @@ public class PushRequest implements Request<PushResponse> {
             }
         };
     }
+
+    @Override
+    public boolean bearerTokenAuthRequired() {
+        return false;
+    }
 }

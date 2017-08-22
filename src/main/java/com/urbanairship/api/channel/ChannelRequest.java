@@ -99,4 +99,9 @@ public class ChannelRequest implements Request<ChannelResponse> {
             }
         };
     }
+
+    @Override
+    public boolean bearerTokenAuthRequired() {
+        return false;
+    }
 }

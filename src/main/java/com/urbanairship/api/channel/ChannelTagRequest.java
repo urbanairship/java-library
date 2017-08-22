@@ -240,6 +240,11 @@ public class ChannelTagRequest implements Request<String> {
         };
     }
 
+    @Override
+    public boolean bearerTokenAuthRequired() {
+        return false;
+    }
+
     private static void appendMapValues(String key, Set<String> values, Map<String, Set<String>> map) {
         if (!map.containsKey(key)) {
             map.put(key, values);

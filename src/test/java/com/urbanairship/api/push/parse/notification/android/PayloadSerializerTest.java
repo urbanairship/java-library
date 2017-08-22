@@ -136,12 +136,19 @@ public class PayloadSerializerTest {
                     "\"summary\":\"big text summary\"" +
                 "}," +
                 "\"time_to_live\":12345," +
-                "\"visibility\":1" +
+                "\"visibility\":1," +
+                "\"public_notification\": {" +
+                    "\"title\": \"A greeting\"," +
+                    "\"alert\": \"Hello!\"," +
+                    "\"summary\": \"A summary\"" +
+                "}" +
         "}";
         String parsedJson = MAPPER.writeValueAsString(payload);
 
-        JsonNode parsedJsonNode = MAPPER.readTree(parsedJson);
-        JsonNode jsonNode = MAPPER.readTree(json);
-        assertEquals(parsedJsonNode, jsonNode);
+
+        JsonNode expected = MAPPER.readTree(json);
+        JsonNode actual = MAPPER.readTree(parsedJson);
+
+        assertEquals(expected, actual);
     }
 }

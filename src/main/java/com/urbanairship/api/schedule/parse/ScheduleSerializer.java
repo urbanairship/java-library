@@ -16,8 +16,6 @@ public class ScheduleSerializer extends JsonSerializer<Schedule> {
 
     public static final ScheduleSerializer INSTANCE = new ScheduleSerializer();
 
-    private ScheduleSerializer() { }
-
     @Override
     public void serialize(Schedule value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         jgen.writeStartObject();
