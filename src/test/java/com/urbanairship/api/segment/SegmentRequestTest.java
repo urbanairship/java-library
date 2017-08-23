@@ -1,5 +1,6 @@
 package com.urbanairship.api.segment;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
@@ -9,7 +10,6 @@ import com.urbanairship.api.push.model.audience.location.DateRange;
 import com.urbanairship.api.segments.SegmentRequest;
 import com.urbanairship.api.segments.parse.SegmentObjectMapper;
 import org.apache.http.entity.ContentType;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 

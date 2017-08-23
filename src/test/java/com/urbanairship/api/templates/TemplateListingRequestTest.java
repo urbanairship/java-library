@@ -1,11 +1,11 @@
 package com.urbanairship.api.templates;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.templates.model.TemplateListingResponse;
 import com.urbanairship.api.templates.parse.TemplatesObjectMapper;
 import org.apache.http.HttpHeaders;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,9 +1,9 @@
 package com.urbanairship.api.push.parse.richpush;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

@@ -4,14 +4,14 @@
 
 package com.urbanairship.api.experiments.parse;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.urbanairship.api.experiments.model.Variant;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.map.JsonSerializer;
-import org.codehaus.jackson.map.SerializerProvider;
 
 import java.io.IOException;
 
-public class VariantSerializer extends JsonSerializer<Variant>{
+public class VariantSerializer extends JsonSerializer<Variant> {
 
     @Override
     public void serialize(Variant variant, JsonGenerator jgen, SerializerProvider provider) throws IOException {

@@ -1,12 +1,12 @@
 package com.urbanairship.api.channel.parse.open;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.urbanairship.api.channel.Constants;
 import com.urbanairship.api.channel.model.open.OpenChannel;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.common.parse.MapOfStringsDeserializer;
 import com.urbanairship.api.common.parse.StringFieldDeserializer;
-import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
 

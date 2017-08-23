@@ -4,15 +4,16 @@
 
 package com.urbanairship.api.experiments.parse;
 
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.urbanairship.api.experiments.model.Experiment;
 import com.urbanairship.api.experiments.model.ExperimentResponse;
 import com.urbanairship.api.experiments.model.VariantPushPayload;
 import com.urbanairship.api.experiments.model.Variant;
 import com.urbanairship.api.push.parse.*;
-import org.codehaus.jackson.Version;
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.module.SimpleModule;
 
 public class ExperimentObjectMapper {
 
@@ -31,7 +32,8 @@ public class ExperimentObjectMapper {
 
         MAPPER.registerModule(MODULE);
         MAPPER.registerModule(PushObjectMapper.getModule());
-        MAPPER.configure(DeserializationConfig.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+        MAPPER.registerModule(new JodaModule());
+        MAPPER.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
     }
 
     public static SimpleModule getModule() {

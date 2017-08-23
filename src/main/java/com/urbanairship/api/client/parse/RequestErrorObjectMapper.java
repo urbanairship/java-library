@@ -4,12 +4,12 @@
 
 package com.urbanairship.api.client.parse;
 
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.urbanairship.api.client.RequestError;
 import com.urbanairship.api.client.RequestErrorDetails;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import org.codehaus.jackson.Version;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.module.SimpleModule;
 
 /*
 This is where object serialization and deserialization are registered with

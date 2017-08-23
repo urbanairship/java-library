@@ -4,6 +4,7 @@
 
 package com.urbanairship.api.push.parse.notification.richpush;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.common.parse.MapOfStringsDeserializer;
@@ -11,7 +12,6 @@ import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.notification.richpush.RichPushIcon;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
-import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
 

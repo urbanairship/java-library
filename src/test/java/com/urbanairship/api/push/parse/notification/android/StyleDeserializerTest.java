@@ -1,12 +1,12 @@
 package com.urbanairship.api.push.parse.notification.android;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.push.model.notification.android.BigPictureStyle;
 import com.urbanairship.api.push.model.notification.android.BigTextStyle;
 import com.urbanairship.api.push.model.notification.android.InboxStyle;
 import com.urbanairship.api.push.model.notification.android.Style;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

@@ -1,5 +1,6 @@
 package com.urbanairship.api.push.parse.audience;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Iterables;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.audience.BasicValueSelector;
@@ -8,7 +9,6 @@ import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.SelectorType;
 import com.urbanairship.api.push.model.audience.ValueSelector;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import java.util.Iterator;

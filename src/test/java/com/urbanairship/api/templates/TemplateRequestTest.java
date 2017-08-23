@@ -1,5 +1,8 @@
 package com.urbanairship.api.templates;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.push.model.notification.Notification;
@@ -10,8 +13,6 @@ import com.urbanairship.api.templates.model.TemplateView;
 import com.urbanairship.api.templates.parse.TemplatesObjectMapper;
 import org.apache.http.HttpHeaders;
 import org.apache.http.entity.ContentType;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,7 +24,7 @@ import java.util.Map;
 import static junit.framework.Assert.assertEquals;
 
 public class TemplateRequestTest {
-    private final static ObjectMapper mapper = TemplatesObjectMapper.getInstance().setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
+    private final static ObjectMapper mapper = TemplatesObjectMapper.getInstance().setSerializationInclusion(JsonInclude.Include.NON_NULL);
     private final static String CREATE_UPDATE_TEMPLATE = "/api/templates/";
     private final static String TEMPLATE_NAME = "abc123";
 

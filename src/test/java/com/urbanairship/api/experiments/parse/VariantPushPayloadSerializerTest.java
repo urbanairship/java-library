@@ -1,10 +1,9 @@
 package com.urbanairship.api.experiments.parse;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.experiments.model.VariantPushPayload;
 import com.urbanairship.api.push.model.InApp;
 import com.urbanairship.api.push.model.notification.Notification;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;

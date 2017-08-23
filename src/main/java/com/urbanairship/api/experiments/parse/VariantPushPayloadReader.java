@@ -4,13 +4,13 @@
 
 package com.urbanairship.api.experiments.parse;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.experiments.model.VariantPushPayload;
 import com.urbanairship.api.push.model.InApp;
 import com.urbanairship.api.push.model.PushOptions;
 import com.urbanairship.api.push.model.notification.Notification;
-import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
 

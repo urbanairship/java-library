@@ -1,12 +1,12 @@
 package com.urbanairship.api.customevents.parse;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.customevents.model.CustomEventPayload;
 import com.urbanairship.api.customevents.model.CustomEventBody;
 import com.urbanairship.api.customevents.model.CustomEventChannelType;
 import com.urbanairship.api.customevents.model.CustomEventUser;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Test;
