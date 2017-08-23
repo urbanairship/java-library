@@ -4,14 +4,14 @@
 
 package com.urbanairship.api.push.parse.notification.actions;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.notification.actions.TagActionData;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.DeserializationContext;
-import org.codehaus.jackson.map.JsonDeserializer;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -30,10 +30,10 @@ public final class TagActionDataDeserializer extends JsonDeserializer<TagActionD
         }
 
         if(jsonNode.isTextual()) {
-            return TagActionData.single(jsonNode.getTextValue());
+            return TagActionData.single(jsonNode.textValue());
         }
 
-        Iterator<JsonNode> items = jsonNode.getElements();
+        Iterator<JsonNode> items = jsonNode.elements();
         List<String> tags = Lists.newArrayList();
         while(items.hasNext()) {
             JsonNode item = items.next();
@@ -41,7 +41,7 @@ public final class TagActionDataDeserializer extends JsonDeserializer<TagActionD
                 throw new APIParsingException("Null or non-string tags are not allowed.");
             }
 
-            tags.add(item.getTextValue());
+            tags.add(item.textValue());
         }
 
         if(tags.size() == 0) {

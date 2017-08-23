@@ -1,10 +1,10 @@
 package com.urbanairship.api.customevents.parse;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.customevents.model.CustomEventChannelType;
 import com.urbanairship.api.customevents.model.CustomEventUser;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

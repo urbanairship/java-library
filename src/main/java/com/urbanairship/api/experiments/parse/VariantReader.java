@@ -4,12 +4,12 @@
 
 package com.urbanairship.api.experiments.parse;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.experiments.model.Variant;
 import com.urbanairship.api.experiments.model.VariantPushPayload;
 import com.urbanairship.api.schedule.model.Schedule;
-import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
 

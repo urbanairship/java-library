@@ -4,13 +4,13 @@
 package com.urbanairship.api.push.parse.notification.ios;
 
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.push.model.notification.ios.IOSMediaContent;
 import com.urbanairship.api.push.model.notification.ios.MediaAttachment;
 import com.urbanairship.api.push.model.notification.ios.IOSMediaOptions;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.DeserializationContext;
 
 import java.io.IOException;
 

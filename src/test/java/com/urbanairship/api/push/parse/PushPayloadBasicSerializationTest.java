@@ -1,5 +1,8 @@
 package com.urbanairship.api.push.parse;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
@@ -14,8 +17,6 @@ import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import com.urbanairship.api.push.model.notification.wns.WNSDevicePayload;
 import org.apache.commons.lang.RandomStringUtils;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -134,7 +135,7 @@ public class PushPayloadBasicSerializationTest {
         mapper.readValue(json, PushPayload.class);
     }
 
-    @Test(expected = APIParsingException.class)
+    @Test(expected = JsonMappingException.class)
     public void testDeviceTypesAllInList() throws Exception {
         String json
                 = "{"

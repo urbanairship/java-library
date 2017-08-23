@@ -1,7 +1,7 @@
 package com.urbanairship.api.templates.parse;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.templates.model.PartialPushPayload;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;

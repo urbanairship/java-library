@@ -4,10 +4,10 @@
 
 package com.urbanairship.api.push.parse;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.PushOptions;
-import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
 

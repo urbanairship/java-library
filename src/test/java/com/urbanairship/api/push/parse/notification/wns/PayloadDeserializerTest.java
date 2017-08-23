@@ -1,12 +1,12 @@
 package com.urbanairship.api.push.parse.notification.wns;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.notification.wns.WNSBinding;
 import com.urbanairship.api.push.model.notification.wns.WNSDevicePayload;
 import com.urbanairship.api.push.model.notification.wns.WNSPush;
 import com.urbanairship.api.push.model.notification.wns.WNSToastData;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

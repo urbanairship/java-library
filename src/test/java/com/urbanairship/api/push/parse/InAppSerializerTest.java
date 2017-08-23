@@ -1,10 +1,10 @@
 package com.urbanairship.api.push.parse;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.push.model.Display;
 import com.urbanairship.api.push.model.InApp;
 import com.urbanairship.api.push.model.Position;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Test;

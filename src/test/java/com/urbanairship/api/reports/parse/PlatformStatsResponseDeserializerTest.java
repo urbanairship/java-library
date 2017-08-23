@@ -1,9 +1,9 @@
 package com.urbanairship.api.reports.parse;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.reports.model.PlatformStats;
 import com.urbanairship.api.reports.model.PlatformStatsResponse;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import java.io.IOException;

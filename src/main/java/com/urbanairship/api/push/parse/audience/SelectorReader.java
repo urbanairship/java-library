@@ -4,6 +4,9 @@
 
 package com.urbanairship.api.push.parse.audience;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
@@ -15,9 +18,6 @@ import com.urbanairship.api.push.model.audience.SelectorCategory;
 import com.urbanairship.api.push.model.audience.SelectorType;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.audience.location.LocationSelector;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonToken;
-import org.codehaus.jackson.map.DeserializationContext;
 
 import java.io.IOException;
 import java.util.ArrayList;

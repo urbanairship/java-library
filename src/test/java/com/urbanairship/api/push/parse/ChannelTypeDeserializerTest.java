@@ -1,10 +1,11 @@
 package com.urbanairship.api.push.parse;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Iterables;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.DeviceType;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 import org.junit.Test;
 
 import java.util.Set;
@@ -26,7 +27,7 @@ public class ChannelTypeDeserializerTest {
         assertEquals(DeviceType.WNS, Iterables.getOnlyElement(parsed));
     }
 
-    @Test(expected = APIParsingException.class)
+    @Test(expected = JsonMappingException.class)
     public void testInvalidPlatform() throws Exception {
         String json = "[\"foo\"]";
 

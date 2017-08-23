@@ -1,5 +1,8 @@
 package com.urbanairship.api.experiments;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.experiments.model.Experiment;
@@ -13,8 +16,6 @@ import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
 import org.apache.http.HttpHeaders;
 import org.apache.http.entity.ContentType;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,7 +28,7 @@ import static junit.framework.Assert.assertEquals;
 
 public class ExperimentRequestTest {
 
-    private final static ObjectMapper mapper = ExperimentObjectMapper.getInstance().setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
+    private final static ObjectMapper mapper = ExperimentObjectMapper.getInstance().setSerializationInclusion(JsonInclude.Include.NON_NULL);
     private final static String EXPERIMENT_PATH = "/api/experiments/";
 
     ExperimentRequest createRequest;

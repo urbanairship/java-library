@@ -1,11 +1,11 @@
 package com.urbanairship.api.customevents.parse;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.common.parse.MapOfStringsDeserializer;
 import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import com.urbanairship.api.customevents.model.CustomEventBody;
-import org.codehaus.jackson.JsonParser;
 
 import java.io.IOException;
 
