@@ -7,4 +7,4 @@ You can contact them by visiting https://support.urbanairship.com/
 # Documentation
 
 Documentation for the library can be found here:
-https://docs.urbanairship.com/reference/libraries/python/
+https://docs.urbanairship.com/reference/libraries/java/
