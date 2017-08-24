@@ -5,14 +5,10 @@ Please include link to open issue if applicable.
 * If applicable
 
 ### Testing
-[ ] I wrote tests covering these changes
+[ ] I wrote tests covering these changes  
+[ ] I ran the full test suite and it passed
 
-* I've tested in virtual environments for python versions:
-
-[ ] 2.7
-[ ] 3.3
-[ ] 3.4
-[ ] 3.6 (coming soon)
+### Console output, including date and time of last test run:
 
 ### Urban Airship Contribution Agreement
 https://docs.urbanairship.com/contribution-agreement/
