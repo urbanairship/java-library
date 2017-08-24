@@ -5,8 +5,8 @@ Please include link to open issue if applicable.
 * If applicable
 
 ### Testing
-[ ] I wrote tests covering these changes  
-[ ] I ran the full test suite and it passed
+- [ ] I wrote tests covering these changes  
+- [ ] I ran the full test suite and it passed
 
 ### Console output, including date and time of last test run:
 
