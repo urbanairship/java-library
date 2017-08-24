@@ -13,7 +13,7 @@ Please include link to open issue if applicable.
 ### Urban Airship Contribution Agreement
 https://docs.urbanairship.com/contribution-agreement/
 
-[ ] I've filled out and signed UA's contribution agreement form.
+- [ ] I've filled out and signed UA's contribution agreement form.
 
 ### Screenshots
 * If applicable
