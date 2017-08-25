@@ -8,7 +8,7 @@ Please include link to open issue if applicable.
 - [ ] I wrote tests covering these changes  
 - [ ] I ran the full test suite and it passed
 
-### Console output, including date and time of last test run:
+### Test run results, including date and time:
 
 ### Urban Airship Contribution Agreement
 https://docs.urbanairship.com/contribution-agreement/
