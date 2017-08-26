@@ -21,7 +21,7 @@ As shown in the :doc:`Getting Started Guide <getting-started>`, the minimum-viab
        .setSecret("your-app-secret-here")
        .build();
 
-If you need to also make custom event requests a bearer token must also be set for the UrbanAirshipClient
+If you need to also make custom event requests, you must also set a bearer token for the UrbanAirshipClient like so:
 
 .. code-block:: java
 
