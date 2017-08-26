@@ -6,7 +6,7 @@ Custom Events
 Configuring the Client
 **********************
 
-The client must have a bearer token set if custom event requests are being made.
+You must set a bearer token on the UrbanAirshipClient for custom events requests.
 
 .. code-block:: java
 
@@ -16,7 +16,7 @@ The client must have a bearer token set if custom event requests are being made.
        .setBearerToken("your-bearer-token-here")
        .build();
 
-If only custom event requests are being made, the app secret is optional.
+If only custom event requests are being made, the secret is optional.
 
 *******************
 Create Custom Event
