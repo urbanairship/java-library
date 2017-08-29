@@ -16,7 +16,7 @@ public class ClientExceptionTest {
                 .build();
 
         ClientException testException = ClientException.newBuilder()
-                .setMessage("Not Found")
+                .setStatusText("Not Found")
                 .setStatusCode(404)
                 .setRequestError(requestError)
                 .build();

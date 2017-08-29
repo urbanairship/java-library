@@ -1,5 +1,7 @@
 package com.urbanairship.api.client;
 
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -33,8 +35,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
-import org.codehaus.jackson.node.JsonNodeFactory;
-import org.codehaus.jackson.node.ObjectNode;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.junit.Test;
@@ -153,7 +153,7 @@ public class ResponseTest {
                                 .setBackground(true)
                                 .setChannelId("channelID")
                                 .setCreated(DateTime.now())
-                                .setChannelType(ChannelType.ANDROID)
+                                .setChannelType(ChannelType.ANDROID.getIdentifier())
                                 .setInstalled(true)
                                 .setLastRegistration(DateTime.now().minus(12345L))
                                 .setOptIn(true)
@@ -187,7 +187,7 @@ public class ResponseTest {
                         .setBackground(true)
                         .setChannelId("channelID")
                         .setCreated(DateTime.now())
-                        .setChannelType(ChannelType.ANDROID)
+                        .setChannelType(ChannelType.ANDROID.getIdentifier())
                         .setInstalled(true)
                         .setLastRegistration(DateTime.now().minus(12345L))
                         .setOptIn(true)
@@ -221,7 +221,7 @@ public class ResponseTest {
                                 .setBackground(true)
                                 .setChannelId("channelID")
                                 .setCreated(DateTime.now())
-                                .setChannelType(ChannelType.ANDROID)
+                                .setChannelType(ChannelType.ANDROID.getIdentifier())
                                 .setInstalled(true)
                                 .setLastRegistration(DateTime.now().minus(12345L))
                                 .setOptIn(true)

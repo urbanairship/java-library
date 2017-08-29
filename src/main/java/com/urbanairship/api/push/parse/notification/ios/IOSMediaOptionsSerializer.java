@@ -3,15 +3,15 @@
  */
 package com.urbanairship.api.push.parse.notification.ios;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.urbanairship.api.push.model.notification.ios.IOSMediaOptions;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.map.JsonSerializer;
-import org.codehaus.jackson.map.SerializerProvider;
 
 import java.io.IOException;
 
-public class IOSMediaOptionsSerializer extends JsonSerializer<IOSMediaOptions>{
+public class IOSMediaOptionsSerializer extends JsonSerializer<IOSMediaOptions> {
 
     @Override
     public void serialize(IOSMediaOptions options, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {

@@ -4,11 +4,11 @@
 
 package com.urbanairship.api.push.parse.notification.wns;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.urbanairship.api.push.model.notification.wns.WNSBinding;
 import com.urbanairship.api.push.model.notification.wns.WNSTileData;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.map.JsonSerializer;
-import org.codehaus.jackson.map.SerializerProvider;
 
 import java.io.IOException;
 

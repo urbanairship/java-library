@@ -1,11 +1,12 @@
 package com.urbanairship.api.push.parse.notification.android;
 
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.push.model.notification.android.BigPictureStyle;
 import com.urbanairship.api.push.model.notification.android.BigTextStyle;
 import com.urbanairship.api.push.model.notification.android.InboxStyle;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
@@ -30,7 +31,11 @@ public class StyleSerializerTest {
                 .build();
 
         String parsedBigText = MAPPER.writeValueAsString(bigPictureStyle);
-        assertEquals(bigPictureStyleJson, parsedBigText);
+
+        JsonNode parsedBigTextNode = MAPPER.readTree(parsedBigText);
+        JsonNode bigPictureStyleJsonNode = MAPPER.readTree(bigPictureStyleJson);
+
+        assertEquals(parsedBigTextNode, bigPictureStyleJsonNode);
     }
 
     @Test
@@ -49,8 +54,12 @@ public class StyleSerializerTest {
                 .setTitle("big text title")
                 .build();
 
-        String parsedBigPicture = MAPPER.writeValueAsString(bigTextStyle);
-        assertEquals(bigTextStyleJson, parsedBigPicture);
+        String parsedBigText = MAPPER.writeValueAsString(bigTextStyle);
+
+        JsonNode fromObj = MAPPER.readTree(parsedBigText);
+        JsonNode fromStr = MAPPER.readTree(bigTextStyleJson);
+
+        assertEquals(fromObj, fromStr);
     }
 
     @Test
@@ -70,6 +79,10 @@ public class StyleSerializerTest {
                 .build();
 
         String parsedInbox = MAPPER.writeValueAsString(inboxStyle);
-        assertEquals(styleInboxJson, parsedInbox);
+
+        JsonNode fromObj = MAPPER.readTree(parsedInbox);
+        JsonNode fromStr = MAPPER.readTree(styleInboxJson);
+
+        assertEquals(fromObj, fromStr);
     }
 }

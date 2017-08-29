@@ -4,6 +4,8 @@
 
 package com.urbanairship.api.channel.parse;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -11,6 +13,7 @@ import com.urbanairship.api.channel.Constants;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.channel.model.ChannelView;
 import com.urbanairship.api.channel.model.ios.IosSettings;
+import com.urbanairship.api.channel.model.open.OpenChannel;
 import com.urbanairship.api.channel.model.web.WebSettings;
 import com.urbanairship.api.client.UrbanAirshipClient;
 import com.urbanairship.api.common.parse.APIParsingException;
@@ -18,8 +21,6 @@ import com.urbanairship.api.common.parse.BooleanFieldDeserializer;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.common.parse.ListOfStringsDeserializer;
 import com.urbanairship.api.common.parse.StringFieldDeserializer;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,15 +43,7 @@ public final class ChannelViewReader implements JsonObjectReader<ChannelView> {
     }
 
     public void readDeviceType(JsonParser jsonParser) throws IOException {
-        String deviceTypeString = jsonParser.getText();
-        Optional<ChannelType> deviceTypeOpt = ChannelType.find(deviceTypeString);
-
-        if (!deviceTypeOpt.isPresent()) {
-            log.error("Unrecognized device type " + deviceTypeString);
-            return;
-        }
-
-        builder.setChannelType(deviceTypeOpt.get());
+        builder.setChannelType(StringFieldDeserializer.INSTANCE.deserialize(jsonParser, Constants.DEVICE_TYPE));
     }
 
     public void readInstalled(JsonParser jsonParser) throws IOException {
@@ -97,6 +90,10 @@ public final class ChannelViewReader implements JsonObjectReader<ChannelView> {
 
     public void readWeb(JsonParser jsonParser) throws IOException {
         builder.setWebSettings(jsonParser.readValueAs(WebSettings.class));
+    }
+
+    public void readOpenChannel(JsonParser jsonParser) throws IOException {
+        builder.setOpenChannel(jsonParser.readValueAs(OpenChannel.class));
     }
 
     @Override

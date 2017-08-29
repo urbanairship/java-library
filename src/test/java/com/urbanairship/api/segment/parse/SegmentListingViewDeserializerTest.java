@@ -1,8 +1,8 @@
 package com.urbanairship.api.segment.parse;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.segments.model.SegmentListingView;
 import com.urbanairship.api.segments.parse.SegmentObjectMapper;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

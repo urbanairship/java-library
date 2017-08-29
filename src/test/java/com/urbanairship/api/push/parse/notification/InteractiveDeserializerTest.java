@@ -1,5 +1,6 @@
 package com.urbanairship.api.push.parse.notification;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.APIParsingException;
@@ -9,7 +10,6 @@ import com.urbanairship.api.push.model.notification.actions.AddTagAction;
 import com.urbanairship.api.push.model.notification.actions.LandingPageContent;
 import com.urbanairship.api.push.model.notification.actions.OpenLandingPageWithContentAction;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import java.io.IOException;

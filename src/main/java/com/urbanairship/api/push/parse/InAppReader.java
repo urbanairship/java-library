@@ -1,5 +1,7 @@
 package com.urbanairship.api.push.parse;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
@@ -7,8 +9,6 @@ import com.urbanairship.api.push.model.Display;
 import com.urbanairship.api.push.model.InApp;
 import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.notification.actions.Actions;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.DateTime;
 
 import java.io.IOException;

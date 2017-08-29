@@ -12,13 +12,23 @@ Configuration
 *************
 
 As shown in the :doc:`Getting Started Guide <getting-started>`, the minimum-viable
-``UrbanAirshipClient`` client configuration requires an app key and a master secret:
+``UrbanAirshipClient`` client configuration requires an app key and a master secret or bearer token:
 
 .. code-block:: java
 
    UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
        .setKey("your-app-key-here")
        .setSecret("your-app-secret-here")
+       .build();
+
+If you need to make custom event requests, you must also set a bearer token for the UrbanAirshipClient like so:
+
+.. code-block:: java
+
+   UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
+       .setKey("your-app-key-here")
+       .setSecret("your-app-secret-here")
+       .setBearerToken("your-bearer-token-here")
        .build();
 
 In the following sections, we'll explore some of the additional client configuration

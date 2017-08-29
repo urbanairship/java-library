@@ -1,12 +1,12 @@
 package com.urbanairship.api.segments.parse;
 
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.segments.model.SegmentListingResponse;
 import com.urbanairship.api.segments.model.SegmentListingView;
 import com.urbanairship.api.segments.model.SegmentView;
-import org.codehaus.jackson.Version;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.module.SimpleModule;
 
 public class SegmentObjectMapper {
     private static final ObjectMapper MAPPER = new ObjectMapper();

@@ -84,4 +84,9 @@ public class StatisticsCsvRequest implements Request<String> {
         };
     }
 
+    @Override
+    public boolean bearerTokenAuthRequired() {
+        return false;
+    }
+
 }

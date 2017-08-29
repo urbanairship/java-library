@@ -15,12 +15,12 @@ public class ClientException extends RuntimeException {
     private final Integer statusCode;
     private final String statusText;
 
-    private ClientException(String message,
+    private ClientException(String statusText,
                             Integer statusCode,
                             Optional<RequestError> error) {
-        super(message);
+        super(statusText);
         this.statusCode = statusCode;
-        this.statusText = message;
+        this.statusText = statusText;
         this.error = error;
     }
 
@@ -54,7 +54,7 @@ public class ClientException extends RuntimeException {
     /**
      * Get the reason phrase from the API response status line.
      *
-     * @return HTTP status message
+     * @return HTTP status statusText
      */
     public String getStatusText() {
         return statusText;
@@ -82,17 +82,17 @@ public class ClientException extends RuntimeException {
      */
     public static class Builder {
         private Integer statusCode;
-        private String message;
+        private String statusText;
         private RequestError requestError = null;
 
         /**
-         * Set the error message.
+         * Set the error statusText.
          *
-         * @param message The message.
+         * @param statusText The statusText.
          * @return Builder
          */
-        public Builder setMessage(String message) {
-            this.message = message;
+        public Builder setStatusText(String statusText) {
+            this.statusText = statusText;
             return this;
         }
 
@@ -125,7 +125,7 @@ public class ClientException extends RuntimeException {
          * @return ClientException
          */
         public ClientException build() {
-            return new ClientException(message,
+            return new ClientException(statusText,
                     statusCode,
                     Optional.fromNullable(requestError));
         }

@@ -143,4 +143,9 @@ public class PlatformStatsRequest implements Request<PlatformStatsResponse> {
             }
         };
     }
+
+    @Override
+    public boolean bearerTokenAuthRequired() {
+        return false;
+    }
 }

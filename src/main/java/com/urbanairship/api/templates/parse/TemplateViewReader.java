@@ -4,18 +4,17 @@
 
 package com.urbanairship.api.templates.parse;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.templates.model.PartialPushPayload;
 import com.urbanairship.api.templates.model.TemplateVariable;
 import com.urbanairship.api.templates.model.TemplateView;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 public class TemplateViewReader implements JsonObjectReader<TemplateView> {
 

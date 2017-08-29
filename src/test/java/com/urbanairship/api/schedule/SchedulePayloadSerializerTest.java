@@ -1,5 +1,7 @@
 package com.urbanairship.api.schedule;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushOptions;
@@ -9,7 +11,6 @@ import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Test;
@@ -90,14 +91,24 @@ public class SchedulePayloadSerializerTest {
                 .setNotification(Notification.newBuilder().setAlert("alert").build())
                 .setPushOptions(PushOptions.newBuilder().build())
                 .build();
+
+        Schedule schedule = Schedule.newBuilder()
+                .setLocalScheduledTimestamp(new DateTime("2013-05-05T00:00:01", DateTimeZone.UTC))
+                .build();
+
         SchedulePayload schedulePayloadLocal = SchedulePayload.newBuilder()
-                .setSchedule(Schedule.newBuilder()
-                        .setLocalScheduledTimestamp(new DateTime("2013-05-05T00:00:01", DateTimeZone.UTC))
-                        .build())
+                .setSchedule(schedule)
                 .setPushPayload(pushPayloadLocal)
                 .build();
 
+        String expectedScheduled = "{\"local_scheduled_time\":\"2013-05-05T00:00:01\"}";
+        String scheduleString = MAPPER.writeValueAsString(schedulePayloadLocal.getSchedule());
+
+        JsonNode jsonNode = MAPPER.readTree(scheduleString);
+        JsonNode jsonNodeExpected = MAPPER.readTree(expectedScheduled);
+
         assertTrue(schedulePayloadLocal.getSchedule().getLocalTimePresent());
+        assertEquals(jsonNodeExpected, jsonNode);
     }
 
 }

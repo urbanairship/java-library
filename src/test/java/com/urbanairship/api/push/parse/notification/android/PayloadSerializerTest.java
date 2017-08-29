@@ -1,6 +1,8 @@
 package com.urbanairship.api.push.parse.notification.android;
 
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.notification.Interactive;
@@ -15,7 +17,6 @@ import com.urbanairship.api.push.model.notification.android.PublicNotification;
 import com.urbanairship.api.push.model.notification.android.Style;
 import com.urbanairship.api.push.model.notification.android.Wearable;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -135,9 +136,19 @@ public class PayloadSerializerTest {
                     "\"summary\":\"big text summary\"" +
                 "}," +
                 "\"time_to_live\":12345," +
-                "\"visibility\":1" +
+                "\"visibility\":1," +
+                "\"public_notification\": {" +
+                    "\"title\": \"A greeting\"," +
+                    "\"alert\": \"Hello!\"," +
+                    "\"summary\": \"A summary\"" +
+                "}" +
         "}";
         String parsedJson = MAPPER.writeValueAsString(payload);
-        assertEquals(json,parsedJson);
+
+
+        JsonNode expected = MAPPER.readTree(json);
+        JsonNode actual = MAPPER.readTree(parsedJson);
+
+        assertEquals(expected, actual);
     }
 }

@@ -4,21 +4,24 @@
 
 package com.urbanairship.api.channel.parse;
 
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.urbanairship.api.channel.model.ChannelResponse;
 import com.urbanairship.api.channel.model.ChannelView;
 import com.urbanairship.api.channel.model.ios.IosSettings;
 import com.urbanairship.api.channel.model.ios.QuietTime;
+import com.urbanairship.api.channel.model.open.OpenChannel;
 import com.urbanairship.api.channel.model.web.Subscription;
 import com.urbanairship.api.channel.model.web.WebSettings;
 import com.urbanairship.api.channel.parse.ios.IosSettingsDeserializer;
 import com.urbanairship.api.channel.parse.ios.QuietTimeDeserializer;
+import com.urbanairship.api.channel.parse.open.OpenChannelDeserializer;
 import com.urbanairship.api.channel.parse.web.SubscriptionDeserializer;
 import com.urbanairship.api.channel.parse.web.WebSettingsDeserializer;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import org.codehaus.jackson.Version;
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.module.SimpleModule;
 
 public class ChannelObjectMapper {
 
@@ -32,11 +35,13 @@ public class ChannelObjectMapper {
         MODULE.addDeserializer(ChannelResponse.class, new ChannelsResponseDeserializer());
         MODULE.addDeserializer(Subscription.class, new SubscriptionDeserializer());
         MODULE.addDeserializer(WebSettings.class, new WebSettingsDeserializer());
+        MODULE.addDeserializer(OpenChannel.class, new OpenChannelDeserializer());
 
 
         MAPPER.registerModule(MODULE);
+        MAPPER.registerModule(new JodaModule());
         MAPPER.registerModule(PushObjectMapper.getModule());
-        MAPPER.configure(DeserializationConfig.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+        MAPPER.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
 }
 
     public static SimpleModule getModule() {

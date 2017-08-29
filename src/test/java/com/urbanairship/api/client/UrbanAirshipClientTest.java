@@ -1,5 +1,7 @@
 package com.urbanairship.api.client;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
 import com.google.common.base.Predicate;
@@ -14,6 +16,11 @@ import com.urbanairship.api.channel.ChannelTagRequest;
 import com.urbanairship.api.channel.model.ChannelResponse;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.common.parse.DateFormats;
+import com.urbanairship.api.experiments.ExperimentRequest;
+import com.urbanairship.api.experiments.model.Experiment;
+import com.urbanairship.api.experiments.model.ExperimentResponse;
+import com.urbanairship.api.experiments.model.VariantPushPayload;
+import com.urbanairship.api.experiments.model.Variant;
 import com.urbanairship.api.location.LocationRequest;
 import com.urbanairship.api.location.model.BoundedBox;
 import com.urbanairship.api.location.model.LocationResponse;
@@ -29,22 +36,19 @@ import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.PushResponse;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.Selectors;
+import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.reports.PlatformStatsRequest;
 import com.urbanairship.api.reports.PlatformStatsRequestType;
-import com.urbanairship.api.reports.PushDetailRequest;
 import com.urbanairship.api.reports.PushInfoRequest;
 import com.urbanairship.api.reports.PushListingRequest;
-import com.urbanairship.api.reports.PushSeriesRequest;
 import com.urbanairship.api.reports.StatisticsCsvRequest;
 import com.urbanairship.api.reports.StatisticsRequest;
 import com.urbanairship.api.reports.model.PlatformStatsResponse;
 import com.urbanairship.api.reports.model.Precision;
-import com.urbanairship.api.reports.model.PushDetailResponse;
 import com.urbanairship.api.reports.model.PushInfoResponse;
 import com.urbanairship.api.reports.model.PushListingResponse;
-import com.urbanairship.api.reports.model.PushSeriesResponse;
 import com.urbanairship.api.reports.model.StatisticsResponse;
 import com.urbanairship.api.schedule.ListSchedulesOrderType;
 import com.urbanairship.api.schedule.ScheduleDeleteRequest;
@@ -76,8 +80,6 @@ import com.urbanairship.api.templates.model.TemplatePushPayload;
 import com.urbanairship.api.templates.model.TemplateResponse;
 import com.urbanairship.api.templates.model.TemplateSelector;
 import org.apache.log4j.BasicConfigurator;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Period;
@@ -90,6 +92,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -182,7 +185,7 @@ public class UrbanAirshipClientTest {
             .setSecret("secret")
             .build();
         assertEquals("App key incorrect", "key", client.getAppKey());
-        assertEquals("App secret incorrect", "secret", client.getAppSecret());
+        assertEquals("App secret incorrect", "secret", client.getAppSecret().get());
         client.close();
     }
 
@@ -569,7 +572,7 @@ public class UrbanAirshipClientTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testServerException() throws Exception {
+    public void testServerExceptionJSONfor503() throws Exception {
 
         PushPayload payload = PushPayload.newBuilder()
             .setAudience(Selectors.all())
@@ -583,6 +586,105 @@ public class UrbanAirshipClientTest {
             .willReturn(aResponse()
                 .withHeader(CONTENT_TYPE_KEY, "application/vnd.urbanairship+json")
                 .withStatus(503)));
+
+        final CountDownLatch latch = new CountDownLatch(1);
+        client.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
+            @Override
+            public void completed(Response response) {
+            }
+
+            @Override
+            public void error(Throwable throwable) {
+                assertTrue(throwable instanceof ServerException);
+                latch.countDown();
+            }
+        });
+
+        latch.await();
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testServerExceptionJSONfor500() throws Exception {
+
+        PushPayload payload = PushPayload.newBuilder()
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setNotification(Notifications.alert("Foo"))
+                .build();
+
+
+        // Setup a stubbed response for the server
+        stubFor(post(urlEqualTo("/api/push/"))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/vnd.urbanairship+json")
+                        .withStatus(500)));
+
+        final CountDownLatch latch = new CountDownLatch(1);
+        client.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
+            @Override
+            public void completed(Response response) {
+            }
+
+            @Override
+            public void error(Throwable throwable) {
+                assertTrue(throwable instanceof ServerException);
+                latch.countDown();
+            }
+        });
+
+        latch.await();
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testServerExceptionNonJSONfor500() throws Exception {
+
+        PushPayload payload = PushPayload.newBuilder()
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setNotification(Notifications.alert("Foo"))
+                .build();
+
+
+        // Setup a stubbed response for the server
+        stubFor(post(urlEqualTo("/api/push/"))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "text/html")
+                        .withStatus(500)));
+
+        final CountDownLatch latch = new CountDownLatch(1);
+        client.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
+            @Override
+            public void completed(Response response) {
+            }
+
+            @Override
+            public void error(Throwable throwable) {
+                assertTrue(throwable instanceof ServerException);
+                latch.countDown();
+            }
+        });
+
+        latch.await();
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testServerExceptionNonJSONfor503() throws Exception {
+
+        PushPayload payload = PushPayload.newBuilder()
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setNotification(Notifications.alert("Foo"))
+                .build();
+
+
+        // Setup a stubbed response for the server
+        stubFor(post(urlEqualTo("/api/push/"))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "text/html")
+                        .withStatus(503)));
 
         final CountDownLatch latch = new CountDownLatch(1);
         client.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
@@ -1908,410 +2010,6 @@ public class UrbanAirshipClientTest {
     }
 
     @Test
-    public void testPushDetail() throws IOException {
-        String queryPathString = "/api/reports/perpush/detail/";
-
-        String responseString = "[ \n" +
-                "{  \n" +
-                "  \"app_key\":\"some_app_key\",\n" +
-                "  \"push_id\":\"57ef3728-79dc-46b1-a6b9-20081e561f97\",\n" +
-                "  \"created\":\"2013-07-31 22:05:53\",\n" +
-                "  \"push_body\":\"PEJhc2U2NC1lbmNvZGVkIHN0cmluZz4=\",\n" +
-                "  \"rich_deletions\":1,\n" +
-                "  \"rich_responses\":2,\n" +
-                "  \"rich_sends\":3,\n" +
-                "  \"sends\":58,\n" +
-                "  \"direct_responses\":4,\n" +
-                "  \"influenced_responses\":5,\n" +
-                "  \"platforms\":{  \n" +
-                "    \"android\":{  \n" +
-                "      \"direct_responses\":6,\n" +
-                "      \"influenced_responses\":7,\n" +
-                "      \"sends\":22\n" +
-                "    },\n" +
-                "    \"ios\":{  \n" +
-                "      \"direct_responses\":8,\n" +
-                "      \"influenced_responses\":9,\n" +
-                "      \"sends\":36\n" +
-                "    }\n" +
-                "  }\n" +
-                "},\n" +
-                "{  \n" +
-                "  \"app_key\":\"some_app_key\",\n" +
-                "  \"push_id\":\"57ef3728-79dc-46b1-a6b9-20081e561f97\",\n" +
-                "  \"created\":\"2013-07-31 22:05:53\",\n" +
-                "  \"push_body\":\"PEJhc2U2NC1lbmNvZGVkIHN0cmluZz4=\",\n" +
-                "  \"rich_deletions\":1,\n" +
-                "  \"rich_responses\":2,\n" +
-                "  \"rich_sends\":3,\n" +
-                "  \"sends\":58,\n" +
-                "  \"direct_responses\":4,\n" +
-                "  \"influenced_responses\":5,\n" +
-                "  \"platforms\":{  \n" +
-                "    \"android\":{  \n" +
-                "      \"direct_responses\":6,\n" +
-                "      \"influenced_responses\":7,\n" +
-                "      \"sends\":22\n" +
-                "    },\n" +
-                "    \"ios\":{  \n" +
-                "      \"direct_responses\":8,\n" +
-                "      \"influenced_responses\":9,\n" +
-                "      \"sends\":36\n" +
-                "    }\n" +
-                "  }\n" +
-                "}\n" +
-                "]";
-
-        stubFor(post(urlEqualTo(queryPathString))
-                .willReturn(aResponse()
-                        .withHeader(CONTENT_TYPE_KEY, "application/json")
-                        .withBody(responseString)
-                        .withStatus(200)));
-
-        PushDetailRequest request = PushDetailRequest.newRequest();
-        request.addPushIds("67ef3728-79dc-46b1-a6b9-20081e561f97","57ef3728-79dc-46b1-a6b9-20081e561f97");
-
-        Response<List<PushDetailResponse>> response = client.execute(request);
-        List<LoggedRequest> requests = findAll(postRequestedFor(urlEqualTo(queryPathString)));
-
-        assertEquals(1, requests.size());
-        assertNotNull(response);
-        assertEquals(200, response.getStatus());
-    }
-
-    @Test
-    public void testListPerPushSeries() throws IOException {
-
-        String queryPathString = "/api/reports/perpush/series/push_id";
-
-        String responseString = "{  \n" +
-                "  \"app_key\":\"some_app_key\",\n" +
-                "  \"push_id\":\"57ef3728-79dc-46b1-a6b9-20081e561f97\",\n" +
-                "  \"start\":\"2013-07-25 23:00:00\",\n" +
-                "  \"end\":\"2013-07-26 11:00:00\",\n" +
-                "  \"precision\":\"HOURLY\",\n" +
-                "  \"counts\":[  \n" +
-                "    {  \n" +
-                "      \"push_platforms\":{  \n" +
-                "        \"all\":{  \n" +
-                "          \"direct_responses\":1,\n" +
-                "          \"influenced_responses\":2,\n" +
-                "          \"sends\":58\n" +
-                "        },\n" +
-                "        \"android\":{  \n" +
-                "          \"direct_responses\":3,\n" +
-                "          \"influenced_responses\":4,\n" +
-                "          \"sends\":22\n" +
-                "        },\n" +
-                "        \"ios\":{  \n" +
-                "          \"direct_responses\":5,\n" +
-                "          \"influenced_responses\":6,\n" +
-                "          \"sends\":36\n" +
-                "        }\n" +
-                "      },\n" +
-                "      \"rich_push_platforms\":{  \n" +
-                "        \"all\":{  \n" +
-                "          \"responses\":7,\n" +
-                "          \"sends\":8\n" +
-                "        }\n" +
-                "      },\n" +
-                "      \"time\":\"2013-07-25 23:00:00\"\n" +
-                "    },\n" +
-                "    {  \n" +
-                "      \"push_platforms\":{  \n" +
-                "        \"all\":{  \n" +
-                "          \"direct_responses\":9,\n" +
-                "          \"influenced_responses\":10,\n" +
-                "          \"sends\":11\n" +
-                "        },\n" +
-                "        \"android\":{  \n" +
-                "          \"direct_responses\":12,\n" +
-                "          \"influenced_responses\":13,\n" +
-                "          \"sends\":14\n" +
-                "        },\n" +
-                "        \"ios\":{  \n" +
-                "          \"direct_responses\":15,\n" +
-                "          \"influenced_responses\":16,\n" +
-                "          \"sends\":17\n" +
-                "        }\n" +
-                "      },\n" +
-                "      \"rich_push_platforms\":{  \n" +
-                "        \"all\":{  \n" +
-                "          \"responses\":18,\n" +
-                "          \"sends\":19\n" +
-                "        }\n" +
-                "      },\n" +
-                "      \"time\":\"2013-07-26 00:00:00\"\n" +
-                "    },\n" +
-                "    {  \n" +
-                "      \"push_platforms\":{  \n" +
-                "        \"all\":{  \n" +
-                "          \"direct_responses\":20,\n" +
-                "          \"influenced_responses\":21,\n" +
-                "          \"sends\":22\n" +
-                "        },\n" +
-                "        \"android\":{  \n" +
-                "          \"direct_responses\":23,\n" +
-                "          \"influenced_responses\":24,\n" +
-                "          \"sends\":25\n" +
-                "        },\n" +
-                "        \"ios\":{  \n" +
-                "          \"direct_responses\":26,\n" +
-                "          \"influenced_responses\":27,\n" +
-                "          \"sends\":28\n" +
-                "        }\n" +
-                "      },\n" +
-                "      \"rich_push_platforms\":{  \n" +
-                "        \"all\":{  \n" +
-                "          \"responses\":29,\n" +
-                "          \"sends\":30\n" +
-                "        }\n" +
-                "      },\n" +
-                "      \"time\":\"2013-07-26 01:00:00\"\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}";
-
-        stubFor(get(urlEqualTo(queryPathString))
-                .willReturn(aResponse()
-                        .withBody(responseString)
-                        .withStatus(200)));
-
-        PushSeriesRequest request = PushSeriesRequest.newRequest("push_id");
-
-        Response<PushSeriesResponse> response = client.execute(request);
-        List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
-
-        assertEquals(1, requests.size());
-        assertNotNull(response);
-        assertEquals(200, response.getStatus());
-    }
-
-    @Test
-    public void testListPerPushSeriesWithPrecision() throws IOException {
-
-        String queryPathString = "/api/reports/perpush/series/push_id?precision=DAILY";
-
-        String responseString = "{  \n" +
-                "  \"app_key\":\"some_app_key\",\n" +
-                "  \"push_id\":\"57ef3728-79dc-46b1-a6b9-20081e561f97\",\n" +
-                "  \"start\":\"2013-07-25 23:00:00\",\n" +
-                "  \"end\":\"2013-07-26 11:00:00\",\n" +
-                "  \"precision\":\"HOURLY\",\n" +
-                "  \"counts\":[  \n" +
-                "    {  \n" +
-                "      \"push_platforms\":{  \n" +
-                "        \"all\":{  \n" +
-                "          \"direct_responses\":1,\n" +
-                "          \"influenced_responses\":2,\n" +
-                "          \"sends\":58\n" +
-                "        },\n" +
-                "        \"android\":{  \n" +
-                "          \"direct_responses\":3,\n" +
-                "          \"influenced_responses\":4,\n" +
-                "          \"sends\":22\n" +
-                "        },\n" +
-                "        \"ios\":{  \n" +
-                "          \"direct_responses\":5,\n" +
-                "          \"influenced_responses\":6,\n" +
-                "          \"sends\":36\n" +
-                "        }\n" +
-                "      },\n" +
-                "      \"rich_push_platforms\":{  \n" +
-                "        \"all\":{  \n" +
-                "          \"responses\":7,\n" +
-                "          \"sends\":8\n" +
-                "        }\n" +
-                "      },\n" +
-                "      \"time\":\"2013-07-25 23:00:00\"\n" +
-                "    },\n" +
-                "    {  \n" +
-                "      \"push_platforms\":{  \n" +
-                "        \"all\":{  \n" +
-                "          \"direct_responses\":9,\n" +
-                "          \"influenced_responses\":10,\n" +
-                "          \"sends\":11\n" +
-                "        },\n" +
-                "        \"android\":{  \n" +
-                "          \"direct_responses\":12,\n" +
-                "          \"influenced_responses\":13,\n" +
-                "          \"sends\":14\n" +
-                "        },\n" +
-                "        \"ios\":{  \n" +
-                "          \"direct_responses\":15,\n" +
-                "          \"influenced_responses\":16,\n" +
-                "          \"sends\":17\n" +
-                "        }\n" +
-                "      },\n" +
-                "      \"rich_push_platforms\":{  \n" +
-                "        \"all\":{  \n" +
-                "          \"responses\":18,\n" +
-                "          \"sends\":19\n" +
-                "        }\n" +
-                "      },\n" +
-                "      \"time\":\"2013-07-26 00:00:00\"\n" +
-                "    },\n" +
-                "    {  \n" +
-                "      \"push_platforms\":{  \n" +
-                "        \"all\":{  \n" +
-                "          \"direct_responses\":20,\n" +
-                "          \"influenced_responses\":21,\n" +
-                "          \"sends\":22\n" +
-                "        },\n" +
-                "        \"android\":{  \n" +
-                "          \"direct_responses\":23,\n" +
-                "          \"influenced_responses\":24,\n" +
-                "          \"sends\":25\n" +
-                "        },\n" +
-                "        \"ios\":{  \n" +
-                "          \"direct_responses\":26,\n" +
-                "          \"influenced_responses\":27,\n" +
-                "          \"sends\":28\n" +
-                "        }\n" +
-                "      },\n" +
-                "      \"rich_push_platforms\":{  \n" +
-                "        \"all\":{  \n" +
-                "          \"responses\":29,\n" +
-                "          \"sends\":30\n" +
-                "        }\n" +
-                "      },\n" +
-                "      \"time\":\"2013-07-26 01:00:00\"\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}";
-
-        stubFor(get(urlEqualTo(queryPathString))
-                .willReturn(aResponse()
-                        .withBody(responseString)
-                        .withStatus(200)));
-
-        PushSeriesRequest request = PushSeriesRequest.newRequest("push_id")
-                .setPrecision(Precision.DAILY);
-
-        Response<PushSeriesResponse> response = client.execute(request);
-        List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
-
-        assertEquals(1, requests.size());
-        assertNotNull(response);
-        assertEquals(200, response.getStatus());
-
-    }
-
-    @Test
-    public void testListPerPushSeriesWithPrecisionWithRange() throws Exception {
-
-        String queryPathString = "/api/reports/perpush/series/push_id?precision=DAILY&start=2014-10-01T12%3A00%3A00&end=2014-10-03T12%3A00%3A00";
-
-        String responseString = "{  \n" +
-                "  \"app_key\":\"some_app_key\",\n" +
-                "  \"push_id\":\"57ef3728-79dc-46b1-a6b9-20081e561f97\",\n" +
-                "  \"start\":\"2013-07-25 23:00:00\",\n" +
-                "  \"end\":\"2013-07-26 11:00:00\",\n" +
-                "  \"precision\":\"HOURLY\",\n" +
-                "  \"counts\":[  \n" +
-                "    {  \n" +
-                "      \"push_platforms\":{  \n" +
-                "        \"all\":{  \n" +
-                "          \"direct_responses\":1,\n" +
-                "          \"influenced_responses\":2,\n" +
-                "          \"sends\":58\n" +
-                "        },\n" +
-                "        \"android\":{  \n" +
-                "          \"direct_responses\":3,\n" +
-                "          \"influenced_responses\":4,\n" +
-                "          \"sends\":22\n" +
-                "        },\n" +
-                "        \"ios\":{  \n" +
-                "          \"direct_responses\":5,\n" +
-                "          \"influenced_responses\":6,\n" +
-                "          \"sends\":36\n" +
-                "        }\n" +
-                "      },\n" +
-                "      \"rich_push_platforms\":{  \n" +
-                "        \"all\":{  \n" +
-                "          \"responses\":7,\n" +
-                "          \"sends\":8\n" +
-                "        }\n" +
-                "      },\n" +
-                "      \"time\":\"2013-07-25 23:00:00\"\n" +
-                "    },\n" +
-                "    {  \n" +
-                "      \"push_platforms\":{  \n" +
-                "        \"all\":{  \n" +
-                "          \"direct_responses\":9,\n" +
-                "          \"influenced_responses\":10,\n" +
-                "          \"sends\":11\n" +
-                "        },\n" +
-                "        \"android\":{  \n" +
-                "          \"direct_responses\":12,\n" +
-                "          \"influenced_responses\":13,\n" +
-                "          \"sends\":14\n" +
-                "        },\n" +
-                "        \"ios\":{  \n" +
-                "          \"direct_responses\":15,\n" +
-                "          \"influenced_responses\":16,\n" +
-                "          \"sends\":17\n" +
-                "        }\n" +
-                "      },\n" +
-                "      \"rich_push_platforms\":{  \n" +
-                "        \"all\":{  \n" +
-                "          \"responses\":18,\n" +
-                "          \"sends\":19\n" +
-                "        }\n" +
-                "      },\n" +
-                "      \"time\":\"2013-07-26 00:00:00\"\n" +
-                "    },\n" +
-                "    {  \n" +
-                "      \"push_platforms\":{  \n" +
-                "        \"all\":{  \n" +
-                "          \"direct_responses\":20,\n" +
-                "          \"influenced_responses\":21,\n" +
-                "          \"sends\":22\n" +
-                "        },\n" +
-                "        \"android\":{  \n" +
-                "          \"direct_responses\":23,\n" +
-                "          \"influenced_responses\":24,\n" +
-                "          \"sends\":25\n" +
-                "        },\n" +
-                "        \"ios\":{  \n" +
-                "          \"direct_responses\":26,\n" +
-                "          \"influenced_responses\":27,\n" +
-                "          \"sends\":28\n" +
-                "        }\n" +
-                "      },\n" +
-                "      \"rich_push_platforms\":{  \n" +
-                "        \"all\":{  \n" +
-                "          \"responses\":29,\n" +
-                "          \"sends\":30\n" +
-                "        }\n" +
-                "      },\n" +
-                "      \"time\":\"2013-07-26 01:00:00\"\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}";
-
-        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0, DateTimeZone.UTC);
-        DateTime end = start.plus(Period.hours(48));
-
-        stubFor(get(urlEqualTo(queryPathString))
-                .willReturn(aResponse()
-                        .withBody(responseString)
-                        .withStatus(200)));
-
-        PushSeriesRequest request = PushSeriesRequest.newRequest("push_id")
-                .setStart(start)
-                .setEnd(end)
-                .setPrecision(Precision.DAILY);
-
-        Response<PushSeriesResponse> response = client.execute(request);
-        List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
-
-        assertEquals(1, requests.size());
-        assertNotNull(response);
-        assertEquals(200, response.getStatus());
-    }
-
-    @Test
     public void testLookupSegment() throws Exception {
         String queryPathString = "/api/segments/abc";
         String responseString = "{  \n" +
@@ -3499,5 +3197,136 @@ public class UrbanAirshipClientTest {
         assertNotNull(response.getBody().get().getTemplates().get());
         assertNotNull(response.getBody().get().getNextPage());
         assertNotNull(response.getBody().get().getPrevPage());
+    }
+
+    @Test
+    public void testCreateExperiment() throws Exception {
+        String queryPathString = "/api/experiments/";
+        String responseJson =
+                "{" +
+                        "\"ok\": true," +
+                        "\"operation_id\": \"df6a6b50-9843-0304-d5a5-743f246a4946\"," +
+                        "\"experiment_id\": \"1cbfbfa2-08d1-92c2-7119-f8f7f670f5f6\"" +
+                        "}";
+
+        stubFor(post(urlEqualTo(queryPathString))
+                .willReturn(aResponse()
+                        .withStatus(201)
+                        .withBody(responseJson)));
+
+        VariantPushPayload payloadOne = VariantPushPayload.newBuilder()
+                .setNotification(Notification.newBuilder()
+                        .setAlert("Hello")
+                        .build()
+                )
+                .build();
+
+        Variant variantOne = Variant.newBuilder()
+                .setPushPayload(payloadOne)
+                .build();
+
+        VariantPushPayload payloadTwo = VariantPushPayload.newBuilder()
+                .setNotification(Notification.newBuilder()
+                        .setAlert("Goodbye")
+                        .build()
+                )
+                .build();
+
+        Variant variantTwo = Variant.newBuilder()
+                .setPushPayload(payloadTwo)
+                .build();
+
+        Experiment experiment = Experiment.newBuilder()
+                .setName("name")
+                .setDescription("description")
+                .setControl(new BigDecimal(0.1))
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setAudience(Selectors.all())
+                .addVariant(variantOne)
+                .addVariant(variantTwo)
+                .build();
+
+        try {
+            final CountDownLatch latch = new CountDownLatch(1);
+            Response<ExperimentResponse> response = client.execute(ExperimentRequest.newRequest(experiment), new ResponseCallback() {
+                @Override
+                public void completed(Response response) {
+                    latch.countDown();
+                }
+
+                @Override
+                public void error(Throwable throwable) {
+
+                }
+            });
+            latch.await();
+
+            // Verify components of the underlying HttpRequest
+            verify(postRequestedFor(urlEqualTo("/api/experiments/"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+            List<LoggedRequest> requests = findAll(postRequestedFor(
+                    urlEqualTo("/api/experiments/")));
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+            assertNotNull(response);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testExperimentValidate() {
+
+        VariantPushPayload payloadOne = VariantPushPayload.newBuilder()
+                .setNotification(Notification.newBuilder()
+                        .setAlert("Hello")
+                        .build()
+                )
+                .build();
+
+        Variant variantOne = Variant.newBuilder()
+                .setPushPayload(payloadOne)
+                .build();
+
+        VariantPushPayload payloadTwo = VariantPushPayload.newBuilder()
+                .setNotification(Notification.newBuilder()
+                        .setAlert("Goodbye")
+                        .build()
+                )
+                .build();
+
+        Variant variantTwo = Variant.newBuilder()
+                .setPushPayload(payloadTwo)
+                .build();
+
+        Experiment experiment = Experiment.newBuilder()
+                .setName("name")
+                .setDescription("description")
+                .setControl(new BigDecimal(0.1))
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setAudience(Selectors.namedUser("birdperson"))
+                .addVariant(variantOne)
+                .addVariant(variantTwo)
+                .build();
+
+        // Setup a stubbed response for the server
+        String experimentJSON = "{\"ok\" : true,\"operation_id\" : \"df6a6b50\", \"experiment_id\": \"ExperimentID\"}";
+        stubFor(post(urlEqualTo("/api/experiments/validate/"))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withBody(experimentJSON)
+                        .withStatus(201)));
+        try {
+            Response<ExperimentResponse> response = client.execute(ExperimentRequest.newRequest(experiment).setValidateOnly(true));
+
+            // Verify components of the underlying HttpRequest
+            verify(postRequestedFor(urlEqualTo("/api/experiments/validate/"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+            assertNotNull(response);
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
+
     }
 }

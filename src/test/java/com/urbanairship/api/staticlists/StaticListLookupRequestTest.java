@@ -1,11 +1,11 @@
 package com.urbanairship.api.staticlists;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.staticlists.model.StaticListView;
 import com.urbanairship.api.staticlists.parse.StaticListsObjectMapper;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 

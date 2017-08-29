@@ -213,31 +213,6 @@ public class Selectors {
         return compound(SelectorType.OR, SelectorType.IOS_CHANNEL, iosChannels);
     }
 
-    /* Device pins */
-    /**
-     * @deprecated Marked to be removed in 2.0.0. Blackberry is no longer supported by the Urban Airship API.
-     */
-    @Deprecated
-    public static final Selector devicePin(String devicePin) {
-        return value(SelectorType.DEVICE_PIN, devicePin);
-    }
-
-    /**
-     * @deprecated Marked to be removed in 2.0.0. Blackberry is no longer supported by the Urban Airship API.
-     */
-    @Deprecated
-    public static final Selector devicePins(String ... devicePins) {
-        return compound(SelectorType.OR, SelectorType.DEVICE_PIN, devicePins);
-    }
-
-    /**
-     * @deprecated Marked to be removed in 2.0.0. Blackberry is no longer supported by the Urban Airship API.
-     */
-    @Deprecated
-    public static final Selector devicePins(Collection<String> devicePins) {
-        return compound(SelectorType.OR, SelectorType.DEVICE_PIN, devicePins);
-    }
-
     /* APIDs */
 
     public static final Selector apid(String apid) {
@@ -278,32 +253,6 @@ public class Selectors {
 
     public static final Selector wnsDevices(Collection<String> ids) {
         return compound(SelectorType.OR, SelectorType.WNS, ids);
-    }
-
-    /* MPNS APIDs */
-
-    /**
-     * @deprecated Marked to be removed in 2.0.0. MPNS is no longer supported by the Urban Airship API.
-     */
-    @Deprecated
-    public static final Selector mpns(String mpns) {
-        return value(SelectorType.MPNS, mpns);
-    }
-
-    /**
-     * @deprecated Marked to be removed in 2.0.0. MPNS is no longer supported by the Urban Airship API.
-     */
-    @Deprecated
-    public static final Selector mpnsDevices(String ... ids) {
-        return compound(SelectorType.OR, SelectorType.MPNS, ids);
-    }
-
-    /**
-     * @deprecated Marked to be removed in 2.0.0. MPNS is no longer supported by the Urban Airship API.
-     */
-    @Deprecated
-    public static final Selector mpnsDevices(Collection<String> ids) {
-        return compound(SelectorType.OR, SelectorType.MPNS, ids);
     }
 
     /* Amazon Channels */

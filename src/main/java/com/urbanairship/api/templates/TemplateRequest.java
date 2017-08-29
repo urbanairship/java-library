@@ -5,6 +5,9 @@
 package com.urbanairship.api.templates;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
@@ -15,8 +18,6 @@ import com.urbanairship.api.templates.model.TemplateVariable;
 import com.urbanairship.api.templates.model.TemplateView;
 import com.urbanairship.api.templates.parse.TemplatesObjectMapper;
 import org.apache.http.entity.ContentType;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.io.IOException;
 import java.net.URI;
@@ -121,7 +122,7 @@ public class TemplateRequest implements Request<TemplateResponse> {
 
     @Override
     public String getRequestBody() {
-        ObjectMapper mapper = TemplatesObjectMapper.getInstance().setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
+        ObjectMapper mapper = TemplatesObjectMapper.getInstance().setSerializationInclusion(JsonInclude.Include.NON_NULL);
         try {
             return mapper.writeValueAsString(this.builder.build());
         } catch (Exception ex) {
@@ -155,5 +156,10 @@ public class TemplateRequest implements Request<TemplateResponse> {
                 return TemplatesObjectMapper.getInstance().readValue(response, TemplateResponse.class);
             }
         };
+    }
+
+    @Override
+    public boolean bearerTokenAuthRequired() {
+        return false;
     }
 }
