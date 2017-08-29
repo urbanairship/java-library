@@ -8,7 +8,6 @@ import com.urbanairship.api.customevents.model.CustomEventChannelType;
 import com.urbanairship.api.customevents.model.CustomEventPayload;
 import com.urbanairship.api.customevents.model.CustomEventResponse;
 import com.urbanairship.api.customevents.model.CustomEventUser;
-import com.urbanairship.api.push.model.PushResponse;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.apache.http.entity.ContentType;
 import org.joda.time.DateTime;
