@@ -4,6 +4,9 @@
 
 package com.urbanairship.api.push.parse.notification;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.FieldParser;
@@ -13,9 +16,6 @@ import com.urbanairship.api.common.parse.StandardObjectDeserializer;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.urbanairship.api.push.model.notification.Notification;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.DeserializationContext;
-import org.codehaus.jackson.map.JsonDeserializer;
 
 import java.io.IOException;
 import java.util.Map;
@@ -37,12 +37,6 @@ public class NotificationDeserializer extends JsonDeserializer<Notification> {
                         reader.readPlatformDevicePayloadOverride(DeviceType.WNS, jsonParser, deserializationContext);
                     }
                 })
-            .put("mpns", new FieldParser<NotificationReader>() {
-                    @Override
-                    public void parse(NotificationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                        reader.readPlatformDevicePayloadOverride(DeviceType.MPNS, jsonParser, deserializationContext);
-                    }
-                })
             .put("ios", new FieldParser<NotificationReader>() {
                     @Override
                     public void parse(NotificationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
@@ -53,12 +47,6 @@ public class NotificationDeserializer extends JsonDeserializer<Notification> {
                     @Override
                     public void parse(NotificationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
                         reader.readPlatformDevicePayloadOverride(DeviceType.ANDROID, jsonParser, deserializationContext);
-                    }
-                })
-            .put("blackberry", new FieldParser<NotificationReader>() {
-                    @Override
-                    public void parse(NotificationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                        reader.readPlatformDevicePayloadOverride(DeviceType.BLACKBERRY, jsonParser, deserializationContext);
                     }
                 })
             .put("amazon", new FieldParser<NotificationReader>() {

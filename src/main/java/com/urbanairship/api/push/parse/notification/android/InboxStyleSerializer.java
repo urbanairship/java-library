@@ -4,11 +4,13 @@
 
 package com.urbanairship.api.push.parse.notification.android;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
+import com.urbanairship.api.push.model.notification.android.BigPictureStyle;
 import com.urbanairship.api.push.model.notification.android.InboxStyle;
 import com.urbanairship.api.push.model.notification.android.Style;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.map.JsonSerializer;
-import org.codehaus.jackson.map.SerializerProvider;
 
 import java.io.IOException;
 
@@ -16,8 +18,6 @@ public class InboxStyleSerializer extends JsonSerializer<InboxStyle> {
 
     @Override
     public void serialize(InboxStyle style, JsonGenerator jgen, SerializerProvider provider) throws IOException {
-        jgen.writeStartObject();
-
         jgen.writeStringField("type", Style.Type.INBOX.getStyleType());
         jgen.writeArrayFieldStart("lines");
         for (String value : style.getContent()) {
@@ -31,7 +31,15 @@ public class InboxStyleSerializer extends JsonSerializer<InboxStyle> {
         if (style.getSummary().isPresent()) {
             jgen.writeStringField("summary", style.getSummary().get());
         }
+    }
 
-        jgen.writeEndObject();
+    @Override
+    public void serializeWithType(InboxStyle style, JsonGenerator jgen,
+                                  SerializerProvider provider,
+                                  TypeSerializer typeSerializer) throws IOException {
+
+        typeSerializer.writeTypePrefixForObject(style, jgen);
+        serialize(style, jgen, provider);
+        typeSerializer.writeTypeSuffixForObject(style, jgen);
     }
 }

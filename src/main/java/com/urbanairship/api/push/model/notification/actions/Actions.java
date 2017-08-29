@@ -146,7 +146,7 @@ public class Actions extends PushModelObject {
             //
             // See the API v3 spec for complete details.
             if (actions.containsKey(AppDefinedAction.class) && actions.size() > 1) {
-                List<String> fieldNames = Lists.newArrayList(actions.getInstance(AppDefinedAction.class).getValue().getFieldNames());
+                List<String> fieldNames = Lists.newArrayList(actions.getInstance(AppDefinedAction.class).getValue().fieldNames());
                 for (Class<? extends Action> key : actions.keySet()) {
                     if (key == AppDefinedAction.class) {
                         continue;

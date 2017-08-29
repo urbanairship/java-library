@@ -4,11 +4,11 @@
 
 package com.urbanairship.api.common.parse;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
 import com.google.common.base.Optional;
 import com.google.common.base.Supplier;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonToken;
-import org.codehaus.jackson.map.DeserializationContext;
 
 import java.io.IOException;
 

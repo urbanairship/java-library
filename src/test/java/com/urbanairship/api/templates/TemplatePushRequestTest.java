@@ -1,5 +1,6 @@
 package com.urbanairship.api.templates;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.push.model.DeviceType;
@@ -11,7 +12,6 @@ import com.urbanairship.api.templates.model.TemplateSelector;
 import com.urbanairship.api.templates.parse.TemplatesObjectMapper;
 import org.apache.http.HttpHeaders;
 import org.apache.http.entity.ContentType;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 

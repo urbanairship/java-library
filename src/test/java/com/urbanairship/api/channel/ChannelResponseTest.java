@@ -1,11 +1,11 @@
 package com.urbanairship.api.channel;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.channel.model.ChannelResponse;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.channel.model.ChannelView;
 import com.urbanairship.api.channel.parse.ChannelObjectMapper;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -21,7 +21,7 @@ public class ChannelResponseTest {
     @Test
     public void testAPIListAllChannelsResponse() {
 
-        String sixresponse = "{\n" +
+        String sevenresponse = "{\n" +
             "  \"ok\": true,\n" +
             "  \"channels\": [\n" +
             "    {\n" +
@@ -181,18 +181,44 @@ public class ChannelResponseTest {
             "            }\n" +
             "        },\n" +
             "        \"last_registration\": \"2017-03-09T16:27:20\"\n" +
+            "    },\n" +
+            "    {\n" +
+            "       \"channel_id\": \"666897e4-84c3-4c76-af86-9ece6290egth\",\n" +
+            "       \"device_type\": \"open\",\n" +
+            "       \"installed\": true,\n" +
+            "       \"named_user_id\": null,\n" +
+            "       \"alias\": null,\n" +
+            "       \"tags\": [ ],\n" +
+            "       \"tag_groups\": {\n" +
+            "           \"ua_channel_type\": [\n" +
+            "               \"e7fd997e-0010-4b05-995e-93aa3f7f2fte\"\n" +
+            "           ],\n" +
+            "           \"ua_opt_in\": [\n" +
+            "                \"true\"\n" +
+            "           ]\n" +
+            "       },\n" +
+            "       \"created\": \"2017-06-29T19:25:31\",\n" +
+            "       \"address\": \"`uuid`\",\n" +
+            "       \"opt_in\": true,\n" +
+            "       \"open\": {\n" +
+            "            \"open_platform_name\": \"open platform name\",\n" +
+            "           \"old_address\": \"old address\",\n" +
+            "           \"identifiers\": {\n" +
+            "                \"demo\": \"foo\",\n" +
+            "               \"customer_uuid\": \"`uuid`\"\n" +
+            "           }\n" +
+            "       },\n" +
+            "       \"last_registration\": \"2017-06-29T19:25:31\"\n" +
             "    }" +
             "  ],\n" +
             "  \"next_page\": \"https:\\/\\/go.urbanairship.com\\/api\\/channels?limit=5&start=0143e4d6-724c-4fc8-bbc6-ca647b8993bf\"\n" +
             "}";
-
-
         try {
-            ChannelResponse response = MAPPER.readValue(sixresponse, ChannelResponse.class);
+            ChannelResponse response = MAPPER.readValue(sevenresponse, ChannelResponse.class);
 
             assertTrue(response.getOk());
             assertEquals("https://go.urbanairship.com/api/channels?limit=5&start=0143e4d6-724c-4fc8-bbc6-ca647b8993bf", response.getNextPage().get());
-            assertEquals(6, response.getChannelObjects().get().size());
+            assertEquals(7, response.getChannelObjects().get().size());
 
             ChannelView one = response.getChannelObjects().get().get(0);
             assertNotNull(one);
@@ -200,7 +226,7 @@ public class ChannelResponseTest {
             assertFalse(one.getBackground().isPresent());
             assertEquals("00000000-0000-0000-0000-000000000000", one.getChannelId());
             assertEquals(1338928657000L, one.getCreated().getMillis());
-            assertEquals(ChannelType.ANDROID, one.getChannelType());
+            assertEquals(ChannelType.ANDROID.getIdentifier(), one.getChannelType());
             assertFalse(one.getIosSettings().isPresent());
             assertFalse(one.getLastRegistration().isPresent());
             assertFalse(one.getPushAddress().isPresent());
@@ -216,7 +242,7 @@ public class ChannelResponseTest {
             assertTrue(two.getBackground().get());
             assertEquals("00662346-9e39-4f5f-80e7-3f8fae58863c", two.getChannelId());
             assertEquals(1394131979000L, two.getCreated().getMillis());
-            assertEquals(ChannelType.ANDROID, two.getChannelType());
+            assertEquals(ChannelType.ANDROID.getIdentifier(), two.getChannelType());
             assertFalse(two.getIosSettings().isPresent());
             assertEquals(1412717315000L, two.getLastRegistration().get().getMillis());
             assertEquals("APA91bFPOUF6KNHXjoG0vaQSP4VLXirGDpy0_CRcb6Jhvnrya2bdRmlUoMiJ12JJevjONZzUwFETYa8uzyiE_9WaL3mzZrdjqOv2YuzYlQ_TrXVgo61JmIyw-M_pshIjVvkvtOuZ4MnRJJ_MiQDYwpB4ZhOTMlyqRw", two.getPushAddress().get());
@@ -232,7 +258,7 @@ public class ChannelResponseTest {
             assertTrue(three.getBackground().get());
             assertEquals("00d174cd-0a31-427e-95c9-52d5785bcd50", three.getChannelId());
             assertEquals(1404929317000L, three.getCreated().getMillis());
-            assertEquals(ChannelType.IOS, three.getChannelType());
+            assertEquals(ChannelType.IOS.getIdentifier(), three.getChannelType());
             assertEquals("IosSettings{badge=1, quiettime=Optional.of(QuietTime{start='17:00', end='9:00'}), timezone=Optional.of(America/Los_Angeles)}", three.getIosSettings().get().toString());
             assertEquals(1412214102000L, three.getLastRegistration().get().getMillis());
             assertEquals("E4EA0D96092A9213BB186BEF66E83EE226401F82B3A77A1AC8217A8FE8ED4614", three.getPushAddress().get());
@@ -247,7 +273,7 @@ public class ChannelResponseTest {
             assertFalse(four.getBackground().isPresent());
             assertEquals("00d8cb94-eac9-49fb-bad0-29298a06730e", four.getChannelId());
             assertEquals(1393109317000L, four.getCreated().getMillis());
-            assertEquals(ChannelType.IOS, four.getChannelType());
+            assertEquals(ChannelType.IOS.getIdentifier(), four.getChannelType());
             assertEquals("IosSettings{badge=1, quiettime=Optional.of(QuietTime{start='null', end='null'}), timezone=Optional.absent()}", four.getIosSettings().get().toString());
             assertFalse(four.getLastRegistration().isPresent());
             assertEquals("21F34C9ED37EAF8D7DC43561C07AA398CA5C6F503196C9E8230C50C0959B8653", four.getPushAddress().get());
@@ -267,7 +293,7 @@ public class ChannelResponseTest {
             assertFalse(five.getBackground().isPresent());
             assertEquals("01257ecd-8182-41fe-a741-9fed91b993cb", five.getChannelId());
             assertEquals(1359075305000L, five.getCreated().getMillis());
-            assertEquals(ChannelType.ANDROID, five.getChannelType());
+            assertEquals(ChannelType.ANDROID.getIdentifier(), five.getChannelType());
             assertFalse(five.getIosSettings().isPresent());
             assertFalse(five.getLastRegistration().isPresent());
             assertFalse(five.getPushAddress().isPresent());
@@ -282,7 +308,7 @@ public class ChannelResponseTest {
             assertFalse(six.getBackground().isPresent());
             assertEquals("f82d3723-09d0-4390-b0ff-690485685e3e", six.getChannelId());
             assertEquals(1359075305000L, six.getCreated().getMillis());
-            assertEquals(ChannelType.WEB, six.getChannelType());
+            assertEquals(ChannelType.WEB.getIdentifier(), six.getChannelType());
             assertFalse(six.getIosSettings().isPresent());
             assertTrue(six.getLastRegistration().isPresent());
             assertTrue(six.getPushAddress().isPresent());
@@ -290,6 +316,13 @@ public class ChannelResponseTest {
             assertTrue(six.isOptIn());
             assertTrue(six.getTags().contains("test1"));
 
+            ChannelView seven = response.getChannelObjects().get().get(6);
+            assertNotNull(seven);
+            assertEquals(ChannelType.OPEN.getIdentifier(), seven.getChannelType());
+            assertEquals(2, seven.getOpen().get().getIdentifiers().get().size());
+            assertEquals("foo", seven.getOpen().get().getIdentifiers().get().get("demo"));
+            assertEquals("open platform name", seven.getOpen().get().getOpenPlatformName());
+            assertEquals("old address", seven.getOpen().get().getOldAddress().get());
 
         } catch (Exception ex) {
             ex.printStackTrace();

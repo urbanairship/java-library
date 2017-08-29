@@ -1,12 +1,12 @@
 package com.urbanairship.api.nameduser;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.channel.model.ChannelView;
 import com.urbanairship.api.nameduser.model.NamedUserListingResponse;
 import com.urbanairship.api.nameduser.model.NamedUserView;
 import com.urbanairship.api.nameduser.parse.NamedUserObjectMapper;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
@@ -61,7 +61,7 @@ public class NamedUserListingResponseTest {
         ChannelView channel = namedUserView.getChannelViews().iterator().next();
         assertTrue(channel.isOptIn());
         assertFalse(channel.getBackground().isPresent());
-        assertEquals(ChannelType.IOS, channel.getChannelType());
+        assertEquals(ChannelType.IOS.getIdentifier(), channel.getChannelType());
         assertTrue(channel.getIosSettings().isPresent());
         assertEquals(DateTime.parse("2013-08-08T20:41:06.000Z"), channel.getCreated());
         assertTrue(channel.getLastRegistration().isPresent());
@@ -130,7 +130,7 @@ public class NamedUserListingResponseTest {
         ChannelView channel = namedUserView1.getChannelViews().iterator().next();
         assertTrue(channel.isOptIn());
         assertFalse(channel.getBackground().isPresent());
-        assertEquals(ChannelType.IOS, channel.getChannelType());
+        assertEquals(ChannelType.IOS.getIdentifier(), channel.getChannelType());
         assertTrue(channel.getIosSettings().isPresent());
         assertEquals(DateTime.parse("2013-08-08T20:41:06.000Z"), channel.getCreated());
         assertTrue(channel.getLastRegistration().isPresent());

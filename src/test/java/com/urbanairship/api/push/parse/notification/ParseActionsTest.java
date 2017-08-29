@@ -1,5 +1,7 @@
 package com.urbanairship.api.push.parse.notification;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -19,8 +21,6 @@ import com.urbanairship.api.push.model.notification.actions.RemoveTagAction;
 import com.urbanairship.api.push.model.notification.actions.ShareAction;
 import com.urbanairship.api.push.model.notification.actions.TagActionData;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ObjectNode;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -226,7 +226,7 @@ public class ParseActionsTest {
             Optional<OpenLandingPageWithContentAction> optOpen = getAction(actions, ActionType.OPEN_LANDING_PAGE_WITH_CONTENT, OpenLandingPageWithContentAction.class);
             assertTrue("Open landing page action should be present.", optOpen.isPresent());
             LandingPageContent actual = optOpen.get().getValue();
-            assertEquals("Body of content not round-tripped.", expected.getBody(), actual.getBody());
+            assertEquals("CustomEventBody of content not round-tripped.", expected.getBody(), actual.getBody());
             assertEquals("Content-type not round-tripped.", expected.getContentType(), actual.getContentType());
             assertEquals("Content-encoding not round-tripped.", expected.getEncoding().get(), actual.getEncoding().get());
         }
@@ -381,7 +381,7 @@ public class ParseActionsTest {
 
         ObjectNode result = optAppDefined.get().getValue();
 
-        Iterator<String> fieldNames = expected.getFieldNames();
+        Iterator<String> fieldNames = expected.fieldNames();
         while (fieldNames.hasNext()) {
             String fieldName = fieldNames.next();
             assertFalse("Expected field name not present in app_defined object: " + fieldName,
@@ -390,7 +390,7 @@ public class ParseActionsTest {
                     expected.path(fieldName), result.path(fieldName));
         }
 
-        Iterator<String> resultFields = result.getFieldNames();
+        Iterator<String> resultFields = result.fieldNames();
         while (resultFields.hasNext()) {
             String fieldName = resultFields.next();
             assertFalse("Unexpected field name in app_defined object: " + fieldName,

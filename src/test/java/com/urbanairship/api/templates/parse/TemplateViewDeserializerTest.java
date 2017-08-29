@@ -1,7 +1,7 @@
 package com.urbanairship.api.templates.parse;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.templates.model.TemplateView;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.junit.Test;
 

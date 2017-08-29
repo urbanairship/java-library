@@ -126,4 +126,9 @@ public class TemplateListingRequest implements Request<TemplateListingResponse> 
             }
         };
     }
+
+    @Override
+    public boolean bearerTokenAuthRequired() {
+        return false;
+    }
 }

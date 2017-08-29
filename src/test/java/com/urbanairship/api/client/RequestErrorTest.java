@@ -1,7 +1,7 @@
 package com.urbanairship.api.client;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.client.parse.RequestErrorObjectMapper;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

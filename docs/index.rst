@@ -37,7 +37,7 @@ Add the following to your pom.xml:
     <dependency>
         <groupId>com.urbanairship</groupId>
         <artifactId>java-client</artifactId>
-        <version>1.0.0</version>
+        <version>VERSION</version>
     </dependency>
 
 
@@ -112,3 +112,5 @@ Endpoint Reference
    static-lists
    location
    templates
+   custom-events
+   a_b_tests

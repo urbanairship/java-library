@@ -1,4 +1,17 @@
 -------------------------
+2.0.0 29AUG17
+-------------------------
+- Added support for server-side custom events.
+- Added support for A/B test creation and deletion.
+- Updated Jackson json library.
+- ServerExceptions will now correctly be thrown on 5XX responses.
+- Fixed a crash caused by device listings that contain open channels.
+- Android public notifications are now being sent properly.
+- Removed deprecated reports endpoints.
+- Removed Blackberry push support.
+- Removed MPNS push support.
+
+-------------------------
 1.4.0 02JUN17
 -------------------------
 - Added icon support for rich inbox messaging.
@@ -17,7 +30,7 @@
 -------------------------
 1.2.0 23NOV16
 -------------------------
-- Collapse ID support for iOS 10
+- Collapse ID support for iOS 10.
 
 -------------------------
 1.1.1 09NOV16

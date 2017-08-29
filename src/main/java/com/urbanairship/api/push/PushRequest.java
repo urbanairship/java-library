@@ -4,6 +4,9 @@ package com.urbanairship.api.push;
  * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.google.common.base.Preconditions;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
@@ -13,9 +16,6 @@ import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.PushResponse;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.apache.http.entity.ContentType;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ArrayNode;
 
 import java.io.IOException;
 import java.net.URI;
@@ -161,5 +161,10 @@ public class PushRequest implements Request<PushResponse> {
                 return PushObjectMapper.getInstance().readValue(response, PushResponse.class);
             }
         };
+    }
+
+    @Override
+    public boolean bearerTokenAuthRequired() {
+        return false;
     }
 }

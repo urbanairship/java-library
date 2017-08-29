@@ -10,6 +10,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.channel.model.ios.IosSettings;
+import com.urbanairship.api.channel.model.open.OpenChannel;
 import com.urbanairship.api.channel.model.web.WebSettings;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
@@ -22,7 +23,7 @@ import java.util.Map;
 public final class ChannelView {
 
     private final String channelId;
-    private final ChannelType channelType;
+    private final String channelType;
     private final boolean installed;
     private final boolean optIn;
     private final Optional<Boolean> background;
@@ -34,15 +35,16 @@ public final class ChannelView {
     private final ImmutableMap<String, ImmutableSet<String>> tagGroups;
     private final Optional<IosSettings> iosSettings;
     private final Optional<WebSettings> web;
+    private final Optional<OpenChannel> open;
 
     private ChannelView() {
         this(null, null, true, true, Optional.<Boolean>absent(), Optional.<String>absent(), null,
             Optional.<DateTime>absent(), Optional.<String>absent(), null, null, Optional.<IosSettings>absent(),
-                Optional.<WebSettings>absent());
+                Optional.<WebSettings>absent(), Optional.<OpenChannel>absent());
     }
 
     private ChannelView(String channelId,
-                       ChannelType channelType,
+                       String channelType,
                        boolean installed,
                        boolean optIn,
                        Optional<Boolean> background,
@@ -53,7 +55,8 @@ public final class ChannelView {
                        ImmutableSet<String> tags,
                        ImmutableMap<String, ImmutableSet<String>> tagGroups,
                        Optional<IosSettings> iosSettings,
-                       Optional<WebSettings> web) {
+                       Optional<WebSettings> web,
+                       Optional<OpenChannel> open) {
         this.channelId = channelId;
         this.channelType = channelType;
         this.installed = installed;
@@ -67,6 +70,7 @@ public final class ChannelView {
         this.tagGroups = tagGroups;
         this.iosSettings = iosSettings;
         this.web = web;
+        this.open = open;
     }
 
     /**
@@ -90,9 +94,9 @@ public final class ChannelView {
     /**
      * Get the channel type
      *
-     * @return ChannelType
+     * @return String channelType
      */
-    public ChannelType getChannelType() {
+    public String getChannelType() {
         return channelType;
     }
 
@@ -195,6 +199,15 @@ public final class ChannelView {
         return web;
     }
 
+    /**
+     * Get the OpenChannel Platform Options Object.
+     *
+     * @return Optional OpenChannel
+     */
+    public Optional<OpenChannel> getOpen() {
+        return open;
+    }
+
     @Override
     public String toString() {
         return "ChannelView{" +
@@ -210,13 +223,14 @@ public final class ChannelView {
             ", tags=" + tags +
             ", tagGroups=" + tagGroups +
             ", iosSettings=" + iosSettings +
-            ". webSettings=" + web +
+            ", webSettings=" + web +
+            ". openChannel=" + open +
             '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(channelId, channelType, installed, optIn, background, pushAddress, created, lastRegistration, alias, tags, tagGroups, iosSettings, web);
+        return Objects.hashCode(channelId, channelType, installed, optIn, background, pushAddress, created, lastRegistration, alias, tags, tagGroups, iosSettings, web, open);
     }
 
     @Override
@@ -240,14 +254,15 @@ public final class ChannelView {
             Objects.equal(this.tags, other.tags) &&
             Objects.equal(this.tagGroups, other.tagGroups) &&
             Objects.equal(this.iosSettings, other.iosSettings) &&
-            Objects.equal(this.web, other.web);
+            Objects.equal(this.web, other.web) &&
+            Objects.equal(this.open, other.open);
     }
 
     public final static class Builder {
         private final ImmutableSet.Builder<String> tags = ImmutableSet.builder();
         private final ImmutableMap.Builder<String, ImmutableSet<String>> tagGroups = ImmutableMap.builder();
         private String channelId = null;
-        private ChannelType channelType = null;
+        private String channelType = null;
         private Boolean optIn = null;
         private Boolean installed = null;
         private Boolean background = null;
@@ -257,6 +272,7 @@ public final class ChannelView {
         private String alias = null;
         private IosSettings iosSettings = null;
         private WebSettings webSettings = null;
+        private OpenChannel openChannel = null;
 
         private Builder() {
         }
@@ -275,10 +291,10 @@ public final class ChannelView {
         /**
          * Set the channel type
          *
-         * @param channelType ChannelType
+         * @param channelType String
          * @return Builder
          */
-        public Builder setChannelType(ChannelType channelType) {
+        public Builder setChannelType(String channelType) {
             this.channelType = channelType;
             return this;
         }
@@ -436,6 +452,16 @@ public final class ChannelView {
         }
 
         /**
+         * Set the OpenChannel Platform Options Object.
+         * @param openChannel OpenChannel
+         * @return Builder
+         */
+        public Builder setOpenChannel(OpenChannel openChannel) {
+            this.openChannel = openChannel;
+            return this;
+        }
+
+        /**
          * Build the ChannelView object
          * @return ChannelView
          */
@@ -459,7 +485,8 @@ public final class ChannelView {
                 tags.build(),
                 tagGroups.build(),
                 Optional.fromNullable(iosSettings),
-                Optional.fromNullable(webSettings)
+                Optional.fromNullable(webSettings),
+                Optional.fromNullable(openChannel)
             );
         }
     }

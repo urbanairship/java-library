@@ -4,11 +4,11 @@
 
 package com.urbanairship.api.push.parse.audience.location;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.push.model.audience.location.AbsoluteDateRange;
-import org.codehaus.jackson.JsonParser;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 

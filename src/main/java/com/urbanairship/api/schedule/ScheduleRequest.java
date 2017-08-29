@@ -118,4 +118,9 @@ public class ScheduleRequest implements Request<ScheduleResponse> {
             }
         };
     }
+
+    @Override
+    public boolean bearerTokenAuthRequired() {
+        return false;
+    }
 }
