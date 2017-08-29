@@ -6,7 +6,7 @@ A/B Tests
 Create A/B Tests
 ****************
 
-To creat a A/B Test, use the ``ExperimentRequest.newRequest()`` method.
+To create a A/B Test, use the ``ExperimentRequest.newRequest()`` method.
 
 .. sourcecode:: java
 
@@ -32,7 +32,7 @@ To creat a A/B Test, use the ``ExperimentRequest.newRequest()`` method.
            .setName("Another test")
            .setDescription("Its a test!")
            .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-           .setAudience(Selectors.namedUser("birdperson"))
+           .setAudience(Selectors.namedUser("NamedUserID"))
            .addVariant(variantOne)
            .addVariant(variantTwo)
            .build();
@@ -44,6 +44,8 @@ To creat a A/B Test, use the ``ExperimentRequest.newRequest()`` method.
 ****************
 Delete A/B Tests
 ****************
+
+To delete a A/B Test, use the ``ExperimentDeleteRequest.newRequest()`` method.
 
 .. sourcecode:: java
 
