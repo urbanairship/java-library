@@ -1,5 +1,5 @@
 -------------------------
-2.0.0 25AUG17
+2.0.0 29AUG17
 -------------------------
 - Added support for server-side custom events.
 - Added support for A/B test creation and deletion.
