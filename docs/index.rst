@@ -112,5 +112,5 @@ Endpoint Reference
    static-lists
    location
    templates
-   customevents
+   custom-events
    a_b_tests
