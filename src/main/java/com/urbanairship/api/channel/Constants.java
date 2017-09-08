@@ -37,6 +37,12 @@ public class Constants {
     public static final String OPEN_PLATFORM_NAME = "open_platform_name";
     public static final String OLD_ADDRESS = "old_address";
     public static final String IDENTIFIERS = "identifiers";
+    public static final String ADDRESS = "address";
+    public static final String SET_TAGS = "set_tags";
+    public static final String TIMEZONE = "timezone";
+    public static final String LOCALE_COUNTRY = "locale_country";
+    public static final String LOCALE_LANGUAGE = "locale_language";
+    public static final String TYPE = "type";
 
     private Constants() {
     }
