@@ -9,8 +9,11 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.google.common.collect.ImmutableMap;
+import com.urbanairship.api.channel.model.open.OpenChannel;
+import com.urbanairship.api.channel.model.open.Channel;
+import com.urbanairship.api.channel.parse.open.ChannelSerializer;
+import com.urbanairship.api.channel.parse.open.OpenChannelSerializer;
 import com.urbanairship.api.common.parse.CommonObjectMapper;
 import com.urbanairship.api.customevents.model.CustomEventPayload;
 import com.urbanairship.api.customevents.model.CustomEventBody;
@@ -303,6 +306,10 @@ public class PushObjectMapper {
                 .addSerializer(CustomEventBody.class, new CustomEventBodySerializer())
 
                 .addDeserializer(CustomEventResponse.class, new CustomEventResponseDeserializer())
+
+            /* Open Channel */
+                .addSerializer(Channel.class, new ChannelSerializer())
+                .addSerializer(OpenChannel.class, new OpenChannelSerializer())
 
             /* Segments */
                 .addDeserializer(SegmentDefinition.class, new SegmentDefinitionDeserializer());
