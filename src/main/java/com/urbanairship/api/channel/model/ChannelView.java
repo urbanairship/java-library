@@ -36,11 +36,12 @@ public final class ChannelView {
     private final Optional<IosSettings> iosSettings;
     private final Optional<WebSettings> web;
     private final Optional<OpenChannel> open;
+    private final Optional<String> address;
 
     private ChannelView() {
         this(null, null, true, true, Optional.<Boolean>absent(), Optional.<String>absent(), null,
             Optional.<DateTime>absent(), Optional.<String>absent(), null, null, Optional.<IosSettings>absent(),
-                Optional.<WebSettings>absent(), Optional.<OpenChannel>absent());
+                Optional.<WebSettings>absent(), Optional.<OpenChannel>absent(), Optional.<String>absent());
     }
 
     private ChannelView(String channelId,
@@ -56,7 +57,8 @@ public final class ChannelView {
                        ImmutableMap<String, ImmutableSet<String>> tagGroups,
                        Optional<IosSettings> iosSettings,
                        Optional<WebSettings> web,
-                       Optional<OpenChannel> open) {
+                       Optional<OpenChannel> open,
+                       Optional<String> address) {
         this.channelId = channelId;
         this.channelType = channelType;
         this.installed = installed;
@@ -71,6 +73,7 @@ public final class ChannelView {
         this.iosSettings = iosSettings;
         this.web = web;
         this.open = open;
+        this.address = address;
     }
 
     /**
@@ -208,54 +211,62 @@ public final class ChannelView {
         return open;
     }
 
+    /**
+     * Get the address. The primary identifier of a record. For example,
+     * in an SMS integration, it could be the end user’s phone number.
+     *
+     * @return Optional String address
+     */
+    public Optional<String> getAddress() {
+        return address;
+    }
+
     @Override
-    public String toString() {
-        return "ChannelView{" +
-            "channelId='" + channelId + '\'' +
-            ", deviceType=" + channelType +
-            ", installed=" + installed +
-            ", optIn=" + optIn +
-            ", background=" + background +
-            ", pushAddress=" + pushAddress +
-            ", created=" + created +
-            ", lastRegistration=" + lastRegistration +
-            ", alias=" + alias +
-            ", tags=" + tags +
-            ", tagGroups=" + tagGroups +
-            ", iosSettings=" + iosSettings +
-            ", webSettings=" + web +
-            ". openChannel=" + open +
-            '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChannelView that = (ChannelView) o;
+        return installed == that.installed &&
+                optIn == that.optIn &&
+                Objects.equal(channelId, that.channelId) &&
+                Objects.equal(channelType, that.channelType) &&
+                Objects.equal(background, that.background) &&
+                Objects.equal(pushAddress, that.pushAddress) &&
+                Objects.equal(created, that.created) &&
+                Objects.equal(lastRegistration, that.lastRegistration) &&
+                Objects.equal(alias, that.alias) &&
+                Objects.equal(tags, that.tags) &&
+                Objects.equal(tagGroups, that.tagGroups) &&
+                Objects.equal(iosSettings, that.iosSettings) &&
+                Objects.equal(web, that.web) &&
+                Objects.equal(open, that.open) &&
+                Objects.equal(address, that.address);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(channelId, channelType, installed, optIn, background, pushAddress, created, lastRegistration, alias, tags, tagGroups, iosSettings, web, open);
+        return Objects.hashCode(channelId, channelType, installed, optIn, background, pushAddress, created, lastRegistration, alias, tags, tagGroups, iosSettings, web, open, address);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        final ChannelView other = (ChannelView) obj;
-        return Objects.equal(this.channelId, other.channelId) &&
-            Objects.equal(this.channelType, other.channelType) &&
-            Objects.equal(this.installed, other.installed) &&
-            Objects.equal(this.optIn, other.optIn) &&
-            Objects.equal(this.background, other.background) &&
-            Objects.equal(this.pushAddress, other.pushAddress) &&
-            Objects.equal(this.created, other.created) &&
-            Objects.equal(this.lastRegistration, other.lastRegistration) &&
-            Objects.equal(this.alias, other.alias) &&
-            Objects.equal(this.tags, other.tags) &&
-            Objects.equal(this.tagGroups, other.tagGroups) &&
-            Objects.equal(this.iosSettings, other.iosSettings) &&
-            Objects.equal(this.web, other.web) &&
-            Objects.equal(this.open, other.open);
+    public String toString() {
+        return "ChannelView{" +
+                "channelId='" + channelId + '\'' +
+                ", channelType='" + channelType + '\'' +
+                ", installed=" + installed +
+                ", optIn=" + optIn +
+                ", background=" + background +
+                ", pushAddress=" + pushAddress +
+                ", created=" + created +
+                ", lastRegistration=" + lastRegistration +
+                ", alias=" + alias +
+                ", tags=" + tags +
+                ", tagGroups=" + tagGroups +
+                ", iosSettings=" + iosSettings +
+                ", web=" + web +
+                ", open=" + open +
+                ", address=" + address +
+                '}';
     }
 
     public final static class Builder {
@@ -273,6 +284,7 @@ public final class ChannelView {
         private IosSettings iosSettings = null;
         private WebSettings webSettings = null;
         private OpenChannel openChannel = null;
+        private String address = null;
 
         private Builder() {
         }
@@ -462,6 +474,17 @@ public final class ChannelView {
         }
 
         /**
+         * Set the address. The primary identifier of a record. For example,
+         * in an SMS integration, it could be the end user’s phone number.
+         * @param address String
+         * @return Builder
+         */
+        public Builder setAddress(String address) {
+            this.address = address;
+            return this;
+        }
+
+        /**
          * Build the ChannelView object
          * @return ChannelView
          */
@@ -486,7 +509,8 @@ public final class ChannelView {
                 tagGroups.build(),
                 Optional.fromNullable(iosSettings),
                 Optional.fromNullable(webSettings),
-                Optional.fromNullable(openChannel)
+                Optional.fromNullable(openChannel),
+                Optional.fromNullable(address)
             );
         }
     }

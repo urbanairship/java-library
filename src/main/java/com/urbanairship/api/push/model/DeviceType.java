@@ -13,24 +13,35 @@ public enum DeviceType {
     WNS("wns"),
     ANDROID("android"),
     AMAZON("amazon"),
-    WEB("web");
+    WEB("web"),
+    OPEN("open::");
 
     public static DeviceType first() {
         return IOS;
     }
 
     public static DeviceType last() {
-        return WEB;
+        return OPEN;
     }
 
     private final String identifier;
+    private String openChannelType;
 
     DeviceType(String identifier) {
         this.identifier = identifier;
     }
 
     public String getIdentifier() {
+        if (this == DeviceType.OPEN) {
+            return identifier + openChannelType;
+        }
+
         return identifier;
+    }
+
+    public DeviceType setOpenChannelType(String openChannelType) {
+        this.openChannelType = openChannelType;
+        return this;
     }
 
     public static Optional<DeviceType> find(String id) {
