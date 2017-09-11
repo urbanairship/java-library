@@ -269,6 +269,20 @@ public class Selectors {
         return compound(SelectorType.OR, SelectorType.AMAZON_CHANNEL, ids);
     }
 
+    /* Open Channels */
+
+    public static final Selector open(String openChannel) {
+        return value(SelectorType.OPEN_CHANNEL, openChannel);
+    }
+
+    public static final Selector openChannelDevices(String ... ids) {
+        return compound(SelectorType.OR, SelectorType.OPEN_CHANNEL, ids);
+    }
+
+    public static final Selector openChannelDevices(Collection<String> ids) {
+        return compound(SelectorType.OR, SelectorType.OPEN_CHANNEL, ids);
+    }
+
     /* Logical operators */
 
     public static final Selector or(Selector ... children) {

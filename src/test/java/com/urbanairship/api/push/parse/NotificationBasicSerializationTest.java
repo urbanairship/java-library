@@ -31,15 +31,6 @@ public class NotificationBasicSerializationTest {
         parsed = mapper.readValue(json, Notification.class);
 
         assertEquals(notification, parsed);
-
-/*        notification = Notification.newBuilder()
-            .addPlatformOverride(Platform.WNS, new WNSDevicePayload(null))
-            .build();
-
-        json = mapper.writeValueAsString(notification);
-        parsed = mapper.readValue(json, Notification.class);
-
-        assertEquals(notification, parsed); */
     }
 
     @Test(expected = APIParsingException.class)

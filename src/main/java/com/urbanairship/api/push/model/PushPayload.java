@@ -31,18 +31,13 @@ public final class PushPayload extends PushModelObject {
         return new Builder();
     }
 
-    private PushPayload(Selector audience,
-                        Optional<Notification> notification,
-                        Optional<RichPushMessage> message,
-                        DeviceTypeData deviceTypes,
-                        Optional<PushOptions> pushOptions,
-                        Optional<InApp> inApp) {
-        this.audience = audience;
-        this.notification = notification;
-        this.message = message;
-        this.deviceTypes = deviceTypes;
-        this.pushOptions = pushOptions;
-        this.inApp = inApp;
+    private PushPayload(Builder builder) {
+        this.audience = builder.audience;
+        this.notification = Optional.fromNullable(builder.notification);
+        this.message = Optional.fromNullable(builder.message);
+        this.deviceTypes = builder.deviceTypes;
+        this.pushOptions = Optional.fromNullable(builder.pushOptions);
+        this.inApp = Optional.fromNullable(builder.inApp);
     }
 
     /**
@@ -243,14 +238,7 @@ public final class PushPayload extends PushModelObject {
             Preconditions.checkNotNull(audience, "'audience' must be set");
             Preconditions.checkNotNull(deviceTypes, "'device_types' must be set");
 
-            return new PushPayload(
-                    audience,
-                    Optional.fromNullable(notification),
-                    Optional.fromNullable(message),
-                    deviceTypes,
-                    Optional.fromNullable(pushOptions),
-                    Optional.fromNullable(inApp)
-            );
+            return new PushPayload(this);
         }
     }
 }
