@@ -8,9 +8,11 @@ import com.google.common.collect.ImmutableList;
 
 import java.util.Objects;
 
-
+/**
+ * The Campaigns Object associates the notification
+ * with the categories that you add in the categories field.
+ */
 public class Campaigns {
-
     private final ImmutableList<String> categories;
 
     /**
@@ -22,8 +24,8 @@ public class Campaigns {
         return new Builder();
     }
 
-    private Campaigns(ImmutableList<String> categories){
-        this.categories = categories;
+    private Campaigns(Builder builder) {
+        this.categories = builder.categories.build();
     }
 
     /**
@@ -44,7 +46,7 @@ public class Campaigns {
 
     @Override
     public int hashCode() {
-        return Objects.hash(categories);
+        return com.google.common.base.Objects.hashCode(categories);
     }
 
     @Override
@@ -56,19 +58,21 @@ public class Campaigns {
             return false;
         }
         final Campaigns other = (Campaigns) obj;
-        return Objects.equals(this.categories, other.categories);
+        return com.google.common.base.Objects.equal(this.categories, other.categories);
     }
 
+    /**
+     * Campaigns Builder
+     */
     public static class Builder{
         private ImmutableList.Builder<String> categories = ImmutableList.builder();
 
-        private Builder() {
-        }
+       private Builder() { }
 
         /**
          * Add category
          *
-         * @param value String
+         * @param category String
          * @return Builder
          */
         public Builder addCategory(String category) {
@@ -79,7 +83,7 @@ public class Campaigns {
         /**
          * Add list of categories
          *
-         * @param value Iterable of categories
+         * @param categories Iterable of categories
          * @return Builder
          */
         public Builder addAllCategories(Iterable<? extends String> categories){
@@ -88,9 +92,7 @@ public class Campaigns {
         }
 
         public Campaigns build(){
-            return new Campaigns(categories.build());
+            return new Campaigns(this);
         }
     }
-
-
 }
