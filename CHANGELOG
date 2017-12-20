@@ -1,4 +1,9 @@
 -------------------------
+2.1.0 20DEC17
+-------------------------
+- Added support for Campaigns in the notification payload.
+
+-------------------------
 2.0.0 29AUG17
 -------------------------
 - Added support for server-side custom events.
