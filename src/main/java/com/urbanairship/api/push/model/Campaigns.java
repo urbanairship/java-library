@@ -4,6 +4,7 @@
 
 package com.urbanairship.api.push.model;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
 import java.util.Objects;
@@ -92,6 +93,7 @@ public class Campaigns {
         }
 
         public Campaigns build(){
+            Preconditions.checkArgument(categories.build().size() > 0, "Category list cannot be empty.");
             return new Campaigns(this);
         }
     }
