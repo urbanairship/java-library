@@ -42,7 +42,6 @@ public class PushPayloadBasicSerializationTest {
                 .setDeviceTypes(DeviceTypeData.of(DeviceType.OPEN.setOpenChannelType("sms")))
                 .build();
 
-        String parsedJson = mapper.writeValueAsString(pushPayload);
         String json = "{\n" +
                 "    \"audience\": {\n" +
                 "        \"open_channel\": \"open_channel\"\n" +
@@ -55,10 +54,35 @@ public class PushPayloadBasicSerializationTest {
                 "    }\n" +
                 "}";
 
+        PushPayload secondPush = PushPayload.newBuilder()
+                .setNotification(Notifications.alert("alert"))
+                .setAudience(Selectors.open("open_channel"))
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.OPEN.setOpenChannelType("email")))
+                .build();
+
+        String secondPayloadJson = "{\n" +
+                "    \"audience\": {\n" +
+                "        \"open_channel\": \"open_channel\"\n" +
+                "    },\n" +
+                "    \"device_types\": [\n" +
+                "        \"open::sms\"\n" +
+                "    ],\n" +
+                "    \"notification\": {\n" +
+                "        \"alert\": \"alert\"\n" +
+                "    }\n" +
+                "}";
+
+        String parsedJson = mapper.writeValueAsString(pushPayload);
+        String secondParsedJson = mapper.writeValueAsString(secondPush);
+
         JsonNode actual = mapper.readTree(parsedJson);
         JsonNode expected = mapper.readTree(json);
 
+        JsonNode actualSecondPush = mapper.readTree(secondParsedJson);
+        JsonNode expectedSecondPush = mapper.readTree(secondPayloadJson);
+
         assertEquals(actual, expected);
+        assertEquals(actualSecondPush, expectedSecondPush);
     }
 
     @Test
