@@ -5,16 +5,16 @@
 package com.urbanairship.api.client;
 
 import com.google.common.base.Optional;
-import com.ning.http.client.AsyncHandler;
-import com.ning.http.client.HttpResponseBodyPart;
-import com.ning.http.client.HttpResponseHeaders;
-import com.ning.http.client.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpHeaders;
 import org.apache.commons.lang.StringUtils;
+import org.asynchttpclient.AsyncHandler;
+import org.asynchttpclient.HttpResponseBodyPart;
+import org.asynchttpclient.HttpResponseHeaders;
+import org.asynchttpclient.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +53,7 @@ class ResponseAsyncHandler<T> implements AsyncHandler<Response> {
     }
 
     @Override
-    public STATE onStatusReceived(HttpResponseStatus responseStatus) throws Exception {
+    public State onStatusReceived(HttpResponseStatus responseStatus) throws Exception {
         statusCode = responseStatus.getStatusCode();
 
         if (statusCode >= 200 && statusCode < 300) {
@@ -69,23 +69,23 @@ class ResponseAsyncHandler<T> implements AsyncHandler<Response> {
             isSuccessful = false;
         }
 
-        return STATE.CONTINUE;
+        return State.CONTINUE;
     }
 
     @Override
-    public STATE onHeadersReceived(HttpResponseHeaders headers) throws Exception {
+    public State onHeadersReceived(HttpResponseHeaders headers) throws Exception {
         if (isSuccessful) {
             responseBuilder.setHeaders(getHeaders(headers));
         } else {
-            exceptionContentType = headers.getHeaders().getFirstValue(CONTENT_TYPE_KEY);
+            exceptionContentType = headers.getHeaders().get(CONTENT_TYPE_KEY);
         }
 
-        return STATE.CONTINUE;
+        return State.CONTINUE;
     }
 
 
     @Override
-    public STATE onBodyPartReceived(HttpResponseBodyPart bodyPart) throws Exception {
+    public State onBodyPartReceived(HttpResponseBodyPart bodyPart) throws Exception {
         String body = new String(bodyPart.getBodyPartBytes(), StandardCharsets.UTF_8);
 
         if (!isSuccessful) {
@@ -101,7 +101,7 @@ class ResponseAsyncHandler<T> implements AsyncHandler<Response> {
         }
 
         bodyBuilder.append(body);
-        return STATE.CONTINUE;
+        return State.CONTINUE;
     }
 
     @Override
@@ -132,9 +132,9 @@ class ResponseAsyncHandler<T> implements AsyncHandler<Response> {
      * @param httpResponse The HttpResponse.
      * @return An immutable map of response headers.
      */
-    private Map<String, Collection<String>> getHeaders(HttpResponseHeaders httpResponse) {
-        Map<String, Collection<String>> headers = new HashMap<>();
-        for (Map.Entry<String, List<String>> entry : httpResponse.getHeaders().entrySet()) {
+    private Map<String, String> getHeaders(HttpResponseHeaders httpResponse) {
+        Map<String, String> headers = new HashMap<>();
+        for (Map.Entry<String, String> entry : httpResponse.getHeaders().entries()) {
             headers.put(entry.getKey(), entry.getValue());
         }
         return headers;

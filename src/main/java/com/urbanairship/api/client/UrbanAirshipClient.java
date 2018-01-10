@@ -9,11 +9,13 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.io.BaseEncoding;
-import com.ning.http.client.AsyncHttpClient;
-import com.ning.http.client.AsyncHttpClientConfig;
-import com.ning.http.client.ProxyServer;
-import com.ning.http.client.filter.FilterContext;
 import org.apache.http.entity.ContentType;
+import org.asynchttpclient.AsyncHttpClient;
+import org.asynchttpclient.BoundRequestBuilder;
+import org.asynchttpclient.DefaultAsyncHttpClient;
+import org.asynchttpclient.DefaultAsyncHttpClientConfig;
+import org.asynchttpclient.filter.FilterContext;
+import org.asynchttpclient.proxy.ProxyServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +41,8 @@ public class UrbanAirshipClient implements Closeable {
     private final Optional<String> bearerToken;
     private final URI baseUri;
     private final AsyncHttpClient client;
+    private final DefaultAsyncHttpClientConfig clientConfig;
+    private final Optional<ProxyServer> proxyServer;
 
     private UrbanAirshipClient(Builder builder) {
         this.appKey = builder.key;
@@ -46,16 +50,21 @@ public class UrbanAirshipClient implements Closeable {
         this.bearerToken = Optional.fromNullable(builder.bearerToken);
         this.baseUri = URI.create(builder.baseUri);
 
-        AsyncHttpClientConfig.Builder clientConfigBuilder = builder.clientConfigBuilder;
+        DefaultAsyncHttpClientConfig.Builder clientConfigBuilder = builder.clientConfigBuilder;
+
         clientConfigBuilder.setUserAgent(getUserAgent());
         clientConfigBuilder.addResponseFilter(new RequestRetryFilter(builder.maxRetries, Optional.fromNullable(builder.retryPredicate)));
 
-        Optional<ProxyServer> proxyServer = convertProxyInfo(Optional.fromNullable(builder.proxyInfo));
-        if (proxyServer.isPresent()) {
+        if (Optional.fromNullable(builder.proxyServer).isPresent()) {
+            proxyServer = Optional.fromNullable(builder.proxyServer.build());
             clientConfigBuilder.setProxyServer(proxyServer.get());
+            clientConfigBuilder.setRealm(proxyServer.get().getRealm());
+        } else {
+            proxyServer = Optional.absent();
         }
 
-        this.client = new AsyncHttpClient(clientConfigBuilder.build());
+        clientConfig = clientConfigBuilder.build();
+        this.client = new DefaultAsyncHttpClient(clientConfig);
     }
 
     /**
@@ -111,6 +120,14 @@ public class UrbanAirshipClient implements Closeable {
         return client;
     }
 
+    public DefaultAsyncHttpClientConfig getClientConfig() {
+        return clientConfig;
+    }
+
+    public Optional<ProxyServer> getProxyServer() {
+        return proxyServer;
+    }
+
     /**
      * Command for executing Urban Airship requests asynchronously with a ResponseCallback.
      *
@@ -119,7 +136,7 @@ public class UrbanAirshipClient implements Closeable {
      * @return A client response future.
      */
     public <T> Future<Response> executeAsync(final Request<T> request, final ResponseCallback callback) throws IOException {
-        AsyncHttpClient.BoundRequestBuilder requestBuilder;
+        BoundRequestBuilder requestBuilder;
         String uri;
 
         try {
@@ -223,7 +240,7 @@ public class UrbanAirshipClient implements Closeable {
      * Close the underlying HTTP client's thread pool.
      */
     @Override
-    public void close() {
+    public void close() throws IOException {
         log.info("Closing client");
         client.close();
     }
@@ -250,34 +267,6 @@ public class UrbanAirshipClient implements Closeable {
         }
         return userAgent;
     }
-
-    /**
-     * Convert the ProxyInfo wrapper into a ProxyServer instance.
-     *
-     * @param proxyInfo An optional ProxyInfo instance.
-     * @return An optional ProxyServer instance.
-     */
-    private Optional<ProxyServer> convertProxyInfo(Optional<ProxyInfo> proxyInfo) {
-        if (proxyInfo.isPresent()) {
-            ProxyServer.Protocol protocol = ProxyServer.Protocol.HTTPS;
-            for (ProxyServer.Protocol proto : ProxyServer.Protocol.values()) {
-                if (proxyInfo.get().getProtocol().equals(proto.getProtocol())) {
-                    protocol = proto;
-                }
-            }
-
-            ProxyServer proxyServer = new ProxyServer(
-                protocol,
-                proxyInfo.get().getHost(),
-                proxyInfo.get().getPort(),
-                proxyInfo.get().getPrincipal(),
-                proxyInfo.get().getPassword()
-            );
-            return Optional.of(proxyServer);
-        }
-        return Optional.absent();
-    }
-
 
     /* Object methods */
 
@@ -324,9 +313,9 @@ public class UrbanAirshipClient implements Closeable {
         private String baseUri;
         private String bearerToken;
         private Integer maxRetries = 10;
-        private AsyncHttpClientConfig.Builder clientConfigBuilder = new AsyncHttpClientConfig.Builder();
-        private ProxyInfo proxyInfo = null;
+        private DefaultAsyncHttpClientConfig.Builder clientConfigBuilder = new DefaultAsyncHttpClientConfig.Builder();
         private Predicate<FilterContext> retryPredicate = null;
+        private ProxyServer.Builder proxyServer;
 
         private Builder() {
             baseUri = "https://go.urbanairship.com";
@@ -389,19 +378,19 @@ public class UrbanAirshipClient implements Closeable {
          * @param builder The client config builder.
          * @return Builder
          */
-        public Builder setClientConfigBuilder(AsyncHttpClientConfig.Builder builder) {
+        public Builder setClientConfigBuilder(DefaultAsyncHttpClientConfig.Builder builder) {
             this.clientConfigBuilder = builder;
             return this;
         }
 
         /**
-         * Set the proxy info.
+         * Set the proxy server builder.
          *
-         * @param proxyInfo The proxy info.
+         * @param builder
          * @return Builder
          */
-        public Builder setProxyInfo(ProxyInfo proxyInfo) {
-            this.proxyInfo = proxyInfo;
+        public Builder setProxyServer(ProxyServer.Builder builder) {
+            this.proxyServer = builder;
             return this;
         }
 
