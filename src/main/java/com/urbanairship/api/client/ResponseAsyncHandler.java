@@ -5,7 +5,6 @@
 package com.urbanairship.api.client;
 
 import com.google.common.base.Optional;
-import io.netty.handler.codec.http.HttpHeaders;
 import org.apache.commons.lang.StringUtils;
 import org.asynchttpclient.AsyncHandler;
 import org.asynchttpclient.HttpResponseBodyPart;
@@ -16,7 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
