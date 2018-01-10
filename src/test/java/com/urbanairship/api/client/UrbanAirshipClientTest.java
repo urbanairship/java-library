@@ -7,10 +7,6 @@ import com.github.tomakehurst.wiremock.verification.LoggedRequest;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.ning.http.client.AsyncHttpClientConfig;
-import com.ning.http.client.ProxyServer;
-import com.ning.http.client.filter.FilterContext;
-import com.ning.http.client.uri.Uri;
 import com.urbanairship.api.channel.ChannelRequest;
 import com.urbanairship.api.channel.ChannelTagRequest;
 import com.urbanairship.api.channel.model.ChannelResponse;
@@ -80,6 +76,13 @@ import com.urbanairship.api.templates.model.TemplatePushPayload;
 import com.urbanairship.api.templates.model.TemplateResponse;
 import com.urbanairship.api.templates.model.TemplateSelector;
 import org.apache.log4j.BasicConfigurator;
+import org.asynchttpclient.AsyncHttpClientConfig;
+import org.asynchttpclient.DefaultAsyncHttpClient;
+import org.asynchttpclient.DefaultAsyncHttpClientConfig;
+import org.asynchttpclient.Realm;
+import org.asynchttpclient.filter.FilterContext;
+import org.asynchttpclient.proxy.ProxyServer;
+import org.asynchttpclient.uri.Uri;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Period;
@@ -155,7 +158,11 @@ public class UrbanAirshipClientTest {
 
     @After
     public void takeDown() {
-        client.close();
+        try {
+            client.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @ClassRule
@@ -186,41 +193,33 @@ public class UrbanAirshipClientTest {
             .build();
         assertEquals("App key incorrect", "key", client.getAppKey());
         assertEquals("App secret incorrect", "secret", client.getAppSecret().get());
-        client.close();
+        try {
+            client.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void testAPIClientBuilderWithOptionalProxyInfo() throws Exception {
-        ProxyInfo proxyInfo = ProxyInfo.newBuilder()
-            .setHost("test.urbanairship.com")
-            .setProtocol(ProxyInfo.ProxyInfoProtocol.HTTPS)
-            .setPrincipal("user")
-            .setPassword("password")
-            .setPort(8080)
-            .build();
+        Realm realm = new Realm.Builder("user", "password")
+                .setScheme(Realm.AuthScheme.BASIC)
+                .build();
 
-        ProxyInfo proxyInfoCopy = ProxyInfo.newBuilder()
-            .setHost("test.urbanairship.com")
-            .setProtocol(ProxyInfo.ProxyInfoProtocol.HTTPS)
-            .setPrincipal("user")
-            .setPassword("password")
-            .setPort(8080)
-            .build();
-
-        assertEquals(proxyInfo, proxyInfoCopy);
+        ProxyServer.Builder proxyServer = new ProxyServer.Builder("test.urbanairship.com", 8080)
+                .setRealm(realm);
 
         UrbanAirshipClient proxyClient = UrbanAirshipClient.newBuilder()
             .setKey("key")
             .setSecret("secret")
-            .setProxyInfo(proxyInfo)
+            .setProxyServer(proxyServer)
             .build();
 
-        ProxyServer proxyServer = proxyClient.getClient().getConfig().getProxyServerSelector().select(Uri.create("https://host:8080"));
-        assertEquals("test.urbanairship.com", proxyServer.getHost());
-        assertEquals(8080, proxyServer.getPort());
-        assertEquals(ProxyServer.Protocol.HTTPS, proxyServer.getProtocol());
-        assertEquals("user", proxyServer.getPrincipal());
-        assertEquals("password", proxyServer.getPassword());
+        assertEquals("test.urbanairship.com", proxyClient.getProxyServer().get().getHost());
+        assertEquals(8080, proxyClient.getProxyServer().get().getPort());
+        assertEquals("user", proxyClient.getClientConfig().getRealm().getPrincipal());
+        assertEquals("password", proxyClient.getClientConfig().getRealm().getPassword());
+
         proxyClient.close();
     }
 
@@ -236,19 +235,19 @@ public class UrbanAirshipClientTest {
     }
 
     @Test
-    public void testAPIClientBuilderWithParams() {
-        AsyncHttpClientConfig.Builder configBuilder = new AsyncHttpClientConfig.Builder()
-            .setConnectTimeout(20)
-            .setWebSocketTimeout(10);
+    public void testAPIClientBuilderWithParams() throws IOException {
+
+        DefaultAsyncHttpClientConfig.Builder defualtClientBuilder = new DefaultAsyncHttpClientConfig.Builder()
+                .setConnectTimeout(20);
 
         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
             .setKey("key")
             .setSecret("secret")
-            .setClientConfigBuilder(configBuilder)
+            .setClientConfigBuilder(defualtClientBuilder)
             .build();
 
-        assertEquals(20, client.getClient().getConfig().getConnectTimeout());
-        assertEquals(10, client.getClient().getConfig().getWebSocketTimeout());
+        assertEquals(20, client.getClientConfig().getConnectTimeout());
+
         client.close();
     }
 
@@ -514,7 +513,11 @@ public class UrbanAirshipClientTest {
         scheduledExecutorService.schedule(new Runnable() {
             @Override
             public void run() {
-                client.close();
+                try {
+                    client.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
                 // Test that closing the client cancels retrying requests.
                 assertTrue(future.isCancelled());
@@ -705,18 +708,19 @@ public class UrbanAirshipClientTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testPushWithProxyClient() throws Exception {
+        Realm localRealm = new Realm.Builder("user", "password")
+                .setScheme(Realm.AuthScheme.BASIC)
+                .build();
+
+        ProxyServer.Builder proxyServer = new ProxyServer.Builder("localhost", 8080)
+            .setRealm(localRealm);
 
         // Setup a client and a push payload
         UrbanAirshipClient proxyClient = UrbanAirshipClient.newBuilder()
             .setBaseUri("http://localhost:8080")
             .setKey("key")
             .setSecret("secret")
-            .setProxyInfo(ProxyInfo.newBuilder()
-                .setHost("localhost")
-                .setPort(8080)
-                .setPrincipal("user")
-                .setPassword("password")
-                .build())
+            .setProxyServer(proxyServer)
             .build();
 
         PushPayload payload = PushPayload.newBuilder()
