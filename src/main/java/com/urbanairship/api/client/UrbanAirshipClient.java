@@ -11,6 +11,7 @@ import com.google.common.base.Predicate;
 import com.google.common.io.BaseEncoding;
 import org.apache.http.entity.ContentType;
 import org.asynchttpclient.AsyncHttpClient;
+import org.asynchttpclient.AsyncHttpClientConfig;
 import org.asynchttpclient.BoundRequestBuilder;
 import org.asynchttpclient.DefaultAsyncHttpClient;
 import org.asynchttpclient.DefaultAsyncHttpClientConfig;
@@ -120,10 +121,20 @@ public class UrbanAirshipClient implements Closeable {
         return client;
     }
 
-    public DefaultAsyncHttpClientConfig getClientConfig() {
+    /**
+     * Get the HTTP client configuration
+     *
+     * @return AsyncHttpClientConfig
+     */
+    public AsyncHttpClientConfig getClientConfig() {
         return clientConfig;
     }
 
+    /**
+     * Get the optional proxy server set
+     *
+     * @return Optional ProxyServer.
+     */
     public Optional<ProxyServer> getProxyServer() {
         return proxyServer;
     }
