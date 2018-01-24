@@ -4,11 +4,19 @@
 
 package com.urbanairship.api.client;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
+import com.google.common.io.BaseEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
@@ -20,16 +28,87 @@ public class UrbanAirshipClient {
 
     private final RequestClient client;
 
+    private String userAgent;
+
     private UrbanAirshipClient(Builder builder) {
         this.client = builder.client;
+        userAgent = getUserAgent();
     }
 
     public static Builder newBuilder() {
         return new Builder();
     }
 
-    public <T> Future<Response> execute(final Request<T> request, ResponseCallback callback) {
-        return client.executeAsync(request, callback);
+    public <T> Future<Response> executeAsync(final Request<T> request, ResponseCallback callback, Map<String, String> headers) {
+        addHeaders(request, headers);
+        return client.executeAsync(request, callback, headers);
+    }
+
+    public <T> Future<Response> executeAsync(Request<T> request) {
+        return executeAsync(request, null, new HashMap<String, String>());
+    }
+
+    public <T> Response execute(Request<T> request) throws IOException {
+        return execute(request, null);
+    }
+
+    public <T> Response execute(Request<T> request, ResponseCallback callback) throws IOException {
+        try {
+            return executeAsync(request, callback, new HashMap<String, String>()).get();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Thread interrupted while retrieving response from future", e);
+        } catch (ExecutionException e) {
+            throw new RuntimeException("Failed to retrieve response from future", e);
+        }
+    }
+
+    private Map<String, String> addHeaders(Request request, Map<String, String> headers) {
+        headers.put("User-Agent", userAgent);
+        Map<String, String> requestHeaders = request.getRequestHeaders();
+        if (requestHeaders != null) {
+            for (Map.Entry<String, String> entry : requestHeaders.entrySet()) {
+                headers.put(entry.getKey(), entry.getValue());
+            }
+        }
+
+        String auth;
+
+        if (request.bearerTokenAuthRequired()) {
+            Preconditions.checkNotNull(client.getBearerToken().get(), "Bearer token required for request: " + request);
+            auth = "Bearer " + client.getBearerToken().get();
+        } else {
+            Preconditions.checkNotNull(client.getAppSecret().get(), "App secret required for request: " + request);
+            auth = "Basic " + BaseEncoding.base64().encode((client.getAppKey() + ":" + client.getAppSecret().get()).getBytes());
+        }
+
+        headers.put("Authorization", auth);
+        headers.put("X-UA-Appkey", client.getAppKey());
+
+        return headers;
+    }
+
+    /**
+     * Retrieve the client user agent.
+     *
+     * @return The user agent.
+     */
+    @VisibleForTesting
+    public String getUserAgent() {
+        String userAgent = "UNKNOWN";
+        InputStream stream = getClass().getResourceAsStream("/client.properties");
+
+        if (stream != null) {
+            Properties props = new Properties();
+            try {
+                props.load(stream);
+                stream.close();
+                userAgent = "UAJavaLib/" + props.get("client.version");
+            } catch (IOException e) {
+                log.error("Failed to retrieve client user agent due to IOException - setting to \"UNKNOWN\"", e);
+            }
+        }
+        return userAgent;
     }
 
     /**
