@@ -13,12 +13,7 @@ import java.util.concurrent.Future;
 public abstract class RequestClient {
     private static final Logger log = LoggerFactory.getLogger(RequestClient.class);
 
-
-    public abstract <T> Response execute(Request<T> request, ResponseCallback callback);
-    public abstract <T> Response execute(Request<T> request);
-
     public abstract <T> Future<Response> executeAsync(final Request<T> request, final ResponseCallback callback);
-    public abstract <T> Future<Response> executeAsync(final Request<T> request);
 
     public abstract String getAppKey();
     public abstract Optional<String> getAppSecret();

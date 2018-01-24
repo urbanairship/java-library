@@ -5,7 +5,6 @@
 package com.urbanairship.api.client;
 
 import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,20 +28,8 @@ public class UrbanAirshipClient {
         return new Builder();
     }
 
-    public <T> Response execute(Request<T> request, ResponseCallback callback) {
-        return client.execute(request, callback);
-    }
-
-    public <T> Response execute(Request<T> request) {
-        return client.execute(request);
-    }
-
-    public <T> Future<Response> executeAsync(final Request<T> request, ResponseCallback callback) {
+    public <T> Future<Response> execute(final Request<T> request, ResponseCallback callback) {
         return client.executeAsync(request, callback);
-    }
-
-    public <T> Future<Response> executeAsync(Request<T> request) {
-        return client.executeAsync(request);
     }
 
     /**
@@ -149,8 +136,6 @@ public class UrbanAirshipClient {
          * @return UrbanAirshipClient
          */
         public UrbanAirshipClient build() {
-            Preconditions.checkNotNull(key, "app key needed to build APIClient");
-
             if(client == null) {
                 if (secret == null && bearerToken == null) {
                     throw new NullPointerException("secret or the bearer token must be set");
