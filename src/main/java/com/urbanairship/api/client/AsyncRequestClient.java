@@ -19,12 +19,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-public class AsyncRequestClient extends RequestClient {
+public class AsyncRequestClient implements RequestClient {
 
     private static final Logger log = LoggerFactory.getLogger(UrbanAirshipClient.class);
 
@@ -45,7 +46,7 @@ public class AsyncRequestClient extends RequestClient {
 
         DefaultAsyncHttpClientConfig.Builder clientConfigBuilder = builder.clientConfigBuilder;
 
-        clientConfigBuilder.setUserAgent(getUserAgent());
+        //clientConfigBuilder.setUserAgent(getUserAgent());
         clientConfigBuilder.addResponseFilter(new RequestRetryFilter(builder.maxRetries, Optional.fromNullable(builder.retryPredicate)));
 
         if (Optional.fromNullable(builder.proxyServer).isPresent()) {
@@ -99,39 +100,6 @@ public class AsyncRequestClient extends RequestClient {
         return clientConfig;
     }
 
-    /**
-     * Retrieve the client user agent.
-     *
-     * @return The user agent.
-     */
-    @VisibleForTesting
-    public String getUserAgent() {
-        String userAgent = "UNKNOWN";
-        InputStream stream = getClass().getResourceAsStream("/client.properties");
-
-        if (stream != null) {
-            Properties props = new Properties();
-            try {
-                props.load(stream);
-                stream.close();
-                userAgent = "UAJavaLib/" + props.get("client.version");
-            } catch (IOException e) {
-                log.error("Failed to retrieve client user agent due to IOException - setting to \"UNKNOWN\"", e);
-            }
-        }
-        return userAgent;
-    }
-
-    public <T> Response execute(Request<T> request, ResponseCallback callback) {
-        try {
-            return executeAsync(request, callback).get();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Thread interrupted while retrieving response from future", e);
-        } catch (ExecutionException e) {
-            throw new RuntimeException("Failed to retrieve response from future", e);
-        }
-    }
 
     /**
      * Close the underlying HTTP client's thread pool.
@@ -142,8 +110,8 @@ public class AsyncRequestClient extends RequestClient {
         client.close();
     }
 
-    public <T> Response execute(Request<T> request) {
-        return execute(request, null);
+    public <T> Future<Response> executeAsync(final Request<T> request, final ResponseCallback callback) {
+        return executeAsync(request, callback, new HashMap<String, String>());
     }
 
     @Override
@@ -154,7 +122,7 @@ public class AsyncRequestClient extends RequestClient {
      * @param callback A ResponseCallback instance.
      * @return A client response future.
      */
-    public <T> Future<Response> executeAsync(final Request<T> request, final ResponseCallback callback) {
+    public <T> Future<Response> executeAsync(final Request<T> request, final ResponseCallback callback, Map<String, String> headers) {
         BoundRequestBuilder requestBuilder;
         String uri;
 
@@ -183,26 +151,10 @@ public class AsyncRequestClient extends RequestClient {
                 break;
         }
 
-        // Headers
-        Map<String, String> requestHeaders = request.getRequestHeaders();
-        if (requestHeaders != null) {
-            for (Map.Entry<String, String> entry : requestHeaders.entrySet()) {
-                requestBuilder.addHeader(entry.getKey(), entry.getValue());
-            }
+        //Headers
+        for (Map.Entry<String, String> entry : headers.entrySet()) {
+            requestBuilder.addHeader(entry.getKey(), entry.getValue());
         }
-
-        String auth;
-
-        if (request.bearerTokenAuthRequired()) {
-            Preconditions.checkNotNull(bearerToken.get(), "Bearer token required for request: " + request);
-            auth = "Bearer " + bearerToken.get();
-        } else {
-            Preconditions.checkNotNull(appSecret.get(), "App secret required for request: " + request);
-            auth = "Basic " + BaseEncoding.base64().encode((appKey + ":" + appSecret.get()).getBytes());
-        }
-
-        requestBuilder.addHeader("Authorization", auth)
-                .addHeader("X-UA-Appkey", appKey);
 
         // Body
         String body = request.getRequestBody();
@@ -214,10 +166,6 @@ public class AsyncRequestClient extends RequestClient {
         log.debug(String.format("Executing Urban Airship request to %s with body %s.", uri, request.getRequestBody()));
         ResponseAsyncHandler<T> handler = new ResponseAsyncHandler<>(Optional.fromNullable(callback), request.getResponseParser());
         return requestBuilder.execute(handler);
-    }
-
-    public <T> Future<Response> executeAsync(Request<T> request) {
-        return executeAsync(request, null);
     }
 
     public static class Builder {

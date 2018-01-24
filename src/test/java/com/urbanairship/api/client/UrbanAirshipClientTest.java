@@ -99,6 +99,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -231,7 +232,7 @@ public class UrbanAirshipClientTest {
 
     @Test
     public void testGetUserAgent() {
-        String userAgent = asyncRequestClient.getUserAgent();
+        String userAgent = client.getUserAgent();
         assertNotNull(userAgent);
         assertFalse(userAgent.equals("UNKNOWN"));
         assertFalse(userAgent.equals("UAJavaLib/UNKNOWN"));
@@ -329,7 +330,7 @@ public class UrbanAirshipClientTest {
 
         try {
             final CountDownLatch latch = new CountDownLatch(1);
-            Response<PushResponse> response = asyncRequestClient.execute(PushRequest.newRequest(payload), new ResponseCallback() {
+            Response<PushResponse> response = client.execute(PushRequest.newRequest(payload), new ResponseCallback() {
                 @Override
                 public void completed(Response response) {
                     latch.countDown();
@@ -404,7 +405,7 @@ public class UrbanAirshipClientTest {
                 .withBody(pushJSON)
                 .withStatus(201)));
 
-        Response<PushResponse> response = asyncRequestClient.execute(PushRequest.newRequest(payload));
+        Response<PushResponse> response = client.execute(PushRequest.newRequest(payload));
 
 
         // Verify components of the underlying HttpRequest
@@ -473,8 +474,8 @@ public class UrbanAirshipClientTest {
             .setDaemon(false)
             .build());
 
-        final Future future = asyncRequestClient.executeAsync(NamedUserListingRequest.newRequest());
-        Response<PushResponse> response = asyncRequestClient.execute(PushRequest.newRequest(payload));
+        final Future future = client.executeAsync(NamedUserListingRequest.newRequest());
+        Response<PushResponse> response = client.execute(PushRequest.newRequest(payload));
 
         // Verify components of the underlying HttpRequest
         verify(postRequestedFor(urlEqualTo("/api/push/"))
@@ -514,7 +515,7 @@ public class UrbanAirshipClientTest {
             .setDaemon(false)
             .build());
 
-        final Future future = asyncRequestClient.executeAsync(NamedUserListingRequest.newRequest());
+        final Future future = client.executeAsync(NamedUserListingRequest.newRequest());
 
         scheduledExecutorService.schedule(new Runnable() {
             @Override
@@ -574,7 +575,7 @@ public class UrbanAirshipClientTest {
                     errorLocation.getLine().equals(47));
                 latch.countDown();
             }
-        });
+        }, new HashMap<String, String>());
 
         latch.await();
     }
@@ -607,7 +608,7 @@ public class UrbanAirshipClientTest {
                 assertTrue(throwable instanceof ServerException);
                 latch.countDown();
             }
-        });
+        }, new HashMap<String, String>());
 
         latch.await();
     }
@@ -744,7 +745,7 @@ public class UrbanAirshipClientTest {
                     .withStatus(201)
             ));
 
-        Response<PushResponse> response = proxyClient.execute(PushRequest.newRequest(payload));
+        Response<PushResponse> response = client.execute(PushRequest.newRequest(payload));
 
         // Verify components of the underlying HttpRequest
         verify(postRequestedFor(urlEqualTo("/api/push/"))
@@ -801,7 +802,7 @@ public class UrbanAirshipClientTest {
                 .withBody(pushJSON)
                 .withStatus(201)));
         try {
-            Response<PushResponse> response = asyncRequestClient.execute(PushRequest.newRequest(payload).setValidateOnly(true));
+            Response<PushResponse> response = client.execute(PushRequest.newRequest(payload).setValidateOnly(true));
 
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/push/validate/"))
@@ -834,7 +835,7 @@ public class UrbanAirshipClientTest {
                 .withStatus(201)));
 
         try {
-            Response<ListAllSchedulesResponse> response = asyncRequestClient.execute(ScheduleListingRequest.newRequest());
+            Response<ListAllSchedulesResponse> response = client.execute(ScheduleListingRequest.newRequest());
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/schedules/"))
@@ -870,7 +871,7 @@ public class UrbanAirshipClientTest {
                 .withStatus(201)));
 
         try {
-            Response<ListAllSchedulesResponse> response = asyncRequestClient.execute(ScheduleListingRequest.newRequest("ee0dd92c-de3b-46dc-9937-c9dcaef0170f"));
+            Response<ListAllSchedulesResponse> response = client.execute(ScheduleListingRequest.newRequest("ee0dd92c-de3b-46dc-9937-c9dcaef0170f"));
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/schedules/ee0dd92c-de3b-46dc-9937-c9dcaef0170f"))
@@ -910,7 +911,7 @@ public class UrbanAirshipClientTest {
                 .withStatus(201)));
 
         try {
-            Response<ListAllSchedulesResponse> response = asyncRequestClient.execute(ScheduleListingRequest.newRequest(UUID.fromString("643a297a-7313-45f0-853f-e68785e54c77"), 25, ListSchedulesOrderType.ASC));
+            Response<ListAllSchedulesResponse> response = client.execute(ScheduleListingRequest.newRequest(UUID.fromString("643a297a-7313-45f0-853f-e68785e54c77"), 25, ListSchedulesOrderType.ASC));
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"))
@@ -954,7 +955,7 @@ public class UrbanAirshipClientTest {
                 .withStatus(201)));
 
         try {
-            Response<ListAllSchedulesResponse> response = asyncRequestClient.execute(ScheduleListingRequest.newRequest(URI.create("https://go.urbanairship.com/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc")));
+            Response<ListAllSchedulesResponse> response = client.execute(ScheduleListingRequest.newRequest(URI.create("https://go.urbanairship.com/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc")));
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"))
@@ -1002,7 +1003,7 @@ public class UrbanAirshipClientTest {
                 .withStatus(201)));
 
         try {
-            Response<ScheduleResponse> response = asyncRequestClient.execute(ScheduleRequest.newRequest(schedule, pushPayload).setName("Test"));
+            Response<ScheduleResponse> response = client.execute(ScheduleRequest.newRequest(schedule, pushPayload).setName("Test"));
 
             // Verify components of the underlying request
             verify(postRequestedFor(urlEqualTo("/api/schedules/"))
@@ -1058,7 +1059,7 @@ public class UrbanAirshipClientTest {
                 .withStatus(201)));
 
         try {
-            Response<ScheduleResponse> response = asyncRequestClient.execute(ScheduleRequest.newUpdateRequest(schedule, pushPayload, "id").setName("test"));
+            Response<ScheduleResponse> response = client.execute(ScheduleRequest.newUpdateRequest(schedule, pushPayload, "id").setName("test"));
 
             // Verify components of the underlying request
             verify(putRequestedFor(urlEqualTo("/api/schedules/id"))
@@ -1083,7 +1084,7 @@ public class UrbanAirshipClientTest {
                 .withStatus(204)));
 
         try {
-            Response<String> response = asyncRequestClient.execute(ScheduleDeleteRequest.newRequest("puppies"));
+            Response<String> response = client.execute(ScheduleDeleteRequest.newRequest("puppies"));
 
             // Verify components of the underlying HttpRequest
             verify(deleteRequestedFor(urlEqualTo("/api/schedules/puppies")));
@@ -1115,7 +1116,7 @@ public class UrbanAirshipClientTest {
             .removeTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"));
 
         try {
-            Response<String> response = asyncRequestClient.execute(request);
+            Response<String> response = client.execute(request);
 
             List<LoggedRequest> requests = findAll(postRequestedFor(urlEqualTo("/api/channels/tags/")));
             assertEquals(1, requests.size());
@@ -1257,7 +1258,7 @@ public class UrbanAirshipClientTest {
         ChannelRequest request = ChannelRequest.newRequest();
 
         try {
-            Response<ChannelResponse> response = asyncRequestClient.execute(request);
+            Response<ChannelResponse> response = client.execute(request);
 
             List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo("/api/channels/")));
             assertEquals(1, requests.size());
@@ -1282,7 +1283,7 @@ public class UrbanAirshipClientTest {
             .setChannel(UUID.randomUUID().toString(), ChannelType.IOS);
 
         try {
-            Response<String> response = asyncRequestClient.execute(request);
+            Response<String> response = client.execute(request);
 
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/named_users/associate/"))
@@ -1311,7 +1312,7 @@ public class UrbanAirshipClientTest {
             .setChannel(UUID.randomUUID().toString(), ChannelType.IOS);
 
         try {
-            Response<String> response = asyncRequestClient.execute(request);
+            Response<String> response = client.execute(request);
 
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/named_users/disassociate/"))
@@ -1346,7 +1347,7 @@ public class UrbanAirshipClientTest {
             .removeTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"));
 
         try {
-            Response<String> response = asyncRequestClient.execute(request);
+            Response<String> response = client.execute(request);
 
             List<LoggedRequest> requests = findAll(postRequestedFor(urlEqualTo("/api/named_users/tags/")));
             assertEquals(1, requests.size());
@@ -1397,7 +1398,7 @@ public class UrbanAirshipClientTest {
         NamedUserListingRequest request = NamedUserListingRequest.newRequest("user-id-1234");
 
         try {
-            Response<NamedUserListingResponse> response = asyncRequestClient.execute(request);
+            Response<NamedUserListingResponse> response = client.execute(request);
 
             List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo("/api/named_users/?id=user-id-1234")));
             assertEquals(1, requests.size());
@@ -1479,7 +1480,7 @@ public class UrbanAirshipClientTest {
         NamedUserListingRequest request = NamedUserListingRequest.newRequest();
 
         try {
-            Response<NamedUserListingResponse> response = asyncRequestClient.execute(request);
+            Response<NamedUserListingResponse> response = client.execute(request);
 
             List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo("/api/named_users/")));
             assertEquals(1, requests.size());
@@ -1513,7 +1514,7 @@ public class UrbanAirshipClientTest {
 
         PushInfoRequest request = PushInfoRequest.newRequest("abc");
 
-        Response<PushInfoResponse> response = asyncRequestClient.execute(request);
+        Response<PushInfoResponse> response = client.execute(request);
 
         List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
         assertEquals(1, requests.size());
@@ -1580,7 +1581,7 @@ public class UrbanAirshipClientTest {
                 .setStart(start)
                 .setEnd(end);
 
-        Response<PushListingResponse> response = asyncRequestClient.execute(request);
+        Response<PushListingResponse> response = client.execute(request);
 
         List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
         assertEquals(1, requests.size());
@@ -1649,7 +1650,7 @@ public class UrbanAirshipClientTest {
                 .setLimit(2)
                 .setPushIdStart("start");
 
-        Response<PushListingResponse> response = asyncRequestClient.execute(request);
+        Response<PushListingResponse> response = client.execute(request);
 
         List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
         assertEquals(1, requests.size());
@@ -1722,7 +1723,7 @@ public class UrbanAirshipClientTest {
 
         StatisticsCsvRequest request = StatisticsCsvRequest.newRequest(start, end);
 
-        Response<String> response = asyncRequestClient.execute(request);
+        Response<String> response = client.execute(request);
 
         List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
         assertEquals(1, requests.size());
@@ -1785,7 +1786,7 @@ public class UrbanAirshipClientTest {
 
         StatisticsRequest request = StatisticsRequest.newRequest(start, end);
 
-        Response<List<StatisticsResponse>> response = asyncRequestClient.execute(request);
+        Response<List<StatisticsResponse>> response = client.execute(request);
 
         List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
         assertEquals(1, requests.size());
@@ -1829,7 +1830,7 @@ public class UrbanAirshipClientTest {
                 .setEnd(end)
                 .setPrecision(Precision.HOURLY);
 
-        Response<PlatformStatsResponse> response = asyncRequestClient.execute(request);
+        Response<PlatformStatsResponse> response = client.execute(request);
 
         List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
         assertEquals(1, requests.size());
@@ -1873,7 +1874,7 @@ public class UrbanAirshipClientTest {
                 .setEnd(end)
                 .setPrecision(Precision.MONTHLY);
 
-        Response<PlatformStatsResponse> response = asyncRequestClient.execute(request);
+        Response<PlatformStatsResponse> response = client.execute(request);
 
         List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
         assertEquals(1, requests.size());
@@ -1918,7 +1919,7 @@ public class UrbanAirshipClientTest {
                 .setPrecision(Precision.MONTHLY);
 
         try {
-            Response<PlatformStatsResponse> response = asyncRequestClient.execute(request);
+            Response<PlatformStatsResponse> response = client.execute(request);
 
             List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
             assertEquals(1, requests.size());
@@ -1966,7 +1967,7 @@ public class UrbanAirshipClientTest {
                 .setEnd(end)
                 .setPrecision(Precision.MONTHLY);
 
-        Response<PlatformStatsResponse> response = asyncRequestClient.execute(request);
+        Response<PlatformStatsResponse> response = client.execute(request);
 
         List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
         assertEquals(1, requests.size());
@@ -2010,7 +2011,7 @@ public class UrbanAirshipClientTest {
                 .setEnd(end)
                 .setPrecision(Precision.MONTHLY);
 
-        Response<PlatformStatsResponse> response = asyncRequestClient.execute(request);
+        Response<PlatformStatsResponse> response = client.execute(request);
 
         List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
         assertEquals(1, requests.size());
@@ -2093,7 +2094,7 @@ public class UrbanAirshipClientTest {
 
         SegmentLookupRequest request = SegmentLookupRequest.newRequest("abc");
 
-        Response<SegmentView> response = asyncRequestClient.execute(request);
+        Response<SegmentView> response = client.execute(request);
 
         List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
         assertEquals(1, requests.size());
@@ -2148,7 +2149,7 @@ public class UrbanAirshipClientTest {
 
         SegmentListingRequest request = SegmentListingRequest.newRequest();
 
-        Response<SegmentListingResponse> response = asyncRequestClient.execute(request);
+        Response<SegmentListingResponse> response = client.execute(request);
 
         List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
         assertEquals(1, requests.size());
@@ -2173,7 +2174,7 @@ public class UrbanAirshipClientTest {
         request.setDisplayName("test")
                 .setCriteria(compound);
 
-        Response<String> response = asyncRequestClient.execute(request);
+        Response<String> response = client.execute(request);
 
         verify(postRequestedFor(urlEqualTo(queryPathString)));
         List<LoggedRequest> requests = findAll(postRequestedFor(
@@ -2200,7 +2201,7 @@ public class UrbanAirshipClientTest {
         request.setDisplayName("test")
                 .setCriteria(compound);
 
-        Response<String> response = asyncRequestClient.execute(request);
+        Response<String> response = client.execute(request);
 
         verify(putRequestedFor(urlEqualTo(queryPathString)));
         List<LoggedRequest> requests = findAll(putRequestedFor(
@@ -2221,7 +2222,7 @@ public class UrbanAirshipClientTest {
 
         SegmentDeleteRequest request = SegmentDeleteRequest.newRequest("abc");
 
-        Response<String> response = asyncRequestClient.execute(request);
+        Response<String> response = client.execute(request);
 
         verify(deleteRequestedFor(urlEqualTo(queryPathString)));
         List<LoggedRequest> requests = findAll(deleteRequestedFor(
@@ -2295,7 +2296,7 @@ public class UrbanAirshipClientTest {
 
         try {
             Request<LocationResponse> request = LocationRequest.newRequest("San Francisco").setType("city");
-            Response<LocationResponse> response = asyncRequestClient.execute(request);
+            Response<LocationResponse> response = client.execute(request);
 
             // Verify components of the underlying request
             verify(getRequestedFor(urlEqualTo("/api/location/?q=San+Francisco&type=city"))
@@ -2375,7 +2376,7 @@ public class UrbanAirshipClientTest {
 
         try {
             Request<LocationResponse> request = LocationRequest.newRequest("San Francisco");
-            Response<LocationResponse> response = asyncRequestClient.execute(request);
+            Response<LocationResponse> response = client.execute(request);
 
             // Verify components of the underlying request
             verify(getRequestedFor(urlEqualTo("/api/location/?q=San+Francisco"))
@@ -2461,7 +2462,7 @@ public class UrbanAirshipClientTest {
 
         try {
             Request<LocationResponse> request = LocationRequest.newRequest(portland).setType("city");
-            Response<LocationResponse> response = asyncRequestClient.execute(request);
+            Response<LocationResponse> response = client.execute(request);
 
             // Verify components of the underlying request
             verify(getRequestedFor(urlEqualTo("/api/location/45.52,-122.681944?type=city"))
@@ -2547,7 +2548,7 @@ public class UrbanAirshipClientTest {
 
         try {
             Request<LocationResponse> request = LocationRequest.newRequest(portland);
-            Response<LocationResponse> response = asyncRequestClient.execute(request);
+            Response<LocationResponse> response = client.execute(request);
 
             // Verify components of the underlying request
             verify(getRequestedFor(urlEqualTo("/api/location/45.52,-122.681944"))
@@ -2641,7 +2642,7 @@ public class UrbanAirshipClientTest {
 
         try {
             Request<LocationResponse> request = LocationRequest.newRequest(california).setType("city");
-            Response<LocationResponse> response = asyncRequestClient.execute(request);
+            Response<LocationResponse> response = client.execute(request);
 
             // Verify components of the underlying request
             verify(getRequestedFor(urlEqualTo("/api/location/32.5343,-124.4096,42.0095,-114.1308?type=city"))
@@ -2735,7 +2736,7 @@ public class UrbanAirshipClientTest {
 
         try {
             Request<LocationResponse> request = LocationRequest.newRequest(california);
-            Response<LocationResponse> response = asyncRequestClient.execute(request);
+            Response<LocationResponse> response = client.execute(request);
 
             // Verify components of the underlying request
             verify(getRequestedFor(urlEqualTo("/api/location/32.5343,-124.4096,42.0095,-114.1308"))
@@ -2775,7 +2776,7 @@ public class UrbanAirshipClientTest {
 
         StaticListLookupRequest request = StaticListLookupRequest.newRequest(listName);
 
-        Response<StaticListView> response = asyncRequestClient.execute(request);
+        Response<StaticListView> response = client.execute(request);
 
         List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
         assertEquals(1, requests.size());
@@ -2827,7 +2828,7 @@ public class UrbanAirshipClientTest {
 
         StaticListListingRequest request = StaticListListingRequest.newRequest();
 
-        Response<StaticListListingResponse> response = asyncRequestClient.execute(request);
+        Response<StaticListListingResponse> response = client.execute(request);
 
         List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
         assertEquals(1, requests.size());
@@ -2847,7 +2848,7 @@ public class UrbanAirshipClientTest {
                         .withStatus(201)));
 
         StaticListRequest request = StaticListRequest.newRequest(listName);
-        Response<String> response = asyncRequestClient.execute(request);
+        Response<String> response = client.execute(request);
 
         verify(postRequestedFor(urlEqualTo(queryPathString)));
         List<LoggedRequest> requests = findAll(postRequestedFor(
@@ -2870,7 +2871,7 @@ public class UrbanAirshipClientTest {
 
         StaticListRequest request = StaticListRequest.newUpdateRequest(listName);
         request.setDescription("a new description");
-        Response<String> response = asyncRequestClient.execute(request);
+        Response<String> response = client.execute(request);
 
         verify(putRequestedFor(urlEqualTo(queryPathString)));
         List<LoggedRequest> requests = findAll(putRequestedFor(
@@ -2893,7 +2894,7 @@ public class UrbanAirshipClientTest {
                         .withStatus(200)));
 
         StaticListUploadRequest request = StaticListUploadRequest.newRequest(listName, csvFile);
-        Response<String> response = asyncRequestClient.execute(request);
+        Response<String> response = client.execute(request);
 
         verify(putRequestedFor(urlEqualTo(queryPathString)));
         List<LoggedRequest> requests = findAll(putRequestedFor(
@@ -2917,7 +2918,7 @@ public class UrbanAirshipClientTest {
 
         StaticListDownloadRequest request = StaticListDownloadRequest.newRequest(listName)
                 .setOutputStream(fileOutputStream);
-        Response<String> response = asyncRequestClient.execute(request);
+        Response<String> response = client.execute(request);
 
         verify(getRequestedFor(urlEqualTo(queryPathString)));
         List<LoggedRequest> requests = findAll(getRequestedFor(
@@ -2938,7 +2939,7 @@ public class UrbanAirshipClientTest {
                         .withStatus(204)));
 
         StaticListDeleteRequest request = StaticListDeleteRequest.newRequest(listName);
-        Response<String> response = asyncRequestClient.execute(request);
+        Response<String> response = client.execute(request);
 
         verify(deleteRequestedFor(urlEqualTo(queryPathString)));
         List<LoggedRequest> requests = findAll(deleteRequestedFor(
@@ -2969,7 +2970,7 @@ public class UrbanAirshipClientTest {
                 .setDescription("A description")
                 .setPush(null);
 
-        Response<TemplateResponse> response = asyncRequestClient.execute(request);
+        Response<TemplateResponse> response = client.execute(request);
         verify(postRequestedFor(urlEqualTo(queryPathString)));
         List<LoggedRequest> requests = findAll(postRequestedFor(
                 urlEqualTo(queryPathString)));
@@ -3002,7 +3003,7 @@ public class UrbanAirshipClientTest {
                 .setDescription("A description")
                 .setPush(null);
 
-        Response<TemplateResponse> response = asyncRequestClient.execute(request);
+        Response<TemplateResponse> response = client.execute(request);
         verify(postRequestedFor(urlEqualTo(queryPathString)));
         List<LoggedRequest> requests = findAll(postRequestedFor(
                 urlEqualTo(queryPathString)));
@@ -3048,7 +3049,7 @@ public class UrbanAirshipClientTest {
         TemplatePushRequest request = TemplatePushRequest.newRequest()
                 .addTemplatePushPayload(payload);
 
-        Response<TemplateResponse> response = asyncRequestClient.execute(request);
+        Response<TemplateResponse> response = client.execute(request);
         verify(postRequestedFor(urlEqualTo(queryPathString)));
         List<LoggedRequest> requests = findAll(postRequestedFor(urlEqualTo(queryPathString)));
 
@@ -3071,7 +3072,7 @@ public class UrbanAirshipClientTest {
                         .withStatus(200)));
 
         TemplateDeleteRequest request = TemplateDeleteRequest.newRequest(templateName);
-        Response<TemplateResponse> response = asyncRequestClient.execute(request);
+        Response<TemplateResponse> response = client.execute(request);
 
         verify(deleteRequestedFor(urlEqualTo(queryPathString)));
         List<LoggedRequest> requests = findAll(deleteRequestedFor(
@@ -3130,7 +3131,7 @@ public class UrbanAirshipClientTest {
                         .withStatus(200)));
 
         TemplateListingRequest request = TemplateListingRequest.newRequest(templateName);
-        Response<TemplateListingResponse> response = asyncRequestClient.execute(request);
+        Response<TemplateListingResponse> response = client.execute(request);
         List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
 
         assertEquals(1, requests.size());
@@ -3195,7 +3196,7 @@ public class UrbanAirshipClientTest {
                         .withStatus(200)));
 
         TemplateListingRequest request = TemplateListingRequest.newRequest();
-        Response<TemplateListingResponse> response = asyncRequestClient.execute(request);
+        Response<TemplateListingResponse> response = client.execute(request);
         List<LoggedRequest> requests = findAll(getRequestedFor(urlEqualTo(queryPathString)));
 
         assertEquals(1, requests.size());
@@ -3258,7 +3259,7 @@ public class UrbanAirshipClientTest {
 
         try {
             final CountDownLatch latch = new CountDownLatch(1);
-            Response<ExperimentResponse> response = asyncRequestClient.execute(ExperimentRequest.newRequest(experiment), new ResponseCallback() {
+            Response<ExperimentResponse> response = client.execute(ExperimentRequest.newRequest(experiment), new ResponseCallback() {
                 @Override
                 public void completed(Response response) {
                     latch.countDown();
@@ -3328,7 +3329,7 @@ public class UrbanAirshipClientTest {
                         .withBody(experimentJSON)
                         .withStatus(201)));
         try {
-            Response<ExperimentResponse> response = asyncRequestClient.execute(ExperimentRequest.newRequest(experiment).setValidateOnly(true));
+            Response<ExperimentResponse> response = client.execute(ExperimentRequest.newRequest(experiment).setValidateOnly(true));
 
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/experiments/validate/"))
