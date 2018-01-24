@@ -122,7 +122,6 @@ public class AsyncRequestClient extends RequestClient {
         return userAgent;
     }
 
-    @Override
     public <T> Response execute(Request<T> request, ResponseCallback callback) {
         try {
             return executeAsync(request, callback).get();
@@ -143,7 +142,6 @@ public class AsyncRequestClient extends RequestClient {
         client.close();
     }
 
-    @Override
     public <T> Response execute(Request<T> request) {
         return execute(request, null);
     }
@@ -218,7 +216,6 @@ public class AsyncRequestClient extends RequestClient {
         return requestBuilder.execute(handler);
     }
 
-    @Override
     public <T> Future<Response> executeAsync(Request<T> request) {
         return executeAsync(request, null);
     }
