@@ -1,10 +1,8 @@
 package com.urbanairship.api.client;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
-import com.google.common.io.BaseEncoding;
 import org.apache.http.entity.ContentType;
 import org.asynchttpclient.AsyncHttpClient;
 import org.asynchttpclient.BoundRequestBuilder;
@@ -16,13 +14,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 public class AsyncRequestClient implements RequestClient {
@@ -46,7 +41,6 @@ public class AsyncRequestClient implements RequestClient {
 
         DefaultAsyncHttpClientConfig.Builder clientConfigBuilder = builder.clientConfigBuilder;
 
-        //clientConfigBuilder.setUserAgent(getUserAgent());
         clientConfigBuilder.addResponseFilter(new RequestRetryFilter(builder.maxRetries, Optional.fromNullable(builder.retryPredicate)));
 
         if (Optional.fromNullable(builder.proxyServer).isPresent()) {
