@@ -205,11 +205,11 @@ public class UrbanAirshipClient {
          * Build an UrbanAirshipClient object.  Will fail if any of the following
          * preconditions are not met.
          * <pre>
-         * 1. App key must be set.
-         * 2. App secret must be set.
+         * 1. App key or client must be set.
+         * 2. App secret or bearer token must be set if no client is provided.
          * 3. The base URI has been overridden but not set.
-         * 4. Max for non-POST 5xx retries must be set, already defaults to 10.
-         * 5. HTTP client config builder must be set, already defaults to a new builder.
+         * 4. Max for non-POST 5xx retries must be set, already defaults to 10 when using the default client.
+         * 5. HTTP client config builder must be set in the default client, already defaults to a new builder.
          * </pre>
          *
          * @return UrbanAirshipClient
