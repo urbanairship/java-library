@@ -11,6 +11,7 @@ import com.google.common.io.BaseEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -22,7 +23,7 @@ import java.util.concurrent.Future;
 /**
  * The UrbanAirshipClient class handles HTTP requests to the Urban Airship API.
  */
-public class UrbanAirshipClient {
+public class UrbanAirshipClient implements Closeable{
 
     private static final Logger log = LoggerFactory.getLogger(UrbanAirshipClient.class);
 
@@ -39,13 +40,15 @@ public class UrbanAirshipClient {
         return new Builder();
     }
 
-    public <T> Future<Response> executeAsync(final Request<T> request, ResponseCallback callback, Map<String, String> headers) {
+
+    public <T> Future<Response> executeAsync(final Request<T> request, ResponseCallback callback) {
+        Map<String, String> headers = new HashMap<>();
         addHeaders(request, headers);
         return client.executeAsync(request, callback, headers);
     }
 
     public <T> Future<Response> executeAsync(Request<T> request) {
-        return executeAsync(request, null, new HashMap<String, String>());
+        return executeAsync(request, null);
     }
 
     public <T> Response execute(Request<T> request) throws IOException {
@@ -54,7 +57,7 @@ public class UrbanAirshipClient {
 
     public <T> Response execute(Request<T> request, ResponseCallback callback) throws IOException {
         try {
-            return executeAsync(request, callback, new HashMap<String, String>()).get();
+            return executeAsync(request, callback).get();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new RuntimeException("Thread interrupted while retrieving response from future", e);
@@ -114,6 +117,7 @@ public class UrbanAirshipClient {
     /**
      * Close the underlying HTTP client's thread pool.
      */
+    @Override
     public void close() throws IOException {
         log.info("Closing client");
         client.close();
