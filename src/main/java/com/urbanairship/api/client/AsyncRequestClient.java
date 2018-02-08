@@ -24,9 +24,6 @@ public class AsyncRequestClient implements RequestClient {
 
     private static final Logger log = LoggerFactory.getLogger(UrbanAirshipClient.class);
 
-    private final String appKey;
-    private final Optional<String> appSecret;
-    private final Optional<String> bearerToken;
     private final Optional<ProxyServer> proxyServer;
 
     private final URI baseUri;
@@ -34,9 +31,6 @@ public class AsyncRequestClient implements RequestClient {
     private final DefaultAsyncHttpClientConfig clientConfig;
 
     private AsyncRequestClient(Builder builder) {
-        this.appKey = builder.key;
-        this.appSecret = Optional.fromNullable(builder.secret);
-        this.bearerToken = Optional.fromNullable(builder.bearerToken);
         this.baseUri = URI.create(builder.baseUri);
 
         DefaultAsyncHttpClientConfig.Builder clientConfigBuilder = builder.clientConfigBuilder;
@@ -57,33 +51,6 @@ public class AsyncRequestClient implements RequestClient {
 
     public static Builder newBuilder() {
         return new Builder();
-    }
-
-    /**
-     * Get the app key.
-     * @return The app key.
-     */
-    @Override
-    public String getAppKey() {
-        return appKey;
-    }
-
-    /**
-     * Get the app secret.
-     * @return The app secret.
-     */
-    @Override
-    public Optional<String> getAppSecret() {
-        return appSecret;
-    }
-
-    /**
-     * Get the bearer token.
-     * @return The bearer token.
-     */
-    @Override
-    public Optional<String> getBearerToken() {
-        return bearerToken;
     }
 
     public Optional<ProxyServer> getProxyServer() {
@@ -164,10 +131,7 @@ public class AsyncRequestClient implements RequestClient {
 
     public static class Builder {
 
-        private String key;
-        private String secret;
         private String baseUri;
-        private String bearerToken;
         private Integer maxRetries = 10;
         private DefaultAsyncHttpClientConfig.Builder clientConfigBuilder = new DefaultAsyncHttpClientConfig.Builder();
         private Predicate<FilterContext> retryPredicate = null;
@@ -175,36 +139,6 @@ public class AsyncRequestClient implements RequestClient {
 
         private Builder() {
             baseUri = "https://go.urbanairship.com";
-        }
-
-        /**
-         * Set the app key.
-         * @param key String app key
-         * @return Builder
-         */
-        public Builder setKey(String key) {
-            this.key = key;
-            return this;
-        }
-
-        /**
-         * Set the app secret.
-         * @param appSecret String app secret
-         * @return Builder
-         */
-        public Builder setSecret(String appSecret) {
-            this.secret = appSecret;
-            return this;
-        }
-
-        /**
-         * Set the bearer token.
-         * @param bearerToken String bearer token
-         * @return Builder
-         */
-        public Builder setBearerToken(String bearerToken) {
-            this.bearerToken = bearerToken;
-            return this;
         }
 
         /**
@@ -275,14 +209,9 @@ public class AsyncRequestClient implements RequestClient {
          * @return UrbanAirshipClient
          */
         public AsyncRequestClient build() {
-            Preconditions.checkNotNull(key, "app key needed to build APIClient");
             Preconditions.checkNotNull(baseUri, "base URI needed to build APIClient");
             Preconditions.checkNotNull(maxRetries, "max non-POST retries needed to build APIClient");
             Preconditions.checkNotNull(clientConfigBuilder, "Async HTTP client config builder needed to build APIClient");
-
-            if (secret == null && bearerToken == null) {
-                throw new NullPointerException("secret or the bearer token must be set");
-            }
 
             return new AsyncRequestClient(this);
         }

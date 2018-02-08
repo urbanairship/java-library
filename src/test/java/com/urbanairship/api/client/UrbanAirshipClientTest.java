@@ -143,8 +143,6 @@ public class UrbanAirshipClientTest {
     public void setup() {
         asyncRequestClient = AsyncRequestClient.newBuilder()
                 .setBaseUri("http://localhost:8080")
-                .setKey("key")
-                .setSecret("secret")
                 .setMaxRetries(5)
                 .setRetryPredicate(new Predicate<FilterContext>() {
                     @Override
@@ -155,6 +153,8 @@ public class UrbanAirshipClientTest {
                 .build();
 
         client = UrbanAirshipClient.newBuilder()
+                .setKey("key")
+                .setSecret("secret")
                 .setClient(asyncRequestClient)
                 .build();
     }
@@ -213,8 +213,6 @@ public class UrbanAirshipClientTest {
                 .setRealm(realm);
 
         AsyncRequestClient proxyClient = AsyncRequestClient.newBuilder()
-                .setKey("key")
-                .setSecret("secret")
                 .setProxyServer(proxyServer)
                 .build();
 
@@ -244,8 +242,6 @@ public class UrbanAirshipClientTest {
                 .setConnectTimeout(20);
 
         AsyncRequestClient client = AsyncRequestClient.newBuilder()
-                .setKey("key")
-                .setSecret("secret")
                 .setClientConfigBuilder(defualtClientBuilder)
                 .build();
 
@@ -442,8 +438,6 @@ public class UrbanAirshipClientTest {
     public void testRetryIsNonBlocking() throws Exception {
         asyncRequestClient = AsyncRequestClient.newBuilder()
             .setBaseUri("http://localhost:8080")
-            .setKey("key")
-            .setSecret("secret")
             .setMaxRetries(1000)
             .build();
 
@@ -497,8 +491,6 @@ public class UrbanAirshipClientTest {
     public void testClose() throws Exception {
         asyncRequestClient = AsyncRequestClient.newBuilder()
             .setBaseUri("http://localhost:8080")
-            .setKey("key")
-            .setSecret("secret")
             .setMaxRetries(1000)
             .build();
 
@@ -721,8 +713,6 @@ public class UrbanAirshipClientTest {
         // Setup a client and a push payload
         AsyncRequestClient proxyClient = AsyncRequestClient.newBuilder()
             .setBaseUri("http://localhost:8080")
-            .setKey("key")
-            .setSecret("secret")
             .setProxyServer(proxyServer)
             .build();
 
