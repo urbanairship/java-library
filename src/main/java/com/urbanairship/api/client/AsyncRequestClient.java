@@ -53,10 +53,20 @@ public class AsyncRequestClient implements RequestClient {
         return new Builder();
     }
 
+    /**
+     * Get the proxy server.
+     *
+     * @return Optional ProxyServer
+     */
     public Optional<ProxyServer> getProxyServer() {
         return proxyServer;
     }
 
+    /**
+     * Get the client config.
+     *
+     * @return DefaultAsyncHttpClientConfig
+     */
     public DefaultAsyncHttpClientConfig getClientConfig() {
         return clientConfig;
     }
@@ -69,10 +79,6 @@ public class AsyncRequestClient implements RequestClient {
     public void close() throws IOException {
         log.info("Closing client");
         client.close();
-    }
-
-    public <T> Future<Response> executeAsync(final Request<T> request, final ResponseCallback callback) {
-        return executeAsync(request, callback, new HashMap<String, String>());
     }
 
     @Override
@@ -129,6 +135,9 @@ public class AsyncRequestClient implements RequestClient {
         return requestBuilder.execute(handler);
     }
 
+    /**
+     * AsyncRequestClient Builder.
+     */
     public static class Builder {
 
         private String baseUri;

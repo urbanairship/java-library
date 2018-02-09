@@ -23,7 +23,7 @@ import java.util.concurrent.Future;
 /**
  * The UrbanAirshipClient class handles HTTP requests to the Urban Airship API.
  */
-public class UrbanAirshipClient implements Closeable{
+public class UrbanAirshipClient implements Closeable {
 
     private static final Logger log = LoggerFactory.getLogger(UrbanAirshipClient.class);
 
@@ -48,9 +48,7 @@ public class UrbanAirshipClient implements Closeable{
 
 
     public <T> Future<Response> executeAsync(final Request<T> request, ResponseCallback callback) {
-        Map<String, String> headers = new HashMap<>();
-        addHeaders(request, headers);
-        return client.executeAsync(request, callback, headers);
+        return client.executeAsync(request, callback, createHeaders(request));
     }
 
     public <T> Future<Response> executeAsync(Request<T> request) {
@@ -72,7 +70,9 @@ public class UrbanAirshipClient implements Closeable{
         }
     }
 
-    private Map<String, String> addHeaders(Request request, Map<String, String> headers) {
+    private Map<String, String> createHeaders(Request request) {
+        Map<String, String> headers = new HashMap<>();
+
         headers.put("User-Agent", userAgent);
         Map<String, String> requestHeaders = request.getRequestHeaders();
         if (requestHeaders != null) {
