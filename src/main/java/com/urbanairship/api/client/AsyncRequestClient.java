@@ -49,6 +49,11 @@ public class AsyncRequestClient implements RequestClient {
         this.client = new DefaultAsyncHttpClient(clientConfig);
     }
 
+    /**
+     * New AsyncRequestClient Builder.
+     *
+     * @return AsyncRequestClient Builder.
+     */
     public static Builder newBuilder() {
         return new Builder();
     }
