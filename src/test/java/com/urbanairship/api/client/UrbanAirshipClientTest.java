@@ -619,9 +619,11 @@ public class UrbanAirshipClientTest {
                         .withStatus(500)));
 
         final CountDownLatch latch = new CountDownLatch(1);
-        asyncRequestClient.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
+
+        client.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
             @Override
             public void completed(Response response) {
+
             }
 
             @Override
@@ -652,7 +654,8 @@ public class UrbanAirshipClientTest {
                         .withStatus(500)));
 
         final CountDownLatch latch = new CountDownLatch(1);
-        asyncRequestClient.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
+
+        client.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
             @Override
             public void completed(Response response) {
             }
@@ -685,7 +688,7 @@ public class UrbanAirshipClientTest {
                         .withStatus(503)));
 
         final CountDownLatch latch = new CountDownLatch(1);
-        asyncRequestClient.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
+        client.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
             @Override
             public void completed(Response response) {
             }
