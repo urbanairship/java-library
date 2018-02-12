@@ -1,13 +1,12 @@
 package com.urbanairship.api.client;
 
-import com.google.common.base.Optional;
-
-import java.io.IOException;
+import java.io.Closeable;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-public interface RequestClient {
+/**
+ * RequestClient must be implemented to create a custom HTTP client that is then used by UrbanAirshipClient to make requests.
+ */
+public interface RequestClient extends Closeable {
     public <T> Future<Response> executeAsync(final Request<T> request, final ResponseCallback callback, Map<String, String> headers);
-
-    public void close() throws IOException;
 }
