@@ -42,6 +42,11 @@ public class UrbanAirshipClient implements Closeable {
         this.bearerToken = Optional.fromNullable(builder.bearerToken);
     }
 
+    /**
+     * New UrbanAirshipClient Builder.
+     *
+     * @return UrbanAirshipClient Builder.
+     */
     public static Builder newBuilder() {
         return new Builder();
     }

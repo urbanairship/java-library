@@ -16,10 +16,12 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
+/**
+ * The AsyncRequestClient is the default request client used by the UrbanAirshipClient.
+ */
 public class AsyncRequestClient implements RequestClient {
 
     private static final Logger log = LoggerFactory.getLogger(UrbanAirshipClient.class);
@@ -77,15 +79,6 @@ public class AsyncRequestClient implements RequestClient {
     }
 
 
-    /**
-     * Close the underlying HTTP client's thread pool.
-     */
-    @Override
-    public void close() throws IOException {
-        log.info("Closing client");
-        client.close();
-    }
-
     @Override
     /**
      * Command for executing Urban Airship requests asynchronously with a ResponseCallback.
@@ -138,6 +131,15 @@ public class AsyncRequestClient implements RequestClient {
         log.debug(String.format("Executing Urban Airship request to %s with body %s.", uri, request.getRequestBody()));
         ResponseAsyncHandler<T> handler = new ResponseAsyncHandler<>(Optional.fromNullable(callback), request.getResponseParser());
         return requestBuilder.execute(handler);
+    }
+
+    /**
+     * Close the underlying HTTP client's thread pool.
+     */
+    @Override
+    public void close() throws IOException {
+        log.info("Closing client");
+        client.close();
     }
 
     /**
