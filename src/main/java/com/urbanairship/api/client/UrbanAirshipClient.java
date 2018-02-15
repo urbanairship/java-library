@@ -235,7 +235,7 @@ public class UrbanAirshipClient implements Closeable {
                 throw new NullPointerException("secret or the bearer token must be set");
             }
 
-            if(client == null) {
+            if (client == null) {
                 client = AsyncRequestClient.newBuilder()
                         .build();
             }
