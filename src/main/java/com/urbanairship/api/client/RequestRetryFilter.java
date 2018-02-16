@@ -6,10 +6,10 @@ package com.urbanairship.api.client;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
-import com.ning.http.client.filter.FilterContext;
-import com.ning.http.client.filter.FilterException;
-import com.ning.http.client.filter.ResponseFilter;
 import org.apache.commons.lang.math.RandomUtils;
+import org.asynchttpclient.filter.FilterContext;
+import org.asynchttpclient.filter.FilterException;
+import org.asynchttpclient.filter.ResponseFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
