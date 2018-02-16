@@ -2,10 +2,8 @@ package com.urbanairship.api.client;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.ListMultimap;
 import com.urbanairship.api.channel.model.ChannelResponse;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.channel.model.ChannelView;
@@ -37,9 +35,12 @@ import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.Assert.assertTrue;
@@ -48,6 +49,14 @@ public class ResponseTest {
 
     private final String CONTENT_TYPE_KEY = "content-type";
     private final String CONTENT_TYPE = "application/json";
+
+
+    private final Map<String, String> headers = new HashMap<>();
+
+    @Before
+    public void setUp() {
+        headers.put(CONTENT_TYPE_KEY, CONTENT_TYPE);
+    }
 
     @Test
     public void testPushResponse() {
@@ -61,14 +70,17 @@ public class ResponseTest {
                 new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
         httpResponse.setHeader(CONTENT_TYPE_KEY, CONTENT_TYPE);
 
-        ListMultimap<String, String> headers = ArrayListMultimap.create();
-        headers.put(httpResponse.getAllHeaders()[0].getName(), httpResponse.getAllHeaders()[0].getValue());
+        Map<String, String> headers = new HashMap<>();
+        headers.put(CONTENT_TYPE_KEY, CONTENT_TYPE);
 
-        Response<PushResponse> response = new Response<PushResponse>(pushResponse, headers.asMap(), httpResponse.getStatusLine().getStatusCode());
+        //ListMultimap<String, String> headers = ArrayListMultimap.create();
+        //headers.put(httpResponse.getAllHeaders()[0].getName(), httpResponse.getAllHeaders()[0].getValue());
+
+        Response<PushResponse> response = new Response<PushResponse>(pushResponse, headers, httpResponse.getStatusLine().getStatusCode());
         assertTrue("HTTP response body not set properly",
                 response.getBody().get().equals(pushResponse));
         assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers.asMap()));
+                response.getHeaders().equals(headers));
         assertTrue("HTTP response status not set properly",
                 response.getStatus() == httpResponse.getStatusLine().getStatusCode());
     }
@@ -85,14 +97,14 @@ public class ResponseTest {
                 .setOperationId("ID")
                 .build();
 
-        ListMultimap<String, String> headers = ArrayListMultimap.create();
-        headers.put(httpResponse.getAllHeaders()[0].getName(), httpResponse.getAllHeaders()[0].getValue());
+        Map<String, String> headers = new HashMap<>();
+        headers.put(CONTENT_TYPE_KEY, CONTENT_TYPE);
 
-        Response<ScheduleResponse> response = new Response<ScheduleResponse>(scheduleResponse, headers.asMap(), httpResponse.getStatusLine().getStatusCode());
+        Response<ScheduleResponse> response = new Response<ScheduleResponse>(scheduleResponse, headers, httpResponse.getStatusLine().getStatusCode());
         assertTrue("HTTP response body not set properly",
                 response.getBody().get().equals(scheduleResponse));
         assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers.asMap()));
+                response.getHeaders().equals(headers));
         assertTrue("HTTP response status not set properly",
                 response.getStatus() == httpResponse.getStatusLine().getStatusCode());
     }
@@ -124,14 +136,14 @@ public class ResponseTest {
                 .addSchedule(sample)
                 .build();
 
-        ListMultimap<String, String> headers = ArrayListMultimap.create();
-        headers.put(httpResponse.getAllHeaders()[0].getName(), httpResponse.getAllHeaders()[0].getValue());
+        Map<String, String> headers = new HashMap<>();
+        headers.put(CONTENT_TYPE_KEY, CONTENT_TYPE);
 
-        Response<ListAllSchedulesResponse> response = new Response<ListAllSchedulesResponse>(listScheduleResponse, headers.asMap(), httpResponse.getStatusLine().getStatusCode());
+        Response<ListAllSchedulesResponse> response = new Response<ListAllSchedulesResponse>(listScheduleResponse, headers, httpResponse.getStatusLine().getStatusCode());
         assertTrue("HTTP response body not set properly",
                 response.getBody().get().equals(listScheduleResponse));
         assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers.asMap()));
+                response.getHeaders().equals(headers));
         assertTrue("HTTP response status not set properly",
                 response.getStatus() == httpResponse.getStatusLine().getStatusCode());
     }
@@ -141,9 +153,6 @@ public class ResponseTest {
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
         httpResponse.setHeader(CONTENT_TYPE_KEY, CONTENT_TYPE);
-
-        ListMultimap<String, String> headers = ArrayListMultimap.create();
-        headers.put(httpResponse.getAllHeaders()[0].getName(), httpResponse.getAllHeaders()[0].getValue());
 
         ChannelResponse channelResponse =
                 ChannelResponse.newBuilder()
@@ -161,11 +170,11 @@ public class ResponseTest {
                                 .build())
                         .build();
 
-        Response<ChannelResponse> response = new Response<ChannelResponse>(channelResponse, headers.asMap(), httpResponse.getStatusLine().getStatusCode());
+        Response<ChannelResponse> response = new Response<ChannelResponse>(channelResponse, headers, httpResponse.getStatusLine().getStatusCode());
         assertTrue("HTTP response body not set properly",
                 response.getBody().get().equals(channelResponse));
         assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers.asMap()));
+                response.getHeaders().equals(headers));
         assertTrue("HTTP response status not set properly",
                 response.getStatus() == httpResponse.getStatusLine().getStatusCode());
     }
@@ -175,9 +184,6 @@ public class ResponseTest {
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
         httpResponse.setHeader(CONTENT_TYPE_KEY, CONTENT_TYPE);
-
-        ListMultimap<String, String> headers = ArrayListMultimap.create();
-        headers.put(httpResponse.getAllHeaders()[0].getName(), httpResponse.getAllHeaders()[0].getValue());
 
         ChannelResponse channelResponse = ChannelResponse.newBuilder()
                 .setOk(true)
@@ -195,11 +201,11 @@ public class ResponseTest {
                         .build())
                 .build();
 
-        Response<ChannelResponse> response = new Response<ChannelResponse>(channelResponse, headers.asMap(), httpResponse.getStatusLine().getStatusCode());
+        Response<ChannelResponse> response = new Response<ChannelResponse>(channelResponse, headers, httpResponse.getStatusLine().getStatusCode());
         assertTrue("HTTP response body not set properly",
                 response.getBody().get().equals(channelResponse));
         assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers.asMap()));
+                response.getHeaders().equals(headers));
         assertTrue("HTTP response status not set properly",
                 response.getStatus() == httpResponse.getStatusLine().getStatusCode());
     }
@@ -209,9 +215,6 @@ public class ResponseTest {
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
         httpResponse.setHeader(CONTENT_TYPE_KEY, CONTENT_TYPE);
-
-        ListMultimap<String, String> headers = ArrayListMultimap.create();
-        headers.put(httpResponse.getAllHeaders()[0].getName(), httpResponse.getAllHeaders()[0].getValue());
 
         NamedUserListingResponse namedUserListingResponse = NamedUserListingResponse.newBuilder()
                 .setOk(true)
@@ -230,11 +233,11 @@ public class ResponseTest {
                         .build())
                 .build();
 
-        Response<NamedUserListingResponse> response = new Response<NamedUserListingResponse>(namedUserListingResponse, headers.asMap(), httpResponse.getStatusLine().getStatusCode());
+        Response<NamedUserListingResponse> response = new Response<NamedUserListingResponse>(namedUserListingResponse, headers, httpResponse.getStatusLine().getStatusCode());
         assertTrue("HTTP response body not set properly",
                 response.getBody().get().equals(namedUserListingResponse));
         assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers.asMap()));
+                response.getHeaders().equals(headers));
         assertTrue("HTTP response status not set properly",
                 response.getStatus() == httpResponse.getStatusLine().getStatusCode());
     }
@@ -244,10 +247,6 @@ public class ResponseTest {
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
         httpResponse.setHeader(CONTENT_TYPE_KEY, CONTENT_TYPE);
-
-        ListMultimap<String, String> headers = ArrayListMultimap.create();
-        headers.put(httpResponse.getAllHeaders()[0].getName(), httpResponse.getAllHeaders()[0].getValue());
-
 
         UUID one = UUID.randomUUID();
         UUID two = UUID.randomUUID();
@@ -270,13 +269,13 @@ public class ResponseTest {
 
         Response<PushListingResponse> response = new Response<PushListingResponse>(
                 pushListingResponse,
-                headers.asMap(),
+                headers,
                 httpResponse.getStatusLine().getStatusCode());
 
         assertTrue("HTTP response not set properly",
                 response.getBody().get().equals(pushListingResponse));
         assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers.asMap()));
+                response.getHeaders().equals(headers));
         assertTrue("HTTP response status not set properly",
                 response.getStatus() == httpResponse.getStatusLine().getStatusCode());
     }
@@ -286,10 +285,6 @@ public class ResponseTest {
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
         httpResponse.setHeader(CONTENT_TYPE_KEY, CONTENT_TYPE);
-
-        ListMultimap<String, String> headers = ArrayListMultimap.create();
-        headers.put(httpResponse.getAllHeaders()[0].getName(), httpResponse.getAllHeaders()[0].getValue());
-
 
         UUID one = UUID.randomUUID();
         UUID two = UUID.randomUUID();
@@ -305,13 +300,13 @@ public class ResponseTest {
 
         Response<PushInfoResponse> response = new Response<PushInfoResponse>(
                 pushInfoResponse,
-                headers.asMap(),
+                headers,
                 httpResponse.getStatusLine().getStatusCode());
 
         assertTrue("HTTP response not set properly",
                 response.getBody().get().equals(pushInfoResponse));
         assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers.asMap()));
+                response.getHeaders().equals(headers));
         assertTrue("HTTP response status not set properly",
                 response.getStatus() == httpResponse.getStatusLine().getStatusCode());
 
@@ -323,9 +318,6 @@ public class ResponseTest {
                 new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
         httpResponse.setHeader(CONTENT_TYPE_KEY, CONTENT_TYPE);
 
-        ListMultimap<String, String> headers = ArrayListMultimap.create();
-        headers.put(httpResponse.getAllHeaders()[0].getName(), httpResponse.getAllHeaders()[0].getValue());
-
         Selector andSelector = Selectors.tags("java", "lib");
         Selector compound = Selectors.or(andSelector, Selectors.not(Selectors.tag("mfd")));
 
@@ -336,13 +328,13 @@ public class ResponseTest {
 
         Response<SegmentView> response = new Response<SegmentView>(
                 segment,
-                headers.asMap(),
+                headers,
                 httpResponse.getStatusLine().getStatusCode());
 
         assertTrue("HTTP response not set properly",
                 response.getBody().get().equals(segment));
         assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers.asMap()));
+                response.getHeaders().equals(headers));
         assertTrue("HTTP response status not set properly",
                 response.getStatus() == httpResponse.getStatusLine().getStatusCode());
     }
@@ -352,9 +344,6 @@ public class ResponseTest {
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
         httpResponse.setHeader(CONTENT_TYPE_KEY, CONTENT_TYPE);
-
-        ListMultimap<String, String> headers = ArrayListMultimap.create();
-        headers.put(httpResponse.getAllHeaders()[0].getName(), httpResponse.getAllHeaders()[0].getValue());
 
         SegmentListingView listItem = SegmentListingView.newBuilder()
                 .setCreationDate(123L)
@@ -376,13 +365,13 @@ public class ResponseTest {
 
         Response<SegmentListingResponse> response = new Response<SegmentListingResponse>(
                 segments,
-                headers.asMap(),
+                headers,
                 httpResponse.getStatusLine().getStatusCode());
 
         assertTrue("HTTP response not set properly",
                 response.getBody().get().equals(segments));
         assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers.asMap()));
+                response.getHeaders().equals(headers));
         assertTrue("HTTP response status not set properly",
                 response.getStatus() == httpResponse.getStatusLine().getStatusCode());
     }
@@ -394,9 +383,7 @@ public class ResponseTest {
             new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
         httpResponse.setHeader(CONTENT_TYPE_KEY, CONTENT_TYPE);
 
-        ListMultimap<String, String> headers = ArrayListMultimap.create();
-        headers.put(httpResponse.getAllHeaders()[0].getName(), httpResponse.getAllHeaders()[0].getValue());
-            ObjectNode node = JsonNodeFactory.instance.objectNode();
+        ObjectNode node = JsonNodeFactory.instance.objectNode();
         node.put("hello", "kitty");
 
         LocationView locationView = LocationView.newBuilder()
@@ -411,13 +398,13 @@ public class ResponseTest {
 
         Response<LocationResponse> response = new Response<LocationResponse>(
             locationResponse,
-            headers.asMap(),
+            headers,
             httpResponse.getStatusLine().getStatusCode());
 
         assertTrue("HTTP response not set properly",
             response.getBody().get().equals(locationResponse));
         assertTrue("HTTP response headers not set properly",
-            response.getHeaders().equals(headers.asMap()));
+            response.getHeaders().equals(headers));
         assertTrue("HTTP response status not set properly",
             response.getStatus() == httpResponse.getStatusLine().getStatusCode());
     }
@@ -427,9 +414,6 @@ public class ResponseTest {
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
         httpResponse.setHeader(CONTENT_TYPE_KEY, CONTENT_TYPE);
-
-        ListMultimap<String, String> headers = ArrayListMultimap.create();
-        headers.put(httpResponse.getAllHeaders()[0].getName(), httpResponse.getAllHeaders()[0].getValue());
 
         DateTime created = new DateTime(2014, 10, 1, 12, 0, 0, 0);
         DateTime updated = created.plus(Period.hours(48));
@@ -446,13 +430,13 @@ public class ResponseTest {
 
         Response<StaticListView> response = new Response<StaticListView>(
                 staticListView,
-                headers.asMap(),
+                headers,
                 httpResponse.getStatusLine().getStatusCode());
 
         assertTrue("HTTP response not set properly",
                 response.getBody().get().equals(staticListView));
         assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers.asMap()));
+                response.getHeaders().equals(headers));
         assertTrue("HTTP response status not set properly",
                 response.getStatus() == httpResponse.getStatusLine().getStatusCode());
     }
@@ -462,9 +446,6 @@ public class ResponseTest {
         HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
                 new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
         httpResponse.setHeader(CONTENT_TYPE_KEY, CONTENT_TYPE);
-
-        ListMultimap<String, String> headers = ArrayListMultimap.create();
-        headers.put(httpResponse.getAllHeaders()[0].getName(), httpResponse.getAllHeaders()[0].getValue());
 
         DateTime created = new DateTime(2014, 10, 1, 12, 0, 0, 0);
         DateTime updated = created.plus(Period.hours(48));
@@ -494,13 +475,13 @@ public class ResponseTest {
 
         Response<StaticListListingResponse> response = new Response<StaticListListingResponse>(
                 staticListListingResponse,
-                headers.asMap(),
+                headers,
                 httpResponse.getStatusLine().getStatusCode());
 
         assertTrue("HTTP response not set properly",
                 response.getBody().get().equals(staticListListingResponse));
         assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers.asMap()));
+                response.getHeaders().equals(headers));
         assertTrue("HTTP response status not set properly",
                 response.getStatus() == httpResponse.getStatusLine().getStatusCode());
 
