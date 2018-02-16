@@ -1,7 +1,7 @@
 -------------------------
 3.0.0 16FEB18
 -------------------------
-- Updated the underlying HTTP client to fix a bug when trying to use a ProxyServer over HTTPS.
+- Updated the underlying HTTP client to fix a bug when trying to use a proxy server over HTTPS.
 - Added support for implementing a custom HTTP client.
 
 -------------------------
