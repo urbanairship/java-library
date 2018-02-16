@@ -1,4 +1,10 @@
 -------------------------
+3.0.0 16FEB18
+-------------------------
+- Updated the Underlying HTTP client.
+- Added support for implementing a custom HTTP client.
+
+-------------------------
 2.1.0 20DEC17
 -------------------------
 - Added support for Campaigns.
