@@ -209,8 +209,9 @@ public class UrbanAirshipClientTest {
                 .setScheme(Realm.AuthScheme.BASIC)
                 .build();
 
-        ProxyServer.Builder proxyServer = new ProxyServer.Builder("test.urbanairship.com", 8080)
-                .setRealm(realm);
+        ProxyServer proxyServer = new ProxyServer.Builder("test.urbanairship.com", 8080)
+                .setRealm(realm)
+                .build();
 
         AsyncRequestClient proxyClient = AsyncRequestClient.newBuilder()
                 .setProxyServer(proxyServer)
@@ -710,8 +711,9 @@ public class UrbanAirshipClientTest {
                 .setScheme(Realm.AuthScheme.BASIC)
                 .build();
 
-        ProxyServer.Builder proxyServer = new ProxyServer.Builder("localhost", 8080)
-            .setRealm(localRealm);
+        ProxyServer proxyServer = new ProxyServer.Builder("localhost", 8080)
+                .setRealm(localRealm)
+                .build();
 
         // Setup a client and a push payload
         AsyncRequestClient proxyClient = AsyncRequestClient.newBuilder()
