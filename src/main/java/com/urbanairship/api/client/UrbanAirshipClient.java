@@ -166,8 +166,9 @@ public class UrbanAirshipClient implements Closeable {
         return client;
     }
 
-    /* Builder for newAPIClient */
-
+    /**
+     * UrbanAirshipClient builder.
+     */
     public static class Builder {
 
         private String key;

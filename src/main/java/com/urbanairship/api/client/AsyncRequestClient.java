@@ -40,7 +40,7 @@ public class AsyncRequestClient implements RequestClient {
         clientConfigBuilder.addResponseFilter(new RequestRetryFilter(builder.maxRetries, Optional.fromNullable(builder.retryPredicate)));
 
         if (Optional.fromNullable(builder.proxyServer).isPresent()) {
-            proxyServer = Optional.fromNullable(builder.proxyServer.build());
+            proxyServer = Optional.fromNullable(builder.proxyServer);
             clientConfigBuilder.setProxyServer(proxyServer.get());
             clientConfigBuilder.setRealm(proxyServer.get().getRealm());
         } else {
@@ -151,7 +151,7 @@ public class AsyncRequestClient implements RequestClient {
         private Integer maxRetries = 10;
         private DefaultAsyncHttpClientConfig.Builder clientConfigBuilder = new DefaultAsyncHttpClientConfig.Builder();
         private Predicate<FilterContext> retryPredicate = null;
-        private ProxyServer.Builder proxyServer;
+        private ProxyServer proxyServer;
 
         private Builder() {
             baseUri = "https://go.urbanairship.com";
@@ -181,22 +181,22 @@ public class AsyncRequestClient implements RequestClient {
         /**
          * Set the client config builder -- defaults to a new builder. Available for custom settings.
          *
-         * @param builder The client config builder.
+         * @param clientConfigBuilder The client config builder.
          * @return Builder
          */
-        public Builder setClientConfigBuilder(DefaultAsyncHttpClientConfig.Builder builder) {
-            this.clientConfigBuilder = builder;
+        public Builder setClientConfigBuilder(DefaultAsyncHttpClientConfig.Builder clientConfigBuilder) {
+            this.clientConfigBuilder = clientConfigBuilder;
             return this;
         }
 
         /**
          * Set the proxy server builder.
          *
-         * @param builder
+         * @param proxyServer
          * @return Builder
          */
-        public Builder setProxyServer(ProxyServer.Builder builder) {
-            this.proxyServer = builder;
+        public Builder setProxyServer(ProxyServer proxyServer) {
+            this.proxyServer = proxyServer;
             return this;
         }
 
