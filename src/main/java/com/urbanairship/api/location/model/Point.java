@@ -119,8 +119,8 @@ public final class Point {
          * Build the Point object. Will fail if any of the following
          * preconditions are not met.
          * <pre>
-         * 1. latitude >= -90d && latitude <= 90d.
-         * 2. longitude >= -180d && longitude <= 180d.
+         * 1. latitude &gt;= -90d {@code &&} latitude &lt;= 90d.
+         * 2. longitude &gt;= -180d {@code &&} longitude &lt;= 180d.
          * * </pre>
          *
          * @return Point

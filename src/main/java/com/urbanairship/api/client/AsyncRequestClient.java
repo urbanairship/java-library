@@ -192,7 +192,7 @@ public class AsyncRequestClient implements RequestClient {
         /**
          * Set the proxy server builder.
          *
-         * @param proxyServer
+         * @param proxyServer ProxyServer
          * @return Builder
          */
         public Builder setProxyServer(ProxyServer proxyServer) {
