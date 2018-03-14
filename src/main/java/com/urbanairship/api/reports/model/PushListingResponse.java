@@ -109,7 +109,7 @@ public class PushListingResponse {
          * Add all push info objects for push listing
          *
          * @param value Iterable of SinglePushInfoResponse objects
-         * @return
+         * @return Builder
          */
         public Builder addPushInfoObjects(Iterable<? extends PushInfoResponse> value) {
             this.pushInfoObjects.addAll(value);
