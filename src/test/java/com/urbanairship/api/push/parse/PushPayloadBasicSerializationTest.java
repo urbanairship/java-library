@@ -39,7 +39,7 @@ public class PushPayloadBasicSerializationTest {
         PushPayload pushPayload = PushPayload.newBuilder()
                 .setNotification(Notifications.alert("alert"))
                 .setAudience(Selectors.open("open_channel"))
-                .setDeviceTypes(DeviceTypeData.of(DeviceType.OPEN.setOpenChannelType("sms")))
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.open("sms")))
                 .build();
 
         String json = "{\n" +
@@ -57,7 +57,7 @@ public class PushPayloadBasicSerializationTest {
         PushPayload secondPush = PushPayload.newBuilder()
                 .setNotification(Notifications.alert("alert"))
                 .setAudience(Selectors.open("open_channel"))
-                .setDeviceTypes(DeviceTypeData.of(DeviceType.OPEN.setOpenChannelType("email")))
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.open("email")))
                 .build();
 
         String secondPayloadJson = "{\n" +
@@ -65,7 +65,7 @@ public class PushPayloadBasicSerializationTest {
                 "        \"open_channel\": \"open_channel\"\n" +
                 "    },\n" +
                 "    \"device_types\": [\n" +
-                "        \"open::sms\"\n" +
+                "        \"open::email\"\n" +
                 "    ],\n" +
                 "    \"notification\": {\n" +
                 "        \"alert\": \"alert\"\n" +
@@ -84,6 +84,7 @@ public class PushPayloadBasicSerializationTest {
         assertEquals(actual, expected);
         assertEquals(actualSecondPush, expectedSecondPush);
     }
+
 
     @Test
     public void testArrayOfPushes() throws Exception {
