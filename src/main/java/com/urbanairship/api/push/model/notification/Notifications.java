@@ -5,6 +5,7 @@
 package com.urbanairship.api.push.model.notification;
 
 import com.google.common.base.Optional;
+import com.urbanairship.api.channel.model.open.OpenChannelPayload;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
@@ -42,16 +43,20 @@ public class Notifications {
     /* Simple alert deviceType overrides */
 
     public static DevicePayloadOverride alert(DeviceType deviceType, String text) {
-        switch (deviceType) {
-        case IOS:
+        if (deviceType.getIdentifier().contains("open::")) {
+
+        }
+
+        switch (deviceType.getIdentifier()) {
+        case "ios":
             return iosAlert(text);
-        case ANDROID:
+        case "android":
             return androidAlert(text);
-        case WNS:
+        case "wns":
             return wnsAlert(text);
-        case AMAZON:
+        case "amazon":
             return admAlert(text);
-        case WEB:
+        case "web":
             return webAlert(text);
         default:
             throw unknownDeviceType(deviceType.getIdentifier());
@@ -86,6 +91,10 @@ public class Notifications {
         return WebDevicePayload.newBuilder()
                 .setAlert(text)
                 .build();
+    }
+
+    public static OpenChannelPayload openChannelAlert(String text) {
+        return null;
     }
 
     /* Platform selector (device_types) */
