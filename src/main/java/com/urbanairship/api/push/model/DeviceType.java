@@ -51,8 +51,18 @@ public final class DeviceType {
         return identifier;
     }
 
-    public static Optional<DeviceType> find(String id) {
-        return fromIdentifierFunction.apply(id);
+    public static Optional<DeviceType> find(String identifier) {
+        for (DeviceType deviceType : TYPES) {
+            if (deviceType.getIdentifier().equals(identifier)) {
+                return Optional.of(deviceType);
+            }
+        }
+
+        if (identifier.contains(OPEN_PLATFORM_NAMESPACE)) {
+            return Optional.of(new DeviceType(PlatformType.OPEN, identifier));
+        }
+
+        return Optional.absent();
     }
 
     @Override
@@ -60,20 +70,4 @@ public final class DeviceType {
         return identifier;
     }
 
-    public static final Function<String, Optional<DeviceType>> fromIdentifierFunction = new Function<String, Optional<DeviceType>>() {
-        @Override
-        public Optional<DeviceType> apply(String identifier) {
-            for (DeviceType deviceType : TYPES) {
-                if (deviceType.getIdentifier().equals(identifier)) {
-                    return Optional.of(deviceType);
-                }
-            }
-
-            if (identifier.contains(OPEN_PLATFORM_NAMESPACE)) {
-                return Optional.of(new DeviceType(PlatformType.OPEN, identifier));
-            }
-
-            return Optional.absent();
-        }
-    };
 }
