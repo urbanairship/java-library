@@ -167,7 +167,7 @@ public class StaticListView {
         /**
          * Set ok.
          *
-         * @param ok
+         * @param ok Boolean
          * @return Builder
          */
         public Builder setOk(Boolean ok) {
@@ -178,7 +178,7 @@ public class StaticListView {
         /**
          * Set the name.
          *
-         * @param name
+         * @param name String
          * @return Builder
          */
         public Builder setName(String name) {
@@ -189,7 +189,7 @@ public class StaticListView {
         /**
          * Set the description.
          *
-         * @param description
+         * @param description String
          * @return Builder
          */
         public Builder setDescription(String description) {
@@ -200,7 +200,7 @@ public class StaticListView {
         /**
          * Set the creation date
          *
-         * @param created
+         * @param created DateTime
          * @return Builder
          */
         public Builder setCreated(DateTime created) {
@@ -211,7 +211,7 @@ public class StaticListView {
         /**
          * Set the last updated date.
          *
-         * @param lastUpdated
+         * @param lastUpdated DateTime
          * @return Builder
          */
         public Builder setLastUpdated(DateTime lastUpdated) {
@@ -222,7 +222,7 @@ public class StaticListView {
         /**
          * Set the channel count.
          *
-         * @param channelCount
+         * @param channelCount int
          * @return Builder
          */
         public Builder setChannelCount(int channelCount) {
@@ -233,7 +233,7 @@ public class StaticListView {
         /**
          * Set the status.
          *
-         * @param status
+         * @param status String
          * @return Builder
          */
         public Builder setStatus(String status) {

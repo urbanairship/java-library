@@ -34,7 +34,7 @@ public class PushExpiry extends PushModelObject {
 
     /**
      * Get the expiry (TTL) as a long.  This is optional.
-     * @return Optional<<T>ExpirySeconds</T>>
+     * @return Optional&lt;ExpirySeconds&gt;
      */
     public Optional<Integer> getExpirySeconds() {
         return expirySeconds;
@@ -42,7 +42,7 @@ public class PushExpiry extends PushModelObject {
 
     /**
      * Get the expiry (TTL) as a timestamp.  This is optional.
-     * @return Optional<<T>ExpiryTimestamp</T>>
+     * @return Optional&lt;ExpiryTimestamp&gt;
      */
     public Optional<DateTime> getExpiryTimeStamp() {
         return expiryTimeStamp;
