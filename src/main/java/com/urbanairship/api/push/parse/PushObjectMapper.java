@@ -59,6 +59,7 @@ import com.urbanairship.api.push.model.notification.android.InboxStyle;
 import com.urbanairship.api.push.model.notification.android.PublicNotification;
 import com.urbanairship.api.push.model.notification.android.Wearable;
 import com.urbanairship.api.push.model.notification.ios.*;
+import com.urbanairship.api.push.model.notification.open.OpenPayload;
 import com.urbanairship.api.push.model.notification.richpush.RichPushIcon;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import com.urbanairship.api.push.model.notification.web.WebDevicePayload;
@@ -112,6 +113,7 @@ import com.urbanairship.api.push.parse.notification.android.PublicNotificationSe
 import com.urbanairship.api.push.parse.notification.android.WearableDeserializer;
 import com.urbanairship.api.push.parse.notification.android.WearableSerializer;
 import com.urbanairship.api.push.parse.notification.ios.*;
+import com.urbanairship.api.push.parse.notification.open.OpenPayloadSerializer;
 import com.urbanairship.api.push.parse.notification.richpush.RichPushIconDeserializer;
 import com.urbanairship.api.push.parse.notification.richpush.RichPushIconSerializer;
 import com.urbanairship.api.push.parse.notification.richpush.RichPushMessageDeserializer;
@@ -310,6 +312,7 @@ public class PushObjectMapper {
             /* Open Channel */
                 .addSerializer(Channel.class, new ChannelSerializer())
                 .addSerializer(OpenChannel.class, new OpenChannelSerializer())
+                .addSerializer(OpenPayload.class, new OpenPayloadSerializer())
 
             /* Segments */
                 .addDeserializer(SegmentDefinition.class, new SegmentDefinitionDeserializer());
