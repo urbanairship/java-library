@@ -51,8 +51,9 @@ public final class RequestError {
      * parses between three, and returns a best effort response.
      *
      * @param body Response body for the request that caused the exception
+     * @param contentType String
      * @return APIError
-     * @throws IOException
+     * @throws IOException if it fails reading the error
      */
     public static RequestError errorFromResponse(String body, String contentType) throws IOException {
 

@@ -63,7 +63,7 @@ public class StaticListUploadRequest implements Request<String> {
     /**
      * Set whether the request uses gzip encoding.
      *
-     * @param gzip
+     * @param gzip Boolean
      * @return StaticListUploadRequest
      */
     public StaticListUploadRequest setGzipEnabled(Boolean gzip) {

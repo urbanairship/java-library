@@ -34,7 +34,7 @@ public class SegmentLookupRequest implements Request<SegmentView> {
     /**
      * Create new request for segment lookup.
      *
-     * @param segmentId
+     * @param segmentId String
      * @return SegmentRequest
      */
     public static SegmentLookupRequest newRequest(String segmentId) {

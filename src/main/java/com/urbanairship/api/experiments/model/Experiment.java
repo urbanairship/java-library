@@ -97,7 +97,7 @@ public final class Experiment extends ExperimentModelObject {
     /**
      * Get the variants for the experiment. A variant defines a push that will be sent to a subset of the experiment's
      * audience.
-     * @return variants List<Variant>
+     * @return variants List&lt;Variant&gt;
      */
     public List<Variant> getVariants() {
         return variants;
@@ -206,7 +206,7 @@ public final class Experiment extends ExperimentModelObject {
         /**
          * Add a variant to the experiment. A variant defines a push that will be sent to a subset of the experiment's
          * audience.
-         * @param variant List<Variant>
+         * @param variant List&lt;Variant&gt;
          * @return Builder
          */
         public Builder addVariant(Variant variant) {
@@ -228,8 +228,8 @@ public final class Experiment extends ExperimentModelObject {
          * 3. At least one variant must be present.
          * </pre>
          *
-         * @throws IllegalArgumentException
-         * @throws NullPointerException
+         * @throws IllegalArgumentException if illegal arguments are used
+         * @throws NullPointerException if audience, deviceTypes, or variants is not set
          * @return Experiment
          */
         public Experiment build() {

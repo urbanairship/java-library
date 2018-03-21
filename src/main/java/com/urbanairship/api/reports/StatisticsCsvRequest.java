@@ -35,6 +35,7 @@ public class StatisticsCsvRequest implements Request<String> {
      *
      * @param start DateTime
      * @param end DateTime
+     * @return StatisticsCsvRequest
      */
     public static StatisticsCsvRequest newRequest(DateTime start, DateTime end) {
         return new StatisticsCsvRequest(start, end);
