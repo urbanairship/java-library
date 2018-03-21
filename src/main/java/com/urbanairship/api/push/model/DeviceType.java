@@ -24,14 +24,27 @@ public final class DeviceType {
             .add(WNS)
             .build();
 
-    public static DeviceType open(String type) {
-        return new DeviceType("open::" + type);
+    private enum PlatformType {
+        NATIVE,
+        OPEN
+    }
+
+    private static final String OPEN_PLATFORM_NAMESPACE = "open::";
+
+    public static DeviceType open(String platformName) {
+        return new DeviceType(PlatformType.OPEN, OPEN_PLATFORM_NAMESPACE + platformName);
     }
 
     private final String identifier;
+    private final PlatformType platformType;
 
-    private DeviceType(String identifier) {
+    private DeviceType(PlatformType platformType, String identifier) {
+        this.platformType = platformType;
         this.identifier = identifier;
+    }
+
+    public boolean isOpenPlatform() {
+        return platformType.equals(PlatformType.OPEN);
     }
 
     public String getIdentifier() {
@@ -56,8 +69,8 @@ public final class DeviceType {
                 }
             }
 
-            if (identifier.contains("open::")) {
-                return Optional.of(new DeviceType(identifier));
+            if (identifier.contains(OPEN_PLATFORM_NAMESPACE)) {
+                return Optional.of(new DeviceType(PlatformType.OPEN, identifier));
             }
 
             return Optional.absent();
