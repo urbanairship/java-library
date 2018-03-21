@@ -4,30 +4,30 @@ import com.google.common.base.Objects;
 
 public class OpenChannelResponse {
     private final boolean ok;
-    private final String channel_id;
+    private final String channelId;
 
     private OpenChannelResponse(Builder builder) {
         this.ok = builder.ok;
-        this.channel_id = builder.channel_id;
+        this.channelId = builder.channel_id;
     }
 
     public static Builder newBuilder() {
         return new Builder();
     }
 
-    public boolean isOk() {
+    public boolean getOk() {
         return ok;
     }
 
-    public String getChannel_id() {
-        return channel_id;
+    public String getChannelId() {
+        return channelId;
     }
 
     @Override
     public String toString() {
         return "OpenChannelResponse{" +
                 "ok=" + ok +
-                ", channel_id='" + channel_id + '\'' +
+                ", channelId='" + channelId + '\'' +
                 '}';
     }
 
@@ -37,12 +37,12 @@ public class OpenChannelResponse {
         if (o == null || getClass() != o.getClass()) return false;
         OpenChannelResponse that = (OpenChannelResponse) o;
         return ok == that.ok &&
-                Objects.equal(channel_id, that.channel_id);
+                Objects.equal(channelId, that.channelId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(ok, channel_id);
+        return Objects.hashCode(ok, channelId);
     }
 
     public static class Builder {
