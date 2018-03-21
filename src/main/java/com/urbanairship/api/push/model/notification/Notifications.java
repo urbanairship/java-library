@@ -8,9 +8,11 @@ import com.google.common.base.Optional;
 import com.urbanairship.api.channel.model.open.OpenChannelPayload;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
+import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
+import com.urbanairship.api.push.model.notification.open.OpenPayload;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import com.urbanairship.api.push.model.notification.web.WebDevicePayload;
 import com.urbanairship.api.push.model.notification.wns.WNSDevicePayload;
@@ -44,7 +46,7 @@ public class Notifications {
 
     public static DevicePayloadOverride alert(DeviceType deviceType, String text) {
         if (deviceType.getIdentifier().contains("open::")) {
-
+            return openPayloadAlert(text, deviceType);
         }
 
         switch (deviceType.getIdentifier()) {
@@ -93,8 +95,11 @@ public class Notifications {
                 .build();
     }
 
-    public static OpenChannelPayload openChannelAlert(String text) {
-        return null;
+    public static OpenPayload openPayloadAlert(String text, DeviceType deviceType) {
+        return OpenPayload.newBuilder()
+                .setAlert(text)
+                .setDeviceType(deviceType)
+                .build();
     }
 
     /* Platform selector (device_types) */
