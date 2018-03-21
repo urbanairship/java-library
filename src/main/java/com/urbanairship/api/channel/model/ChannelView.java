@@ -222,6 +222,32 @@ public final class ChannelView {
     }
 
     @Override
+    public String toString() {
+        return "ChannelView{" +
+                "channelId='" + channelId + '\'' +
+                ", channelType='" + channelType + '\'' +
+                ", installed=" + installed +
+                ", optIn=" + optIn +
+                ", background=" + background +
+                ", pushAddress=" + pushAddress +
+                ", created=" + created +
+                ", lastRegistration=" + lastRegistration +
+                ", alias=" + alias +
+                ", tags=" + tags +
+                ", tagGroups=" + tagGroups +
+                ", iosSettings=" + iosSettings +
+                ", web=" + web +
+                ", open=" + open +
+                ", address=" + address +
+                '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(channelId, channelType, installed, optIn, background, pushAddress, created, lastRegistration, alias, tags, tagGroups, iosSettings, web, open, address);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -241,32 +267,6 @@ public final class ChannelView {
                 Objects.equal(web, that.web) &&
                 Objects.equal(open, that.open) &&
                 Objects.equal(address, that.address);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(channelId, channelType, installed, optIn, background, pushAddress, created, lastRegistration, alias, tags, tagGroups, iosSettings, web, open, address);
-    }
-
-    @Override
-    public String toString() {
-        return "ChannelView{" +
-                "channelId='" + channelId + '\'' +
-                ", channelType='" + channelType + '\'' +
-                ", installed=" + installed +
-                ", optIn=" + optIn +
-                ", background=" + background +
-                ", pushAddress=" + pushAddress +
-                ", created=" + created +
-                ", lastRegistration=" + lastRegistration +
-                ", alias=" + alias +
-                ", tags=" + tags +
-                ", tagGroups=" + tagGroups +
-                ", iosSettings=" + iosSettings +
-                ", web=" + web +
-                ", open=" + open +
-                ", address=" + address +
-                '}';
     }
 
     public final static class Builder {
