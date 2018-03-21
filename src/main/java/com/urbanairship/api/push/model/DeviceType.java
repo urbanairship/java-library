@@ -4,9 +4,10 @@
 
 package com.urbanairship.api.push.model;
 
-import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
+
+import java.util.Objects;
 
 public final class DeviceType {
 
@@ -68,6 +69,19 @@ public final class DeviceType {
     @Override
     public String toString() {
         return identifier;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DeviceType that = (DeviceType) o;
+        return Objects.equals(identifier, that.identifier) && platformType == that.platformType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(identifier, platformType);
     }
 
 }
