@@ -180,7 +180,7 @@ public final class OpenPayload extends PushModelObject implements DevicePayloadO
         /**
          * Optional, a string value for providing a content summary.
          *
-         * @param summary
+         * @param summary Optional String
          * @return OpenPayload Builder
          */
         public Builder setSummary(String summary) {

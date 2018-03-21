@@ -67,7 +67,7 @@ public class OpenChannel {
 
     /**
      * New OpenChannel Builder.
-     * @return
+     * @return Builder
      */
     public static Builder newBuilder() {
         return new Builder();
@@ -145,8 +145,8 @@ public class OpenChannel {
          * but cannot be used for segmentations. Maximum of 100 pairs of string values.
          * This value should be exhaustive whenever this key is present—values will not be unioned
          * with existing identifiers, they will replace them, similar to "set_tags": true above.
-         * @param key
-         * @param value
+         * @param key String
+         * @param value String
          * @return OpenChannel Builder
          */
         public Builder addIdentifier(String key, String value) {
@@ -159,7 +159,7 @@ public class OpenChannel {
          * but cannot be used for segmentations. Maximum of 100 pairs of string values.
          * This value should be exhaustive whenever this key is present—values will not be unioned
          * with existing identifiers, they will replace them, similar to "set_tags": true above.
-         * @param entries
+         * @param entries Map of Strings
          * @return OpenChannel Builder
          */
         public Builder addAllIdentifierEntries(Map<String, String> entries) {

@@ -19,7 +19,7 @@ public class OpenChannelPayload extends PushModelObject {
 
     /**
      * Get the channel object that is the object used to create or update channels on an open platform.
-     * @return
+     * @return Channel
      */
     public Channel getChannel() {
         return channel;
