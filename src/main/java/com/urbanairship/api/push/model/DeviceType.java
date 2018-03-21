@@ -10,16 +10,16 @@ import com.google.common.collect.ImmutableSet;
 
 public final class DeviceType {
 
-    public static final DeviceType ANDROID = new DeviceType("android");
-    public static final DeviceType IOS = new DeviceType("ios");
-    public static final DeviceType AMAZON = new DeviceType("amazon");
-    public static final DeviceType WEB = new DeviceType("web");
-    public static final DeviceType WNS = new DeviceType("wns");
+    public static final DeviceType AMAZON = new DeviceType(PlatformType.NATIVE, "amazon");
+    public static final DeviceType ANDROID = new DeviceType(PlatformType.NATIVE, "android");
+    public static final DeviceType IOS = new DeviceType(PlatformType.NATIVE, "ios");
+    public static final DeviceType WEB = new DeviceType(PlatformType.NATIVE, "web");
+    public static final DeviceType WNS = new DeviceType(PlatformType.NATIVE, "wns");
 
     public static final ImmutableSet<DeviceType> TYPES = ImmutableSet.<DeviceType>builder()
+            .add(AMAZON)
             .add(ANDROID)
             .add(IOS)
-            .add(AMAZON)
             .add(WEB)
             .add(WNS)
             .build();
