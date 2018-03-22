@@ -45,7 +45,7 @@ public class Notifications {
     /* Simple alert deviceType overrides */
 
     public static DevicePayloadOverride alert(DeviceType deviceType, String text) {
-        if (deviceType.getIdentifier().contains("open::")) {
+        if (deviceType.isOpenPlatform()) {
             return openPayloadAlert(text, deviceType);
         }
 

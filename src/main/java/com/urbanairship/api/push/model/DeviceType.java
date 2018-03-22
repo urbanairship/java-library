@@ -4,42 +4,66 @@
 
 package com.urbanairship.api.push.model;
 
-import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 
+import java.util.Objects;
+
 public final class DeviceType {
 
-    public static final DeviceType ANDROID = new DeviceType("android");
-    public static final DeviceType IOS = new DeviceType("ios");
-    public static final DeviceType AMAZON = new DeviceType("amazon");
-    public static final DeviceType WEB = new DeviceType("web");
-    public static final DeviceType WNS = new DeviceType("wns");
+    public static final DeviceType AMAZON = new DeviceType(PlatformType.NATIVE, "amazon");
+    public static final DeviceType ANDROID = new DeviceType(PlatformType.NATIVE, "android");
+    public static final DeviceType IOS = new DeviceType(PlatformType.NATIVE, "ios");
+    public static final DeviceType WEB = new DeviceType(PlatformType.NATIVE, "web");
+    public static final DeviceType WNS = new DeviceType(PlatformType.NATIVE, "wns");
 
     public static final ImmutableSet<DeviceType> TYPES = ImmutableSet.<DeviceType>builder()
+            .add(AMAZON)
             .add(ANDROID)
             .add(IOS)
-            .add(AMAZON)
             .add(WEB)
             .add(WNS)
             .build();
 
-    public static DeviceType open(String type) {
-        return new DeviceType("open::" + type);
+    private enum PlatformType {
+        NATIVE,
+        OPEN
+    }
+
+    private static final String OPEN_PLATFORM_NAMESPACE = "open::";
+
+    public static DeviceType open(String platformName) {
+        return new DeviceType(PlatformType.OPEN, OPEN_PLATFORM_NAMESPACE + platformName);
     }
 
     private final String identifier;
+    private final PlatformType platformType;
 
-    private DeviceType(String identifier) {
+    private DeviceType(PlatformType platformType, String identifier) {
+        this.platformType = platformType;
         this.identifier = identifier;
+    }
+
+    public boolean isOpenPlatform() {
+        return platformType.equals(PlatformType.OPEN);
     }
 
     public String getIdentifier() {
         return identifier;
     }
 
-    public static Optional<DeviceType> find(String id) {
-        return fromIdentifierFunction.apply(id);
+    public static Optional<DeviceType> find(String identifier) {
+        for (DeviceType deviceType : TYPES) {
+            if (deviceType.getIdentifier().equals(identifier)) {
+                return Optional.of(deviceType);
+            }
+        }
+
+        if (identifier.contains(OPEN_PLATFORM_NAMESPACE)) {
+            return Optional.of(new DeviceType(PlatformType.OPEN, identifier));
+        }
+
+        return Optional.absent();
     }
 
     @Override
@@ -47,20 +71,17 @@ public final class DeviceType {
         return identifier;
     }
 
-    public static final Function<String, Optional<DeviceType>> fromIdentifierFunction = new Function<String, Optional<DeviceType>>() {
-        @Override
-        public Optional<DeviceType> apply(String identifier) {
-            for (DeviceType deviceType : TYPES) {
-                if (deviceType.getIdentifier().equals(identifier)) {
-                    return Optional.of(deviceType);
-                }
-            }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DeviceType that = (DeviceType) o;
+        return Objects.equals(identifier, that.identifier) && platformType == that.platformType;
+    }
 
-            if (identifier.contains("open::")) {
-                return Optional.of(new DeviceType(identifier));
-            }
+    @Override
+    public int hashCode() {
+        return Objects.hash(identifier, platformType);
+    }
 
-            return Optional.absent();
-        }
-    };
 }
