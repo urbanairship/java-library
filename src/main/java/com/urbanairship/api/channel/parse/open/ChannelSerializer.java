@@ -15,8 +15,11 @@ public class ChannelSerializer extends JsonSerializer<Channel> {
         jgen.writeStartObject();
 
         jgen.writeStringField(Constants.TYPE, payload.getType().getIdentifier());
-        jgen.writeStringField(Constants.ADDRESS, payload.getAddress());
         jgen.writeObjectField(Constants.OPEN_CHANNEL, payload.getOpen());
+
+        if (payload.getAddress().isPresent()) {
+            jgen.writeStringField(Constants.ADDRESS, payload.getAddress().get());
+        }
 
         if (payload.getOptIn().isPresent()) {
             jgen.writeBooleanField(Constants.OPT_IN, payload.getOptIn().get());
