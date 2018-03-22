@@ -17,7 +17,7 @@ public class Channel extends PushModelObject {
 
     private final ChannelType type;
     private final Optional<Boolean> optIn;
-    private final String address;
+    private final Optional<String> address;
     private final Optional<Boolean> setTags;
     private final Optional<ImmutableList<String>> tags;
     private final Optional<String> timezone;
@@ -28,7 +28,7 @@ public class Channel extends PushModelObject {
     private Channel(Builder builder) {
         this.type = builder.type;
         this.open = builder.open;
-        this.address = builder.address;
+        this.address = Optional.fromNullable(builder.address);
 
         this.optIn = Optional.fromNullable(builder.optIn);
         this.setTags = Optional.fromNullable(builder.setTags);
@@ -67,7 +67,7 @@ public class Channel extends PushModelObject {
      * missing, channel_id must be present.
      * @return Optional String address
      */
-    public String getAddress() {
+    public Optional<String> getAddress() {
         return address;
     }
 
@@ -115,7 +115,7 @@ public class Channel extends PushModelObject {
 
     /**
      * Get open channel specific properties.
-     * @return Optional OpenChannel open
+     * @return OpenChannel open
      */
     public OpenChannel getOpen() {
         return open;
@@ -142,12 +142,28 @@ public class Channel extends PushModelObject {
                 Objects.equal(tags, that.tags) &&
                 Objects.equal(timezone, that.timezone) &&
                 Objects.equal(localeCountry, that.localeCountry) &&
-                Objects.equal(localeLanguage, that.localeLanguage);
+                Objects.equal(localeLanguage, that.localeLanguage) &&
+                Objects.equal(open, that.open);
+    }
+
+    @Override
+    public String toString() {
+        return "Channel{" +
+                "type=" + type +
+                ", optIn=" + optIn +
+                ", address=" + address +
+                ", setTags=" + setTags +
+                ", tags=" + tags +
+                ", timezone=" + timezone +
+                ", localeCountry=" + localeCountry +
+                ", localeLanguage=" + localeLanguage +
+                ", open=" + open +
+                '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(type, optIn, address, setTags, tags, timezone, localeCountry, localeLanguage);
+        return Objects.hashCode(type, optIn, address, setTags, tags, timezone, localeCountry, localeLanguage, open);
     }
 
     /**
@@ -280,6 +296,8 @@ public class Channel extends PushModelObject {
 
         public Channel build() {
             Preconditions.checkNotNull(type, "The channel type must be set.");
+            Preconditions.checkNotNull(open);
+
             return new Channel(this);
         }
     }
