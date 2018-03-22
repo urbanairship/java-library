@@ -21,8 +21,8 @@ public class Channel extends PushModelObject {
     private final Optional<Boolean> setTags;
     private final Optional<ImmutableList<String>> tags;
     private final Optional<String> timezone;
-    private final Optional<String> locale_country;
-    private final Optional<String> locale_language;
+    private final Optional<String> localeCountry;
+    private final Optional<String> localeLanguage;
     private final OpenChannel open;
 
     private Channel(Builder builder) {
@@ -33,8 +33,8 @@ public class Channel extends PushModelObject {
         this.optIn = Optional.fromNullable(builder.optIn);
         this.setTags = Optional.fromNullable(builder.setTags);
         this.timezone = Optional.fromNullable(builder.timezone);
-        this.locale_country = Optional.fromNullable(builder.locale_country);
-        this.locale_language = Optional.fromNullable(builder.locale_language);
+        this.localeCountry = Optional.fromNullable(builder.locale_country);
+        this.localeLanguage = Optional.fromNullable(builder.locale_language);
 
         if (builder.tags.build().isEmpty()) {
             this.tags = Optional.absent();
@@ -99,18 +99,18 @@ public class Channel extends PushModelObject {
 
     /**
      * Get a String representation of the locale country.
-     * @return Optional String locale_country
+     * @return Optional String localeCountry
      */
     public Optional<String> getLocaleCountry() {
-        return locale_country;
+        return localeCountry;
     }
 
     /**
      * Get a String representation of the locale language.
-     * @return Optional String locale_language
+     * @return Optional String localeLanguage
      */
     public Optional<String> getLocaleLanguage() {
-        return locale_language;
+        return localeLanguage;
     }
 
     /**
@@ -141,13 +141,13 @@ public class Channel extends PushModelObject {
                 Objects.equal(setTags, that.setTags) &&
                 Objects.equal(tags, that.tags) &&
                 Objects.equal(timezone, that.timezone) &&
-                Objects.equal(locale_country, that.locale_country) &&
-                Objects.equal(locale_language, that.locale_language);
+                Objects.equal(localeCountry, that.localeCountry) &&
+                Objects.equal(localeLanguage, that.localeLanguage);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(type, optIn, address, setTags, tags, timezone, locale_country, locale_language);
+        return Objects.hashCode(type, optIn, address, setTags, tags, timezone, localeCountry, localeLanguage);
     }
 
     /**
@@ -246,7 +246,7 @@ public class Channel extends PushModelObject {
         }
 
         /**
-         * Set a the locale_country The two-letter country locale shortcode.
+         * Set a the localeCountry The two-letter country locale shortcode.
          * Will set the ua_locale_country tag group to the specified value.
          * @param locale_country String
          * @return Channel Builder
@@ -257,7 +257,7 @@ public class Channel extends PushModelObject {
         }
 
         /**
-         * Set a String locale_language, the two-letter language locale
+         * Set a String localeLanguage, the two-letter language locale
          * shortcode. Will set the ua_locale_language tag group to the
          * specified value
          * @param locale_language String
