@@ -295,8 +295,8 @@ public class Channel extends PushModelObject {
         }
 
         public Channel build() {
-            Preconditions.checkNotNull(type, "The channel type must be set.");
-            Preconditions.checkNotNull(open);
+            Preconditions.checkNotNull(type, "'type' cannot be null.");
+            Preconditions.checkNotNull(open, "'open' cannot be null.");
 
             return new Channel(this);
         }
