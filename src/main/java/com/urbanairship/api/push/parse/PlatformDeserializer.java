@@ -18,11 +18,10 @@ public class PlatformDeserializer extends JsonDeserializer<DeviceType> {
     @Override
     public DeviceType deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         String deviceTypeString = jp.getText();
-        Optional<DeviceType> platform = DeviceType.fromIdentifierFunction.apply(deviceTypeString);
+        Optional<DeviceType> platform = DeviceType.find(deviceTypeString);
         if (!platform.isPresent()) {
-            APIParsingException.raise(String.format("Unrecognized device type '%s'",deviceTypeString), jp);
+            APIParsingException.raise(String.format("Unrecognized device type '%s'", deviceTypeString), jp);
         }
-
         return platform.get();
     }
 }

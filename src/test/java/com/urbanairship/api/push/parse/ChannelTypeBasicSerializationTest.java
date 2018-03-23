@@ -16,7 +16,7 @@ public class ChannelTypeBasicSerializationTest {
 
     @Test
     public void testRoundTrip() throws Exception {
-        Set<DeviceType> deviceType = EnumSet.allOf(DeviceType.class);
+        Set<DeviceType> deviceType = DeviceType.TYPES;
 
         String json = mapper.writeValueAsString(deviceType);
         Set<DeviceType> parsed = mapper.readValue(json, new TypeReference<Set<DeviceType>>() {
