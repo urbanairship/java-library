@@ -1,8 +1,9 @@
 -------------------------
-3.0.0 16FEB18
+3.0.0 23MAR18
 -------------------------
 - Updated the underlying HTTP client to fix a bug when trying to use a proxy server over HTTPS.
 - Added support for implementing a custom HTTP client.
+- Added support for creating and pushing to open channels.
 
 -------------------------
 2.1.0 20DEC17
