@@ -13,6 +13,7 @@ public interface RequestClient extends Closeable {
      * @param request the Request.
      * @param callback the ResponseCallback.
      * @param headers a Map of the headers.
+     * @param <T> type
      * @return The Future Response.
      */
     public <T> Future<Response> executeAsync(final Request<T> request, final ResponseCallback callback, Map<String, String> headers);

@@ -21,6 +21,7 @@ public enum SelectorType {
     AMAZON_CHANNEL("amazon_channel", SelectorCategory.VALUE, true, true, DeviceType.AMAZON),
     IOS_CHANNEL("ios_channel", SelectorCategory.VALUE, true, true, DeviceType.IOS),
     ANDROID_CHANNEL("android_channel", SelectorCategory.VALUE, true, true, DeviceType.ANDROID),
+    OPEN_CHANNEL("open_channel", SelectorCategory.VALUE),
     CHANNEL("channel", SelectorCategory.VALUE),
 
     AND("and", SelectorCategory.COMPOUND),

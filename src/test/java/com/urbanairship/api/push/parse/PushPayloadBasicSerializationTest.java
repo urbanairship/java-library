@@ -2,6 +2,7 @@ package com.urbanairship.api.push.parse;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.DeviceType;
@@ -11,6 +12,7 @@ import com.urbanairship.api.push.model.Position;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
+import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
@@ -31,6 +33,58 @@ import static org.junit.Assert.assertTrue;
 public class PushPayloadBasicSerializationTest {
 
     private static final ObjectMapper mapper = PushObjectMapper.getInstance();
+
+    @Test
+    public void testOpenChannel() throws Exception {
+        PushPayload pushPayload = PushPayload.newBuilder()
+                .setNotification(Notifications.alert("alert"))
+                .setAudience(Selectors.open("open_channel"))
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.open("sms")))
+                .build();
+
+        String json = "{\n" +
+                "    \"audience\": {\n" +
+                "        \"open_channel\": \"open_channel\"\n" +
+                "    },\n" +
+                "    \"device_types\": [\n" +
+                "        \"open::sms\"\n" +
+                "    ],\n" +
+                "    \"notification\": {\n" +
+                "        \"alert\": \"alert\"\n" +
+                "    }\n" +
+                "}";
+
+        PushPayload secondPush = PushPayload.newBuilder()
+                .setNotification(Notifications.alert("alert"))
+                .setAudience(Selectors.open("open_channel"))
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.open("email")))
+                .build();
+
+        String secondPayloadJson = "{\n" +
+                "    \"audience\": {\n" +
+                "        \"open_channel\": \"open_channel\"\n" +
+                "    },\n" +
+                "    \"device_types\": [\n" +
+                "        \"open::email\"\n" +
+                "    ],\n" +
+                "    \"notification\": {\n" +
+                "        \"alert\": \"alert\"\n" +
+                "    }\n" +
+                "}";
+
+        String parsedJson = mapper.writeValueAsString(pushPayload);
+        String secondParsedJson = mapper.writeValueAsString(secondPush);
+
+        JsonNode actual = mapper.readTree(parsedJson);
+        JsonNode expected = mapper.readTree(json);
+
+        JsonNode actualSecondPush = mapper.readTree(secondParsedJson);
+        JsonNode expectedSecondPush = mapper.readTree(secondPayloadJson);
+
+        assertEquals(actual, expected);
+        assertEquals(actualSecondPush, expectedSecondPush);
+    }
+
 
     @Test
     public void testArrayOfPushes() throws Exception {

@@ -63,7 +63,7 @@ public class StaticListRequest implements Request<String> {
     /**
      * Set the description of the static list.
      *
-     * @param description
+     * @param description String
      * @return StaticListRequest
      */
     public StaticListRequest setDescription(String description) {
@@ -74,8 +74,8 @@ public class StaticListRequest implements Request<String> {
     /**
      * Add a key-value pair to the extra mapping.
      *
-     * @param key
-     * @param val
+     * @param key String
+     * @param val String
      * @return StaticListRequest
      */
     public StaticListRequest addExtra(String key, String val) {
@@ -86,7 +86,7 @@ public class StaticListRequest implements Request<String> {
     /**
      * Add all key-value pairs to the map of extras.
      *
-     * @param entries
+     * @param entries Map of Strings
      * @return StaticListCreationRequest
      */
     public StaticListRequest addAllExtras(Map<String, String> entries) {

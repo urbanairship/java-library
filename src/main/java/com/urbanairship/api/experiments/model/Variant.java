@@ -184,7 +184,7 @@ public class Variant {
          * 1. Partial push notification object must be specified.
          * </pre>
          *
-         * @throws NullPointerException
+         * @throws NullPointerException if variantPushPayload is not set
          * @return Variant
          */
         public Variant build() {

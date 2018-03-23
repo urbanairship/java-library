@@ -12,9 +12,11 @@ import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.urbanairship.api.channel.model.ChannelView;
 import com.urbanairship.api.channel.model.ios.IosSettings;
 import com.urbanairship.api.channel.model.ios.QuietTime;
+import com.urbanairship.api.channel.model.open.OpenChannel;
 import com.urbanairship.api.channel.parse.ChannelViewDeserializer;
 import com.urbanairship.api.channel.parse.ios.IosSettingsDeserializer;
 import com.urbanairship.api.channel.parse.ios.QuietTimeDeserializer;
+import com.urbanairship.api.channel.parse.open.OpenChannelDeserializer;
 import com.urbanairship.api.nameduser.model.NamedUserListingResponse;
 import com.urbanairship.api.nameduser.model.NamedUserView;
 import com.urbanairship.api.push.parse.PushObjectMapper;
@@ -29,6 +31,7 @@ public class NamedUserObjectMapper {
         MODULE.addDeserializer(ChannelView.class, new ChannelViewDeserializer());
         MODULE.addDeserializer(NamedUserView.class, new NamedUserViewDeserializer());
         MODULE.addDeserializer(NamedUserListingResponse.class, new NamedUserlListingResponseDeserializer());
+        MODULE.addDeserializer(OpenChannel.class, new OpenChannelDeserializer());
 
         MAPPER.registerModule(MODULE);
         MAPPER.registerModule(PushObjectMapper.getModule());
