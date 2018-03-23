@@ -22,6 +22,7 @@ public final class PushPayload extends PushModelObject {
     private final DeviceTypeData deviceTypes;
     private final Optional<PushOptions> pushOptions;
     private final Optional<InApp> inApp;
+    private final Optional<Campaigns> campaigns;
 
     /**
      * PushPayload builder
@@ -31,13 +32,20 @@ public final class PushPayload extends PushModelObject {
         return new Builder();
     }
 
-    private PushPayload(Builder builder) {
-        this.audience = builder.audience;
-        this.notification = Optional.fromNullable(builder.notification);
-        this.message = Optional.fromNullable(builder.message);
-        this.deviceTypes = builder.deviceTypes;
-        this.pushOptions = Optional.fromNullable(builder.pushOptions);
-        this.inApp = Optional.fromNullable(builder.inApp);
+    private PushPayload(Selector audience,
+                        Optional<Notification> notification,
+                        Optional<RichPushMessage> message,
+                        DeviceTypeData deviceTypes,
+                        Optional<PushOptions> pushOptions,
+                        Optional<InApp> inApp,
+                        Optional<Campaigns> campaigns) {
+        this.audience = audience;
+        this.notification = notification;
+        this.message = message;
+        this.deviceTypes = deviceTypes;
+        this.pushOptions = pushOptions;
+        this.inApp = inApp;
+        this.campaigns = campaigns;
     }
 
     /**
@@ -50,7 +58,7 @@ public final class PushPayload extends PushModelObject {
 
     /**
      * Get the Notification. This is optional.
-     * @return Optional<<T>Notification</T>>
+     * @return Optional Notification
      */
     public Optional<Notification> getNotification() {
         return notification;
@@ -58,7 +66,7 @@ public final class PushPayload extends PushModelObject {
 
     /**
      * Get the rich push message. This is optional
-     * @return Optional<<T>RichPushMessage</T>>
+     * @return Optional RichPushMessage
      */
     public Optional<RichPushMessage> getMessage() {
         return message;
@@ -93,6 +101,15 @@ public final class PushPayload extends PushModelObject {
         return pushOptions;
     }
 
+    /**
+     * Get the optional Campaign.
+     *
+     * @return An optional Campaign object.
+     */
+    public Optional<Campaigns> getCampaigns() {
+        return campaigns;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -122,6 +139,9 @@ public final class PushPayload extends PushModelObject {
         if (inApp != null ? !inApp.equals(that.inApp) : that.inApp != null) {
             return false;
         }
+        if (campaigns != null ? !campaigns.equals(that.campaigns) : that.campaigns != null) {
+            return false;
+        }
 
         return true;
     }
@@ -134,6 +154,7 @@ public final class PushPayload extends PushModelObject {
         result = 31 * result + (deviceTypes != null ? deviceTypes.hashCode() : 0);
         result = 31 * result + (pushOptions != null ? pushOptions.hashCode() : 0);
         result = 31 * result + (inApp != null ? inApp.hashCode() : 0);
+        result = 31 * result + (campaigns != null ? campaigns.hashCode() : 0);
         return result;
     }
 
@@ -146,6 +167,7 @@ public final class PushPayload extends PushModelObject {
                 ", deviceTypes=" + deviceTypes +
                 ", pushOptions=" + pushOptions +
                 ", inApp=" + inApp +
+                ", campaigns=" + campaigns +
                 '}';
     }
 
@@ -156,6 +178,7 @@ public final class PushPayload extends PushModelObject {
         private RichPushMessage message = null;
         private PushOptions pushOptions = null;
         private InApp inApp = null;
+        private Campaigns campaigns = null;
 
         private Builder() { }
 
@@ -220,6 +243,16 @@ public final class PushPayload extends PushModelObject {
         }
 
         /**
+         * Set the campaign.
+         * @param campaigns A campaign object.
+         * @return Builder
+         */
+        public Builder setCampaigns(Campaigns campaigns) {
+            this.campaigns = campaigns;
+            return this;
+        }
+
+        /**
          * Build a PushPayload object. Will fail if any of the following
          * preconditions are not met.
          * <pre>
@@ -228,8 +261,8 @@ public final class PushPayload extends PushModelObject {
          * 3. DeviceTypes (device types) must be set.
          * </pre>
          *
-         * @throws IllegalArgumentException
-         * @throws NullPointerException
+         * @throws IllegalArgumentException if an illegal argument is used
+         * @throws NullPointerException if required variables are not initialized
          * @return PushPayload
          */
         public PushPayload build() {
@@ -238,7 +271,15 @@ public final class PushPayload extends PushModelObject {
             Preconditions.checkNotNull(audience, "'audience' must be set");
             Preconditions.checkNotNull(deviceTypes, "'device_types' must be set");
 
-            return new PushPayload(this);
+            return new PushPayload(
+                    audience,
+                    Optional.fromNullable(notification),
+                    Optional.fromNullable(message),
+                    deviceTypes,
+                    Optional.fromNullable(pushOptions),
+                    Optional.fromNullable(inApp),
+                    Optional.fromNullable(campaigns)
+            );
         }
     }
 }

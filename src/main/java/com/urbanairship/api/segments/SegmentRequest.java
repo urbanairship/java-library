@@ -45,7 +45,7 @@ public class SegmentRequest implements Request<String> {
     /**
      * Create a new segment update request.
      *
-     * @param segmentId
+     * @param segmentId String
      * @return SegmentRequest
      */
     public static SegmentRequest newUpdateRequest(String segmentId) {
@@ -56,7 +56,7 @@ public class SegmentRequest implements Request<String> {
     /**
      * Set the criteria for the segment request.
      *
-     * @param criteria
+     * @param criteria Selector
      * @return SegmentRequest
      */
     public SegmentRequest setCriteria(Selector criteria) {
@@ -67,7 +67,7 @@ public class SegmentRequest implements Request<String> {
     /**
      * Set the display name of the segment request.
      *
-     * @param displayName
+     * @param displayName String
      * @return SegmentRequest
      */
     public SegmentRequest setDisplayName(String displayName) {
@@ -75,6 +75,10 @@ public class SegmentRequest implements Request<String> {
         return this;
     }
 
+    /**
+     * Get the content type.
+     * @return ContentType
+     */
     @Override
     public ContentType getContentType() {
         return ContentType.APPLICATION_JSON;

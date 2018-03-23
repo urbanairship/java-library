@@ -38,6 +38,7 @@ public class StatisticsRequest implements Request<List<StatisticsResponse>> {
      *
      * @param start DateTime
      * @param end DateTime
+     * @return StatisticsRequest
      */
     public static StatisticsRequest newRequest(DateTime start, DateTime end) {
         return new StatisticsRequest(start, end);

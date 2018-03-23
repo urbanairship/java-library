@@ -78,7 +78,7 @@ public class SegmentListingResponse {
         /**
          * Set the next page.
          *
-         * @param nextPage
+         * @param nextPage String
          * @return Builder
          */
         public Builder setNextPage(String nextPage) {
