@@ -106,6 +106,12 @@ public final class ChannelViewDeserializer extends JsonDeserializer<ChannelView>
                             reader.readOpenChannel(jsonParser);
                         }
                     })
+                    .put(Constants.ADDRESS, new FieldParser<ChannelViewReader>() {
+                        @Override
+                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readAddress(jsonParser);
+                        }
+                    })
                     .build()
     );
 

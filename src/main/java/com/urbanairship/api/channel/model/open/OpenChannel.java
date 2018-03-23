@@ -159,7 +159,7 @@ public class OpenChannel {
          * but cannot be used for segmentations. Maximum of 100 pairs of string values.
          * This value should be exhaustive whenever this key is present—values will not be unioned
          * with existing identifiers, they will replace them, similar to "set_tags": true above.
-         * @param entries Map&lt;String, String&gt;
+         * @param entries Map of Strings
          * @return OpenChannel Builder
          */
         public Builder addAllIdentifierEntries(Map<String, String> entries) {
