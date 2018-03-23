@@ -58,7 +58,7 @@ public final class PushPayload extends PushModelObject {
 
     /**
      * Get the Notification. This is optional.
-     * @return Optional<<T>Notification</T>>
+     * @return Optional Notification
      */
     public Optional<Notification> getNotification() {
         return notification;
@@ -66,7 +66,7 @@ public final class PushPayload extends PushModelObject {
 
     /**
      * Get the rich push message. This is optional
-     * @return Optional<<T>RichPushMessage</T>>
+     * @return Optional RichPushMessage
      */
     public Optional<RichPushMessage> getMessage() {
         return message;
@@ -261,8 +261,8 @@ public final class PushPayload extends PushModelObject {
          * 3. DeviceTypes (device types) must be set.
          * </pre>
          *
-         * @throws IllegalArgumentException
-         * @throws NullPointerException
+         * @throws IllegalArgumentException if an illegal argument is used
+         * @throws NullPointerException if required variables are not initialized
          * @return PushPayload
          */
         public PushPayload build() {

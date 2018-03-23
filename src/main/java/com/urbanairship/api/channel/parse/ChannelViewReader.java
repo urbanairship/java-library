@@ -96,6 +96,10 @@ public final class ChannelViewReader implements JsonObjectReader<ChannelView> {
         builder.setOpenChannel(jsonParser.readValueAs(OpenChannel.class));
     }
 
+    public void readAddress(JsonParser jsonParser) throws IOException {
+        builder.setAddress(StringFieldDeserializer.INSTANCE.deserialize(jsonParser, Constants.ADDRESS));
+    }
+
     @Override
     public ChannelView validateAndBuild() throws IOException {
         try {

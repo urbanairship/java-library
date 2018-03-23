@@ -30,7 +30,7 @@ public class PushOptions extends PushModelObject {
 
     /**
      * Get the expiry (TTL).  This is optional.
-     * @return Optional<<T>Expiry</T>>
+     * @return Optional&lt;Expiry&gt;
      **/
     public Optional<PushExpiry> getExpiry() {
         return expiry;

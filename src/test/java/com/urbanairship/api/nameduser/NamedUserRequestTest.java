@@ -91,5 +91,4 @@ public class NamedUserRequestTest {
         assertEquals(response, associationRequest.getResponseParser().parse(response));
         assertEquals(response, disassociationRequest.getResponseParser().parse(response));
     }
-
 }

@@ -9,8 +9,11 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.google.common.collect.ImmutableMap;
+import com.urbanairship.api.channel.model.open.OpenChannel;
+import com.urbanairship.api.channel.model.open.Channel;
+import com.urbanairship.api.channel.parse.open.ChannelSerializer;
+import com.urbanairship.api.channel.parse.open.OpenChannelSerializer;
 import com.urbanairship.api.common.parse.CommonObjectMapper;
 import com.urbanairship.api.customevents.model.CustomEventPayload;
 import com.urbanairship.api.customevents.model.CustomEventBody;
@@ -57,6 +60,7 @@ import com.urbanairship.api.push.model.notification.android.InboxStyle;
 import com.urbanairship.api.push.model.notification.android.PublicNotification;
 import com.urbanairship.api.push.model.notification.android.Wearable;
 import com.urbanairship.api.push.model.notification.ios.*;
+import com.urbanairship.api.push.model.notification.open.OpenPayload;
 import com.urbanairship.api.push.model.notification.richpush.RichPushIcon;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import com.urbanairship.api.push.model.notification.web.WebDevicePayload;
@@ -110,6 +114,7 @@ import com.urbanairship.api.push.parse.notification.android.PublicNotificationSe
 import com.urbanairship.api.push.parse.notification.android.WearableDeserializer;
 import com.urbanairship.api.push.parse.notification.android.WearableSerializer;
 import com.urbanairship.api.push.parse.notification.ios.*;
+import com.urbanairship.api.push.parse.notification.open.OpenPayloadSerializer;
 import com.urbanairship.api.push.parse.notification.richpush.RichPushIconDeserializer;
 import com.urbanairship.api.push.parse.notification.richpush.RichPushIconSerializer;
 import com.urbanairship.api.push.parse.notification.richpush.RichPushMessageDeserializer;
@@ -305,6 +310,11 @@ public class PushObjectMapper {
                 .addSerializer(CustomEventBody.class, new CustomEventBodySerializer())
 
                 .addDeserializer(CustomEventResponse.class, new CustomEventResponseDeserializer())
+
+            /* Open Channel */
+                .addSerializer(Channel.class, new ChannelSerializer())
+                .addSerializer(OpenChannel.class, new OpenChannelSerializer())
+                .addSerializer(OpenPayload.class, new OpenPayloadSerializer())
 
             /* Segments */
                 .addDeserializer(SegmentDefinition.class, new SegmentDefinitionDeserializer());

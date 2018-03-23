@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.urbanairship.api.channel.model.ChannelResponse;
 import com.urbanairship.api.channel.model.ChannelView;
+import com.urbanairship.api.channel.model.OpenChannelResponse;
 import com.urbanairship.api.channel.model.ios.IosSettings;
 import com.urbanairship.api.channel.model.ios.QuietTime;
 import com.urbanairship.api.channel.model.open.OpenChannel;
@@ -36,7 +37,7 @@ public class ChannelObjectMapper {
         MODULE.addDeserializer(Subscription.class, new SubscriptionDeserializer());
         MODULE.addDeserializer(WebSettings.class, new WebSettingsDeserializer());
         MODULE.addDeserializer(OpenChannel.class, new OpenChannelDeserializer());
-
+        MODULE.addDeserializer(OpenChannelResponse.class, new OpenChannelResponseDeserializer());
 
         MAPPER.registerModule(MODULE);
         MAPPER.registerModule(new JodaModule());
