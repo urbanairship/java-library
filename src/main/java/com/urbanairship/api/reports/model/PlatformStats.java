@@ -119,7 +119,7 @@ public final class PlatformStats {
          * Set the date.
          *
          * @param value DateTime
-         * @return
+         * @return Builder
          */
         public Builder setDate(DateTime value) {
             this.date = value;

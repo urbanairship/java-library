@@ -23,6 +23,7 @@ import com.urbanairship.api.customevents.parse.CustomEventBodySerializer;
 import com.urbanairship.api.customevents.parse.CustomEventResponseDeserializer;
 import com.urbanairship.api.customevents.parse.CustomEventSerializer;
 import com.urbanairship.api.customevents.parse.CustomEventUserSerializer;
+import com.urbanairship.api.push.model.Campaigns;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.Display;
@@ -193,6 +194,7 @@ public class PushObjectMapper {
                 .addDeserializer(Display.class, new DisplayDeserializer())
                 .addSerializer(DeviceType.class, new DeviceTypeSerializer())
                 .addDeserializer(DeviceType.class, new PlatformDeserializer())
+                .addSerializer(Campaigns.class, new CampaignsSerializer())
                 .addSerializer(Selector.class, new SelectorSerializer())
                 .addDeserializer(Selector.class, new SelectorDeserializer())
                 .addSerializer(LocationSelector.class, new LocationSelectorSerializer())

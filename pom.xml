@@ -95,8 +95,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.3</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
 
@@ -171,6 +171,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
             <version>${jackson.version}</version>
@@ -195,6 +201,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.joda</groupId>
+            <artifactId>joda-convert</artifactId>
+            <version>1.8.1</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>fluent-hc</artifactId>
             <version>4.5.2</version>
@@ -207,9 +219,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.ning</groupId>
+            <groupId>org.asynchttpclient</groupId>
             <artifactId>async-http-client</artifactId>
-            <version>1.9.31</version>
+            <version>2.0.38</version>
         </dependency>
 
         <dependency>

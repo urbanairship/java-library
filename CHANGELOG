@@ -1,4 +1,15 @@
 -------------------------
+3.0.0 16FEB18
+-------------------------
+- Updated the underlying HTTP client to fix a bug when trying to use a proxy server over HTTPS.
+- Added support for implementing a custom HTTP client.
+
+-------------------------
+2.1.0 20DEC17
+-------------------------
+- Added support for Campaigns.
+
+-------------------------
 2.0.0 29AUG17
 -------------------------
 - Added support for server-side custom events.
