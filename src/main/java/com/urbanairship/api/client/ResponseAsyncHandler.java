@@ -5,10 +5,10 @@
 package com.urbanairship.api.client;
 
 import com.google.common.base.Optional;
+import io.netty.handler.codec.http.HttpHeaders;
 import org.apache.commons.lang.StringUtils;
 import org.asynchttpclient.AsyncHandler;
 import org.asynchttpclient.HttpResponseBodyPart;
-import org.asynchttpclient.HttpResponseHeaders;
 import org.asynchttpclient.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,16 +71,15 @@ class ResponseAsyncHandler<T> implements AsyncHandler<Response> {
     }
 
     @Override
-    public State onHeadersReceived(HttpResponseHeaders headers) throws Exception {
+    public State onHeadersReceived(HttpHeaders httpHeaders) throws Exception {
         if (isSuccessful) {
-            responseBuilder.setHeaders(getHeaders(headers));
+            responseBuilder.setHeaders(getHeaders(httpHeaders));
         } else {
-            exceptionContentType = headers.getHeaders().get(CONTENT_TYPE_KEY);
+            exceptionContentType = httpHeaders.get(CONTENT_TYPE_KEY);
         }
 
         return State.CONTINUE;
     }
-
 
     @Override
     public State onBodyPartReceived(HttpResponseBodyPart bodyPart) throws Exception {
@@ -130,9 +129,9 @@ class ResponseAsyncHandler<T> implements AsyncHandler<Response> {
      * @param httpResponse The HttpResponse.
      * @return An immutable map of response headers.
      */
-    private Map<String, String> getHeaders(HttpResponseHeaders httpResponse) {
+    private Map<String, String> getHeaders(HttpHeaders httpResponse) {
         Map<String, String> headers = new HashMap<>();
-        for (Map.Entry<String, String> entry : httpResponse.getHeaders().entries()) {
+        for (Map.Entry<String, String> entry : httpResponse.entries()) {
             headers.put(entry.getKey(), entry.getValue());
         }
         return headers;
