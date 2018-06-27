@@ -1,4 +1,9 @@
 -------------------------
+3.0.1 28JUN18
+-------------------------
+- Updated to async-http-client 2.4.8.
+
+-------------------------
 3.0.0 23MAR18
 -------------------------
 - Updated the underlying HTTP client to fix a bug when trying to use a proxy server over HTTPS.
