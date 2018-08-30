@@ -1,4 +1,4 @@
-package com.urbanairship.api.schedule;
+package com.urbanairship.api.schedule.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.schedule.model.ScheduleResponse;
