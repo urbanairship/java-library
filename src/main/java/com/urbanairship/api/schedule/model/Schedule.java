@@ -8,16 +8,21 @@ import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import org.joda.time.DateTime;
 
+import java.util.Optional;
+
 public final class Schedule extends ScheduleModelObject {
 
     private final DateTime scheduledTimestamp;
     private final Boolean localTimePresent;
+    private final Optional<BestTime> bestTime;
 
     // TODO local, global, etc
 
-    private Schedule(DateTime scheduledTimestamp, boolean localTimePresent) {
-        this.scheduledTimestamp = scheduledTimestamp;
-        this.localTimePresent = localTimePresent;
+    private Schedule(Builder builder) {
+        this.scheduledTimestamp = builder.scheduledTimestamp;
+        this.localTimePresent = builder.localTimePresent;
+        this.bestTime = Optional.ofNullable(builder.bestTime);
+
     }
 
     /**
@@ -36,12 +41,18 @@ public final class Schedule extends ScheduleModelObject {
         return localTimePresent;
     }
 
+    public Optional<BestTime> getBestTime() {
+        return bestTime;
+    }
+
+
 
     @Override
     public String toString() {
         return "Schedule{" +
                 "scheduledTimestamp=" + scheduledTimestamp +
                 ", localTimePresent=" + localTimePresent +
+                ", scheduledBestTime=" + bestTime +
                 '}';
     }
 
@@ -77,6 +88,7 @@ public final class Schedule extends ScheduleModelObject {
     public static class Builder {
         private DateTime scheduledTimestamp = null;
         private Boolean localTimePresent = false;
+        private BestTime bestTime = null;
 
         private Builder() { }
 
@@ -96,7 +108,6 @@ public final class Schedule extends ScheduleModelObject {
          * Set the DateTime for local scheduled delivery. This will be converted to
          * UTC by the server.
          * @param scheduledTimestamp DateTime.
-
          * @return Builder
          */
         public Builder setLocalScheduledTimestamp(DateTime scheduledTimestamp) {
@@ -106,14 +117,29 @@ public final class Schedule extends ScheduleModelObject {
         }
 
         /**
+         * Set the best time ( aka Optimal Time) which is one of our predictive features. This sends push on a specified
+         * date for the optimal time for the user to receive.
+         * @param bestTime BestTime
+         * @return Builder
+         */
+        public Builder setBestTime(BestTime bestTime) {
+            this.bestTime = bestTime;
+            return this;
+        }
+
+        /**
          * Build the Schedule object.
          * @return Schedule
          */
         public Schedule build() {
-            Preconditions.checkArgument((scheduledTimestamp != null),"" +
-                    "Either scheduled_time or local_scheduled_time must be set.");
+            Preconditions.checkArgument((scheduledTimestamp != null || bestTime != null ),
+                    "Either scheduled_time, local_scheduled_time, or best time must be set.");
 
-            return new Schedule(scheduledTimestamp, localTimePresent);
+            Preconditions.checkArgument(((scheduledTimestamp != null) ^ (bestTime != null)),
+                    "If bestTime is selected, scheduleTimestamp must be null and vice versa.");
+
+
+            return new Schedule(this);
         }
     }
 }
