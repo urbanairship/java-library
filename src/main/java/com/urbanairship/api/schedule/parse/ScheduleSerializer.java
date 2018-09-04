@@ -22,16 +22,12 @@ public class ScheduleSerializer extends JsonSerializer<Schedule> {
 
         if (value.getBestTime().isPresent()) {
             jgen.writeObjectField("best_time", value.getBestTime().get());
-        } else {
-
-            if (!value.getLocalTimePresent()) {
+        } else if (!value.getLocalTimePresent()){
                 jgen.writeStringField("scheduled_time", DateFormats.DATE_FORMATTER.print(value.getScheduledTimestamp()));
             }
-            if (value.getLocalTimePresent()) {
+            else {
                 jgen.writeStringField("local_scheduled_time", DateFormats.DATE_FORMATTER.print(value.getScheduledTimestamp()));
             }
-        }
-
         jgen.writeEndObject();
     }
 }
