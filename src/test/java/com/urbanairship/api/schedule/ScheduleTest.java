@@ -1,43 +1,42 @@
-package com.urbanairship.api.schedule.model;
+package com.urbanairship.api.schedule;
 
 import com.urbanairship.api.schedule.model.BestTime;
 import com.urbanairship.api.schedule.model.Schedule;
 import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-
-import java.util.Date;
+import org.junit.rules.ExpectedException;
 
 public class ScheduleTest {
 
     private DateTime dateTime;
 
     @Before
-
     public void setUp() {
         dateTime = DateTime.now();
-
-
     }
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     /**
      * Neither setScheduledTimestamp nor setBestTime called
      */
-    @Test(expected = IllegalArgumentException.class)
-
-    public void testScheduledTimeAndBestTimeBothAbsent() {
+    @Test
+    public void testScheduledTimeAndBestTimeBothAbsent() throws Exception {
+        thrown.expect(IllegalArgumentException.class);
         Schedule schedule = Schedule.newBuilder()
                 .build();
-        
     }
 
     /**
      * Both setScheduledTimestamp and setBestTime called
      */
-    @Test(expected = IllegalArgumentException.class)
-
-    public void testScheduledTimeAndBestTimeBothPresent() {
+    @Test
+    public void testScheduledTimeAndBestTimeBothPresent() throws Exception {
+        thrown.expect(IllegalArgumentException.class);
 
         Schedule schedule = Schedule.newBuilder()
                 .setScheduledTimestamp(dateTime)
@@ -73,13 +72,5 @@ public class ScheduleTest {
                 .build();
 
         Assert.assertNotNull(schedule.getBestTime());
-
     }
-
-
-
-
-
-
-
 }

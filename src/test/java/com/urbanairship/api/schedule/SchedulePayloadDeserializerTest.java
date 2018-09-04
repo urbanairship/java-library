@@ -1,32 +1,29 @@
-package com.urbanairship.api.schedule.parse;
+package com.urbanairship.api.schedule;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Optional;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.DateFormats;
-import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushPayload;
-import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.schedule.model.BestTime;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
-import com.urbanairship.api.schedule.parse.ScheduleObjectMapper;
 import org.apache.commons.lang.RandomStringUtils;
 import org.joda.time.DateTime;
-import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
-
+import org.junit.rules.ExpectedException;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 public class SchedulePayloadDeserializerTest {
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     private static final ObjectMapper MAPPER = PushObjectMapper.getInstance();
 
@@ -51,37 +48,32 @@ public class SchedulePayloadDeserializerTest {
 
         SchedulePayload payload = MAPPER.readValue(json, SchedulePayload.class);
 
-        assertNotNull(payload);
-        assertEquals(payload.getName(), Optional.of(name));
-        assertEquals(payload.getSchedule().getScheduledTimestamp(), DateFormats.DATE_PARSER.parseDateTime("2013-05-05 00:00:01"));
+        org.junit.Assert.assertNotNull(payload);
+        junit.framework.Assert.assertEquals(payload.getName(), Optional.of(name));
+        junit.framework.Assert.assertEquals(payload.getSchedule().getScheduledTimestamp(), DateFormats.DATE_PARSER.parseDateTime("2013-05-05 00:00:01"));
 
         List<SchedulePayload> payloadList = MAPPER.readValue(json, new TypeReference<List<SchedulePayload>>() {
         });
 
-        assertNotNull(payloadList);
-        assertEquals(payloadList.size(), 1);
-
+        org.junit.Assert.assertNotNull(payloadList);
+        junit.framework.Assert.assertEquals(payloadList.size(), 1);
     }
 
     @Test
     public void testBestTimeDeserialization() throws Exception {
 
-        BestTime bestTime = BestTime.newBuilder()
-                .setSendDate(DateTime.now())
-                .build();
-
-        Schedule schedule = Schedule.newBuilder()
-                .setBestTime(bestTime)
-                .build();
-
         SchedulePayload payload = SchedulePayload.newBuilder()
-                .setSchedule(schedule)
+                .setSchedule(Schedule.newBuilder()
+                        .setBestTime(BestTime.newBuilder()
+                                .setSendDate(DateTime.now())
+                                .build())
+                        .build())
                 .setName("BestTimePushPayload")
                 .setPushPayload(PushPayload.newBuilder()
                         .setAudience(Selectors.all())
                         .setDeviceTypes(DeviceTypeData.all())
                         .setNotification(Notification.newBuilder()
-                                .setAlert("Hello Nerds")
+                                .setAlert("Hello Everyone")
                                 .build())
                         .build())
                 .build();
@@ -90,11 +82,8 @@ public class SchedulePayloadDeserializerTest {
 
         SchedulePayload fromJson = MAPPER.readValue(json, SchedulePayload.class);
 
-        assertEquals(payload, fromJson);
+        junit.framework.Assert.assertEquals(payload, fromJson);
     }
-
-
-
 
     @Test
     public void testDeserializationWithoutName() throws Exception {
@@ -112,13 +101,14 @@ public class SchedulePayloadDeserializerTest {
 
         SchedulePayload payload = MAPPER.readValue(json, SchedulePayload.class);
 
-        assertNotNull(payload);
-        assertEquals(payload.getName(), Optional.<String>absent());
-        assertEquals(payload.getSchedule().getScheduledTimestamp(), DateFormats.DATE_PARSER.parseDateTime("2013-05-05 00:00:01"));
+        org.junit.Assert.assertNotNull(payload);
+        junit.framework.Assert.assertEquals(payload.getName(), Optional.<String>absent());
+        junit.framework.Assert.assertEquals(payload.getSchedule().getScheduledTimestamp(), DateFormats.DATE_PARSER.parseDateTime("2013-05-05 00:00:01"));
     }
 
-    @Test(expected = APIParsingException.class)
+    @Test
     public void testInvalidScheduleObject() throws Exception {
+        thrown.expect(APIParsingException.class);
         String json =
                 "{" +
                         "\"schedule\": {" +
@@ -135,9 +125,9 @@ public class SchedulePayloadDeserializerTest {
 
     }
 
-    @Test(expected = APIParsingException.class)
+    @Test
     public void testInvalidName() throws Exception {
-
+        thrown.expect(APIParsingException .class);
         String json =
                 "{" +
                         "\"schedule\": {" +
@@ -154,6 +144,5 @@ public class SchedulePayloadDeserializerTest {
                         "}";
 
         MAPPER.readValue(json, SchedulePayload.class);
-
     }
 }

@@ -10,6 +10,10 @@ import org.joda.time.DateTime;
 
 import java.util.Optional;
 
+
+/**
+ * Represents the schedule details for a push. A Schedule defines when a push will be sent.
+ */
 public final class Schedule extends ScheduleModelObject {
 
     private final DateTime scheduledTimestamp;
@@ -22,11 +26,10 @@ public final class Schedule extends ScheduleModelObject {
         this.scheduledTimestamp = builder.scheduledTimestamp;
         this.localTimePresent = builder.localTimePresent;
         this.bestTime = Optional.ofNullable(builder.bestTime);
-
     }
 
     /**
-     * Get the DateTime for this schedule
+     * Get the DateTime for this schedule.
      * @return DateTime
      */
     public DateTime getScheduledTimestamp () {
@@ -34,18 +37,20 @@ public final class Schedule extends ScheduleModelObject {
     }
 
     /**
-     * Get the boolean indicating if the scheduled time is local
+     * Get the boolean indicating if the scheduled time is in local time.
      * @return boolean
      */
     public Boolean getLocalTimePresent() {
         return localTimePresent;
     }
 
+    /**
+     * Get the BestTime for this schedule.
+     * @return
+     */
     public Optional<BestTime> getBestTime() {
         return bestTime;
     }
-
-
 
     @Override
     public String toString() {
@@ -132,14 +137,26 @@ public final class Schedule extends ScheduleModelObject {
          * @return Schedule
          */
         public Schedule build() {
-            Preconditions.checkArgument((scheduledTimestamp != null || bestTime != null ),
-                    "Either scheduled_time, local_scheduled_time, or best time must be set.");
 
-            Preconditions.checkArgument(((scheduledTimestamp != null) ^ (bestTime != null)),
-                    "If bestTime is selected, scheduleTimestamp must be null and vice versa.");
-
+            Preconditions.checkArgument(argumentValidator(scheduledTimestamp,bestTime),
+                    "Either scheduled_time or best_time must be set.");
 
             return new Schedule(this);
         }
+
+        // ensure that exactly one argument is set
+        private boolean argumentValidator(DateTime scheduledTimestamp, BestTime bestTime) {
+            int argumentSet = 0;
+            if (scheduledTimestamp != null) {
+                argumentSet++;
+            }
+
+            if (bestTime != null) {
+                argumentSet++;
+            }
+            return argumentSet == 1;
+        }
+
     }
+
 }
