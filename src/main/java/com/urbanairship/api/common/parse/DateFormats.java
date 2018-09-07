@@ -9,13 +9,10 @@ import org.joda.time.format.DateTimeFormatterBuilder;
 import org.joda.time.format.DateTimeParser;
 import org.joda.time.format.ISODateTimeFormat;
 
-
-
 public class DateFormats {
 
     private static final DateTimeParser SPACE_PARSER = new DateTimeFormatterBuilder().appendLiteral(' ').toParser();
     private static final DateTimeParser T_PARSER = new DateTimeFormatterBuilder().appendLiteral('T').toParser();
-
 
     public static final DateTimeFormatter DATE_PARSER = new DateTimeFormatterBuilder()
             .append(ISODateTimeFormat.date())
