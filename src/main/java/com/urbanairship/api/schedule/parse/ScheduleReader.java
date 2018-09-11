@@ -7,6 +7,7 @@ package com.urbanairship.api.schedule.parse;
 import com.fasterxml.jackson.core.JsonParser;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
+import com.urbanairship.api.schedule.model.BestTime;
 import com.urbanairship.api.schedule.model.Schedule;
 import org.joda.time.DateTime;
 
@@ -21,8 +22,11 @@ public final class ScheduleReader implements JsonObjectReader<Schedule> {
     }
 
     public void readScheduledTime(JsonParser jsonParser) throws IOException {
-        String time = jsonParser.readValuesAs(DateTime.class).toString();
         builder.setScheduledTimestamp(jsonParser.readValueAs(DateTime.class));
+    }
+
+    public void readBestTime(JsonParser jsonParser) throws IOException {
+        builder.setBestTime(jsonParser.readValueAs(BestTime.class));
     }
 
     @Override
