@@ -33,6 +33,12 @@ public final class ScheduleDeserializer extends JsonDeserializer<Schedule> {
                     reader.readScheduledTime(jsonParser);
                 }
             })
+            .put("best_time", new FieldParser<ScheduleReader>() {
+                @Override
+                public void parse(ScheduleReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                    reader.readBestTime(jsonParser);
+                }
+            })
             .build()
     );
 
