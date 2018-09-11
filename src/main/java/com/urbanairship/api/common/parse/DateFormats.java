@@ -16,7 +16,7 @@ public class DateFormats {
 
     public static final DateTimeFormatter DATE_PARSER = new DateTimeFormatterBuilder()
             .append(ISODateTimeFormat.date())
-            .append(null, new DateTimeParser[] {SPACE_PARSER, T_PARSER})
+            .append(null, new DateTimeParser[]{SPACE_PARSER, T_PARSER})
             .append(ISODateTimeFormat.hourMinuteSecond())
             .toFormatter()
             .withZoneUTC();
@@ -27,21 +27,21 @@ public class DateFormats {
 
     public static final DateTimeFormatter SECONDS_FORMAT = new DateTimeFormatterBuilder()
             .append(ISODateTimeFormat.date())
-            .append(null, new DateTimeParser[] {SPACE_PARSER, T_PARSER})
+            .append(null, new DateTimeParser[]{SPACE_PARSER, T_PARSER})
             .append(ISODateTimeFormat.hourMinuteSecond())
             .toFormatter()
             .withZoneUTC();
 
     public static final DateTimeFormatter MINUTES_FORMAT = new DateTimeFormatterBuilder()
             .append(ISODateTimeFormat.date())
-            .append(null, new DateTimeParser[] {SPACE_PARSER, T_PARSER})
+            .append(null, new DateTimeParser[]{SPACE_PARSER, T_PARSER})
             .append(ISODateTimeFormat.hourMinute())
             .toFormatter()
             .withZoneUTC();
 
     public static final DateTimeFormatter HOURS_FORMAT = new DateTimeFormatterBuilder()
             .append(ISODateTimeFormat.date())
-            .append(null, new DateTimeParser[] {SPACE_PARSER, T_PARSER})
+            .append(null, new DateTimeParser[]{SPACE_PARSER, T_PARSER})
             .append(ISODateTimeFormat.hour())
             .toFormatter()
             .withZoneUTC();
@@ -54,5 +54,6 @@ public class DateFormats {
 
     public static final DateTimeFormatter YEARS_FORMAT = ISODateTimeFormat.year().withZoneUTC();
 
-    private DateFormats() { }
+    private DateFormats() {
+    }
 }

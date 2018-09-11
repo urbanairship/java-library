@@ -8,20 +8,17 @@ import com.urbanairship.api.push.model.PushOptions;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
-import com.urbanairship.api.push.parse.PushObjectMapper;
+import com.urbanairship.api.schedule.model.BestTime;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
+import com.urbanairship.api.schedule.parse.ScheduleObjectMapper;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 public class SchedulePayloadSerializerTest {
 
-    private static final ObjectMapper MAPPER = PushObjectMapper.getInstance();
+    private static final ObjectMapper MAPPER = ScheduleObjectMapper.getInstance();
 
     @Test
     public void testSerialization() throws Exception {
@@ -43,7 +40,32 @@ public class SchedulePayloadSerializerTest {
 
         String properJson = "{\"schedule\":{\"scheduled_time\":\"2013-05-05T00:00:01\"},\"push\":{\"audience\":{\"tag\":\"tag\"},\"device_types\":[\"ios\"],\"notification\":{\"alert\":\"alert\"},\"options\":{}}}";
 
-        assertEquals(json, properJson);
+        org.junit.Assert.assertEquals(json, properJson);
+    }
+
+    @Test
+    public void testBestTimeSerialization() throws Exception {
+        BestTime bestTime = BestTime.newBuilder()
+                .setSendDate(new DateTime("2013-05-05T00:00:01", DateTimeZone.UTC))
+                .build();
+
+        PushPayload pushPayload = PushPayload.newBuilder()
+                .setAudience(Selectors.tag("tag"))
+                .setDeviceTypes(DeviceTypeData.newBuilder().addDeviceType(DeviceType.IOS).build())
+                .setNotification(Notification.newBuilder().setAlert("alert").build())
+                .setPushOptions(PushOptions.newBuilder().build())
+                .build();
+        SchedulePayload schedulePayload = SchedulePayload.newBuilder()
+                .setSchedule(Schedule.newBuilder()
+                        .setBestTime(bestTime)
+                        .build())
+                .setPushPayload(pushPayload)
+                .build();
+
+        String json = MAPPER.writeValueAsString(schedulePayload);
+
+        String properJson = "{\"schedule\":{\"best_time\":{\"send_date\":\"2013-05-05\"}},\"push\":{\"audience\":{\"tag\":\"tag\"},\"device_types\":[\"ios\"],\"notification\":{\"alert\":\"alert\"},\"options\":{}}}";
+        org.junit.Assert.assertEquals(json, properJson);
     }
 
     @Test(expected = Exception.class)
@@ -63,7 +85,7 @@ public class SchedulePayloadSerializerTest {
         String json = MAPPER.writeValueAsString(schedulePayload);
         String properJson = "{\"schedule\":{},\"push\":{\"audience\":{\"tag\":\"tag\"},\"device_types\":[\"ios\"],\"notification\":{\"alert\":\"alert\"},\"options\":{\"present\":true}}}";
 
-        assertEquals(json, properJson);
+        org.junit.Assert.assertEquals(json, properJson);
 
     }
 
@@ -83,7 +105,7 @@ public class SchedulePayloadSerializerTest {
                 .setPushPayload(pushPayload)
                 .build();
 
-        assertFalse(schedulePayload.getSchedule().getLocalTimePresent());
+        org.junit.Assert.assertFalse(schedulePayload.getSchedule().getLocalTimePresent());
 
         PushPayload pushPayloadLocal = PushPayload.newBuilder()
                 .setAudience(Selectors.tag("tag"))
@@ -107,8 +129,8 @@ public class SchedulePayloadSerializerTest {
         JsonNode jsonNode = MAPPER.readTree(scheduleString);
         JsonNode jsonNodeExpected = MAPPER.readTree(expectedScheduled);
 
-        assertTrue(schedulePayloadLocal.getSchedule().getLocalTimePresent());
-        assertEquals(jsonNodeExpected, jsonNode);
+        org.junit.Assert.assertTrue(schedulePayloadLocal.getSchedule().getLocalTimePresent());
+        org.junit.Assert.assertEquals(jsonNodeExpected, jsonNode);
     }
 
 }
