@@ -37,6 +37,11 @@ public class WebDevicePayloadDeserializer extends JsonDeserializer<WebDevicePayl
                             reader.readWebIcon(json);
                         }
                     })
+                    .put("require_interaction", new FieldParser<WebDevicePayloadReader>() {
+                        public void parse(WebDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                            reader.readRequireInteraction(json);
+                        }
+                    })
                     .build()
     );
 

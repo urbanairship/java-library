@@ -28,6 +28,10 @@ public class WebDevicePayloadSerializer extends JsonSerializer<WebDevicePayload>
             jgen.writeStringField("title", payload.getTitle().get());
         }
 
+        if (payload.getRequireInteraction().isPresent()) {
+            jgen.writeObjectField("require_interaction", payload.getRequireInteraction().get());
+        }
+
         jgen.writeEndObject();
     }
 }

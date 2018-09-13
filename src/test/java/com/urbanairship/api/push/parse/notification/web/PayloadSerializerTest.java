@@ -24,14 +24,17 @@ public class PayloadSerializerTest {
                 .setTitle("WebSettings title")
                 .addExtraEntry("extrakey", "extravalue")
                 .setWebIcon(webIcon)
+                .setRequireInteraction(true)
                 .build();
 
         String expected = "{" +
                     "\"alert\":\"WebSettings specific alert\"," +
                     "\"extra\":{\"extrakey\":\"extravalue\"}," +
                     "\"icon\":{\"url\":\"https://i.ytimg.com/vi/PNgykntrIzE/maxresdefault.jpg\"}," +
-                    "\"title\":\"WebSettings title\"" +
-                "}";
+                    "\"title\":\"WebSettings title\"," +
+                    "\"require_interaction\":true" +
+
+        "}";
 
         String parsedJson = MAPPER.writeValueAsString(webPayload);
         WebDevicePayload roundTripWebPayload = MAPPER.readValue(parsedJson, WebDevicePayload.class);
