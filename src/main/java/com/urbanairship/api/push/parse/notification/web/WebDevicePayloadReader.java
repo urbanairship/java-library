@@ -34,6 +34,10 @@ public class WebDevicePayloadReader implements JsonObjectReader<WebDevicePayload
         builder.setWebIcon(parser.readValueAs(WebIcon.class));
     }
 
+    public void readRequireInteraction(JsonParser parser) throws IOException {
+        builder.setRequireInteraction(parser.readValueAs(boolean.class));
+    }
+
     @Override
     public WebDevicePayload validateAndBuild() throws IOException {
         try{
