@@ -6,7 +6,6 @@ package com.urbanairship.api.push.model;
 
 import com.google.common.base.Optional;
 
-
 /**
  * Optional features for a Push payload for the Urban Airship API.
  * Created for future optional features to be added.
@@ -47,9 +46,7 @@ public class PushOptions extends PushModelObject {
 
         PushOptions that = (PushOptions) o;
 
-        return !(expiry != null ? !expiry.equals(that.expiry) : that.expiry != null);
-
-    }
+        return !(expiry != null ? !expiry.equals(that.expiry) : that.expiry != null); }
 
     @Override
     public int hashCode() {
@@ -65,6 +62,7 @@ public class PushOptions extends PushModelObject {
 
     public static class Builder {
         private PushExpiry expiry = null;
+        private Boolean requireInteraction = null;
 
         private Builder() { }
 
@@ -82,6 +80,4 @@ public class PushOptions extends PushModelObject {
             return new PushOptions(Optional.fromNullable(expiry));
         }
     }
-
-
 }
