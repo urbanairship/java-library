@@ -20,7 +20,6 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
     private final Optional<WebIcon> webIcon;
     private final Optional<Boolean> requireInteraction;
 
-
     private WebDevicePayload(Builder builder) {
         this.alert = Optional.fromNullable(builder.alert);
         this.title = Optional.fromNullable(builder.title);
