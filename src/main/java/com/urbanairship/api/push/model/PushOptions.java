@@ -62,7 +62,6 @@ public class PushOptions extends PushModelObject {
 
     public static class Builder {
         private PushExpiry expiry = null;
-        private Boolean requireInteraction = null;
 
         private Builder() { }
 
