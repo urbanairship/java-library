@@ -100,4 +100,21 @@ public class PayloadDeserializerTest {
         assertNotNull(payload);
         assertEquals(webIcon, payload.getWebIcon().get());
     }
+
+    @Test
+    public void testRequireInteraction() throws Exception {
+        String json =
+                "{" +
+                        "\"require_interaction\":" +
+                        "true" +
+                        "}";
+
+        WebDevicePayload expected = WebDevicePayload.newBuilder()
+                .setRequireInteraction(true)
+                .build();
+
+        WebDevicePayload payload = MAPPER.readValue(json, WebDevicePayload.class);
+        assertNotNull(payload);
+        assertEquals(expected.getRequireInteraction().get(), payload.getRequireInteraction().get());
+    }
 }
