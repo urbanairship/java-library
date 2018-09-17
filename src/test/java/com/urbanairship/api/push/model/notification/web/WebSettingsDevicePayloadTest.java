@@ -19,6 +19,7 @@ public class WebSettingsDevicePayloadTest {
                 .addExtraEntry("key", "value")
                 .addExtraEntry("key2", "value2")
                 .setWebIcon(webIcon)
+                .setRequireInteraction(true)
                 .build();
 
         assertTrue(m.getExtra().isPresent());
@@ -37,6 +38,9 @@ public class WebSettingsDevicePayloadTest {
 
         assertTrue(m.getWebIcon().isPresent());
         assertEquals(m.getWebIcon().get(), webIcon);
+
+        assertTrue(m.getRequireInteraction().isPresent());
+        assertEquals(true, m.getRequireInteraction().get());
     }
 }
 
