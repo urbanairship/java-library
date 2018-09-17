@@ -46,7 +46,8 @@ public class PushOptions extends PushModelObject {
 
         PushOptions that = (PushOptions) o;
 
-        return !(expiry != null ? !expiry.equals(that.expiry) : that.expiry != null); }
+        return !(expiry != null ? !expiry.equals(that.expiry) : that.expiry != null);
+    }
 
     @Override
     public int hashCode() {
