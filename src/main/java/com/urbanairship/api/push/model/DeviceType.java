@@ -27,13 +27,19 @@ public final class DeviceType {
 
     private enum PlatformType {
         NATIVE,
-        OPEN
+        OPEN,
+        EMAIL
     }
 
     private static final String OPEN_PLATFORM_NAMESPACE = "open::";
+    private static final String EMAIL_PLATFORM_NAMESPACE = "email";
 
     public static DeviceType open(String platformName) {
         return new DeviceType(PlatformType.OPEN, OPEN_PLATFORM_NAMESPACE + platformName);
+    }
+
+    public static DeviceType email(String platformName) {
+        return new DeviceType(PlatformType.EMAIL, EMAIL_PLATFORM_NAMESPACE);
     }
 
     private final String identifier;
@@ -48,6 +54,9 @@ public final class DeviceType {
         return platformType.equals(PlatformType.OPEN);
     }
 
+    public boolean isEmailPlatform() {
+        return platformType.equals(PlatformType.EMAIL); }
+
     public String getIdentifier() {
         return identifier;
     }
@@ -61,9 +70,12 @@ public final class DeviceType {
 
         if (identifier.contains(OPEN_PLATFORM_NAMESPACE)) {
             return Optional.of(new DeviceType(PlatformType.OPEN, identifier));
-        }
+        } else if(identifier.contains(EMAIL_PLATFORM_NAMESPACE)) {
+            return Optional.of(new DeviceType(PlatformType.EMAIL, identifier));
 
-        return Optional.absent();
+        } else {
+            return Optional.absent();
+        }
     }
 
     @Override
