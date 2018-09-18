@@ -30,6 +30,8 @@ public enum SelectorType {
 
     LOCATION("location", SelectorCategory.LOCATION),
 
+    SMS("sms_id", SelectorCategory.SMS),
+
     ALL("all", SelectorCategory.ATOMIC),
     TRIGGERED("triggered", SelectorCategory.ATOMIC);
 
