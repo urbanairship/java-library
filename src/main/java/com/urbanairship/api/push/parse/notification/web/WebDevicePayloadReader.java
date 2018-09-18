@@ -2,6 +2,7 @@ package com.urbanairship.api.push.parse.notification.web;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.BooleanFieldDeserializer;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.common.parse.MapOfStringsDeserializer;
 import com.urbanairship.api.common.parse.StringFieldDeserializer;
@@ -32,6 +33,10 @@ public class WebDevicePayloadReader implements JsonObjectReader<WebDevicePayload
 
     public void readWebIcon(JsonParser parser) throws IOException {
         builder.setWebIcon(parser.readValueAs(WebIcon.class));
+    }
+
+    public void readRequireInteraction(JsonParser parser) throws IOException {
+        builder.setRequireInteraction(BooleanFieldDeserializer.INSTANCE.deserialize(parser, "require_interaction"));
     }
 
     @Override

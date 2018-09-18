@@ -18,11 +18,13 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
     private final Optional<String> title;
     private final Optional<ImmutableMap<String, String>> extra;
     private final Optional<WebIcon> webIcon;
+    private final Optional<Boolean> requireInteraction;
 
     private WebDevicePayload(Builder builder) {
         this.alert = Optional.fromNullable(builder.alert);
         this.title = Optional.fromNullable(builder.title);
         this.webIcon = Optional.fromNullable(builder.webIcon);
+        this.requireInteraction = Optional.fromNullable(builder.requireInteraction);
 
         if (builder.extra.build().isEmpty()) {
             this.extra = Optional.absent();
@@ -87,6 +89,15 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
         return webIcon;
     }
 
+    /**
+     * Get the Require Interaction flag.
+     *
+     * @return Optional Boolean require interaction flag.
+     */
+    public Optional<Boolean> getRequireInteraction() {
+        return requireInteraction;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -100,12 +111,14 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
         return Objects.equal(alert, payload.alert) &&
                 Objects.equal(title, payload.title) &&
                 Objects.equal(extra, payload.extra) &&
-                Objects.equal(webIcon, payload.webIcon);
+                Objects.equal(webIcon, payload.webIcon)&&
+                Objects.equal(requireInteraction, payload.requireInteraction);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(alert, title, extra, webIcon);
+        return Objects.hashCode(alert, title, extra, webIcon,
+                requireInteraction);
     }
 
     @Override
@@ -115,6 +128,7 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
                 ", title=" + title +
                 ", extra=" + extra +
                 ", webIcon=" + webIcon +
+                ", requireInteraction=" + requireInteraction +
                 '}';
     }
 
@@ -126,6 +140,7 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
         private String title = null;
         private ImmutableMap.Builder<String, String> extra = ImmutableMap.builder();
         private WebIcon webIcon = null;
+        private Boolean requireInteraction = null;
 
         private Builder() { }
 
@@ -185,6 +200,22 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
             return this;
         }
 
+        /**
+         * Set the Require Interaction flag.
+         *
+         * @param value Boolean
+         * @return Builder
+         */
+        public Builder setRequireInteraction(boolean value){
+            this.requireInteraction = value;
+            return this;
+        }
+
+        /**
+         * Build the WebDevicePayload object.
+         *
+         * @return WebDevicePayload
+         */
         public WebDevicePayload build() {
             return new WebDevicePayload(this);
         }
