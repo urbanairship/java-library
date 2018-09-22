@@ -5,11 +5,14 @@ import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 public class EmailPayload extends PushModelObject implements DevicePayloadOverride {
 
+    //Make HTML Option, everything else required. If someone tries to build one, throw an error...if that's the way we want to go about doing it.
     private final Optional<String> alert;
     private final Optional<String> subject;
     private final Optional<String> htmlBody;
@@ -22,7 +25,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
 
     private EmailPayload(Builder builder) {
         this.alert = Optional.fromNullable(builder.alert);
-        this.subject = Optional.fromNullable(builder.htmlBody);
+        this.subject = Optional.fromNullable(builder.subject);
         this.htmlBody = Optional.fromNullable(builder.htmlBody);
         this.plaintextBody = Optional.fromNullable(builder.plaintextBody);
         this.messageType = Optional.fromNullable(builder.messageType);
@@ -37,7 +40,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
     }
 
     @Override
-    public DeviceType getDeviceType() { return deviceType; }
+    public DeviceType getDeviceType() { return deviceType.EMAIL; }
 
     /**
      * Optional, override the alert value provided at the top level, if any.
@@ -237,6 +240,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
          * Optional, a string representing the sender name.
          *
          * @param senderName Optional String
+         * Must be set up by Urban Airship before use.
          * @return EmailPayload Builder
          */
         public Builder setSenderName(String senderName) {
@@ -255,8 +259,52 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
             return this;
         }
 
+//        private final Pattern PLAINTEXT_PATTERN = Pattern.compile("(?i)(\\[\\[.*?ua-unsubscribe.*?\\]\\])");
+//        private boolean validPlaintext = PLAINTEXT_PATTERN.matcher(plaintextBody).find();
+//
+//        private final Pattern HTML_PATTERN = Pattern.compile("(?i)(<a[^>]*?data-ua-unsubscribe.*?>.*?\\S+?.*?</a>)");
+//        private boolean validHtml = HTML_PATTERN.matcher(htmlBody).find();
+
         public EmailPayload build() {
+            //Set precondition for message type : commercial which requires unsubscribe links.
             Preconditions.checkNotNull(deviceType, "DeviceType must be set.");
+
+            Preconditions.checkNotNull(subject, "Subject must be set.");
+
+            Preconditions.checkArgument(StringUtils.isNotBlank(subject),
+                    "Subject must not be blank");
+
+            Preconditions.checkNotNull(plaintextBody, "PlaintextBody must be set.");
+
+            Preconditions.checkArgument(StringUtils.isNotBlank(plaintextBody),
+                    "Plaintext Body must not be blank");
+//
+//            if(messageType == messageType.COMMERCIAL) {
+//                Preconditions.checkArgument(validPlaintext == true,
+//                        "PlaintextBody must contain Unsubscribe Link");
+//                if(!htmlBody.isEmpty()){
+//                    Preconditions.checkArgument(validHtml == true && validPlaintext ,
+//                            "PlaintextBody and HtmlBody must contain unsubscribe links" );
+//                }
+//            }
+
+            Preconditions.checkNotNull(messageType, "MessageType must be set.");
+
+            Preconditions.checkNotNull(senderName, "SenderName must be set.");
+
+            Preconditions.checkArgument(StringUtils.isNotBlank(senderName),
+                    "SenderName must not be blank");
+
+            Preconditions.checkNotNull(senderAddress, "SenderAddress must be set.");
+
+            Preconditions.checkArgument(StringUtils.isNotBlank(senderAddress),
+                    "SenderAddress must not be blank");
+
+            Preconditions.checkNotNull(replyTo, "ReplyTo must be set.");
+
+            Preconditions.checkArgument(StringUtils.isNotBlank(replyTo),
+                    "ReplyTo must not be blank");
+
             return new EmailPayload(this);
         }
     }
