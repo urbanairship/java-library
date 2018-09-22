@@ -11,6 +11,7 @@ import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
+import com.urbanairship.api.push.model.notification.email.EmailPayload;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 import com.urbanairship.api.push.model.notification.open.OpenPayload;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
@@ -60,6 +61,8 @@ public class Notifications {
             return admAlert(text);
         case "web":
             return webAlert(text);
+        case "email":
+                return emailAlert(text);
         default:
             throw unknownDeviceType(deviceType.getIdentifier());
         }
@@ -99,6 +102,12 @@ public class Notifications {
         return OpenPayload.newBuilder()
                 .setAlert(text)
                 .setDeviceType(deviceType)
+                .build();
+    }
+
+    public static EmailPayload emailAlert(String text) {
+        return EmailPayload.newBuilder()
+                .setAlert(text)
                 .build();
     }
 
