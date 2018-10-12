@@ -3,6 +3,7 @@ package com.urbanairship.api.channel;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Preconditions;
 import com.google.common.net.HttpHeaders;
+import com.urbanairship.api.channel.model.SmsRegistrationResponse;
 import com.urbanairship.api.channel.parse.ChannelObjectMapper;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
@@ -17,9 +18,9 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SmsRegistrationRequest implements Request<String> {
+public class SmsRegistrationRequest implements Request<SmsRegistrationResponse> {
 
-    private final static String REGISTER_SMS_CHANNEL = "/api/channels/sms/";
+    private final static String REGISTER_SMS_CHANNEL = "/api/channels/sms";
     private final static String OPT_OUT = "/api/channels/sms/opt-out";
     private final static String UNINSTALL = "/api/channels/sms/uninstall";
 
@@ -30,8 +31,17 @@ public class SmsRegistrationRequest implements Request<String> {
     private final String path;
     private final Map<String, String> payload = new HashMap<String, String>();
 
-    private SmsRegistrationRequest(String path) {
+    private SmsRegistrationRequest(String path, String sender, String msisdn) {
         this.path = path;
+        payload.put(SENDER_KEY, sender);
+        payload.put(MSISDN_KEY, msisdn);
+    }
+
+    private SmsRegistrationRequest(String path, String sender, String msisdn, DateTime optedIn) {
+        this.path = path;
+        payload.put(SENDER_KEY, sender);
+        payload.put(MSISDN_KEY, msisdn);
+        payload.put(OPTED_IN_KEY, DateFormats.DATE_FORMATTER.print(optedIn));
     }
 
     /**
@@ -41,10 +51,8 @@ public class SmsRegistrationRequest implements Request<String> {
      * @param msisdn The mobile phone number you want to opt-out of SMS messages.
      * @return SmsRegistrationRequest
      */
-    public SmsRegistrationRequest newOptOutRequest(String sender, String msisdn) {
-        payload.put(SENDER_KEY, sender);
-        payload.put(MSISDN_KEY, msisdn);
-        return this;
+    public static SmsRegistrationRequest newOptOutRequest(String sender, String msisdn) {
+        return new SmsRegistrationRequest(OPT_OUT, sender, msisdn);
     }
 
     /**
@@ -54,10 +62,8 @@ public class SmsRegistrationRequest implements Request<String> {
      * @param msisdn The mobile phone number you want to register as an SMS channel (or send a request to opt-in).
      * @return SmsRegistrationRequest
      */
-    public SmsRegistrationRequest newUninstallRequest(String sender, String msisdn) {
-        payload.put(SENDER_KEY, sender);
-        payload.put(MSISDN_KEY, msisdn);
-        return this;
+    public static SmsRegistrationRequest newUninstallRequest(String sender, String msisdn) {
+        return new SmsRegistrationRequest(UNINSTALL, sender, msisdn);
     }
 
     /**
@@ -67,10 +73,8 @@ public class SmsRegistrationRequest implements Request<String> {
      * @param msisdn The mobile phone number you want to register as an SMS channel.
      * @return SmsRegistrationRequest
      */
-    public SmsRegistrationRequest newRegistrationRequest(String sender, String msisdn) {
-        payload.put(SENDER_KEY, sender);
-        payload.put(MSISDN_KEY, msisdn);
-        return this;
+    public static SmsRegistrationRequest newRegistrationRequest(String sender, String msisdn) {
+        return new SmsRegistrationRequest(REGISTER_SMS_CHANNEL, sender, msisdn);
     }
 
     /**
@@ -81,11 +85,8 @@ public class SmsRegistrationRequest implements Request<String> {
      * @param optedIn The datetime that represents the date and time when explicit permission was received from the user to receive messages.
      * @return SmsRegistrationRequest
      */
-    public SmsRegistrationRequest newRegistrationRequest(String sender, String msisdn, DateTime optedIn) {
-        payload.put(SENDER_KEY, sender);
-        payload.put(MSISDN_KEY, msisdn);
-        payload.put(OPTED_IN_KEY, DateFormats.SECONDS_FORMAT.print(optedIn));
-        return this;
+    public static SmsRegistrationRequest newRegistrationRequest(String sender, String msisdn, DateTime optedIn) {
+        return new SmsRegistrationRequest(REGISTER_SMS_CHANNEL, sender, msisdn, optedIn);
     }
 
     @Override
@@ -125,11 +126,11 @@ public class SmsRegistrationRequest implements Request<String> {
     }
 
     @Override
-    public ResponseParser<String> getResponseParser() {
-        return new ResponseParser<String>() {
+    public ResponseParser<SmsRegistrationResponse> getResponseParser() {
+        return new ResponseParser<SmsRegistrationResponse>() {
             @Override
-            public String parse(String response) throws IOException {
-                return response;
+            public SmsRegistrationResponse parse(String response) throws IOException {
+                return ChannelObjectMapper.getInstance().readValue(response, SmsRegistrationResponse.class);
             }
         };
     }
