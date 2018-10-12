@@ -245,7 +245,6 @@ public class ChannelRequestTest {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
         URI expectedURI = URI.create("https://go.urbanairship.com/api/channels/sms/" + msisdn + "/" + sender);
-        URI actualURI = request.getUri(baseURI);
 
         assertEquals(expectedURI, request.getUri(baseURI));
     }
