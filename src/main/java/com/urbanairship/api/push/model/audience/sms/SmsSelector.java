@@ -71,7 +71,7 @@ public class SmsSelector extends PushModelObject implements Selector {
 
         /**
          * Set the recipient phone number.
-         * @param msisdn String
+         * @param msisdn String Must be numerical characters with no leading zeros.
          * @return SmsSelector Builder
          */
         public Builder setMsisdn(String msisdn) {
@@ -81,7 +81,7 @@ public class SmsSelector extends PushModelObject implements Selector {
 
         /**
          * Set the sender that the app is configured to send SMS messages from.
-         * @param sender String
+         * @param sender String Must be numeric characters only.
          * @return SmsSelector Builder
          */
         public Builder setSender(String sender) {
