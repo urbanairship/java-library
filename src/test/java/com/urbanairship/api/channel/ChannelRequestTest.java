@@ -236,4 +236,18 @@ public class ChannelRequestTest {
         assertEquals(listRequest.getResponseParser().parse(response), responseParser.parse(response));
     }
 
+    @Test
+    public void testSmsUri() {
+        String msisdn = "15552243311";
+        String sender = "12345";
+        ChannelRequest request = ChannelRequest.newSmsLookupRequest(msisdn, sender);
+
+        URI baseURI = URI.create("https://go.urbanairship.com");
+
+        URI expectedURI = URI.create("https://go.urbanairship.com/api/channels/sms/" + msisdn + "/" + sender);
+        URI actualURI = request.getUri(baseURI);
+
+        assertEquals(expectedURI, request.getUri(baseURI));
+    }
+
 }
