@@ -66,7 +66,7 @@ public class ChannelRequest implements Request<ChannelResponse> {
     /**
      * Create a request for looking up an sms channel.
      *
-     * @param msisdn The mobile phone number you want to look up.
+     * @param msisdn The mobile phone number you want to look up. Must be numerical characters with no leading zeros.
      * @param sender The SMS sender ID provided by Urban Airship. Must be numeric characters only.
      * @return ChannelRequest
      */
@@ -74,7 +74,7 @@ public class ChannelRequest implements Request<ChannelResponse> {
         Preconditions.checkNotNull(msisdn, "msisdn cannot be null.");
         Preconditions.checkNotNull(sender, "Sender cannot be null.");
 
-        return new ChannelRequest(API_SMS_CHANNEL + "/" + msisdn + "/" + sender);
+        return new ChannelRequest(API_SMS_CHANNEL + "" + msisdn + "/" + sender);
     }
 
     @Override
