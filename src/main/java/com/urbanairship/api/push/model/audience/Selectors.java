@@ -199,6 +199,12 @@ public class Selectors {
         return value(SelectorType.CHANNEL, channel);
     }
 
+    /* Sms Sender used to send to all SMS devices associated with the sender */
+
+    public static final Selector smsBroadcast(String sender) {
+        return value(SelectorType.SMS_SENDER, sender);
+    }
+
     /* iOS channels */
 
     public static final Selector iosChannel(String iosChannel) {
