@@ -74,7 +74,7 @@ public class ChannelRequest implements Request<ChannelResponse> {
         Preconditions.checkNotNull(msisdn, "msisdn cannot be null.");
         Preconditions.checkNotNull(sender, "Sender cannot be null.");
 
-        return new ChannelRequest(API_SMS_CHANNEL + "" + msisdn + "/" + sender);
+        return new ChannelRequest(API_SMS_CHANNEL + msisdn + "/" + sender);
     }
 
     @Override
