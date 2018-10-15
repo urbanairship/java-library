@@ -56,7 +56,11 @@ public class SmsRegistrationRequest implements Request<SmsRegistrationResponse> 
     }
 
     /**
-     * Removes phone numbers and accompanying data from Urban Airship.
+     * Removes phone numbers and accompanying data from Urban Airship. Use with caution.
+     * Uninstalling an SMS channel will prevent you from retrieving opt-in and opt-out history for the corresponding msisdn.
+     * If the uninstalled msisdn opts-in again, it will generate a new channel_id.
+     * The new channel_id cannot be reassociated with any opt-in information, tags, named users, insight reports,
+     * or other information from the uninstalled SMS channel.
      *
      * @param sender A number the app is configured to send from, provided by Urban Airship.
      * @param msisdn The mobile phone number you want to register as an SMS channel (or send a request to opt-in).
