@@ -9,6 +9,9 @@ import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.SelectorType;
 import com.urbanairship.api.push.model.audience.SelectorVisitor;
 
+/**
+ * SmSSelector used to set the audience to target a single sms device.
+ */
 public class SmsSelector extends PushModelObject implements Selector {
     private final String msisdn;
     private final String sender;
@@ -18,6 +21,10 @@ public class SmsSelector extends PushModelObject implements Selector {
         this.sender = builder.sender;
     }
 
+    /**
+     * New SmsSelector Builder.
+     * @return Builder
+     */
     public static Builder newBuilder() {
         return new Builder();
     }
@@ -65,6 +72,9 @@ public class SmsSelector extends PushModelObject implements Selector {
         return Objects.hashCode(msisdn, sender);
     }
 
+    /**
+     * SmsSelector Builder.
+     */
     public static class Builder {
         private String msisdn = null;
         private String sender = null;
