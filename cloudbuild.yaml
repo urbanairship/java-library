@@ -1,0 +1,24 @@
+# https://cloud.google.com/cloud-build/docs/build-config
+# https://cloud.google.com/cloud-build/docs/api/reference/rest/v1/projects.builds#Build
+steps:
+  - name: gcr.io/cloud-builders/gsutil
+    # FIXME: using branch build for now
+    entrypoint: sh
+    args:
+      [
+        '-c',
+        'gsutil cp gs://ua-web-ephemeral-test/web-ci-spike /workspace/web-ci && chmod +x web-ci',
+      ]
+
+  # trigger the rest of the build using the binary we just built
+  - id: trigger_build
+    name: gcr.io/cloud-builders/gcloud
+    env:
+      - PROJECT_ID=$PROJECT_ID
+      - BUILD_ID=$BUILD_ID
+      - REPO_NAME=$REPO_NAME
+      - BRANCH_NAME=$BRANCH_NAME
+      - TAG_NAME=$TAG_NAME
+      - COMMIT_SHA=$COMMIT_SHA
+    entrypoint: /workspace/web-ci
+    args: ['build', '--stdout', '--submit']
