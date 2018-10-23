@@ -6,6 +6,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.channel.model.ChannelType;
+import com.urbanairship.api.channel.model.email.OptInLevel;
 import com.urbanairship.api.push.model.PushModelObject;
 
 import java.util.List;
@@ -29,7 +30,6 @@ public class Channel extends PushModelObject {
         this.type = builder.type;
         this.open = builder.open;
         this.address = Optional.fromNullable(builder.address);
-
         this.optIn = Optional.fromNullable(builder.optIn);
         this.setTags = Optional.fromNullable(builder.setTags);
         this.timezone = Optional.fromNullable(builder.timezone);
