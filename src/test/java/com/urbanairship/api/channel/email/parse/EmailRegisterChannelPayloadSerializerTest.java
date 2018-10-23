@@ -1,4 +1,4 @@
-package com.urbanairship.api.channel.email;
+package com.urbanairship.api.channel.email.parse;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,7 +18,7 @@ public class EmailRegisterChannelPayloadSerializerTest {
     @Test
     public void testRegisterEmailChannellPayload() throws IOException {
 
-        RegisterEmailChannel channel = RegisterEmailChannel.newBuilder()
+        RegisterEmailChannel registerEmailChannel = RegisterEmailChannel.newBuilder()
                 .setEmailOptInLevel(OptInLevel.COMMERCIAL)
                 .setAddress("name@example.com")
                 .setTimeZone("America/Los_Angeles")
@@ -27,7 +27,7 @@ public class EmailRegisterChannelPayloadSerializerTest {
                 .build();
 
 
-        String parsedJson = MAPPER.writeValueAsString(channel);
+        String parsedJson = MAPPER.writeValueAsString(registerEmailChannel);
         String jsonString = " {\n" +
                 "     \"channel\" : {\n" +
                 "        \"type\": \"email\",\n" +
