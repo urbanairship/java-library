@@ -21,6 +21,10 @@ public final class DeviceTypeData extends PushModelObject {
         return new Builder();
     }
 
+    /**
+     * Device type "all" is being deprecated. It will not target email and sms devices.
+     */
+    @Deprecated
     public static DeviceTypeData all() {
         return DeviceTypeData.newBuilder()
             .setAll(true)
@@ -35,6 +39,10 @@ public final class DeviceTypeData extends PushModelObject {
         return builder.build();
     }
 
+    /**
+     * Device type "all" is being deprecated. It will not target email and sms devices.
+     */
+    @Deprecated
     public boolean isAll() {
         return all;
     }
@@ -82,6 +90,10 @@ public final class DeviceTypeData extends PushModelObject {
 
         private Builder() { }
 
+        /**
+         * @deprecated Device type "all" is being deprecated. It will not target email and sms devices.
+         */
+        @Deprecated
         public Builder setAll(boolean value) {
             all = value;
             return this;
