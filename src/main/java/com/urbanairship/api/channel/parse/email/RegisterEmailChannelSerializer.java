@@ -27,14 +27,6 @@ public class RegisterEmailChannelSerializer extends JsonSerializer<RegisterEmail
             jgen.writeStringField(Constants.EMAIL_OPT_IN_LEVEL, payload.getEmailOptInLevel().get().getIdentifier());
         }
 
-        if (payload.getSetTags().isPresent()) {
-            jgen.writeBooleanField(Constants.SET_TAGS, payload.getSetTags().get());
-        }
-
-        if (payload.getTags().isPresent()) {
-            jgen.writeObjectField(Constants.TAGS, payload.getTags().get());
-        }
-
         if (payload.getTimezone().isPresent()) {
             jgen.writeStringField(Constants.TIMEZONE, payload.getTimezone().get());
         }

@@ -16,8 +16,6 @@ public class RegisterEmailChannel {
     private final ChannelType type;
     private final Optional<OptInLevel> emailOptInLevel;
     private final Optional<String> address;
-    private final Optional<Boolean> setTags;
-    private final Optional<ImmutableList<String>> tags;
     private final Optional<String> timezone;
     private final Optional<String> localeCountry;
     private final Optional<String> localeLanguage;
@@ -26,17 +24,10 @@ public class RegisterEmailChannel {
     private RegisterEmailChannel(Builder builder) {
         this.type = ChannelType.EMAIL;
         this.emailOptInLevel = Optional.fromNullable((builder.email_opt_in_level));
-        this.setTags = Optional.fromNullable(builder.setTags);
         this.address = Optional.fromNullable(builder.address);
         this.timezone = Optional.fromNullable(builder.timezone);
         this.localeCountry = Optional.fromNullable(builder.locale_country);
         this.localeLanguage = Optional.fromNullable(builder.locale_language);
-
-        if (builder.tags.build().isEmpty()) {
-            this.tags = Optional.absent();
-        } else {
-            this.tags = Optional.of(builder.tags.build());
-        }
     }
 
     /**
@@ -68,24 +59,6 @@ public class RegisterEmailChannel {
     }
 
     /**
-     * Get the setTags flag. Optional, though required if tags is present.
-     * If true on update, value of tags overwrites any existing tags.
-     * If false, tags are unioned with existing tags.
-     * @return Optional Boolean setTags
-     */
-    public Optional<Boolean> getSetTags() {
-        return setTags;
-    }
-
-    /**
-     * Get the List of String representations of tags.
-     * @return Optional ImmutableList of Strings
-     */
-    public Optional<ImmutableList<String>> getTags() {
-        return tags;
-    }
-
-    /**
      * Get a String representation of the timezone.
      * @return Optional String timezone
      */
@@ -110,7 +83,7 @@ public class RegisterEmailChannel {
     }
 
     /**
-     * New Channel Builder.
+     * New Register Email Register Email Channel builder.
      *
      * @return Builder
      */
@@ -125,8 +98,6 @@ public class RegisterEmailChannel {
         RegisterEmailChannel that = (RegisterEmailChannel) o;
         return type == that.type &&
                 Objects.equal(address, that.address) &&
-                Objects.equal(setTags, that.setTags) &&
-                Objects.equal(tags, that.tags) &&
                 Objects.equal(timezone, that.timezone) &&
                 Objects.equal(localeCountry, that.localeCountry) &&
                 Objects.equal(localeLanguage, that.localeLanguage) &&
@@ -140,8 +111,6 @@ public class RegisterEmailChannel {
                 "type=" + type +
                 ", emailOptInLevel=" + emailOptInLevel +
                 ", address=" + address +
-                ", setTags=" + setTags +
-                ", tags=" + tags +
                 ", timezone=" + timezone +
                 ", localeCountry=" + localeCountry +
                 ", localeLanguage=" + localeLanguage +
@@ -150,17 +119,15 @@ public class RegisterEmailChannel {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(type, emailOptInLevel, address, setTags, tags, timezone, localeCountry, localeLanguage);
+        return Objects.hashCode(type, emailOptInLevel, address, timezone, localeCountry, localeLanguage);
     }
 
     /**
-     * Channel Builder
+     * Register Email RegisterEmailChannel Builder
      */
     public final static class Builder {
         private ChannelType type;
         private String address;
-        private boolean setTags;
-        private ImmutableList.Builder<String> tags = ImmutableList.builder();
         private String timezone;
         private String locale_country;
         private String locale_language;
@@ -172,7 +139,7 @@ public class RegisterEmailChannel {
         /**
          * Set the RegisterEmailChannel opt in status.
          * @param emailOptInLevel OptInLevel
-         * @return Channel Builder
+         * @return RegisterEmailChannel Builder
          */
         public Builder setEmailOptInLevel(OptInLevel emailOptInLevel) {
             this.email_opt_in_level = emailOptInLevel;
@@ -186,42 +153,10 @@ public class RegisterEmailChannel {
          * old associations. Examples: email address, phone number. If
          * missing, channel_id must be present.
          * @param address String
-         * @return Channel Builder
+         * @return RegisterEmailChannel Builder
          */
         public Builder setAddress(String address) {
             this.address = address;
-            return this;
-        }
-
-        /**
-         * Optional, though required if tags is present.
-         * If true on update, value of tags overwrites any existing tags.
-         * If false, tags are unioned with existing tags.
-         * @param setTags boolean
-         * @return Channel Builder
-         */
-        public Builder setTags(boolean setTags) {
-            this.setTags = setTags;
-            return this;
-        }
-
-        /**
-         * Add a List of String representations of tags.
-         * @param tags A List of Strings
-         * @return Channel Builder
-         */
-        public Builder addAllTags(List<String> tags) {
-            this.tags.addAll(tags);
-            return this;
-        }
-
-        /**
-         * Set a String representation of a tag.
-         * @param tag String
-         * @return Channel Builder
-         */
-        public Builder addTag(String tag) {
-            tags.add(tag);
             return this;
         }
 
@@ -230,7 +165,7 @@ public class RegisterEmailChannel {
          * as a string, e.g., "America/Los Angeles". Will set the timezone
          * tag group tag with the specified value.
          * @param timezone String
-         * @return Channel Builder
+         * @return RegisterEmailChannel Builder
          */
         public Builder setTimeZone(String timezone) {
             this.timezone = timezone;
@@ -241,7 +176,7 @@ public class RegisterEmailChannel {
          * Set a the localeCountry The two-letter country locale shortcode.
          * Will set the ua_locale_country tag group to the specified value.
          * @param locale_country String
-         * @return Channel Builder
+         * @return RegisterEmailChannel Builder
          */
         public Builder setLocaleCountry(String locale_country) {
             this.locale_country = locale_country;
@@ -253,7 +188,7 @@ public class RegisterEmailChannel {
          * shortcode. Will set the ua_locale_language tag group to the
          * specified value
          * @param locale_language String
-         * @return Channel Builder
+         * @return RegisterEmailChannel Builder
          */
         public Builder setLocaleLanguage(String locale_language) {
             this.locale_language = locale_language;

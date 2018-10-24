@@ -66,7 +66,7 @@ public class OpenChannel {
     }
 
     /**
-     * New OpenChannel Builder.
+     * New OpenRegister Email Channel builder.
      * @return Builder
      */
     public static Builder newBuilder() {
@@ -106,7 +106,7 @@ public class OpenChannel {
 
 
     /**
-     * OpenChannel Builder
+     * OpenRegister Email Channel builder
      */
     public final static class Builder {
         private String openPlatformName = null;
@@ -119,7 +119,7 @@ public class OpenChannel {
          * Set the canonical name of the open platform on which the channel is registered.
          *
          * @param platformName String
-         * @return OpenChannel Builder
+         * @return OpenRegister Email Channel builder
          */
         public Builder setOpenPlatformName(String platformName) {
             this.openPlatformName = platformName;
@@ -133,7 +133,7 @@ public class OpenChannel {
          * After a call swapping the address, new registrations referencing
          * the old address will be assumed to represent a new channel.
          * @param oldAddress String
-         * @return OpenChannel Builder
+         * @return OpenRegister Email Channel builder
          */
         public Builder setOldAddress(String oldAddress) {
             this.oldAddress = oldAddress;
@@ -147,7 +147,7 @@ public class OpenChannel {
          * with existing identifiers, they will replace them, similar to "set_tags": true above.
          * @param key String
          * @param value String
-         * @return OpenChannel Builder
+         * @return OpenRegister Email Channel builder
          */
         public Builder addIdentifier(String key, String value) {
             this.identifiers.put(key, value);
@@ -160,7 +160,7 @@ public class OpenChannel {
          * This value should be exhaustive whenever this key is present—values will not be unioned
          * with existing identifiers, they will replace them, similar to "set_tags": true above.
          * @param entries Map of Strings
-         * @return OpenChannel Builder
+         * @return OpenRegister Email Channel builder
          */
         public Builder addAllIdentifierEntries(Map<String, String> entries) {
             this.identifiers.putAll(entries);
