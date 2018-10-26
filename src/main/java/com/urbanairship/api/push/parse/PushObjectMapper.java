@@ -11,9 +11,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.channel.model.email.RegisterEmailChannel;
+import com.urbanairship.api.channel.model.email.RegisterEmailChannelResponse;
 import com.urbanairship.api.channel.model.open.OpenChannel;
 import com.urbanairship.api.channel.model.open.Channel;
-import com.urbanairship.api.channel.parse.email.RegisterEmailChannelDeserializer;
+import com.urbanairship.api.channel.parse.email.RegiserEmailChannelResponseDeserializer;
 import com.urbanairship.api.channel.parse.email.RegisterEmailChannelSerializer;
 import com.urbanairship.api.channel.parse.open.ChannelSerializer;
 import com.urbanairship.api.channel.parse.open.OpenChannelSerializer;
@@ -323,7 +324,8 @@ public class PushObjectMapper {
                 .addDeserializer(SegmentDefinition.class, new SegmentDefinitionDeserializer())
 
                 /* Email */
-                .addSerializer(RegisterEmailChannel.class, new RegisterEmailChannelSerializer());
+                .addSerializer(RegisterEmailChannel.class, new RegisterEmailChannelSerializer())
+                .addDeserializer(RegisterEmailChannelResponse.class, new RegiserEmailChannelResponseDeserializer());
 
         MAPPER.registerModule(MODULE);
         MAPPER.registerModule(CommonObjectMapper.getModule());
