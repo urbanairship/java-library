@@ -17,8 +17,8 @@ public class BigPictureStyle implements Style<String> {
 
     private BigPictureStyle(Builder builder) {
         this.content = builder.content;
-        this.title = Optional.of(builder.title);
-        this.summary = Optional.of(builder.summary);
+        this.title = Optional.fromNullable(builder.title);
+        this.summary = Optional.fromNullable(builder.summary);
     }
 
     /**
