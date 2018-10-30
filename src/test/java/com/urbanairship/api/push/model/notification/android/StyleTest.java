@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 public class StyleTest {
@@ -31,6 +32,20 @@ public class StyleTest {
         assertEquals(style.getContent(), "hello.png");
         assertEquals(style.getType().getStyleType(), "big_picture");
     }
+
+    @Test
+    public void testBigPictureStyleOptional() throws Exception {
+        BigPictureStyle style = BigPictureStyle.newBuilder()
+                .setContent("hello.png")
+                .build();
+
+        assertNotNull(style);
+        assertFalse(style.getTitle().isPresent());
+        assertFalse(style.getSummary().isPresent());
+        assertEquals(style.getContent(), "hello.png");
+        assertEquals(style.getType().getStyleType(), "big_picture");
+    }
+
 
     @Test
     public void testBigTextStyle() throws Exception {
