@@ -1,5 +1,12 @@
 -------------------------
-3.1.0 17SEPT18
+3.3.0 30OCT18
+-------------------------
+- Added support for SMS registrations.
+- Updated to Jackson version 2.9.7.
+- Deprecated 'all' as a selectable device type.
+
+-------------------------
+3.2.0 17SEPT18
 -------------------------
 - Added support for the Require Interaction web notify feature.
 
