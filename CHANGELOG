@@ -2,7 +2,7 @@
 3.3.0 30OCT18
 -------------------------
 - Added support for SMS registrations.
-- Updated to jackson version 2.9.7.
+- Updated to Jackson version 2.9.7.
 - Deprecated 'all' as a selectable device type.
 
 -------------------------
