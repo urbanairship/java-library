@@ -1,9 +1,11 @@
 env: maven:3.5.4-alpine
 steps:
-  - type: deps_image
-    force: true
-  - label: javadoc
-    args: ['javadoc:javadoc']
+  - label: remove me
+    args: [-q, install]
+  # - type: deps_image
+  #   force: true
+  # - label: javadoc
+  #   args: ['javadoc:javadoc']
   # - type: tar
   #   dir: target/site
   #   args:
