@@ -1,16 +1,17 @@
-# trigger build
 env: maven:3.5.4-alpine
 steps:
   - type: deps_image
-  - args: ['javadoc:javadoc']
-  - type: tar
-    dir: target/site
-    args:
-      - -czf
-      - java-library-apidocs.tar.gz
-      - apidocs
-    dest: java-library-apidocs.tar.gz
-  - type: upload
-    dir: target/site/apidocs
-    src: java-library-apidocs.tar.gz
-    dest: gs://ua-web-ephemeral-test/java-library-apidocs.tar.gz
+    force: true
+  - label: javadoc
+    args: ['javadoc:javadoc']
+  # - type: tar
+  #   dir: target/site
+  #   args:
+  #     - -czf
+  #     - java-library-apidocs.tar.gz
+  #     - apidocs
+  #   dest: java-library-apidocs.tar.gz
+  # - type: upload
+  #   dir: target/site/apidocs
+  #   src: java-library-apidocs.tar.gz
+  #   dest: gs://ua-web-ephemeral-test/java-library-apidocs.tar.gz
