@@ -1,33 +1,32 @@
 package com.urbanairship.api.channel.model.email;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.push.model.PushModelObject;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
- * Represents the payload to be used for registering or updating an open channel.
+ * Represents the payload to be used for registering or updating an email channel.
  */
-public class UninstallOpenChannel extends PushModelObject {
+public class UninstallEmailChannel extends PushModelObject {
 
-    private final String channelId;
-    private final String deviceType;
+    private final String emailAddress;
 
-    private UninstallOpenChannel(Builder builder) {
-        this.channelId = builder.channel_id;
-        this.deviceType = builder.device_type;
+    private UninstallEmailChannel(Builder builder) {
+        this.emailAddress = builder.email_address;
+
     }
 
-    public String getChannelId() {
-        return channelId;
-    }
-
-    public String getDeviceType() {
-        return deviceType;
+    public String getEmailAddress() {
+        return emailAddress;
     }
 
     /**
-         * New UninstallOpenChannel builder.
+         * New UninstallEmailChannel builder.
          * @return Builder
          */
         public static Builder newBuilder () {
@@ -37,59 +36,46 @@ public class UninstallOpenChannel extends PushModelObject {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof UninstallOpenChannel)) return false;
-        UninstallOpenChannel that = (UninstallOpenChannel) o;
-        return Objects.equals(getChannelId(), that.getChannelId()) &&
-                Objects.equals(getDeviceType(), that.getDeviceType());
+        if (!(o instanceof UninstallEmailChannel)) return false;
+        UninstallEmailChannel that = (UninstallEmailChannel) o;
+        return Objects.equals(getEmailAddress(), that.getEmailAddress());
     }
 
     @Override
     public String toString() {
-        return "UninstallOpenChannel{" +
-                "channelId='" + channelId + '\'' +
-                ", deviceType='" + deviceType + '\'' +
+        return "UninstallEmailChannel{" +
+                "emailAddress='" + emailAddress + '\'' +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getChannelId(), getDeviceType());
+        return Objects.hash(emailAddress);
     }
 
     /**
-     * Create UninstallOpenChannel Builder
+     * Create UninstallEmailChannel Builder
      */
     public final static class Builder {
-        private String channel_id;
-        private String device_type;
+        private String email_address;
 
         private Builder() {}
 
         /**
-         * Set the channelId
-         * @param channelId String
+         * Set the email_address
+         * @param email_address String
+         * Used _ notation to conform with previously written code
          * @return RegisterEmailChannel Builder
          */
-        public Builder setChannelId(String channelId) {
-            this.channel_id = channelId;
+        public Builder setEmailAddress(String email_address) {
+            this.email_address = email_address;
             return this;
         }
 
-        /**
-         * Set the deviceType
-         * @param deviceType String
-         * @return RegisterEmailChannel Builder
-         */
-        public Builder setDeviceType(String deviceType) {
-            this.device_type = deviceType;
-            return this;
-        }
+        public UninstallEmailChannel build() {
+            Preconditions.checkNotNull(email_address, "'email_address' cannot be null.");
 
-        public UninstallOpenChannel build() {
-            Preconditions.checkNotNull(channel_id, "'channel_id' cannot be null.");
-            Preconditions.checkNotNull(device_type, "'device_type' cannot be null.");
-
-            return new UninstallOpenChannel(this);
+            return new UninstallEmailChannel(this);
         }
     }
 }

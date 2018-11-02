@@ -1,7 +1,7 @@
 package com.urbanairship.api.channel.email.parse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.urbanairship.api.channel.model.email.RegisterEmailChannelResponse;
+import com.urbanairship.api.channel.model.email.EmailChannelResponse;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.junit.Test;
 
@@ -20,7 +20,7 @@ public class EmailRegisterChannelResponseDeserializerTest {
 
         ObjectMapper mapper = PushObjectMapper.getInstance();
         try {
-            RegisterEmailChannelResponse response = mapper.readValue(responseString, RegisterEmailChannelResponse.class);
+            EmailChannelResponse response = mapper.readValue(responseString, EmailChannelResponse.class);
             org.junit.Assert.assertTrue("Error in response channelId",
                     response.getChannelId().get().equals("251d3318-b3cb-4e9f-876a-ea3bfa6e47bd"));
             org.junit.Assert.assertTrue("Error in response status",

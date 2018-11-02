@@ -3,29 +3,28 @@ package com.urbanairship.api.channel.model.email;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.urbanairship.api.client.Response;
 
-public class RegisterEmailChannelResponse {
+public class EmailChannelResponse {
 
     private final boolean ok;
     private final Optional<String> channelId;
 
-    private RegisterEmailChannelResponse() {
+    private EmailChannelResponse() {
         this(false, null);
     }
 
-    private RegisterEmailChannelResponse(boolean ok, String channelId) {
+    private EmailChannelResponse(boolean ok, String channelId) {
         this.ok = ok;
         this.channelId = Optional.fromNullable(channelId);
     }
 
     /**
-     * New RegisterEmailChannelResponse builder
+     * New EmailChannelResponse builder
      *
      * @return Builder
      */
-    public static RegisterEmailChannelResponse.Builder newBuilder() {
-        return new RegisterEmailChannelResponse.Builder();
+    public static EmailChannelResponse.Builder newBuilder() {
+        return new EmailChannelResponse.Builder();
     }
 
     /**
@@ -67,7 +66,7 @@ public class RegisterEmailChannelResponse {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final RegisterEmailChannelResponse other = (RegisterEmailChannelResponse) obj;
+        final EmailChannelResponse other = (EmailChannelResponse) obj;
         return Objects.equal(this.ok, other.ok) && Objects.equal(this.channelId, other.channelId);
     }
 
@@ -85,7 +84,7 @@ public class RegisterEmailChannelResponse {
          * @param value boolean
          * @return Builder
          */
-        public RegisterEmailChannelResponse.Builder setOk(boolean value) {
+        public EmailChannelResponse.Builder setOk(boolean value) {
             this.ok = value;
             return this;
         }
@@ -96,21 +95,21 @@ public class RegisterEmailChannelResponse {
          * @param channelId String
          * @return Builder
          */
-        public RegisterEmailChannelResponse.Builder setChannelId(String channelId) {
+        public EmailChannelResponse.Builder setChannelId(String channelId) {
             this.channelId = channelId;
             return this;
         }
 
         /**
-         * Build the RegisterEmailChannelResponse object
-         * @return RegisterEmailChannelResponse
+         * Build the EmailChannelResponse object
+         * @return EmailChannelResponse
          */
-        public RegisterEmailChannelResponse build() {
+        public EmailChannelResponse build() {
             if (ok != false) {
                 Preconditions.checkArgument(channelId != null);
             }
 
-            return new RegisterEmailChannelResponse(ok, channelId);
+            return new EmailChannelResponse(ok, channelId);
         }
     }
 }
