@@ -1,18 +1,18 @@
 package com.urbanairship.api.channel.parse.email;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.urbanairship.api.channel.model.email.RegisterEmailChannelResponse;
+import com.urbanairship.api.channel.model.email.EmailChannelResponse;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 
 import java.io.IOException;
 
-public class RegisterEmailChannelResponseReader implements JsonObjectReader<RegisterEmailChannelResponse> {
+public class RegisterEmailChannelResponseReader implements JsonObjectReader<EmailChannelResponse> {
 
-    private final RegisterEmailChannelResponse.Builder builder;
+    private final EmailChannelResponse.Builder builder;
 
     public RegisterEmailChannelResponseReader() {
-        this.builder = RegisterEmailChannelResponse.newBuilder();
+        this.builder = EmailChannelResponse.newBuilder();
     }
 
     public void readOk(JsonParser jsonParser) throws IOException {
@@ -24,7 +24,7 @@ public class RegisterEmailChannelResponseReader implements JsonObjectReader<Regi
     }
 
     @Override
-    public RegisterEmailChannelResponse validateAndBuild() throws IOException {
+    public EmailChannelResponse validateAndBuild() throws IOException {
         try {
             return builder.build();
         } catch (Exception ex) {

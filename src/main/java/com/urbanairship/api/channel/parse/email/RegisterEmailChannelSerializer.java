@@ -4,9 +4,13 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.urbanairship.api.channel.Constants;
+import com.urbanairship.api.channel.model.email.OptInLevel;
 import com.urbanairship.api.channel.model.email.RegisterEmailChannel;
 
 import java.io.IOException;
+import java.util.HashMap;
+
+import static com.urbanairship.api.channel.model.email.OptInLevel.EMAIL_COMMERCIAL_OPTED_IN;
 
 public class RegisterEmailChannelSerializer extends JsonSerializer<RegisterEmailChannel> {
 
@@ -21,8 +25,12 @@ public class RegisterEmailChannelSerializer extends JsonSerializer<RegisterEmail
             jgen.writeStringField(Constants.ADDRESS, payload.getAddress().get());
         }
 
-        if (payload.getEmailOptInLevel().isPresent()) {
-            jgen.writeStringField(Constants.EMAIL_OPT_IN_LEVEL, payload.getEmailOptInLevel().get().getIdentifier());
+        for (OptInLevel level: OptInLevel.values()
+             ) {
+            if (payload.getEmailOptInLevel().get().keySet().contains(level)) {
+                jgen.writeObjectField(level.getIdentifier(),
+                        payload.getEmailOptInLevel().get().get(level));
+            }
         }
 
         if (payload.getTimezone().isPresent()) {

@@ -6,8 +6,11 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.push.model.PushModelObject;
+import org.joda.time.DateTime;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents the payload to be used for registering or updating an email channel.
@@ -15,7 +18,7 @@ import java.util.List;
 public class RegisterEmailChannel extends PushModelObject {
 
     private final ChannelType type;
-    private final Optional<OptInLevel> emailOptInLevel;
+    private final Optional<Map<OptInLevel,String>> emailOptInLevel;
     private final Optional<String> address;
     private final Optional<Boolean> setTags;
     private final Optional<ImmutableList<String>> tags;
@@ -28,7 +31,7 @@ public class RegisterEmailChannel extends PushModelObject {
         this.type = ChannelType.EMAIL;
         this.emailOptInLevel = Optional.fromNullable((builder.email_opt_in_level));
         this.address = Optional.fromNullable(builder.address);
-        this.setTags = Optional.fromNullable(builder.setTags);
+        this.setTags = Optional.fromNullable(builder.set_tags);
         this.timezone = Optional.fromNullable(builder.timezone);
         this.localeCountry = Optional.fromNullable(builder.locale_country);
         this.localeLanguage = Optional.fromNullable(builder.locale_language);
@@ -52,7 +55,7 @@ public class RegisterEmailChannel extends PushModelObject {
      * Get the channel email opt in level.
      * @return Optional OptInLevel emailOptInLevel
      */
-    public Optional<OptInLevel> getEmailOptInLevel() {
+    public Optional<Map<OptInLevel,String>> getEmailOptInLevel() {
         return emailOptInLevel;
     }
 
@@ -93,8 +96,7 @@ public class RegisterEmailChannel extends PushModelObject {
     }
 
     /**
-     * New Register Email Register Email Channel builder.
-     *
+     * New RegisterEmailChannel builder.
      * @return Builder
      */
     public static Builder newBuilder() {
@@ -119,7 +121,7 @@ public class RegisterEmailChannel extends PushModelObject {
 
     @Override
     public String toString() {
-        return "Channel{" +
+        return "RegisterEmailChannel{" +
                 "type=" + type +
                 ", emailOptInLevel=" + emailOptInLevel +
                 ", address=" + address +
@@ -137,28 +139,28 @@ public class RegisterEmailChannel extends PushModelObject {
     }
 
     /**
-     * Register Email RegisterEmailChannel Builder
+     * Create RegisterEmailChannel Builder
      */
     public final static class Builder {
         private ChannelType type;
         private String address;
         private String timezone;
         private ImmutableList.Builder<String> tags = ImmutableList.builder();
-        private boolean setTags;
+        private boolean set_tags;
         private String locale_country;
         private String locale_language;
-        private OptInLevel email_opt_in_level;
+        private Map<OptInLevel, String> email_opt_in_level = new HashMap<>();
 
         private Builder() {}
 
 
         /**
-         * Set the RegisterEmailChannel opt in status.
-         * @param emailOptInLevel OptInLevel
+         * Set the EmailOptInLevel status and time.
+         * @param level, time OptInLevel, String
          * @return RegisterEmailChannel Builder
          */
-        public Builder setEmailOptInLevel(OptInLevel emailOptInLevel) {
-            this.email_opt_in_level = emailOptInLevel;
+        public Builder setEmailOptInLevel(OptInLevel level, String time) {
+            this.email_opt_in_level.put(level, time);
             return this;
         }
 
@@ -184,7 +186,7 @@ public class RegisterEmailChannel extends PushModelObject {
          * @return Channel Builder
          */
         public Builder setTags(boolean setTags) {
-            this.setTags = setTags;
+            this.set_tags = setTags;
             return this;
         }
 
@@ -223,6 +225,7 @@ public class RegisterEmailChannel extends PushModelObject {
         /**
          * Set a the localeCountry The two-letter country locale shortcode.
          * Will set the ua_locale_country tag group to the specified value.
+         * Used _ notation to conform with previously written code
          * @param locale_country String
          * @return RegisterEmailChannel Builder
          */
@@ -235,6 +238,7 @@ public class RegisterEmailChannel extends PushModelObject {
          * Set a String localeLanguage, the two-letter language locale
          * shortcode. Will set the ua_locale_language tag group to the
          * specified value
+         * Used _ notation to conform with previously written code
          * @param locale_language String
          * @return RegisterEmailChannel Builder
          */

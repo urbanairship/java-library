@@ -13,7 +13,7 @@ import com.urbanairship.api.channel.model.ChannelResponse;
 import com.urbanairship.api.channel.model.ChannelView;
 import com.urbanairship.api.channel.model.OpenChannelResponse;
 import com.urbanairship.api.channel.model.email.RegisterEmailChannel;
-import com.urbanairship.api.channel.model.email.RegisterEmailChannelResponse;
+import com.urbanairship.api.channel.model.email.EmailChannelResponse;
 import com.urbanairship.api.channel.model.ios.IosSettings;
 import com.urbanairship.api.channel.model.ios.QuietTime;
 import com.urbanairship.api.channel.model.open.OpenChannel;
@@ -42,7 +42,7 @@ public class ChannelObjectMapper {
         MODULE.addDeserializer(WebSettings.class, new WebSettingsDeserializer());
         MODULE.addDeserializer(OpenChannel.class, new OpenChannelDeserializer());
         MODULE.addDeserializer(OpenChannelResponse.class, new OpenChannelResponseDeserializer());
-        MODULE.addDeserializer(RegisterEmailChannelResponse.class, new RegisterEmailChannelResponseDeserializer());
+        MODULE.addDeserializer(EmailChannelResponse.class, new RegisterEmailChannelResponseDeserializer());
         MODULE.addSerializer(RegisterEmailChannel.class, new RegisterEmailChannelSerializer());
 
         MAPPER.registerModule(MODULE);

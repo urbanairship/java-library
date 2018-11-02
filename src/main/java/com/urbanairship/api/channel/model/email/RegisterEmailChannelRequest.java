@@ -2,7 +2,6 @@ package com.urbanairship.api.channel.model.email;
 
 import com.google.common.base.Preconditions;
 import com.google.common.net.HttpHeaders;
-import com.urbanairship.api.channel.model.OpenChannelResponse;
 import com.urbanairship.api.channel.parse.ChannelObjectMapper;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
@@ -15,7 +14,7 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RegisterEmailChannelRequest implements Request<RegisterEmailChannelResponse> {
+public class RegisterEmailChannelRequest implements Request<EmailChannelResponse> {
 
     private final static String API_REGISTER_EMAIL_CHANNEL = "/api/channels/email/";
 
@@ -59,11 +58,11 @@ public class RegisterEmailChannelRequest implements Request<RegisterEmailChannel
     }
 
     @Override
-    public ResponseParser<RegisterEmailChannelResponse> getResponseParser() {
-        return new ResponseParser<RegisterEmailChannelResponse>() {
+    public ResponseParser<EmailChannelResponse> getResponseParser() {
+        return new ResponseParser<EmailChannelResponse>() {
             @Override
-            public RegisterEmailChannelResponse parse(String response) throws IOException {
-                return ChannelObjectMapper.getInstance().readValue(response, RegisterEmailChannelResponse.class);
+            public EmailChannelResponse parse(String response) throws IOException {
+                return ChannelObjectMapper.getInstance().readValue(response, EmailChannelResponse.class);
             }
         };
     }

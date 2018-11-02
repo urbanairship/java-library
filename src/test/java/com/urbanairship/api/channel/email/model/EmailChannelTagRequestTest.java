@@ -1,4 +1,4 @@
-package com.urbanairship.api.channel.email.parse;
+package com.urbanairship.api.channel.email.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
