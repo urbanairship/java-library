@@ -1,9 +1,8 @@
-package com.urbanairship.api.channel;
+package com.urbanairship.api.channel.model.email;
 
 import com.google.common.base.Preconditions;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.channel.model.OpenChannelResponse;
-import com.urbanairship.api.channel.model.open.OpenChannelPayload;
 import com.urbanairship.api.channel.parse.ChannelObjectMapper;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
@@ -16,19 +15,19 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OpenChannelRequest implements Request<OpenChannelResponse> {
+public class RegisterEmailChannelRequest implements Request<RegisterEmailChannelResponse> {
 
-    private final static String API_OPEN_CHANNEL = "/api/channels/open/";
+    private final static String API_REGISTER_EMAIL_CHANNEL = "/api/channels/email/";
 
-    private final OpenChannelPayload payload;
+    private final RegisterEmailChannel payload;
 
-    private OpenChannelRequest(OpenChannelPayload payload) {
-        Preconditions.checkNotNull(payload, "Payload must not be null to create an open channel request");
+    private RegisterEmailChannelRequest(RegisterEmailChannel payload) {
+        Preconditions.checkNotNull(payload, "Payload must not be null to create an RegisterEmail channel request");
         this.payload = payload;
     }
 
-    public static OpenChannelRequest newRequest(OpenChannelPayload payload) {
-        return new OpenChannelRequest(payload);
+    public static RegisterEmailChannelRequest newRequest(RegisterEmailChannel payload) {
+        return new RegisterEmailChannelRequest(payload);
     }
 
     @Override
@@ -56,15 +55,15 @@ public class OpenChannelRequest implements Request<OpenChannelResponse> {
 
     @Override
     public URI getUri(URI baseUri) throws URISyntaxException {
-        return RequestUtils.resolveURI(baseUri, API_OPEN_CHANNEL);
+        return RequestUtils.resolveURI(baseUri, API_REGISTER_EMAIL_CHANNEL);
     }
 
     @Override
-    public ResponseParser<OpenChannelResponse> getResponseParser() {
-        return new ResponseParser<OpenChannelResponse>() {
+    public ResponseParser<RegisterEmailChannelResponse> getResponseParser() {
+        return new ResponseParser<RegisterEmailChannelResponse>() {
             @Override
-            public OpenChannelResponse parse(String response) throws IOException {
-                return ChannelObjectMapper.getInstance().readValue(response, OpenChannelResponse.class);
+            public RegisterEmailChannelResponse parse(String response) throws IOException {
+                return ChannelObjectMapper.getInstance().readValue(response, RegisterEmailChannelResponse.class);
             }
         };
     }

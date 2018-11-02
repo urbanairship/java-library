@@ -14,7 +14,7 @@ import com.urbanairship.api.channel.model.email.RegisterEmailChannel;
 import com.urbanairship.api.channel.model.email.RegisterEmailChannelResponse;
 import com.urbanairship.api.channel.model.open.OpenChannel;
 import com.urbanairship.api.channel.model.open.Channel;
-import com.urbanairship.api.channel.parse.email.RegiserEmailChannelResponseDeserializer;
+import com.urbanairship.api.channel.parse.email.RegisterEmailChannelResponseDeserializer;
 import com.urbanairship.api.channel.parse.email.RegisterEmailChannelSerializer;
 import com.urbanairship.api.channel.parse.open.ChannelSerializer;
 import com.urbanairship.api.channel.parse.open.OpenChannelSerializer;
@@ -325,7 +325,7 @@ public class PushObjectMapper {
 
                 /* Email */
                 .addSerializer(RegisterEmailChannel.class, new RegisterEmailChannelSerializer())
-                .addDeserializer(RegisterEmailChannelResponse.class, new RegiserEmailChannelResponseDeserializer());
+                .addDeserializer(RegisterEmailChannelResponse.class, new RegisterEmailChannelResponseDeserializer());
 
         MAPPER.registerModule(MODULE);
         MAPPER.registerModule(CommonObjectMapper.getModule());

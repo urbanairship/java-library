@@ -3,10 +3,7 @@ package com.urbanairship.api.channel.model.email;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
-import com.urbanairship.api.channel.model.ChannelResponse;
-import com.urbanairship.api.channel.model.ChannelView;
-import com.urbanairship.api.push.model.notification.ios.IOSBadgeData;
+import com.urbanairship.api.client.Response;
 
 public class RegisterEmailChannelResponse {
 

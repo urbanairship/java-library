@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.urbanairship.api.channel.Constants;
 import com.urbanairship.api.channel.model.email.RegisterEmailChannel;
-import com.urbanairship.api.channel.model.open.Channel;
-import sun.jvm.hotspot.asm.Register;
 
 import java.io.IOException;
 

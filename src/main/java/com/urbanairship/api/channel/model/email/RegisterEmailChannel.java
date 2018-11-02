@@ -5,17 +5,20 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.channel.model.ChannelType;
+import com.urbanairship.api.push.model.PushModelObject;
 
 import java.util.List;
 
 /**
  * Represents the payload to be used for registering or updating an email channel.
  */
-public class RegisterEmailChannel {
+public class RegisterEmailChannel extends PushModelObject {
 
     private final ChannelType type;
     private final Optional<OptInLevel> emailOptInLevel;
     private final Optional<String> address;
+    private final Optional<Boolean> setTags;
+    private final Optional<ImmutableList<String>> tags;
     private final Optional<String> timezone;
     private final Optional<String> localeCountry;
     private final Optional<String> localeLanguage;
@@ -25,9 +28,16 @@ public class RegisterEmailChannel {
         this.type = ChannelType.EMAIL;
         this.emailOptInLevel = Optional.fromNullable((builder.email_opt_in_level));
         this.address = Optional.fromNullable(builder.address);
+        this.setTags = Optional.fromNullable(builder.setTags);
         this.timezone = Optional.fromNullable(builder.timezone);
         this.localeCountry = Optional.fromNullable(builder.locale_country);
         this.localeLanguage = Optional.fromNullable(builder.locale_language);
+
+        if (builder.tags.build().isEmpty()) {
+            this.tags = Optional.absent();
+        } else {
+            this.tags = Optional.of(builder.tags.build());
+        }
     }
 
     /**
@@ -98,6 +108,8 @@ public class RegisterEmailChannel {
         RegisterEmailChannel that = (RegisterEmailChannel) o;
         return type == that.type &&
                 Objects.equal(address, that.address) &&
+                Objects.equal(setTags, that.setTags) &&
+                Objects.equal(tags, that.tags) &&
                 Objects.equal(timezone, that.timezone) &&
                 Objects.equal(localeCountry, that.localeCountry) &&
                 Objects.equal(localeLanguage, that.localeLanguage) &&
@@ -111,6 +123,8 @@ public class RegisterEmailChannel {
                 "type=" + type +
                 ", emailOptInLevel=" + emailOptInLevel +
                 ", address=" + address +
+                ", setTags=" + setTags +
+                ", tags=" + tags +
                 ", timezone=" + timezone +
                 ", localeCountry=" + localeCountry +
                 ", localeLanguage=" + localeLanguage +
@@ -119,7 +133,7 @@ public class RegisterEmailChannel {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(type, emailOptInLevel, address, timezone, localeCountry, localeLanguage);
+        return Objects.hashCode(type, emailOptInLevel, address,setTags, tags, timezone, localeCountry, localeLanguage);
     }
 
     /**
@@ -129,6 +143,8 @@ public class RegisterEmailChannel {
         private ChannelType type;
         private String address;
         private String timezone;
+        private ImmutableList.Builder<String> tags = ImmutableList.builder();
+        private boolean setTags;
         private String locale_country;
         private String locale_language;
         private OptInLevel email_opt_in_level;
@@ -157,6 +173,38 @@ public class RegisterEmailChannel {
          */
         public Builder setAddress(String address) {
             this.address = address;
+            return this;
+        }
+
+        /**
+         * Optional, though required if tags is present.
+         * If true on update, value of tags overwrites any existing tags.
+         * If false, tags are unioned with existing tags.
+         * @param setTags boolean
+         * @return Channel Builder
+         */
+        public Builder setTags(boolean setTags) {
+            this.setTags = setTags;
+            return this;
+        }
+
+        /**
+         * Add a List of String representations of tags.
+         * @param tags A List of Strings
+         * @return Channel Builder
+         */
+        public Builder addAllTags(List<String> tags) {
+            this.tags.addAll(tags);
+            return this;
+        }
+
+        /**
+         * Set a String representation of a tag.
+         * @param tag String
+         * @return Channel Builder
+         */
+        public Builder addTag(String tag) {
+            tags.add(tag);
             return this;
         }
 
