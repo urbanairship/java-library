@@ -31,7 +31,6 @@ public class EmailTagRequest implements Request<String> {
     private final Map<String, Set<String>> removeTags = new HashMap<String, Set<String>>();
     private final Map<String, Set<String>> setTags = new HashMap<String, Set<String>>();
 
-
     private ObjectNode payloadNode = JsonNodeFactory.instance.objectNode();
     private ObjectNode emailNode = JsonNodeFactory.instance.objectNode();;
     private Optional<ObjectNode> addTagNode = Optional.fromNullable(JsonNodeFactory.instance.objectNode());
@@ -59,7 +58,6 @@ public class EmailTagRequest implements Request<String> {
     public EmailTagRequest addEmailChannel(String channel) {
         jsonStringBuilder.append(channel);
         return this;
-
     }
 
     public EmailTagRequest addTags(String tagGroup, Set<String> tags) {
@@ -88,7 +86,6 @@ public class EmailTagRequest implements Request<String> {
 
         emailNode.put(EMAIL_CHANNEL_KEY, jsonStringBuilder.toString());
         payloadNode.set(AUDIENCE_KEY, emailNode);
-
 
         if (!addTags.isEmpty()) {
             payloadNode.putPOJO(ADD_KEY,addTags);        }

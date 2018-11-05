@@ -4,15 +4,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.channel.model.email.OptInLevel;
 import com.urbanairship.api.channel.model.email.RegisterEmailChannel;
-
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import org.joda.time.DateTime;
+
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.HashMap;
-
-import static org.junit.Assert.assertEquals;
 
 public class EmailRegisterChannelPayloadSerializerTest {
     private static final ObjectMapper MAPPER = PushObjectMapper.getInstance();
@@ -47,7 +43,7 @@ public class EmailRegisterChannelPayloadSerializerTest {
             System.out.println(actual);
             JsonNode expected = MAPPER.readTree(jsonString);
 
-            assertEquals(expected, actual);
+            org.junit.Assert.assertEquals(expected, actual);
         }
 
     }

@@ -6,7 +6,6 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.channel.model.ChannelType;
-import com.urbanairship.api.channel.model.email.OptInLevel;
 import com.urbanairship.api.push.model.PushModelObject;
 
 import java.util.List;

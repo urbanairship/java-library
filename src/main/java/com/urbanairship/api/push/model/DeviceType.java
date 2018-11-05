@@ -29,7 +29,7 @@ public final class DeviceType {
 
     private enum PlatformType {
         NATIVE,
-        OPEN,
+        OPEN
     }
 
     private static final String OPEN_PLATFORM_NAMESPACE = "open::";

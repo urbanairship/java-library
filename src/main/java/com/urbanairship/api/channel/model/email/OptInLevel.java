@@ -36,6 +36,4 @@ public enum OptInLevel {
     public String getIdentifier() {
         return identifier;
     }
-
 }
-
