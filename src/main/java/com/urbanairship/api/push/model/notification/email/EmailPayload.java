@@ -259,14 +259,8 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
             return this;
         }
 
-//        private final Pattern PLAINTEXT_PATTERN = Pattern.compile("(?i)(\\[\\[.*?ua-unsubscribe.*?\\]\\])");
-//        private boolean validPlaintext = PLAINTEXT_PATTERN.matcher(plaintextBody).find();
-//
-//        private final Pattern HTML_PATTERN = Pattern.compile("(?i)(<a[^>]*?data-ua-unsubscribe.*?>.*?\\S+?.*?</a>)");
-//        private boolean validHtml = HTML_PATTERN.matcher(htmlBody).find();
-
         public EmailPayload build() {
-            //Set precondition for message type : commercial which requires unsubscribe links.
+
             Preconditions.checkNotNull(deviceType, "DeviceType must be set.");
 
             Preconditions.checkNotNull(subject, "Subject must be set.");
@@ -278,15 +272,6 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
 
             Preconditions.checkArgument(StringUtils.isNotBlank(plaintextBody),
                     "Plaintext Body must not be blank");
-//
-//            if(messageType == messageType.COMMERCIAL) {
-//                Preconditions.checkArgument(validPlaintext == true,
-//                        "PlaintextBody must contain Unsubscribe Link");
-//                if(!htmlBody.isEmpty()){
-//                    Preconditions.checkArgument(validHtml == true && validPlaintext ,
-//                            "PlaintextBody and HtmlBody must contain unsubscribe links" );
-//                }
-//            }
 
             Preconditions.checkNotNull(messageType, "MessageType must be set.");
 

@@ -6,7 +6,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.push.model.PushModelObject;
-import org.joda.time.DateTime;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +24,6 @@ public class RegisterEmailChannel extends PushModelObject {
     private final Optional<String> timezone;
     private final Optional<String> localeCountry;
     private final Optional<String> localeLanguage;
-
 
     private RegisterEmailChannel(Builder builder) {
         this.type = ChannelType.EMAIL;
@@ -60,11 +58,7 @@ public class RegisterEmailChannel extends PushModelObject {
     }
 
     /**
-     * Get the email channel's address, a Unique identifier of the object
-     * used as the primary ID in the delivery tier (webhook). One-to-one
-     * with Channel ID. New addresses on existing channels will overwrite
-     * old associations.If
-     * missing, channel_id must be present.
+     * Get the email channel's address,
      * @return Optional String address
      */
     public Optional<String> getAddress() {
@@ -116,7 +110,6 @@ public class RegisterEmailChannel extends PushModelObject {
                 Objects.equal(localeCountry, that.localeCountry) &&
                 Objects.equal(localeLanguage, that.localeLanguage) &&
                 Objects.equal(emailOptInLevel, that.emailOptInLevel);
-
     }
 
     @Override
@@ -152,7 +145,6 @@ public class RegisterEmailChannel extends PushModelObject {
         private Map<OptInLevel, String> email_opt_in_level = new HashMap<>();
 
         private Builder() {}
-
 
         /**
          * Set the EmailOptInLevel status and time.
@@ -254,6 +246,3 @@ public class RegisterEmailChannel extends PushModelObject {
         }
     }
 }
-
-
-

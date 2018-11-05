@@ -17,7 +17,6 @@ import java.util.Map;
 public class RegisterEmailChannelRequest implements Request<EmailChannelResponse> {
 
     private final static String API_REGISTER_EMAIL_CHANNEL = "/api/channels/email/";
-
     private final RegisterEmailChannel payload;
 
     private RegisterEmailChannelRequest(RegisterEmailChannel payload) {

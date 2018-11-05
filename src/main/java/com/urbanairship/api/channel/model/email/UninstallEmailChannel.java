@@ -1,12 +1,7 @@
 package com.urbanairship.api.channel.model.email;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
-import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.push.model.PushModelObject;
-
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -18,7 +13,6 @@ public class UninstallEmailChannel extends PushModelObject {
 
     private UninstallEmailChannel(Builder builder) {
         this.emailAddress = builder.email_address;
-
     }
 
     public String getEmailAddress() {
@@ -79,6 +73,3 @@ public class UninstallEmailChannel extends PushModelObject {
         }
     }
 }
-
-
-

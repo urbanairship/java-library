@@ -8,9 +8,6 @@ import com.urbanairship.api.channel.model.email.OptInLevel;
 import com.urbanairship.api.channel.model.email.RegisterEmailChannel;
 
 import java.io.IOException;
-import java.util.HashMap;
-
-import static com.urbanairship.api.channel.model.email.OptInLevel.EMAIL_COMMERCIAL_OPTED_IN;
 
 public class RegisterEmailChannelSerializer extends JsonSerializer<RegisterEmailChannel> {
 
@@ -20,11 +17,12 @@ public class RegisterEmailChannelSerializer extends JsonSerializer<RegisterEmail
         jgen.writeObjectFieldStart(Constants.CHANNEL);
         jgen.writeStringField(Constants.TYPE, payload.getType().getIdentifier());
 
-
         if (payload.getAddress().isPresent()) {
             jgen.writeStringField(Constants.ADDRESS, payload.getAddress().get());
         }
-        /*Checks keys in the opt in hashmap*/
+
+        /*Checks keys in the opt-in hashmap to see which matches the opt-in levels in the opt-in level enum.
+        * then writes the correct value to the JSON*/
         for (OptInLevel level: OptInLevel.values()
              ) {
             if (payload.getEmailOptInLevel().get().keySet().contains(level)) {
