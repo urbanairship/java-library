@@ -21,13 +21,19 @@ import static org.junit.Assert.assertTrue;
 public class EmailChannelTagRequestTest {
     private static final ObjectMapper MAPPER = ChannelObjectMapper.getInstance();
 
-    @Test
-    public void testAddEmailTagRequest() throws IOException {
+    Set<String> testTagSet;
 
-        Set<String> testTagSet = new TreeSet<>();
+    public void setup(){
+    testTagSet = new TreeSet<>();
         for(int i =1; i < 4 ; i++) {
             testTagSet.add(String.format("tag%s", i));
         }
+    }
+
+    @Test
+    public void testAddEmailTagRequest() throws IOException {
+
+        setup();
 
         EmailTagRequest emailTagRequest =  EmailTagRequest.newRequest();
             emailTagRequest.addEmailChannel("name@example.com")
@@ -56,10 +62,7 @@ public class EmailChannelTagRequestTest {
     @Test
     public void testRemoveEmailTagRequest() throws IOException {
 
-        Set<String> testTagSet = new TreeSet<>();
-        for(int i =1; i < 4 ; i++) {
-            testTagSet.add(String.format("tag%s", i));
-        }
+        setup();
 
         EmailTagRequest emailTagRequest =  EmailTagRequest.newRequest();
         emailTagRequest.addEmailChannel("name@example.com")
@@ -87,18 +90,13 @@ public class EmailChannelTagRequestTest {
 
     @Test
     public void testSetEmailTagRequest() throws IOException {
-
-        Set<String> testTagSet = new TreeSet<>();
-        for(int i =1; i < 4 ; i++) {
-            testTagSet.add(String.format("tag%s", i));
-        }
+        setup();
 
         EmailTagRequest emailTagRequest =  EmailTagRequest.newRequest();
         emailTagRequest.addEmailChannel("name@example.com")
                 .setTags("my_fav_tag_group1", testTagSet )
-                .setTags("my_fav_tag_group2", testTagSet )
-                .setTags("my_fav_tag_group3", testTagSet );
-
+        .setTags("my_fav_tag_group2", testTagSet )
+        .setTags("my_fav_tag_group3", testTagSet );
 
         String jsonFromString = "{\n" +
                 "   \"audience\": {\n" +
@@ -117,14 +115,28 @@ public class EmailChannelTagRequestTest {
         assertEquals(expected, actual);
     }
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testEmptyEmailTagRequest() throws IOException {
 
         EmailTagRequest emailTagRequest =  EmailTagRequest.newRequest();
-        emailTagRequest.addEmailChannel("name@example.com");
+        emailTagRequest.getRequestBody();
+    }
 
-        thrown.expect(IllegalArgumentException.class);
+    @Test(expected = IllegalArgumentException.class)
+    public void testEmptyAudienceTagRequest() throws IOException {
+
+        EmailTagRequest emailTagRequest =  EmailTagRequest.newRequest();
+        emailTagRequest.addEmailChannel("name@example.com");
+        emailTagRequest.getRequestBody();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void tesSetTagAndAddRequest() throws IOException {
+
+        EmailTagRequest emailTagRequest =  EmailTagRequest.newRequest();
+        emailTagRequest.addEmailChannel("name@example.com")
+                .setTags("my_fav_tag_group1", testTagSet )
+                .addTags("my_fav_tag_group1", testTagSet );
+        emailTagRequest.getRequestBody();
     }
 }

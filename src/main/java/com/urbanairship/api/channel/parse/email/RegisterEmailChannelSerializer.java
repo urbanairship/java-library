@@ -24,7 +24,7 @@ public class RegisterEmailChannelSerializer extends JsonSerializer<RegisterEmail
         if (payload.getAddress().isPresent()) {
             jgen.writeStringField(Constants.ADDRESS, payload.getAddress().get());
         }
-
+        /*Checks keys in the opt in hashmap*/
         for (OptInLevel level: OptInLevel.values()
              ) {
             if (payload.getEmailOptInLevel().get().keySet().contains(level)) {
