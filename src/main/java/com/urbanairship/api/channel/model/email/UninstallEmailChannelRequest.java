@@ -14,6 +14,11 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * The UninstallEmailChannelRequest class builds a payload to remove email channels that is executed in
+ * the {@link com.urbanairship.api.client.UrbanAirshipClient}.
+ */
 public class UninstallEmailChannelRequest implements Request<EmailChannelResponse> {
 
     private final static String API_UNINSTALL_EMAIL_CHANNEL = "/api/channels/email/uninstall";
@@ -25,6 +30,12 @@ public class UninstallEmailChannelRequest implements Request<EmailChannelRespons
         this.payload = payload;
     }
 
+    /**
+     * Creates a new request to uninstall an email channel.
+     *
+     * @param payload
+     * @return UninstallEmailChannelRequest A new request to uninstall an email channel.
+     * */
     public static UninstallEmailChannelRequest newRequest(UninstallEmailChannel payload) {
         return new UninstallEmailChannelRequest(payload);
     }

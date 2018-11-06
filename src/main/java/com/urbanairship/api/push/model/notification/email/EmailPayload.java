@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 
 public class EmailPayload extends PushModelObject implements DevicePayloadOverride {
 
-    //Make HTML Option, everything else required. If someone tries to build one, throw an error...if that's the way we want to go about doing it.
     private final Optional<String> alert;
     private final Optional<String> subject;
     private final Optional<String> htmlBody;
@@ -39,6 +38,11 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
         return new Builder();
     }
 
+    /**
+     * Returns Devicetype: Email when requested
+     *
+     * @return String email
+     * */
     @Override
     public DeviceType getDeviceType() { return deviceType.EMAIL; }
 

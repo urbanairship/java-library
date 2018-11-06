@@ -14,16 +14,21 @@ public class UninstallEmailChannel extends PushModelObject {
     private UninstallEmailChannel(Builder builder) {
         this.emailAddress = builder.email_address;
     }
-
+    /**
+     * Get the email address
+     *
+     * @return String email address
+     * */
     public String getEmailAddress() {
         return emailAddress;
     }
 
     /**
-         * New UninstallEmailChannel builder.
-         * @return Builder
-         */
-        public static Builder newBuilder () {
+     * New UninstallEmailChannel builder.
+     *
+     * @return Builder
+     */
+    public static Builder newBuilder () {
             return new Builder();
         }
 
