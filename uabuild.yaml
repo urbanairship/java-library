@@ -3,5 +3,6 @@ steps:
   - label: javadoc
     args: [-q, javadoc:javadoc]
   - label: upload docs
+    type: gsutil
     entrypoint: bash
     args: [ci/upload_docs.sh]
