@@ -18,6 +18,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * The EmailTagRequest class builds email tag mutation requests to be executed in
+ * the {@link com.urbanairship.api.client.UrbanAirshipClient}.
+ */
 public class EmailTagRequest implements Request<String> {
 
     private final static String EMAIL_CHANNELS_TAGS_PATH = "/api/channels/email/tags";
@@ -32,7 +36,7 @@ public class EmailTagRequest implements Request<String> {
     private final Map<String, Set<String>> setTags = new HashMap<String, Set<String>>();
 
     private ObjectNode payloadNode = JsonNodeFactory.instance.objectNode();
-    private ObjectNode emailNode = JsonNodeFactory.instance.objectNode();;
+    private ObjectNode emailNode = JsonNodeFactory.instance.objectNode();
     private Optional<ObjectNode> addTagNode = Optional.fromNullable(JsonNodeFactory.instance.objectNode());
     private Optional<ObjectNode> removeTagNode = Optional.fromNullable(JsonNodeFactory.instance.objectNode());
     private Optional<ObjectNode> setTagNode = Optional.fromNullable(JsonNodeFactory.instance.objectNode());
@@ -60,16 +64,38 @@ public class EmailTagRequest implements Request<String> {
         return this;
     }
 
+
+    /**
+     * Add tag group and tags to add to channels.
+     *
+     * @param tagGroup String
+     * @param tags Set<String> of tags
+     * @return ChannelTagRequest
+     * */
     public EmailTagRequest addTags(String tagGroup, Set<String> tags) {
         addTags.put(tagGroup, tags);
         return this;
     }
 
+    /**
+     * Add tag group and tags to remove from channels.
+     *
+     * @param tagGroup String
+     * @param tags Set<String> of tags
+     * @return ChannelTagRequest
+     */
     public EmailTagRequest removeTags(String tagGroup, Set<String> tags) {
         removeTags.put(tagGroup, tags);
         return this;
     }
 
+    /**
+     * Add tag group and tags to set to channels.
+     *
+     * @param tagGroup String
+     * @param tags Set of tags
+     * @return ChannelTagRequest
+     */
     public EmailTagRequest setTags(String tagGroup, Set<String> tags) {
         setTags.put(tagGroup, tags);
         return this;
