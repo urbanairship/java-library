@@ -19,7 +19,7 @@ public class EmailPayloadTest {
     public void testBuilder() {
         DeviceType deviceTypeEmail = DeviceType.open("email");
 
-        EmailPayload openPayloadEmail = EmailPayload.newBuilder()
+        EmailPayload emailPayload = EmailPayload.newBuilder()
                 .setSubject("Welcome to the Winter Sale! ")
                 .setPlaintextBody("Greetings! Check out our latest winter deals! [[ua-unsubscribe href=\"http://unsubscribe.urbanairship.com/email/success.html\"]]")
                 .setHtmlBody("<h1>Seasons Greetings</h1><p>Check out our winter deals!</p><p><a data-ua-unsubscribe=\"1\" title=\"unsubscribe\" href=\"http://unsubscribe.urbanairship.com/email/success.html\">Unsubscribe</a></p>")
@@ -30,12 +30,12 @@ public class EmailPayloadTest {
                 .setReplyTo("no-reply@urbanairship.com")
                 .build();
 
-        assertEquals(openPayloadEmail.getSubject().get(), "Welcome to the Winter Sale! ");
-        assertEquals(openPayloadEmail.getHtmlBody().get(), "<h1>Seasons Greetings</h1><p>Check out our winter deals!</p><p><a data-ua-unsubscribe=\"1\" title=\"unsubscribe\" href=\"http://unsubscribe.urbanairship.com/email/success.html\">Unsubscribe</a></p>");
-        assertEquals(openPayloadEmail.getPlaintextBody().get(), "Greetings! Check out our latest winter deals! [[ua-unsubscribe href=\"http://unsubscribe.urbanairship.com/email/success.html\"]]");
-        assertEquals(openPayloadEmail.getMessageType().get(), MessageType.COMMERCIAL);
-        assertEquals(openPayloadEmail.getSenderName().get(), "Urban Airship");
-        assertEquals(openPayloadEmail.getSenderAddress().get(), "team@urbanairship.com");
-        assertEquals(openPayloadEmail.getReplyTo().get(), "no-reply@urbanairship.com");
+        assertEquals(emailPayload.getSubject().get(), "Welcome to the Winter Sale! ");
+        assertEquals(emailPayload.getHtmlBody().get(), "<h1>Seasons Greetings</h1><p>Check out our winter deals!</p><p><a data-ua-unsubscribe=\"1\" title=\"unsubscribe\" href=\"http://unsubscribe.urbanairship.com/email/success.html\">Unsubscribe</a></p>");
+        assertEquals(emailPayload.getPlaintextBody().get(), "Greetings! Check out our latest winter deals! [[ua-unsubscribe href=\"http://unsubscribe.urbanairship.com/email/success.html\"]]");
+        assertEquals(emailPayload.getMessageType().get(), MessageType.COMMERCIAL);
+        assertEquals(emailPayload.getSenderName().get(), "Urban Airship");
+        assertEquals(emailPayload.getSenderAddress().get(), "team@urbanairship.com");
+        assertEquals(emailPayload.getReplyTo().get(), "no-reply@urbanairship.com");
     }
 }
