@@ -1,19 +1,7 @@
 env: maven:3.5.4-alpine
 steps:
-  - label: remove me
+  - label: javadoc
     args: [-q, javadoc:javadoc]
-  # - type: deps_image
-  #   force: true
-  # - label: javadoc
-  #   args: ['javadoc:javadoc']
-  # - type: tar
-  #   dir: target/site
-  #   args:
-  #     - -czf
-  #     - java-library-apidocs.tar.gz
-  #     - apidocs
-  #   dest: java-library-apidocs.tar.gz
-  # - type: upload
-  #   dir: target/site/apidocs
-  #   src: java-library-apidocs.tar.gz
-  #   dest: gs://ua-web-ephemeral-test/java-library-apidocs.tar.gz
+  - label: upload docs
+    entrypoint: bash
+    args: [ci/upload_docs.sh]
