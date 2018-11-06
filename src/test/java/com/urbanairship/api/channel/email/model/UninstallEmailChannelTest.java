@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
-public class EmailChannelUninstallRequestTest {
+public class UninstallEmailChannelTest {
 
     private static final ObjectMapper MAPPER = ChannelObjectMapper.getInstance();
 
