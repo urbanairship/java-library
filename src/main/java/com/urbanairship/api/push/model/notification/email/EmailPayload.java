@@ -10,6 +10,10 @@ import org.apache.commons.lang.StringUtils;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+
+/**
+ * Represents the payload to be used for registering or updating an email channel.
+ */
 public class EmailPayload extends PushModelObject implements DevicePayloadOverride {
 
     private final Optional<String> alert;

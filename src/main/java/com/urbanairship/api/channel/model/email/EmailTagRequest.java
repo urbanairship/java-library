@@ -37,10 +37,6 @@ public class EmailTagRequest implements Request<String> {
 
     private ObjectNode payloadNode = JsonNodeFactory.instance.objectNode();
     private ObjectNode emailNode = JsonNodeFactory.instance.objectNode();
-    private Optional<ObjectNode> addTagNode = Optional.fromNullable(JsonNodeFactory.instance.objectNode());
-    private Optional<ObjectNode> removeTagNode = Optional.fromNullable(JsonNodeFactory.instance.objectNode());
-    private Optional<ObjectNode> setTagNode = Optional.fromNullable(JsonNodeFactory.instance.objectNode());
-    private Optional<ObjectNode> tagNode = Optional.fromNullable(JsonNodeFactory.instance.objectNode());
 
     private StringBuilder jsonStringBuilder = new StringBuilder();
 
