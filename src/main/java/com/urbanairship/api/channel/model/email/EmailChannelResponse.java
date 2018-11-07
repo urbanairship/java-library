@@ -4,14 +4,10 @@ import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
-public class EmailChannelResponse {
+public final class EmailChannelResponse {
 
     private final boolean ok;
     private final Optional<String> channelId;
-
-    private EmailChannelResponse() {
-        this(false, null);
-    }
 
     private EmailChannelResponse(boolean ok, String channelId) {
         this.ok = ok;
