@@ -14,6 +14,9 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Represents the Request to be used for registering or updating an email channel.
+ */
 public class RegisterEmailChannelRequest implements Request<EmailChannelResponse> {
 
     private final static String API_REGISTER_EMAIL_CHANNEL = "/api/channels/email/";
