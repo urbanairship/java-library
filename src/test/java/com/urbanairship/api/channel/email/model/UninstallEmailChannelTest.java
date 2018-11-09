@@ -30,7 +30,6 @@ public class UninstallEmailChannelTest {
                 "}";
 
         JsonNode actual = MAPPER.readTree(uninstallEmailChannel.toJSON());
-        System.out.println(actual);
 
         JsonNode expected = null;
         try {
