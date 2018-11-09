@@ -40,7 +40,6 @@ public class EmailRegisterChannelPayloadSerializerTest {
                     "  }",level.getIdentifier());
 
             JsonNode actual = MAPPER.readTree(parsedJson);
-            System.out.println(actual);
             JsonNode expected = MAPPER.readTree(jsonString);
 
             org.junit.Assert.assertEquals(expected, actual);
