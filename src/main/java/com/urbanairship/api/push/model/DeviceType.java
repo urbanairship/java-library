@@ -16,6 +16,7 @@ public final class DeviceType {
     public static final DeviceType IOS = new DeviceType(PlatformType.NATIVE, "ios");
     public static final DeviceType WEB = new DeviceType(PlatformType.NATIVE, "web");
     public static final DeviceType WNS = new DeviceType(PlatformType.NATIVE, "wns");
+    public static final DeviceType EMAIL = new DeviceType(PlatformType.NATIVE, "email");
 
     public static final ImmutableSet<DeviceType> TYPES = ImmutableSet.<DeviceType>builder()
             .add(AMAZON)
@@ -23,6 +24,7 @@ public final class DeviceType {
             .add(IOS)
             .add(WEB)
             .add(WNS)
+            .add(EMAIL)
             .build();
 
     private enum PlatformType {
@@ -61,9 +63,9 @@ public final class DeviceType {
 
         if (identifier.contains(OPEN_PLATFORM_NAMESPACE)) {
             return Optional.of(new DeviceType(PlatformType.OPEN, identifier));
+        } else {
+            return Optional.absent();
         }
-
-        return Optional.absent();
     }
 
     @Override

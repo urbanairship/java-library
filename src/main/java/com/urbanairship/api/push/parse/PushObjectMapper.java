@@ -10,8 +10,14 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.common.collect.ImmutableMap;
+import com.urbanairship.api.channel.model.email.EmailChannelResponse;
+import com.urbanairship.api.channel.model.email.RegisterEmailChannel;
+import com.urbanairship.api.channel.model.email.UninstallEmailChannel;
 import com.urbanairship.api.channel.model.open.OpenChannel;
 import com.urbanairship.api.channel.model.open.Channel;
+import com.urbanairship.api.channel.parse.email.RegisterEmailChannelResponseDeserializer;
+import com.urbanairship.api.channel.parse.email.RegisterEmailChannelSerializer;
+import com.urbanairship.api.channel.parse.email.UninstallEmailChannelSerializer;
 import com.urbanairship.api.channel.parse.open.ChannelSerializer;
 import com.urbanairship.api.channel.parse.open.OpenChannelSerializer;
 import com.urbanairship.api.common.parse.CommonObjectMapper;
@@ -211,7 +217,7 @@ public class PushObjectMapper {
                 .addDeserializer(PushResponse.class, new PushResponseDeserializer())
 
 
-            /* IOS */
+                /* IOS */
                 .addSerializer(IOSDevicePayload.class, new IOSDevicePayloadSerializer())
                 .addDeserializer(IOSDevicePayload.class, iosPayloadDS)
                 .addSerializer(IOSBadgeData.class, new IOSBadgeDataSerializer())
@@ -226,7 +232,7 @@ public class PushObjectMapper {
                 .addSerializer(IOSMediaContent.class, new IOSMediaContentSerializer())
                 .addDeserializer(IOSMediaContent.class, new IOSMediaContentDeserializer())
 
-            /* WNS enums */
+                /* WNS enums */
                 .addSerializer(WNSToastData.Duration.class, new WNSDurationSerializer())
                 .addDeserializer(WNSToastData.Duration.class, new WNSDurationDeserializer())
                 .addSerializer(WNSAudioData.Sound.class, new WNSSoundSerializer())
@@ -236,7 +242,7 @@ public class PushObjectMapper {
                 .addSerializer(WNSPush.CachePolicy.class, new WNSCachePolicySerializer())
                 .addDeserializer(WNSPush.CachePolicy.class, new WNSCachePolicyDeserializer())
 
-            /* WNS composite types */
+                /* WNS composite types */
                 .addSerializer(WNSDevicePayload.class, new WNSDevicePayloadSerializer())
                 .addDeserializer(WNSDevicePayload.class, wnsPayloadDS)
                 .addSerializer(WNSBinding.class, new WNSBindingSerializer())
@@ -250,7 +256,7 @@ public class PushObjectMapper {
                 .addSerializer(WNSAudioData.class, new WNSAudioSerializer())
                 .addDeserializer(WNSAudioData.class, audioDS)
 
-            /* Android */
+                /* Android */
                 .addSerializer(AndroidDevicePayload.class, new AndroidDevicePayloadSerializer())
                 .addDeserializer(AndroidDevicePayload.class, androidPayloadDS)
                 .addSerializer(Wearable.class, new WearableSerializer())
@@ -265,30 +271,30 @@ public class PushObjectMapper {
                 .addSerializer(PublicNotification.class, new PublicNotificationSerializer())
                 .addDeserializer(PublicNotification.class, new PublicNotificationDeserializer())
 
-            /* WebSettings */
+                /* WebSettings */
                 .addSerializer(WebDevicePayload.class, new WebDevicePayloadSerializer())
                 .addDeserializer(WebDevicePayload.class, webPayloadDS)
                 .addSerializer(WebIcon.class, new WebIconSerializer())
                 .addDeserializer(WebIcon.class, new WebIconDeserializer())
 
-            /* AMAZON */
+                /* AMAZON */
                 .addSerializer(ADMDevicePayload.class, new ADMDevicePayloadSerializer())
                 .addDeserializer(ADMDevicePayload.class, admPayloadDS)
 
-            /* Rich Push */
+                /* Rich Push */
                 .addSerializer(RichPushMessage.class, new RichPushMessageSerializer())
                 .addDeserializer(RichPushMessage.class, new RichPushMessageDeserializer())
                 .addSerializer(RichPushIcon.class, new RichPushIconSerializer())
                 .addDeserializer(RichPushIcon.class, new RichPushIconDeserializer())
 
-            /* Schedules */
+                /* Schedules */
                 .addDeserializer(SchedulePayload.class, SchedulePayloadDeserializer.INSTANCE)
                 .addSerializer(SchedulePayload.class, ScheduledPayloadSerializer.INSTANCE)
                 .addDeserializer(Schedule.class, ScheduleDeserializer.INSTANCE)
                 .addSerializer(Schedule.class, ScheduleSerializer.INSTANCE)
                 .addSerializer(ScheduleDetails.class, ScheduleDetailsSerializer.INSTANCE)
 
-           /* Actions */
+                /* Actions */
                 .addDeserializer(Actions.class, new ActionsDeserializer())
                 .addSerializer(Actions.class, new ActionsSerializer(ActionNameRegistry.INSTANCE))
 
@@ -304,22 +310,26 @@ public class PushObjectMapper {
 
                 .addDeserializer(TagActionData.class, new TagActionDataDeserializer())
 
-            /* Custom Events */
+                /* Custom Events */
                 .addSerializer(CustomEventUser.class, new CustomEventUserSerializer())
                 .addSerializer(CustomEventPayload.class, new CustomEventSerializer())
                 .addSerializer(CustomEventBody.class, new CustomEventBodySerializer())
 
                 .addDeserializer(CustomEventResponse.class, new CustomEventResponseDeserializer())
 
-            /* Open Channel */
+                /* Open Channel */
                 .addSerializer(Channel.class, new ChannelSerializer())
                 .addSerializer(OpenChannel.class, new OpenChannelSerializer())
                 .addSerializer(OpenPayload.class, new OpenPayloadSerializer())
 
-            /* Segments */
-                .addDeserializer(SegmentDefinition.class, new SegmentDefinitionDeserializer());
+                /* Segments */
+                .addDeserializer(SegmentDefinition.class, new SegmentDefinitionDeserializer())
 
-
+                /* Email */
+                .addSerializer(RegisterEmailChannel.class, new RegisterEmailChannelSerializer())
+                .addDeserializer(EmailChannelResponse.class, new RegisterEmailChannelResponseDeserializer())
+                .addSerializer(UninstallEmailChannel.class,
+                        new UninstallEmailChannelSerializer());
 
         MAPPER.registerModule(MODULE);
         MAPPER.registerModule(CommonObjectMapper.getModule());
