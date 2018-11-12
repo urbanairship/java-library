@@ -9,11 +9,13 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.urbanairship.api.channel.SmsRegistrationRequest;
 import com.urbanairship.api.channel.model.ChannelResponse;
 import com.urbanairship.api.channel.model.ChannelView;
 import com.urbanairship.api.channel.model.OpenChannelResponse;
 import com.urbanairship.api.channel.model.email.RegisterEmailChannel;
 import com.urbanairship.api.channel.model.email.EmailChannelResponse;
+import com.urbanairship.api.channel.model.SmsRegistrationResponse;
 import com.urbanairship.api.channel.model.ios.IosSettings;
 import com.urbanairship.api.channel.model.ios.QuietTime;
 import com.urbanairship.api.channel.model.open.OpenChannel;
@@ -44,6 +46,7 @@ public class ChannelObjectMapper {
         MODULE.addDeserializer(OpenChannelResponse.class, new OpenChannelResponseDeserializer());
         MODULE.addDeserializer(EmailChannelResponse.class, new RegisterEmailChannelResponseDeserializer());
         MODULE.addSerializer(RegisterEmailChannel.class, new RegisterEmailChannelSerializer());
+        MODULE.addDeserializer(SmsRegistrationResponse.class, new SmsRegistrationResponseDeserializer());
 
         MAPPER.registerModule(MODULE);
         MAPPER.registerModule(new JodaModule());
