@@ -43,6 +43,7 @@ public class Constants {
     public static final String LOCALE_COUNTRY = "locale_country";
     public static final String LOCALE_LANGUAGE = "locale_language";
     public static final String TYPE = "type";
+    public static final String EMAIL_ADDRESS = "email_address";
 
     private Constants() {
     }
