@@ -27,7 +27,7 @@ public class BasicSelector extends PushModelObject implements Selector  {
 
     @Override
     public DeviceTypeData getApplicableDeviceTypes() {
-        return DeviceTypeData.all();
+        return DeviceTypeData.of(type.getPlatform().get());
     }
 
     @Override

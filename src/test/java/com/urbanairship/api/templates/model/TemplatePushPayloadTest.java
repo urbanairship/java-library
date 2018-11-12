@@ -1,5 +1,6 @@
 package com.urbanairship.api.templates.model;
 
+import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.audience.Selectors;
 import org.junit.Test;
@@ -21,13 +22,13 @@ public class TemplatePushPayloadTest {
 
         TemplatePushPayload payload = TemplatePushPayload.newBuilder()
                 .setAudience(Selectors.tag("tag"))
-                .setDeviceTypes(DeviceTypeData.all())
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.ANDROID))
                 .setMergeData(mergeData)
                 .build();
 
         assertNotNull(payload);
         assertEquals(payload.getAudience(), Selectors.tag("tag"));
-        assertEquals(payload.getDeviceTypes(), DeviceTypeData.all());
+        assertEquals(payload.getDeviceTypes(), DeviceTypeData.of(DeviceType.ANDROID));
         assertEquals(payload.getMergeData(), mergeData);
     }
 

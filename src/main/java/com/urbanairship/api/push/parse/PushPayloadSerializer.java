@@ -18,11 +18,9 @@ public class PushPayloadSerializer extends JsonSerializer<PushPayload> {
         jgen.writeStartObject();
 
         jgen.writeObjectField("audience", payload.getAudience());
-        if (payload.getDeviceTypes().isAll()) {
-            jgen.writeStringField("device_types", "all");
-        } else {
-            jgen.writeObjectField("device_types", payload.getDeviceTypes().getDeviceTypes().get());
-        }
+
+        jgen.writeObjectField("device_types", payload.getDeviceTypes().getDeviceTypes().get());
+
         if (payload.getNotification().isPresent()) {
             jgen.writeObjectField("notification", payload.getNotification().get());
         }

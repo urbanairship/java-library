@@ -6,7 +6,6 @@ package com.urbanairship.api.push.model;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 
 public final class DeviceTypeData extends PushModelObject {
