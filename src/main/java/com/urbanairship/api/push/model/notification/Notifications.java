@@ -5,10 +5,8 @@
 package com.urbanairship.api.push.model.notification;
 
 import com.google.common.base.Optional;
-import com.urbanairship.api.channel.model.open.OpenChannelPayload;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
-import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
@@ -107,9 +105,6 @@ public class Notifications {
     public static DeviceTypeData deviceTypes(String ... names) {
         DeviceTypeData.Builder deviceTypes = DeviceTypeData.newBuilder();
         for (String name : names) {
-            if (name.equalsIgnoreCase("all")) {
-                return DeviceTypeData.all();
-            }
             Optional<DeviceType> deviceType = DeviceType.find(name);
             if (! deviceType.isPresent()) {
                 throw unknownDeviceType(name);

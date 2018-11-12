@@ -147,19 +147,6 @@ public class PushPayloadBasicSerializationTest {
     }
 
     @Test
-    public void testDeviceTypesAll() throws Exception {
-        String json
-                = "{"
-                + "  \"audience\" : \"all\","
-                + "  \"device_types\" : \"all\","
-                + "  \"notification\" : { \"alert\" : \"wat\" }"
-                + "}";
-        PushPayload push = mapper.readValue(json, PushPayload.class);
-        assertTrue(push.getDeviceTypes().isAll());
-        assertFalse(push.getDeviceTypes().getDeviceTypes().isPresent());
-    }
-
-    @Test
     public void testDeviceTypesList() throws Exception {
         String json
                 = "{"
@@ -168,7 +155,6 @@ public class PushPayloadBasicSerializationTest {
                 + "  \"notification\" : { \"alert\" : \"wat\" }"
                 + "}";
         PushPayload push = mapper.readValue(json, PushPayload.class);
-        assertFalse(push.getDeviceTypes().isAll());
         assertTrue(push.getDeviceTypes().getDeviceTypes().isPresent());
         Set<DeviceType> deviceTypes = push.getDeviceTypes().getDeviceTypes().get();
         assertEquals(4, deviceTypes.size());
@@ -404,6 +390,18 @@ public class PushPayloadBasicSerializationTest {
                         .build())
                 .build();
         mapper.readValue(mapper.writeValueAsString(payload), PushPayload.class);
+    }
+
+    @Test
+    public void testTriggeredSerialization() throws Exception {
+        PushPayload pushPayload = PushPayload.newBuilder()
+                .setAudience(Selectors.triggered())
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.ANDROID))
+                .setNotification(Notifications.alert("Testing"))
+                .build();
+
+        String pushPayloadJson = mapper.writeValueAsString(pushPayload);
+        System.out.println(pushPayloadJson);
     }
 
     @Test(expected = APIParsingException.class)

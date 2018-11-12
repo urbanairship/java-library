@@ -14,6 +14,7 @@ import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Set;
 
 public class PlatformDataDeserializer extends JsonDeserializer<DeviceTypeData> {
@@ -34,7 +35,13 @@ public class PlatformDataDeserializer extends JsonDeserializer<DeviceTypeData> {
                                                         value),
                                           parser);
             } else {
-                builder.setAll(true);
+                Set<DeviceType> deviceTypes = new HashSet<>();
+                deviceTypes.add(DeviceType.IOS);
+                deviceTypes.add(DeviceType.ANDROID);
+                deviceTypes.add(DeviceType.WNS);
+                deviceTypes.add(DeviceType.AMAZON);
+                deviceTypes.add(DeviceType.WEB);
+                builder.addAllDeviceTypes(deviceTypes);
             }
         } else {
             Set<DeviceType> deviceTypes = parser.readValueAs(new TypeReference<Set<DeviceType>>() {});

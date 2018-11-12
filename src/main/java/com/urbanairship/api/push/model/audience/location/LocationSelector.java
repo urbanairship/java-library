@@ -37,7 +37,8 @@ public final class LocationSelector extends PushModelObject implements Selector 
 
     @Override
     public DeviceTypeData getApplicableDeviceTypes() {
-        return DeviceTypeData.all();
+        //return DeviceTypeData.all();
+        return DeviceTypeData.of(getType().getPlatform().get());
     }
 
     @Override
