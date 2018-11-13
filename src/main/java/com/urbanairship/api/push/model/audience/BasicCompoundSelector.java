@@ -27,13 +27,6 @@ public class BasicCompoundSelector implements CompoundSelector {
         return this.type;
     }
 
-    /*
-    @Override
-    public DeviceTypeData getApplicableDeviceTypes() {
-        return DeviceTypeData.all();
-    }
-    */
-
     @Override
     public DeviceTypeData getApplicableDeviceTypes() {
         return DeviceTypeData.of(type.getPlatform().get());
