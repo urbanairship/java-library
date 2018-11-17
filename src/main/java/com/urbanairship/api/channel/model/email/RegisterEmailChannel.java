@@ -19,16 +19,19 @@ public class RegisterEmailChannel extends PushModelObject {
     private final ChannelType type;
     private final Optional<Map<OptInLevel,String>> emailOptInLevel;
     private final Optional<String> address;
+    private final Optional<String> uaAddress;
     private final Optional<Boolean> setTags;
     private final Optional<ImmutableList<String>> tags;
     private final Optional<String> timezone;
     private final Optional<String> localeCountry;
     private final Optional<String> localeLanguage;
 
-    private RegisterEmailChannel(Builder builder) {
+    //Protected to facilitate subclassing for create and send child object
+    protected RegisterEmailChannel(Builder builder) {
         this.type = ChannelType.EMAIL;
         this.emailOptInLevel = Optional.fromNullable((builder.email_opt_in_level));
         this.address = Optional.fromNullable(builder.address);
+        this.uaAddress = Optional.fromNullable(builder.ua_address);
         this.setTags = Optional.fromNullable(builder.set_tags);
         this.timezone = Optional.fromNullable(builder.timezone);
         this.localeCountry = Optional.fromNullable(builder.locale_country);
@@ -63,6 +66,14 @@ public class RegisterEmailChannel extends PushModelObject {
      */
     public Optional<String> getAddress() {
         return address;
+    }
+
+    /**
+     * Get the UA reserved email channel's address,
+     * @return Optional String uaAddress
+     */
+    public Optional<String> getUaAddress() {
+        return uaAddress;
     }
 
     /**
@@ -104,6 +115,7 @@ public class RegisterEmailChannel extends PushModelObject {
         RegisterEmailChannel that = (RegisterEmailChannel) o;
         return type == that.type &&
                 Objects.equal(address, that.address) &&
+                Objects.equal(uaAddress, that.uaAddress) &&
                 Objects.equal(setTags, that.setTags) &&
                 Objects.equal(tags, that.tags) &&
                 Objects.equal(timezone, that.timezone) &&
@@ -118,6 +130,7 @@ public class RegisterEmailChannel extends PushModelObject {
                 "type=" + type +
                 ", emailOptInLevel=" + emailOptInLevel +
                 ", address=" + address +
+                ", uaAddress=" + uaAddress +
                 ", setTags=" + setTags +
                 ", tags=" + tags +
                 ", timezone=" + timezone +
@@ -128,7 +141,7 @@ public class RegisterEmailChannel extends PushModelObject {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(type, emailOptInLevel, address,setTags, tags, timezone, localeCountry, localeLanguage);
+        return Objects.hashCode(type, emailOptInLevel, address, uaAddress,setTags, tags, timezone, localeCountry, localeLanguage);
     }
 
     /**
@@ -137,6 +150,7 @@ public class RegisterEmailChannel extends PushModelObject {
     public final static class Builder {
         private ChannelType type;
         private String address;
+        private String ua_address;
         private String timezone;
         private ImmutableList.Builder<String> tags = ImmutableList.builder();
         private boolean set_tags;
@@ -144,7 +158,7 @@ public class RegisterEmailChannel extends PushModelObject {
         private String locale_language;
         private Map<OptInLevel, String> email_opt_in_level = new HashMap<>();
 
-        private Builder() {}
+        protected Builder() {}
 
         /**
          * Set the EmailOptInLevel status and time.
@@ -158,15 +172,23 @@ public class RegisterEmailChannel extends PushModelObject {
 
         /**
          * Set the channel's address, a Unique identifier of the object
-         * used as the primary ID in the delivery tier (webhook). One-to-one
-         * with Channel ID. New addresses on existing channels will overwrite
-         * old associations. Examples: email address, phone number. If
-         * missing, channel_id must be present.
+         * used as the primary ID in the delivery tier (Email).
          * @param address String
          * @return RegisterEmailChannel Builder
          */
         public Builder setAddress(String address) {
             this.address = address;
+            return this;
+        }
+
+        /**
+         * Set the channel's reserved UA address, a Unique identifier of the object
+         * used as the primary ID in the delivery tier (Create And Send Email).
+         * @param uaAddress String
+         * @return RegisterEmailChannel Builder
+         */
+        public Builder setUaAddress(String uaAddress) {
+            this.ua_address = uaAddress;
             return this;
         }
 
