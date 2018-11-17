@@ -28,39 +28,32 @@ public class CreateAndSendEmailTest {
 
     private static final ObjectMapper MAPPER = ChannelObjectMapper.getInstance();
 
-            String expectedAudienceString = "\"audience\": {\n" +
-                "    \"create_and_send\" : [\n" +
-                "      {\n" +
-                "        \"ua_address\": \"new@email.com\",\n" +
-                "        \"ua_commercial_opted_in\": \"2019-10-12T12:12:12\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"ua_address\" : \"ben@icetown.com\",\n" +
-                "        \"ua_transactional_opted_in\": \"2019-10-12T12:12:12\"\n" +
-                "      }\n" +
-                "    ]\n" +
-                "  },";
+    String channelString = "";
+    String audienceString = "";
+    String emailPayloadString = "";
+    String notificationString = "";
+    String payloadString = "";
 
-        String htmlBodyString = "\"<h1>Seasons Greetings</h1><p>Check out our winter deals!</p>" +
+    String htmlBodyString = "\"<h1>Seasons Greetings</h1><p>Check out our winter deals!</p>" +
                 "<p><a data-ua-unsubscribe=\\\"1\\\" title=\\\"unsubscribe\\\" " +
                 "href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\">Unsubscribe</a></p>";
-        String plaintextBodyString = "Greetings! Check out our latest winter deals! " +
+    String plaintextBodyString = "Greetings! Check out our latest winter deals! " +
                 "[[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]";
 
-        CreateAndSendEmailChannel newChannel = CreateAndSendEmailChannel.newBuilder()
-                .setAddress("new@email.com")
-                .setEmailOptInLevel(OptInLevel.EMAIL_COMMERCIAL_OPTED_IN,"2019-10-12T12:12:12")
-                .build();
+    RegisterEmailChannel newChannel = RegisterEmailChannel.newBuilder()
+            .setUaAddress("new@email.com")
+            .setEmailOptInLevel(OptInLevel.EMAIL_COMMERCIAL_OPTED_IN,"2019-10-12T12:12:12")
+            .build();
 
         RegisterEmailChannel benChannel = RegisterEmailChannel.newBuilder()
-                .setAddress("ben@icetown.com")
+                .setUaAddress("ben@icetown.com")
                 .setEmailOptInLevel(OptInLevel.EMAIL_TRANSACTIONAL_OPTED_IN,"2019-10-12T12:12:12")
                 .build();
 
-//        CreateAndSendAudience audience = CreateAndSendAudience.newBuilder()
-//            .setChannel(newChannel)
-//            .setChannel(benChannel)
-//            .build();
+        CreateAndSendAudience audience = CreateAndSendAudience.newBuilder()
+            .setChannel(newChannel)
+            .setChannel(benChannel)
+            .build();
 //
 //        EmailPayload emailPayload = EmailPayload.newBuilder()
 //                .setSubject("Welcome to the Winter Sale! ")
@@ -82,18 +75,12 @@ public class CreateAndSendEmailTest {
 //                .setNotification(notification)
 //                .build();
 
-    //Payload
-    //Audience
-    //Device Types
-    //Notification
-    //email
-    //campaigns
+
     @Test
     public void testNewChannel() {
         String expectedNewChannelString = "{\n" +
                 "        \"ua_address\": \"new@email.com\",\n" +
-                "        \"ua_commercial_opted_in\": \"2018-11-29T10:34:22\",\n" +
-                "      }";
+                "        \"ua_commercial_opted_in\": \"2018-11-29T10:34:22\",\n}";
         try {
             Assert.assertEquals(expectedNewChannelString, MAPPER.readTree(newChannel.toJSON()));
         } catch (IOException e) {
