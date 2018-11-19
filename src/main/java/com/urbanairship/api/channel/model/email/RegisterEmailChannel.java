@@ -1,5 +1,4 @@
-package com.urbanairship.api.channel.model.open;
-
+package com.urbanairship.api.channel.model.email;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
@@ -8,29 +7,29 @@ import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.push.model.PushModelObject;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Represents the payload to be used for registering or updating an open channel.
+ * Represents the payload to be used for registering or updating an email channel.
  */
-public class Channel extends PushModelObject {
+public class RegisterEmailChannel extends PushModelObject {
 
     private final ChannelType type;
-    private final Optional<Boolean> optIn;
+    private final Optional<Map<OptInLevel,String>> emailOptInLevel;
     private final Optional<String> address;
     private final Optional<Boolean> setTags;
     private final Optional<ImmutableList<String>> tags;
     private final Optional<String> timezone;
     private final Optional<String> localeCountry;
     private final Optional<String> localeLanguage;
-    private final OpenChannel open;
 
-    private Channel(Builder builder) {
-        this.type = builder.type;
-        this.open = builder.open;
+    private RegisterEmailChannel(Builder builder) {
+        this.type = ChannelType.EMAIL;
+        this.emailOptInLevel = Optional.fromNullable((builder.email_opt_in_level));
         this.address = Optional.fromNullable(builder.address);
-        this.optIn = Optional.fromNullable(builder.optIn);
-        this.setTags = Optional.fromNullable(builder.setTags);
+        this.setTags = Optional.fromNullable(builder.set_tags);
         this.timezone = Optional.fromNullable(builder.timezone);
         this.localeCountry = Optional.fromNullable(builder.locale_country);
         this.localeLanguage = Optional.fromNullable(builder.locale_language);
@@ -43,49 +42,27 @@ public class Channel extends PushModelObject {
     }
 
     /**
-     * Get the ChannelType.
+     * Get the RegisterEmailChannelType.
      * @return ChannelType type
      */
     public ChannelType getType() {
-        return type;
+        return ChannelType.EMAIL;
     }
 
     /**
-     * Get the channel opt in status.
-     * @return Optional Boolean optIn
+     * Get the channel email opt in level.
+     * @return Optional OptInLevel emailOptInLevel
      */
-    public Optional<Boolean> getOptIn() {
-        return optIn;
+    public Optional<Map<OptInLevel,String>> getEmailOptInLevel() {
+        return emailOptInLevel;
     }
 
     /**
-     * Get the channel's address, a Unique identifier of the object
-     * used as the primary ID in the delivery tier (webhook). One-to-one
-     * with Channel ID. New addresses on existing channels will overwrite
-     * old associations. Examples: email address, phone number. If
-     * missing, channel_id must be present.
+     * Get the email channel's address,
      * @return Optional String address
      */
     public Optional<String> getAddress() {
         return address;
-    }
-
-    /**
-     * Get the setTags flag. Optional, though required if tags is present.
-     * If true on update, value of tags overwrites any existing tags.
-     * If false, tags are unioned with existing tags.
-     * @return Optional Boolean setTags
-     */
-    public Optional<Boolean> getSetTags() {
-        return setTags;
-    }
-
-    /**
-     * Get the List of String representations of tags.
-     * @return Optional ImmutableList of Strings
-     */
-    public Optional<ImmutableList<String>> getTags() {
-        return tags;
     }
 
     /**
@@ -113,16 +90,7 @@ public class Channel extends PushModelObject {
     }
 
     /**
-     * Get open channel specific properties.
-     * @return OpenChannel open
-     */
-    public OpenChannel getOpen() {
-        return open;
-    }
-
-    /**
-     * New Channel Builder.
-     *
+     * New RegisterEmailChannel builder.
      * @return Builder
      */
     public static Builder newBuilder() {
@@ -133,72 +101,58 @@ public class Channel extends PushModelObject {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Channel that = (Channel) o;
+        RegisterEmailChannel that = (RegisterEmailChannel) o;
         return type == that.type &&
-                Objects.equal(optIn, that.optIn) &&
                 Objects.equal(address, that.address) &&
                 Objects.equal(setTags, that.setTags) &&
                 Objects.equal(tags, that.tags) &&
                 Objects.equal(timezone, that.timezone) &&
                 Objects.equal(localeCountry, that.localeCountry) &&
                 Objects.equal(localeLanguage, that.localeLanguage) &&
-                Objects.equal(open, that.open);
+                Objects.equal(emailOptInLevel, that.emailOptInLevel);
     }
 
     @Override
     public String toString() {
-        return "Channel{" +
+        return "RegisterEmailChannel{" +
                 "type=" + type +
-                ", optIn=" + optIn +
+                ", emailOptInLevel=" + emailOptInLevel +
                 ", address=" + address +
                 ", setTags=" + setTags +
                 ", tags=" + tags +
                 ", timezone=" + timezone +
                 ", localeCountry=" + localeCountry +
                 ", localeLanguage=" + localeLanguage +
-                ", open=" + open +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(type, optIn, address, setTags, tags, timezone, localeCountry, localeLanguage, open);
+        return Objects.hashCode(type, emailOptInLevel, address,setTags, tags, timezone, localeCountry, localeLanguage);
     }
 
     /**
-     * Channel Builder
+     * Create RegisterEmailChannel Builder
      */
     public final static class Builder {
         private ChannelType type;
-        private boolean optIn;
         private String address;
-        private boolean setTags;
-        private ImmutableList.Builder<String> tags = ImmutableList.builder();
         private String timezone;
+        private ImmutableList.Builder<String> tags = ImmutableList.builder();
+        private boolean set_tags;
         private String locale_country;
         private String locale_language;
-        private OpenChannel open;
+        private Map<OptInLevel, String> email_opt_in_level = new HashMap<>();
 
         private Builder() {}
 
         /**
-         * Set the ChannelType. Must be open.
-         * @param type ChannelType
-         * @return Channel Builder
+         * Set the EmailOptInLevel status and time.
+         * @param level, time OptInLevel, String
+         * @return RegisterEmailChannel Builder
          */
-        public Builder setChannelType(ChannelType type) {
-            this.type = type;
-            return this;
-        }
-
-        /**
-         * Set the channel opt in status. If false, no payloads will be
-         * delivered for the channel.
-         * @param optIn boolean
-         * @return Channel Builder
-         */
-        public Builder setOptIn(boolean optIn) {
-            this.optIn = optIn;
+        public Builder setEmailOptInLevel(OptInLevel level, String time) {
+            this.email_opt_in_level.put(level, time);
             return this;
         }
 
@@ -209,7 +163,7 @@ public class Channel extends PushModelObject {
          * old associations. Examples: email address, phone number. If
          * missing, channel_id must be present.
          * @param address String
-         * @return Channel Builder
+         * @return RegisterEmailChannel Builder
          */
         public Builder setAddress(String address) {
             this.address = address;
@@ -224,7 +178,7 @@ public class Channel extends PushModelObject {
          * @return Channel Builder
          */
         public Builder setTags(boolean setTags) {
-            this.setTags = setTags;
+            this.set_tags = setTags;
             return this;
         }
 
@@ -253,7 +207,7 @@ public class Channel extends PushModelObject {
          * as a string, e.g., "America/Los Angeles". Will set the timezone
          * tag group tag with the specified value.
          * @param timezone String
-         * @return Channel Builder
+         * @return RegisterEmailChannel Builder
          */
         public Builder setTimeZone(String timezone) {
             this.timezone = timezone;
@@ -263,8 +217,9 @@ public class Channel extends PushModelObject {
         /**
          * Set a the localeCountry The two-letter country locale shortcode.
          * Will set the ua_locale_country tag group to the specified value.
+         * Used _ notation to conform with previously written code
          * @param locale_country String
-         * @return Channel Builder
+         * @return RegisterEmailChannel Builder
          */
         public Builder setLocaleCountry(String locale_country) {
             this.locale_country = locale_country;
@@ -275,29 +230,19 @@ public class Channel extends PushModelObject {
          * Set a String localeLanguage, the two-letter language locale
          * shortcode. Will set the ua_locale_language tag group to the
          * specified value
+         * Used _ notation to conform with previously written code
          * @param locale_language String
-         * @return Channel Builder
+         * @return RegisterEmailChannel Builder
          */
         public Builder setLocaleLanguage(String locale_language) {
             this.locale_language = locale_language;
             return this;
         }
 
-        /**
-         * Set open channel specific properties.
-         * @param open OpenChannel
-         * @return Channel Builder
-         */
-        public Builder setOpenChannel(OpenChannel open) {
-            this.open = open;
-            return this;
-        }
+        public RegisterEmailChannel build() {
+            Preconditions.checkNotNull(email_opt_in_level, "'email_opt_in_level' cannot be null.");
 
-        public Channel build() {
-            Preconditions.checkNotNull(type, "'type' cannot be null.");
-            Preconditions.checkNotNull(open, "'open' cannot be null.");
-
-            return new Channel(this);
+            return new RegisterEmailChannel(this);
         }
     }
 }

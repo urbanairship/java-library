@@ -6,7 +6,10 @@ import com.urbanairship.api.channel.model.ChannelResponse;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.channel.model.ChannelView;
 import com.urbanairship.api.channel.parse.ChannelObjectMapper;
+import com.urbanairship.api.push.model.DeviceType;
 import org.junit.Test;
+
+import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -328,5 +331,44 @@ public class ChannelResponseTest {
             ex.printStackTrace();
             fail("Exception " + ex.getMessage());
         }
+    }
+
+    @Test
+    public void testSmsChannelLookup() throws IOException {
+        String jsonResponse = "{\n" +
+                "    \"ok\": true,\n" +
+                "    \"channel\": {\n" +
+                "        \"channel_id\": \"f0840bf7-1bf2-4546-9b13-1e48e1f20298\",\n" +
+                "        \"device_type\": \"sms\",\n" +
+                "        \"installed\": true,\n" +
+                "        \"push_address\": null,\n" +
+                "        \"named_user_id\": null,\n" +
+                "        \"alias\": null,\n" +
+                "        \"tags\": [ ],\n" +
+                "        \"tag_groups\": {\n" +
+                "            \"ua_channel_type\": [\n" +
+                "                \"sms\"\n" +
+                "            ],\n" +
+                "            \"ua_sender_id\": [\n" +
+                "                \"12345678912\"\n" +
+                "            ],\n" +
+                "            \"ua_opt_in\": [\n" +
+                "                \"true\"\n" +
+                "            ]\n" +
+                "        },\n" +
+                "        \"created\": \"2018-10-05T17:18:00\",\n" +
+                "        \"opt_in\": true,\n" +
+                "        \"last_registration\": \"2018-10-05T17:18:00\"\n" +
+                "    }\n" +
+                "}";
+
+        ChannelResponse response = MAPPER.readValue(jsonResponse, ChannelResponse.class);
+
+        ChannelView smsChannel = response.getChannelView().get();
+        assertNotNull(smsChannel);
+        assertEquals("sms", smsChannel.getChannelType());
+        assertTrue(smsChannel.getTagGroups().get("ua_channel_type").contains("sms"));
+        assertTrue(smsChannel.getTagGroups().get("ua_sender_id").contains("12345678912"));
+        assertEquals("f0840bf7-1bf2-4546-9b13-1e48e1f20298", smsChannel.getChannelId());
     }
 }
