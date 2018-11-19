@@ -44,6 +44,7 @@ import com.urbanairship.api.push.model.audience.location.DateRange;
 import com.urbanairship.api.push.model.audience.location.LocationSelector;
 import com.urbanairship.api.push.model.audience.location.RecentDateRange;
 import com.urbanairship.api.push.model.audience.location.SegmentDefinition;
+import com.urbanairship.api.push.model.audience.sms.SmsSelector;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.notification.Notification;
@@ -69,6 +70,7 @@ import com.urbanairship.api.push.model.notification.ios.*;
 import com.urbanairship.api.push.model.notification.open.OpenPayload;
 import com.urbanairship.api.push.model.notification.richpush.RichPushIcon;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
+import com.urbanairship.api.push.model.notification.sms.SmsPayload;
 import com.urbanairship.api.push.model.notification.web.WebDevicePayload;
 import com.urbanairship.api.push.model.notification.web.WebIcon;
 import com.urbanairship.api.push.model.notification.wns.WNSAudioData;
@@ -88,6 +90,7 @@ import com.urbanairship.api.push.parse.audience.location.LocationSelectorSeriali
 import com.urbanairship.api.push.parse.audience.location.RecentDateRangeDeserializer;
 import com.urbanairship.api.push.parse.audience.location.RecentDateRangeSerializer;
 import com.urbanairship.api.push.parse.audience.location.SegmentDefinitionDeserializer;
+import com.urbanairship.api.push.parse.audience.sms.SmsSelectorSerializer;
 import com.urbanairship.api.push.parse.notification.InteractiveDeserializer;
 import com.urbanairship.api.push.parse.notification.InteractiveSerializer;
 import com.urbanairship.api.push.parse.notification.NotificationDeserializer;
@@ -125,6 +128,7 @@ import com.urbanairship.api.push.parse.notification.richpush.RichPushIconDeseria
 import com.urbanairship.api.push.parse.notification.richpush.RichPushIconSerializer;
 import com.urbanairship.api.push.parse.notification.richpush.RichPushMessageDeserializer;
 import com.urbanairship.api.push.parse.notification.richpush.RichPushMessageSerializer;
+import com.urbanairship.api.push.parse.notification.sms.SmsPayloadSerializer;
 import com.urbanairship.api.push.parse.notification.web.WebDevicePayloadDeserializer;
 import com.urbanairship.api.push.parse.notification.web.WebDevicePayloadSerializer;
 import com.urbanairship.api.push.parse.notification.web.WebIconDeserializer;
@@ -205,6 +209,7 @@ public class PushObjectMapper {
                 .addDeserializer(Selector.class, new SelectorDeserializer())
                 .addSerializer(LocationSelector.class, new LocationSelectorSerializer())
                 .addDeserializer(LocationSelector.class, new LocationSelectorDeserializer())
+                .addSerializer(SmsSelector.class, new SmsSelectorSerializer())
                 .addSerializer(AbsoluteDateRange.class, new AbsoluteDateRangeSerializer())
                 .addDeserializer(AbsoluteDateRange.Builder.class, new AbsoluteDateRangeDeserializer())
                 .addSerializer(RecentDateRange.class, new RecentDateRangeSerializer())
@@ -276,6 +281,9 @@ public class PushObjectMapper {
                 .addDeserializer(WebDevicePayload.class, webPayloadDS)
                 .addSerializer(WebIcon.class, new WebIconSerializer())
                 .addDeserializer(WebIcon.class, new WebIconDeserializer())
+
+                /* SMS */
+                .addSerializer(SmsPayload.class, new SmsPayloadSerializer())
 
                 /* AMAZON */
                 .addSerializer(ADMDevicePayload.class, new ADMDevicePayloadSerializer())
