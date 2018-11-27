@@ -16,6 +16,10 @@ public class CreateAndSendAudience extends PushModelObject {
     public static Builder newBuilder() {
         return new Builder();}
 
+    public List<RegisterEmailChannel> getEmailChannelList() {
+        return emailChannelList;
+    }
+
     /**
      * CreateAndSendAudience Builder.
      */
