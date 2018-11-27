@@ -1,12 +1,17 @@
 package com.urbanairship.api.push.model.notification.email;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
+import com.urbanairship.api.channel.parse.ChannelObjectMapper;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
 import com.urbanairship.api.push.model.notification.open.OpenPayload;
 import org.junit.Test;
+import org.junit.experimental.theories.suppliers.TestedOn;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +23,7 @@ public class EmailPayloadTest {
     @Test
     public void testBuilder() {
         DeviceType deviceTypeEmail = DeviceType.open("email");
+        String expectedPayloadString = "";
 
         EmailPayload emailPayload = EmailPayload.newBuilder()
                 .setSubject("Welcome to the Winter Sale! ")

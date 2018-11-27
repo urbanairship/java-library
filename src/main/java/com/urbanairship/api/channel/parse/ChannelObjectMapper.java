@@ -19,6 +19,7 @@ import com.urbanairship.api.channel.model.ios.QuietTime;
 import com.urbanairship.api.channel.model.open.OpenChannel;
 import com.urbanairship.api.channel.model.web.Subscription;
 import com.urbanairship.api.channel.model.web.WebSettings;
+import com.urbanairship.api.channel.parse.email.CreateAndSendAudienceSerializer;
 import com.urbanairship.api.channel.parse.email.RegisterEmailChannelResponseDeserializer;
 import com.urbanairship.api.channel.parse.email.RegisterEmailChannelSerializer;
 import com.urbanairship.api.channel.parse.ios.IosSettingsDeserializer;
@@ -26,6 +27,7 @@ import com.urbanairship.api.channel.parse.ios.QuietTimeDeserializer;
 import com.urbanairship.api.channel.parse.open.OpenChannelDeserializer;
 import com.urbanairship.api.channel.parse.web.SubscriptionDeserializer;
 import com.urbanairship.api.channel.parse.web.WebSettingsDeserializer;
+import com.urbanairship.api.push.model.audience.CreateAndSendAudience;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 
 public class ChannelObjectMapper {
@@ -44,6 +46,7 @@ public class ChannelObjectMapper {
         MODULE.addDeserializer(OpenChannelResponse.class, new OpenChannelResponseDeserializer());
         MODULE.addDeserializer(EmailChannelResponse.class, new RegisterEmailChannelResponseDeserializer());
         MODULE.addSerializer(RegisterEmailChannel.class, new RegisterEmailChannelSerializer());
+        MODULE.addSerializer(CreateAndSendAudience.class, new CreateAndSendAudienceSerializer());
 
         MAPPER.registerModule(MODULE);
         MAPPER.registerModule(new JodaModule());
