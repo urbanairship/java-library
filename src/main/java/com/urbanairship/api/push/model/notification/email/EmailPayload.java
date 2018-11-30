@@ -190,17 +190,6 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
         }
 
         /**
-         * Optional, override the alert value provided at the top level, if any.
-         *
-         * @param alert String.
-         * @return EmailPayload Builder
-         */
-        public Builder setAlert(String alert) {
-            this.alert = alert;
-            return this;
-        }
-
-        /**
          * Optional, a string representing the subject of the notification.
          *
          * @param subject Optional String

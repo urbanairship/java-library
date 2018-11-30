@@ -17,7 +17,6 @@ public class CreateAndSendAudienceSerializer extends JsonSerializer<CreateAndSen
     public void serialize(CreateAndSendAudience payload, JsonGenerator jgen, SerializerProvider provider) throws IOException {
 
         jgen.writeStartObject();
-        jgen.writeObjectFieldStart(Constants.AUDIENCE);
         jgen.writeArrayFieldStart("create_and_send");
 
         for (RegisterEmailChannel channel : payload.getEmailChannelList()) {
@@ -26,11 +25,9 @@ public class CreateAndSendAudienceSerializer extends JsonSerializer<CreateAndSen
                     channel.getUaAddress().get());
             jgen.writeStringField(channel.getCreateAndSendOptInLevel().get(),
                     channel.getCreateAndSendTimestamp().get());
-
             jgen.writeEndObject();
         }
-
-        jgen.close();
-
+        jgen.writeEndArray();
+        jgen.writeEndObject();
     }
 }

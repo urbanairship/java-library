@@ -15,6 +15,8 @@ import com.urbanairship.api.channel.model.email.RegisterEmailChannel;
 import com.urbanairship.api.channel.model.email.UninstallEmailChannel;
 import com.urbanairship.api.channel.model.open.OpenChannel;
 import com.urbanairship.api.channel.model.open.Channel;
+import com.urbanairship.api.channel.parse.email.CreateAndSendAudienceSerializer;
+import com.urbanairship.api.channel.parse.email.CreateAndSendEmailPayloadSerializer;
 import com.urbanairship.api.channel.parse.email.RegisterEmailChannelResponseDeserializer;
 import com.urbanairship.api.channel.parse.email.RegisterEmailChannelSerializer;
 import com.urbanairship.api.channel.parse.email.UninstallEmailChannelSerializer;
@@ -38,6 +40,7 @@ import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.PushOptions;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.PushResponse;
+import com.urbanairship.api.push.model.audience.CreateAndSendAudience;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.location.AbsoluteDateRange;
 import com.urbanairship.api.push.model.audience.location.DateRange;
@@ -65,6 +68,8 @@ import com.urbanairship.api.push.model.notification.android.Category;
 import com.urbanairship.api.push.model.notification.android.InboxStyle;
 import com.urbanairship.api.push.model.notification.android.PublicNotification;
 import com.urbanairship.api.push.model.notification.android.Wearable;
+import com.urbanairship.api.push.model.notification.email.CreateAndSendEmailPayload;
+import com.urbanairship.api.push.model.notification.email.EmailPayload;
 import com.urbanairship.api.push.model.notification.ios.*;
 import com.urbanairship.api.push.model.notification.open.OpenPayload;
 import com.urbanairship.api.push.model.notification.richpush.RichPushIcon;
@@ -119,6 +124,8 @@ import com.urbanairship.api.push.parse.notification.android.PublicNotificationDe
 import com.urbanairship.api.push.parse.notification.android.PublicNotificationSerializer;
 import com.urbanairship.api.push.parse.notification.android.WearableDeserializer;
 import com.urbanairship.api.push.parse.notification.android.WearableSerializer;
+import com.urbanairship.api.push.parse.notification.email.EmailPayloadDeserializer;
+import com.urbanairship.api.push.parse.notification.email.EmailPayloadSerializer;
 import com.urbanairship.api.push.parse.notification.ios.*;
 import com.urbanairship.api.push.parse.notification.open.OpenPayloadSerializer;
 import com.urbanairship.api.push.parse.notification.richpush.RichPushIconDeserializer;
@@ -174,6 +181,8 @@ public class PushObjectMapper {
         AndroidDevicePayloadDeserializer androidPayloadDS = new AndroidDevicePayloadDeserializer();
         ADMDevicePayloadDeserializer admPayloadDS = new ADMDevicePayloadDeserializer();
         WebDevicePayloadDeserializer webPayloadDS = new WebDevicePayloadDeserializer();
+        EmailPayloadDeserializer emailPayloadDS = new EmailPayloadDeserializer();
+
 
 
 
@@ -183,6 +192,7 @@ public class PushObjectMapper {
                         .put(DeviceType.IOS, iosPayloadDS)
                         .put(DeviceType.ANDROID, androidPayloadDS)
                         .put(DeviceType.AMAZON, admPayloadDS)
+                        .put(DeviceType.EMAIL, emailPayloadDS)
                         .build());
 
         MODULE
@@ -329,7 +339,13 @@ public class PushObjectMapper {
                 .addSerializer(RegisterEmailChannel.class, new RegisterEmailChannelSerializer())
                 .addDeserializer(EmailChannelResponse.class, new RegisterEmailChannelResponseDeserializer())
                 .addSerializer(UninstallEmailChannel.class,
-                        new UninstallEmailChannelSerializer());
+                        new UninstallEmailChannelSerializer())
+                .addSerializer((EmailPayload.class), new EmailPayloadSerializer())
+
+                /* Create And Send */
+                .addSerializer(CreateAndSendEmailPayload.class, new CreateAndSendEmailPayloadSerializer())
+                .addSerializer(CreateAndSendAudience.class, new CreateAndSendAudienceSerializer());
+
 
         MAPPER.registerModule(MODULE);
         MAPPER.registerModule(CommonObjectMapper.getModule());

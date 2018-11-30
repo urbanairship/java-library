@@ -46,7 +46,6 @@ public class ChannelObjectMapper {
         MODULE.addDeserializer(OpenChannelResponse.class, new OpenChannelResponseDeserializer());
         MODULE.addDeserializer(EmailChannelResponse.class, new RegisterEmailChannelResponseDeserializer());
         MODULE.addSerializer(RegisterEmailChannel.class, new RegisterEmailChannelSerializer());
-        MODULE.addSerializer(CreateAndSendAudience.class, new CreateAndSendAudienceSerializer());
 
         MAPPER.registerModule(MODULE);
         MAPPER.registerModule(new JodaModule());
