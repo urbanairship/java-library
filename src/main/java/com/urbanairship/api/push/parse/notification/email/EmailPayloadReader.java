@@ -17,10 +17,6 @@ public class EmailPayloadReader implements JsonObjectReader<EmailPayload> {
         this.builder = EmailPayload.newBuilder();
     }
 
-    public void readAlert(JsonParser parser) throws IOException {
-        builder.setAlert(StringFieldDeserializer.INSTANCE.deserialize(parser, "alert"));
-    }
-
     public void readSubject(JsonParser parser) throws IOException {
         builder.setSubject(StringFieldDeserializer.INSTANCE.deserialize(parser, "subject"));
     }

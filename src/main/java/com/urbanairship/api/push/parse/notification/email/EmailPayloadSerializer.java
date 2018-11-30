@@ -16,10 +16,6 @@ public class EmailPayloadSerializer extends JsonSerializer<EmailPayload> {
             throws IOException, JsonProcessingException {
         jgen.writeStartObject();
 
-        if (payload.getAlert().isPresent()) {
-            jgen.writeStringField("alert", payload.getAlert().get());
-        }
-
         if (payload.getSubject().isPresent()) {
             jgen.writeStringField("subject", payload.getSubject().get());
         }

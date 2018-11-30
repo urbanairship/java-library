@@ -16,11 +16,6 @@ public class EmailPayloadDeserializer extends JsonDeserializer<EmailPayload> {
 
     private static final FieldParserRegistry<EmailPayload, EmailPayloadReader> FIELD_PARSERS = new MapFieldParserRegistry<EmailPayload, EmailPayloadReader>(
             ImmutableMap.<String, FieldParser<EmailPayloadReader>>builder()
-                    .put("alert", new FieldParser<EmailPayloadReader>() {
-                        public void parse(EmailPayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readAlert(json);
-                        }
-                    })
                     .put("subject", new FieldParser<EmailPayloadReader>() {
                         public void parse(EmailPayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
                             reader.readSubject(json);
