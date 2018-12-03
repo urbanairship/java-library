@@ -2,6 +2,7 @@ package com.urbanairship.api.push.model.notification.email;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.urbanairship.api.push.model.Campaigns;
 import com.urbanairship.api.push.model.audience.CreateAndSendAudience;
 import com.urbanairship.api.push.model.notification.Notification;
 
@@ -11,18 +12,19 @@ public class CreateAndSendEmailPayload {
 
     private final Optional<CreateAndSendAudience> audience;
     private final Optional<Notification> notification;
+    private final Optional<Campaigns> campaigns;
 
 
     private CreateAndSendEmailPayload(com.urbanairship.api.push.model.notification.email.CreateAndSendEmailPayload.Builder builder) {
         this.audience = Optional.fromNullable(builder.audience);
         this.notification = Optional.fromNullable(builder.notification);
+        this.campaigns = Optional.fromNullable(builder.campaigns);
 
     }
 
     public static com.urbanairship.api.push.model.notification.email.CreateAndSendEmailPayload.Builder newBuilder() {
         return new com.urbanairship.api.push.model.notification.email.CreateAndSendEmailPayload.Builder();
     }
-
 
 
     /**
@@ -43,6 +45,14 @@ public class CreateAndSendEmailPayload {
         return notification;
     }
 
+    /**
+     * Optional, an object representing the campaign.
+     *
+     * @return Optional Campaigns campaigns.
+     */
+    public Optional<Campaigns> getCampaigns() {
+        return campaigns;
+    }
 
 
     @Override
@@ -50,6 +60,7 @@ public class CreateAndSendEmailPayload {
         return "CreateAndSendEmailPayload{" +
                 "audience=" + audience +
                 ", notification=" + notification +
+                ", campaigns=" + campaigns +
                 '}';
     }
 
@@ -59,12 +70,13 @@ public class CreateAndSendEmailPayload {
         if (!(o instanceof com.urbanairship.api.push.model.notification.email.CreateAndSendEmailPayload)) return false;
         com.urbanairship.api.push.model.notification.email.CreateAndSendEmailPayload that = (com.urbanairship.api.push.model.notification.email.CreateAndSendEmailPayload) o;
         return Objects.equals(getAudience(), that.getAudience()) &&
-                Objects.equals(getNotification(), that.getNotification());
+                Objects.equals(getNotification(), that.getNotification())
+                && Objects.equals(getCampaigns(), that.getCampaigns());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getAudience(), getNotification());
+        return Objects.hash(getAudience(), getNotification(), getCampaigns());
     }
 
     /**
@@ -73,6 +85,7 @@ public class CreateAndSendEmailPayload {
     public static class Builder {
         private CreateAndSendAudience audience;
         private Notification notification;
+        private Campaigns campaigns;
 
         private Builder() {
         }
@@ -96,6 +109,17 @@ public class CreateAndSendEmailPayload {
          */
         public com.urbanairship.api.push.model.notification.email.CreateAndSendEmailPayload.Builder setNotification(Notification notification) {
             this.notification = notification;
+            return this;
+        }
+
+        /**
+         * Optional Notification object
+         *
+         * @param campaigns Optional campaigns
+         * @return CreateAndSendEmailPayload Builder
+         */
+        public com.urbanairship.api.push.model.notification.email.CreateAndSendEmailPayload.Builder setCampaigns(Campaigns campaigns) {
+            this.campaigns = campaigns;
             return this;
         }
 

@@ -19,6 +19,7 @@ public class CreateAndSendEmailPayloadSerializer extends JsonSerializer<CreateAn
             jgen.writeObjectField("audience", payload.getAudience().get());
             jgen.writeObjectField("device_types", deviceArray);
             jgen.writeObjectField("notification", payload.getNotification().get());
+            jgen.writeObjectField("campaigns", payload.getCampaigns().get());
 
             jgen.writeEndObject();
 
