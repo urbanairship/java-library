@@ -17,22 +17,31 @@ import java.util.Map;
 public class RegisterEmailChannel extends PushModelObject {
 
     private final ChannelType type;
-    private final Optional<Map<OptInLevel,String>> emailOptInLevel;
+    private final Optional<Map<OptInLevel, String>> emailOptInLevel;
     private final Optional<String> address;
+    private final Optional<String> uaAddress;
     private final Optional<Boolean> setTags;
     private final Optional<ImmutableList<String>> tags;
     private final Optional<String> timezone;
     private final Optional<String> localeCountry;
     private final Optional<String> localeLanguage;
+    private final Optional<String> createAndSendOptInLevel;
+    private final Optional<String> createAndSendTimestamp;
 
-    private RegisterEmailChannel(Builder builder) {
+
+    //Protected to facilitate subclassing for create and send child object
+    protected RegisterEmailChannel(Builder builder) {
         this.type = ChannelType.EMAIL;
         this.emailOptInLevel = Optional.fromNullable((builder.email_opt_in_level));
         this.address = Optional.fromNullable(builder.address);
+        this.uaAddress = Optional.fromNullable(builder.ua_address);
         this.setTags = Optional.fromNullable(builder.set_tags);
         this.timezone = Optional.fromNullable(builder.timezone);
         this.localeCountry = Optional.fromNullable(builder.locale_country);
         this.localeLanguage = Optional.fromNullable(builder.locale_language);
+        this.createAndSendOptInLevel = Optional.fromNullable(builder.create_and_send_level);
+        this.createAndSendTimestamp = Optional.fromNullable(builder.create_and_send_timestamp);
+
 
         if (builder.tags.build().isEmpty()) {
             this.tags = Optional.absent();
@@ -43,6 +52,7 @@ public class RegisterEmailChannel extends PushModelObject {
 
     /**
      * Get the RegisterEmailChannelType.
+     *
      * @return ChannelType type
      */
     public ChannelType getType() {
@@ -51,14 +61,16 @@ public class RegisterEmailChannel extends PushModelObject {
 
     /**
      * Get the channel email opt in level.
+     *
      * @return Optional OptInLevel emailOptInLevel
      */
-    public Optional<Map<OptInLevel,String>> getEmailOptInLevel() {
+    public Optional<Map<OptInLevel, String>> getEmailOptInLevel() {
         return emailOptInLevel;
     }
 
     /**
      * Get the email channel's address,
+     *
      * @return Optional String address
      */
     public Optional<String> getAddress() {
@@ -66,7 +78,17 @@ public class RegisterEmailChannel extends PushModelObject {
     }
 
     /**
+     * Get the UA reserved email channel's address,
+     *
+     * @return Optional String uaAddress
+     */
+    public Optional<String> getUaAddress() {
+        return uaAddress;
+    }
+
+    /**
      * Get a String representation of the timezone.
+     *
      * @return Optional String timezone
      */
     public Optional<String> getTimezone() {
@@ -75,6 +97,7 @@ public class RegisterEmailChannel extends PushModelObject {
 
     /**
      * Get a String representation of the locale country.
+     *
      * @return Optional String localeCountry
      */
     public Optional<String> getLocaleCountry() {
@@ -83,6 +106,7 @@ public class RegisterEmailChannel extends PushModelObject {
 
     /**
      * Get a String representation of the locale language.
+     *
      * @return Optional String localeLanguage
      */
     public Optional<String> getLocaleLanguage() {
@@ -90,7 +114,25 @@ public class RegisterEmailChannel extends PushModelObject {
     }
 
     /**
+     * Get a String representation of the Specific Opt-In Level.
+     *
+     * @return Optional String createAndSendOptInLevel
+     */
+    public Optional<String> getCreateAndSendOptInLevel() {
+        return createAndSendOptInLevel;
+    }
+
+    /**
+     * Get a String representation of the Specific Opt-In Level Timestamp.
+     *
+     * @return Optional String createAndSendTimestamp
+     */
+    public Optional<String> getCreateAndSendTimestamp() { return createAndSendTimestamp;
+    }
+
+    /**
      * New RegisterEmailChannel builder.
+     *
      * @return Builder
      */
     public static Builder newBuilder() {
@@ -104,6 +146,7 @@ public class RegisterEmailChannel extends PushModelObject {
         RegisterEmailChannel that = (RegisterEmailChannel) o;
         return type == that.type &&
                 Objects.equal(address, that.address) &&
+                Objects.equal(uaAddress, that.uaAddress) &&
                 Objects.equal(setTags, that.setTags) &&
                 Objects.equal(tags, that.tags) &&
                 Objects.equal(timezone, that.timezone) &&
@@ -118,17 +161,20 @@ public class RegisterEmailChannel extends PushModelObject {
                 "type=" + type +
                 ", emailOptInLevel=" + emailOptInLevel +
                 ", address=" + address +
+                ", uaAddress=" + uaAddress +
                 ", setTags=" + setTags +
                 ", tags=" + tags +
                 ", timezone=" + timezone +
                 ", localeCountry=" + localeCountry +
                 ", localeLanguage=" + localeLanguage +
+                ", createAndSendOptInLevel=" + createAndSendOptInLevel +
+                ", createAndSendTimestamp=" + createAndSendTimestamp +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(type, emailOptInLevel, address,setTags, tags, timezone, localeCountry, localeLanguage);
+        return Objects.hashCode(type, emailOptInLevel, address, uaAddress, setTags, tags, timezone, localeCountry, localeLanguage, createAndSendOptInLevel, createAndSendTimestamp);
     }
 
     /**
@@ -137,17 +183,22 @@ public class RegisterEmailChannel extends PushModelObject {
     public final static class Builder {
         private ChannelType type;
         private String address;
+        private String ua_address;
         private String timezone;
         private ImmutableList.Builder<String> tags = ImmutableList.builder();
         private boolean set_tags;
         private String locale_country;
         private String locale_language;
         private Map<OptInLevel, String> email_opt_in_level = new HashMap<>();
+        private String create_and_send_level;
+        private String create_and_send_timestamp;
 
-        private Builder() {}
+        protected Builder() {
+        }
 
         /**
          * Set the EmailOptInLevel status and time.
+         *
          * @param level, time OptInLevel, String
          * @return RegisterEmailChannel Builder
          */
@@ -158,10 +209,8 @@ public class RegisterEmailChannel extends PushModelObject {
 
         /**
          * Set the channel's address, a Unique identifier of the object
-         * used as the primary ID in the delivery tier (webhook). One-to-one
-         * with Channel ID. New addresses on existing channels will overwrite
-         * old associations. Examples: email address, phone number. If
-         * missing, channel_id must be present.
+         * used as the primary ID in the delivery tier (Email).
+         *
          * @param address String
          * @return RegisterEmailChannel Builder
          */
@@ -171,9 +220,22 @@ public class RegisterEmailChannel extends PushModelObject {
         }
 
         /**
+         * Set the channel's reserved UA address, a Unique identifier of the object
+         * used as the primary ID in the delivery tier (Create And Send Email).
+         *
+         * @param uaAddress String
+         * @return RegisterEmailChannel Builder
+         */
+        public Builder setUaAddress(String uaAddress) {
+            this.ua_address = uaAddress;
+            return this;
+        }
+
+        /**
          * Optional, though required if tags is present.
          * If true on update, value of tags overwrites any existing tags.
          * If false, tags are unioned with existing tags.
+         *
          * @param setTags boolean
          * @return Channel Builder
          */
@@ -184,6 +246,7 @@ public class RegisterEmailChannel extends PushModelObject {
 
         /**
          * Add a List of String representations of tags.
+         *
          * @param tags A List of Strings
          * @return Channel Builder
          */
@@ -194,6 +257,7 @@ public class RegisterEmailChannel extends PushModelObject {
 
         /**
          * Set a String representation of a tag.
+         *
          * @param tag String
          * @return Channel Builder
          */
@@ -206,6 +270,7 @@ public class RegisterEmailChannel extends PushModelObject {
          * Set timezone string. An IANA tzdata identifier for the timezone
          * as a string, e.g., "America/Los Angeles". Will set the timezone
          * tag group tag with the specified value.
+         *
          * @param timezone String
          * @return RegisterEmailChannel Builder
          */
@@ -218,6 +283,7 @@ public class RegisterEmailChannel extends PushModelObject {
          * Set a the localeCountry The two-letter country locale shortcode.
          * Will set the ua_locale_country tag group to the specified value.
          * Used _ notation to conform with previously written code
+         *
          * @param locale_country String
          * @return RegisterEmailChannel Builder
          */
@@ -231,11 +297,34 @@ public class RegisterEmailChannel extends PushModelObject {
          * shortcode. Will set the ua_locale_language tag group to the
          * specified value
          * Used _ notation to conform with previously written code
+         *
          * @param locale_language String
          * @return RegisterEmailChannel Builder
          */
         public Builder setLocaleLanguage(String locale_language) {
             this.locale_language = locale_language;
+            return this;
+        }
+
+        /**
+         * Set a String create_and_send_level
+         *
+         * @param create_and_send_level String
+         * @return RegisterEmailChannel Builder
+         */
+        public Builder setCreateAndSendOptInLevel(String create_and_send_level) {
+            this.create_and_send_level = create_and_send_level;
+            return this;
+        }
+
+        /**
+         * Set a String create_and_send_timestamp
+         *
+         * @param create_and_send_timestamp String
+         * @return RegisterEmailChannel Builder
+         */
+        public Builder setCreateAndSendTimestamp(String create_and_send_timestamp) {
+            this.create_and_send_timestamp = create_and_send_timestamp;
             return this;
         }
 

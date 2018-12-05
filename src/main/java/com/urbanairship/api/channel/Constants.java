@@ -44,6 +44,8 @@ public class Constants {
     public static final String LOCALE_LANGUAGE = "locale_language";
     public static final String TYPE = "type";
     public static final String EMAIL_ADDRESS = "email_address";
+    public static final String UA_ADDRESS = "ua_address";
+    public static final String AUDIENCE = "audience";
 
     private Constants() {
     }

@@ -20,7 +20,7 @@ import java.util.Set;
 
 /**
  * The EmailTagRequest class builds email tag mutation requests to be executed in
- * the {@link com.urbanairship.api.client.UrbanAirshipClient}.
+ * the {@link com.urbanairship.api.client.UrbanAirshipClient}. Open Channel Tags Request will not function for Email.
  */
 public class EmailTagRequest implements Request<String> {
 
