@@ -3,29 +3,27 @@ package com.urbanairship.api.push.model.notification.email;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.Campaigns;
+import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.audience.CreateAndSendAudience;
 import com.urbanairship.api.push.model.notification.Notification;
 
 import java.util.Objects;
 
-public class CreateAndSendEmailPayload {
+public class CreateAndSendEmailPayload extends PushModelObject {
 
     private final Optional<CreateAndSendAudience> audience;
     private final Optional<Notification> notification;
     private final Optional<Campaigns> campaigns;
 
-
     private CreateAndSendEmailPayload(com.urbanairship.api.push.model.notification.email.CreateAndSendEmailPayload.Builder builder) {
         this.audience = Optional.fromNullable(builder.audience);
         this.notification = Optional.fromNullable(builder.notification);
         this.campaigns = Optional.fromNullable(builder.campaigns);
-
     }
 
     public static com.urbanairship.api.push.model.notification.email.CreateAndSendEmailPayload.Builder newBuilder() {
         return new com.urbanairship.api.push.model.notification.email.CreateAndSendEmailPayload.Builder();
     }
-
 
     /**
      * Optional, get the audience object for the payload
@@ -128,7 +126,6 @@ public class CreateAndSendEmailPayload {
             Preconditions.checkNotNull(notification, "Notification must be set.");
 
             Preconditions.checkNotNull(audience, "Audience must be set.");
-
 
             return new com.urbanairship.api.push.model.notification.email.CreateAndSendEmailPayload(this);
         }
