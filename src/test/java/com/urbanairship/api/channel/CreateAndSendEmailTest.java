@@ -9,11 +9,17 @@ import com.urbanairship.api.channel.model.email.OptInLevel;
 import com.urbanairship.api.channel.model.email.RegisterEmailChannel;
 import com.urbanairship.api.channel.model.email.RegisterEmailChannelRequest;
 import com.urbanairship.api.channel.parse.ChannelObjectMapper;
+import com.urbanairship.api.client.Request;
+import com.urbanairship.api.client.Response;
+import com.urbanairship.api.client.UrbanAirshipClient;
+import com.urbanairship.api.push.PushRequest;
 import com.urbanairship.api.push.model.Campaigns;
 import com.urbanairship.api.push.model.DeviceType;
+import com.urbanairship.api.push.model.PushResponse;
 import com.urbanairship.api.push.model.audience.CreateAndSendAudience;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.notification.email.CreateAndSendEmailPayload;
+import com.urbanairship.api.push.model.notification.email.CreateAndSendEmailRequest;
 import com.urbanairship.api.push.model.notification.email.EmailPayload;
 import com.urbanairship.api.push.model.notification.email.MessageType;
 import com.urbanairship.api.push.parse.PushObjectMapper;
@@ -42,43 +48,49 @@ public class CreateAndSendEmailTest {
             .setCreateAndSendTimestamp("2018-11-29T10:34:22")
             .build();
 
-        RegisterEmailChannel benChannel = RegisterEmailChannel.newBuilder()
-                .setUaAddress("ben@icetown.com")
-                .setCreateAndSendOptInLevel("ua_commercial_opted_in")
-                .setCreateAndSendTimestamp("2018-11-29T12:45:10")
-                .build();
+    RegisterEmailChannel benChannel = RegisterEmailChannel.newBuilder()
+            .setUaAddress("ben@icetown.com")
+            .setCreateAndSendOptInLevel("ua_commercial_opted_in")
+            .setCreateAndSendTimestamp("2018-11-29T12:45:10")
+            .build();
 
-        CreateAndSendAudience audience = CreateAndSendAudience.newBuilder()
+    CreateAndSendAudience audience = CreateAndSendAudience.newBuilder()
             .setChannel(newChannel)
             .setChannel(benChannel)
             .build();
 
-        EmailPayload emailPayload = EmailPayload.newBuilder()
-                .setDeviceType(DeviceType.EMAIL)
-                .setSubject("Welcome to the Winter Sale! ")
-                .setHtmlBody(htmlBodyString)
-                .setPlaintextBody(plaintextBodyString)
-                .setMessageType(MessageType.COMMERCIAL)
-                .setSenderName("Urban Airship")
-                .setSenderAddress("team@urbanairship.com")
-                .setReplyTo("no-reply@urbanairship.com")
-                .build();
+    EmailPayload emailPayload = EmailPayload.newBuilder()
+            .setDeviceType(DeviceType.EMAIL)
+            .setSubject("Welcome to the Winter Sale! ")
+            .setHtmlBody(htmlBodyString)
+            .setPlaintextBody(plaintextBodyString)
+            .setMessageType(MessageType.COMMERCIAL)
+            .setSenderName("Urban Airship")
+            .setSenderAddress("team@urbanairship.com")
+            .setReplyTo("no-reply@urbanairship.com")
+            .build();
 
-        Notification notification = Notification.newBuilder()
+    Notification notification = Notification.newBuilder()
             .addDeviceTypeOverride(DeviceType.EMAIL, emailPayload)
             .build();
 
-        Campaigns campaign = Campaigns.newBuilder()
+    Campaigns campaign = Campaigns.newBuilder()
             .addCategory("winter sale")
             .addCategory("west coast")
             .build();
 
-        CreateAndSendEmailPayload payload = CreateAndSendEmailPayload.newBuilder()
-                .setAudience(audience)
-                .setNotification(notification)
-                .setCampaigns(campaign)
-                .build();
+    CreateAndSendEmailPayload payload = CreateAndSendEmailPayload.newBuilder()
+            .setAudience(audience)
+            .setNotification(notification)
+            .setCampaigns(campaign)
+            .build();
 
+    CreateAndSendEmailRequest request = CreateAndSendEmailRequest.newRequest(payload);
+
+    UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
+            .setKey("ISex_TTJRuarzs9-o_Gkhg")
+            .setSecret("nDq-bQ3CT92PqCIXNtQyCQ")
+            .build();
 
     @Test
     public void testNewChannel() {
@@ -98,7 +110,7 @@ public class CreateAndSendEmailTest {
     }
 
     @Test
-    public void testNewAudience(){
+    public void testNewAudience() {
 
         String expectedAudienceString = "{\"create_and_send\":[{\"ua_address\":\"new@email.com\",\"ua_commercial_opted_in\":\"2018-11-29T10:34:22\"},{\"ua_address\":\"ben@icetown.com\",\"ua_commercial_opted_in\":\"2018-11-29T12:45:10\"}]}";
         try {
@@ -106,7 +118,7 @@ public class CreateAndSendEmailTest {
             JsonNode actual = PUSH_OBJECT_MAPPER.readTree(parsedJson);
             JsonNode expected = PUSH_OBJECT_MAPPER.readTree(expectedAudienceString);
 
-            Assert.assertEquals(expected,actual);
+            Assert.assertEquals(expected, actual);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -122,7 +134,7 @@ public class CreateAndSendEmailTest {
             JsonNode actual = PUSH_OBJECT_MAPPER.readTree(parsedJson);
             JsonNode expected = PUSH_OBJECT_MAPPER.readTree(expectedEmailpayloadString);
 
-            Assert.assertEquals(expected,actual);
+            Assert.assertEquals(expected, actual);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -139,7 +151,7 @@ public class CreateAndSendEmailTest {
             JsonNode actual = PUSH_OBJECT_MAPPER.readTree(parsedJson);
             JsonNode expected = PUSH_OBJECT_MAPPER.readTree(expectedNewNotificationString);
 
-            Assert.assertEquals(expected,actual);
+            Assert.assertEquals(expected, actual);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -181,10 +193,11 @@ public class CreateAndSendEmailTest {
             JsonNode actual = PUSH_OBJECT_MAPPER.readTree(parsedJson);
             JsonNode expected = PUSH_OBJECT_MAPPER.readTree(expectedCreateAndSendEmailPayloadString);
 
-            Assert.assertEquals(expected,actual);
+            Assert.assertEquals(expected, actual);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 }
+
