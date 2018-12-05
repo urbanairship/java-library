@@ -59,8 +59,7 @@ public class Notifications {
             return admAlert(text);
         case "web":
             return webAlert(text);
-        case "email":
-                return emailAlert(text);
+
         default:
             throw unknownDeviceType(deviceType.getIdentifier());
         }
@@ -100,12 +99,6 @@ public class Notifications {
         return OpenPayload.newBuilder()
                 .setAlert(text)
                 .setDeviceType(deviceType)
-                .build();
-    }
-
-    public static EmailPayload emailAlert(String text) {
-        return EmailPayload.newBuilder()
-                .setAlert(text)
                 .build();
     }
 

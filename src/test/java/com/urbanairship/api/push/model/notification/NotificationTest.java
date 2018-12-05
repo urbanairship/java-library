@@ -20,6 +20,7 @@ public class NotificationTest {
                 .setInteractive(Interactive.newBuilder()
                         .setType("acme_interact")
                         .build())
+                /// TODO: 11/13/18 implement email as part of notification
                 .build();
         Notification notification1 = notification.toBuilder().build();
         assertEquals(notification, notification1);

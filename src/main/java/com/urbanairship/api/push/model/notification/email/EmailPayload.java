@@ -23,6 +23,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
     private final Optional<MessageType> messageType;
     private final Optional<String> senderName;
     private final Optional<String> senderAddress;
+    private final Optional<String> uaAddress;
     private final Optional<String> replyTo;
     private final DeviceType deviceType;
 
@@ -34,6 +35,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
         this.messageType = Optional.fromNullable(builder.messageType);
         this.senderName = Optional.fromNullable(builder.senderName);
         this.senderAddress = Optional.fromNullable((builder.senderAddress));
+        this.uaAddress = Optional.fromNullable((builder.uaAddress));
         this.replyTo = Optional.fromNullable((builder.replyTo));
         this.deviceType = builder.deviceType;
     }
@@ -46,16 +48,20 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
      * Returns Devicetype: Email when requested
      *
      * @return String email
-     * */
+     */
     @Override
-    public DeviceType getDeviceType() { return deviceType.EMAIL; }
+    public DeviceType getDeviceType() {
+        return deviceType.EMAIL;
+    }
 
     /**
      * Optional, override the alert value provided at the top level, if any.
      *
      * @return Optional String alert.
      */
-    public Optional<String> getAlert() { return alert; }
+    public Optional<String> getAlert() {
+        return alert;
+    }
 
     /**
      * Optional, a string representing the subject of the notification.
@@ -89,7 +95,9 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
      *
      * @return Optional enum messageType.
      */
-    public Optional<MessageType> getMessageType() { return messageType; }
+    public Optional<MessageType> getMessageType() {
+        return messageType;
+    }
 
     /**
      * Optional, a string representing the name of the sender.
@@ -110,6 +118,16 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
     }
 
     /**
+     * Optional, a string representing the reserved UA email address of the sender for Create and Send.
+     *
+     * @return Optional String uaAddress.
+     */
+    public Optional<String> getUaAddress() {
+        return uaAddress;
+    }
+
+
+    /**
      * Optional, a string representing the "reply to" address of the notification.
      *
      * @return Optional String replyTo.
@@ -127,6 +145,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
                 ", messageType=" + messageType +
                 ", senderName=" + senderName +
                 ", senderAddress=" + senderAddress +
+                ", uaAddress=" + uaAddress +
                 ", replyTo=" + replyTo +
                 '}';
     }
@@ -142,13 +161,14 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
                 Objects.equals(getMessageType(), that.getMessageType()) &&
                 Objects.equals(getSenderName(), that.getSenderName()) &&
                 Objects.equals(getSenderAddress(), that.getSenderAddress()) &&
+                Objects.equals(getUaAddress(), that.getUaAddress()) &&
                 Objects.equals(getReplyTo(), that.getReplyTo());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getSubject(), getHtmlBody(), getPlaintextBody(), getMessageType(), getSenderName(),
-                getSenderAddress(), getReplyTo());
+                getSenderAddress(), getUaAddress(), getReplyTo());
     }
 
     /**
@@ -162,20 +182,11 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
         private MessageType messageType = null;
         private String senderName = null;
         private String senderAddress = null;
+        private String uaAddress = null;
         private String replyTo = null;
         private DeviceType deviceType = null;
 
-        private Builder() { }
-
-        /**
-         * Optional, override the alert value provided at the top level, if any.
-         *
-         * @param alert String.
-         * @return EmailPayload Builder
-         */
-        public Builder setAlert(String alert) {
-            this.alert = alert;
-            return this;
+        private Builder() {
         }
 
         /**
@@ -234,6 +245,17 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
         }
 
         /**
+         * Optional, a string representing the reserved UA email address for Create and Send.
+         *
+         * @param uaAddress Optional String
+         * @return EmailPayload Builder
+         */
+        public Builder setUaAddress(String uaAddress) {
+            this.uaAddress = uaAddress;
+            return this;
+        }
+
+        /**
          * Optional, a string representing the reply-to address.
          *
          * @param replyTo Optional String
@@ -248,7 +270,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
          * Optional, a string representing the sender name.
          *
          * @param senderName Optional String
-         * Must be set up by Urban Airship before use.
+         *                   Must be set up by Urban Airship before use.
          * @return EmailPayload Builder
          */
         public Builder setSenderName(String senderName) {
