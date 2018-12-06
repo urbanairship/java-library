@@ -1,4 +1,4 @@
-package com.urbanairship.api.push.model.notification.email;
+package com.urbanairship.api.createandsend;
 
 /*
  * Copyright (c) 2013-2016.  Urban Airship and Contributors
@@ -12,7 +12,7 @@ import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
-import com.urbanairship.api.push.model.PushPayload;
+import com.urbanairship.api.createandsend.model.notification.CreateAndSendPayload;
 import com.urbanairship.api.push.model.PushResponse;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.apache.http.entity.ContentType;
@@ -28,20 +28,20 @@ import java.util.Map;
  * The PushRequest class builds push and push validation requests to be executed in
  * the {@link com.urbanairship.api.client.UrbanAirshipClient}.
  */
-public class CreateAndSendEmailRequest implements Request<PushResponse> {
+public class CreateAndSendRequest implements Request<PushResponse> {
 
-    private final static String API_PUSH_PATH = "/api//create-and-send";
+    private final static String API_PUSH_PATH = "/api/create-and-send";
     private final static String API_VALIDATE_PATH = "/api/create-and-send/validate";
 
-    private final List<CreateAndSendEmailPayload> payloads = new ArrayList<>();
+    private final List<CreateAndSendPayload> payloads = new ArrayList<>();
     private boolean validateOnly;
 
-    private CreateAndSendEmailRequest(CreateAndSendEmailPayload payload) {
+    private CreateAndSendRequest(CreateAndSendPayload payload) {
         Preconditions.checkNotNull(payload, "Payload required when creating an email request");
         this.payloads.add(payload);
     }
 
-    private CreateAndSendEmailRequest(List<CreateAndSendEmailPayload> payloadList) {
+    private CreateAndSendRequest(List<CreateAndSendPayload> payloadList) {
         Preconditions.checkNotNull(payloadList, "Payload required when creating a push request");
         if (payloadList.isEmpty()) {
             throw new IllegalStateException("Payload list cannot be empty");
@@ -53,29 +53,29 @@ public class CreateAndSendEmailRequest implements Request<PushResponse> {
      * Create a CreateAndSendEmail request.
      *
      * @param payload CreateAndSEndEmailPayload
-     * @return CreateAndSendEmailRequest
+     * @return CreateAndSendRequest
      */
-    public static CreateAndSendEmailRequest newRequest(CreateAndSendEmailPayload payload) {
-        return new CreateAndSendEmailRequest(payload);
+    public static CreateAndSendRequest newRequest(CreateAndSendPayload payload) {
+        return new CreateAndSendRequest(payload);
     }
 
     /**
      * Create a CreateAndSendEmail request.
      *
      * @param payloadList List of CreateAndSEndEMail objects
-     * @return CreateAndSendEmailRequest
+     * @return CreateAndSendRequest
      */
-    public static CreateAndSendEmailRequest newRequest(List<CreateAndSendEmailPayload> payloadList) {
-        return new CreateAndSendEmailRequest(payloadList);
+    public static CreateAndSendRequest newRequest(List<CreateAndSendPayload> payloadList) {
+        return new CreateAndSendRequest(payloadList);
     }
 
     /**
      * Add additional payloads to a batch CreateAndSendEmail request
      *
-     * @param newPayload CreateAndSendEmailRequest
-     * @return CreateAndSendEmailRequest
+     * @param newPayload CreateAndSendRequest
+     * @return CreateAndSendRequest
      */
-    public CreateAndSendEmailRequest addPayload(CreateAndSendEmailPayload newPayload) {
+    public CreateAndSendRequest addPayload(CreateAndSendPayload newPayload) {
         Preconditions.checkNotNull(newPayload, "Payload required when adding to a CreateAndSendEmail request");
         payloads.add(newPayload);
         return this;
@@ -85,9 +85,9 @@ public class CreateAndSendEmailRequest implements Request<PushResponse> {
      * Add additional payloads to a batch CreateAndSendEmail request
      *
      * @param newPayloads List of CreateAndSendEmail objects
-     * @return CreateAndSendEmailRequest
+     * @return CreateAndSendRequest
      */
-    public CreateAndSendEmailRequest addPayloads(List<CreateAndSendEmailPayload> newPayloads) {
+    public CreateAndSendRequest addPayloads(List<CreateAndSendPayload> newPayloads) {
         Preconditions.checkNotNull(newPayloads, "Payload required when adding to a CreateAndSendEmail request");
         if (newPayloads.isEmpty()) {
             throw new IllegalStateException("Payload list cannot be empty");
@@ -102,7 +102,7 @@ public class CreateAndSendEmailRequest implements Request<PushResponse> {
      * @param validateOnly {@code true} to only validate the payload, {@code false} to send the push request.
      * @return The push request.
      */
-    public CreateAndSendEmailRequest setValidateOnly(boolean validateOnly) {
+    public CreateAndSendRequest setValidateOnly(boolean validateOnly) {
         this.validateOnly = validateOnly;
         return this;
     }
@@ -135,7 +135,7 @@ public class CreateAndSendEmailRequest implements Request<PushResponse> {
 
         ArrayNode arrayNode = mapper.createArrayNode();
 
-        for (CreateAndSendEmailPayload pushPayload : this.payloads) {
+        for (CreateAndSendPayload pushPayload : this.payloads) {
             try {
                 JsonNode pushJson = mapper.readTree(pushPayload.toJSON());
                 arrayNode.add(pushJson);
