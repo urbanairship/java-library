@@ -1,30 +1,23 @@
-package com.urbanairship.api.channel;
+package com.urbanairship.api.createandsend;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.tomakehurst.wiremock.common.Json;
-import com.sun.org.apache.bcel.internal.generic.PUSH;
-import com.sun.security.ntlm.Client;
-import com.urbanairship.api.channel.model.email.OptInLevel;
-import com.urbanairship.api.channel.model.email.RegisterEmailChannel;
-import com.urbanairship.api.channel.model.email.RegisterEmailChannelRequest;
 import com.urbanairship.api.channel.parse.ChannelObjectMapper;
-import com.urbanairship.api.client.Request;
-import com.urbanairship.api.client.Response;
 import com.urbanairship.api.client.UrbanAirshipClient;
-import com.urbanairship.api.push.PushRequest;
+import com.urbanairship.api.common.parse.DateFormats;
+import com.urbanairship.api.createandsend.model.audience.EmailChannel;
+import com.urbanairship.api.createandsend.model.audience.EmailChannels;
 import com.urbanairship.api.push.model.Campaigns;
 import com.urbanairship.api.push.model.DeviceType;
-import com.urbanairship.api.push.model.PushResponse;
-import com.urbanairship.api.push.model.audience.CreateAndSendAudience;
+import com.urbanairship.api.createandsend.model.audience.CreateAndSendAudience;
 import com.urbanairship.api.push.model.notification.Notification;
-import com.urbanairship.api.push.model.notification.email.CreateAndSendEmailPayload;
-import com.urbanairship.api.push.model.notification.email.CreateAndSendEmailRequest;
+import com.urbanairship.api.createandsend.model.notification.CreateAndSendPayload;
 import com.urbanairship.api.push.model.notification.email.EmailPayload;
 import com.urbanairship.api.push.model.notification.email.MessageType;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import com.urbanairship.api.push.parse.notification.email.EmailPayloadReader;
+import org.joda.time.DateTime;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -42,55 +35,69 @@ public class CreateAndSendEmailTest {
     String htmlBodyString = "<h1>Seasons Greetings</h1><p>Check out our winter deals!</p><p><a data-ua-unsubscribe=\"1\" title=\"unsubscribe\" href=\"http://unsubscribe.urbanairship.com/email/success.html\">Unsubscribe</a></p>";
     String plaintextBodyString = "Greetings! Check out our latest winter deals! [[ua-unsubscribe href=\"http://unsubscribe.urbanairship.com/email/success.html\"]]";
 
-    RegisterEmailChannel newChannel = RegisterEmailChannel.newBuilder()
-            .setUaAddress("new@email.com")
-            .setCreateAndSendOptInLevel("ua_commercial_opted_in")
-            .setCreateAndSendTimestamp("2018-11-29T10:34:22")
-            .build();
+    EmailChannel newChannel;
+    EmailChannel benChannel;
+    CreateAndSendAudience audience;
+    EmailPayload emailPayload;
+    Notification notification;
+    Campaigns campaign;
+    CreateAndSendPayload payload;
+    CreateAndSendRequest request;
+    UrbanAirshipClient client;
 
-    RegisterEmailChannel benChannel = RegisterEmailChannel.newBuilder()
-            .setUaAddress("ben@icetown.com")
-            .setCreateAndSendOptInLevel("ua_commercial_opted_in")
-            .setCreateAndSendTimestamp("2018-11-29T12:45:10")
-            .build();
+    @Before
+    public void setUp() {
+        DateTime newDateTime = DateTime.parse("2018-11-29T10:34:22", DateFormats.DATE_FORMATTER);
+        DateTime benDateTime = DateTime.parse("2018-11-29T12:45:10", DateFormats.DATE_FORMATTER);
 
-    CreateAndSendAudience audience = CreateAndSendAudience.newBuilder()
-            .setChannel(newChannel)
-            .setChannel(benChannel)
-            .build();
+        newChannel = EmailChannel.newBuilder()
+                .setAddress("new@email.com")
+                .setCommertialOptedIn(newDateTime)
+                .build();
 
-    EmailPayload emailPayload = EmailPayload.newBuilder()
-            .setDeviceType(DeviceType.EMAIL)
-            .setSubject("Welcome to the Winter Sale! ")
-            .setHtmlBody(htmlBodyString)
-            .setPlaintextBody(plaintextBodyString)
-            .setMessageType(MessageType.COMMERCIAL)
-            .setSenderName("Urban Airship")
-            .setSenderAddress("team@urbanairship.com")
-            .setReplyTo("no-reply@urbanairship.com")
-            .build();
+        benChannel = EmailChannel.newBuilder()
+                .setAddress("ben@icetown.com")
+                .setCommertialOptedIn(benDateTime)
+                .build();
 
-    Notification notification = Notification.newBuilder()
-            .addDeviceTypeOverride(DeviceType.EMAIL, emailPayload)
-            .build();
+        audience = new CreateAndSendAudience(EmailChannels.newBuilder()
+                .addChannel(newChannel)
+                .addChannel(benChannel)
+                .build());
 
-    Campaigns campaign = Campaigns.newBuilder()
-            .addCategory("winter sale")
-            .addCategory("west coast")
-            .build();
+        emailPayload = EmailPayload.newBuilder()
+                .setDeviceType(DeviceType.EMAIL)
+                .setSubject("Welcome to the Winter Sale! ")
+                .setHtmlBody(htmlBodyString)
+                .setPlaintextBody(plaintextBodyString)
+                .setMessageType(MessageType.COMMERCIAL)
+                .setSenderName("Urban Airship")
+                .setSenderAddress("team@urbanairship.com")
+                .setReplyTo("no-reply@urbanairship.com")
+                .build();
 
-    CreateAndSendEmailPayload payload = CreateAndSendEmailPayload.newBuilder()
-            .setAudience(audience)
-            .setNotification(notification)
-            .setCampaigns(campaign)
-            .build();
+        notification = Notification.newBuilder()
+                .addDeviceTypeOverride(DeviceType.EMAIL, emailPayload)
+                .build();
 
-    CreateAndSendEmailRequest request = CreateAndSendEmailRequest.newRequest(payload);
+        campaign = Campaigns.newBuilder()
+                .addCategory("winter sale")
+                .addCategory("west coast")
+                .build();
 
-    UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-            .setKey("ISex_TTJRuarzs9-o_Gkhg")
-            .setSecret("nDq-bQ3CT92PqCIXNtQyCQ")
-            .build();
+        payload = CreateAndSendPayload.newBuilder()
+                .setAudience(audience)
+                .setNotification(notification)
+                .setCampaigns(campaign)
+                .build();
+
+        request = CreateAndSendRequest.newRequest(payload);
+
+        client = UrbanAirshipClient.newBuilder()
+                .setKey("ISex_TTJRuarzs9-o_Gkhg")
+                .setSecret("nDq-bQ3CT92PqCIXNtQyCQ")
+                .build();
+    }
 
     @Test
     public void testNewChannel() {

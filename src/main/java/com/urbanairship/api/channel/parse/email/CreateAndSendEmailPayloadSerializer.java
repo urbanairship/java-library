@@ -4,15 +4,13 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.urbanairship.api.channel.Constants;
-import com.urbanairship.api.push.model.DeviceType;
-import com.urbanairship.api.push.model.notification.email.CreateAndSendEmailPayload;
+import com.urbanairship.api.createandsend.model.notification.CreateAndSendPayload;
 
 import java.io.IOException;
 
-public class CreateAndSendEmailPayloadSerializer extends JsonSerializer<CreateAndSendEmailPayload> {
+public class CreateAndSendEmailPayloadSerializer extends JsonSerializer<CreateAndSendPayload> {
     @Override
-    public void serialize(CreateAndSendEmailPayload payload, JsonGenerator jgen, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
+    public void serialize(CreateAndSendPayload payload, JsonGenerator jgen, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
         String[] deviceArray = {"email"};
 
             jgen.writeStartObject();
