@@ -23,6 +23,13 @@ import com.urbanairship.api.channel.parse.email.UninstallEmailChannelSerializer;
 import com.urbanairship.api.channel.parse.open.ChannelSerializer;
 import com.urbanairship.api.channel.parse.open.OpenChannelSerializer;
 import com.urbanairship.api.common.parse.CommonObjectMapper;
+import com.urbanairship.api.createandsend.model.notification.CreateAndSendPayload;
+import com.urbanairship.api.createandsend.model.notification.EmailTemplate;
+import com.urbanairship.api.createandsend.model.notification.Fields;
+import com.urbanairship.api.createandsend.model.notification.VariableDetail;
+import com.urbanairship.api.createandsend.parse.EmailTemplateSerializer;
+import com.urbanairship.api.createandsend.parse.FieldsSerializer;
+import com.urbanairship.api.createandsend.parse.VariableDetailSerializer;
 import com.urbanairship.api.customevents.model.CustomEventPayload;
 import com.urbanairship.api.customevents.model.CustomEventBody;
 import com.urbanairship.api.customevents.model.CustomEventResponse;
@@ -40,7 +47,7 @@ import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.PushOptions;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.PushResponse;
-import com.urbanairship.api.push.model.audience.CreateAndSendAudience;
+import com.urbanairship.api.createandsend.model.audience.CreateAndSendAudience;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.location.AbsoluteDateRange;
 import com.urbanairship.api.push.model.audience.location.DateRange;
@@ -69,7 +76,6 @@ import com.urbanairship.api.push.model.notification.android.Category;
 import com.urbanairship.api.push.model.notification.android.InboxStyle;
 import com.urbanairship.api.push.model.notification.android.PublicNotification;
 import com.urbanairship.api.push.model.notification.android.Wearable;
-import com.urbanairship.api.push.model.notification.email.CreateAndSendEmailPayload;
 import com.urbanairship.api.push.model.notification.email.EmailPayload;
 import com.urbanairship.api.push.model.notification.ios.*;
 import com.urbanairship.api.push.model.notification.open.OpenPayload;
@@ -351,7 +357,10 @@ public class PushObjectMapper {
                 .addSerializer((EmailPayload.class), new EmailPayloadSerializer())
 
                 /* Create And Send */
-                .addSerializer(CreateAndSendEmailPayload.class, new CreateAndSendEmailPayloadSerializer())
+                .addSerializer(CreateAndSendPayload.class, new CreateAndSendEmailPayloadSerializer())
+                .addSerializer(EmailTemplate.class, new EmailTemplateSerializer())
+                .addSerializer(Fields.class, new FieldsSerializer())
+                .addSerializer(VariableDetail.class, new VariableDetailSerializer())
                 .addSerializer(CreateAndSendAudience.class, new CreateAndSendAudienceSerializer());
 
 
