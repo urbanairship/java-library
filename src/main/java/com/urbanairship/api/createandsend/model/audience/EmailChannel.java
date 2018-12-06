@@ -5,6 +5,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import org.joda.time.DateTime;
 
+import java.sql.Timestamp;
 import java.util.Map;
 
 public class EmailChannel {

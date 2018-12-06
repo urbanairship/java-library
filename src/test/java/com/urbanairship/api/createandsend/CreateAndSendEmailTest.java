@@ -57,7 +57,7 @@ public class CreateAndSendEmailTest {
 
         benChannel = EmailChannel.newBuilder()
                 .setAddress("ben@icetown.com")
-                .setCommertialOptedIn(benDateTime)
+                .setTransactionalOptedIn(benDateTime)
                 .build();
 
         audience = new CreateAndSendAudience(EmailChannels.newBuilder()
@@ -100,7 +100,7 @@ public class CreateAndSendEmailTest {
     }
 
     @Test
-    public void testNewChannel() {
+    public void testCommercialOptedInChannel() {
 
         String expectedNewChannelString = "{\n" +
                 "        \"ua_address\": \"new@email.com\",\n" +
@@ -110,6 +110,25 @@ public class CreateAndSendEmailTest {
             String parsedJson = CHANNEL_OBJECT_MAPPER.writeValueAsString(newChannel);
             JsonNode actual = CHANNEL_OBJECT_MAPPER.readTree(parsedJson);
             JsonNode expected = CHANNEL_OBJECT_MAPPER.readTree(expectedNewChannelString);
+            Assert.assertEquals(expected, actual);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Test
+    public void testTransactionalOptedInChannel() {
+
+        String expectedNewChannelString = "{\n" +
+                "        \"ua_address\": \"ben@icetown.com\",\n" +
+                "        \"ua_transactional_opted_in\": \"2018-11-29T12:45:10\"}";
+
+        try {
+            String parsedJson = CHANNEL_OBJECT_MAPPER.writeValueAsString(benChannel);
+            JsonNode actual = CHANNEL_OBJECT_MAPPER.readTree(parsedJson);
+            JsonNode expected = CHANNEL_OBJECT_MAPPER.readTree(expectedNewChannelString);
+            Assert.assertEquals(expected, actual);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -175,7 +194,7 @@ public class CreateAndSendEmailTest {
                 "\t\t\t},\n" +
                 "\t\t\t{\n" +
                 "\t\t\t\t\"ua_address\": \"ben@icetown.com\",\n" +
-                "\t\t\t\t\"ua_commercial_opted_in\": \"2018-11-29T12:45:10\"\n" +
+                "\t\t\t\t\"ua_transactional_opted_in\": \"2018-11-29T12:45:10\"\n" +
                 "\t\t\t}\n" +
                 "\t\t]\n" +
                 "\t},\n" +

@@ -1,4 +1,4 @@
-package com.urbanairship.api.channel.parse.email;
+package com.urbanairship.api.channel.parse.createandsend;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
