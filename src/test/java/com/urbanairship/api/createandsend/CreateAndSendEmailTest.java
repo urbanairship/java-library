@@ -7,6 +7,7 @@ import com.urbanairship.api.client.UrbanAirshipClient;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.createandsend.model.audience.EmailChannel;
 import com.urbanairship.api.createandsend.model.audience.EmailChannels;
+import com.urbanairship.api.createandsend.model.notification.CreateAndSendEmailPayload;
 import com.urbanairship.api.push.model.Campaigns;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.createandsend.model.audience.CreateAndSendAudience;
@@ -38,7 +39,7 @@ public class CreateAndSendEmailTest {
     EmailChannel newChannel;
     EmailChannel benChannel;
     CreateAndSendAudience audience;
-    EmailPayload emailPayload;
+    CreateAndSendEmailPayload createAndSendEmailPayload;
     Notification notification;
     Campaigns campaign;
     CreateAndSendPayload payload;
@@ -65,7 +66,7 @@ public class CreateAndSendEmailTest {
                 .addChannel(benChannel)
                 .build());
 
-        emailPayload = EmailPayload.newBuilder()
+        createAndSendEmailPayload = CreateAndSendEmailPayload.newBuilder()
                 .setDeviceType(DeviceType.EMAIL)
                 .setSubject("Welcome to the Winter Sale! ")
                 .setHtmlBody(htmlBodyString)
@@ -77,7 +78,7 @@ public class CreateAndSendEmailTest {
                 .build();
 
         notification = Notification.newBuilder()
-                .addDeviceTypeOverride(DeviceType.EMAIL, emailPayload)
+                .addDeviceTypeOverride(DeviceType.EMAIL, createAndSendEmailPayload)
                 .build();
 
         campaign = Campaigns.newBuilder()
@@ -138,7 +139,7 @@ public class CreateAndSendEmailTest {
     @Test
     public void testNewAudience() {
 
-        String expectedAudienceString = "{\"create_and_send\":[{\"ua_address\":\"new@email.com\",\"ua_commercial_opted_in\":\"2018-11-29T10:34:22\"},{\"ua_address\":\"ben@icetown.com\",\"ua_commercial_opted_in\":\"2018-11-29T12:45:10\"}]}";
+        String expectedAudienceString = "{\"create_and_send\":[{\"ua_address\":\"new@email.com\",\"ua_commercial_opted_in\":\"2018-11-29T10:34:22\"},{\"ua_address\":\"ben@icetown.com\",\"ua_transactional_opted_in\":\"2018-11-29T12:45:10\"}]}";
         try {
             String parsedJson = PUSH_OBJECT_MAPPER.writeValueAsString(audience);
             JsonNode actual = PUSH_OBJECT_MAPPER.readTree(parsedJson);
@@ -156,7 +157,7 @@ public class CreateAndSendEmailTest {
 
         String expectedEmailpayloadString = "{\"subject\":\"Welcome to the Winter Sale! \",\"html_body\":\"<h1>Seasons Greetings</h1><p>Check out our winter deals!</p><p><a data-ua-unsubscribe=\\\"1\\\" title=\\\"unsubscribe\\\" href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\">Unsubscribe</a></p>\",\"plaintext_body\":\"Greetings! Check out our latest winter deals! [[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]\",\"message_type\":\"commercial\",\"sender_name\":\"Urban Airship\",\"sender_address\":\"team@urbanairship.com\",\"reply_to\":\"no-reply@urbanairship.com\"}";
         try {
-            String parsedJson = PUSH_OBJECT_MAPPER.writeValueAsString(emailPayload);
+            String parsedJson = PUSH_OBJECT_MAPPER.writeValueAsString(createAndSendEmailPayload);
             JsonNode actual = PUSH_OBJECT_MAPPER.readTree(parsedJson);
             JsonNode expected = PUSH_OBJECT_MAPPER.readTree(expectedEmailpayloadString);
 
