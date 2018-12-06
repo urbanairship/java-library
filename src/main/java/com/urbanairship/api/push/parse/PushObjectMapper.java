@@ -23,15 +23,8 @@ import com.urbanairship.api.channel.parse.email.UninstallEmailChannelSerializer;
 import com.urbanairship.api.channel.parse.open.ChannelSerializer;
 import com.urbanairship.api.channel.parse.open.OpenChannelSerializer;
 import com.urbanairship.api.common.parse.CommonObjectMapper;
-import com.urbanairship.api.createandsend.model.notification.CreateAndSendEmailPayload;
-import com.urbanairship.api.createandsend.model.notification.CreateAndSendPayload;
-import com.urbanairship.api.createandsend.model.notification.EmailTemplate;
-import com.urbanairship.api.createandsend.model.notification.Fields;
-import com.urbanairship.api.createandsend.model.notification.VariableDetail;
-import com.urbanairship.api.createandsend.parse.CreateAndSendPayloadSerializer;
-import com.urbanairship.api.createandsend.parse.EmailTemplateSerializer;
-import com.urbanairship.api.createandsend.parse.FieldsSerializer;
-import com.urbanairship.api.createandsend.parse.VariableDetailSerializer;
+import com.urbanairship.api.createandsend.model.notification.*;
+import com.urbanairship.api.createandsend.parse.*;
 import com.urbanairship.api.customevents.model.CustomEventPayload;
 import com.urbanairship.api.customevents.model.CustomEventBody;
 import com.urbanairship.api.customevents.model.CustomEventResponse;
@@ -356,6 +349,9 @@ public class PushObjectMapper {
                 .addSerializer((EmailPayload.class), new EmailPayloadSerializer())
 
                 /* Create And Send */
+                .addSerializer(SmsFields.class, new SmsFieldsSerializer())
+                .addSerializer(SmsTemplate.class, new SmsTemplateSerializer())
+                .addSerializer(com.urbanairship.api.createandsend.model.notification.SmsPayload.class, new com.urbanairship.api.createandsend.parse.SmsPayloadSerializer())
                 .addSerializer(CreateAndSendPayload.class, new CreateAndSendPayloadSerializer())
                 .addSerializer(EmailTemplate.class, new EmailTemplateSerializer())
                 .addSerializer(Fields.class, new FieldsSerializer())

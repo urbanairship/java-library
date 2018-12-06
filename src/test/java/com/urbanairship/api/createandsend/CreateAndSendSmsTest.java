@@ -47,6 +47,14 @@ public class CreateAndSendSmsTest {
     }
 
     @Test
+    public void testSimplePayload() throws IOException {
+        String expectedJson = "";
+        String actualJson = MAPPER.writeValueAsString(smsPayload);
+
+        JsonNode actualNode = MAPPER.readTree(actualJson);
+    }
+
+    @Test
     public void testBadPayload() {
 
     }
