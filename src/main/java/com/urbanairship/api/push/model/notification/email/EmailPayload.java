@@ -8,7 +8,6 @@ import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Objects;
-import java.util.regex.Pattern;
 
 
 /**
