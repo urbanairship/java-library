@@ -23,10 +23,12 @@ import com.urbanairship.api.channel.parse.email.UninstallEmailChannelSerializer;
 import com.urbanairship.api.channel.parse.open.ChannelSerializer;
 import com.urbanairship.api.channel.parse.open.OpenChannelSerializer;
 import com.urbanairship.api.common.parse.CommonObjectMapper;
+import com.urbanairship.api.createandsend.model.notification.CreateAndSendEmailPayload;
 import com.urbanairship.api.createandsend.model.notification.CreateAndSendPayload;
 import com.urbanairship.api.createandsend.model.notification.EmailTemplate;
 import com.urbanairship.api.createandsend.model.notification.Fields;
 import com.urbanairship.api.createandsend.model.notification.VariableDetail;
+import com.urbanairship.api.createandsend.parse.CreateAndSendPayloadSerializer;
 import com.urbanairship.api.createandsend.parse.EmailTemplateSerializer;
 import com.urbanairship.api.createandsend.parse.FieldsSerializer;
 import com.urbanairship.api.createandsend.parse.VariableDetailSerializer;
@@ -193,9 +195,6 @@ public class PushObjectMapper {
         WebDevicePayloadDeserializer webPayloadDS = new WebDevicePayloadDeserializer();
         EmailPayloadDeserializer emailPayloadDS = new EmailPayloadDeserializer();
 
-
-
-
         NotificationDeserializer notificationDeserializer = new NotificationDeserializer(
                 ImmutableMap.<DeviceType, JsonDeserializer<? extends DevicePayloadOverride>>builder()
                         .put(DeviceType.WNS, wnsPayloadDS)
@@ -357,11 +356,12 @@ public class PushObjectMapper {
                 .addSerializer((EmailPayload.class), new EmailPayloadSerializer())
 
                 /* Create And Send */
-                .addSerializer(CreateAndSendPayload.class, new CreateAndSendEmailPayloadSerializer())
+                .addSerializer(CreateAndSendPayload.class, new CreateAndSendPayloadSerializer())
                 .addSerializer(EmailTemplate.class, new EmailTemplateSerializer())
                 .addSerializer(Fields.class, new FieldsSerializer())
                 .addSerializer(VariableDetail.class, new VariableDetailSerializer())
-                .addSerializer(CreateAndSendAudience.class, new CreateAndSendAudienceSerializer());
+                .addSerializer(CreateAndSendAudience.class, new CreateAndSendAudienceSerializer())
+                .addSerializer(CreateAndSendEmailPayload.class, new CreateAndSendEmailPayloadSerializer());
 
 
         MAPPER.registerModule(MODULE);
