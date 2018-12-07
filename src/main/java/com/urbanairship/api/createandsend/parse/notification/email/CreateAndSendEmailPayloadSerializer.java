@@ -1,18 +1,17 @@
-package com.urbanairship.api.push.parse.notification.email;
+package com.urbanairship.api.createandsend.parse.notification.email;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.urbanairship.api.push.model.notification.email.EmailPayload;
+import com.urbanairship.api.createandsend.model.notification.email.CreateAndSendEmailPayload;
 
 import java.io.IOException;
 
-public class EmailPayloadSerializer extends JsonSerializer<EmailPayload> {
-
+public class CreateAndSendEmailPayloadSerializer extends JsonSerializer<CreateAndSendEmailPayload> {
 
     @Override
-    public void serialize(EmailPayload payload, JsonGenerator jgen, SerializerProvider serializerProvider)
+    public void serialize(CreateAndSendEmailPayload payload, JsonGenerator jgen, SerializerProvider serializerProvider)
             throws IOException, JsonProcessingException {
         jgen.writeStartObject();
 
@@ -42,6 +41,14 @@ public class EmailPayloadSerializer extends JsonSerializer<EmailPayload> {
 
         if (payload.getReplyTo().isPresent()) {
             jgen.writeStringField("reply_to", payload.getReplyTo().get());
+        }
+
+        if (payload.getBypassOptInLevel().isPresent()) {
+            jgen.writeBooleanField("bypass_opt_in_level", payload.getBypassOptInLevel().get());
+        }
+
+        if (payload.getEmailTemplate().isPresent()) {
+            jgen.writeObjectField("template", payload.getEmailTemplate().get());
         }
 
         jgen.writeEndObject();

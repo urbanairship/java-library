@@ -40,10 +40,42 @@ public class EmailRegisterChannelPayloadSerializerTest {
                     "  }",level.getIdentifier());
 
             JsonNode actual = MAPPER.readTree(parsedJson);
+
             JsonNode expected = MAPPER.readTree(jsonString);
 
             org.junit.Assert.assertEquals(expected, actual);
         }
 
+    }
+
+    @Test
+    public void testCreateAndSendRegisterEmailChannelPayload() throws IOException {
+
+        for (OptInLevel level : OptInLevel.values()) {
+            RegisterEmailChannel registerEmailChannel = RegisterEmailChannel.newBuilder()
+                    .setEmailOptInLevel(level, "2018-02-13T11:58:59")
+                    .setTimeZone("America/Los_Angeles")
+                    .setAddress("name@example.com")
+                    .setLocaleCountry("US")
+                    .setLocaleLanguage("en")
+                    .build();
+
+            String parsedJson = MAPPER.writeValueAsString(registerEmailChannel);
+            String jsonString = String.format(" {\n" +
+                    "     \"channel\" : {\n" +
+                    "        \"type\": \"email\",\n" +
+                    "        \"%s\": \"2018-02-13T11:58:59\",\n" +
+                    "        \"address\": \"name@example.com\",\n" +
+                    "        \"timezone\" : \"America/Los_Angeles\",\n" +
+                    "        \"locale_country\" : \"US\",\n" +
+                    "        \"locale_language\" : \"en\"\n" +
+                    "     }\n" +
+                    "  }",level.getIdentifier());
+
+            JsonNode actual = MAPPER.readTree(parsedJson);
+            JsonNode expected = MAPPER.readTree(jsonString);
+
+            org.junit.Assert.assertEquals(expected, actual);
+        }
     }
 }
