@@ -1,15 +1,16 @@
-package com.urbanairship.api.createandsend.model.audience;
+package com.urbanairship.api.createandsend.model.audience.sms;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
+import org.joda.time.DateTime;
 
 import java.util.Map;
 import java.util.Optional;
 
 public final class SmsChannel {
     private final String msisdn;
-    private final String optedIn;
+    private final DateTime optedIn;
     private final String sender;
 
     private final Optional<ImmutableMap<String, String>> substitutions;
@@ -17,7 +18,7 @@ public final class SmsChannel {
     private SmsChannel(Builder builder) {
         msisdn = builder.msisdn;
         optedIn = builder.optedIn;
-        sender = builder.optedIn;
+        sender = builder.sender;
 
         if (builder.substitutions.build().isEmpty()) {
             substitutions = Optional.empty();
@@ -34,7 +35,7 @@ public final class SmsChannel {
         return msisdn;
     }
 
-    public String getOptedIn() {
+    public DateTime getOptedIn() {
         return optedIn;
     }
 
@@ -74,7 +75,7 @@ public final class SmsChannel {
 
     public final static class Builder {
         private String msisdn;
-        private String optedIn;
+        private DateTime optedIn;
         private String sender;
 
         private ImmutableMap.Builder<String, String> substitutions = ImmutableMap.builder();
@@ -84,7 +85,7 @@ public final class SmsChannel {
             return this;
         }
 
-        public Builder setOptedIn(String optedIn) {
+        public Builder setOptedIn(DateTime optedIn) {
             this.optedIn = optedIn;
             return this;
         }

@@ -1,11 +1,10 @@
-package com.urbanairship.api.createandsend.model.audience;
+package com.urbanairship.api.createandsend.model.audience.email;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import org.joda.time.DateTime;
 
-import java.sql.Timestamp;
 import java.util.Map;
 
 public class EmailChannel {
