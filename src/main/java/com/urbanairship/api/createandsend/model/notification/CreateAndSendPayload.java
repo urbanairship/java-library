@@ -11,13 +11,13 @@ import java.util.Objects;
 
 public class CreateAndSendPayload extends PushModelObject {
 
-    private final Optional<CreateAndSendAudience> audience;
-    private final Optional<Notification> notification;
+    private final CreateAndSendAudience audience;
+    private final Notification notification;
     private final Optional<Campaigns> campaigns;
 
     private CreateAndSendPayload(CreateAndSendPayload.Builder builder) {
-        this.audience = Optional.fromNullable(builder.audience);
-        this.notification = Optional.fromNullable(builder.notification);
+        this.audience = builder.audience;
+        this.notification = builder.notification;
         this.campaigns = Optional.fromNullable(builder.campaigns);
     }
 
@@ -26,20 +26,20 @@ public class CreateAndSendPayload extends PushModelObject {
     }
 
     /**
-     * Optional, get the audience object for the payload
+     * get the audience object for the payload
      *
      * @return Optional CreateAndSendAudience audience.
      */
-    public Optional<CreateAndSendAudience> getAudience() {
+    public CreateAndSendAudience getAudience() {
         return audience;
     }
 
     /**
-     * Optional, an object representing the notification.
+     * an object representing the notification.
      *
      * @return Optional Notification notification.
      */
-    public Optional<Notification> getNotification() {
+    public Notification getNotification() {
         return notification;
     }
 
@@ -89,7 +89,7 @@ public class CreateAndSendPayload extends PushModelObject {
         }
 
         /**
-         * Optional, CreateAndSendAudience object.
+         * CreateAndSendAudience object.
          *
          * @param audience Optional CreateAndSendAudience
          * @return CreateAndSendPayload Builder
@@ -100,7 +100,7 @@ public class CreateAndSendPayload extends PushModelObject {
         }
 
         /**
-         * Optional Notification object
+         * Notification object
          *
          * @param notification Optional Notification
          * @return CreateAndSendPayload Builder

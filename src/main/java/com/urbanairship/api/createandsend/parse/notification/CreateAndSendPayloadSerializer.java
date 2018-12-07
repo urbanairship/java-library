@@ -12,14 +12,9 @@ public class CreateAndSendPayloadSerializer extends JsonSerializer<CreateAndSend
     public void serialize(CreateAndSendPayload payload, JsonGenerator jgen, SerializerProvider serializerProvider) throws IOException {
         jgen.writeStartObject();
 
-        if (payload.getAudience().isPresent()) {
-            jgen.writeObjectField("audience", payload.getAudience().get());
-        }
-
-        if (payload.getNotification().isPresent()) {
-            jgen.writeObjectField("device_types", payload.getNotification().get().getDeviceTypePayloadOverrides().keySet().toArray());
-            jgen.writeObjectField("notification", payload.getNotification().get());
-        }
+        jgen.writeObjectField("audience", payload.getAudience());
+        jgen.writeObjectField("device_types", payload.getNotification().getDeviceTypePayloadOverrides().keySet().toArray());
+        jgen.writeObjectField("notification", payload.getNotification());
 
         if (payload.getCampaigns().isPresent()) {
             jgen.writeObjectField("campaigns", payload.getCampaigns().get());

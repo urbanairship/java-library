@@ -65,7 +65,7 @@ public class RegisterEmailChannel extends PushModelObject {
     /**
      * Get the email channel's address,
      *
-     * @return Optional String address
+     * @return String address
      */
     public String getAddress() {
         return address;
