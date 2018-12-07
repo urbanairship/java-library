@@ -1,6 +1,5 @@
 package com.urbanairship.api.createandsend;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.createandsend.model.notification.SmsFields;
@@ -18,6 +17,7 @@ import java.io.IOException;
 public class CreateAndSendSmsTest {
     private SmsPayload smsPayload;
     private SmsPayload smsPayloadWithTemplate;
+    private SmsTemplate smsTemplate;
 
     private static final ObjectMapper MAPPER = PushObjectMapper.getInstance();
 
@@ -31,7 +31,7 @@ public class CreateAndSendSmsTest {
                 .setAlert("smsFieldAlert")
                 .build();
 
-        SmsTemplate smsTemplate = SmsTemplate.newBuilder()
+        smsTemplate = SmsTemplate.newBuilder()
                 .setSmsFields(smsFields)
                 .build();
 
@@ -48,15 +48,21 @@ public class CreateAndSendSmsTest {
 
     @Test
     public void testSimplePayload() throws IOException {
-        String expectedJson = "";
+        String expectedJson = "{\"alert\":\"smsAlert\",\"expiry\":1000}";
         String actualJson = MAPPER.writeValueAsString(smsPayload);
 
         JsonNode actualNode = MAPPER.readTree(actualJson);
+        JsonNode expectedNode = MAPPER.readTree(expectedJson);
+
+        assertEquals(expectedNode, actualNode);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testBadPayload() {
-
+        SmsPayload smsPayload = SmsPayload.newBuilder()
+                .setAlert("Awesome Alert")
+                .setSmsTemplate(smsTemplate)
+                .build();
     }
 
     @Test
