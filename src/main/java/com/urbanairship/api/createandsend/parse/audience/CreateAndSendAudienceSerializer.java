@@ -31,11 +31,7 @@ public class CreateAndSendAudienceSerializer extends JsonSerializer<CreateAndSen
                     jgen.writeStringField("ua_transactional_opted_in", DateFormats.DATE_FORMATTER.print(channel.getTransactionalOptedIn().get()));
                 }
                 if (channel.getSubstitutions().isPresent()) {
-                    jgen.writeStartObject("substitutions");
-                    for (String key : channel.getSubstitutions().get().keySet()) {
-                        jgen.writeStringField(key, channel.getSubstitutions().get().get(key));
-                    }
-                    jgen.writeEndObject();
+                    jgen.writeObjectField("substitutions", channel.getSubstitutions().get());
                 }
                 jgen.writeEndObject();
             }
