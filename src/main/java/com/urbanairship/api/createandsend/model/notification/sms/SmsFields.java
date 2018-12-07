@@ -3,6 +3,9 @@ package com.urbanairship.api.createandsend.model.notification.sms;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 
+/**
+ * Represents the sms fields in the create and send sms notification.
+ */
 public class SmsFields {
     private final Optional<String> alert;
 
@@ -14,6 +17,10 @@ public class SmsFields {
         return new Builder();
     }
 
+    /**
+     * Get the notification you want to send to an SMS audience.
+     * @return Optional String
+     */
     public Optional<String> getAlert() {
         return alert;
     }
@@ -41,6 +48,11 @@ public class SmsFields {
     public static class Builder {
         private String alert;
 
+        /**
+         * Set the notification you want to send to an SMS audience.
+         * @param alert String
+         * @return SmsFields Builder
+         */
         public Builder setAlert(String alert) {
             this.alert = alert;
             return this;

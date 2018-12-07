@@ -11,18 +11,34 @@ public class CreateAndSendAudience extends PushModelObject {
     private Optional<EmailChannels> emailChannels = Optional.empty();
     private Optional<SmsChannels> smsChannels = Optional.empty();
 
+    /**
+     * Create and send audience for EmailChannels
+     * @param emailChannels EmailChannels
+     */
     public CreateAndSendAudience(EmailChannels emailChannels) {
         this.emailChannels = Optional.ofNullable(emailChannels);
     }
 
+    /**
+     * Create and send audience for SmsChannels
+     * @param smsChannels SmsChannels
+     */
     public CreateAndSendAudience(SmsChannels smsChannels) {
         this.smsChannels = Optional.ofNullable(smsChannels);
     }
 
+    /**
+     * Get the audience email channels if present.
+     * @return Optional EmailChannels
+     */
     public Optional<EmailChannels> getEmailChannels() {
         return emailChannels;
     }
 
+    /**
+     * Get the audience sms channels if present.
+     * @return Optional SmsChannels
+     */
     public Optional<SmsChannels> getSmsChannels() {
         return smsChannels;
     }
