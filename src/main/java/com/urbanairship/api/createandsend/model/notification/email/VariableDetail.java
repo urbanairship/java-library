@@ -1,4 +1,4 @@
-package com.urbanairship.api.createandsend.model.notification;
+package com.urbanairship.api.createandsend.model.notification.email;
 
 import com.google.common.base.Optional;
 

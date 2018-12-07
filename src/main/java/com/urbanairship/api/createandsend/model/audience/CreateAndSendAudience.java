@@ -1,5 +1,7 @@
 package com.urbanairship.api.createandsend.model.audience;
 
+import com.urbanairship.api.createandsend.model.audience.email.EmailChannels;
+import com.urbanairship.api.createandsend.model.audience.sms.SmsChannels;
 import com.urbanairship.api.push.model.PushModelObject;
 
 import java.util.Objects;

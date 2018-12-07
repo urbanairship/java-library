@@ -1,12 +1,12 @@
-package com.urbanairship.api.channel.parse.createandsend;
+package com.urbanairship.api.createandsend.parse.audience;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.createandsend.model.audience.CreateAndSendAudience;
-import com.urbanairship.api.createandsend.model.audience.EmailChannel;
-import com.urbanairship.api.createandsend.model.audience.SmsChannel;
+import com.urbanairship.api.createandsend.model.audience.email.EmailChannel;
+import com.urbanairship.api.createandsend.model.audience.sms.SmsChannel;
 
 import java.io.IOException;
 
@@ -46,7 +46,11 @@ public class CreateAndSendAudienceSerializer extends JsonSerializer<CreateAndSen
                 jgen.writeStartObject();
                 jgen.writeStringField("us_msisdn", smsChannel.getMsisdn());
                 jgen.writeStringField("ua_sender", smsChannel.getSender());
-                jgen.writeStringField("ua_opted_in", smsChannel.getOptedIn());
+                jgen.writeStringField("ua_opted_in", DateFormats.DATE_FORMATTER.print(smsChannel.getOptedIn()));
+
+                if (smsChannel.getSubstitutions().isPresent()) {
+                    jgen.writeObjectField("substitutions", smsChannel.getSubstitutions().get());
+                }
                 jgen.writeEndObject();
             }
         }

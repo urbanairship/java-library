@@ -20,7 +20,7 @@ import com.urbanairship.api.channel.model.ios.QuietTime;
 import com.urbanairship.api.channel.model.open.OpenChannel;
 import com.urbanairship.api.channel.model.web.Subscription;
 import com.urbanairship.api.channel.model.web.WebSettings;
-import com.urbanairship.api.channel.parse.createandsend.CreateAndSendEmailChannelSerializer;
+import com.urbanairship.api.createandsend.parse.CreateAndSendEmailChannelSerializer;
 import com.urbanairship.api.channel.parse.email.RegisterEmailChannelResponseDeserializer;
 import com.urbanairship.api.channel.parse.email.RegisterEmailChannelSerializer;
 import com.urbanairship.api.channel.parse.ios.IosSettingsDeserializer;
@@ -28,7 +28,7 @@ import com.urbanairship.api.channel.parse.ios.QuietTimeDeserializer;
 import com.urbanairship.api.channel.parse.open.OpenChannelDeserializer;
 import com.urbanairship.api.channel.parse.web.SubscriptionDeserializer;
 import com.urbanairship.api.channel.parse.web.WebSettingsDeserializer;
-import com.urbanairship.api.createandsend.model.audience.EmailChannel;
+import com.urbanairship.api.createandsend.model.audience.email.EmailChannel;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 
 public class ChannelObjectMapper {

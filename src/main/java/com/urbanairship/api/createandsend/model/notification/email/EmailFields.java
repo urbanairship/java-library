@@ -1,12 +1,12 @@
-package com.urbanairship.api.createandsend.model.notification;
+package com.urbanairship.api.createandsend.model.notification.email;
 
 import com.google.common.base.Preconditions;
 
-public class Fields {
+public class EmailFields {
     private final String plainTextBody;
     private final String subject;
 
-    private Fields(Builder builder) {
+    private EmailFields(Builder builder) {
         plainTextBody = builder.plainTextBody;
         subject = builder.subject;
     }
@@ -37,11 +37,11 @@ public class Fields {
             return this;
         }
 
-        public Fields build() {
+        public EmailFields build() {
             Preconditions.checkNotNull(plainTextBody, "plain text body cannot be null.");
             Preconditions.checkNotNull(subject, "subject cannot be null.");
 
-            return new Fields(this);
+            return new EmailFields(this);
         }
     }
 }

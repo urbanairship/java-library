@@ -1,4 +1,4 @@
-package com.urbanairship.api.createandsend.model.audience;
+package com.urbanairship.api.createandsend.model.audience.email;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;

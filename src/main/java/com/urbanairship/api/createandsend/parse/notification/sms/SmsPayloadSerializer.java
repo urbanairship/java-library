@@ -1,9 +1,9 @@
-package com.urbanairship.api.createandsend.parse;
+package com.urbanairship.api.createandsend.parse.notification.sms;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.urbanairship.api.createandsend.model.notification.SmsPayload;
+import com.urbanairship.api.createandsend.model.notification.sms.SmsPayload;
 
 import java.io.IOException;
 

@@ -1,10 +1,10 @@
-package com.urbanairship.api.channel.parse.createandsend;
+package com.urbanairship.api.createandsend.parse.notification.email;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.urbanairship.api.createandsend.model.notification.CreateAndSendEmailPayload;
+import com.urbanairship.api.createandsend.model.notification.email.CreateAndSendEmailPayload;
 
 import java.io.IOException;
 
@@ -41,6 +41,14 @@ public class CreateAndSendEmailPayloadSerializer extends JsonSerializer<CreateAn
 
         if (payload.getReplyTo().isPresent()) {
             jgen.writeStringField("reply_to", payload.getReplyTo().get());
+        }
+
+        if (payload.getBypassOptInLevel().isPresent()) {
+            jgen.writeBooleanField("bypass_opt_in_level", payload.getBypassOptInLevel().get());
+        }
+
+        if (payload.getEmailTemplate().isPresent()) {
+            jgen.writeObjectField("template", payload.getEmailTemplate().get());
         }
 
         jgen.writeEndObject();
