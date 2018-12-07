@@ -27,7 +27,6 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
     private final Optional<String> uaAddress;
     private final Optional<String> replyTo;
     private final Optional<EmailTemplate> emailTemplate;
-    private final DeviceType deviceType;
 
     private CreateAndSendEmailPayload(Builder builder) {
         this.alert = Optional.fromNullable(builder.alert);
@@ -41,7 +40,6 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
         this.replyTo = Optional.fromNullable((builder.replyTo));
         this.bypassOptInLevel = Optional.fromNullable(builder.byPassOptInLevel);
         this.emailTemplate = Optional.fromNullable(builder.emailTemplate);
-        this.deviceType = builder.deviceType;
     }
 
     public static Builder newBuilder() {
@@ -55,7 +53,7 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
      */
     @Override
     public DeviceType getDeviceType() {
-        return deviceType.EMAIL;
+        return DeviceType.EMAIL;
     }
 
     /**
@@ -316,17 +314,6 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
         }
 
         /**
-         * Set the device type for the email channel payload.
-         *
-         * @param deviceType DeviceType
-         * @return CreateAndSendEmailPayload Builder
-         */
-        public Builder setDeviceType(DeviceType deviceType) {
-            this.deviceType = deviceType;
-            return this;
-        }
-
-        /**
          * Provide the ID or inline fields for a template. Using a template enables you to provide and populate
          * variables in your notification.
          *
@@ -339,9 +326,6 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
         }
 
         public CreateAndSendEmailPayload build() {
-
-            Preconditions.checkNotNull(deviceType, "DeviceType must be set.");
-
             Preconditions.checkNotNull(subject, "Subject must be set.");
 
             Preconditions.checkArgument(StringUtils.isNotBlank(subject),

@@ -66,7 +66,6 @@ public class CreateAndSendEmailTest {
                 .build());
 
         createAndSendEmailPayload = CreateAndSendEmailPayload.newBuilder()
-                .setDeviceType(DeviceType.EMAIL)
                 .setSubject("Welcome to the Winter Sale! ")
                 .setHtmlBody(htmlBodyString)
                 .setPlaintextBody(plaintextBodyString)
