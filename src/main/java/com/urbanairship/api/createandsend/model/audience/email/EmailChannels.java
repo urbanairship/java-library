@@ -5,6 +5,9 @@ import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 
+/**
+ * Represents the collection of all audience email channels.
+ */
 public class EmailChannels {
     private final List<EmailChannel> emailChannels;
 
@@ -12,10 +15,18 @@ public class EmailChannels {
         emailChannels = builder.emailChannels.build();
     }
 
+    /**
+     * EmailChannels Builder
+     * @return Builder
+     */
     public static Builder newBuilder() {
         return new Builder();
     }
 
+    /**
+     * Get the create and send audience email channels.
+     * @return
+     */
     public List<EmailChannel> getEmailChannels() {
         return emailChannels;
     }
