@@ -70,7 +70,7 @@ public class CreateAndSendEmailTest {
                 .build());
 
         createAndSendEmailPayload = CreateAndSendEmailPayload.newBuilder()
-                .setSubject("Welcome to the Winter Sale!")
+                .setSubject("Welcome to the Winter Sale! ")
                 .setHtmlBody(htmlBodyString)
                 .setPlaintextBody(plaintextBodyString)
                 .setMessageType(MessageType.COMMERCIAL)
@@ -250,7 +250,7 @@ public class CreateAndSendEmailTest {
                 "\t\"device_types\": [\"email\"],\n" +
                 "\t\"notification\": {\n" +
                 "\t\t\"email\": {\n" +
-                "\t\t\t\"subject\": \"Welcome to the Winter Sale!\",\n" +
+                "\t\t\t\"subject\": \"Welcome to the Winter Sale! \",\n" +
                 "\t\t\t\"html_body\": \"<h1>Seasons Greetings</h1><p>Check out our winter deals!</p><p><a data-ua-unsubscribe=\\\"1\\\" title=\\\"unsubscribe\\\" href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\">Unsubscribe</a></p>\",\n" +
                 "\t\t\t\"plaintext_body\": \"Greetings! Check out our latest winter deals! [[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]\",\n" +
                 "\t\t\t\"message_type\": \"commercial\",\n" +
