@@ -51,13 +51,11 @@ public class EmailRegisterChannelPayloadSerializerTest {
     @Test
     public void testCreateAndSendRegisterEmailChannelPayload() throws IOException {
 
-        for (OptInLevel level : OptInLevel.values()
-        ) {
-
+        for (OptInLevel level : OptInLevel.values()) {
             RegisterEmailChannel registerEmailChannel = RegisterEmailChannel.newBuilder()
                     .setEmailOptInLevel(level, "2018-02-13T11:58:59")
-                    .setUaAddress("name@example.com")
                     .setTimeZone("America/Los_Angeles")
+                    .setAddress("name@example.com")
                     .setLocaleCountry("US")
                     .setLocaleLanguage("en")
                     .build();
@@ -67,7 +65,7 @@ public class EmailRegisterChannelPayloadSerializerTest {
                     "     \"channel\" : {\n" +
                     "        \"type\": \"email\",\n" +
                     "        \"%s\": \"2018-02-13T11:58:59\",\n" +
-                    "        \"ua_address\": \"name@example.com\",\n" +
+                    "        \"address\": \"name@example.com\",\n" +
                     "        \"timezone\" : \"America/Los_Angeles\",\n" +
                     "        \"locale_country\" : \"US\",\n" +
                     "        \"locale_language\" : \"en\"\n" +
@@ -79,6 +77,5 @@ public class EmailRegisterChannelPayloadSerializerTest {
 
             org.junit.Assert.assertEquals(expected, actual);
         }
-
     }
 }
