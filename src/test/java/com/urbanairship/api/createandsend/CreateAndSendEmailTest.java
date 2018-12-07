@@ -8,6 +8,8 @@ import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.createandsend.model.audience.email.EmailChannel;
 import com.urbanairship.api.createandsend.model.audience.email.EmailChannels;
 import com.urbanairship.api.createandsend.model.notification.email.CreateAndSendEmailPayload;
+import com.urbanairship.api.createandsend.model.notification.email.EmailFields;
+import com.urbanairship.api.createandsend.model.notification.email.EmailTemplate;
 import com.urbanairship.api.push.model.Campaigns;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.createandsend.model.audience.CreateAndSendAudience;
@@ -39,11 +41,13 @@ public class CreateAndSendEmailTest {
     EmailChannel benChannel;
     CreateAndSendAudience audience;
     CreateAndSendEmailPayload createAndSendEmailPayload;
+    CreateAndSendEmailPayload templateEmailPayload;
     Notification notification;
     Campaigns campaign;
     CreateAndSendPayload payload;
     CreateAndSendRequest request;
     UrbanAirshipClient client;
+    CreateAndSendPayload templatePayload;
 
     @Before
     public void setUp() {
@@ -66,7 +70,7 @@ public class CreateAndSendEmailTest {
                 .build());
 
         createAndSendEmailPayload = CreateAndSendEmailPayload.newBuilder()
-                .setSubject("Welcome to the Winter Sale! ")
+                .setSubject("Welcome to the Winter Sale!")
                 .setHtmlBody(htmlBodyString)
                 .setPlaintextBody(plaintextBodyString)
                 .setMessageType(MessageType.COMMERCIAL)
@@ -95,6 +99,52 @@ public class CreateAndSendEmailTest {
         client = UrbanAirshipClient.newBuilder()
                 .setKey("ISex_TTJRuarzs9-o_Gkhg")
                 .setSecret("nDq-bQ3CT92PqCIXNtQyCQ")
+                .build();
+
+        EmailTemplate template = EmailTemplate.newBuilder()
+                .setEmailFields(EmailFields.newBuilder()
+                        .setSubject("Hi there, {{name}}")
+                        .setPlainTextBody("Hope you're enjoying our store in {{location}} [[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]")
+                        .build())
+                .build();
+
+        EmailChannel templateNewChannel = EmailChannel.newBuilder()
+                .setAddress("new@email.com")
+                .addSubstitution("name", "New Person Esq")
+                .addSubstitution("location", "City, State")
+                .build();
+
+        EmailChannel templateBenChannel = EmailChannel.newBuilder()
+                .setAddress("ben@icetown.com")
+                .addSubstitution("name", "Ben Wyatt")
+                .addSubstitution("location","Pawnee, IN")
+                .build();
+
+        EmailChannels templateChannels = EmailChannels.newBuilder()
+                .addChannel(templateNewChannel)
+                .addChannel(templateBenChannel)
+                .build();
+
+        CreateAndSendAudience templateAudience = new CreateAndSendAudience(templateChannels);
+
+        templateEmailPayload = createAndSendEmailPayload.newBuilder()
+                .setMessageType(MessageType.COMMERCIAL)
+                .setSenderName("Urban Airship")
+                .setSubject("Welcome to the Winter Sale!")
+                .setPlaintextBody("Hope you're enjoying our store in {{location}} [[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]")
+                .setSenderAddress("team@urbanairship.com")
+                .setReplyTo("no-reply@urbanairship.com")
+                .setEmailTemplate(template)
+                .build();
+
+        Notification templateNotification = Notification.newBuilder()
+                .addDeviceTypeOverride(DeviceType.EMAIL, templateEmailPayload)
+                .build();
+
+
+        templatePayload = CreateAndSendPayload.newBuilder()
+                .setAudience(templateAudience)
+                .setNotification(templateNotification)
                 .build();
     }
 
@@ -200,7 +250,7 @@ public class CreateAndSendEmailTest {
                 "\t\"device_types\": [\"email\"],\n" +
                 "\t\"notification\": {\n" +
                 "\t\t\"email\": {\n" +
-                "\t\t\t\"subject\": \"Welcome to the Winter Sale! \",\n" +
+                "\t\t\t\"subject\": \"Welcome to the Winter Sale!\",\n" +
                 "\t\t\t\"html_body\": \"<h1>Seasons Greetings</h1><p>Check out our winter deals!</p><p><a data-ua-unsubscribe=\\\"1\\\" title=\\\"unsubscribe\\\" href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\">Unsubscribe</a></p>\",\n" +
                 "\t\t\t\"plaintext_body\": \"Greetings! Check out our latest winter deals! [[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]\",\n" +
                 "\t\t\t\"message_type\": \"commercial\",\n" +
@@ -223,6 +273,61 @@ public class CreateAndSendEmailTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testCreateAndSendEmailTemplate() {
+        String templateFieldsString = "{\n" +
+                "    \"audience\": {\n" +
+                "        \"create_and_send\": [\n" +
+                "            {\n" +
+                "                \"ua_address\": \"new@email.com\",\n" +
+                "                \"substitutions\": {\n" +
+                "                    \"name\": \"New Person Esq\",\n" +
+                "                    \"location\": \"City, State\"\n" +
+                "                }\n" +
+                "            },\n" +
+                "            {\n" +
+                "                \"ua_address\": \"ben@icetown.com\",\n" +
+                "                \"substitutions\": {\n" +
+                "                    \"name\": \"Ben Wyatt\",\n" +
+                "                    \"location\": \"Pawnee, IN\"\n" +
+                "                }\n" +
+                "            }\n" +
+                "        ]\n" +
+                "    },\n" +
+                "    \"device_types\": [\n" +
+                "        \"email\"\n" +
+                "    ],\n" +
+                "    \"notification\": {\n" +
+                "        \"email\": {\n" +
+                "            \"subject\": \"Welcome to the Winter Sale!\",\n" +
+                "            \"plaintext_body\": \"Hope you're enjoying our store in {{location}} [[ua-unsubscribe href=\\\\\\\"http://unsubscribe.urbanairship.com/email/success.html\\\\\\\"]]\",\n" +
+                "            \"message_type\": \"commercial\",\n" +
+                "            \"sender_name\": \"Urban Airship\",\n" +
+                "            \"sender_address\": \"team@urbanairship.com\",\n" +
+                "            \"reply_to\": \"no-reply@urbanairship.com\",\n" +
+                "            \"template\": {\n" +
+                "                \"fields\": {\n" +
+                "                    \"plaintext_body\": \"Hope you're enjoying our store in {{location}} [[ua-unsubscribe href=\\\\\\\"http://unsubscribe.urbanairship.com/email/success.html\\\\\\\"]]\",\n" +
+                "                    \"subject\": \"Hi there, {{name}}\"\n" +
+                "                }\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}";
+
+        JsonNode actual = null;
+        JsonNode expected = null;
+        try {
+            String parsedJson = PUSH_OBJECT_MAPPER.writeValueAsString(templatePayload);
+            actual = PUSH_OBJECT_MAPPER.readTree(parsedJson);
+            expected = PUSH_OBJECT_MAPPER.readTree(templateFieldsString);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Assert.assertEquals(expected, actual);
     }
 }
 
