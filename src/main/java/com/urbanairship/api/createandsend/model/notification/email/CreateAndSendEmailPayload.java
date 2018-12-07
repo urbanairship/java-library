@@ -1,10 +1,11 @@
-package com.urbanairship.api.push.model.notification.email;
+package com.urbanairship.api.createandsend.model.notification.email;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
+import com.urbanairship.api.push.model.notification.email.MessageType;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Objects;
@@ -13,8 +14,9 @@ import java.util.Objects;
 /**
  * Represents the payload to be used for registering or updating an email channel.
  */
-public class EmailPayload extends PushModelObject implements DevicePayloadOverride {
+public class CreateAndSendEmailPayload extends PushModelObject implements DevicePayloadOverride {
 
+    private final Optional<Boolean> bypassOptInLevel;
     private final Optional<String> alert;
     private final Optional<String> subject;
     private final Optional<String> htmlBody;
@@ -24,9 +26,9 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
     private final Optional<String> senderAddress;
     private final Optional<String> uaAddress;
     private final Optional<String> replyTo;
-    private final DeviceType deviceType;
+    private final Optional<EmailTemplate> emailTemplate;
 
-    private EmailPayload(Builder builder) {
+    private CreateAndSendEmailPayload(Builder builder) {
         this.alert = Optional.fromNullable(builder.alert);
         this.subject = Optional.fromNullable(builder.subject);
         this.htmlBody = Optional.fromNullable(builder.htmlBody);
@@ -36,7 +38,8 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
         this.senderAddress = Optional.fromNullable((builder.senderAddress));
         this.uaAddress = Optional.fromNullable((builder.uaAddress));
         this.replyTo = Optional.fromNullable((builder.replyTo));
-        this.deviceType = builder.deviceType;
+        this.bypassOptInLevel = Optional.fromNullable(builder.byPassOptInLevel);
+        this.emailTemplate = Optional.fromNullable(builder.emailTemplate);
     }
 
     public static Builder newBuilder() {
@@ -50,7 +53,17 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
      */
     @Override
     public DeviceType getDeviceType() {
-        return deviceType.EMAIL;
+        return DeviceType.EMAIL;
+    }
+
+    /**
+     * Get the email template, Using a template enables you to provide and populate
+     * variables in your notification
+     *
+     * @return Optional, EmailTemplate
+     */
+    public Optional<EmailTemplate> getEmailTemplate() {
+        return emailTemplate;
     }
 
     /**
@@ -135,6 +148,16 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
         return replyTo;
     }
 
+    /**
+     * Optional, a boolean toggle you can set when message_type is set to transactional to send a business critical
+     * email. If true, the message will be sent to your entire audience, ignoring  transactional_opted_out status.
+     *
+     * @return Optional Boolean bypassOptInLevel
+     */
+    public Optional<Boolean> getBypassOptInLevel() {
+        return bypassOptInLevel;
+    }
+
     @Override
     public String toString() {
         return "EmailPayload{" +
@@ -152,8 +175,8 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof EmailPayload)) return false;
-        EmailPayload that = (EmailPayload) o;
+        if (!(o instanceof CreateAndSendEmailPayload)) return false;
+        CreateAndSendEmailPayload that = (CreateAndSendEmailPayload) o;
         return Objects.equals(getSubject(), that.getSubject()) &&
                 Objects.equals(getHtmlBody(), that.getHtmlBody()) &&
                 Objects.equals(getPlaintextBody(), that.getPlaintextBody()) &&
@@ -171,7 +194,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
     }
 
     /**
-     * EmailPayload Builder.
+     * CreateAndSendEmailPayload Builder.
      */
     public static class Builder {
         private String alert = null;
@@ -184,6 +207,8 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
         private String uaAddress = null;
         private String replyTo = null;
         private DeviceType deviceType = null;
+        private Boolean byPassOptInLevel = null;
+        private EmailTemplate emailTemplate = null;
 
         private Builder() {
         }
@@ -192,7 +217,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
          * Optional, a string representing the subject of the notification.
          *
          * @param subject Optional String
-         * @return EmailPayload Builder
+         * @return CreateAndSendEmailPayload Builder
          */
         public Builder setSubject(String subject) {
             this.subject = subject;
@@ -200,10 +225,21 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
         }
 
         /**
+         * Optional, a boolean you can set this toggle when message_type is set to transactional to send a business critical
+         * email. If true, the message will be sent to your entire audience, ignoring  transactional_opted_out status.
+         * @param byPassOptInLevel Boolean
+         * @return CreateAndSendEmailPayload Builder
+         */
+        public Builder setByPassOptInLevel(Boolean byPassOptInLevel) {
+            this.byPassOptInLevel = byPassOptInLevel;
+            return this;
+        }
+
+        /**
          * Optional, a string representing the HTML body of the notification.
          *
          * @param htmlBody Optional String
-         * @return EmailPayload Builder
+         * @return CreateAndSendEmailPayload Builder
          */
         public Builder setHtmlBody(String htmlBody) {
             this.htmlBody = htmlBody;
@@ -214,7 +250,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
          * Optional, a string representing the plaintext body of the notification.
          *
          * @param plaintextBody Optional String
-         * @return EmailPayload Builder
+         * @return CreateAndSendEmailPayload Builder
          */
         public Builder setPlaintextBody(String plaintextBody) {
             this.plaintextBody = plaintextBody;
@@ -225,7 +261,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
          * Optional, an enum representing the possible message types of the notification.
          *
          * @param value Optional Map of Strings
-         * @return EmailPayload Builder
+         * @return CreateAndSendEmailPayload Builder
          */
         public Builder setMessageType(MessageType value) {
             this.messageType = value;
@@ -236,7 +272,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
          * Optional, a string representing the sender address.
          *
          * @param senderAddress Optional String
-         * @return EmailPayload Builder
+         * @return CreateAndSendEmailPayload Builder
          */
         public Builder setSenderAddress(String senderAddress) {
             this.senderAddress = senderAddress;
@@ -247,7 +283,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
          * Optional, a string representing the reserved UA email address for Create and Send.
          *
          * @param uaAddress Optional String
-         * @return EmailPayload Builder
+         * @return CreateAndSendEmailPayload Builder
          */
         public Builder setUaAddress(String uaAddress) {
             this.uaAddress = uaAddress;
@@ -258,7 +294,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
          * Optional, a string representing the reply-to address.
          *
          * @param replyTo Optional String
-         * @return EmailPayload Builder
+         * @return CreateAndSendEmailPayload Builder
          */
         public Builder setReplyTo(String replyTo) {
             this.replyTo = replyTo;
@@ -270,7 +306,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
          *
          * @param senderName Optional String
          *                   Must be set up by Urban Airship before use.
-         * @return EmailPayload Builder
+         * @return CreateAndSendEmailPayload Builder
          */
         public Builder setSenderName(String senderName) {
             this.senderName = senderName;
@@ -278,20 +314,18 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
         }
 
         /**
-         * Set the device type for the email channel payload.
+         * Provide the ID or inline fields for a template. Using a template enables you to provide and populate
+         * variables in your notification.
          *
-         * @param deviceType DeviceType
-         * @return EmailPayload Builder
+         * @param emailTemplate EmailTemplate
+         * @return CreateAndSendEmailPayload Builder
          */
-        public Builder setDeviceType(DeviceType deviceType) {
-            this.deviceType = deviceType;
+        public Builder setEmailTemplate(EmailTemplate emailTemplate) {
+            this.emailTemplate = emailTemplate;
             return this;
         }
 
-        public EmailPayload build() {
-
-            Preconditions.checkNotNull(deviceType, "DeviceType must be set.");
-
+        public CreateAndSendEmailPayload build() {
             Preconditions.checkNotNull(subject, "Subject must be set.");
 
             Preconditions.checkArgument(StringUtils.isNotBlank(subject),
@@ -319,7 +353,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
             Preconditions.checkArgument(StringUtils.isNotBlank(replyTo),
                     "ReplyTo must not be blank");
 
-            return new EmailPayload(this);
+            return new CreateAndSendEmailPayload(this);
         }
     }
 }

@@ -15,12 +15,27 @@ import com.urbanairship.api.channel.model.email.RegisterEmailChannel;
 import com.urbanairship.api.channel.model.email.UninstallEmailChannel;
 import com.urbanairship.api.channel.model.open.OpenChannel;
 import com.urbanairship.api.channel.model.open.Channel;
+import com.urbanairship.api.createandsend.model.notification.email.CreateAndSendEmailPayload;
+import com.urbanairship.api.createandsend.model.notification.email.EmailFields;
+import com.urbanairship.api.createandsend.model.notification.email.EmailTemplate;
+import com.urbanairship.api.createandsend.model.notification.email.VariableDetail;
+import com.urbanairship.api.createandsend.model.notification.sms.SmsFields;
+import com.urbanairship.api.createandsend.model.notification.sms.SmsTemplate;
+import com.urbanairship.api.createandsend.parse.audience.CreateAndSendAudienceSerializer;
+import com.urbanairship.api.createandsend.parse.notification.email.CreateAndSendEmailPayloadSerializer;
 import com.urbanairship.api.channel.parse.email.RegisterEmailChannelResponseDeserializer;
 import com.urbanairship.api.channel.parse.email.RegisterEmailChannelSerializer;
 import com.urbanairship.api.channel.parse.email.UninstallEmailChannelSerializer;
 import com.urbanairship.api.channel.parse.open.ChannelSerializer;
 import com.urbanairship.api.channel.parse.open.OpenChannelSerializer;
 import com.urbanairship.api.common.parse.CommonObjectMapper;
+import com.urbanairship.api.createandsend.model.notification.*;
+import com.urbanairship.api.createandsend.parse.notification.CreateAndSendPayloadSerializer;
+import com.urbanairship.api.createandsend.parse.notification.email.EmailFieldsSerializer;
+import com.urbanairship.api.createandsend.parse.notification.email.EmailTemplateSerializer;
+import com.urbanairship.api.createandsend.parse.notification.email.VariableDetailSerializer;
+import com.urbanairship.api.createandsend.parse.notification.sms.SmsFieldsSerializer;
+import com.urbanairship.api.createandsend.parse.notification.sms.SmsTemplateSerializer;
 import com.urbanairship.api.customevents.model.CustomEventPayload;
 import com.urbanairship.api.customevents.model.CustomEventBody;
 import com.urbanairship.api.customevents.model.CustomEventResponse;
@@ -38,6 +53,7 @@ import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.PushOptions;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.PushResponse;
+import com.urbanairship.api.createandsend.model.audience.CreateAndSendAudience;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.location.AbsoluteDateRange;
 import com.urbanairship.api.push.model.audience.location.DateRange;
@@ -66,6 +82,7 @@ import com.urbanairship.api.push.model.notification.android.Category;
 import com.urbanairship.api.push.model.notification.android.InboxStyle;
 import com.urbanairship.api.push.model.notification.android.PublicNotification;
 import com.urbanairship.api.push.model.notification.android.Wearable;
+import com.urbanairship.api.push.model.notification.email.EmailPayload;
 import com.urbanairship.api.push.model.notification.ios.*;
 import com.urbanairship.api.push.model.notification.open.OpenPayload;
 import com.urbanairship.api.push.model.notification.richpush.RichPushIcon;
@@ -122,6 +139,8 @@ import com.urbanairship.api.push.parse.notification.android.PublicNotificationDe
 import com.urbanairship.api.push.parse.notification.android.PublicNotificationSerializer;
 import com.urbanairship.api.push.parse.notification.android.WearableDeserializer;
 import com.urbanairship.api.push.parse.notification.android.WearableSerializer;
+import com.urbanairship.api.push.parse.notification.email.EmailPayloadDeserializer;
+import com.urbanairship.api.push.parse.notification.email.EmailPayloadSerializer;
 import com.urbanairship.api.push.parse.notification.ios.*;
 import com.urbanairship.api.push.parse.notification.open.OpenPayloadSerializer;
 import com.urbanairship.api.push.parse.notification.richpush.RichPushIconDeserializer;
@@ -178,8 +197,7 @@ public class PushObjectMapper {
         AndroidDevicePayloadDeserializer androidPayloadDS = new AndroidDevicePayloadDeserializer();
         ADMDevicePayloadDeserializer admPayloadDS = new ADMDevicePayloadDeserializer();
         WebDevicePayloadDeserializer webPayloadDS = new WebDevicePayloadDeserializer();
-
-
+        EmailPayloadDeserializer emailPayloadDS = new EmailPayloadDeserializer();
 
         NotificationDeserializer notificationDeserializer = new NotificationDeserializer(
                 ImmutableMap.<DeviceType, JsonDeserializer<? extends DevicePayloadOverride>>builder()
@@ -187,6 +205,7 @@ public class PushObjectMapper {
                         .put(DeviceType.IOS, iosPayloadDS)
                         .put(DeviceType.ANDROID, androidPayloadDS)
                         .put(DeviceType.AMAZON, admPayloadDS)
+                        .put(DeviceType.EMAIL, emailPayloadDS)
                         .build());
 
         MODULE
@@ -337,7 +356,20 @@ public class PushObjectMapper {
                 .addSerializer(RegisterEmailChannel.class, new RegisterEmailChannelSerializer())
                 .addDeserializer(EmailChannelResponse.class, new RegisterEmailChannelResponseDeserializer())
                 .addSerializer(UninstallEmailChannel.class,
-                        new UninstallEmailChannelSerializer());
+                        new UninstallEmailChannelSerializer())
+                .addSerializer((EmailPayload.class), new EmailPayloadSerializer())
+
+                /* Create And Send */
+                .addSerializer(SmsFields.class, new SmsFieldsSerializer())
+                .addSerializer(SmsTemplate.class, new SmsTemplateSerializer())
+                .addSerializer(com.urbanairship.api.createandsend.model.notification.sms.SmsPayload.class, new com.urbanairship.api.createandsend.parse.notification.sms.SmsPayloadSerializer())
+                .addSerializer(CreateAndSendPayload.class, new CreateAndSendPayloadSerializer())
+                .addSerializer(EmailTemplate.class, new EmailTemplateSerializer())
+                .addSerializer(EmailFields.class, new EmailFieldsSerializer())
+                .addSerializer(VariableDetail.class, new VariableDetailSerializer())
+                .addSerializer(CreateAndSendAudience.class, new CreateAndSendAudienceSerializer())
+                .addSerializer(CreateAndSendEmailPayload.class, new CreateAndSendEmailPayloadSerializer());
+
 
         MAPPER.registerModule(MODULE);
         MAPPER.registerModule(CommonObjectMapper.getModule());

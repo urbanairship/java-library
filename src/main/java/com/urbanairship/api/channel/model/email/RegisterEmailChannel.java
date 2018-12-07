@@ -17,22 +17,25 @@ import java.util.Map;
 public class RegisterEmailChannel extends PushModelObject {
 
     private final ChannelType type;
-    private final Optional<Map<OptInLevel,String>> emailOptInLevel;
-    private final Optional<String> address;
+    private final Optional<Map<OptInLevel, String>> emailOptInLevel;
+    private final String address;
     private final Optional<Boolean> setTags;
     private final Optional<ImmutableList<String>> tags;
     private final Optional<String> timezone;
     private final Optional<String> localeCountry;
     private final Optional<String> localeLanguage;
 
-    private RegisterEmailChannel(Builder builder) {
+
+    //Protected to facilitate subclassing for create and send child object
+    protected RegisterEmailChannel(Builder builder) {
         this.type = ChannelType.EMAIL;
-        this.emailOptInLevel = Optional.fromNullable((builder.email_opt_in_level));
-        this.address = Optional.fromNullable(builder.address);
+        this.emailOptInLevel = Optional.fromNullable((builder.emailOptInLevel));
+        this.address = builder.address;
         this.setTags = Optional.fromNullable(builder.set_tags);
         this.timezone = Optional.fromNullable(builder.timezone);
-        this.localeCountry = Optional.fromNullable(builder.locale_country);
-        this.localeLanguage = Optional.fromNullable(builder.locale_language);
+        this.localeCountry = Optional.fromNullable(builder.localeCountry);
+        this.localeLanguage = Optional.fromNullable(builder.localeLanguage);
+
 
         if (builder.tags.build().isEmpty()) {
             this.tags = Optional.absent();
@@ -43,6 +46,7 @@ public class RegisterEmailChannel extends PushModelObject {
 
     /**
      * Get the RegisterEmailChannelType.
+     *
      * @return ChannelType type
      */
     public ChannelType getType() {
@@ -51,22 +55,25 @@ public class RegisterEmailChannel extends PushModelObject {
 
     /**
      * Get the channel email opt in level.
+     *
      * @return Optional OptInLevel emailOptInLevel
      */
-    public Optional<Map<OptInLevel,String>> getEmailOptInLevel() {
+    public Optional<Map<OptInLevel, String>> getEmailOptInLevel() {
         return emailOptInLevel;
     }
 
     /**
      * Get the email channel's address,
-     * @return Optional String address
+     *
+     * @return String address
      */
-    public Optional<String> getAddress() {
+    public String getAddress() {
         return address;
     }
 
     /**
      * Get a String representation of the timezone.
+     *
      * @return Optional String timezone
      */
     public Optional<String> getTimezone() {
@@ -75,6 +82,7 @@ public class RegisterEmailChannel extends PushModelObject {
 
     /**
      * Get a String representation of the locale country.
+     *
      * @return Optional String localeCountry
      */
     public Optional<String> getLocaleCountry() {
@@ -83,6 +91,7 @@ public class RegisterEmailChannel extends PushModelObject {
 
     /**
      * Get a String representation of the locale language.
+     *
      * @return Optional String localeLanguage
      */
     public Optional<String> getLocaleLanguage() {
@@ -91,6 +100,7 @@ public class RegisterEmailChannel extends PushModelObject {
 
     /**
      * New RegisterEmailChannel builder.
+     *
      * @return Builder
      */
     public static Builder newBuilder() {
@@ -128,7 +138,7 @@ public class RegisterEmailChannel extends PushModelObject {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(type, emailOptInLevel, address,setTags, tags, timezone, localeCountry, localeLanguage);
+        return Objects.hashCode(type, emailOptInLevel, address, setTags, tags, timezone, localeCountry, localeLanguage);
     }
 
     /**
@@ -140,28 +150,28 @@ public class RegisterEmailChannel extends PushModelObject {
         private String timezone;
         private ImmutableList.Builder<String> tags = ImmutableList.builder();
         private boolean set_tags;
-        private String locale_country;
-        private String locale_language;
-        private Map<OptInLevel, String> email_opt_in_level = new HashMap<>();
+        private String localeCountry;
+        private String localeLanguage;
+        private Map<OptInLevel, String> emailOptInLevel = new HashMap<>();
 
-        private Builder() {}
+        protected Builder() {
+        }
 
         /**
          * Set the EmailOptInLevel status and time.
+         *
          * @param level, time OptInLevel, String
          * @return RegisterEmailChannel Builder
          */
         public Builder setEmailOptInLevel(OptInLevel level, String time) {
-            this.email_opt_in_level.put(level, time);
+            this.emailOptInLevel.put(level, time);
             return this;
         }
 
         /**
          * Set the channel's address, a Unique identifier of the object
-         * used as the primary ID in the delivery tier (webhook). One-to-one
-         * with Channel ID. New addresses on existing channels will overwrite
-         * old associations. Examples: email address, phone number. If
-         * missing, channel_id must be present.
+         * used as the primary ID in the delivery tier (Email).
+         *
          * @param address String
          * @return RegisterEmailChannel Builder
          */
@@ -174,6 +184,7 @@ public class RegisterEmailChannel extends PushModelObject {
          * Optional, though required if tags is present.
          * If true on update, value of tags overwrites any existing tags.
          * If false, tags are unioned with existing tags.
+         *
          * @param setTags boolean
          * @return Channel Builder
          */
@@ -184,6 +195,7 @@ public class RegisterEmailChannel extends PushModelObject {
 
         /**
          * Add a List of String representations of tags.
+         *
          * @param tags A List of Strings
          * @return Channel Builder
          */
@@ -194,6 +206,7 @@ public class RegisterEmailChannel extends PushModelObject {
 
         /**
          * Set a String representation of a tag.
+         *
          * @param tag String
          * @return Channel Builder
          */
@@ -206,6 +219,7 @@ public class RegisterEmailChannel extends PushModelObject {
          * Set timezone string. An IANA tzdata identifier for the timezone
          * as a string, e.g., "America/Los Angeles". Will set the timezone
          * tag group tag with the specified value.
+         *
          * @param timezone String
          * @return RegisterEmailChannel Builder
          */
@@ -218,11 +232,12 @@ public class RegisterEmailChannel extends PushModelObject {
          * Set a the localeCountry The two-letter country locale shortcode.
          * Will set the ua_locale_country tag group to the specified value.
          * Used _ notation to conform with previously written code
+         *
          * @param locale_country String
          * @return RegisterEmailChannel Builder
          */
         public Builder setLocaleCountry(String locale_country) {
-            this.locale_country = locale_country;
+            this.localeCountry = locale_country;
             return this;
         }
 
@@ -231,16 +246,18 @@ public class RegisterEmailChannel extends PushModelObject {
          * shortcode. Will set the ua_locale_language tag group to the
          * specified value
          * Used _ notation to conform with previously written code
+         *
          * @param locale_language String
          * @return RegisterEmailChannel Builder
          */
         public Builder setLocaleLanguage(String locale_language) {
-            this.locale_language = locale_language;
+            this.localeLanguage = locale_language;
             return this;
         }
 
         public RegisterEmailChannel build() {
-            Preconditions.checkNotNull(email_opt_in_level, "'email_opt_in_level' cannot be null.");
+            Preconditions.checkNotNull(address, "address cannot be null.");
+            Preconditions.checkNotNull(emailOptInLevel, "'emailOptInLevel' cannot be null.");
 
             return new RegisterEmailChannel(this);
         }
