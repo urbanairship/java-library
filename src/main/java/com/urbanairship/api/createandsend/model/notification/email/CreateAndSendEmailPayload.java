@@ -1,5 +1,6 @@
 package com.urbanairship.api.createandsend.model.notification.email;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.DeviceType;
@@ -7,8 +8,6 @@ import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.urbanairship.api.push.model.notification.email.MessageType;
 import org.apache.commons.lang.StringUtils;
-
-import java.util.Objects;
 
 
 /**
@@ -159,9 +158,34 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CreateAndSendEmailPayload that = (CreateAndSendEmailPayload) o;
+        return Objects.equal(bypassOptInLevel, that.bypassOptInLevel) &&
+                Objects.equal(alert, that.alert) &&
+                Objects.equal(subject, that.subject) &&
+                Objects.equal(htmlBody, that.htmlBody) &&
+                Objects.equal(plaintextBody, that.plaintextBody) &&
+                Objects.equal(messageType, that.messageType) &&
+                Objects.equal(senderName, that.senderName) &&
+                Objects.equal(senderAddress, that.senderAddress) &&
+                Objects.equal(uaAddress, that.uaAddress) &&
+                Objects.equal(replyTo, that.replyTo) &&
+                Objects.equal(emailTemplate, that.emailTemplate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(bypassOptInLevel, alert, subject, htmlBody, plaintextBody, messageType, senderName, senderAddress, uaAddress, replyTo, emailTemplate);
+    }
+
+    @Override
     public String toString() {
-        return "EmailPayload{" +
-                "subject=" + subject +
+        return "CreateAndSendEmailPayload{" +
+                "bypassOptInLevel=" + bypassOptInLevel +
+                ", alert=" + alert +
+                ", subject=" + subject +
                 ", htmlBody=" + htmlBody +
                 ", plaintextBody=" + plaintextBody +
                 ", messageType=" + messageType +
@@ -169,28 +193,8 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
                 ", senderAddress=" + senderAddress +
                 ", uaAddress=" + uaAddress +
                 ", replyTo=" + replyTo +
+                ", emailTemplate=" + emailTemplate +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CreateAndSendEmailPayload)) return false;
-        CreateAndSendEmailPayload that = (CreateAndSendEmailPayload) o;
-        return Objects.equals(getSubject(), that.getSubject()) &&
-                Objects.equals(getHtmlBody(), that.getHtmlBody()) &&
-                Objects.equals(getPlaintextBody(), that.getPlaintextBody()) &&
-                Objects.equals(getMessageType(), that.getMessageType()) &&
-                Objects.equals(getSenderName(), that.getSenderName()) &&
-                Objects.equals(getSenderAddress(), that.getSenderAddress()) &&
-                Objects.equals(getUaAddress(), that.getUaAddress()) &&
-                Objects.equals(getReplyTo(), that.getReplyTo());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getSubject(), getHtmlBody(), getPlaintextBody(), getMessageType(), getSenderName(),
-                getSenderAddress(), getUaAddress(), getReplyTo());
     }
 
     /**

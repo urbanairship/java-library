@@ -88,7 +88,7 @@ public class EmailTemplate {
         }
 
         public EmailTemplate build() {
-            Preconditions.checkArgument((templateId != null && emailFields != null), "the template id or emailFields value must be set, not both.");
+            Preconditions.checkArgument(!(templateId != null && emailFields != null), "the template id or emailFields value must be set, not both.");
             return new EmailTemplate(this);
         }
     }
