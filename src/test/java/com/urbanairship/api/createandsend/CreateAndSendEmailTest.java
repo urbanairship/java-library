@@ -141,7 +141,6 @@ public class CreateAndSendEmailTest {
                 .addDeviceTypeOverride(DeviceType.EMAIL, templateEmailPayload)
                 .build();
 
-
         templatePayload = CreateAndSendPayload.newBuilder()
                 .setAudience(templateAudience)
                 .setNotification(templateNotification)
@@ -149,92 +148,67 @@ public class CreateAndSendEmailTest {
     }
 
     @Test
-    public void testCommercialOptedInChannel() {
+    public void testCommercialOptedInChannel() throws IOException {
 
         String expectedNewChannelString = "{\n" +
                 "        \"ua_address\": \"new@email.com\",\n" +
                 "        \"ua_commercial_opted_in\": \"2018-11-29T10:34:22\"}";
 
-        try {
-            String parsedJson = CHANNEL_OBJECT_MAPPER.writeValueAsString(newChannel);
-            JsonNode actual = CHANNEL_OBJECT_MAPPER.readTree(parsedJson);
-            JsonNode expected = CHANNEL_OBJECT_MAPPER.readTree(expectedNewChannelString);
-            Assert.assertEquals(expected, actual);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        String parsedJson = CHANNEL_OBJECT_MAPPER.writeValueAsString(newChannel);
+        JsonNode actual = CHANNEL_OBJECT_MAPPER.readTree(parsedJson);
+        JsonNode expected = CHANNEL_OBJECT_MAPPER.readTree(expectedNewChannelString);
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void testTransactionalOptedInChannel() {
+    public void testTransactionalOptedInChannel() throws IOException {
 
         String expectedNewChannelString = "{\n" +
                 "        \"ua_address\": \"ben@icetown.com\",\n" +
                 "        \"ua_transactional_opted_in\": \"2018-11-29T12:45:10\"}";
 
-        try {
-            String parsedJson = CHANNEL_OBJECT_MAPPER.writeValueAsString(benChannel);
-            JsonNode actual = CHANNEL_OBJECT_MAPPER.readTree(parsedJson);
-            JsonNode expected = CHANNEL_OBJECT_MAPPER.readTree(expectedNewChannelString);
-            Assert.assertEquals(expected, actual);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        String parsedJson = CHANNEL_OBJECT_MAPPER.writeValueAsString(benChannel);
+        JsonNode actual = CHANNEL_OBJECT_MAPPER.readTree(parsedJson);
+        JsonNode expected = CHANNEL_OBJECT_MAPPER.readTree(expectedNewChannelString);
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void testNewAudience() {
+    public void testNewAudience() throws IOException {
 
         String expectedAudienceString = "{\"create_and_send\":[{\"ua_address\":\"new@email.com\",\"ua_commercial_opted_in\":\"2018-11-29T10:34:22\"},{\"ua_address\":\"ben@icetown.com\",\"ua_transactional_opted_in\":\"2018-11-29T12:45:10\"}]}";
-        try {
-            String parsedJson = PUSH_OBJECT_MAPPER.writeValueAsString(audience);
-            JsonNode actual = PUSH_OBJECT_MAPPER.readTree(parsedJson);
-            JsonNode expected = PUSH_OBJECT_MAPPER.readTree(expectedAudienceString);
 
-            Assert.assertEquals(expected, actual);
+        String parsedJson = PUSH_OBJECT_MAPPER.writeValueAsString(audience);
+        JsonNode actual = PUSH_OBJECT_MAPPER.readTree(parsedJson);
+        JsonNode expected = PUSH_OBJECT_MAPPER.readTree(expectedAudienceString);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void testEmailPayload() {
-
+    public void testEmailPayload() throws IOException {
         String expectedEmailpayloadString = "{\"subject\":\"Welcome to the Winter Sale! \",\"html_body\":\"<h1>Seasons Greetings</h1><p>Check out our winter deals!</p><p><a data-ua-unsubscribe=\\\"1\\\" title=\\\"unsubscribe\\\" href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\">Unsubscribe</a></p>\",\"plaintext_body\":\"Greetings! Check out our latest winter deals! [[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]\",\"message_type\":\"commercial\",\"sender_name\":\"Urban Airship\",\"sender_address\":\"team@urbanairship.com\",\"reply_to\":\"no-reply@urbanairship.com\"}";
-        try {
-            String parsedJson = PUSH_OBJECT_MAPPER.writeValueAsString(createAndSendEmailPayload);
-            JsonNode actual = PUSH_OBJECT_MAPPER.readTree(parsedJson);
-            JsonNode expected = PUSH_OBJECT_MAPPER.readTree(expectedEmailpayloadString);
 
-            Assert.assertEquals(expected, actual);
+        String parsedJson = PUSH_OBJECT_MAPPER.writeValueAsString(createAndSendEmailPayload);
+        JsonNode actual = PUSH_OBJECT_MAPPER.readTree(parsedJson);
+        JsonNode expected = PUSH_OBJECT_MAPPER.readTree(expectedEmailpayloadString);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void testNotification() {
-
+    public void testNotification() throws IOException {
         String expectedNewNotificationString = "{\"email\":{\"subject\":\"Welcome to the Winter Sale! \",\"html_body\":\"<h1>Seasons Greetings</h1><p>Check out our winter deals!</p><p><a data-ua-unsubscribe=\\\"1\\\" title=\\\"unsubscribe\\\" href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\">Unsubscribe</a></p>\",\"plaintext_body\":\"Greetings! Check out our latest winter deals! [[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]\",\"message_type\":\"commercial\",\"sender_name\":\"Urban Airship\",\"sender_address\":\"team@urbanairship.com\",\"reply_to\":\"no-reply@urbanairship.com\"}}";
 
-        try {
-            String parsedJson = PUSH_OBJECT_MAPPER.writeValueAsString(notification);
-            JsonNode actual = PUSH_OBJECT_MAPPER.readTree(parsedJson);
-            JsonNode expected = PUSH_OBJECT_MAPPER.readTree(expectedNewNotificationString);
+        String parsedJson = PUSH_OBJECT_MAPPER.writeValueAsString(notification);
+        JsonNode actual = PUSH_OBJECT_MAPPER.readTree(parsedJson);
+        JsonNode expected = PUSH_OBJECT_MAPPER.readTree(expectedNewNotificationString);
 
-            Assert.assertEquals(expected, actual);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void testCreateAndSendEmailPayload() {
+    public void testCreateAndSendEmailPayload() throws IOException {
         String expectedCreateAndSendEmailPayloadString = "{\n" +
                 "\t\"audience\": {\n" +
                 "\t\t\"create_and_send\": [{\n" +
@@ -263,20 +237,16 @@ public class CreateAndSendEmailTest {
                 "\t\t\"categories\": [\"winter sale\", \"west coast\"]\n" +
                 "\t}\n" +
                 "}";
-        try {
-            String parsedJson = PUSH_OBJECT_MAPPER.writeValueAsString(payload);
-            JsonNode actual = PUSH_OBJECT_MAPPER.readTree(parsedJson);
-            JsonNode expected = PUSH_OBJECT_MAPPER.readTree(expectedCreateAndSendEmailPayloadString);
 
-            Assert.assertEquals(expected, actual);
+        String parsedJson = PUSH_OBJECT_MAPPER.writeValueAsString(payload);
+        JsonNode actual = PUSH_OBJECT_MAPPER.readTree(parsedJson);
+        JsonNode expected = PUSH_OBJECT_MAPPER.readTree(expectedCreateAndSendEmailPayloadString);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void testCreateAndSendEmailTemplate() {
+    public void testCreateAndSendEmailTemplate() throws IOException {
         String templateFieldsString = "{\n" +
                 "    \"audience\": {\n" +
                 "        \"create_and_send\": [\n" +
@@ -319,15 +289,29 @@ public class CreateAndSendEmailTest {
 
         JsonNode actual = null;
         JsonNode expected = null;
-        try {
-            String parsedJson = PUSH_OBJECT_MAPPER.writeValueAsString(templatePayload);
-            actual = PUSH_OBJECT_MAPPER.readTree(parsedJson);
-            expected = PUSH_OBJECT_MAPPER.readTree(templateFieldsString);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        String parsedJson = PUSH_OBJECT_MAPPER.writeValueAsString(templatePayload);
+        actual = PUSH_OBJECT_MAPPER.readTree(parsedJson);
+        expected = PUSH_OBJECT_MAPPER.readTree(templateFieldsString);
 
         Assert.assertEquals(expected, actual);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testEmailTemplateIdAndFieldsBeingSet() {
+        EmailTemplate emailTemplate = EmailTemplate.newBuilder()
+                .setTemplateId("templateId")
+                .setEmailFields(EmailFields.newBuilder()
+                        .setPlainTextBody("plainText")
+                        .setSubject("subject")
+                        .build())
+                .build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testEmailTemplateIdAndFieldsNullValues() {
+        EmailTemplate emailTemplate = EmailTemplate.newBuilder()
+                .build();
     }
 }
 
