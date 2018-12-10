@@ -33,7 +33,7 @@ public class UninstallEmailChannelRequest implements Request<EmailChannelRespons
     /**
      * Creates a new request to uninstall an email channel.
      *
-     * @param payload
+     * @param payload UninstallEmailChannel
      * @return UninstallEmailChannelRequest A new request to uninstall an email channel.
      * */
     public static UninstallEmailChannelRequest newRequest(UninstallEmailChannel payload) {
