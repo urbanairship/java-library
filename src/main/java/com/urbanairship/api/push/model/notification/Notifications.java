@@ -5,12 +5,11 @@
 package com.urbanairship.api.push.model.notification;
 
 import com.google.common.base.Optional;
-import com.urbanairship.api.channel.model.open.OpenChannelPayload;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
-import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
+import com.urbanairship.api.push.model.notification.email.EmailPayload;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 import com.urbanairship.api.push.model.notification.open.OpenPayload;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
@@ -60,6 +59,7 @@ public class Notifications {
             return admAlert(text);
         case "web":
             return webAlert(text);
+
         default:
             throw unknownDeviceType(deviceType.getIdentifier());
         }
@@ -107,9 +107,6 @@ public class Notifications {
     public static DeviceTypeData deviceTypes(String ... names) {
         DeviceTypeData.Builder deviceTypes = DeviceTypeData.newBuilder();
         for (String name : names) {
-            if (name.equalsIgnoreCase("all")) {
-                return DeviceTypeData.all();
-            }
             Optional<DeviceType> deviceType = DeviceType.find(name);
             if (! deviceType.isPresent()) {
                 throw unknownDeviceType(name);
