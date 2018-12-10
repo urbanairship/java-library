@@ -120,8 +120,8 @@ public class EmailChannel {
         /**
          * Add all substitution values. You can provide additional key-value pairs representing variables your notification template.
          * Your variable keys must not be prefixed with ua_
-         * @param substitutions
-         * @return
+         * @param substitutions Map of Strings.
+         * @return EmailChannel Builder
          */
         public Builder addAllSubstitutions(Map<String, String> substitutions) {
             substitutions.putAll(substitutions);

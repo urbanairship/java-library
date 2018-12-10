@@ -25,7 +25,7 @@ public class EmailChannels {
 
     /**
      * Get the create and send audience email channels.
-     * @return
+     * @return List of EmailChannel
      */
     public List<EmailChannel> getEmailChannels() {
         return emailChannels;
