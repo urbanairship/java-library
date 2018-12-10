@@ -130,8 +130,6 @@ public class CreateAndSendEmailTest {
         templateEmailPayload = createAndSendEmailPayload.newBuilder()
                 .setMessageType(MessageType.COMMERCIAL)
                 .setSenderName("Urban Airship")
-                .setSubject("Welcome to the Winter Sale!")
-                .setPlaintextBody("Hope you're enjoying our store in {{location}} [[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]")
                 .setSenderAddress("team@urbanairship.com")
                 .setReplyTo("no-reply@urbanairship.com")
                 .setEmailTemplate(template)
@@ -252,17 +250,13 @@ public class CreateAndSendEmailTest {
                 "        \"create_and_send\": [\n" +
                 "            {\n" +
                 "                \"ua_address\": \"new@email.com\",\n" +
-                "                \"substitutions\": {\n" +
-                "                    \"name\": \"New Person Esq\",\n" +
-                "                    \"location\": \"City, State\"\n" +
-                "                }\n" +
+                "                \"name\": \"New Person Esq\",\n" +
+                "                \"location\": \"City, State\"\n" +
                 "            },\n" +
                 "            {\n" +
                 "                \"ua_address\": \"ben@icetown.com\",\n" +
-                "                \"substitutions\": {\n" +
-                "                    \"name\": \"Ben Wyatt\",\n" +
-                "                    \"location\": \"Pawnee, IN\"\n" +
-                "                }\n" +
+                "                \"name\": \"Ben Wyatt\",\n" +
+                "                \"location\": \"Pawnee, IN\"\n" +
                 "            }\n" +
                 "        ]\n" +
                 "    },\n" +
@@ -271,8 +265,6 @@ public class CreateAndSendEmailTest {
                 "    ],\n" +
                 "    \"notification\": {\n" +
                 "        \"email\": {\n" +
-                "            \"subject\": \"Welcome to the Winter Sale!\",\n" +
-                "            \"plaintext_body\": \"Hope you're enjoying our store in {{location}} [[ua-unsubscribe href=\\\\\\\"http://unsubscribe.urbanairship.com/email/success.html\\\\\\\"]]\",\n" +
                 "            \"message_type\": \"commercial\",\n" +
                 "            \"sender_name\": \"Urban Airship\",\n" +
                 "            \"sender_address\": \"team@urbanairship.com\",\n" +
@@ -311,6 +303,77 @@ public class CreateAndSendEmailTest {
     @Test(expected = IllegalArgumentException.class)
     public void testEmailTemplateIdAndFieldsNullValues() {
         EmailTemplate emailTemplate = EmailTemplate.newBuilder()
+                .build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSubjectAndTemplateNotNull() {
+        EmailTemplate emailTemplate = EmailTemplate.newBuilder()
+                .setTemplateId("template_id")
+                .build();
+
+        CreateAndSendEmailPayload payload = CreateAndSendEmailPayload.newBuilder()
+                .setMessageType(MessageType.COMMERCIAL)
+                .setSenderName("Urban Airship")
+                .setSubject("Welcome to the Winter Sale!")
+                .setPlaintextBody("Hope you're enjoying our store in {{location}} [[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]")
+                .setSenderAddress("team@urbanairship.com")
+                .setReplyTo("no-reply@urbanairship.com")
+                .setEmailTemplate(emailTemplate)
+                .build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSubjectAndTemplateNull() {
+        CreateAndSendEmailPayload payload = CreateAndSendEmailPayload.newBuilder()
+                .setMessageType(MessageType.COMMERCIAL)
+                .setSenderName("Urban Airship")
+                .setPlaintextBody("Hope you're enjoying our store in {{location}} [[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]")
+                .setSenderAddress("team@urbanairship.com")
+                .setReplyTo("no-reply@urbanairship.com")
+                .build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testPlainTextAndTemplateNotNull() {
+        EmailTemplate emailTemplate = EmailTemplate.newBuilder()
+                .setTemplateId("template_id")
+                .build();
+
+        CreateAndSendEmailPayload payload = CreateAndSendEmailPayload.newBuilder()
+                .setMessageType(MessageType.COMMERCIAL)
+                .setSenderName("Urban Airship")
+                .setPlaintextBody("Hope you're enjoying our store in {{location}} [[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]")
+                .setSenderAddress("team@urbanairship.com")
+                .setReplyTo("no-reply@urbanairship.com")
+                .setEmailTemplate(emailTemplate)
+                .build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testPlainTextAndTemplateNull() {
+        CreateAndSendEmailPayload payload = CreateAndSendEmailPayload.newBuilder()
+                .setMessageType(MessageType.COMMERCIAL)
+                .setSubject("subject")
+                .setSenderName("Urban Airship")
+                .setSenderAddress("team@urbanairship.com")
+                .setReplyTo("no-reply@urbanairship.com")
+                .build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testHtmlBodyAndTemplateNotNull() {
+        EmailTemplate emailTemplate = EmailTemplate.newBuilder()
+                .setTemplateId("template_id")
+                .build();
+
+        CreateAndSendEmailPayload payload = CreateAndSendEmailPayload.newBuilder()
+                .setMessageType(MessageType.COMMERCIAL)
+                .setSenderName("Urban Airship")
+                .setSenderAddress("team@urbanairship.com")
+                .setReplyTo("no-reply@urbanairship.com")
+                .setHtmlBody("body")
+                .setEmailTemplate(emailTemplate)
                 .build();
     }
 }
