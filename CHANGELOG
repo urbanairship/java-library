@@ -1,4 +1,9 @@
 -------------------------
+4.0.1 10DEC18
+-------------------------
+- Fixed a crash when using create and send templates.
+
+-------------------------
 4.0.0 10DEC18
 -------------------------
 - Added support for eMail create and send.
