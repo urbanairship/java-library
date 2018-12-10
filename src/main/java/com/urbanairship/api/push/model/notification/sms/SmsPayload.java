@@ -76,7 +76,7 @@ public class SmsPayload extends PushModelObject implements DevicePayloadOverride
         /**
          * Overrides the alert provided at the top level of the notification for SMS channels.
          * The maximum length of an SMS alert is 1600 characters.
-         * @param alert
+         * @param alert String
          * @return SmsPayload builder
          */
         public Builder setAlert(String alert) {
@@ -86,7 +86,7 @@ public class SmsPayload extends PushModelObject implements DevicePayloadOverride
 
         /**
          * Delivery expiration, as either absolute ISO UTC timestamp, or number of seconds from now.
-         * @param expiry
+         * @param expiry PushExpiry
          * @return SmsPayload builder
          */
         public Builder setExpiry(PushExpiry expiry) {
