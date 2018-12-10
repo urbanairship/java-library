@@ -182,19 +182,6 @@ public class PushPayloadBasicSerializationTest {
     }
 
     @Test
-    public void testDeviceTypesAll() throws Exception {
-        String json
-                = "{"
-                + "  \"audience\" : \"all\","
-                + "  \"device_types\" : \"all\","
-                + "  \"notification\" : { \"alert\" : \"wat\" }"
-                + "}";
-        PushPayload push = mapper.readValue(json, PushPayload.class);
-        assertTrue(push.getDeviceTypes().isAll());
-        assertFalse(push.getDeviceTypes().getDeviceTypes().isPresent());
-    }
-
-    @Test
     public void testDeviceTypesList() throws Exception {
         String json
                 = "{"
@@ -203,7 +190,6 @@ public class PushPayloadBasicSerializationTest {
                 + "  \"notification\" : { \"alert\" : \"wat\" }"
                 + "}";
         PushPayload push = mapper.readValue(json, PushPayload.class);
-        assertFalse(push.getDeviceTypes().isAll());
         assertTrue(push.getDeviceTypes().getDeviceTypes().isPresent());
         Set<DeviceType> deviceTypes = push.getDeviceTypes().getDeviceTypes().get();
         assertEquals(4, deviceTypes.size());
