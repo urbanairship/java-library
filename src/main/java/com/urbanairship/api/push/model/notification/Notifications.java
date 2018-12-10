@@ -107,9 +107,6 @@ public class Notifications {
     public static DeviceTypeData deviceTypes(String ... names) {
         DeviceTypeData.Builder deviceTypes = DeviceTypeData.newBuilder();
         for (String name : names) {
-            if (name.equalsIgnoreCase("all")) {
-                return DeviceTypeData.all();
-            }
             Optional<DeviceType> deviceType = DeviceType.find(name);
             if (! deviceType.isPresent()) {
                 throw unknownDeviceType(name);
