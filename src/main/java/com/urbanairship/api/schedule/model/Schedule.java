@@ -46,7 +46,7 @@ public final class Schedule extends ScheduleModelObject {
 
     /**
      * Get the BestTime for this schedule.
-     * @return
+     * @return Optional BestTime
      */
     public Optional<BestTime> getBestTime() {
         return bestTime;

@@ -23,7 +23,6 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
     private final Optional<MessageType> messageType;
     private final Optional<String> senderName;
     private final Optional<String> senderAddress;
-    private final Optional<String> uaAddress;
     private final Optional<String> replyTo;
     private final Optional<EmailTemplate> emailTemplate;
 
@@ -35,7 +34,6 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
         this.messageType = Optional.fromNullable(builder.messageType);
         this.senderName = Optional.fromNullable(builder.senderName);
         this.senderAddress = Optional.fromNullable((builder.senderAddress));
-        this.uaAddress = Optional.fromNullable((builder.uaAddress));
         this.replyTo = Optional.fromNullable((builder.replyTo));
         this.bypassOptInLevel = Optional.fromNullable(builder.byPassOptInLevel);
         this.emailTemplate = Optional.fromNullable(builder.emailTemplate);
@@ -129,16 +127,6 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
     }
 
     /**
-     * Optional, a string representing the reserved UA email address of the sender for Create and Send.
-     *
-     * @return Optional String uaAddress.
-     */
-    public Optional<String> getUaAddress() {
-        return uaAddress;
-    }
-
-
-    /**
      * Optional, a string representing the "reply to" address of the notification.
      *
      * @return Optional String replyTo.
@@ -170,14 +158,13 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
                 Objects.equal(messageType, that.messageType) &&
                 Objects.equal(senderName, that.senderName) &&
                 Objects.equal(senderAddress, that.senderAddress) &&
-                Objects.equal(uaAddress, that.uaAddress) &&
                 Objects.equal(replyTo, that.replyTo) &&
                 Objects.equal(emailTemplate, that.emailTemplate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(bypassOptInLevel, alert, subject, htmlBody, plaintextBody, messageType, senderName, senderAddress, uaAddress, replyTo, emailTemplate);
+        return Objects.hashCode(bypassOptInLevel, alert, subject, htmlBody, plaintextBody, messageType, senderName, senderAddress, replyTo, emailTemplate);
     }
 
     @Override
@@ -191,7 +178,6 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
                 ", messageType=" + messageType +
                 ", senderName=" + senderName +
                 ", senderAddress=" + senderAddress +
-                ", uaAddress=" + uaAddress +
                 ", replyTo=" + replyTo +
                 ", emailTemplate=" + emailTemplate +
                 '}';
@@ -208,7 +194,6 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
         private MessageType messageType = null;
         private String senderName = null;
         private String senderAddress = null;
-        private String uaAddress = null;
         private String replyTo = null;
         private DeviceType deviceType = null;
         private Boolean byPassOptInLevel = null;
@@ -284,17 +269,6 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
         }
 
         /**
-         * Optional, a string representing the reserved UA email address for Create and Send.
-         *
-         * @param uaAddress Optional String
-         * @return CreateAndSendEmailPayload Builder
-         */
-        public Builder setUaAddress(String uaAddress) {
-            this.uaAddress = uaAddress;
-            return this;
-        }
-
-        /**
          * Optional, a string representing the reply-to address.
          *
          * @param replyTo Optional String
@@ -330,15 +304,11 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
         }
 
         public CreateAndSendEmailPayload build() {
-            Preconditions.checkNotNull(subject, "Subject must be set.");
-
-            Preconditions.checkArgument(StringUtils.isNotBlank(subject),
-                    "Subject must not be blank");
-
-            Preconditions.checkNotNull(plaintextBody, "PlaintextBody must be set.");
-
-            Preconditions.checkArgument(StringUtils.isNotBlank(plaintextBody),
-                    "Plaintext Body must not be blank");
+            Preconditions.checkArgument(!(emailTemplate != null && subject != null), "subject cannot be used if email template is also set.");
+            Preconditions.checkArgument(!(subject == null && emailTemplate == null), "subject or email template must be set.");
+            Preconditions.checkArgument(!(plaintextBody != null && emailTemplate != null), "email plaintext_body must not be specified if email payload is templated");
+            Preconditions.checkArgument(!(plaintextBody == null && emailTemplate == null), "plaintext body or email template must be set");
+            Preconditions.checkArgument(!(htmlBody != null && emailTemplate != null), "email htmlBody must not be specified if email payload is templated");
 
             Preconditions.checkNotNull(messageType, "MessageType must be set.");
 

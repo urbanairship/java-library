@@ -160,7 +160,8 @@ public class RegisterEmailChannel extends PushModelObject {
         /**
          * Set the EmailOptInLevel status and time.
          *
-         * @param level, time OptInLevel, String
+         * @param level time OptInLevel, String
+         * @param time String
          * @return RegisterEmailChannel Builder
          */
         public Builder setEmailOptInLevel(OptInLevel level, String time) {

@@ -59,8 +59,8 @@ public class EmailTemplate {
 
         /**
          * Set a list of the variables in your template and default values.
-         * @param variableDetail
-         * @return
+         * @param variableDetail VariableDetail
+         * @return EmailTemplate Builder
          */
         public Builder addVariableDetail(VariableDetail variableDetail) {
             variableDetails.add(variableDetail);
@@ -69,8 +69,8 @@ public class EmailTemplate {
 
         /**
          * Set the email fields. The template you want to construct for the message.
-         * @param emailFields
-         * @return
+         * @param emailFields EmailFields
+         * @return EmailTemplate Builder
          */
         public Builder setEmailFields(EmailFields emailFields) {
             this.emailFields = emailFields;

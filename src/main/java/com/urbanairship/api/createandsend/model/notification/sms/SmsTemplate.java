@@ -19,7 +19,7 @@ public class SmsTemplate {
 
     /**
      * Get the template you want to construct for the message.
-     * @return
+     * @return Optional SmsFields
      */
     public Optional<SmsFields> getSmsFields() {
         return smsFields;
