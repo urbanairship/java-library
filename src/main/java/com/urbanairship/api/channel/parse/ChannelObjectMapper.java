@@ -9,21 +9,26 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
-import com.urbanairship.api.channel.SmsRegistrationRequest;
 import com.urbanairship.api.channel.model.ChannelResponse;
 import com.urbanairship.api.channel.model.ChannelView;
 import com.urbanairship.api.channel.model.OpenChannelResponse;
+import com.urbanairship.api.channel.model.email.RegisterEmailChannel;
+import com.urbanairship.api.channel.model.email.EmailChannelResponse;
 import com.urbanairship.api.channel.model.SmsRegistrationResponse;
 import com.urbanairship.api.channel.model.ios.IosSettings;
 import com.urbanairship.api.channel.model.ios.QuietTime;
 import com.urbanairship.api.channel.model.open.OpenChannel;
 import com.urbanairship.api.channel.model.web.Subscription;
 import com.urbanairship.api.channel.model.web.WebSettings;
+import com.urbanairship.api.createandsend.parse.CreateAndSendEmailChannelSerializer;
+import com.urbanairship.api.channel.parse.email.RegisterEmailChannelResponseDeserializer;
+import com.urbanairship.api.channel.parse.email.RegisterEmailChannelSerializer;
 import com.urbanairship.api.channel.parse.ios.IosSettingsDeserializer;
 import com.urbanairship.api.channel.parse.ios.QuietTimeDeserializer;
 import com.urbanairship.api.channel.parse.open.OpenChannelDeserializer;
 import com.urbanairship.api.channel.parse.web.SubscriptionDeserializer;
 import com.urbanairship.api.channel.parse.web.WebSettingsDeserializer;
+import com.urbanairship.api.createandsend.model.audience.email.EmailChannel;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 
 public class ChannelObjectMapper {
@@ -40,7 +45,10 @@ public class ChannelObjectMapper {
         MODULE.addDeserializer(WebSettings.class, new WebSettingsDeserializer());
         MODULE.addDeserializer(OpenChannel.class, new OpenChannelDeserializer());
         MODULE.addDeserializer(OpenChannelResponse.class, new OpenChannelResponseDeserializer());
+        MODULE.addDeserializer(EmailChannelResponse.class, new RegisterEmailChannelResponseDeserializer());
+        MODULE.addSerializer(RegisterEmailChannel.class, new RegisterEmailChannelSerializer());
         MODULE.addDeserializer(SmsRegistrationResponse.class, new SmsRegistrationResponseDeserializer());
+        MODULE.addSerializer(EmailChannel.class, new CreateAndSendEmailChannelSerializer());
 
         MAPPER.registerModule(MODULE);
         MAPPER.registerModule(new JodaModule());

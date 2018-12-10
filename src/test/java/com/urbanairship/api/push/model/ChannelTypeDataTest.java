@@ -3,22 +3,13 @@ package com.urbanairship.api.push.model;
 import com.google.common.collect.ImmutableSet;
 import org.junit.Test;
 
-import static com.urbanairship.api.push.model.audience.Selectors.alias;
-import static com.urbanairship.api.push.model.audience.Selectors.all;
-import static com.urbanairship.api.push.model.audience.Selectors.and;
 import static com.urbanairship.api.push.model.audience.Selectors.androidChannel;
 import static com.urbanairship.api.push.model.audience.Selectors.apid;
 import static com.urbanairship.api.push.model.audience.Selectors.deviceToken;
 import static com.urbanairship.api.push.model.audience.Selectors.iosChannel;
-import static com.urbanairship.api.push.model.audience.Selectors.not;
-import static com.urbanairship.api.push.model.audience.Selectors.or;
-import static com.urbanairship.api.push.model.audience.Selectors.tag;
-import static com.urbanairship.api.push.model.audience.Selectors.triggered;
 import static com.urbanairship.api.push.model.audience.Selectors.wns;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 public class ChannelTypeDataTest {
@@ -27,34 +18,11 @@ public class ChannelTypeDataTest {
     public void testDeviceTypeDataOf() {
         DeviceTypeData data = DeviceTypeData.of(DeviceType.IOS, DeviceType.ANDROID, DeviceType.AMAZON);
         assertTrue(data.getDeviceTypes().isPresent());
-        assertFalse(data.isAll());
         assertEquals(3, data.getDeviceTypes().get().size());
         assertTrue(data.getDeviceTypes().get().contains(DeviceType.IOS));
         assertTrue(data.getDeviceTypes().get().contains(DeviceType.ANDROID));
         assertTrue(data.getDeviceTypes().get().contains(DeviceType.AMAZON));
         assertFalse(data.getDeviceTypes().get().contains(DeviceType.WNS));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testDeviceTypeDataValidation() {
-        DeviceTypeData.newBuilder()
-                .setAll(true)
-                .addDeviceType(DeviceType.IOS)
-                .build();
-    }
-
-    @Test
-    public void testEquality() {
-        DeviceTypeData d = DeviceTypeData.all();
-        assertEquals(d, d);
-        assertSame(d, d);
-        assertFalse(d == null);
-        DeviceTypeData d2 = DeviceTypeData.all();
-        assertEquals(d, d2);
-        assertNotSame(d, d2);
-        assertEquals(DeviceTypeData.of(DeviceType.IOS, DeviceType.ANDROID),
-                DeviceTypeData.of(DeviceType.IOS, DeviceType.ANDROID));
-        assertTrue(!DeviceTypeData.all().equals(DeviceTypeData.of(DeviceType.AMAZON)));
     }
 
     @Test
@@ -73,7 +41,6 @@ public class ChannelTypeDataTest {
 
     @Test
     public void testHash() {
-        assertEquals(DeviceTypeData.all().hashCode(), DeviceTypeData.newBuilder().setAll(true).build().hashCode());
         assertEquals(DeviceTypeData.of(DeviceType.IOS).hashCode(), DeviceTypeData.of(DeviceType.IOS).hashCode());
     }
 
@@ -84,20 +51,5 @@ public class ChannelTypeDataTest {
         assertEquals(DeviceTypeData.of(DeviceType.ANDROID), apid("8516d389-88fb-1fa8-474b-bcf2464cc997").getApplicableDeviceTypes());
         assertEquals(DeviceTypeData.of(DeviceType.ANDROID), androidChannel("8516d389-88fb-1fa8-474b-bcf2464cc997").getApplicableDeviceTypes());
         assertEquals(DeviceTypeData.of(DeviceType.WNS), wns("8516d389-88fb-1fa8-474b-bcf2464cc997").getApplicableDeviceTypes());
-        assertEquals(DeviceTypeData.all(), all().getApplicableDeviceTypes());
-        assertEquals(DeviceTypeData.all(), triggered().getApplicableDeviceTypes());
-        assertEquals(DeviceTypeData.all(), tag("T").getApplicableDeviceTypes());
-        assertEquals(DeviceTypeData.all(), alias("A").getApplicableDeviceTypes());
-    }
-
-    @Test
-    public void testApplicableDeviceTypes_NOT() throws Exception {
-        assertEquals(DeviceTypeData.all(), not(apid("89f3167f-b148-1391-9349-b61449678acb")).getApplicableDeviceTypes());
-        assertEquals(DeviceTypeData.all(), not(and(tag("T"), deviceToken("852C1C580CF5BA045676D71E491291D653506869505BF0B9FAE7D9BC0321F796")))
-                .getApplicableDeviceTypes());
-        assertEquals(DeviceTypeData.all(), or(and(tag("T1"),
-                        apid("8516d389-88fb-1fa8-474b-bcf2464cc997")),
-                not(deviceToken("852C1C580CF5BA045676D71E491291D653506869505BF0B9FAE7D9BC0321F796")))
-                .getApplicableDeviceTypes());
     }
 }
