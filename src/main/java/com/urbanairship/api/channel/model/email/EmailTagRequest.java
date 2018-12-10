@@ -65,7 +65,7 @@ public class EmailTagRequest implements Request<String> {
      * Add tag group and tags to add to channels.
      *
      * @param tagGroup String
-     * @param tags Set<String> of tags
+     * @param tags Set of Strings
      * @return ChannelTagRequest
      * */
     public EmailTagRequest addTags(String tagGroup, Set<String> tags) {
@@ -77,7 +77,7 @@ public class EmailTagRequest implements Request<String> {
      * Add tag group and tags to remove from channels.
      *
      * @param tagGroup String
-     * @param tags Set<String> of tags
+     * @param tags Set of Strings
      * @return ChannelTagRequest
      */
     public EmailTagRequest removeTags(String tagGroup, Set<String> tags) {
