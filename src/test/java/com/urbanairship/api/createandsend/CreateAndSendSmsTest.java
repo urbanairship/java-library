@@ -1,6 +1,5 @@
 package com.urbanairship.api.createandsend;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.common.parse.DateFormats;
@@ -143,19 +142,15 @@ public class CreateAndSendSmsTest {
                 "            \"us_msisdn\": \"msisdn\",\n" +
                 "            \"ua_sender\": \"sender\",\n" +
                 "            \"ua_opted_in\": \"" + dateString + "\",\n" +
-                "            \"substitutions\": {\n" +
-                "                \"key1\": \"value1\",\n" +
-                "                \"key2\": \"value2\"\n" +
-                "            }\n" +
+                "            \"key1\": \"value1\",\n" +
+                "            \"key2\": \"value2\"\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"us_msisdn\": \"msisdn2\",\n" +
                 "            \"ua_sender\": \"sender2\",\n" +
                 "            \"ua_opted_in\": \"" + dateString + "\",\n" +
-                "            \"substitutions\": {\n" +
-                "                \"key3\": \"value3\",\n" +
-                "                \"key4\": \"value4\"\n" +
-                "            }\n" +
+                "            \"key3\": \"value3\",\n" +
+                "            \"key4\": \"value4\"\n" +
                 "        }\n" +
                 "    ]\n" +
                 "}";
@@ -186,20 +181,16 @@ public class CreateAndSendSmsTest {
                 "            {\n" +
                 "                \"us_msisdn\": \"msisdn\",\n" +
                 "                \"ua_sender\": \"sender\",\n" +
-                "                \"ua_opted_in\": \"" + dateString +"\",\n" +
-                "                \"substitutions\": {\n" +
-                "                    \"key1\": \"value1\",\n" +
-                "                    \"key2\": \"value2\"\n" +
-                "                }\n" +
+                "                \"ua_opted_in\": \"" + dateString + "\",\n" +
+                "                \"key1\": \"value1\",\n" +
+                "                \"key2\": \"value2\"\n" +
                 "            },\n" +
                 "            {\n" +
                 "                \"us_msisdn\": \"msisdn2\",\n" +
                 "                \"ua_sender\": \"sender2\",\n" +
                 "                \"ua_opted_in\": \"" + dateString + "\",\n" +
-                "                \"substitutions\": {\n" +
-                "                    \"key3\": \"value3\",\n" +
-                "                    \"key4\": \"value4\"\n" +
-                "                }\n" +
+                "                \"key3\": \"value3\",\n" +
+                "                \"key4\": \"value4\"\n" +
                 "            }\n" +
                 "        ]\n" +
                 "    },\n" +
