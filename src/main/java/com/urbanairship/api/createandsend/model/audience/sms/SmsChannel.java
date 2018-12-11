@@ -39,7 +39,8 @@ public final class SmsChannel {
     }
 
     /**
-     * Get the msisdn. The address that you want to populate the channel's address field.
+     * Get the msisdn. The mobile phone number you want to register as an SMS channel
+     * (or send a request to opt-in). Must be numeric characters only, without leading zeros. 15 digits maximum.
      * @return String
      */
     public String getMsisdn() {
@@ -55,7 +56,7 @@ public final class SmsChannel {
     }
 
     /**
-     * Get the sender. The address that you want to populate the channel's address field.
+     * Get the sender. A number the app is configured to send from, provided by Urban Airship. Must be numeric characters only.
      * @return String
      */
     public String getSender() {
@@ -105,7 +106,8 @@ public final class SmsChannel {
         private ImmutableMap.Builder<String, String> substitutions = ImmutableMap.builder();
 
         /**
-         * Set the msisdn. The address that you want to populate the channel's address field.
+         * Set the msisdn. The mobile phone number you want to register as an SMS channel (or send a request to opt-in).
+         * Must be numeric characters only, without leading zeros. 15 digits maximum.
          * @param msisdn String
          * @return SmsChannel Builder
          */
@@ -125,7 +127,7 @@ public final class SmsChannel {
         }
 
         /**
-         * Set the sender. The address that you want to populate the channel's address field.
+         * Set the sender. A number the app is configured to send from, provided by Urban Airship. Must be numeric characters only.
          * @param sender String
          * @return SmsChannel Builder
          */
