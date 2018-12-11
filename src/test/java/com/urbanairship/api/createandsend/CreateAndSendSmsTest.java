@@ -139,14 +139,14 @@ public class CreateAndSendSmsTest {
         String expectedJson  = "{\n" +
                 "    \"create_and_send\": [\n" +
                 "        {\n" +
-                "            \"us_msisdn\": \"msisdn\",\n" +
+                "            \"ua_msisdn\": \"msisdn\",\n" +
                 "            \"ua_sender\": \"sender\",\n" +
                 "            \"ua_opted_in\": \"" + dateString + "\",\n" +
                 "            \"key1\": \"value1\",\n" +
                 "            \"key2\": \"value2\"\n" +
                 "        },\n" +
                 "        {\n" +
-                "            \"us_msisdn\": \"msisdn2\",\n" +
+                "            \"ua_msisdn\": \"msisdn2\",\n" +
                 "            \"ua_sender\": \"sender2\",\n" +
                 "            \"ua_opted_in\": \"" + dateString + "\",\n" +
                 "            \"key3\": \"value3\",\n" +
@@ -154,6 +154,7 @@ public class CreateAndSendSmsTest {
                 "        }\n" +
                 "    ]\n" +
                 "}";
+
         String actualJson = MAPPER.writeValueAsString(audience);
 
         JsonNode actualNode = MAPPER.readTree(actualJson);
@@ -179,14 +180,14 @@ public class CreateAndSendSmsTest {
                 "    \"audience\": {\n" +
                 "        \"create_and_send\": [\n" +
                 "            {\n" +
-                "                \"us_msisdn\": \"msisdn\",\n" +
+                "                \"ua_msisdn\": \"msisdn\",\n" +
                 "                \"ua_sender\": \"sender\",\n" +
                 "                \"ua_opted_in\": \"" + dateString + "\",\n" +
                 "                \"key1\": \"value1\",\n" +
                 "                \"key2\": \"value2\"\n" +
                 "            },\n" +
                 "            {\n" +
-                "                \"us_msisdn\": \"msisdn2\",\n" +
+                "                \"ua_msisdn\": \"msisdn2\",\n" +
                 "                \"ua_sender\": \"sender2\",\n" +
                 "                \"ua_opted_in\": \"" + dateString + "\",\n" +
                 "                \"key3\": \"value3\",\n" +

@@ -42,7 +42,7 @@ public class CreateAndSendAudienceSerializer extends JsonSerializer<CreateAndSen
         if (payload.getSmsChannels().isPresent()) {
             for (SmsChannel smsChannel : payload.getSmsChannels().get().getSmsChannels()) {
                 jgen.writeStartObject();
-                jgen.writeStringField("us_msisdn", smsChannel.getMsisdn());
+                jgen.writeStringField("ua_msisdn", smsChannel.getMsisdn());
                 jgen.writeStringField("ua_sender", smsChannel.getSender());
                 jgen.writeStringField("ua_opted_in", DateFormats.DATE_FORMATTER.print(smsChannel.getOptedIn()));
 
