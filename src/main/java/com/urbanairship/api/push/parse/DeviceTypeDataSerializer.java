@@ -15,10 +15,6 @@ public class DeviceTypeDataSerializer extends JsonSerializer<DeviceTypeData> {
 
     @Override
     public void serialize(DeviceTypeData payload, JsonGenerator jgen, SerializerProvider provider) throws IOException {
-        if (payload.isAll()) {
-            jgen.writeString("all");
-        } else {
-            jgen.writeObject(payload.getDeviceTypes().get());
-        }
+        jgen.writeObject(payload.getDeviceTypes().get());
     }
 }

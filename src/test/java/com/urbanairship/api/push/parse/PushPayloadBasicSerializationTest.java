@@ -5,20 +5,23 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
-import com.urbanairship.api.push.model.DeviceType;
-import com.urbanairship.api.push.model.DeviceTypeData;
-import com.urbanairship.api.push.model.InApp;
-import com.urbanairship.api.push.model.Position;
-import com.urbanairship.api.push.model.PushPayload;
+import com.urbanairship.api.push.model.*;
+import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.Selectors;
+import com.urbanairship.api.push.model.audience.location.LocationIdentifier;
+import com.urbanairship.api.push.model.audience.location.LocationSelector;
+import com.urbanairship.api.push.model.audience.sms.SmsSelector;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
+import com.urbanairship.api.push.model.notification.sms.SmsPayload;
 import com.urbanairship.api.push.model.notification.wns.WNSDevicePayload;
 import org.apache.commons.lang.RandomStringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -33,6 +36,38 @@ import static org.junit.Assert.assertTrue;
 public class PushPayloadBasicSerializationTest {
 
     private static final ObjectMapper mapper = PushObjectMapper.getInstance();
+
+    @Test
+    public void testSmsChannel() throws Exception {
+        DateTime dateTime = new DateTime(2018, 02, 17, 11, 48, DateTimeZone.UTC);
+
+        SmsPayload smsPayload = SmsPayload.newBuilder()
+                .setAlert("sms alert")
+                .setExpiry(PushExpiry.newBuilder()
+                        .setExpiryTimeStamp(dateTime)
+                        .build())
+                .build();
+
+        PushPayload pushPayload = PushPayload.newBuilder()
+                .setNotification(Notifications.notification(smsPayload))
+                .setAudience(SmsSelector.newBuilder()
+                        .setMsisdn("15552243311")
+                        .setSender("12345")
+                        .build())
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.SMS))
+                .build();
+
+
+        String serializedPayload = mapper.writeValueAsString(pushPayload);
+        String expected = "{\"audience\":{\"sms_id\":{\"msisdn\":\"15552243311\",\"sender\":\"12345\"}}," +
+                "\"device_types\":[\"sms\"],\"notification\":{\"sms\":{\"alert\":\"sms alert\"," +
+                "\"expiry\":\"2018-02-17T11:48:00\"}}}";
+
+        JsonNode actualNode = mapper.readTree(serializedPayload);
+        JsonNode expectedNode = mapper.readTree(expected);
+
+        assertEquals(expectedNode, actualNode);
+    }
 
     @Test
     public void testOpenChannel() throws Exception {
@@ -147,19 +182,6 @@ public class PushPayloadBasicSerializationTest {
     }
 
     @Test
-    public void testDeviceTypesAll() throws Exception {
-        String json
-                = "{"
-                + "  \"audience\" : \"all\","
-                + "  \"device_types\" : \"all\","
-                + "  \"notification\" : { \"alert\" : \"wat\" }"
-                + "}";
-        PushPayload push = mapper.readValue(json, PushPayload.class);
-        assertTrue(push.getDeviceTypes().isAll());
-        assertFalse(push.getDeviceTypes().getDeviceTypes().isPresent());
-    }
-
-    @Test
     public void testDeviceTypesList() throws Exception {
         String json
                 = "{"
@@ -168,7 +190,6 @@ public class PushPayloadBasicSerializationTest {
                 + "  \"notification\" : { \"alert\" : \"wat\" }"
                 + "}";
         PushPayload push = mapper.readValue(json, PushPayload.class);
-        assertFalse(push.getDeviceTypes().isAll());
         assertTrue(push.getDeviceTypes().getDeviceTypes().isPresent());
         Set<DeviceType> deviceTypes = push.getDeviceTypes().getDeviceTypes().get();
         assertEquals(4, deviceTypes.size());

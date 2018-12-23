@@ -34,10 +34,7 @@ public class BasicValueSelector implements ValueSelector {
 
     @Override
     public DeviceTypeData getApplicableDeviceTypes() {
-        if (type.getPlatform().isPresent()) {
-            return DeviceTypeData.of(type.getPlatform().get());
-        }
-        return DeviceTypeData.all();
+        return DeviceTypeData.of(type.getPlatform().get());
     }
 
     @Override
