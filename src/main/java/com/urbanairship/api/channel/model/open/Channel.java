@@ -29,7 +29,6 @@ public class Channel extends PushModelObject {
         this.type = builder.type;
         this.open = builder.open;
         this.address = Optional.fromNullable(builder.address);
-
         this.optIn = Optional.fromNullable(builder.optIn);
         this.setTags = Optional.fromNullable(builder.setTags);
         this.timezone = Optional.fromNullable(builder.timezone);

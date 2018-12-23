@@ -8,5 +8,6 @@ public enum SelectorCategory {
     ATOMIC,
     VALUE,
     COMPOUND,
-    LOCATION
+    LOCATION,
+    SMS
 }

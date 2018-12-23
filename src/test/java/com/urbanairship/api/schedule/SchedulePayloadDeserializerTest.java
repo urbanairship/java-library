@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Optional;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.DateFormats;
+import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.audience.Selectors;
@@ -70,8 +71,8 @@ public class SchedulePayloadDeserializerTest {
                         .build())
                 .setName("BestTimePushPayload")
                 .setPushPayload(PushPayload.newBuilder()
-                        .setAudience(Selectors.all())
-                        .setDeviceTypes(DeviceTypeData.all())
+                        .setAudience(Selectors.androidChannel("channel"))
+                        .setDeviceTypes(DeviceTypeData.of(DeviceType.ANDROID))
                         .setNotification(Notification.newBuilder()
                                 .setAlert("Hello Everyone")
                                 .build())
