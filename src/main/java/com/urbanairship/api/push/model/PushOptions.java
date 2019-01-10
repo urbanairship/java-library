@@ -15,9 +15,11 @@ import com.google.common.base.Optional;
 public class PushOptions extends PushModelObject {
 
     private final Optional<PushExpiry> expiry;
+    private final Optional<PushNoThrottle> noThrottle;
 
-    private PushOptions(Optional<PushExpiry> expiry) {
+    private PushOptions(Optional<PushExpiry> expiry,Optional<PushNoThrottle> noThrottle) {
         this.expiry = expiry;
+        this.noThrottle = noThrottle;
     }
 
     /**
@@ -36,6 +38,14 @@ public class PushOptions extends PushModelObject {
         return expiry;
     }
 
+    /**
+     * Get the no_throttle value.  This is optional.
+     * @return Optional<<T>noThrottle</T>>
+     **/
+    public Optional<PushNoThrottle> getNoThrottle() {
+        return noThrottle;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -47,24 +57,31 @@ public class PushOptions extends PushModelObject {
 
         PushOptions that = (PushOptions) o;
 
-        return !(expiry != null ? !expiry.equals(that.expiry) : that.expiry != null);
-
+        if (!expiry.equals(that.expiry)) {
+            return false;
+        }
+        return noThrottle.equals(that.noThrottle);
     }
 
     @Override
     public int hashCode() {
-        return (expiry != null ? expiry.hashCode() : 0);
+        int result = expiry.hashCode();
+        result = 31 * result + noThrottle.hashCode();
+        return result;
     }
+
 
     @Override
     public String toString() {
-        return "PushOptionsPayload{" +
-                "expiry=" + expiry +
-                '}';
+        return "PushOptions{"
+            + "expiry=" + expiry
+            + ", noThrottle=" + noThrottle
+            + '}';
     }
 
     public static class Builder {
         private PushExpiry expiry = null;
+        private PushNoThrottle noThrottle = null;
 
         private Builder() { }
 
@@ -78,8 +95,18 @@ public class PushOptions extends PushModelObject {
             return this;
         }
 
+        /**
+         * Set no_throttle value
+         * @param value Boolean
+         * @return Builder
+         **/
+        public Builder setNoThrottle(PushNoThrottle value) {
+            this.noThrottle = value;
+            return this;
+        }
+
         public PushOptions build() {
-            return new PushOptions(Optional.fromNullable(expiry));
+            return new PushOptions(Optional.fromNullable(expiry),Optional.fromNullable(noThrottle));
         }
     }
 

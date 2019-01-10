@@ -129,6 +129,7 @@ public class UrbanAirshipClientTest {
     public final static String CONTENT_TYPE_KEY = "Content-type";
     public final static String APP_JSON = "application/json";
     public final static String TEXT_CSV = "text/csv";
+    public final static int TESTPORT = 8080;
 
     static {
         BasicConfigurator.configure();
@@ -140,7 +141,7 @@ public class UrbanAirshipClientTest {
     @Before
     public void setup() {
         client = UrbanAirshipClient.newBuilder()
-                .setBaseUri("http://localhost:8080")
+                .setBaseUri("http://localhost:"+TESTPORT)
                 .setKey("key")
                 .setSecret("secret")
                 .setMaxRetries(5)
@@ -196,7 +197,7 @@ public class UrbanAirshipClientTest {
             .setProtocol(ProxyInfo.ProxyInfoProtocol.HTTPS)
             .setPrincipal("user")
             .setPassword("password")
-            .setPort(8080)
+            .setPort(TESTPORT)
             .build();
 
         ProxyInfo proxyInfoCopy = ProxyInfo.newBuilder()
@@ -204,7 +205,7 @@ public class UrbanAirshipClientTest {
             .setProtocol(ProxyInfo.ProxyInfoProtocol.HTTPS)
             .setPrincipal("user")
             .setPassword("password")
-            .setPort(8080)
+            .setPort(TESTPORT)
             .build();
 
         assertEquals(proxyInfo, proxyInfoCopy);
@@ -215,9 +216,9 @@ public class UrbanAirshipClientTest {
             .setProxyInfo(proxyInfo)
             .build();
 
-        ProxyServer proxyServer = proxyClient.getClient().getConfig().getProxyServerSelector().select(Uri.create("https://host:8080"));
+        ProxyServer proxyServer = proxyClient.getClient().getConfig().getProxyServerSelector().select(Uri.create("https://host:"+TESTPORT));
         assertEquals("test.urbanairship.com", proxyServer.getHost());
-        assertEquals(8080, proxyServer.getPort());
+        assertEquals(TESTPORT, proxyServer.getPort());
         assertEquals(ProxyServer.Protocol.HTTPS, proxyServer.getProtocol());
         assertEquals("user", proxyServer.getPrincipal());
         assertEquals("password", proxyServer.getPassword());
@@ -439,7 +440,7 @@ public class UrbanAirshipClientTest {
     @SuppressWarnings("unchecked")
     public void testRetryIsNonBlocking() throws Exception {
         client = UrbanAirshipClient.newBuilder()
-            .setBaseUri("http://localhost:8080")
+            .setBaseUri("http://localhost:"+TESTPORT)
             .setKey("key")
             .setSecret("secret")
             .setMaxRetries(1000)
@@ -494,7 +495,7 @@ public class UrbanAirshipClientTest {
     @SuppressWarnings("unchecked")
     public void testClose() throws Exception {
         client = UrbanAirshipClient.newBuilder()
-            .setBaseUri("http://localhost:8080")
+            .setBaseUri("http://localhost:"+TESTPORT)
             .setKey("key")
             .setSecret("secret")
             .setMaxRetries(1000)
@@ -708,12 +709,12 @@ public class UrbanAirshipClientTest {
 
         // Setup a client and a push payload
         UrbanAirshipClient proxyClient = UrbanAirshipClient.newBuilder()
-            .setBaseUri("http://localhost:8080")
+            .setBaseUri("http://localhost:"+TESTPORT)
             .setKey("key")
             .setSecret("secret")
             .setProxyInfo(ProxyInfo.newBuilder()
                 .setHost("localhost")
-                .setPort(8080)
+                .setPort(TESTPORT)
                 .setPrincipal("user")
                 .setPassword("password")
                 .build())

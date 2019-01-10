@@ -2,15 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
+    <!--parent>
         <groupId>org.sonatype.oss</groupId>
         <artifactId>oss-parent</artifactId>
         <version>7</version>
-    </parent>
+    </parent-->
 
     <groupId>com.urbanairship</groupId>
     <artifactId>java-client</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.0-nothrottle</version>
     <packaging>jar</packaging>
 
     <name>Java Client</name>
@@ -23,14 +23,17 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:git:git@github.com:urbanairship/java-library.git</connection>
-        <developerConnection>scm:git:git@github.com:urbanairship/java-library.git</developerConnection>
-        <url>git@github.com:urbanairship/java-library.git</url>
-        <tag>2.0.0</tag>
+        <connection>scm:git:git@github.com:FieserKiller/java-library.git</connection>
+        <developerConnection>scm:git:git@github.com:FieserKiller/java-library.git</developerConnection>
+        <url>git@github.com:FieserKiller/java-library.git</url>
+        <tag>HEAD</tag>
     </scm>
     <developers>
         <developer>
             <email>support@urbanairship.com</email>
+        </developer>
+        <developer>
+            <email>ap@2scale.net</email>
         </developer>
     </developers>
 
@@ -61,7 +64,7 @@
                 </configuration>
             </plugin>
 
-            <plugin>
+            <!--plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.4</version>
@@ -74,7 +77,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin-->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -100,7 +103,7 @@
                 </configuration>
             </plugin>
 
-            <plugin>
+            <!--plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.9.1</version>
@@ -112,7 +115,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin-->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

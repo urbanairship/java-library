@@ -2,11 +2,7 @@ package com.urbanairship.api.push.parse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
-import com.urbanairship.api.push.model.DeviceType;
-import com.urbanairship.api.push.model.DeviceTypeData;
-import com.urbanairship.api.push.model.PushExpiry;
-import com.urbanairship.api.push.model.PushOptions;
-import com.urbanairship.api.push.model.PushPayload;
+import com.urbanairship.api.push.model.*;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
 import org.joda.time.DateTime;
@@ -44,23 +40,67 @@ public class PushOptionsTest {
     @Test
     public void testOptionsPresent() throws Exception {
         String properJson
-                = "{"
-                + "\"audience\":\"ALL\","
-                + "\"device_types\":[\"ios\"],"
-                + "\"notification\":{\"alert\":\"wat\"},"
-                + "\"options\":{}"
-                + "}";
+            = "{"
+            + "\"audience\":\"ALL\","
+            + "\"device_types\":[\"ios\"],"
+            + "\"notification\":{\"alert\":\"wat\"},"
+            + "\"options\":{}"
+            + "}";
         PushPayload push = PushPayload.newBuilder()
-                .setAudience(Selectors.all())
-                .setDeviceTypes(DeviceTypeData.newBuilder().addDeviceType(DeviceType.IOS).build())
-                .setNotification(Notification.newBuilder().setAlert("wat").build())
-                .setPushOptions(PushOptions.newBuilder().build())
-                .build();
+            .setAudience(Selectors.all())
+            .setDeviceTypes(DeviceTypeData.newBuilder().addDeviceType(DeviceType.IOS).build())
+            .setNotification(Notification.newBuilder().setAlert("wat").build())
+            .setPushOptions(PushOptions.newBuilder().build())
+            .build();
         String json = mapper.writeValueAsString(push);
 
         assertTrue(push.getPushOptions().isPresent());
         assertEquals(properJson, json);
     }
+
+    @Test
+    public void testOptionsNoThrottlePresent() throws Exception {
+        String properJson
+            = "{"
+            + "\"audience\":\"ALL\","
+            + "\"device_types\":[\"ios\"],"
+            + "\"notification\":{\"alert\":\"wat\"},"
+            + "\"options\":{\"no_throttle\":true}"
+            + "}";
+        PushPayload push = PushPayload.newBuilder()
+            .setAudience(Selectors.all())
+            .setDeviceTypes(DeviceTypeData.newBuilder().addDeviceType(DeviceType.IOS).build())
+            .setNotification(Notification.newBuilder().setAlert("wat").build())
+            .setPushOptions(PushOptions.newBuilder().setNoThrottle(PushNoThrottle.newBuilder().setValue(true).build()).build())
+            .build();
+        String json = mapper.writeValueAsString(push);
+
+        assertTrue(push.getPushOptions().isPresent());
+        assertEquals(properJson, json);
+    }
+
+    @Test
+    public void testOptionsAllPresent() throws Exception {
+        String properJson
+            = "{"
+            + "\"audience\":\"ALL\","
+            + "\"device_types\":[\"ios\"],"
+            + "\"notification\":{\"alert\":\"wat\"},"
+            + "\"options\":{\"expiry\":300,"
+            + "\"no_throttle\":true}"
+            + "}";
+        PushPayload push = PushPayload.newBuilder()
+            .setAudience(Selectors.all())
+            .setDeviceTypes(DeviceTypeData.newBuilder().addDeviceType(DeviceType.IOS).build())
+            .setNotification(Notification.newBuilder().setAlert("wat").build())
+            .setPushOptions(PushOptions.newBuilder().setExpiry(PushExpiry.newBuilder().setExpirySeconds(300).build()).setNoThrottle(PushNoThrottle.newBuilder().setValue(true).build()).build())
+            .build();
+        String json = mapper.writeValueAsString(push);
+
+        assertTrue(push.getPushOptions().isPresent());
+        assertEquals(properJson, json);
+    }
+
 
     @Test
     public void testEmptyOptions() throws Exception {
@@ -75,12 +115,37 @@ public class PushOptionsTest {
     }
 
     @Test
+    public void testParseNoThrottleRoundTrip() throws Exception {
+        PushNoThrottle pushNoThrottle1 = PushNoThrottle.newBuilder().setValue(true).build();
+        String json = mapper.writeValueAsString(pushNoThrottle1);
+        PushNoThrottle pushNoThrottle2 = mapper.readValue(json, PushNoThrottle.class);
+        assertEquals(pushNoThrottle1, pushNoThrottle2);
+    }
+
+
+    @Test
+    public void testParsingNoThrottle() throws Exception {
+        String json
+            = "{"
+            + "\"no_throttle\":true"
+            + "}";
+
+        PushOptions options = mapper.readValue(json, PushOptions.class);
+
+        assertTrue(options.getNoThrottle().isPresent());
+        PushNoThrottle noThrottle = options.getNoThrottle().get();
+        assertEquals(true, noThrottle.getValue().get());
+    }
+
+    @Test
     public void testParseExpiryRoundTrip() throws Exception {
         PushExpiry expiry1 = PushExpiry.newBuilder().setExpirySeconds(600).build();
         String json = mapper.writeValueAsString(expiry1);
         PushExpiry expiry2 = mapper.readValue(json, PushExpiry.class);
         assertEquals(expiry1, expiry2);
     }
+
+
 
     /* Equality */
     @Test
