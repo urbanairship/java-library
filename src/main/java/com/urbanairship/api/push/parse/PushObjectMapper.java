@@ -280,7 +280,7 @@ public class PushObjectMapper {
                 .addSerializer(WNSAudioData.class, new WNSAudioSerializer())
                 .addDeserializer(WNSAudioData.class, audioDS)
 
-                /* Android */
+                /* DeviceStats */
                 .addSerializer(AndroidDevicePayload.class, new AndroidDevicePayloadSerializer())
                 .addDeserializer(AndroidDevicePayload.class, androidPayloadDS)
                 .addSerializer(Wearable.class, new WearableSerializer())

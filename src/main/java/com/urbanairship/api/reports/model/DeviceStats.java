@@ -2,18 +2,18 @@ package com.urbanairship.api.reports.model;
 
 import java.util.Objects;
 
-public final class Android {
+public final class DeviceStats {
 
     private final int direct;
     private final int influenced;
 
-    private Android(int direct, int influenced) {
+    private DeviceStats(int direct, int influenced) {
         this.direct = direct;
         this.influenced = influenced;
     }
 
     /**
-     * New Android builder.
+     * New DeviceStats builder.
      *
      * @return Builder
      */
@@ -25,9 +25,9 @@ public final class Android {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Android android = (Android) o;
-        return direct == android.direct &&
-                influenced == android.influenced;
+        DeviceStats deviceType = (DeviceStats) o;
+        return direct == deviceType.direct &&
+                influenced == deviceType.influenced;
     }
 
     @Override
@@ -37,7 +37,7 @@ public final class Android {
 
     @Override
     public String toString() {
-        return "Android{" +
+        return "DeviceStats{" +
                 "direct=" + direct +
                 ", influenced=" + influenced +
                 '}';
@@ -89,6 +89,6 @@ public final class Android {
             return this;
         }
 
-        public Android build() { return new Android(direct, influenced); }
+        public DeviceStats build() { return new DeviceStats(direct, influenced); }
     }
 }

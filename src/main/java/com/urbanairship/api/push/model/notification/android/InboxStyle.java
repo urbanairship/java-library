@@ -8,7 +8,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
 /**
- * Represents an Android style with a type of "inbox".
+ * Represents an DeviceStats style with a type of "inbox".
  */
 public class InboxStyle implements Style<ImmutableList<String>> {
     private final ImmutableList<String> content;

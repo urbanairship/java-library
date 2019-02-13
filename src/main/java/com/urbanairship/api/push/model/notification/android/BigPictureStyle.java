@@ -8,7 +8,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 /**
- * Represents an Android style with a type of "big_picture".
+ * Represents an DeviceStats style with a type of "big_picture".
  */
 public class BigPictureStyle implements Style<String> {
     private final String content;

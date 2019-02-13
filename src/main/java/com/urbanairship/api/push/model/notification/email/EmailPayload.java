@@ -280,7 +280,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
         /**
          * Set the device type for the email channel payload.
          *
-         * @param deviceType DeviceType
+         * @param deviceType DeviceStats
          * @return EmailPayload Builder
          */
         public Builder setDeviceType(DeviceType deviceType) {
@@ -290,7 +290,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
 
         public EmailPayload build() {
 
-            Preconditions.checkNotNull(deviceType, "DeviceType must be set.");
+            Preconditions.checkNotNull(deviceType, "DeviceStats must be set.");
 
             Preconditions.checkNotNull(subject, "Subject must be set.");
 
