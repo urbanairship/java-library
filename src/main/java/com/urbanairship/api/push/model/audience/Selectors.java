@@ -233,7 +233,7 @@ public class Selectors {
         return compound(SelectorType.OR, SelectorType.APID, apids);
     }
 
-    /* Android channels */
+    /* DeviceStats channels */
 
     public static final Selector androidChannel(String androidChannel) {
         return value(SelectorType.ANDROID_CHANNEL, androidChannel);

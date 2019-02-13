@@ -30,7 +30,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
     private final Optional<String> summary;
     private final Optional<Style> style;
     private final Optional<String> sound;
-    // Android L features
+    // DeviceStats L features
     private final Optional<Integer> priority;
     private final Optional<Category> category;
     private final Optional<Integer> visibility;
@@ -72,7 +72,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
     /**
      * Get the device type.
      *
-     * @return DeviceType.ANDROID
+     * @return DeviceStats.ANDROID
      */
     @Override
     public DeviceType getDeviceType() {
@@ -321,7 +321,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         private String summary = null;
         private Style style = null;
         private String sound = null;
-        // Android L features
+        // DeviceStats L features
         private Integer priority = null;
         private Category category = null;
         private Integer visibility = null;

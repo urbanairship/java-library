@@ -3,15 +3,15 @@ package com.urbanairship.api.reports.parse;
 import com.fasterxml.jackson.core.JsonParser;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
-import com.urbanairship.api.reports.model.Android;
+import com.urbanairship.api.reports.model.DeviceStats;
 
 import java.io.IOException;
 
-public final class DeviceTypeReader implements JsonObjectReader<Android> {
+public final class DeviceStatsReader implements JsonObjectReader<DeviceStats> {
 
-    private final Android.Builder builder;
+    private final DeviceStats.Builder builder;
 
-    public DeviceTypeReader() { this.builder = Android.newBuilder(); }
+    public DeviceStatsReader() { this.builder = DeviceStats.newBuilder(); }
 
     public void readDirect(JsonParser jsonParser) throws IOException {
         builder.setDirect(jsonParser.readValueAs(int.class));
@@ -22,7 +22,7 @@ public final class DeviceTypeReader implements JsonObjectReader<Android> {
     }
 
     @Override
-    public Android validateAndBuild() throws IOException {
+    public DeviceStats validateAndBuild() throws IOException {
         try {
             return builder.build();
         } catch (Exception e) {

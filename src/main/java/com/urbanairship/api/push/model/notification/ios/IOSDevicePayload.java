@@ -75,7 +75,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     /**
      * Get the deviceType.
-     * @return DeviceType
+     * @return DeviceStats
      */
     @Override
     public DeviceType getDeviceType() {

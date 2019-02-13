@@ -7,7 +7,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 /**
- * Represents an Android style with a type of "big_text".
+ * Represents an DeviceStats style with a type of "big_text".
  */
 public class BigTextStyle implements Style<String> {
     private final String content;

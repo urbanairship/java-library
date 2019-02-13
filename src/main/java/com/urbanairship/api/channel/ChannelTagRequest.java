@@ -80,7 +80,7 @@ public class ChannelTagRequest implements Request<String> {
         return this;
     }
     /**
-     * Add an Android channel to the request audience.
+     * Add an DeviceStats channel to the request audience.
      *
      * @param channel String
      * @return ChannelTagRequest
@@ -90,7 +90,7 @@ public class ChannelTagRequest implements Request<String> {
     }
 
     /**
-     * Add multiple Android channels to the request audience.
+     * Add multiple DeviceStats channels to the request audience.
      *
      * @param channels String... of channel IDs
      * @return ChannelTagRequest
@@ -100,7 +100,7 @@ public class ChannelTagRequest implements Request<String> {
     }
 
     /**
-     * Add a set of Android channel to the request audience.
+     * Add a set of DeviceStats channel to the request audience.
      *
      * @param channels Set of channels IDs
      * @return ChannelTagRequest
