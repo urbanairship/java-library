@@ -13,7 +13,6 @@ import com.urbanairship.api.reports.model.Response;
 
 import java.io.IOException;
 
-
 public class ResponseDeserializer extends JsonDeserializer<Response> {
     private static final FieldParserRegistry<Response, ResponseReader> FIELD_PARSERS =
             new MapFieldParserRegistry<Response, ResponseReader>(
