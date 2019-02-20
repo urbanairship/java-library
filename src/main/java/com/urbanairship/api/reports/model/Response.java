@@ -1,18 +1,18 @@
 package com.urbanairship.api.reports.model;
 
+import com.google.common.collect.ImmutableMap;
 import org.joda.time.DateTime;
 
-import java.time.LocalDate;
 import java.util.Map;
 import java.util.Objects;
 
 public final class Response {
-    DateTime date;
-    Map<String, DeviceStats> deviceStatsMap;
+    public DateTime date;
+    private ImmutableMap<String, DeviceStats> deviceStatsMap;
 
     private Response() { this(null, null); }
 
-    private Response(DateTime date, Map<String, DeviceStats> deviceStatsMap) {
+    private Response(DateTime date, ImmutableMap<String, DeviceStats> deviceStatsMap) {
         this.date = date;
         this.deviceStatsMap = deviceStatsMap;
     }
@@ -60,8 +60,9 @@ public final class Response {
     }
 
     public static class Builder {
-        private DateTime date;
-        Map<String, DeviceStats> deviceStatsMap;
+
+        public DateTime date;
+        private ImmutableMap.Builder<String, DeviceStats> deviceStatsMap = ImmutableMap.builder();
 
         private Builder() {}
 
@@ -90,18 +91,18 @@ public final class Response {
         /**
          * Add all mappings of device type and device statistics for listing
          *
-         * @param deviceStatsMap Map of device name and it's associated statistics
+         * @param deviceStats Map of device type and it's associated statistics
          * @return Builder
          */
-        public Builder addDeviceStatsMapping(Map<String, DeviceStats> deviceStatsMap) {
-            for (Map.Entry<String, DeviceStats> entry : deviceStatsMap.entrySet()) {
-                this.deviceStatsMap.put(entry.getKey(), entry.getValue());
+        public Builder addDeviceStatsMapping(ImmutableMap<String, DeviceStats> deviceStats) {
+            if (!deviceStats.isEmpty()) {
+                this.deviceStatsMap.putAll(deviceStats);
             }
             return this;
         }
 
         public Response build() {
-            return new Response(date, deviceStatsMap);
+            return new Response(date, deviceStatsMap.build());
         }
 
     }

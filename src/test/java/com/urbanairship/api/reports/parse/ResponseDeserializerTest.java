@@ -11,10 +11,11 @@ import static org.junit.Assert.assertNotNull;
 public class ResponseDeserializerTest {
     private static final ObjectMapper mapper = ReportsObjectMapper.getInstance();
 
-   @Test
+
+    @Test
    public void testSomeJson() throws IOException {
 
-       String testJson =
+       String json =
                "{\n" +
                "  \"android\": {\n" +
                "    \"direct\":1337,\n" +
@@ -27,11 +28,9 @@ public class ResponseDeserializerTest {
                "  }\n" +
                "}";
 
-       System.out.println(testJson);
-
-       Response test = mapper.readValue(testJson, Response.class);
+       System.out.println(json);
+       Response test = mapper.readValue(json, Response.class);
        assertNotNull(test);
-
        System.out.println(test);
    }
 }
