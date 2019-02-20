@@ -20,12 +20,12 @@ public class DeviceTypeDeserializerTest {
                         "\"influenced\":1996\n" +
                         "}";
 
-        DeviceStats obj = mapper.readValue(json, DeviceStats.class);
-        assertNotNull(obj);
+        DeviceStats deviceStats = mapper.readValue(json, DeviceStats.class);
+        assertNotNull(deviceStats);
 
-        System.out.println(obj);
+        System.out.println(deviceStats);
 
-        assertEquals(1337, obj.getDirect());
-        assertEquals(1996, obj.getInfluenced());
+        assertEquals(1337, deviceStats.getDirect());
+        assertEquals(1996, deviceStats.getInfluenced());
     }
 }
