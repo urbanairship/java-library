@@ -58,7 +58,6 @@ public final class Response {
     }
 
     public static class Builder {
-
         private DateTime date = null;
         private ImmutableMap.Builder<String, DeviceStats> deviceStatsMap = ImmutableMap.builder();
 
@@ -89,8 +88,5 @@ public final class Response {
         public Response build() {
             return new Response(date, deviceStatsMap.build());
         }
-
     }
-
-
 }

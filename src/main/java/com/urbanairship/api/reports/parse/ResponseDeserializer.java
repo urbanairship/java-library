@@ -40,7 +40,6 @@ public class ResponseDeserializer extends JsonDeserializer<Response> {
                             .build()
             );
 
-
     private final StandardObjectDeserializer<Response, ?> deserializer;
 
     public ResponseDeserializer() {
