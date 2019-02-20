@@ -33,7 +33,6 @@ public final class DeviceStatsDeserializer extends JsonDeserializer<DeviceStats>
 
     private final StandardObjectDeserializer<DeviceStats, ?> deserializer;
 
-
     public DeviceStatsDeserializer() {
         deserializer = new StandardObjectDeserializer<DeviceStats, DeviceStatsReader>(
                 FIELD_PARSERS,

@@ -71,6 +71,7 @@ public class ResponseReportRequestTest {
         assertEquals(responseReportRequest.getRequestHeaders(), headers);
         assertEquals(nextPageRequest.getRequestHeaders(), headers);
     }
+
     @Test
     public void testURI() throws Exception {
         URI baseURI = URI.create("https://go.urbanairship.com");
@@ -120,6 +121,4 @@ public class ResponseReportRequestTest {
 
         assertEquals(responseReportRequest.getResponseParser().parse(response), responseParser.parse(response));
     }
-
-
 }

@@ -3,7 +3,6 @@ package com.urbanairship.api.reports.model;
 import java.util.Objects;
 
 public final class DeviceStats {
-
     private final int direct;
     private final int influenced;
 

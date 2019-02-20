@@ -29,6 +29,4 @@ public class ResponseTest {
         assertEquals(1111, response.getDeviceStatsMap().get("android").getInfluenced());
         assertEquals(2222, response.getDeviceStatsMap().get("android").getDirect());
     }
-
-
 }
