@@ -1,13 +1,17 @@
 package com.urbanairship.api.reports.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.collect.ImmutableMap;
+import com.urbanairship.api.common.parse.DateTimeDeserializer;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.util.Map;
 import java.util.Objects;
 
 public final class Response {
-    public DateTime date;
+    private DateTime date;
     private ImmutableMap<String, DeviceStats> deviceStatsMap;
 
     private Response() { this(null, null); }
@@ -61,7 +65,7 @@ public final class Response {
 
     public static class Builder {
 
-        public DateTime date;
+        private DateTime date = null;
         private ImmutableMap.Builder<String, DeviceStats> deviceStatsMap = ImmutableMap.builder();
 
         private Builder() {}

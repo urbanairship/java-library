@@ -1,16 +1,13 @@
 package com.urbanairship.api.reports.parse;
 
-import com.google.common.collect.ImmutableMap;
+import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.reports.model.DeviceStats;
 import com.urbanairship.api.reports.model.Response;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.urbanairship.api.common.parse.APIParsingException;
-import org.joda.time.DateTime;
 
 import java.io.IOException;
-import java.util.Map;
 
 public class ResponseReader implements JsonObjectReader<Response> {
 
@@ -19,13 +16,11 @@ public class ResponseReader implements JsonObjectReader<Response> {
     public ResponseReader() { this.builder = Response.newBuilder(); }
 
     public void readDate(JsonParser jsonParser) throws IOException {
-        builder.setDate(jsonParser.readValueAs(DateTime.class));
+        String date = jsonParser.readValueAs(String.class);
+        builder.setDate(DateFormats.DATE_PARSER.parseDateTime(date));
     }
 
     public void readDeviceStats(JsonParser jsonParser, String value ) throws IOException {
-//        Map<String, DeviceStats> mutableDeviceStats = jsonParser.readValueAs(new TypeReference<Map<String, DeviceStats>>() {});
-//        ImmutableMap<String, DeviceStats> deviceStatsImmutableMap = immutableMapConverter(mutableDeviceStats);
-//        builder.addDeviceStatsMapping(deviceStatsImmutableMap);
         builder.addDeviceStatsMapping(value, jsonParser.readValueAs(DeviceStats.class));
     }
 
@@ -38,12 +33,4 @@ public class ResponseReader implements JsonObjectReader<Response> {
             throw new APIParsingException(e.getMessage());
         }
    }
-
-    private static ImmutableMap<String, DeviceStats> immutableMapConverter(Map<String, DeviceStats> map) {
-        ImmutableMap.Builder<String, DeviceStats> builder = ImmutableMap.builder();
-        for (Map.Entry<String, DeviceStats> entry : map.entrySet()) {
-            builder.put(entry.getKey(), entry.getValue());
-        }
-        return builder.build();
-    }
 }
