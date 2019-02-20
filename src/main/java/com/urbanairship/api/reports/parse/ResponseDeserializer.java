@@ -20,7 +20,7 @@ public class ResponseDeserializer extends JsonDeserializer<Response> {
                             .put("android", new FieldParser<ResponseReader>() {
                                 @Override
                                 public void parse(ResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readDeviceStats(jsonParser);
+                                    reader.readDeviceStats(jsonParser, "android");
                                 }
                             })
                             .put("date", new FieldParser<ResponseReader>() {
@@ -34,7 +34,7 @@ public class ResponseDeserializer extends JsonDeserializer<Response> {
                             .put("ios", new FieldParser<ResponseReader>() {
                                 @Override
                                 public void parse(ResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readDeviceStats(jsonParser);
+                                    reader.readDeviceStats(jsonParser, "ios");
                                 }
                             })
                             .build()
