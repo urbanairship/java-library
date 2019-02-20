@@ -12,13 +12,13 @@ public class DeviceTypeDeserializerTest {
     private static final ObjectMapper mapper = ReportsObjectMapper.getInstance();
 
     @Test
-    public void testStats() throws Exception {
+    public void testDeviceStats() throws Exception {
 
         String json =
-                "{  \n" +
-                        "\"direct\":1337,\n" +
-                        "\"influenced\":1996\n" +
-                        "}";
+                "{ \n" +
+                "   \"direct\":1337,\n" +
+                "   \"influenced\":1996\n" +
+                "}";
 
         DeviceStats deviceStats = mapper.readValue(json, DeviceStats.class);
         assertNotNull(deviceStats);
