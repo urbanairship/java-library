@@ -355,7 +355,7 @@ public class UrbanAirshipClientTest {
             String audience = (String) result.get("audience");
             assertTrue(audience.equals("ALL"));
 
-            // DeviceStats
+            // DeviceType
             List<String> deviceTypeData = (List<String>) result.get("device_types");
             assertTrue(deviceTypeData.get(0).equals("ios"));
             assertEquals(DeviceType.find(deviceTypeData.get(0)).get(), DeviceType.IOS);
@@ -420,7 +420,7 @@ public class UrbanAirshipClientTest {
         String audience = (String) result.get("audience");
         assertTrue(audience.equals("ALL"));
 
-        // DeviceStats
+        // DeviceType
         List<String> deviceTypeData = (List<String>) result.get("device_types");
         assertTrue(deviceTypeData.get(0).equals("ios"));
         assertEquals(DeviceType.find(deviceTypeData.get(0)).get(), DeviceType.IOS);
@@ -757,7 +757,7 @@ public class UrbanAirshipClientTest {
         String audience = (String)result.get("audience");
         assertTrue(audience.equals("ALL"));
 
-        // DeviceStats
+        // DeviceType
         List<String> deviceTypeData = (List<String>)result.get("device_types");
         assertTrue(deviceTypeData.get(0).equals("ios"));
         assertEquals(DeviceType.find(deviceTypeData.get(0)).get(), DeviceType.IOS);
