@@ -5,6 +5,8 @@ import com.google.common.base.Optional;
 
 import java.util.Objects;
 
+//TODO: make sure to add commnets to the needed functions, look at other for example
+
 public class Report {
     private final Optional<String> next_page;
     private final Optional<ImmutableList<Response>> responses;

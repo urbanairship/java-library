@@ -29,7 +29,7 @@ public class SmsPayload extends PushModelObject implements DevicePayloadOverride
 
     /**
      * Get the device type.
-     * @return DeviceStats.SMS
+     * @return DeviceType.SMS
      */
     @Override
     public DeviceType getDeviceType() {

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.google.common.base.Optional;
 
 /**
- * Base Interface for the DeviceStats Style objects.
+ * Base Interface for the Android Style objects.
  *
  * @param <T> Style Type
  */

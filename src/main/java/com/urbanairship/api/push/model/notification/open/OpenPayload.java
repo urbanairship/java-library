@@ -202,7 +202,7 @@ public final class OpenPayload extends PushModelObject implements DevicePayloadO
         /**
          * Set the device type for the open channel payload.
          *
-         * @param deviceType DeviceStats
+         * @param deviceType DeviceType
          * @return OpenPayload Builder
          */
         public Builder setDeviceType(DeviceType deviceType) {
@@ -223,7 +223,7 @@ public final class OpenPayload extends PushModelObject implements DevicePayloadO
         }
 
         public OpenPayload build() {
-            Preconditions.checkNotNull(deviceType, "DeviceStats must be set.");
+            Preconditions.checkNotNull(deviceType, "DeviceType must be set.");
             return new OpenPayload(this);
         }
     }

@@ -14,7 +14,7 @@ import com.urbanairship.api.push.model.notification.Interactive;
 import java.util.List;
 
 /**
- * Represents an DeviceStats wearable object.
+ * Represents an Android wearable object.
  */
 public class Wearable {
     private final Optional<String> backgroundImage;

@@ -8,7 +8,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 /**
- * Represents an DeviceStats public_notification object.
+ * Represents an Android public_notification object.
  */
 public class PublicNotification {
     private final Optional<String> title;
