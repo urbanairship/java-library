@@ -31,7 +31,9 @@ public class ResponseDeserializerTest {
 
        Response response = mapper.readValue(json, Response.class);
        assertNotNull(response);
-        System.out.println(response);
+
+       System.out.println(response);
+
        assertEquals(1337, response.getDeviceStatsMap().get("ios").getDirect());
        assertEquals(9999, response.getDeviceStatsMap().get("ios").getInfluenced());
        assertEquals(7331, response.getDeviceStatsMap().get("android").getDirect());
