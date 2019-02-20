@@ -45,7 +45,7 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
     /**
      * Get the device type.
      *
-     * @return DeviceStats.WEB
+     * @return DeviceType.WEB
      */
     @Override
     public DeviceType getDeviceType() {

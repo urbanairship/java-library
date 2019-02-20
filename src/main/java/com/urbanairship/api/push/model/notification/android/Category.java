@@ -7,7 +7,7 @@ package com.urbanairship.api.push.model.notification.android;
 import com.google.common.base.Optional;
 
 /**
- * Enum of DeviceStats categories
+ * Enum of Android categories
  */
 public enum Category {
 
