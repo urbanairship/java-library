@@ -18,10 +18,20 @@ public class Report {
 
     public static Builder newBuilder() { return new Builder(); }
 
-    public Optional<String> getNext_page() {
+    /**
+     * Get the next page attribute if present for a ReportResponseRequest.
+     *
+     * @return An optional string
+     */
+    public Optional<String> getNextPage() {
         return next_page;
     }
 
+    /**
+     * Get the list of Response objects for a ReportResponseRequest
+     *
+     * @return An optional immutable list of Response objects
+     */
     public Optional<ImmutableList<Response>> getResponses() {
         return responses;
     }
@@ -54,21 +64,44 @@ public class Report {
 
         private Builder() {}
 
+        /**
+         * Set the next page
+         *
+         * @param next_page String
+         * @return Builder
+         */
         public Builder setNextPage(String next_page) {
             this.next_page = next_page;
             return this;
         }
 
-        public Builder addResponseObject(Response item) {
-            this.responses.add(item);
+        /**
+         * Add a Response object for a listing
+         *
+         * @param object Response
+         * @return Builder
+         */
+        public Builder addResponseObject(Response object) {
+            this.responses.add(object);
             return this;
         }
 
-        public Builder addResponseObject(Iterable<? extends Response> item) {
-            this.responses.addAll(item);
+        /**
+         * Add all Response objects for a listing
+         *
+         * @param object Iterable of Response objects
+         * @return Builder
+         */
+        public Builder addResponseObject(Iterable<? extends Response> object) {
+            this.responses.addAll(object);
             return this;
         }
 
+        /**
+         * Build the Response object
+         *
+         * @return Response
+         */
         public Report build() {
             return new Report(Optional.fromNullable(next_page), Optional.fromNullable(responses.build()));
         }
