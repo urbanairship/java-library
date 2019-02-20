@@ -1,13 +1,7 @@
 package com.urbanairship.api.reports.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.collect.ImmutableMap;
-import com.urbanairship.api.common.parse.DateTimeDeserializer;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
-import java.util.Map;
 import java.util.Objects;
 
 public final class Response {
@@ -59,7 +53,7 @@ public final class Response {
      *
      * @return A Map of device names and their associated platform statistics
      */
-    public Map<String, DeviceStats> getDeviceStatsMap() {
+    public ImmutableMap<String, DeviceStats> getDeviceStatsMap() {
         return deviceStatsMap;
     }
 
@@ -89,19 +83,6 @@ public final class Response {
          */
         public Builder addDeviceStatsMapping(String value, DeviceStats object) {
             this.deviceStatsMap.put(value, object);
-            return this;
-        }
-
-        /**
-         * Add all mappings of device type and device statistics for listing
-         *
-         * @param deviceStats Map of device type and it's associated statistics
-         * @return Builder
-         */
-        public Builder addDeviceStatsMapping(ImmutableMap<String, DeviceStats> deviceStats) {
-            if (!deviceStats.isEmpty()) {
-                this.deviceStatsMap.putAll(deviceStats);
-            }
             return this;
         }
 

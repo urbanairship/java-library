@@ -8,7 +8,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
 
 public class DeviceTypeDeserializerTest {
-
     private static final ObjectMapper mapper = ReportsObjectMapper.getInstance();
 
     @Test
