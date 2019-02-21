@@ -8,7 +8,14 @@ import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import com.urbanairship.api.reports.model.*;
+import com.urbanairship.api.reports.model.PlatformStats;
+import com.urbanairship.api.reports.model.PushInfoResponse;
+import com.urbanairship.api.reports.model.PushListingResponse;
+import com.urbanairship.api.reports.model.StatisticsResponse;
+import com.urbanairship.api.reports.model.PlatformStatsResponse;
+import com.urbanairship.api.reports.model.DeviceStats;
+import com.urbanairship.api.reports.model.Response;
+import com.urbanairship.api.reports.model.Report;
 
 
 public class ReportsObjectMapper {
