@@ -24,6 +24,7 @@ import java.util.Map;
  * endpoint to be executed in the {@link com.urbanairship.api.client.UrbanAirshipClient}
  */
 public class ResponseReportRequest implements Request<Report> {
+    private final static String API_RESPONSE_REPORT = "/api/reports/responses/";
     private final String path;
     private final boolean nextPageRequest;
     private DateTime start;
@@ -38,11 +39,10 @@ public class ResponseReportRequest implements Request<Report> {
     /**
      * Create a Response Report request.
      *
-     * @param uri String
      * @return ResponseReportRequest
      */
-    public static ResponseReportRequest newRequest(String uri) {
-        return new ResponseReportRequest(uri, false);
+    public static ResponseReportRequest newRequest() {
+        return new ResponseReportRequest(API_RESPONSE_REPORT, false);
     }
 
     /**
