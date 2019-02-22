@@ -3,7 +3,7 @@ package com.urbanairship.api.reports.parse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.reports.model.Report;
-import com.urbanairship.api.reports.model.Response;
+import com.urbanairship.api.reports.model.ResponseReportResponse;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -51,18 +51,18 @@ public class ReportDeserializerTest {
 
         System.out.println(report);
 
-        Response response1 = report.getResponses().get().get(0);
-        assertEquals(DateFormats.DATE_PARSER.parseDateTime("2013-07-01 00:00:00"), response1.getDate());
-        assertEquals(1337, response1.getDeviceStatsMap().get("ios").getDirect());
-        assertEquals(9999, response1.getDeviceStatsMap().get("ios").getInfluenced());
-        assertEquals(7331, response1.getDeviceStatsMap().get("android").getDirect());
-        assertEquals(8888, response1.getDeviceStatsMap().get("android").getInfluenced());
+        ResponseReportResponse responseReportResponse1 = report.getResponses().get().get(0);
+        assertEquals(DateFormats.DATE_PARSER.parseDateTime("2013-07-01 00:00:00"), responseReportResponse1.getDate());
+        assertEquals(1337, responseReportResponse1.getDeviceStatsMap().get("ios").getDirect());
+        assertEquals(9999, responseReportResponse1.getDeviceStatsMap().get("ios").getInfluenced());
+        assertEquals(7331, responseReportResponse1.getDeviceStatsMap().get("android").getDirect());
+        assertEquals(8888, responseReportResponse1.getDeviceStatsMap().get("android").getInfluenced());
 
-        Response response2 = report.getResponses().get().get(1);
-        assertEquals(DateFormats.DATE_PARSER.parseDateTime("2015-10-15 11:22:33"), response2.getDate());
-        assertEquals(1996, response2.getDeviceStatsMap().get("android").getDirect());
-        assertEquals(1234, response2.getDeviceStatsMap().get("android").getInfluenced());
-        assertEquals(5813, response2.getDeviceStatsMap().get("ios").getDirect());
-        assertEquals(1123, response2.getDeviceStatsMap().get("ios").getInfluenced());
+        ResponseReportResponse responseReportResponse2 = report.getResponses().get().get(1);
+        assertEquals(DateFormats.DATE_PARSER.parseDateTime("2015-10-15 11:22:33"), responseReportResponse2.getDate());
+        assertEquals(1996, responseReportResponse2.getDeviceStatsMap().get("android").getDirect());
+        assertEquals(1234, responseReportResponse2.getDeviceStatsMap().get("android").getInfluenced());
+        assertEquals(5813, responseReportResponse2.getDeviceStatsMap().get("ios").getDirect());
+        assertEquals(1123, responseReportResponse2.getDeviceStatsMap().get("ios").getInfluenced());
     }
 }

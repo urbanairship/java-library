@@ -3,17 +3,17 @@ package com.urbanairship.api.reports.parse;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.reports.model.DeviceStats;
-import com.urbanairship.api.reports.model.Response;
+import com.urbanairship.api.reports.model.ResponseReportResponse;
 import com.fasterxml.jackson.core.JsonParser;
 import com.urbanairship.api.common.parse.APIParsingException;
 
 import java.io.IOException;
 
-public class ResponseReader implements JsonObjectReader<Response> {
+public class ResponseReportResponseReader implements JsonObjectReader<ResponseReportResponse> {
 
-    private final Response.Builder builder;
+    private final ResponseReportResponse.Builder builder;
 
-    public ResponseReader() { this.builder = Response.newBuilder(); }
+    public ResponseReportResponseReader() { this.builder = ResponseReportResponse.newBuilder(); }
 
     public void readDate(JsonParser jsonParser) throws IOException {
         String date = jsonParser.readValueAs(String.class);
@@ -25,7 +25,7 @@ public class ResponseReader implements JsonObjectReader<Response> {
     }
 
    @Override
-   public Response validateAndBuild() throws IOException {
+   public ResponseReportResponse validateAndBuild() throws IOException {
         try {
             return builder.build();
         }

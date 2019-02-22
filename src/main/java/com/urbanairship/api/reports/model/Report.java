@@ -7,9 +7,9 @@ import java.util.Objects;
 
 public class Report {
     private final Optional<String> next_page;
-    private final Optional<ImmutableList<Response>> responses;
+    private final Optional<ImmutableList<ResponseReportResponse>> responses;
 
-    private Report(Optional<String> next_page, Optional<ImmutableList<Response>> responses) {
+    private Report(Optional<String> next_page, Optional<ImmutableList<ResponseReportResponse>> responses) {
         this.next_page = next_page;
         this.responses = responses;
     }
@@ -30,7 +30,7 @@ public class Report {
      *
      * @return An optional immutable list of Response objects
      */
-    public Optional<ImmutableList<Response>> getResponses() {
+    public Optional<ImmutableList<ResponseReportResponse>> getResponses() {
         return responses;
     }
 
@@ -58,7 +58,7 @@ public class Report {
 
     public static class Builder {
         private String next_page = null;
-        private ImmutableList.Builder<Response> responses = ImmutableList.builder();
+        private ImmutableList.Builder<ResponseReportResponse> responses = ImmutableList.builder();
 
         private Builder() {}
 
@@ -79,7 +79,7 @@ public class Report {
          * @param object Response
          * @return Builder
          */
-        public Builder addResponseObject(Response object) {
+        public Builder addResponseObject(ResponseReportResponse object) {
             this.responses.add(object);
             return this;
         }
@@ -90,7 +90,7 @@ public class Report {
          * @param object Iterable of Response objects
          * @return Builder
          */
-        public Builder addResponseObject(Iterable<? extends Response> object) {
+        public Builder addResponseObject(Iterable<? extends ResponseReportResponse> object) {
             this.responses.addAll(object);
             return this;
         }
