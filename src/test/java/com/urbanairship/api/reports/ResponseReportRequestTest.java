@@ -23,7 +23,6 @@ import static org.junit.Assert.assertEquals;
 
 public class ResponseReportRequestTest {
     ObjectMapper mapper = ReportsObjectMapper.getInstance();
-    String API_PATH = "/api/reports/responses/";
 
     DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0, DateTimeZone.UTC);
     DateTime end = start.plus(Period.hours(48));
@@ -36,7 +35,7 @@ public class ResponseReportRequestTest {
 
     @Before
     public void setupCreate() {
-        responseReportRequest = ResponseReportRequest.newRequest(API_PATH)
+        responseReportRequest = ResponseReportRequest.newRequest()
                 .setStart(start)
                 .setEnd(end)
                 .setPrecision(Precision.DAILY);
