@@ -17,8 +17,8 @@ public class ReportTest {
                 .setInfluenced(2222)
                 .build();
 
-        Response response1, response2;
-        response1 = response2 = Response.newBuilder()
+        ResponseReportResponse responseReportResponse1, responseReportResponse2;
+        responseReportResponse1 = responseReportResponse2 = ResponseReportResponse.newBuilder()
                 .setDate(date)
                 .addDeviceStatsMapping("ios", deviceStats)
                 .addDeviceStatsMapping("android", deviceStats)
@@ -26,8 +26,8 @@ public class ReportTest {
 
         Report report = Report.newBuilder()
                 .setNextPage("Woah! Another Page!")
-                .addResponseObject(response1)
-                .addResponseObject(response2)
+                .addResponseObject(responseReportResponse1)
+                .addResponseObject(responseReportResponse2)
                 .build();
 
         assertNotNull(report);

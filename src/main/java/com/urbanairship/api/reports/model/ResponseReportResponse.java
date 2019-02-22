@@ -4,13 +4,13 @@ import com.google.common.collect.ImmutableMap;
 import org.joda.time.DateTime;
 import java.util.Objects;
 
-public final class Response {
+public final class ResponseReportResponse {
     private DateTime date;
     private ImmutableMap<String, DeviceStats> deviceStatsMap;
 
-    private Response() { this(null, null); }
+    private ResponseReportResponse() { this(null, null); }
 
-    private Response(DateTime date, ImmutableMap<String, DeviceStats> deviceStatsMap) {
+    private ResponseReportResponse(DateTime date, ImmutableMap<String, DeviceStats> deviceStatsMap) {
         this.date = date;
         this.deviceStatsMap = deviceStatsMap;
     }
@@ -21,9 +21,9 @@ public final class Response {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Response response = (Response) o;
-        return Objects.equals(date, response.date) &&
-                Objects.equals(deviceStatsMap, response.deviceStatsMap);
+        ResponseReportResponse responseReportResponse = (ResponseReportResponse) o;
+        return Objects.equals(date, responseReportResponse.date) &&
+                Objects.equals(deviceStatsMap, responseReportResponse.deviceStatsMap);
     }
 
     @Override
@@ -85,8 +85,8 @@ public final class Response {
             return this;
         }
 
-        public Response build() {
-            return new Response(date, deviceStatsMap.build());
+        public ResponseReportResponse build() {
+            return new ResponseReportResponse(date, deviceStatsMap.build());
         }
     }
 }

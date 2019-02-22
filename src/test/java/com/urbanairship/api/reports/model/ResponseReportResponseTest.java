@@ -6,7 +6,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class ResponseTest {
+public class ResponseReportResponseTest {
 
     @Test
     public void testResponseObject() {
@@ -17,16 +17,16 @@ public class ResponseTest {
                 .setDirect(2222)
                 .build();
 
-        Response response = Response.newBuilder()
+        ResponseReportResponse responseReportResponse = ResponseReportResponse.newBuilder()
                 .setDate(date)
                 .addDeviceStatsMapping("ios", deviceStats)
                 .addDeviceStatsMapping("android", deviceStats)
                 .build();
 
-        assertNotNull(response);
-        assertEquals(1111, response.getDeviceStatsMap().get("ios").getInfluenced());
-        assertEquals(2222, response.getDeviceStatsMap().get("ios").getDirect());
-        assertEquals(1111, response.getDeviceStatsMap().get("android").getInfluenced());
-        assertEquals(2222, response.getDeviceStatsMap().get("android").getDirect());
+        assertNotNull(responseReportResponse);
+        assertEquals(1111, responseReportResponse.getDeviceStatsMap().get("ios").getInfluenced());
+        assertEquals(2222, responseReportResponse.getDeviceStatsMap().get("ios").getDirect());
+        assertEquals(1111, responseReportResponse.getDeviceStatsMap().get("android").getInfluenced());
+        assertEquals(2222, responseReportResponse.getDeviceStatsMap().get("android").getDirect());
     }
 }

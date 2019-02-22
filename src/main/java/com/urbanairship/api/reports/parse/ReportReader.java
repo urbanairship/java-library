@@ -3,7 +3,7 @@ package com.urbanairship.api.reports.parse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.reports.model.Report;
-import com.urbanairship.api.reports.model.Response;
+import com.urbanairship.api.reports.model.ResponseReportResponse;
 import com.fasterxml.jackson.core.JsonParser;
 import com.urbanairship.api.common.parse.APIParsingException;
 
@@ -20,7 +20,7 @@ public class ReportReader implements JsonObjectReader<Report> {
     }
 
     public void readResponseObjects(JsonParser jsonParser) throws IOException {
-        builder.addResponseObject((List<Response>) jsonParser.readValueAs(new TypeReference<List<Response>>() {}));
+        builder.addResponseObject((List<ResponseReportResponse>) jsonParser.readValueAs(new TypeReference<List<ResponseReportResponse>>() {}));
     }
 
     @Override
