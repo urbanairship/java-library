@@ -42,6 +42,9 @@ public class ResponseReportRequest implements Request<ResponseReport> {
     /**
      * Create a Response Report request.
      *
+     * @param start DateTime
+     * @param end DateTime
+     * @param precision Precision
      * @return ResponseReportRequest
      */
     public static ResponseReportRequest newRequest(DateTime start, DateTime end, Precision precision) {
@@ -51,45 +54,15 @@ public class ResponseReportRequest implements Request<ResponseReport> {
     /**
      * Create a new Response Report request using a next page URI.
      *
+     * @param start DateTime
+     * @param end DateTime
+     * @param precision Precision
      * @param nextPage URI
      * @return ResponseReportRequest
      */
     public static ResponseReportRequest newRequest(DateTime start, DateTime end, Precision precision, URI nextPage) {
         Preconditions.checkNotNull(nextPage, "Next page URI cannot be null");
         return new ResponseReportRequest(start, end, precision, nextPage.getPath() + "?" + nextPage.getQuery(), true);
-    }
-
-    /**
-     * Set the request start date
-     *
-     * @param start DateTime
-     * @return ResponseReportRequest
-     */
-    public ResponseReportRequest setStart(DateTime start) {
-        this.start = start;
-        return this;
-    }
-
-    /**
-     * Set the request end date
-     *
-     * @param end DateTime
-     * @return ResponseReportRequest
-     */
-    public ResponseReportRequest setEnd(DateTime end) {
-        this.end = end;
-        return this;
-    }
-
-    /**
-     * Set the request precision
-     *
-     * @param precision Precision
-     * @return ResponseReportRequest
-     */
-    public ResponseReportRequest setPrecision(Precision precision) {
-        this.precision = precision;
-        return this;
     }
 
     @Override
