@@ -35,12 +35,9 @@ public class ResponseReportRequestTest {
 
     @Before
     public void setupCreate() {
-        responseReportRequest = ResponseReportRequest.newRequest()
-                .setStart(start)
-                .setEnd(end)
-                .setPrecision(Precision.DAILY);
+        responseReportRequest = ResponseReportRequest.newRequest(start, end, Precision.DAILY);
 
-        nextPageRequest = ResponseReportRequest.newRequest(URI.create(nextPageUri));
+        nextPageRequest = ResponseReportRequest.newRequest(start, end, Precision.DAILY, URI.create(nextPageUri));
     }
 
     @Test

@@ -31,9 +31,12 @@ public class ResponseReportRequest implements Request<ResponseReport> {
     private DateTime end;
     private Precision precision;
 
-    private ResponseReportRequest(String path, boolean nextPageRequest) {
+    private ResponseReportRequest(DateTime start, DateTime end, Precision precision, String path, boolean nextPageRequest) {
         this.path = path;
         this.nextPageRequest = nextPageRequest;
+        this.start = start;
+        this.end = end;
+        this.precision = precision;
     }
 
     /**
@@ -41,8 +44,8 @@ public class ResponseReportRequest implements Request<ResponseReport> {
      *
      * @return ResponseReportRequest
      */
-    public static ResponseReportRequest newRequest() {
-        return new ResponseReportRequest(API_RESPONSE_REPORT, false);
+    public static ResponseReportRequest newRequest(DateTime start, DateTime end, Precision precision) {
+        return new ResponseReportRequest(start, end, precision, API_RESPONSE_REPORT, false);
     }
 
     /**
@@ -51,9 +54,9 @@ public class ResponseReportRequest implements Request<ResponseReport> {
      * @param nextPage URI
      * @return ResponseReportRequest
      */
-    public static ResponseReportRequest newRequest(URI nextPage) {
+    public static ResponseReportRequest newRequest(DateTime start, DateTime end, Precision precision, URI nextPage) {
         Preconditions.checkNotNull(nextPage, "Next page URI cannot be null");
-        return new ResponseReportRequest(nextPage.getPath() + "?" + nextPage.getQuery(), true);
+        return new ResponseReportRequest(start, end, precision, nextPage.getPath() + "?" + nextPage.getQuery(), true);
     }
 
     /**
