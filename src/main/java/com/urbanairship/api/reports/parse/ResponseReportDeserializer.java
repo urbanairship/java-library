@@ -13,19 +13,19 @@ import com.urbanairship.api.reports.model.ResponseReport;
 
 import java.io.IOException;
 
-public class ReportDeserializer extends JsonDeserializer<ResponseReport> {
-    private static final FieldParserRegistry<ResponseReport, ReportReader> FIELD_PARSERS =
-            new MapFieldParserRegistry<ResponseReport, ReportReader>(
-                    ImmutableMap.<String, FieldParser<ReportReader>>builder()
-                    .put("next_page", new FieldParser<ReportReader>() {
+public class ResponseReportDeserializer extends JsonDeserializer<ResponseReport> {
+    private static final FieldParserRegistry<ResponseReport, ResponseReportReader> FIELD_PARSERS =
+            new MapFieldParserRegistry<ResponseReport, ResponseReportReader>(
+                    ImmutableMap.<String, FieldParser<ResponseReportReader>>builder()
+                    .put("next_page", new FieldParser<ResponseReportReader>() {
                         @Override
-                        public void parse(ReportReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                        public void parse(ResponseReportReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
                             reader.readNextPage(jsonParser);
                         }
                     })
-                    .put("responses", new FieldParser<ReportReader>() {
+                    .put("responses", new FieldParser<ResponseReportReader>() {
                         @Override
-                        public void parse(ReportReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                        public void parse(ResponseReportReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
                            reader.readResponseObjects(jsonParser);
                         }
                     })
@@ -34,13 +34,13 @@ public class ReportDeserializer extends JsonDeserializer<ResponseReport> {
 
     private final StandardObjectDeserializer<ResponseReport, ?> deserializer;
 
-    public ReportDeserializer() {
-        deserializer = new StandardObjectDeserializer<ResponseReport, ReportReader>(
+    public ResponseReportDeserializer() {
+        deserializer = new StandardObjectDeserializer<ResponseReport, ResponseReportReader>(
                 FIELD_PARSERS,
-                new Supplier<ReportReader>() {
+                new Supplier<ResponseReportReader>() {
                     @Override
-                    public ReportReader get() {
-                        return new ReportReader();
+                    public ResponseReportReader get() {
+                        return new ResponseReportReader();
                     }
                 }
         );
