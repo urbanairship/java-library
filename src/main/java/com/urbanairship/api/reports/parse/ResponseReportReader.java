@@ -10,10 +10,10 @@ import com.urbanairship.api.common.parse.APIParsingException;
 import java.io.IOException;
 import java.util.List;
 
-public class ReportReader implements JsonObjectReader<ResponseReport> {
+public class ResponseReportReader implements JsonObjectReader<ResponseReport> {
     private final ResponseReport.Builder builder;
 
-    public ReportReader() { this.builder = ResponseReport.newBuilder(); }
+    public ResponseReportReader() { this.builder = ResponseReport.newBuilder(); }
 
     public void readNextPage(JsonParser jsonParser) throws IOException {
         builder.setNextPage(jsonParser.readValueAs(String.class));
