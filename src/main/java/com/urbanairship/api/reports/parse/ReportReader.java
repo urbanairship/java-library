@@ -2,7 +2,7 @@ package com.urbanairship.api.reports.parse;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.urbanairship.api.common.parse.JsonObjectReader;
-import com.urbanairship.api.reports.model.Report;
+import com.urbanairship.api.reports.model.ResponseReport;
 import com.urbanairship.api.reports.model.ResponseReportResponse;
 import com.fasterxml.jackson.core.JsonParser;
 import com.urbanairship.api.common.parse.APIParsingException;
@@ -10,10 +10,10 @@ import com.urbanairship.api.common.parse.APIParsingException;
 import java.io.IOException;
 import java.util.List;
 
-public class ReportReader implements JsonObjectReader<Report> {
-    private final Report.Builder builder;
+public class ReportReader implements JsonObjectReader<ResponseReport> {
+    private final ResponseReport.Builder builder;
 
-    public ReportReader() { this.builder = Report.newBuilder(); }
+    public ReportReader() { this.builder = ResponseReport.newBuilder(); }
 
     public void readNextPage(JsonParser jsonParser) throws IOException {
         builder.setNextPage(jsonParser.readValueAs(String.class));
@@ -24,7 +24,7 @@ public class ReportReader implements JsonObjectReader<Report> {
     }
 
     @Override
-    public Report validateAndBuild() throws IOException {
+    public ResponseReport validateAndBuild() throws IOException {
         try {
             return builder.build();
         } catch (Exception e) {
