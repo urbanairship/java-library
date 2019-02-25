@@ -6,7 +6,7 @@ import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.reports.model.Precision;
-import com.urbanairship.api.reports.model.Report;
+import com.urbanairship.api.reports.model.ResponseReport;
 import com.urbanairship.api.reports.parse.ReportsObjectMapper;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.utils.URIBuilder;
@@ -23,7 +23,7 @@ import java.util.Map;
  * The ResponseReportRequest class builds a request to the response report api
  * endpoint to be executed in the {@link com.urbanairship.api.client.UrbanAirshipClient}
  */
-public class ResponseReportRequest implements Request<Report> {
+public class ResponseReportRequest implements Request<ResponseReport> {
     private final static String API_RESPONSE_REPORT = "/api/reports/responses/";
     private final String path;
     private final boolean nextPageRequest;
@@ -138,11 +138,11 @@ public class ResponseReportRequest implements Request<Report> {
     }
 
     @Override
-    public ResponseParser<Report> getResponseParser() {
-        return new ResponseParser<Report>() {
+    public ResponseParser<ResponseReport> getResponseParser() {
+        return new ResponseParser<ResponseReport>() {
             @Override
-            public Report parse(String response) throws IOException {
-                return ReportsObjectMapper.getInstance().readValue(response, Report.class);
+            public ResponseReport parse(String response) throws IOException {
+                return ReportsObjectMapper.getInstance().readValue(response, ResponseReport.class);
             }
         };
     }

@@ -24,7 +24,7 @@ public class ReportsObjectMapper {
         MODULE.addDeserializer(PlatformStatsResponse.class, new PlatformStatsResponseDeserializer());
         MODULE.addDeserializer(DeviceStats.class, new DeviceStatsDeserializer());
         MODULE.addDeserializer(ResponseReportResponse.class, new ResponseReportResponseDeserializer());
-        MODULE.addDeserializer(Report.class, new ReportDeserializer());
+        MODULE.addDeserializer(ResponseReport.class, new ReportDeserializer());
 
         MAPPER.registerModule(MODULE);
         MAPPER.registerModule(PushObjectMapper.getModule());

@@ -2,7 +2,7 @@ package com.urbanairship.api.reports.parse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.common.parse.DateFormats;
-import com.urbanairship.api.reports.model.Report;
+import com.urbanairship.api.reports.model.ResponseReport;
 import com.urbanairship.api.reports.model.ResponseReportResponse;
 import org.junit.Test;
 
@@ -11,7 +11,7 @@ import java.io.IOException;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class ReportDeserializerTest {
+public class ResponseReportDeserializerTest {
     private static final ObjectMapper mapper = ReportsObjectMapper.getInstance();
 
     @Test
@@ -46,19 +46,19 @@ public class ReportDeserializerTest {
                 "   ]\n" +
                 "}";
 
-        Report report = mapper.readValue(json, Report.class);
-        assertNotNull(report);
+        ResponseReport responseReport = mapper.readValue(json, ResponseReport.class);
+        assertNotNull(responseReport);
 
-        System.out.println(report);
+        System.out.println(responseReport);
 
-        ResponseReportResponse responseReportResponse1 = report.getResponses().get().get(0);
+        ResponseReportResponse responseReportResponse1 = responseReport.getResponses().get().get(0);
         assertEquals(DateFormats.DATE_PARSER.parseDateTime("2013-07-01 00:00:00"), responseReportResponse1.getDate());
         assertEquals(1337, responseReportResponse1.getDeviceStatsMap().get("ios").getDirect());
         assertEquals(9999, responseReportResponse1.getDeviceStatsMap().get("ios").getInfluenced());
         assertEquals(7331, responseReportResponse1.getDeviceStatsMap().get("android").getDirect());
         assertEquals(8888, responseReportResponse1.getDeviceStatsMap().get("android").getInfluenced());
 
-        ResponseReportResponse responseReportResponse2 = report.getResponses().get().get(1);
+        ResponseReportResponse responseReportResponse2 = responseReport.getResponses().get().get(1);
         assertEquals(DateFormats.DATE_PARSER.parseDateTime("2015-10-15 11:22:33"), responseReportResponse2.getDate());
         assertEquals(1996, responseReportResponse2.getDeviceStatsMap().get("android").getDirect());
         assertEquals(1234, responseReportResponse2.getDeviceStatsMap().get("android").getInfluenced());

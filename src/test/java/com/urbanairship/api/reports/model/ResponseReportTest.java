@@ -6,7 +6,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class ReportTest {
+public class ResponseReportTest {
 
     @Test
     public void testReportResponse() {
@@ -24,15 +24,15 @@ public class ReportTest {
                 .addDeviceStatsMapping("android", deviceStats)
                 .build();
 
-        Report report = Report.newBuilder()
+        ResponseReport responseReport = ResponseReport.newBuilder()
                 .setNextPage("Woah! Another Page!")
                 .addResponseObject(responseReportResponse1)
                 .addResponseObject(responseReportResponse2)
                 .build();
 
-        assertNotNull(report);
-        assertEquals(2, report.getResponses().get().size());
-        assertEquals(1111, report.getResponses().get().get(0).getDeviceStatsMap().get("ios").getDirect());
-        assertEquals(2222, report.getResponses().get().get(1).getDeviceStatsMap().get("android").getInfluenced());
+        assertNotNull(responseReport);
+        assertEquals(2, responseReport.getResponses().get().size());
+        assertEquals(1111, responseReport.getResponses().get().get(0).getDeviceStatsMap().get("ios").getDirect());
+        assertEquals(2222, responseReport.getResponses().get().get(1).getDeviceStatsMap().get("android").getInfluenced());
     }
 }

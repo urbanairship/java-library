@@ -5,11 +5,11 @@ import com.google.common.base.Optional;
 
 import java.util.Objects;
 
-public class Report {
+public class ResponseReport {
     private final Optional<String> next_page;
     private final Optional<ImmutableList<ResponseReportResponse>> responses;
 
-    private Report(Optional<String> next_page, Optional<ImmutableList<ResponseReportResponse>> responses) {
+    private ResponseReport(Optional<String> next_page, Optional<ImmutableList<ResponseReportResponse>> responses) {
         this.next_page = next_page;
         this.responses = responses;
     }
@@ -38,9 +38,9 @@ public class Report {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Report report = (Report) o;
-        return Objects.equals(next_page, report.next_page) &&
-                Objects.equals(responses, report.responses);
+        ResponseReport responseReport = (ResponseReport) o;
+        return Objects.equals(next_page, responseReport.next_page) &&
+                Objects.equals(responses, responseReport.responses);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class Report {
 
     @Override
     public String toString() {
-        return "Report{" +
+        return "ResponseReport{" +
                 "next_page=" + next_page +
                 ", responses=" + responses +
                 '}';
@@ -100,8 +100,8 @@ public class Report {
          *
          * @return Response
          */
-        public Report build() {
-            return new Report(Optional.fromNullable(next_page), Optional.fromNullable(responses.build()));
+        public ResponseReport build() {
+            return new ResponseReport(Optional.fromNullable(next_page), Optional.fromNullable(responses.build()));
         }
     }
 }
