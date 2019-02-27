@@ -45,6 +45,18 @@ public class IOSAlertDataReader implements JsonObjectReader<IOSAlertData> {
         builder.setSummaryArgCount(IntFieldDeserializer.INSTANCE.deserialize(parser, "summary-arg-count"));
     }
 
+    public void readTitle(JsonParser parser) throws IOException {
+        builder.setTitle(StringFieldDeserializer.INSTANCE.deserialize(parser, "title"));
+    }
+
+    public void readTitleLocArgs(JsonParser parser) throws IOException {
+        builder.setTitleLocArgs(ListOfStringsDeserializer.INSTANCE.deserialize(parser, "title-loc-args"));
+    }
+
+    public void readTitleLocKey(JsonParser parser) throws IOException {
+        builder.setTitleLocKey(StringFieldDeserializer.INSTANCE.deserialize(parser, "title-loc-key"));
+    }
+
     @Override
         public IOSAlertData validateAndBuild() throws IOException {
         try {
