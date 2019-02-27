@@ -5,9 +5,7 @@
 package com.urbanairship.api.push.model.notification.ios;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.push.model.PushModelObject;
-import org.checkerframework.checker.nullness.Opt;
 
 import java.util.List;
 import java.util.Objects;
