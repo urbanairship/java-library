@@ -47,6 +47,7 @@ public class PayloadDeserializerTest {
         String json
                 = "{"
                 + "  \"alert\": {"
+                + "    \"title\" : \"Super Cool Title\","
                 + "    \"body\" : \"B\","
                 + "    \"summary-arg\" : \"New England Patriots\","
                 + "    \"summary-arg-count\" : 1,"
@@ -55,12 +56,17 @@ public class PayloadDeserializerTest {
                 + "    \"loc-args\" : ["
                 + "        \"arg1\", \"arg2\""
                 + "      ],"
-                + "    \"launch-image\" : \"LI\""
+                + "    \"launch-image\" : \"LI\","
+                + "    \"title-loc-args\" : ["
+                + "        \"arg4\", \"arg5\""
+                + "      ],"
+                + "    \"title-loc-key\" : \"Special Key\""
                 + "  }"
                 + "}";
 
         IOSDevicePayload expected = IOSDevicePayload.newBuilder()
                 .setAlert(IOSAlertData.newBuilder()
+                        .setTitle("Super Cool Title")
                         .setBody("B")
                         .setActionLocKey("ALK")
                         .setLocKey("LK")
@@ -68,6 +74,8 @@ public class PayloadDeserializerTest {
                         .setLaunchImage("LI")
                         .setSummaryArg("New England Patriots")
                         .setSummaryArgCount(1)
+                        .setTitleLocArgs(ImmutableList.of("arg4", "arg5"))
+                        .setTitleLocKey("Special Key")
                         .build())
                 .build();
 
@@ -81,6 +89,7 @@ public class PayloadDeserializerTest {
 
         IOSAlertData alert = payload.getAlertData().get();
         assertTrue(alert.isCompound());
+        assertEquals("Super Cool Title", alert.getTitle().get());
         assertEquals("B", alert.getBody().get());
         assertEquals("ALK", alert.getActionLocKey().get());
         assertEquals("LK", alert.getLocKey().get());
@@ -88,6 +97,8 @@ public class PayloadDeserializerTest {
         assertEquals(2, alert.getLocArgs().get().size());
         assertEquals("New England Patriots", alert.getSummaryArg().get());
         assertEquals(1, alert.getSummaryArgCount().get().intValue());
+        assertEquals(2, alert.getTitleLocArgs().get().size());
+        assertEquals("Special Key", alert.getTitleLocKey().get());
     }
 
     @Test

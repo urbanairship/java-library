@@ -19,23 +19,32 @@ public final class IOSAlertData extends PushModelObject {
     private final Optional<String> locKey;
     private final Optional<List<String>> locArgs;
     private final Optional<String> launchImage;
-    private final Optional<String> summary_arg;
-    private final Optional<Integer> summary_arg_count;
+    private final Optional<String> summaryArg;
+    private final Optional<Integer> summaryArgCount;
+    private final Optional<String> title;
+    private final Optional<List<String>> titleLocArgs;
+    private final Optional<String> titleLocKey;
 
     private IOSAlertData(Optional<String> body,
                          Optional<String> actionLocKey,
                          Optional<String> locKey,
                          Optional<List<String>> locArgs,
                          Optional<String> launchImage,
-                         Optional<String> summary_arg,
-                         Optional<Integer> summary_arg_count) {
+                         Optional<String> summaryArg,
+                         Optional<Integer> summaryArgCount,
+                         Optional<String> title,
+                         Optional<List<String>> titleLocArgs,
+                         Optional<String> titleLocKey) {
         this.body = body;
         this.actionLocKey = actionLocKey;
         this.locKey = locKey;
         this.locArgs = locArgs;
         this.launchImage = launchImage;
-        this.summary_arg = summary_arg;
-        this.summary_arg_count = summary_arg_count;
+        this.summaryArg = summaryArg;
+        this.summaryArgCount = summaryArgCount;
+        this.title = title;
+        this.titleLocArgs = titleLocArgs;
+        this.titleLocKey = titleLocKey;
     }
 
     public static Builder newBuilder() {
@@ -70,11 +79,23 @@ public final class IOSAlertData extends PushModelObject {
     }
 
     public Optional<String> getSummaryArg() {
-        return summary_arg;
+        return summaryArg;
     }
 
     public Optional<Integer> getSummaryArgCount() {
-        return summary_arg_count;
+        return summaryArgCount;
+    }
+
+    public Optional<String> getTitle() {
+        return title;
+    }
+
+    public Optional<List<String>> getTitleLocArgs() {
+        return titleLocArgs;
+    }
+
+    public Optional<String> getTitleLocKey() {
+        return titleLocKey;
     }
 
     @Override
@@ -87,13 +108,16 @@ public final class IOSAlertData extends PushModelObject {
                 Objects.equals(locKey, that.locKey) &&
                 Objects.equals(locArgs, that.locArgs) &&
                 Objects.equals(launchImage, that.launchImage) &&
-                Objects.equals(summary_arg, that.summary_arg) &&
-                Objects.equals(summary_arg_count, that.summary_arg_count);
+                Objects.equals(summaryArg, that.summaryArg) &&
+                Objects.equals(summaryArgCount, that.summaryArgCount) &&
+                Objects.equals(title, that.title) &&
+                Objects.equals(titleLocArgs, that.titleLocArgs) &&
+                Objects.equals(titleLocKey, that.titleLocKey);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(body, actionLocKey, locKey, locArgs, launchImage, summary_arg, summary_arg_count);
+        return Objects.hash(body, actionLocKey, locKey, locArgs, launchImage, summaryArg, summaryArgCount, title, titleLocArgs, titleLocKey);
     }
 
     @Override
@@ -104,8 +128,11 @@ public final class IOSAlertData extends PushModelObject {
                 ", locKey=" + locKey +
                 ", locArgs=" + locArgs +
                 ", launchImage=" + launchImage +
-                ", summary_arg=" + summary_arg +
-                ", summary_arg_count=" + summary_arg_count +
+                ", summaryArg=" + summaryArg +
+                ", summaryArgCount=" + summaryArgCount +
+                ", title=" + title +
+                ", titleLocArgs=" + titleLocArgs +
+                ", titleLocKey=" + titleLocKey +
                 '}';
     }
 
@@ -115,8 +142,11 @@ public final class IOSAlertData extends PushModelObject {
         private String locKey = null;
         private List<String> locArgs = null;
         private String launchImage = null;
-        private String summary_arg = null;
-        private Integer summary_arg_count = null;
+        private String summaryArg = null;
+        private Integer summaryArgCount = null;
+        private String title = null;
+        private List<String> titleLocArgs = null;
+        private String titleLocKey = null;
 
         private Builder() { }
 
@@ -146,12 +176,27 @@ public final class IOSAlertData extends PushModelObject {
         }
 
         public Builder setSummaryArg(String value) {
-            this.summary_arg = value;
+            this.summaryArg = value;
             return this;
         }
 
         public Builder setSummaryArgCount(Integer value) {
-            this.summary_arg_count = value;
+            this.summaryArgCount = value;
+            return this;
+        }
+
+        public Builder setTitle(String value) {
+            this.title = value;
+            return this;
+        }
+
+        public Builder setTitleLocArgs(List<String> value) {
+            this.titleLocArgs = value;
+            return this;
+        }
+
+        public Builder setTitleLocKey(String value) {
+            this.titleLocKey = value;
             return this;
         }
 
@@ -161,8 +206,11 @@ public final class IOSAlertData extends PushModelObject {
                                     Optional.fromNullable(locKey),
                                     Optional.fromNullable(locArgs),
                                     Optional.fromNullable(launchImage),
-                                    Optional.fromNullable(summary_arg),
-                                    Optional.fromNullable(summary_arg_count));
+                                    Optional.fromNullable(summaryArg),
+                                    Optional.fromNullable(summaryArgCount),
+                                    Optional.fromNullable(title),
+                                    Optional.fromNullable(titleLocArgs),
+                                    Optional.fromNullable(titleLocKey));
         }
     }
 }

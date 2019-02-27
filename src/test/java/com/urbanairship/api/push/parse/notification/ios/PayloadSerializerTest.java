@@ -54,19 +54,23 @@ public class PayloadSerializerTest {
 
         IOSDevicePayload payload = IOSDevicePayload.newBuilder()
                 .setAlert(IOSAlertData.newBuilder()
+                        .setTitle("T")
                         .setBody("B")
                         .setActionLocKey("ALK")
                         .setLocKey("LK")
                         .setLocArgs(ImmutableList.of("arg1", "arg2"))
                         .setLaunchImage("LI")
+                        .setTitleLocArgs(ImmutableList.of("arg3", "arg4"))
+                        .setTitleLocKey("TLK")
+                        .setSummaryArg("SA")
+                        .setSummaryArgCount(1)
                         .build())
                 .build();
 
         String json = mapper.writeValueAsString(payload);
 
-
         String expected
-            = "{\"alert\":{\"body\":\"B\",\"action-loc-key\":\"ALK\",\"loc-key\":\"LK\",\"loc-args\":[\"arg1\",\"arg2\"],\"launch-image\":\"LI\"}}";
+            = "{\"alert\":{\"body\":\"B\",\"action-loc-key\":\"ALK\",\"loc-key\":\"LK\",\"loc-args\":[\"arg1\",\"arg2\"],\"launch-image\":\"LI\",\"title\":\"T\",\"title-loc-args\":[\"arg3\",\"arg4\"],\"title-loc-key\":\"TLK\",\"summary-arg\":\"SA\",\"summary-arg-count\":1}}";
 
         assertEquals(expected, json);
     }
@@ -85,7 +89,6 @@ public class PayloadSerializerTest {
         String json = mapper.writeValueAsString(payload);
 
         String expected
-
             = "{\"alert\":{\"action-loc-key\":\"ALK\",\"loc-key\":\"LK\",\"loc-args\":[\"arg1\",\"arg2\"],\"launch-image\":\"LI\"}}";
 
         assertEquals(expected, json);
