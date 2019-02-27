@@ -48,6 +48,8 @@ public class PayloadDeserializerTest {
                 = "{"
                 + "  \"alert\": {"
                 + "    \"body\" : \"B\","
+                + "    \"summary-arg\" : \"New England Patriots\","
+                + "    \"summary-arg-count\" : 1,"
                 + "    \"action-loc-key\" : \"ALK\","
                 + "    \"loc-key\" : \"LK\","
                 + "    \"loc-args\" : ["
@@ -64,6 +66,8 @@ public class PayloadDeserializerTest {
                         .setLocKey("LK")
                         .setLocArgs(ImmutableList.of("arg1", "arg2"))
                         .setLaunchImage("LI")
+                        .setSummaryArg("New England Patriots")
+                        .setSummaryArgCount(1)
                         .build())
                 .build();
 
@@ -82,6 +86,8 @@ public class PayloadDeserializerTest {
         assertEquals("LK", alert.getLocKey().get());
         assertEquals("LI", alert.getLaunchImage().get());
         assertEquals(2, alert.getLocArgs().get().size());
+        assertEquals("New England Patriots", alert.getSummaryArg().get());
+        assertEquals(1, alert.getSummaryArgCount().get().intValue());
     }
 
     @Test
