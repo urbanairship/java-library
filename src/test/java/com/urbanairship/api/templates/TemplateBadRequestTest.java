@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class TemplateBadRequestTest {
 
-    @Test
+    @Test(expected=RuntimeException.class)
     public void testErrorResponseParsing() throws IOException {
         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
                 .setKey("ISex_TTJRuarzs9-o_Gkhg")
@@ -36,6 +36,7 @@ public class TemplateBadRequestTest {
             ClientException ex = (ClientException) e.getCause().getCause();
             Assert.assertEquals(400, ex.getStatusCode());
             Assert.assertEquals("\"id\" must be a valid GUID", ex.getError().get().getError());
+            throw e;
         }
     }
 }
