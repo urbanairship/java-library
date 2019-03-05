@@ -1,0 +1,18 @@
+{
+  "ok": false,
+  "error": "child \"id\" fails because [\"id\" must be a valid GUID]",
+  "details": [
+    {
+      "message": "\"id\" must be a valid GUID",
+      "path": [
+        "id"
+      ],
+      "type": "string.guid",
+      "context": {
+        "value": "template-id-123",
+        "key": "id",
+        "label": "id"
+      }
+    }
+  ]
+}
