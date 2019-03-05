@@ -2,7 +2,14 @@ package com.urbanairship.api.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.client.parse.RequestErrorObjectMapper;
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -70,6 +77,21 @@ public class RequestErrorTest {
                 .build())
             .build();
         assertEquals("Error in the details", error.getDetails().get(), testDetails);
+    }
+
+    @Test
+    public void testTemplateRequestErrorDeserialization() throws IOException {
+        InputStream responseStream = this.getClass()
+                .getResourceAsStream("/com/urbanairship/api/client/template-request-error.json");
+        String response = new BufferedReader(new InputStreamReader(responseStream))
+                .lines().collect(Collectors.joining("\n"));
+
+        RequestError error = RequestError.errorFromResponse(response, RequestError.UA_APPLICATION_JSON_V3);
+
+        Assert.assertFalse(error.getOk());
+
+        String errorMessage = error.getError();
+        Assert.assertEquals("\"id\" must be a valid GUID", errorMessage);
     }
 
     @Test
