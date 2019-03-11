@@ -46,7 +46,7 @@ public class StatisticsResponseTest {
     }
 
     @Test
-    public void testStatisticsResponseEqualityandHash() {
+    public void testStatisticsResponseEqualityAndHash() {
         StatisticsResponse obj1 = StatisticsResponse.newBuilder()
                 .setStartTime(new DateTime(2015, 5, 31, 12, 0, 0, 0))
                 .setIosCount(1)

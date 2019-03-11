@@ -17,6 +17,7 @@ public class PushInfoResponseDeserializerTest {
 
     @Test
     public void testPushInfoResponse() {
+
         String response =
                 "{\n" +
                     "\"push_uuid\":\"df31cae0-fa3c-11e2-97ce-14feb5d317b8\",\n" +
@@ -45,6 +46,7 @@ public class PushInfoResponseDeserializerTest {
 
     @Test
     public void testPushInfoResponseNoGroupID() {
+
         String response =
                 "{\n" +
                         "\"push_uuid\":\"df31cae0-fa3c-11e2-97ce-14feb5d317b8\",\n" +
@@ -68,6 +70,7 @@ public class PushInfoResponseDeserializerTest {
             fail("Exception " + ex.getMessage());
         }
     }
+
     @Test(expected = APIParsingException.class)
     public void testNoPushUuid() throws Exception {
 
