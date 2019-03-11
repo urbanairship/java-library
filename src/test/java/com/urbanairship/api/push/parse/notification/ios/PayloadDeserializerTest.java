@@ -6,6 +6,7 @@ import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.notification.ios.IOSAlertData;
 import com.urbanairship.api.push.model.notification.ios.IOSBadgeData;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
+import com.urbanairship.api.push.model.notification.ios.IOSSoundData;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.junit.Test;
 
@@ -118,22 +119,34 @@ public class PayloadDeserializerTest {
 
     @Test
     public void testSound() throws Exception {
-        String json
-                = "{"
-                + "  \"sound\": \"cat.wav\""
+        String json =
+                "{"
+                + "  \"sound\": {"
+                + "    \"critical\" : true,"
+                + "    \"volume\" : 0.5,"
+                + "    \"name\" : \"Billy Bob Thorton\""
+                + "  }"
                 + "}";
 
+        IOSSoundData iosSoundData = IOSSoundData.newBuilder()
+                .setName("Billy Bob Thorton")
+                .setCritical(true)
+                .setVolume(0.5)
+                .build();
+
         IOSDevicePayload expected = IOSDevicePayload.newBuilder()
-                .setSound("cat.wav")
+                .setSoundData(iosSoundData)
                 .build();
 
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
         assertNotNull(payload);
-        assertNotNull(payload.getSound());
+        assertNotNull(payload.getSoundData());
         assertFalse(payload.getAlert().isPresent());
         assertFalse(payload.getExtra().isPresent());
-        assertTrue(payload.getSound().isPresent());
-        assertEquals("cat.wav", payload.getSound().get());
+        assertTrue(payload.getSoundData().isPresent());
+        assertEquals(0.5, payload.getSoundData().get().getVolume().get(), 0.0f);
+        assertEquals(true, payload.getSoundData().get().getCritical().get());
+        assertEquals("Billy Bob Thorton", payload.getSoundData().get().getName());
         assertEquals(expected, payload);
     }
 
@@ -205,7 +218,7 @@ public class PayloadDeserializerTest {
 
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
         assertNotNull(payload);
-        assertNotNull(payload.getSound());
+//        assertNotNull(payload.getSound());
         assertTrue(payload.getContentAvailable().isPresent());
         assertEquals(true, payload.getContentAvailable().get());
         assertEquals(expected, payload);
@@ -246,7 +259,7 @@ public class PayloadDeserializerTest {
         assertFalse(payload.getAlert().isPresent());
         assertFalse(payload.getExtra().isPresent());
         assertFalse(payload.getBadge().isPresent());
-        assertFalse(payload.getSound().isPresent());
+        assertFalse(payload.getSoundData().isPresent());
         assertFalse(payload.getContentAvailable().isPresent());
     }
 

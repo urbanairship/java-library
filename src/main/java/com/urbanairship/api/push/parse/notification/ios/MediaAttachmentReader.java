@@ -26,7 +26,7 @@ public class MediaAttachmentReader implements JsonObjectReader<MediaAttachment> 
     public MediaAttachment validateAndBuild() throws IOException {
         try {
             return builder.build();
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new APIParsingException(e.getMessage(), e);
         }
     }
