@@ -20,10 +20,6 @@ public class IOSDevicePayloadSerializer extends JsonSerializer<IOSDevicePayload>
             jgen.writeObjectField("alert", payload.getAlertData().get());
         }
 
-        if (payload.getSound().isPresent()) {
-            jgen.writeStringField("sound", payload.getSound().get());
-        }
-
         if (payload.getBadge().isPresent()) {
             jgen.writeObjectField("badge", payload.getBadge().get());
         }
@@ -62,6 +58,10 @@ public class IOSDevicePayloadSerializer extends JsonSerializer<IOSDevicePayload>
 
         if (payload.getMutableContent().isPresent()) {
             jgen.writeBooleanField("mutable_content", payload.getMutableContent().get());
+        }
+
+        if (payload.getSoundData().isPresent()) {
+            jgen.writeObjectField("sound", payload.getSoundData().get());
         }
 
         if (payload.getMediaAttachment().isPresent()) {
