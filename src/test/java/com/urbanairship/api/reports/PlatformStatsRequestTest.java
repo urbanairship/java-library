@@ -1,6 +1,5 @@
 package com.urbanairship.api.reports;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
@@ -44,9 +43,6 @@ public class PlatformStatsRequestTest {
 
     @Before
     public void setupCreate() {
-        DateTime start = new DateTime(2014, 10, 1, 12, 0, 0, 0, DateTimeZone.UTC);
-        DateTime end = start.plus(Period.hours(48));
-
         timeInAppRequest = PlatformStatsRequest.newRequest(PlatformStatsRequestType.TIME_IN_APP)
                 .setStart(start)
                 .setEnd(end)
