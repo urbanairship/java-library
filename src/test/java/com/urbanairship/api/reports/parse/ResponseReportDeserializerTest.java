@@ -52,17 +52,17 @@ public class ResponseReportDeserializerTest {
         System.out.println(responseReport);
 
         ResponseReportResponse responseReportResponse1 = responseReport.getResponses().get().get(0);
-        assertEquals(DateFormats.DATE_PARSER.parseDateTime("2013-07-01 00:00:00"), responseReportResponse1.getDate());
-        assertEquals(1337, responseReportResponse1.getDeviceStatsMap().get("ios").getDirect());
-        assertEquals(9999, responseReportResponse1.getDeviceStatsMap().get("ios").getInfluenced());
-        assertEquals(7331, responseReportResponse1.getDeviceStatsMap().get("android").getDirect());
-        assertEquals(8888, responseReportResponse1.getDeviceStatsMap().get("android").getInfluenced());
+        assertEquals(DateFormats.DATE_PARSER.parseDateTime("2013-07-01 00:00:00"), responseReportResponse1.getDate().get());
+        assertEquals(1337, responseReportResponse1.getDeviceStatsMap().get().get("ios").getDirect().get().intValue());
+        assertEquals(9999, responseReportResponse1.getDeviceStatsMap().get().get("ios").getInfluenced().get().intValue());
+        assertEquals(7331, responseReportResponse1.getDeviceStatsMap().get().get("android").getDirect().get().intValue());
+        assertEquals(8888, responseReportResponse1.getDeviceStatsMap().get().get("android").getInfluenced().get().intValue());
 
         ResponseReportResponse responseReportResponse2 = responseReport.getResponses().get().get(1);
-        assertEquals(DateFormats.DATE_PARSER.parseDateTime("2015-10-15 11:22:33"), responseReportResponse2.getDate());
-        assertEquals(1996, responseReportResponse2.getDeviceStatsMap().get("android").getDirect());
-        assertEquals(1234, responseReportResponse2.getDeviceStatsMap().get("android").getInfluenced());
-        assertEquals(5813, responseReportResponse2.getDeviceStatsMap().get("ios").getDirect());
-        assertEquals(1123, responseReportResponse2.getDeviceStatsMap().get("ios").getInfluenced());
+        assertEquals(DateFormats.DATE_PARSER.parseDateTime("2015-10-15 11:22:33"), responseReportResponse2.getDate().get());
+        assertEquals(1996, responseReportResponse2.getDeviceStatsMap().get().get("android").getDirect().get().intValue());
+        assertEquals(1234, responseReportResponse2.getDeviceStatsMap().get().get("android").getInfluenced().get().intValue());
+        assertEquals(5813, responseReportResponse2.getDeviceStatsMap().get().get("ios").getDirect().get().intValue());
+        assertEquals(1123, responseReportResponse2.getDeviceStatsMap().get().get("ios").getInfluenced().get().intValue());
     }
 }

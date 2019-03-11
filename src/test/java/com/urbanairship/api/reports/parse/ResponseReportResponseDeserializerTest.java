@@ -34,10 +34,10 @@ public class ResponseReportResponseDeserializerTest {
 
         System.out.println(responseReportResponse);
 
-        assertEquals(1337, responseReportResponse.getDeviceStatsMap().get("ios").getDirect());
-        assertEquals(9999, responseReportResponse.getDeviceStatsMap().get("ios").getInfluenced());
-        assertEquals(7331, responseReportResponse.getDeviceStatsMap().get("android").getDirect());
-        assertEquals(8888, responseReportResponse.getDeviceStatsMap().get("android").getInfluenced());
-        assertEquals(DateFormats.DATE_PARSER.parseDateTime("2013-07-01 00:00:00"), responseReportResponse.getDate());
+        assertEquals(1337, responseReportResponse.getDeviceStatsMap().get().get("ios").getDirect().get().intValue());
+        assertEquals(9999, responseReportResponse.getDeviceStatsMap().get().get("ios").getInfluenced().get().intValue());
+        assertEquals(7331, responseReportResponse.getDeviceStatsMap().get().get("android").getDirect().get().intValue());
+        assertEquals(8888, responseReportResponse.getDeviceStatsMap().get().get("android").getInfluenced().get().intValue());
+        assertEquals(DateFormats.DATE_PARSER.parseDateTime("2013-07-01 00:00:00"), responseReportResponse.getDate().get());
     }
 }

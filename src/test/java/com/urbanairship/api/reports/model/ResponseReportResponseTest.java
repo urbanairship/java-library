@@ -24,9 +24,9 @@ public class ResponseReportResponseTest {
                 .build();
 
         assertNotNull(responseReportResponse);
-        assertEquals(1111, responseReportResponse.getDeviceStatsMap().get("ios").getInfluenced());
-        assertEquals(2222, responseReportResponse.getDeviceStatsMap().get("ios").getDirect());
-        assertEquals(1111, responseReportResponse.getDeviceStatsMap().get("android").getInfluenced());
-        assertEquals(2222, responseReportResponse.getDeviceStatsMap().get("android").getDirect());
+        assertEquals(1111, responseReportResponse.getDeviceStatsMap().get().get("ios").getInfluenced().get().intValue());
+        assertEquals(2222, responseReportResponse.getDeviceStatsMap().get().get("ios").getDirect().get().intValue());
+        assertEquals(1111, responseReportResponse.getDeviceStatsMap().get().get("android").getInfluenced().get().intValue());
+        assertEquals(2222, responseReportResponse.getDeviceStatsMap().get().get("android").getDirect().get().intValue());
     }
 }

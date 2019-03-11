@@ -32,7 +32,7 @@ public class ResponseReportTest {
 
         assertNotNull(responseReport);
         assertEquals(2, responseReport.getResponses().get().size());
-        assertEquals(1111, responseReport.getResponses().get().get(0).getDeviceStatsMap().get("ios").getDirect());
-        assertEquals(2222, responseReport.getResponses().get().get(1).getDeviceStatsMap().get("android").getInfluenced());
+        assertEquals(1111, responseReport.getResponses().get().get(0).getDeviceStatsMap().get().get("ios").getDirect().get().intValue());
+        assertEquals(2222, responseReport.getResponses().get().get(1).getDeviceStatsMap().get().get("android").getInfluenced().get().intValue());
     }
 }

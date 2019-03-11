@@ -24,7 +24,7 @@ public class DeviceTypeDeserializerTest {
 
         System.out.println(deviceStats);
 
-        assertEquals(1337, deviceStats.getDirect());
-        assertEquals(1996, deviceStats.getInfluenced());
+        assertEquals(1337, deviceStats.getDirect().get().intValue());
+        assertEquals(1996, deviceStats.getInfluenced().get().intValue());
     }
 }

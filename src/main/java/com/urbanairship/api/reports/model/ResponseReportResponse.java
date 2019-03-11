@@ -3,14 +3,15 @@ package com.urbanairship.api.reports.model;
 import com.google.common.collect.ImmutableMap;
 import org.joda.time.DateTime;
 import java.util.Objects;
+import java.util.Optional;
 
 public final class ResponseReportResponse {
-    private DateTime date;
-    private ImmutableMap<String, DeviceStats> deviceStatsMap;
+    private Optional<DateTime> date;
+    private Optional<ImmutableMap<String, DeviceStats>> deviceStatsMap;
 
     private ResponseReportResponse() { this(null, null); }
 
-    private ResponseReportResponse(DateTime date, ImmutableMap<String, DeviceStats> deviceStatsMap) {
+    private ResponseReportResponse(Optional<DateTime> date, Optional<ImmutableMap<String, DeviceStats>> deviceStatsMap) {
         this.date = date;
         this.deviceStatsMap = deviceStatsMap;
     }
@@ -21,9 +22,9 @@ public final class ResponseReportResponse {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ResponseReportResponse responseReportResponse = (ResponseReportResponse) o;
-        return Objects.equals(date, responseReportResponse.date) &&
-                Objects.equals(deviceStatsMap, responseReportResponse.deviceStatsMap);
+        ResponseReportResponse that = (ResponseReportResponse) o;
+        return Objects.equals(date, that.date) &&
+                Objects.equals(deviceStatsMap, that.deviceStatsMap);
     }
 
     @Override
@@ -33,7 +34,7 @@ public final class ResponseReportResponse {
 
     @Override
     public String toString() {
-        return "Response{" +
+        return "ResponseReportResponse{" +
                 "date=" + date +
                 ", deviceStatsMap=" + deviceStatsMap +
                 '}';
@@ -44,7 +45,7 @@ public final class ResponseReportResponse {
      *
      * @return DateTime
      */
-    public DateTime getDate() {
+    public Optional<DateTime> getDate() {
         return date;
     }
 
@@ -53,7 +54,7 @@ public final class ResponseReportResponse {
      *
      * @return A Map of device names and their associated platform statistics
      */
-    public ImmutableMap<String, DeviceStats> getDeviceStatsMap() {
+    public Optional<ImmutableMap<String, DeviceStats>> getDeviceStatsMap() {
         return deviceStatsMap;
     }
 
@@ -86,7 +87,7 @@ public final class ResponseReportResponse {
         }
 
         public ResponseReportResponse build() {
-            return new ResponseReportResponse(date, deviceStatsMap.build());
+            return new ResponseReportResponse(Optional.ofNullable(date), Optional.ofNullable(deviceStatsMap.build()));
         }
     }
 }

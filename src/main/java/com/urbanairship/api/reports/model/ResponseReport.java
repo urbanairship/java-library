@@ -1,7 +1,7 @@
 package com.urbanairship.api.reports.model;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 import java.util.Objects;
 
@@ -38,9 +38,9 @@ public class ResponseReport {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ResponseReport responseReport = (ResponseReport) o;
-        return Objects.equals(next_page, responseReport.next_page) &&
-                Objects.equals(responses, responseReport.responses);
+        ResponseReport that = (ResponseReport) o;
+        return Objects.equals(next_page, that.next_page) &&
+                Objects.equals(responses, that.responses);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class ResponseReport {
          * @return Response
          */
         public ResponseReport build() {
-            return new ResponseReport(Optional.fromNullable(next_page), Optional.fromNullable(responses.build()));
+            return new ResponseReport(Optional.ofNullable(next_page), Optional.ofNullable(responses.build()));
         }
     }
 }
