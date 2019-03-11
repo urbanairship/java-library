@@ -1,12 +1,13 @@
 package com.urbanairship.api.reports.model;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public final class DeviceStats {
-    private final int direct;
-    private final int influenced;
+    private final Optional<Integer> direct;
+    private final Optional<Integer> influenced;
 
-    private DeviceStats(int direct, int influenced) {
+    private DeviceStats(Optional<Integer> direct, Optional<Integer> influenced) {
         this.direct = direct;
         this.influenced = influenced;
     }
@@ -24,9 +25,9 @@ public final class DeviceStats {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DeviceStats deviceType = (DeviceStats) o;
-        return direct == deviceType.direct &&
-                influenced == deviceType.influenced;
+        DeviceStats that = (DeviceStats) o;
+        return Objects.equals(direct, that.direct) &&
+                Objects.equals(influenced, that.influenced);
     }
 
     @Override
@@ -47,7 +48,7 @@ public final class DeviceStats {
      *
      * @return int
      */
-    public int getDirect() {
+    public Optional<Integer> getDirect() {
         return direct;
     }
 
@@ -56,7 +57,7 @@ public final class DeviceStats {
      *
      * @return int
      */
-    public int getInfluenced() {
+    public Optional<Integer> getInfluenced() {
         return influenced;
     }
 
@@ -88,6 +89,6 @@ public final class DeviceStats {
             return this;
         }
 
-        public DeviceStats build() { return new DeviceStats(direct, influenced); }
+        public DeviceStats build() { return new DeviceStats(Optional.ofNullable(direct), Optional.ofNullable(influenced)); }
     }
 }
