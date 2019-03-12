@@ -32,7 +32,6 @@ public class PayloadSerializerTest {
         assertEquals(expected, json);
     }
 
-
     @Test
     public void testEmptyAlert() throws Exception {
         IOSDevicePayload payload = IOSDevicePayload.newBuilder()
@@ -195,7 +194,7 @@ public class PayloadSerializerTest {
                 .setMutableContent(true)
                 .setSubtitle("subtitle")
                 .setMediaAttachment(mediaAttachment)
-                .setSoundData("just a string file path")
+                .setSoundData("just a string file name")
                 .setCollapseId("collapseId")
                 .setThreadId("threadId")
                 .build();

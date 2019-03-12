@@ -199,14 +199,6 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
     public Optional<IOSSoundData> getSound() { return sound; }
 
     /**
-     * Get the sound file name.
-     * @return String representing the sound file name.
-     */
-    public String getSoundName() {
-        return sound.isPresent() ? sound.get().getName() : null;
-    }
-
-    /**
      * Get the Collapse ID String. When there is a newer message that renders an older, related message irrelevant to the client app,
      * the new message replaces the older message with the same collapse ID. Similar to the GCM collapse key. iOS 10.
      * @return Optional String representation of the collapse ID.

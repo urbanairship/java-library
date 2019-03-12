@@ -88,7 +88,7 @@ public final class IOSSoundData extends PushModelObject {
         }
 
         public IOSSoundData build() {
-            Preconditions.checkNotNull(name);
+            Preconditions.checkNotNull(name, "The sound file name cannot be null");
             return new IOSSoundData(Optional.fromNullable(critical), Optional.fromNullable(volume), name);
         }
     }
