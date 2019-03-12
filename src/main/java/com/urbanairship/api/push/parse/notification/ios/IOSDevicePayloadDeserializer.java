@@ -99,6 +99,12 @@ public class IOSDevicePayloadDeserializer extends JsonDeserializer<IOSDevicePayl
                     reader.readCollapseId(json);
                 }
             })
+            .put("thread_id", new FieldParser<IOSDevicePayloadReader>() {
+                @Override
+                public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                    reader.readThreadId(json);
+                }
+            })
             .build()
             );
 

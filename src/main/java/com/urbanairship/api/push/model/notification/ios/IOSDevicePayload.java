@@ -35,6 +35,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
     private final Optional<IOSSoundData> sound;
     private final Optional<Boolean> mutableContent;
     private final Optional<String> collapseId;
+    private final Optional<String> threadId;
 
     private IOSDevicePayload(Optional<IOSAlertData> alert,
                              Optional<IOSBadgeData> badge,
@@ -49,7 +50,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                              Optional<MediaAttachment> mediaAttachment,
                              Optional<IOSSoundData> sound,
                              Optional<Boolean> mutableContent,
-                             Optional<String> collapseId) {
+                             Optional<String> collapseId,
+                             Optional<String> threadId) {
         this.alert = alert;
         this.badge = badge;
         this.contentAvailable = contentAvailable;
@@ -64,6 +66,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         this.sound = sound;
         this.mutableContent = mutableContent;
         this.collapseId = collapseId;
+        this.threadId = threadId;
     }
 
     /**
@@ -212,6 +215,14 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         return collapseId;
     }
 
+    /**
+     * Get the thread ID.
+     * @return Optional String representation of thread ID.
+     */
+    public Optional<String> getThreadId() {
+        return threadId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -230,12 +241,13 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                 Objects.equals(mediaAttachment, that.mediaAttachment) &&
                 Objects.equals(sound, that.sound) &&
                 Objects.equals(mutableContent, that.mutableContent) &&
-                Objects.equals(collapseId, that.collapseId);
+                Objects.equals(collapseId, that.collapseId) &&
+                Objects.equals(threadId, that.threadId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(alert, extra, badge, contentAvailable, expiry, priority, category, interactive, title, subtitle, mediaAttachment, sound, mutableContent, collapseId);
+        return Objects.hash(alert, extra, badge, contentAvailable, expiry, priority, category, interactive, title, subtitle, mediaAttachment, sound, mutableContent, collapseId, threadId);
     }
 
     @Override
@@ -255,6 +267,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                 ", sound=" + sound +
                 ", mutableContent=" + mutableContent +
                 ", collapseId=" + collapseId +
+                ", threadId=" + threadId +
                 '}';
     }
 
@@ -273,6 +286,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         private IOSSoundData sound = null;
         private Boolean mutableContent = null;
         private String collapseId = null;
+        private String threadId = null;
 
         private Builder() { }
 
@@ -458,6 +472,16 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         }
 
         /**
+         * Set the thread ID.
+         * @param value String
+         * @return Builder
+         */
+        public Builder setThreadId(String value) {
+            this.threadId = value;
+            return this;
+        }
+
+        /**
          * Build IOSDevicePayload
          * @return IOSDevicePayload
          */
@@ -476,7 +500,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                     Optional.fromNullable(mediaAttachment),
                     Optional.fromNullable(sound),
                     Optional.fromNullable(mutableContent),
-                    Optional.fromNullable(collapseId));
+                    Optional.fromNullable(collapseId),
+                    Optional.fromNullable(threadId));
         }
     }
 }

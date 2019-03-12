@@ -83,6 +83,9 @@ public class IOSDevicePayloadReader implements JsonObjectReader<IOSDevicePayload
         builder.setCollapseId(StringFieldDeserializer.INSTANCE.deserialize(parser, "collapse_id"));
     }
 
+    public void readThreadId(JsonParser parser) throws IOException {
+        builder.setThreadId(StringFieldDeserializer.INSTANCE.deserialize(parser, "thread_id"));
+    }
     @Override
     public IOSDevicePayload validateAndBuild() throws IOException {
         try {
