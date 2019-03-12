@@ -79,6 +79,7 @@ public class IOSDevicePayloadTest {
                 .setMediaAttachment(mediaAttachment)
                 .setSoundData(iosSoundData)
                 .setMutableContent(true)
+                .setThreadId("unique ID")
                 .build();
 
         assertTrue(m.getExtra().isPresent());
@@ -108,6 +109,7 @@ public class IOSDevicePayloadTest {
         assertEquals(y, m.getMediaAttachment().get().getOptions().get().getCrop().get().getY().get());
         Boolean hidden = true;
         assertEquals(hidden, m.getMediaAttachment().get().getOptions().get().getHidden().get());
+        assertEquals("unique ID", m.getThreadId().get());
     }
 
 }

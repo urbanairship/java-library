@@ -295,6 +295,16 @@ public class PayloadDeserializerTest {
     }
 
     @Test
+    public void testThreadId() throws Exception {
+        String json
+                = "{"
+                + "  \"thread_id\": \"woof\""
+                + "}";
+        IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
+        assertTrue(payload.getThreadId().get().equals("woof"));
+    }
+
+    @Test
     public void testIos10Extras() throws Exception {
         String json
             = "{\n" +
@@ -320,7 +330,8 @@ public class PayloadDeserializerTest {
                 "            \"subtitle\": \"content subtitle\"" +
                 "        }" +
                 "    }," +
-                "    \"collapse_id\": \"collapseId\"" +
+                "    \"collapse_id\": \"collapseId\"," +
+                "    \"thread_id\": \"threadId\"" +
                 "}";
 
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
@@ -335,6 +346,9 @@ public class PayloadDeserializerTest {
 
         //Collapse ID
         assertTrue(payload.getCollapseId().get().equals("collapseId"));
+
+        //Thread ID
+        assertTrue(payload.getThreadId().get().equals("threadId"));
 
         //Mutable Content
         assertTrue(payload.getMutableContent().get().equals(true));
