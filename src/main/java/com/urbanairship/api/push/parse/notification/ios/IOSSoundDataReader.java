@@ -1,7 +1,6 @@
 package com.urbanairship.api.push.parse.notification.ios;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.BooleanFieldDeserializer;
 import com.urbanairship.api.common.parse.JsonObjectReader;
