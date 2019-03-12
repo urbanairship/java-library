@@ -56,6 +56,11 @@ public final class IOSSoundData extends PushModelObject {
                 '}';
     }
 
+    /**
+     * Determines whether the 'sound' key should be mapped to just a string or the entire IOSDataSound object.
+     *
+     * @return boolean True if the entire IOSSoundData object needs to be read or false if just the file name needs to be read.
+     */
     public boolean shouldBeDict() {
         return critical.isPresent() && critical.get();
     }

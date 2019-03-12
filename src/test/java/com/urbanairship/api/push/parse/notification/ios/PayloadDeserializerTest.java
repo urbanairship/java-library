@@ -218,7 +218,7 @@ public class PayloadDeserializerTest {
 
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
         assertNotNull(payload);
-//        assertNotNull(payload.getSound());
+        assertNotNull(payload.getSound());
         assertTrue(payload.getContentAvailable().isPresent());
         assertEquals(true, payload.getContentAvailable().get());
         assertEquals(expected, payload);
@@ -301,7 +301,7 @@ public class PayloadDeserializerTest {
                 "    \"alert\": \"alert\"," +
                 "    \"subtitle\": \"subtitle\"," +
                 "    \"mutable_content\": true," +
-                "    \"sound\": \"something\"," +
+                "    \"sound\": \"beep boop\"," +
                 "    \"media_attachment\": {" +
                 "        \"url\": \"https://media.giphy.com/media/JYsWwF82EGnpC/giphy.gif\"," +
                 "        \"options\": {" +
@@ -346,7 +346,7 @@ public class PayloadDeserializerTest {
         assertTrue(payload.getMediaAttachment().get().getUrl().equals("https://media.giphy.com/media/JYsWwF82EGnpC/giphy.gif"));
 
         //Sound
-        assertTrue(payload.getSoundName().equals("something"));
+        assertTrue(payload.getSoundName().equals("beep boop"));
 
         //options
         assertTrue(payload.getMediaAttachment().get().getOptions().get().getTime().get().equals(10));
