@@ -22,7 +22,7 @@ public class IOSDevicePayloadReader implements JsonObjectReader<IOSDevicePayload
     private IOSDevicePayload.Builder builder = IOSDevicePayload.newBuilder();
     private IOSAlertDataDeserializer alertDS = new IOSAlertDataDeserializer();
     private MediaAttachmentDeserializer mediaAttachmentDS = new MediaAttachmentDeserializer();
-    private IOSSoundDataDeserializer soundDataDS = new IOSSoundDataDeserializer();
+    private IOSSoundDataDeserializer soundDS = new IOSSoundDataDeserializer();
 
     public IOSDevicePayloadReader() {
     }
@@ -72,7 +72,7 @@ public class IOSDevicePayloadReader implements JsonObjectReader<IOSDevicePayload
     }
 
     public void readSoundData(JsonParser parser, DeserializationContext context) throws IOException {
-        builder.setSoundData(soundDataDS.deserialize(parser, context));
+        builder.setSoundData(soundDS.deserialize(parser, context));
     }
 
     public void readMediaAttachment(JsonParser parser, DeserializationContext context) throws IOException {

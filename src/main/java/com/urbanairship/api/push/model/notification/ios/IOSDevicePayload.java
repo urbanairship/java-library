@@ -190,7 +190,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
     }
 
     /**
-     * Get the IOSSound Data if present.
+     * Get the IOSSoundData if present.
      * @return Optional IOSSoundData object
      */
     public Optional<IOSSoundData> getSound() { return sound; }
@@ -211,7 +211,6 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
     public Optional<String> getCollapseId() {
         return collapseId;
     }
-
 
     @Override
     public boolean equals(Object o) {
