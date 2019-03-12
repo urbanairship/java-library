@@ -8,7 +8,9 @@ import com.urbanairship.api.push.model.notification.ios.IOSBadgeData;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 import com.urbanairship.api.push.model.notification.ios.IOSSoundData;
 import com.urbanairship.api.push.parse.PushObjectMapper;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -20,6 +22,9 @@ import static org.junit.Assert.assertTrue;
 
 public class PayloadDeserializerTest {
     private static final ObjectMapper mapper = PushObjectMapper.getInstance();
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void testAlert() throws Exception {
@@ -148,6 +153,21 @@ public class PayloadDeserializerTest {
         assertEquals(true, payload.getSound().get().getCritical().get());
         assertEquals("Billy Bob Thorton", payload.getSound().get().getName());
         assertEquals(expected, payload);
+    }
+
+    @Test
+    public void testSoundObjectWithNoName() throws  Exception {
+        String json =
+                "{"
+                + "  \"sound\": {"
+                + "    \"critical\" : true,"
+                + "    \"volume\" : 0.5"
+                + "  }"
+                + "}";
+
+        thrown.expect(APIParsingException.class);
+        thrown.expectMessage("The sound file name cannot be null");
+        mapper.readValue(json, IOSSoundData.class);
     }
 
     @Test
