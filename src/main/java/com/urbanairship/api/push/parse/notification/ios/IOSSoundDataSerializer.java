@@ -10,7 +10,7 @@ import java.io.IOException;
 public class IOSSoundDataSerializer extends JsonSerializer<IOSSoundData> {
     @Override
     public void serialize(IOSSoundData payload, JsonGenerator jgen, SerializerProvider provider) throws IOException {
-        if (!payload.shouldBeDict() && payload.getName() != null) {
+        if (!payload.shouldBeDict()) {
             jgen.writeString(payload.getName());
         } else {
             jgen.writeStartObject();
