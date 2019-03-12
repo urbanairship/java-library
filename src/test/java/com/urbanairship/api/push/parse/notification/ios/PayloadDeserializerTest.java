@@ -140,13 +140,13 @@ public class PayloadDeserializerTest {
 
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
         assertNotNull(payload);
-        assertNotNull(payload.getSoundData());
+        assertNotNull(payload.getSound());
         assertFalse(payload.getAlert().isPresent());
         assertFalse(payload.getExtra().isPresent());
-        assertTrue(payload.getSoundData().isPresent());
-        assertEquals(0.5, payload.getSoundData().get().getVolume().get(), 0.0f);
-        assertEquals(true, payload.getSoundData().get().getCritical().get());
-        assertEquals("Billy Bob Thorton", payload.getSoundData().get().getName());
+        assertTrue(payload.getSound().isPresent());
+        assertEquals(0.5, payload.getSound().get().getVolume().get(), 0.0f);
+        assertEquals(true, payload.getSound().get().getCritical().get());
+        assertEquals("Billy Bob Thorton", payload.getSound().get().getName());
         assertEquals(expected, payload);
     }
 
@@ -259,7 +259,7 @@ public class PayloadDeserializerTest {
         assertFalse(payload.getAlert().isPresent());
         assertFalse(payload.getExtra().isPresent());
         assertFalse(payload.getBadge().isPresent());
-        assertFalse(payload.getSoundData().isPresent());
+        assertFalse(payload.getSound().isPresent());
         assertFalse(payload.getContentAvailable().isPresent());
     }
 
@@ -301,6 +301,7 @@ public class PayloadDeserializerTest {
                 "    \"alert\": \"alert\"," +
                 "    \"subtitle\": \"subtitle\"," +
                 "    \"mutable_content\": true," +
+                "    \"sound\": \"something\"," +
                 "    \"media_attachment\": {" +
                 "        \"url\": \"https://media.giphy.com/media/JYsWwF82EGnpC/giphy.gif\"," +
                 "        \"options\": {" +
@@ -343,6 +344,9 @@ public class PayloadDeserializerTest {
 
         //Media Attachment
         assertTrue(payload.getMediaAttachment().get().getUrl().equals("https://media.giphy.com/media/JYsWwF82EGnpC/giphy.gif"));
+
+        //Sound
+        assertTrue(payload.getSoundName().equals("something"));
 
         //options
         assertTrue(payload.getMediaAttachment().get().getOptions().get().getTime().get().equals(10));

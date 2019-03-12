@@ -56,6 +56,10 @@ public final class IOSSoundData extends PushModelObject {
                 '}';
     }
 
+    public boolean shouldBeDict() {
+        return critical.isPresent() && critical.get();
+    }
+
     public static class Builder {
        private Boolean critical = null;
        private Double volume = null;

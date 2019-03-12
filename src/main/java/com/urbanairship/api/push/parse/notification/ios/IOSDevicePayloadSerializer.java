@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
+import com.urbanairship.api.push.model.notification.ios.IOSSoundData;
 
 import java.io.IOException;
 
@@ -60,8 +61,8 @@ public class IOSDevicePayloadSerializer extends JsonSerializer<IOSDevicePayload>
             jgen.writeBooleanField("mutable_content", payload.getMutableContent().get());
         }
 
-        if (payload.getSoundData().isPresent()) {
-            jgen.writeObjectField("sound", payload.getSoundData().get());
+        if (payload.getSound().isPresent()) {
+            jgen.writeObjectField("sound", payload.getSound().get());
         }
 
         if (payload.getMediaAttachment().isPresent()) {

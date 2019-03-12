@@ -195,12 +195,13 @@ public class PayloadSerializerTest {
                 .setMutableContent(true)
                 .setSubtitle("subtitle")
                 .setMediaAttachment(mediaAttachment)
+                .setSoundData("just a string file path")
                 .setCollapseId("collapseId")
                 .build();
 
         String json = mapper.writeValueAsString(payload);
         String expected
-                = "{\"alert\":\"alert\",\"subtitle\":\"subtitle\",\"mutable_content\":true,\"media_attachment\":{\"url\":\"http://www.google.com\",\"options\":{\"time\":10,\"crop\":{\"x\":0.1,\"y\":0.2,\"width\":0.3,\"height\":0.4},\"hidden\":true},\"content\":{\"body\":\"content body\",\"title\":\"content title\",\"subtitle\":\"content subtitle\"}},\"collapse_id\":\"collapseId\"}";
+                = "{\"alert\":\"alert\",\"subtitle\":\"subtitle\",\"mutable_content\":true,\"sound\":\"just a string file path\",\"media_attachment\":{\"url\":\"http://www.google.com\",\"options\":{\"time\":10,\"crop\":{\"x\":0.1,\"y\":0.2,\"width\":0.3,\"height\":0.4},\"hidden\":true},\"content\":{\"body\":\"content body\",\"title\":\"content title\",\"subtitle\":\"content subtitle\"}},\"collapse_id\":\"collapseId\"}";
 
         assertEquals(expected, json);
     }

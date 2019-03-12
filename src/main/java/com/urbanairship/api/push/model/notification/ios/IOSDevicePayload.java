@@ -32,7 +32,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
     private final Optional<String> title;
     private final Optional<String> subtitle;
     private final Optional<MediaAttachment> mediaAttachment;
-    private final Optional<IOSSoundData> soundData;
+    private final Optional<IOSSoundData> sound;
     private final Optional<Boolean> mutableContent;
     private final Optional<String> collapseId;
 
@@ -47,7 +47,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                              Optional<String> title,
                              Optional<String> subtitle,
                              Optional<MediaAttachment> mediaAttachment,
-                             Optional<IOSSoundData> soundData,
+                             Optional<IOSSoundData> sound,
                              Optional<Boolean> mutableContent,
                              Optional<String> collapseId) {
         this.alert = alert;
@@ -61,7 +61,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         this.title = title;
         this.subtitle = subtitle;
         this.mediaAttachment = mediaAttachment;
-        this.soundData = soundData;
+        this.sound = sound;
         this.mutableContent = mutableContent;
         this.collapseId = collapseId;
     }
@@ -189,7 +189,19 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         return mediaAttachment;
     }
 
-    public Optional<IOSSoundData> getSoundData() { return soundData; }
+    /**
+     * Get the IOSSound Data if present.
+     * @return Optional IOSSoundData object
+     */
+    public Optional<IOSSoundData> getSound() { return sound; }
+
+    /**
+     * Get the sound file name.
+     * @return String representing the sound file name.
+     */
+    public String getSoundName() {
+        return sound.isPresent() ? sound.get().getName() : null;
+    }
 
     /**
      * Get the Collapse ID String. When there is a newer message that renders an older, related message irrelevant to the client app,
@@ -217,14 +229,14 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                 Objects.equals(title, that.title) &&
                 Objects.equals(subtitle, that.subtitle) &&
                 Objects.equals(mediaAttachment, that.mediaAttachment) &&
-                Objects.equals(soundData, that.soundData) &&
+                Objects.equals(sound, that.sound) &&
                 Objects.equals(mutableContent, that.mutableContent) &&
                 Objects.equals(collapseId, that.collapseId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(alert, extra, badge, contentAvailable, expiry, priority, category, interactive, title, subtitle, mediaAttachment, soundData, mutableContent, collapseId);
+        return Objects.hash(alert, extra, badge, contentAvailable, expiry, priority, category, interactive, title, subtitle, mediaAttachment, sound, mutableContent, collapseId);
     }
 
     @Override
@@ -241,7 +253,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                 ", title=" + title +
                 ", subtitle=" + subtitle +
                 ", mediaAttachment=" + mediaAttachment +
-                ", soundData=" + soundData +
+                ", sound=" + sound +
                 ", mutableContent=" + mutableContent +
                 ", collapseId=" + collapseId +
                 '}';
@@ -259,7 +271,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         private String title = null;
         private String subtitle = null;
         private MediaAttachment mediaAttachment = null;
-        private IOSSoundData soundData = null;
+        private IOSSoundData sound = null;
         private Boolean mutableContent = null;
         private String collapseId = null;
 
@@ -403,8 +415,26 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
             return this;
         }
 
+        /**
+         * Set the IOSSoundData object.
+         *
+         * @param value IOSSoundData
+         * @return Builder
+         */
         public Builder setSoundData(IOSSoundData value) {
-            this.soundData = value;
+            this.sound = value;
+            return this;
+        }
+
+        /** Set the name of the IOSSoundData object. This is a shortcut for when the only value pertaining to the 'sound' key is a sound file name.
+         *
+         * @param name String
+         * @return Builder
+         */
+        public Builder setSoundData(String name) {
+            this.sound = IOSSoundData.newBuilder()
+                    .setName(name)
+                    .build();
             return this;
         }
 
@@ -445,7 +475,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                     Optional.fromNullable(title),
                     Optional.fromNullable(subtitle),
                     Optional.fromNullable(mediaAttachment),
-                    Optional.fromNullable(soundData),
+                    Optional.fromNullable(sound),
                     Optional.fromNullable(mutableContent),
                     Optional.fromNullable(collapseId));
         }
