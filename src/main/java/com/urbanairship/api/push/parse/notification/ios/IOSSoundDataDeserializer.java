@@ -5,7 +5,11 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.google.common.collect.ImmutableMap;
-import com.urbanairship.api.common.parse.*;
+import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.FieldParser;
+import com.urbanairship.api.common.parse.FieldParserRegistry;
+import com.urbanairship.api.common.parse.MapFieldParserRegistry;
+import com.urbanairship.api.common.parse.StandardObjectDeserializer;
 import com.urbanairship.api.push.model.notification.ios.IOSSoundData;
 
 import java.io.IOException;
