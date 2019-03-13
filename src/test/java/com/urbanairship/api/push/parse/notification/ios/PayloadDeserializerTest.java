@@ -156,7 +156,7 @@ public class PayloadDeserializerTest {
     }
 
     @Test
-    public void testSoundObjectWithNoName() throws  Exception {
+    public void testSoundObjectWithNoName() throws Exception {
         String json =
                 "{"
                 + "  \"sound\": {"

@@ -162,6 +162,22 @@ public class PayloadSerializerTest {
     }
 
     @Test
+    public void testSound() throws Exception {
+        IOSSoundData soundData = IOSSoundData.newBuilder()
+                .setCritical(true)
+                .setVolume(1.0)
+                .setName("Goliath")
+                .build();
+
+        String json = mapper.writeValueAsString(soundData);
+
+        String expected
+                = "{\"critical\":true,\"volume\":1.0,\"name\":\"Goliath\"}";
+
+        assertEquals(expected, json);
+    }
+
+    @Test
     public void testMediaAttachment() throws Exception {
 
         Crop crop = Crop.newBuilder()
