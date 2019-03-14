@@ -448,7 +448,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
          * @param name String
          * @return Builder
          */
-        public Builder setSoundData(String name) {
+        public Builder setSound(String name) {
             this.sound = IOSSoundData.newBuilder()
                     .setName(name)
                     .build();
