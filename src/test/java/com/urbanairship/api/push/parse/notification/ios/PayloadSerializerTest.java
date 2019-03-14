@@ -210,7 +210,7 @@ public class PayloadSerializerTest {
                 .setMutableContent(true)
                 .setSubtitle("subtitle")
                 .setMediaAttachment(mediaAttachment)
-                .setSoundData("just a string file name")
+                .setSound("just a string file name")
                 .setCollapseId("collapseId")
                 .setThreadId("threadId")
                 .build();
