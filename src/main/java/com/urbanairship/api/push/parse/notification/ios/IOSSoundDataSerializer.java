@@ -11,7 +11,7 @@ public class IOSSoundDataSerializer extends JsonSerializer<IOSSoundData> {
     @Override
     public void serialize(IOSSoundData payload, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         if (!payload.shouldBeDict()) {
-            jgen.writeString(payload.getName());
+            jgen.writeString(payload.getName().get());
         } else {
             jgen.writeStartObject();
 
@@ -23,7 +23,9 @@ public class IOSSoundDataSerializer extends JsonSerializer<IOSSoundData> {
                 jgen.writeNumberField("volume", payload.getVolume().get());
             }
 
-            jgen.writeStringField("name", payload.getName());
+            if (payload.getName().isPresent()) {
+                jgen.writeStringField("name", payload.getName().get());
+            }
 
             jgen.writeEndObject();
         }

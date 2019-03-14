@@ -98,9 +98,9 @@ public class IOSDevicePayloadTest {
         assertEquals("content body", m.getMediaAttachment().get().getContent().get().getBody().get());
         assertEquals("content title", m.getMediaAttachment().get().getContent().get().getTitle().get());
         assertEquals("content subtitle", m.getMediaAttachment().get().getContent().get().getSubtitle().get());
-        assertEquals(true, m.getSound().get().getCritical().get());
-        assertEquals(0.5, m.getSound().get().getVolume().get(), 0.0f);
-        assertEquals("really cool name", m.getSound().get().getName());
+        assertEquals(true, m.getSoundData().get().getCritical().get());
+        assertEquals(0.5, m.getSoundData().get().getVolume().get(), 0.0f);
+        assertEquals("really cool name", m.getSound().get());
         Integer time = 10;
         assertEquals(time, m.getMediaAttachment().get().getOptions().get().getTime().get());
         assertEquals(height, m.getMediaAttachment().get().getOptions().get().getCrop().get().getHeight().get());

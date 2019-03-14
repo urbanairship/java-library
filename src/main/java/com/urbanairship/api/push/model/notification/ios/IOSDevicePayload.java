@@ -196,7 +196,19 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
      * Get the IOSSoundData if present.
      * @return Optional IOSSoundData object
      */
-    public Optional<IOSSoundData> getSound() { return sound; }
+    public Optional<IOSSoundData> getSoundData() { return sound; }
+
+
+    /**
+     * Get the sound file name.
+     * @return String sound file name
+     */
+    public Optional<String> getSound() {
+        if (!sound.isPresent()) {
+            return Optional.absent();
+        }
+        return sound.get().getName();
+    }
 
     /**
      * Get the Collapse ID String. When there is a newer message that renders an older, related message irrelevant to the client app,

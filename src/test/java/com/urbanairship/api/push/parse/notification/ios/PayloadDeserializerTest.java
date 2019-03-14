@@ -126,32 +126,28 @@ public class PayloadDeserializerTest {
     public void testSound() throws Exception {
         String json =
                 "{"
-                + "  \"sound\": {"
+                + "    \"name\" : \"Billy Bob Thorton\","
                 + "    \"critical\" : true,"
-                + "    \"volume\" : 0.5,"
-                + "    \"name\" : \"Billy Bob Thorton\""
-                + "  }"
+                + "    \"volume\" : 0.5"
                 + "}";
 
-        IOSSoundData iosSoundData = IOSSoundData.newBuilder()
+        IOSSoundData payload = mapper.readValue(json, IOSSoundData.class);
+        String objectJson = mapper.writeValueAsString(payload);
+        IOSSoundData payload2 = mapper.readValue(json, IOSSoundData.class);
+
+        assertEquals(payload, payload2);
+
+        IOSSoundData expected = IOSSoundData.newBuilder()
                 .setName("Billy Bob Thorton")
                 .setCritical(true)
                 .setVolume(0.5)
                 .build();
 
-        IOSDevicePayload expected = IOSDevicePayload.newBuilder()
-                .setSoundData(iosSoundData)
-                .build();
-
-        IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
+        payload = mapper.readValue(objectJson, IOSSoundData.class);
         assertNotNull(payload);
-        assertNotNull(payload.getSound());
-        assertFalse(payload.getAlert().isPresent());
-        assertFalse(payload.getExtra().isPresent());
-        assertTrue(payload.getSound().isPresent());
-        assertEquals(0.5, payload.getSound().get().getVolume().get(), 0.0f);
-        assertEquals(true, payload.getSound().get().getCritical().get());
-        assertEquals("Billy Bob Thorton", payload.getSound().get().getName());
+        assertEquals(0.5, payload.getVolume().get(), 0.0f);
+        assertEquals(true, payload.getCritical().get());
+        assertEquals("Billy Bob Thorton", payload.getName().get());
         assertEquals(expected, payload);
     }
 
@@ -160,6 +156,7 @@ public class PayloadDeserializerTest {
         String json =
                 "{"
                 + "  \"sound\": {"
+                + "    \"name\" : \"Billy Bob Thorton\","
                 + "    \"critical\" : true,"
                 + "    \"volume\" : 0.5"
                 + "  }"
@@ -238,7 +235,7 @@ public class PayloadDeserializerTest {
 
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
         assertNotNull(payload);
-        assertNotNull(payload.getSound());
+        assertNotNull(payload.getSoundData());
         assertTrue(payload.getContentAvailable().isPresent());
         assertEquals(true, payload.getContentAvailable().get());
         assertEquals(expected, payload);
@@ -279,7 +276,7 @@ public class PayloadDeserializerTest {
         assertFalse(payload.getAlert().isPresent());
         assertFalse(payload.getExtra().isPresent());
         assertFalse(payload.getBadge().isPresent());
-        assertFalse(payload.getSound().isPresent());
+        assertFalse(payload.getSoundData().isPresent());
         assertFalse(payload.getContentAvailable().isPresent());
     }
 
@@ -380,7 +377,7 @@ public class PayloadDeserializerTest {
         assertTrue(payload.getMediaAttachment().get().getUrl().equals("https://media.giphy.com/media/JYsWwF82EGnpC/giphy.gif"));
 
         //Sound
-        assertTrue(payload.getSound().get().getName().equals("beep boop"));
+        assertTrue(payload.getSound().get().equals("beep boop"));
 
         //options
         assertTrue(payload.getMediaAttachment().get().getOptions().get().getTime().get().equals(10));
