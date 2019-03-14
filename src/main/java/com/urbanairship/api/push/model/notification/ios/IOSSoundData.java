@@ -10,9 +10,9 @@ import java.util.Objects;
 public final class IOSSoundData extends PushModelObject {
     private final Optional<Boolean> critical;
     private final Optional<Double> volume;
-    private final String name;
+    private final Optional<String> name;
 
-    public IOSSoundData(Optional<Boolean> critical, Optional<Double> volume, String name) {
+    public IOSSoundData(Optional<Boolean> critical, Optional<Double> volume, Optional<String> name) {
         this.critical = critical;
         this.volume = volume;
         this.name = name;
@@ -28,7 +28,7 @@ public final class IOSSoundData extends PushModelObject {
         return volume;
     }
 
-    public String getName() {
+    public Optional<String> getName() {
         return name;
     }
 
@@ -89,7 +89,7 @@ public final class IOSSoundData extends PushModelObject {
 
         public IOSSoundData build() {
             Preconditions.checkNotNull(name, "The sound file name cannot be null");
-            return new IOSSoundData(Optional.fromNullable(critical), Optional.fromNullable(volume), name);
+            return new IOSSoundData(Optional.fromNullable(critical), Optional.fromNullable(volume), Optional.fromNullable(name));
         }
     }
 }
