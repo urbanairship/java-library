@@ -200,9 +200,13 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
 
     /**
+     * @deprecated
+     * The sound can be retrieved from getSoundData()
+     *
      * Get the sound file name.
      * @return String sound file name
      */
+    @Deprecated
     public Optional<String> getSound() {
         if (!sound.isPresent()) {
             return Optional.absent();
@@ -443,11 +447,16 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
             return this;
         }
 
-        /** Set the name of the IOSSoundData object. This is a shortcut for when the only value pertaining to the 'sound' key is a sound file name.
+        /**
+         * @deprecated
+         * This is being replaced by setSoundData.
+         *
+         * Set the name of the IOSSoundData object. This is a shortcut for when the only value pertaining to the 'sound' key is a sound file name.
          *
          * @param name String
          * @return Builder
          */
+        @Deprecated
         public Builder setSound(String name) {
             this.sound = IOSSoundData.newBuilder()
                     .setName(name)
