@@ -22,16 +22,13 @@ public class IOSDevicePayloadReader implements JsonObjectReader<IOSDevicePayload
     private IOSDevicePayload.Builder builder = IOSDevicePayload.newBuilder();
     private IOSAlertDataDeserializer alertDS = new IOSAlertDataDeserializer();
     private MediaAttachmentDeserializer mediaAttachmentDS = new MediaAttachmentDeserializer();
+    private IOSSoundDataDeserializer soundDS = new IOSSoundDataDeserializer();
 
     public IOSDevicePayloadReader() {
     }
 
     public void readAlert(JsonParser parser, DeserializationContext context) throws IOException {
         builder.setAlert(alertDS.deserialize(parser, context));
-    }
-
-    public void readSound(JsonParser parser) throws IOException {
-        builder.setSound(StringFieldDeserializer.INSTANCE.deserialize(parser, "sound"));
     }
 
     public void readBadge(JsonParser parser) throws IOException {
@@ -74,6 +71,10 @@ public class IOSDevicePayloadReader implements JsonObjectReader<IOSDevicePayload
         builder.setMutableContent(BooleanFieldDeserializer.INSTANCE.deserialize(parser, "mutable_content"));
     }
 
+    public void readSoundData(JsonParser parser, DeserializationContext context) throws IOException {
+        builder.setSoundData(soundDS.deserialize(parser, context));
+    }
+
     public void readMediaAttachment(JsonParser parser, DeserializationContext context) throws IOException {
         builder.setMediaAttachment(mediaAttachmentDS.deserialize(parser, context));
     }
@@ -82,6 +83,9 @@ public class IOSDevicePayloadReader implements JsonObjectReader<IOSDevicePayload
         builder.setCollapseId(StringFieldDeserializer.INSTANCE.deserialize(parser, "collapse_id"));
     }
 
+    public void readThreadId(JsonParser parser) throws IOException {
+        builder.setThreadId(StringFieldDeserializer.INSTANCE.deserialize(parser, "thread_id"));
+    }
     @Override
     public IOSDevicePayload validateAndBuild() throws IOException {
         try {

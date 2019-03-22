@@ -8,6 +8,7 @@ import com.google.common.base.Optional;
 import com.urbanairship.api.push.model.PushModelObject;
 
 import java.util.List;
+import java.util.Objects;
 
 public final class IOSAlertData extends PushModelObject {
 
@@ -16,17 +17,32 @@ public final class IOSAlertData extends PushModelObject {
     private final Optional<String> locKey;
     private final Optional<List<String>> locArgs;
     private final Optional<String> launchImage;
+    private final Optional<String> summaryArg;
+    private final Optional<Integer> summaryArgCount;
+    private final Optional<String> title;
+    private final Optional<List<String>> titleLocArgs;
+    private final Optional<String> titleLocKey;
 
     private IOSAlertData(Optional<String> body,
                          Optional<String> actionLocKey,
                          Optional<String> locKey,
                          Optional<List<String>> locArgs,
-                         Optional<String> launchImage) {
+                         Optional<String> launchImage,
+                         Optional<String> summaryArg,
+                         Optional<Integer> summaryArgCount,
+                         Optional<String> title,
+                         Optional<List<String>> titleLocArgs,
+                         Optional<String> titleLocKey) {
         this.body = body;
         this.actionLocKey = actionLocKey;
         this.locKey = locKey;
         this.locArgs = locArgs;
         this.launchImage = launchImage;
+        this.summaryArg = summaryArg;
+        this.summaryArgCount = summaryArgCount;
+        this.title = title;
+        this.titleLocArgs = titleLocArgs;
+        this.titleLocKey = titleLocKey;
     }
 
     public static Builder newBuilder() {
@@ -60,42 +76,46 @@ public final class IOSAlertData extends PushModelObject {
         return launchImage;
     }
 
+    public Optional<String> getSummaryArg() {
+        return summaryArg;
+    }
+
+    public Optional<Integer> getSummaryArgCount() {
+        return summaryArgCount;
+    }
+
+    public Optional<String> getTitle() {
+        return title;
+    }
+
+    public Optional<List<String>> getTitleLocArgs() {
+        return titleLocArgs;
+    }
+
+    public Optional<String> getTitleLocKey() {
+        return titleLocKey;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        IOSAlertData that = (IOSAlertData)o;
-        if (body != null ? !body.equals(that.body) : that.body != null) {
-            return false;
-        }
-        if (actionLocKey != null ? !actionLocKey.equals(that.actionLocKey) : that.actionLocKey != null) {
-            return false;
-        }
-        if (locKey != null ? !locKey.equals(that.locKey) : that.locKey != null) {
-            return false;
-        }
-        if (locArgs != null ? !locArgs.equals(that.locArgs) : that.locArgs != null) {
-            return false;
-        }
-        if (launchImage != null ? !launchImage.equals(that.launchImage) : that.launchImage != null) {
-            return false;
-        }
-        return true;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        IOSAlertData that = (IOSAlertData) o;
+        return Objects.equals(body, that.body) &&
+                Objects.equals(actionLocKey, that.actionLocKey) &&
+                Objects.equals(locKey, that.locKey) &&
+                Objects.equals(locArgs, that.locArgs) &&
+                Objects.equals(launchImage, that.launchImage) &&
+                Objects.equals(summaryArg, that.summaryArg) &&
+                Objects.equals(summaryArgCount, that.summaryArgCount) &&
+                Objects.equals(title, that.title) &&
+                Objects.equals(titleLocArgs, that.titleLocArgs) &&
+                Objects.equals(titleLocKey, that.titleLocKey);
     }
 
     @Override
     public int hashCode() {
-        int result = (body != null ? body.hashCode() : 0);
-        result = 31 * result + (actionLocKey != null ? actionLocKey.hashCode() : 0);
-        result = 31 * result + (locKey != null ? locKey.hashCode() : 0);
-        result = 31 * result + (locArgs != null ? locArgs.hashCode() : 0);
-        result = 31 * result + (launchImage != null ? launchImage.hashCode() : 0);
-        return result;
+        return Objects.hash(body, actionLocKey, locKey, locArgs, launchImage, summaryArg, summaryArgCount, title, titleLocArgs, titleLocKey);
     }
 
     @Override
@@ -106,15 +126,25 @@ public final class IOSAlertData extends PushModelObject {
                 ", locKey=" + locKey +
                 ", locArgs=" + locArgs +
                 ", launchImage=" + launchImage +
+                ", summaryArg=" + summaryArg +
+                ", summaryArgCount=" + summaryArgCount +
+                ", title=" + title +
+                ", titleLocArgs=" + titleLocArgs +
+                ", titleLocKey=" + titleLocKey +
                 '}';
     }
 
     public static class Builder {
-        private String body;
-        private String actionLocKey;
-        private String locKey;
-        private List<String> locArgs;
-        private String launchImage;
+        private String body = null;
+        private String actionLocKey = null;
+        private String locKey = null;
+        private List<String> locArgs = null;
+        private String launchImage = null;
+        private String summaryArg = null;
+        private Integer summaryArgCount = null;
+        private String title = null;
+        private List<String> titleLocArgs = null;
+        private String titleLocKey = null;
 
         private Builder() { }
 
@@ -143,12 +173,42 @@ public final class IOSAlertData extends PushModelObject {
             return this;
         }
 
+        public Builder setSummaryArg(String value) {
+            this.summaryArg = value;
+            return this;
+        }
+
+        public Builder setSummaryArgCount(Integer value) {
+            this.summaryArgCount = value;
+            return this;
+        }
+
+        public Builder setTitle(String value) {
+            this.title = value;
+            return this;
+        }
+
+        public Builder setTitleLocArgs(List<String> value) {
+            this.titleLocArgs = value;
+            return this;
+        }
+
+        public Builder setTitleLocKey(String value) {
+            this.titleLocKey = value;
+            return this;
+        }
+
         public IOSAlertData build() {
             return new IOSAlertData(Optional.fromNullable(body),
                                     Optional.fromNullable(actionLocKey),
                                     Optional.fromNullable(locKey),
                                     Optional.fromNullable(locArgs),
-                                    Optional.fromNullable(launchImage));
+                                    Optional.fromNullable(launchImage),
+                                    Optional.fromNullable(summaryArg),
+                                    Optional.fromNullable(summaryArgCount),
+                                    Optional.fromNullable(title),
+                                    Optional.fromNullable(titleLocArgs),
+                                    Optional.fromNullable(titleLocKey));
         }
     }
 }

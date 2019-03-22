@@ -26,11 +26,6 @@ public class IOSDevicePayloadDeserializer extends JsonDeserializer<IOSDevicePayl
                         reader.readAlert(json, context);
                     }
                 })
-            .put("sound", new FieldParser<IOSDevicePayloadReader>() {
-                    public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readSound(json);
-                    }
-                })
             .put("badge", new FieldParser<IOSDevicePayloadReader>() {
                     public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
                         reader.readBadge(json);
@@ -87,6 +82,11 @@ public class IOSDevicePayloadDeserializer extends JsonDeserializer<IOSDevicePayl
                     reader.readMutableContent(json);
                 }
             })
+            .put("sound", new FieldParser<IOSDevicePayloadReader>() {
+                public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                    reader.readSoundData(json, context);
+                }
+            })
             .put("media_attachment", new FieldParser<IOSDevicePayloadReader>() {
                 @Override
                 public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
@@ -97,6 +97,12 @@ public class IOSDevicePayloadDeserializer extends JsonDeserializer<IOSDevicePayl
                 @Override
                 public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
                     reader.readCollapseId(json);
+                }
+            })
+            .put("thread_id", new FieldParser<IOSDevicePayloadReader>() {
+                @Override
+                public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                    reader.readThreadId(json);
                 }
             })
             .build()

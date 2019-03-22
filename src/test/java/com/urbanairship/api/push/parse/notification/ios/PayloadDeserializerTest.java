@@ -6,8 +6,11 @@ import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.notification.ios.IOSAlertData;
 import com.urbanairship.api.push.model.notification.ios.IOSBadgeData;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
+import com.urbanairship.api.push.model.notification.ios.IOSSoundData;
 import com.urbanairship.api.push.parse.PushObjectMapper;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -19,6 +22,9 @@ import static org.junit.Assert.assertTrue;
 
 public class PayloadDeserializerTest {
     private static final ObjectMapper mapper = PushObjectMapper.getInstance();
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void testAlert() throws Exception {
@@ -47,23 +53,35 @@ public class PayloadDeserializerTest {
         String json
                 = "{"
                 + "  \"alert\": {"
+                + "    \"title\" : \"Super Cool Title\","
                 + "    \"body\" : \"B\","
+                + "    \"summary-arg\" : \"New England Patriots\","
+                + "    \"summary-arg-count\" : 1,"
                 + "    \"action-loc-key\" : \"ALK\","
                 + "    \"loc-key\" : \"LK\","
                 + "    \"loc-args\" : ["
                 + "        \"arg1\", \"arg2\""
                 + "      ],"
-                + "    \"launch-image\" : \"LI\""
+                + "    \"launch-image\" : \"LI\","
+                + "    \"title-loc-args\" : ["
+                + "        \"arg4\", \"arg5\""
+                + "      ],"
+                + "    \"title-loc-key\" : \"Special Key\""
                 + "  }"
                 + "}";
 
         IOSDevicePayload expected = IOSDevicePayload.newBuilder()
                 .setAlert(IOSAlertData.newBuilder()
+                        .setTitle("Super Cool Title")
                         .setBody("B")
                         .setActionLocKey("ALK")
                         .setLocKey("LK")
                         .setLocArgs(ImmutableList.of("arg1", "arg2"))
                         .setLaunchImage("LI")
+                        .setSummaryArg("New England Patriots")
+                        .setSummaryArgCount(1)
+                        .setTitleLocArgs(ImmutableList.of("arg4", "arg5"))
+                        .setTitleLocKey("Special Key")
                         .build())
                 .build();
 
@@ -77,11 +95,16 @@ public class PayloadDeserializerTest {
 
         IOSAlertData alert = payload.getAlertData().get();
         assertTrue(alert.isCompound());
+        assertEquals("Super Cool Title", alert.getTitle().get());
         assertEquals("B", alert.getBody().get());
         assertEquals("ALK", alert.getActionLocKey().get());
         assertEquals("LK", alert.getLocKey().get());
         assertEquals("LI", alert.getLaunchImage().get());
         assertEquals(2, alert.getLocArgs().get().size());
+        assertEquals("New England Patriots", alert.getSummaryArg().get());
+        assertEquals(1, alert.getSummaryArgCount().get().intValue());
+        assertEquals(2, alert.getTitleLocArgs().get().size());
+        assertEquals("Special Key", alert.getTitleLocKey().get());
     }
 
     @Test
@@ -101,23 +124,47 @@ public class PayloadDeserializerTest {
 
     @Test
     public void testSound() throws Exception {
-        String json
-                = "{"
-                + "  \"sound\": \"cat.wav\""
+        String json =
+                "{"
+                + "    \"name\" : \"Billy Bob Thorton\","
+                + "    \"critical\" : true,"
+                + "    \"volume\" : 0.5"
                 + "}";
 
-        IOSDevicePayload expected = IOSDevicePayload.newBuilder()
-                .setSound("cat.wav")
+        IOSSoundData payload = mapper.readValue(json, IOSSoundData.class);
+        String objectJson = mapper.writeValueAsString(payload);
+        IOSSoundData payload2 = mapper.readValue(json, IOSSoundData.class);
+
+        assertEquals(payload, payload2);
+
+        IOSSoundData expected = IOSSoundData.newBuilder()
+                .setName("Billy Bob Thorton")
+                .setCritical(true)
+                .setVolume(0.5)
                 .build();
 
-        IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
+        payload = mapper.readValue(objectJson, IOSSoundData.class);
         assertNotNull(payload);
-        assertNotNull(payload.getSound());
-        assertFalse(payload.getAlert().isPresent());
-        assertFalse(payload.getExtra().isPresent());
-        assertTrue(payload.getSound().isPresent());
-        assertEquals("cat.wav", payload.getSound().get());
+        assertEquals(0.5, payload.getVolume().get(), 0.0f);
+        assertEquals(true, payload.getCritical().get());
+        assertEquals("Billy Bob Thorton", payload.getName().get());
         assertEquals(expected, payload);
+    }
+
+    @Test
+    public void testSoundObjectWithNoName() throws Exception {
+        String json =
+                "{"
+                + "  \"sound\": {"
+                + "    \"name\" : \"Billy Bob Thorton\","
+                + "    \"critical\" : true,"
+                + "    \"volume\" : 0.5"
+                + "  }"
+                + "}";
+
+        thrown.expect(APIParsingException.class);
+        thrown.expectMessage("The sound file name cannot be null");
+        mapper.readValue(json, IOSSoundData.class);
     }
 
     @Test
@@ -188,7 +235,7 @@ public class PayloadDeserializerTest {
 
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
         assertNotNull(payload);
-        assertNotNull(payload.getSound());
+        assertNotNull(payload.getSoundData());
         assertTrue(payload.getContentAvailable().isPresent());
         assertEquals(true, payload.getContentAvailable().get());
         assertEquals(expected, payload);
@@ -229,7 +276,7 @@ public class PayloadDeserializerTest {
         assertFalse(payload.getAlert().isPresent());
         assertFalse(payload.getExtra().isPresent());
         assertFalse(payload.getBadge().isPresent());
-        assertFalse(payload.getSound().isPresent());
+        assertFalse(payload.getSoundData().isPresent());
         assertFalse(payload.getContentAvailable().isPresent());
     }
 
@@ -265,12 +312,23 @@ public class PayloadDeserializerTest {
     }
 
     @Test
+    public void testThreadId() throws Exception {
+        String json
+                = "{"
+                + "  \"thread_id\": \"woof\""
+                + "}";
+        IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
+        assertTrue(payload.getThreadId().get().equals("woof"));
+    }
+
+    @Test
     public void testIos10Extras() throws Exception {
         String json
             = "{\n" +
                 "    \"alert\": \"alert\"," +
                 "    \"subtitle\": \"subtitle\"," +
                 "    \"mutable_content\": true," +
+                "    \"sound\": \"beep boop\"," +
                 "    \"media_attachment\": {" +
                 "        \"url\": \"https://media.giphy.com/media/JYsWwF82EGnpC/giphy.gif\"," +
                 "        \"options\": {" +
@@ -289,7 +347,8 @@ public class PayloadDeserializerTest {
                 "            \"subtitle\": \"content subtitle\"" +
                 "        }" +
                 "    }," +
-                "    \"collapse_id\": \"collapseId\"" +
+                "    \"collapse_id\": \"collapseId\"," +
+                "    \"thread_id\": \"threadId\"" +
                 "}";
 
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
@@ -305,6 +364,9 @@ public class PayloadDeserializerTest {
         //Collapse ID
         assertTrue(payload.getCollapseId().get().equals("collapseId"));
 
+        //Thread ID
+        assertTrue(payload.getThreadId().get().equals("threadId"));
+
         //Mutable Content
         assertTrue(payload.getMutableContent().get().equals(true));
 
@@ -313,6 +375,9 @@ public class PayloadDeserializerTest {
 
         //Media Attachment
         assertTrue(payload.getMediaAttachment().get().getUrl().equals("https://media.giphy.com/media/JYsWwF82EGnpC/giphy.gif"));
+
+        //Sound
+        assertTrue(payload.getSound().get().equals("beep boop"));
 
         //options
         assertTrue(payload.getMediaAttachment().get().getOptions().get().getTime().get().equals(10));

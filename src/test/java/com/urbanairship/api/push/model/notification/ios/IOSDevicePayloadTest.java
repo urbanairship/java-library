@@ -61,8 +61,13 @@ public class IOSDevicePayloadTest {
                 .setContent(content)
                 .build();
 
+        IOSSoundData iosSoundData = IOSSoundData.newBuilder()
+                .setCritical(true)
+                .setVolume(0.5)
+                .setName("really cool name")
+                .build();
+
         IOSDevicePayload m = IOSDevicePayload.newBuilder()
-                .setSound("this is a sound")
                 .setContentAvailable(true)
                 .setAlert(IOSAlertData.newBuilder().build())
                 .setBadge(IOSBadgeData.newBuilder().setType(IOSBadgeData.Type.VALUE).setValue(1).build())
@@ -72,7 +77,9 @@ public class IOSDevicePayloadTest {
                 .setTitle("title")
                 .setSubtitle("subtitle")
                 .setMediaAttachment(mediaAttachment)
+                .setSoundData(iosSoundData)
                 .setMutableContent(true)
+                .setThreadId("unique ID")
                 .build();
 
         assertTrue(m.getExtra().isPresent());
@@ -84,7 +91,6 @@ public class IOSDevicePayloadTest {
         assertEquals(t, m.getExpiry().get().getExpirySeconds().get());
         assertTrue(m.getAlertData().isPresent());
         assertTrue(m.getBadge().isPresent());
-        assertEquals("this is a sound", m.getSound().get());
         assertTrue(m.getContentAvailable().get());
         assertEquals("title", m.getTitle().get());
         assertEquals("subtitle", m.getSubtitle().get());
@@ -92,6 +98,9 @@ public class IOSDevicePayloadTest {
         assertEquals("content body", m.getMediaAttachment().get().getContent().get().getBody().get());
         assertEquals("content title", m.getMediaAttachment().get().getContent().get().getTitle().get());
         assertEquals("content subtitle", m.getMediaAttachment().get().getContent().get().getSubtitle().get());
+        assertEquals(true, m.getSoundData().get().getCritical().get());
+        assertEquals(0.5, m.getSoundData().get().getVolume().get(), 0.0f);
+        assertEquals("really cool name", m.getSound().get());
         Integer time = 10;
         assertEquals(time, m.getMediaAttachment().get().getOptions().get().getTime().get());
         assertEquals(height, m.getMediaAttachment().get().getOptions().get().getCrop().get().getHeight().get());
@@ -100,6 +109,7 @@ public class IOSDevicePayloadTest {
         assertEquals(y, m.getMediaAttachment().get().getOptions().get().getCrop().get().getY().get());
         Boolean hidden = true;
         assertEquals(hidden, m.getMediaAttachment().get().getOptions().get().getHidden().get());
+        assertEquals("unique ID", m.getThreadId().get());
     }
 
 }
