@@ -5,10 +5,11 @@
 package com.urbanairship.api.push.parse.notification.ios;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.common.parse.IntFieldDeserializer;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.common.parse.ListOfStringsDeserializer;
 import com.urbanairship.api.common.parse.StringFieldDeserializer;
+import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.notification.ios.IOSAlertData;
 
 import java.io.IOException;
@@ -38,6 +39,26 @@ public class IOSAlertDataReader implements JsonObjectReader<IOSAlertData> {
 
     public void readLaunchImage(JsonParser parser) throws IOException {
         builder.setLaunchImage(StringFieldDeserializer.INSTANCE.deserialize(parser, "launch-image"));
+    }
+
+    public void readSummaryArg(JsonParser parser) throws  IOException {
+        builder.setSummaryArg(StringFieldDeserializer.INSTANCE.deserialize(parser, "summary-arg"));
+    }
+
+    public void readSummaryArgCount(JsonParser parser) throws  IOException {
+        builder.setSummaryArgCount(IntFieldDeserializer.INSTANCE.deserialize(parser, "summary-arg-count"));
+    }
+
+    public void readTitle(JsonParser parser) throws IOException {
+        builder.setTitle(StringFieldDeserializer.INSTANCE.deserialize(parser, "title"));
+    }
+
+    public void readTitleLocArgs(JsonParser parser) throws IOException {
+        builder.setTitleLocArgs(ListOfStringsDeserializer.INSTANCE.deserialize(parser, "title-loc-args"));
+    }
+
+    public void readTitleLocKey(JsonParser parser) throws IOException {
+        builder.setTitleLocKey(StringFieldDeserializer.INSTANCE.deserialize(parser, "title-loc-key"));
     }
 
     @Override

@@ -48,6 +48,31 @@ public class IOSAlertDataDeserializer extends JsonDeserializer<IOSAlertData> {
                         reader.readLaunchImage(json);
                     }
                 })
+            .put("summary-arg", new FieldParser<IOSAlertDataReader>() {
+                    public void parse(IOSAlertDataReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                        reader.readSummaryArg(json);
+                    }
+                })
+            .put("summary-arg-count", new FieldParser<IOSAlertDataReader>() {
+                    public void parse(IOSAlertDataReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                        reader.readSummaryArgCount(json);
+                    }
+            })
+            .put("title", new FieldParser<IOSAlertDataReader>() {
+                    public void parse(IOSAlertDataReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                        reader.readTitle(json);
+                    }
+            })
+            .put("title-loc-args", new FieldParser<IOSAlertDataReader>() {
+                    public void parse(IOSAlertDataReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                        reader.readTitleLocArgs(json);
+                    }
+            })
+            .put("title-loc-key", new FieldParser<IOSAlertDataReader>() {
+                    public void parse(IOSAlertDataReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                        reader.readTitleLocKey(json);
+                    }
+            })
             .build()
             );
 

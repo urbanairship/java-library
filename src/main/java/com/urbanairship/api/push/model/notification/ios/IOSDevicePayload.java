@@ -14,6 +14,7 @@ import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.urbanairship.api.push.model.notification.Interactive;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * IOSDevicePayload for iOS specific push messages.
@@ -22,7 +23,6 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
     private final Optional<IOSAlertData> alert;
     private final Optional<ImmutableMap<String, String>> extra;
-    private final Optional<String> sound;
     private final Optional<IOSBadgeData> badge;
     private final Optional<Boolean> contentAvailable;
     private final Optional<PushExpiry> expiry;
@@ -32,11 +32,12 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
     private final Optional<String> title;
     private final Optional<String> subtitle;
     private final Optional<MediaAttachment> mediaAttachment;
+    private final Optional<IOSSoundData> sound;
     private final Optional<Boolean> mutableContent;
     private final Optional<String> collapseId;
+    private final Optional<String> threadId;
 
     private IOSDevicePayload(Optional<IOSAlertData> alert,
-                             Optional<String> sound,
                              Optional<IOSBadgeData> badge,
                              Optional<Boolean> contentAvailable,
                              Optional<PushExpiry> expiry,
@@ -47,10 +48,11 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                              Optional<String> title,
                              Optional<String> subtitle,
                              Optional<MediaAttachment> mediaAttachment,
+                             Optional<IOSSoundData> sound,
                              Optional<Boolean> mutableContent,
-                             Optional<String> collapseId) {
+                             Optional<String> collapseId,
+                             Optional<String> threadId) {
         this.alert = alert;
-        this.sound = sound;
         this.badge = badge;
         this.contentAvailable = contentAvailable;
         this.extra = extra;
@@ -61,8 +63,10 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         this.title = title;
         this.subtitle = subtitle;
         this.mediaAttachment = mediaAttachment;
+        this.sound = sound;
         this.mutableContent = mutableContent;
         this.collapseId = collapseId;
+        this.threadId = threadId;
     }
 
     /**
@@ -97,14 +101,6 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
      */
     public Optional<IOSAlertData> getAlertData() {
         return alert;
-    }
-
-    /**
-     * Get the sound file name
-     * @return Optional string representing the sound file name
-     */
-    public Optional<String> getSound() {
-        return sound;
     }
 
     /**
@@ -197,6 +193,27 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
     }
 
     /**
+     * Get the IOSSoundData if present.
+     * @return Optional IOSSoundData object
+     */
+    public Optional<IOSSoundData> getSoundData() { return sound; }
+
+
+    /**
+     * @deprecated The sound name can now be retrieved from getSoundData() as of 4.1.0.
+     *
+     * Gets the sound file name.
+     * @return String sound file name
+     */
+    @Deprecated
+    public Optional<String> getSound() {
+        if (!sound.isPresent()) {
+            return Optional.absent();
+        }
+        return sound.get().getName();
+    }
+
+    /**
      * Get the Collapse ID String. When there is a newer message that renders an older, related message irrelevant to the client app,
      * the new message replaces the older message with the same collapse ID. Similar to the GCM collapse key. iOS 10.
      * @return Optional String representation of the collapse ID.
@@ -205,99 +222,64 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         return collapseId;
     }
 
+    /**
+     * Get the thread ID.
+     * @return Optional String representation of thread ID.
+     */
+    public Optional<String> getThreadId() {
+        return threadId;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        IOSDevicePayload that = (IOSDevicePayload)o;
-        if (alert != null ? !alert.equals(that.alert) : that.alert != null) {
-            return false;
-        }
-        if (extra != null ? !extra.equals(that.extra) : that.extra != null) {
-            return false;
-        }
-        if (sound != null ? !sound.equals(that.sound) : that.sound != null) {
-            return false;
-        }
-        if (badge != null ? !badge.equals(that.badge) : that.badge != null) {
-            return false;
-        }
-        if (contentAvailable != null ? !contentAvailable.equals(that.contentAvailable) : that.contentAvailable != null) {
-            return false;
-        }
-        if (expiry != null ? ! expiry.equals(that.expiry) : that.expiry != null) {
-            return false;
-        }
-        if (priority != null ? ! priority.equals(that.priority) : that.priority != null) {
-            return false;
-        }
-        if (category!= null ? ! category.equals(that.category) : that.category != null) {
-            return false;
-        }
-        if (interactive!= null ? ! interactive.equals(that.interactive) : that.interactive != null) {
-            return false;
-        }
-        if (title!= null ? ! title.equals(that.title) : that.title != null) {
-            return false;
-        }
-        if(subtitle!= null ? ! subtitle.equals(that.subtitle) : that.subtitle != null) {
-            return false;
-        }
-        if(mediaAttachment != null ? ! mediaAttachment.equals(that.mediaAttachment) : that.mediaAttachment != null) {
-            return false;
-        }
-        if(mutableContent != null ? ! mutableContent.equals(that.mutableContent) : that.mutableContent != null) {
-            return false;
-        }
-        return true;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        IOSDevicePayload that = (IOSDevicePayload) o;
+        return Objects.equals(alert, that.alert) &&
+                Objects.equals(extra, that.extra) &&
+                Objects.equals(badge, that.badge) &&
+                Objects.equals(contentAvailable, that.contentAvailable) &&
+                Objects.equals(expiry, that.expiry) &&
+                Objects.equals(priority, that.priority) &&
+                Objects.equals(category, that.category) &&
+                Objects.equals(interactive, that.interactive) &&
+                Objects.equals(title, that.title) &&
+                Objects.equals(subtitle, that.subtitle) &&
+                Objects.equals(mediaAttachment, that.mediaAttachment) &&
+                Objects.equals(sound, that.sound) &&
+                Objects.equals(mutableContent, that.mutableContent) &&
+                Objects.equals(collapseId, that.collapseId) &&
+                Objects.equals(threadId, that.threadId);
     }
 
     @Override
     public int hashCode() {
-        int result = (alert != null ? alert.hashCode() : 0);
-        result = 31 * result + (extra != null ? extra.hashCode() : 0);
-        result = 31 * result + (sound != null ? sound.hashCode() : 0);
-        result = 31 * result + (badge != null ? badge.hashCode() : 0);
-        result = 31 * result + (contentAvailable != null ? contentAvailable.hashCode() : 0);
-        result = 31 * result + ( expiry != null ?  expiry.hashCode() : 0);
-        result = 31 * result + (priority != null ? priority.hashCode() : 0);
-        result = 31 * result + (category != null ? category.hashCode() : 0);
-        result = 31 * result + (interactive != null ? interactive.hashCode() : 0);
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (mediaAttachment != null ? mediaAttachment.hashCode() : 0);
-        result = 31 * result + (mutableContent != null ? mutableContent.hashCode() : 0);
-        result = 31 * result + (collapseId != null ? collapseId.hashCode() : 0);
-        return result;
+        return Objects.hash(alert, extra, badge, contentAvailable, expiry, priority, category, interactive, title, subtitle, mediaAttachment, sound, mutableContent, collapseId, threadId);
     }
 
     @Override
     public String toString() {
         return "IOSDevicePayload{" +
-            "alert=" + alert +
-            ", extra=" + extra +
-            ", sound=" + sound +
-            ", badge=" + badge +
-            ", expiry=" + expiry +
-            ", priority" + priority +
-            ", contentAvailable=" + contentAvailable +
-            ", category=" + category +
-            ", interactive=" + interactive +
-            ", title=" + title +
-            ", subtitle=" + subtitle +
-            ", mediaAttachment=" + mediaAttachment +
-            ", mutable_content=" + mutableContent +
-            ", collapse_id=" + collapseId +
+                "alert=" + alert +
+                ", extra=" + extra +
+                ", badge=" + badge +
+                ", contentAvailable=" + contentAvailable +
+                ", expiry=" + expiry +
+                ", priority=" + priority +
+                ", category=" + category +
+                ", interactive=" + interactive +
+                ", title=" + title +
+                ", subtitle=" + subtitle +
+                ", mediaAttachment=" + mediaAttachment +
+                ", sound=" + sound +
+                ", mutableContent=" + mutableContent +
+                ", collapseId=" + collapseId +
+                ", threadId=" + threadId +
                 '}';
     }
 
     public static class Builder {
         private IOSAlertData alert = null;
-        private String sound = null;
         private IOSBadgeData badge = null;
         private Boolean contentAvailable = null;
         private ImmutableMap.Builder<String, String> extra = null;
@@ -308,8 +290,10 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         private String title = null;
         private String subtitle = null;
         private MediaAttachment mediaAttachment = null;
+        private IOSSoundData sound = null;
         private Boolean mutableContent = null;
         private String collapseId = null;
+        private String threadId = null;
 
         private Builder() { }
 
@@ -335,17 +319,6 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
          */
         public Builder setAlert(IOSAlertData alert) {
             this.alert = alert;
-            return this;
-        }
-
-        /**
-         * Set the filename for the sound. A matching sound file that meets
-         * Apple requirements needs to reside on the device.
-         * @param sound Sound file name
-         * @return Builder
-         */
-        public Builder setSound(String sound) {
-            this.sound = sound;
             return this;
         }
 
@@ -463,6 +436,33 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         }
 
         /**
+         * Set the IOSSoundData object.
+         *
+         * @param value IOSSoundData
+         * @return Builder
+         */
+        public Builder setSoundData(IOSSoundData value) {
+            this.sound = value;
+            return this;
+        }
+
+        /**
+         * @deprecated This can now be set using setSoundData as of 4.1.0.
+         *
+         * Sets the name of the IOSSoundData object. This is a shortcut for when the only value pertaining to the 'sound' key is a sound file name.
+         *
+         * @param name String
+         * @return Builder
+         */
+        @Deprecated
+        public Builder setSound(String name) {
+            this.sound = IOSSoundData.newBuilder()
+                    .setName(name)
+                    .build();
+            return this;
+        }
+
+        /**
          * Set the mutable content
          * @param value Boolean
          * @return Builder
@@ -483,13 +483,22 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         }
 
         /**
+         * Set the thread ID.
+         * @param value String
+         * @return Builder
+         */
+        public Builder setThreadId(String value) {
+            this.threadId = value;
+            return this;
+        }
+
+        /**
          * Build IOSDevicePayload
          * @return IOSDevicePayload
          */
         public IOSDevicePayload build() {
             // Yes, empty payloads are valid (for Passes)
             return new IOSDevicePayload(Optional.fromNullable(alert),
-                    Optional.fromNullable(sound),
                     Optional.fromNullable(badge),
                     Optional.fromNullable(contentAvailable),
                     Optional.fromNullable(expiry),
@@ -500,8 +509,10 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                     Optional.fromNullable(title),
                     Optional.fromNullable(subtitle),
                     Optional.fromNullable(mediaAttachment),
+                    Optional.fromNullable(sound),
                     Optional.fromNullable(mutableContent),
-                    Optional.fromNullable(collapseId));
+                    Optional.fromNullable(collapseId),
+                    Optional.fromNullable(threadId));
         }
     }
 }

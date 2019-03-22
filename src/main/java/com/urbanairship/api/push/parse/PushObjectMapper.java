@@ -255,6 +255,8 @@ public class PushObjectMapper {
                 .addDeserializer(Crop.class, new CropDeserializer())
                 .addSerializer(IOSMediaContent.class, new IOSMediaContentSerializer())
                 .addDeserializer(IOSMediaContent.class, new IOSMediaContentDeserializer())
+                .addSerializer(IOSSoundData.class, new IOSSoundDataSerializer())
+                .addDeserializer(IOSSoundData.class, new IOSSoundDataDeserializer())
 
                 /* WNS enums */
                 .addSerializer(WNSToastData.Duration.class, new WNSDurationSerializer())

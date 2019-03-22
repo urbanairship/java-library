@@ -88,9 +88,9 @@ public final class IOSMediaOptions extends PushModelObject{
     }
 
     public static class Builder {
-        private Integer time;
-        private Crop crop;
-        private Boolean hidden;
+        private Integer time = null;
+        private Crop crop= null;
+        private Boolean hidden = null;
 
         private Builder() { }
 
