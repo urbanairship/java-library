@@ -46,7 +46,6 @@ public class CreateAndSendEmailTest {
     Campaigns campaign;
     CreateAndSendPayload payload;
     CreateAndSendRequest request;
-    UrbanAirshipClient client;
     CreateAndSendPayload templatePayload;
 
     @Before
@@ -95,11 +94,6 @@ public class CreateAndSendEmailTest {
                 .build();
 
         request = CreateAndSendRequest.newRequest(payload);
-
-        client = UrbanAirshipClient.newBuilder()
-                .setKey("ISex_TTJRuarzs9-o_Gkhg")
-                .setSecret("nDq-bQ3CT92PqCIXNtQyCQ")
-                .build();
 
         EmailTemplate template = EmailTemplate.newBuilder()
                 .setEmailFields(EmailFields.newBuilder()
