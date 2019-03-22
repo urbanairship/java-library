@@ -200,10 +200,9 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
 
 
     /**
-     * @deprecated
-     * The sound can be retrieved from getSoundData()
+     * @deprecated The sound name can now be retrieved from getSoundData() as of 4.1.0.
      *
-     * Get the sound file name.
+     * Gets the sound file name.
      * @return String sound file name
      */
     @Deprecated
@@ -448,10 +447,9 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         }
 
         /**
-         * @deprecated
-         * This is being replaced by setSoundData.
+         * @deprecated This can now be set using setSoundData as of 4.1.0.
          *
-         * Set the name of the IOSSoundData object. This is a shortcut for when the only value pertaining to the 'sound' key is a sound file name.
+         * Sets the name of the IOSSoundData object. This is a shortcut for when the only value pertaining to the 'sound' key is a sound file name.
          *
          * @param name String
          * @return Builder
