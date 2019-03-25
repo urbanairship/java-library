@@ -81,10 +81,24 @@ public class RequestErrorTest {
 
     @Test
     public void testTemplateRequestErrorDeserialization() throws IOException {
-        InputStream responseStream = this.getClass()
-                .getResourceAsStream("/com/urbanairship/api/client/template-request-error.json");
-        String response = new BufferedReader(new InputStreamReader(responseStream))
-                .lines().collect(Collectors.joining("\n"));
+        String response = "{\n" +
+                "  \"ok\": false,\n" +
+                "  \"error\": \"child \\\"id\\\" fails because [\\\"id\\\" must be a valid GUID]\",\n" +
+                "  \"details\": [\n" +
+                "    {\n" +
+                "      \"message\": \"\\\"id\\\" must be a valid GUID\",\n" +
+                "      \"path\": [\n" +
+                "        \"id\"\n" +
+                "      ],\n" +
+                "      \"type\": \"string.guid\",\n" +
+                "      \"context\": {\n" +
+                "        \"value\": \"template-id-123\",\n" +
+                "        \"key\": \"id\",\n" +
+                "        \"label\": \"id\"\n" +
+                "      }\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
 
         RequestError error = RequestError.errorFromResponse(response, RequestError.UA_APPLICATION_JSON_V3);
 
