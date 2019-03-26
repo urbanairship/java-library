@@ -1,4 +1,14 @@
 -------------------------
+4.1.0 11DEC18
+-------------------------
+- Added support for Response reporting.
+- Added support for Devices reporting.
+- Added support for more iOS alert extras.
+- Updated to Jackson version 2.9.8 due to security vulnerability.
+- Fixed an issue with handling request errors from the template API.
+- Updated RequestError parsing to handle additional white spaces.
+
+-------------------------
 4.0.2 11DEC18
 -------------------------
 - Fixed a crash when using SMS create and send.
