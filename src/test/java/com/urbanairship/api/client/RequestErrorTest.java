@@ -109,6 +109,28 @@ public class RequestErrorTest {
     }
 
     @Test
+    public void testSpaceInContentType() throws IOException {
+        String errorJSON = "{\n" +
+                "    \"ok\" : false,\n" +
+                "    \"operation_id\" : \"operation id\",\n" +
+                "    \"error\" : \"Invalid push content\",\n" +
+                "    \"error_code\" : 40001,\n" +
+                "    \"details\" : {\n" +
+                "        \"error\" : \"error message\",\n" +
+                "        \"path\" : \"push.wns.text\",\n" +
+                "        \"location\" : {\n" +
+                "            \"line\" : 47,\n" +
+                "            \"column\" : 12\n" +
+                "        }\n" +
+                "    }\n" +
+                "}";
+
+        RequestError errorWithSpace = RequestError.errorFromResponse(errorJSON, "application/ vnd.urbanairship+json");
+        RequestError errorWithoutSpace = RequestError.errorFromResponse(errorJSON, "application/vnd.urbanairship+json");
+        assertEquals(errorWithoutSpace, errorWithSpace);
+    }
+
+    @Test
     public void testDeprecatedJsonRequestErrorDeserialization() throws Exception {
         String errorJSON = "{\"message\":\"Unauthorized\"}";
         RequestError error = RequestError.newBuilder().setError("Unauthorized").build();
