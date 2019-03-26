@@ -58,6 +58,7 @@ public final class RequestError {
      * @throws IOException if it fails reading the error
      */
     public static RequestError errorFromResponse(String body, String contentType) throws IOException {
+        contentType = contentType.replace(" ", "");
 
         // Text/html
         if (contentType.equalsIgnoreCase(CONTENT_TYPE_TEXT_HTML)) {
