@@ -5,9 +5,11 @@
 package com.urbanairship.api.client;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Optional;
 import com.urbanairship.api.client.parse.RequestErrorObjectMapper;
+import com.urbanairship.api.common.parse.APIParsingException;
 
 import java.io.IOException;
 import java.util.Map;
@@ -24,7 +26,7 @@ public final class RequestError {
     private final static String CONTENT_TYPE_TEXT_HTML = "text/html";
     private final static String CONTENT_TYPE_JSON = "application/json";
     private final static String UA_APPLICATION_JSON = "application/vnd.urbanairship+json";
-    private final static String UA_APPLICATION_JSON_V3 = "application/vnd.urbanairship+json;version=3";
+    final static String UA_APPLICATION_JSON_V3 = "application/vnd.urbanairship+json;version=3";
 
     private final boolean ok;
     private final Optional<String> operationId;
@@ -69,8 +71,13 @@ public final class RequestError {
 
         // v3 JSON parsing
         else if (contentType.equalsIgnoreCase(UA_APPLICATION_JSON) || contentType.equalsIgnoreCase(UA_APPLICATION_JSON_V3)) {
-            ObjectMapper mapper = RequestErrorObjectMapper.getInstance();
-            return mapper.readValue(body, RequestError.class);
+            try {
+                ObjectMapper mapper = RequestErrorObjectMapper.getInstance();
+                return mapper.readValue(body, RequestError.class);
+            } catch (APIParsingException e) {
+                //Templates API returns a v3 Content-Type header, but does not conform to the standard error type
+                return nonV3JSONError(body);
+            }
         }
 
         // wut?
@@ -100,15 +107,69 @@ public final class RequestError {
     @Deprecated
     private static RequestError nonV3JSONError(String body) throws IOException {
         ObjectMapper mapper = RequestErrorObjectMapper.getInstance();
+        JsonNode error = mapper.readTree(body);
 
-        Map<String, String> errorMsg =
-                mapper.readValue(body,
-                        new TypeReference<Map<String, String>>() {
-                        });
+        String errorMessage = extractErrorMessage(error);
 
         return RequestError.newBuilder()
-                .setError(errorMsg.get("message"))
+                .setError(errorMessage)
                 .build();
+    }
+
+    private static String extractErrorMessage(JsonNode error) {
+        java.util.Optional<String> topLevelMessage = getTopLevelMessage(error);
+        java.util.Optional<String> detailMessage = getDetailMessage(error);
+        java.util.Optional<String> detailArrayMessage = getDetailArrayMessage(error);
+
+        String errorMessage;
+        if (topLevelMessage.isPresent()) {
+            errorMessage = topLevelMessage.get();
+        } else if (detailMessage.isPresent()) {
+            errorMessage = detailMessage.get();
+        } else if (detailArrayMessage.isPresent()) {
+            errorMessage = detailArrayMessage.get();
+        } else {
+            errorMessage = "Unknown response parsing error";
+        }
+
+        return errorMessage;
+    }
+
+    private static java.util.Optional<String> getTopLevelMessage(JsonNode error) {
+        JsonNode message = error.get("message");
+
+        if (message != null) {
+            return java.util.Optional.of(message.asText());
+        } else {
+            return java.util.Optional.empty();
+        }
+    }
+
+    private static java.util.Optional<String> getDetailMessage(JsonNode error) {
+        JsonNode details = error.get("details");
+        if (details != null && !details.isArray()) {
+            JsonNode message = details.get("message");
+            if (message != null) {
+                return java.util.Optional.of(message.asText());
+            }
+        }
+
+        return java.util.Optional.empty();
+    }
+
+    private static java.util.Optional<String> getDetailArrayMessage(JsonNode error) {
+        JsonNode details = error.get("details");
+        if (details != null && details.isArray()) {
+            JsonNode firstDetail = details.get(0);
+            if (firstDetail != null) {
+                JsonNode detailMessage = firstDetail.get("message");
+                if (detailMessage != null) {
+                    return java.util.Optional.of(detailMessage.asText());
+                }
+            }
+        }
+
+        return java.util.Optional.empty();
     }
 
     /**
