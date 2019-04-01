@@ -37,11 +37,12 @@ public final class ChannelView {
     private final Optional<WebSettings> web;
     private final Optional<OpenChannel> open;
     private final Optional<String> address;
+    private final Optional<String> namedUser;
 
     private ChannelView() {
         this(null, null, true, true, Optional.<Boolean>absent(), Optional.<String>absent(), null,
             Optional.<DateTime>absent(), Optional.<String>absent(), null, null, Optional.<IosSettings>absent(),
-                Optional.<WebSettings>absent(), Optional.<OpenChannel>absent(), Optional.<String>absent());
+                Optional.<WebSettings>absent(), Optional.<OpenChannel>absent(), Optional.<String>absent(), Optional.absent());
     }
 
     private ChannelView(String channelId,
@@ -58,7 +59,8 @@ public final class ChannelView {
                        Optional<IosSettings> iosSettings,
                        Optional<WebSettings> web,
                        Optional<OpenChannel> open,
-                       Optional<String> address) {
+                       Optional<String> address,
+                       Optional<String> namedUser) {
         this.channelId = channelId;
         this.channelType = channelType;
         this.installed = installed;
@@ -74,6 +76,7 @@ public final class ChannelView {
         this.web = web;
         this.open = open;
         this.address = address;
+        this.namedUser = namedUser;
     }
 
     /**
@@ -221,6 +224,10 @@ public final class ChannelView {
         return address;
     }
 
+    public Optional<String> getNamedUser() {
+        return namedUser;
+    }
+
     @Override
     public String toString() {
         return "ChannelView{" +
@@ -239,12 +246,13 @@ public final class ChannelView {
                 ", web=" + web +
                 ", open=" + open +
                 ", address=" + address +
+                ", namedUser=" + namedUser +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(channelId, channelType, installed, optIn, background, pushAddress, created, lastRegistration, alias, tags, tagGroups, iosSettings, web, open, address);
+        return Objects.hashCode(channelId, channelType, installed, optIn, background, pushAddress, created, lastRegistration, alias, tags, tagGroups, iosSettings, web, open, address, namedUser);
     }
 
     @Override
@@ -266,7 +274,8 @@ public final class ChannelView {
                 Objects.equal(iosSettings, that.iosSettings) &&
                 Objects.equal(web, that.web) &&
                 Objects.equal(open, that.open) &&
-                Objects.equal(address, that.address);
+                Objects.equal(address, that.address) &&
+                Objects.equal(namedUser, that.namedUser);
     }
 
     public final static class Builder {
@@ -285,6 +294,7 @@ public final class ChannelView {
         private WebSettings webSettings = null;
         private OpenChannel openChannel = null;
         private String address = null;
+        private String namedUser = null;
 
         private Builder() {
         }
@@ -485,6 +495,16 @@ public final class ChannelView {
         }
 
         /**
+         * Set the named user.
+         * @param namedUser String
+         * @return Builder
+         */
+        public Builder setNamedUser(String namedUser) {
+            this.namedUser = namedUser;
+            return this;
+        }
+
+        /**
          * Build the ChannelView object
          * @return ChannelView
          */
@@ -510,7 +530,8 @@ public final class ChannelView {
                 Optional.fromNullable(iosSettings),
                 Optional.fromNullable(webSettings),
                 Optional.fromNullable(openChannel),
-                Optional.fromNullable(address)
+                Optional.fromNullable(address),
+                Optional.fromNullable(namedUser)
             );
         }
     }
