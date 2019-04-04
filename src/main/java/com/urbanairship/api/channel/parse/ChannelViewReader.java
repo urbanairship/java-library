@@ -101,7 +101,7 @@ public final class ChannelViewReader implements JsonObjectReader<ChannelView> {
     }
 
     public void readNamedUser(JsonParser jsonParser) throws IOException {
-        builder.setNamedUser(StringFieldDeserializer.INSTANCE.deserialize(jsonParser, Constants.NAMED_USER));
+        builder.setNamedUser(jsonParser.readValueAs(String.class));
     }
 
     @Override
