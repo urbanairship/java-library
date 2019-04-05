@@ -50,7 +50,6 @@ public final class ChannelView {
         this.lastRegistration = Optional.fromNullable(builder.lastRegistration);
         this.alias = Optional.fromNullable(builder.alias);
         this.tags = builder.tags.build();
-
         this.tagGroups = builder.tagGroups.build();
         this.iosSettings = Optional.fromNullable(builder.iosSettings);
         this.web = Optional.fromNullable(builder.webSettings);
