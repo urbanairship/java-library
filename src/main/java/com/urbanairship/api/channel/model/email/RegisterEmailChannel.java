@@ -15,7 +15,6 @@ import java.util.Map;
  * Represents the payload to be used for registering or updating an email channel.
  */
 public class RegisterEmailChannel extends PushModelObject {
-
     private final ChannelType type;
     private final Optional<Map<OptInLevel, String>> emailOptInLevel;
     private final String address;
@@ -24,7 +23,6 @@ public class RegisterEmailChannel extends PushModelObject {
     private final Optional<String> timezone;
     private final Optional<String> localeCountry;
     private final Optional<String> localeLanguage;
-
 
     //Protected to facilitate subclassing for create and send child object
     protected RegisterEmailChannel(Builder builder) {
@@ -35,7 +33,6 @@ public class RegisterEmailChannel extends PushModelObject {
         this.timezone = Optional.fromNullable(builder.timezone);
         this.localeCountry = Optional.fromNullable(builder.localeCountry);
         this.localeLanguage = Optional.fromNullable(builder.localeLanguage);
-
 
         if (builder.tags.build().isEmpty()) {
             this.tags = Optional.absent();
