@@ -37,43 +37,25 @@ public final class ChannelView {
     private final Optional<WebSettings> web;
     private final Optional<OpenChannel> open;
     private final Optional<String> address;
+    private final Optional<String> namedUser;
 
-    private ChannelView() {
-        this(null, null, true, true, Optional.<Boolean>absent(), Optional.<String>absent(), null,
-            Optional.<DateTime>absent(), Optional.<String>absent(), null, null, Optional.<IosSettings>absent(),
-                Optional.<WebSettings>absent(), Optional.<OpenChannel>absent(), Optional.<String>absent());
-    }
-
-    private ChannelView(String channelId,
-                       String channelType,
-                       boolean installed,
-                       boolean optIn,
-                       Optional<Boolean> background,
-                       Optional<String> pushAddress,
-                       DateTime created,
-                       Optional<DateTime> lastRegistration,
-                       Optional<String> alias,
-                       ImmutableSet<String> tags,
-                       ImmutableMap<String, ImmutableSet<String>> tagGroups,
-                       Optional<IosSettings> iosSettings,
-                       Optional<WebSettings> web,
-                       Optional<OpenChannel> open,
-                       Optional<String> address) {
-        this.channelId = channelId;
-        this.channelType = channelType;
-        this.installed = installed;
-        this.optIn = optIn;
-        this.background = background;
-        this.pushAddress = pushAddress;
-        this.created = created;
-        this.lastRegistration = lastRegistration;
-        this.alias = alias;
-        this.tags = tags;
-        this.tagGroups = tagGroups;
-        this.iosSettings = iosSettings;
-        this.web = web;
-        this.open = open;
-        this.address = address;
+    private ChannelView(Builder builder) {
+        this.channelId = builder.channelId;
+        this.channelType = builder.channelType;
+        this.installed = builder.installed;
+        this.optIn = builder.optIn;
+        this.background = Optional.fromNullable(builder.background);
+        this.pushAddress = Optional.fromNullable(builder.pushAddress);
+        this.created = builder.created;
+        this.lastRegistration = Optional.fromNullable(builder.lastRegistration);
+        this.alias = Optional.fromNullable(builder.alias);
+        this.tags = builder.tags.build();
+        this.tagGroups = builder.tagGroups.build();
+        this.iosSettings = Optional.fromNullable(builder.iosSettings);
+        this.web = Optional.fromNullable(builder.webSettings);
+        this.open = Optional.fromNullable(builder.openChannel);
+        this.address = Optional.fromNullable(builder.address);
+        this.namedUser = Optional.fromNullable(builder.namedUser);
     }
 
     /**
@@ -221,6 +203,16 @@ public final class ChannelView {
         return address;
     }
 
+    /**
+     * Get the named user. A Named User is a proprietary identifier
+     * that maps customer-chosen IDs, e.g., CRM data, to Channels.
+     *
+     * @return Optional String namedUser
+     */
+    public Optional<String> getNamedUser() {
+        return namedUser;
+    }
+
     @Override
     public String toString() {
         return "ChannelView{" +
@@ -239,12 +231,16 @@ public final class ChannelView {
                 ", web=" + web +
                 ", open=" + open +
                 ", address=" + address +
+                ", namedUser=" + namedUser +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(channelId, channelType, installed, optIn, background, pushAddress, created, lastRegistration, alias, tags, tagGroups, iosSettings, web, open, address);
+        return Objects.hashCode(channelId, channelType, installed, optIn,
+                background, pushAddress, created, lastRegistration,
+                alias, tags, tagGroups, iosSettings,
+                web, open, address, namedUser);
     }
 
     @Override
@@ -266,7 +262,8 @@ public final class ChannelView {
                 Objects.equal(iosSettings, that.iosSettings) &&
                 Objects.equal(web, that.web) &&
                 Objects.equal(open, that.open) &&
-                Objects.equal(address, that.address);
+                Objects.equal(address, that.address) &&
+                Objects.equal(namedUser, that.namedUser);
     }
 
     public final static class Builder {
@@ -285,6 +282,7 @@ public final class ChannelView {
         private WebSettings webSettings = null;
         private OpenChannel openChannel = null;
         private String address = null;
+        private String namedUser = null;
 
         private Builder() {
         }
@@ -485,6 +483,16 @@ public final class ChannelView {
         }
 
         /**
+         * Set the named user.
+         * @param namedUser String
+         * @return Builder
+         */
+        public Builder setNamedUser(String namedUser) {
+            this.namedUser = namedUser;
+            return this;
+        }
+
+        /**
          * Build the ChannelView object
          * @return ChannelView
          */
@@ -495,23 +503,7 @@ public final class ChannelView {
             Preconditions.checkNotNull(optIn);
             Preconditions.checkNotNull(created);
 
-            return new ChannelView(
-                channelId,
-                channelType,
-                installed,
-                optIn,
-                Optional.fromNullable(background),
-                Optional.fromNullable(pushAddress),
-                created,
-                Optional.fromNullable(lastRegistration),
-                Optional.fromNullable(alias),
-                tags.build(),
-                tagGroups.build(),
-                Optional.fromNullable(iosSettings),
-                Optional.fromNullable(webSettings),
-                Optional.fromNullable(openChannel),
-                Optional.fromNullable(address)
-            );
+            return new ChannelView(this);
         }
     }
 }
