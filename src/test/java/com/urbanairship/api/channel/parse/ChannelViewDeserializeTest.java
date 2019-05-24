@@ -71,6 +71,7 @@ public class ChannelViewDeserializeTest {
                 "  ]" +
                 "}," +
                 "\"alias\" : \"alias\"," +
+                "\"named_user_id\" : \"namedUser\"," +
                 "\"created\" : \"2013-08-08T20:41:06.000Z\"," +
                 "\"push_address\" : \"address\"" +
                 "}";
@@ -88,6 +89,7 @@ public class ChannelViewDeserializeTest {
         assertEquals("America/Los_Angeles", channel.getIosSettings().get().getTimezone().get());
         assertEquals("address", channel.getPushAddress().get());
         assertEquals("alias", channel.getAlias().get());
+        assertEquals("namedUser", channel.getNamedUser().get());
         ImmutableSet<String> expectedTags = new ImmutableSet.Builder<String>()
             .addAll(Sets.newHashSet("tag1", "tag2")).build();
         assertEquals(expectedTags, channel.getTags());
