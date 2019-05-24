@@ -1,4 +1,10 @@
 -------------------------
+4.2.0 24MAY19
+-------------------------
+- Updated to Jackson version 2.9.9 due to security vulnerability.
+- Added Named User field to channel lookups.
+
+-------------------------
 4.1.0 26MAR19
 -------------------------
 - Added support for Response reporting.
