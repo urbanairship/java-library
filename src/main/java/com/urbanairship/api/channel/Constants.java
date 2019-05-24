@@ -46,6 +46,7 @@ public class Constants {
     public static final String EMAIL_ADDRESS = "email_address";
     public static final String UA_ADDRESS = "ua_address";
     public static final String AUDIENCE = "audience";
+    public static final String NAMED_USER = "named_user_id";
 
     private Constants() {
     }
