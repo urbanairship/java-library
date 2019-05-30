@@ -34,12 +34,13 @@ public class TemplateScheduledPushPayloadSerializerTest {
                 .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS, DeviceType.ANDROID))
                 .setMergeData(mergeData)
                 .setSchedule(schedule)
+                .setName("Prince")
                 .build();
 
         String templateScheduledPushPayloadSerialized = MAPPER.writeValueAsString(payload);
         String templateScheduledPushPayloadString =
                 "{" +
-                    "\"audience\":\"ALL\"," +
+                    "\"audience\":\"ALL\"," + "\"name\":\"Prince\"," +
                     "\"device_types\":[\"ios\",\"android\"]," +
                     "\"merge_data\":{" +
                         "\"template_id\":\"id123\"," +

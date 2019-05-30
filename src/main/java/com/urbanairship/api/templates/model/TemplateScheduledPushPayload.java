@@ -11,12 +11,14 @@ public class TemplateScheduledPushPayload {
     private final DeviceTypeData deviceTypes;
     private final TemplateSelector mergeData;
     private final Schedule schedule;
+    private final String name;
 
     private TemplateScheduledPushPayload(TemplateScheduledPushPayload.Builder builder) {
         this.audience = builder.audience;
         this.deviceTypes = builder.deviceTypes;
         this.mergeData = builder.mergeData;
         this.schedule = builder.schedule;
+        this.name = builder.name;
     }
 
     /**
@@ -64,6 +66,15 @@ public class TemplateScheduledPushPayload {
         return schedule;
     }
 
+    /**
+     * Get the name (variable specification) for a template push.
+     *
+     * @return A String object
+     */
+    public String getName() {
+        return name;
+    }
+
     @Override
     public String toString() {
         return "TemplatePushPayload{" +
@@ -85,6 +96,7 @@ public class TemplateScheduledPushPayload {
         if (!deviceTypes.equals(that.deviceTypes)) return false;
         if (!mergeData.equals(that.mergeData)) return false;
         if (!schedule.equals(that.schedule)) return false;
+        if (!name.equals(that.name)) return false;
 
         return true;
     }
@@ -102,6 +114,7 @@ public class TemplateScheduledPushPayload {
         private DeviceTypeData deviceTypes = null;
         private TemplateSelector mergeData = null;
         private Schedule schedule = null;
+        private String name = null;
 
         /**
          * Set the template push schedule.
@@ -144,6 +157,17 @@ public class TemplateScheduledPushPayload {
          */
         public TemplateScheduledPushPayload.Builder setMergeData(TemplateSelector mergeData) {
             this.mergeData = mergeData;
+            return this;
+        }
+
+        /**
+         * Set the name.
+         *
+         * @param name An optional name for the scheduled push operation.
+         * @return Builder
+         */
+        public TemplateScheduledPushPayload.Builder setName(String name) {
+            this.name = name;
             return this;
         }
 
