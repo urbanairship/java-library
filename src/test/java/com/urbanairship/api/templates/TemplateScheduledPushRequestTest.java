@@ -6,6 +6,7 @@ import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.audience.Selectors;
+import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.ScheduleResponse;
 import com.urbanairship.api.schedule.parse.ScheduleObjectMapper;
 import com.urbanairship.api.templates.model.TemplatePushPayload;
@@ -15,6 +16,7 @@ import com.urbanairship.api.templates.model.TemplateSelector;
 import com.urbanairship.api.templates.parse.TemplatesObjectMapper;
 import org.apache.http.HttpHeaders;
 import org.apache.http.entity.ContentType;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,6 +44,7 @@ public class TemplateScheduledPushRequestTest {
                     .addSubstitution("LAST_NAME", "Lasty")
                     .addSubstitution("TITLE", "Dr.")
                     .build())
+            .setSchedule(Schedule.newBuilder().setScheduledTimestamp(DateTime.parse("2013-04-01T18:45:00Z")).build())
             .build();
 
 
