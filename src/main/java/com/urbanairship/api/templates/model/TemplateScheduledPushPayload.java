@@ -56,9 +56,9 @@ public class TemplateScheduledPushPayload {
     }
 
     /**
-     * Get the merge data (variable specification) for a template push.
+     * Get the schedule (variable specification) for a template push.
      *
-     * @return A TemplateSelector object
+     * @return A Schedule object
      */
     public Schedule getSchedule() {
         return schedule;
@@ -70,6 +70,7 @@ public class TemplateScheduledPushPayload {
                 "audience=" + audience +
                 ", deviceTypes=" + deviceTypes +
                 ", mergeData=" + mergeData +
+                ", schedule=" + schedule +
                 '}';
     }
 
@@ -156,8 +157,8 @@ public class TemplateScheduledPushPayload {
          */
         public TemplateScheduledPushPayload build() {
             Preconditions.checkArgument(
-                    audience != null && deviceTypes != null && mergeData != null,
-                    "audience, deviceTypes, and mergeData cannot be null."
+                    audience != null && deviceTypes != null && mergeData != null && schedule != null,
+                    "audience, deviceTypes, mergeData and schedule cannot be null."
             );
 
             return new TemplateScheduledPushPayload(this);

@@ -27,12 +27,13 @@ public class TemplateScheduledPushPayloadSerializerTest {
                 .addSubstitution("LAST_NAME", "")
                 .build();
 
-        Schedule schedule = Schedule.newBuilder().setScheduledTimestamp(DateTime.now()).build();
+        Schedule schedule = Schedule.newBuilder().setScheduledTimestamp(DateTime.parse("2019-05-30T07:53:13Z")).build();
 
         TemplateScheduledPushPayload payload = TemplateScheduledPushPayload.newBuilder()
                 .setAudience(Selectors.all())
                 .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS, DeviceType.ANDROID))
                 .setMergeData(mergeData)
+                .setSchedule(schedule)
                 .build();
 
         String templateScheduledPushPayloadSerialized = MAPPER.writeValueAsString(payload);
@@ -46,7 +47,7 @@ public class TemplateScheduledPushPayloadSerializerTest {
                             "\"FIRST_NAME\":\"Prince\"," +
                             "\"LAST_NAME\":\"\"" +
                         "}" +
-                    "}," +"\"schedule\":null"+
+                    "}," +"\"schedule\":{\"scheduled_time\":\"2019-05-30T07:53:13\"}"+
                 "}";
 
         JsonNode jsonFromObject = MAPPER.readTree(templateScheduledPushPayloadSerialized);
