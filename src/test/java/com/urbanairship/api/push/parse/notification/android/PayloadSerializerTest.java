@@ -74,6 +74,8 @@ public class PayloadSerializerTest {
                 .setPriority(1)
                 .setPublicNotification(publicNotification)
                 .setSound("cowbell.mp3")
+                .setIcon("icon.xml")
+                .setIconColor("#012345")
                 .setStyle(bigTextStyle)
                 .setSummary("A summary")
                 .setTimeToLive(expiry)
@@ -127,6 +129,8 @@ public class PayloadSerializerTest {
                 "}," +
                 "\"summary\":\"A summary\"," +
                 "\"sound\":\"cowbell.mp3\"," +
+                "\"icon\":\"icon.xml\"," +
+                "\"icon_color\":\"#012345\"," +
                 "\"category\":\"alarm\"," +
                 "\"priority\":1," +
                 "\"style\":{" +

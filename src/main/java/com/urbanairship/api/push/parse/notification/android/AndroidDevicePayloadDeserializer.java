@@ -86,6 +86,16 @@ public class AndroidDevicePayloadDeserializer extends JsonDeserializer<AndroidDe
                             reader.readSound(json);
                         }
                     })
+                    .put("icon", new FieldParser<AndroidDevicePayloadReader>() {
+                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                            reader.readIcon(json);
+                        }
+                    })
+                    .put("icon_color", new FieldParser<AndroidDevicePayloadReader>() {
+                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                            reader.readIconColor(json);
+                        }
+                    })
                     .put("priority", new FieldParser<AndroidDevicePayloadReader>() {
                         public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
                             reader.readPriority(json);

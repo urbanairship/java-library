@@ -64,6 +64,14 @@ public class AndroidDevicePayloadSerializer extends JsonSerializer<AndroidDevice
             jgen.writeStringField("sound", payload.getSound().get());
         }
 
+        if (payload.getIcon().isPresent()) {
+            jgen.writeStringField("icon", payload.getIcon().get());
+        }
+
+        if (payload.getIconColor().isPresent()) {
+            jgen.writeStringField("icon_color", payload.getIconColor().get());
+        }
+
         if (payload.getCategory().isPresent()) {
             jgen.writeStringField("category", payload.getCategory().get().getCategory());
         }

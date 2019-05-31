@@ -338,6 +338,30 @@ public class PayloadDeserializerTest {
     }
 
     @Test
+    public void testIcon() throws Exception {
+        String json =
+                "{" +
+                        "\"icon\": \"icon.xml\"" +
+                 "}";
+
+        AndroidDevicePayload payload = mapper.readValue(json, AndroidDevicePayload.class);
+        assertNotNull(payload);
+        assertEquals(payload.getIcon().get(), "icon.xml");
+    }
+
+    @Test
+    public void testIconColor() throws Exception {
+        String json =
+                "{" +
+                        "\"icon_color\": \"#012345\"" +
+                 "}";
+
+        AndroidDevicePayload payload = mapper.readValue(json, AndroidDevicePayload.class);
+        assertNotNull(payload);
+        assertEquals(payload.getIconColor().get(), "#012345");
+    }
+
+    @Test
     public void testPriority() throws Exception {
         String json =
                 "{" +
