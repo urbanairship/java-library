@@ -31,6 +31,11 @@ public class AndroidDevicePayloadDeserializer extends JsonDeserializer<AndroidDe
                             reader.readCollapseKey(json);
                         }
                     })
+                    .put("notification_channel", new FieldParser<AndroidDevicePayloadReader>() {
+                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                            reader.readNotificationChannel(json);
+                        }
+                    })
                     .put("time_to_live", new FieldParser<AndroidDevicePayloadReader>() {
                         public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
                             reader.readTimeToLive(json);
