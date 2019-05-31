@@ -80,6 +80,14 @@ public class AndroidDevicePayloadReader implements JsonObjectReader<AndroidDevic
         builder.setSound(parser.readValueAs(String.class));
     }
 
+    public void readIcon(JsonParser parser) throws IOException {
+        builder.setIcon(parser.readValueAs(String.class));
+    }
+
+    public void readIconColor(JsonParser parser) throws IOException {
+        builder.setIconColor(StringFieldDeserializer.INSTANCE.deserialize(parser, "icon_color"));
+    }
+
     public void readPriority(JsonParser parser) throws IOException {
         builder.setPriority(parser.readValueAs(Integer.class));
     }
