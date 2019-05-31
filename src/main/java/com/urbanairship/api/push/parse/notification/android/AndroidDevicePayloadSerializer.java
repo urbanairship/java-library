@@ -28,6 +28,10 @@ public class AndroidDevicePayloadSerializer extends JsonSerializer<AndroidDevice
             jgen.writeStringField("notification_channel", payload.getNotificationChannel().get());
         }
 
+        if (payload.getNotificationTag().isPresent()) {
+            jgen.writeStringField("notification_tag", payload.getNotificationTag().get());
+        }
+
         if (payload.getTimeToLive().isPresent()) {
             jgen.writeObjectField("time_to_live", payload.getTimeToLive().get());
         }

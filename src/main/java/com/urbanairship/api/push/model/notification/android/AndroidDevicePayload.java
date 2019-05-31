@@ -20,6 +20,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
     private final Optional<String> alert;
     private final Optional<String> collapseKey;
     private final Optional<String> notificationChannel;
+    private final Optional<String> notificationTag;
     private final Optional<PushExpiry> timeToLive;
     private final Optional<String> deliveryPriority;
     private final Optional<Boolean> delayWhileIdle;
@@ -43,6 +44,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         this.alert = Optional.fromNullable(builder.alert);
         this.collapseKey = Optional.fromNullable(builder.collapseKey);
         this.notificationChannel = Optional.fromNullable(builder.notificationChannel);
+        this.notificationTag = Optional.fromNullable(builder.notificationTag);
         this.timeToLive = Optional.fromNullable(builder.timeToLive);
         this.deliveryPriority = Optional.fromNullable(builder.deliveryPriority);
         this.delayWhileIdle = Optional.fromNullable(builder.delayWhileIdle);
@@ -111,6 +113,15 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
      */
     public Optional<String> getNotificationChannel() {
         return notificationChannel;
+    }
+
+    /**
+     * Get the notification tag.
+     *
+     * @return Optional String notification tag
+     */
+    public Optional<String> getNotificationTag() {
+        return notificationTag;
     }
 
     /**
@@ -272,6 +283,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
                 "alert=" + alert +
                 ", collapseKey=" + collapseKey +
                 ", notificationChannel=" + notificationChannel +
+                ", notificationTag=" + notificationTag +
                 ", timeToLive=" + timeToLive +
                 ", delayWhileIdle=" + delayWhileIdle +
                 ", deliveryPriority=" + deliveryPriority +
@@ -303,6 +315,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         if (!category.equals(that.category)) return false;
         if (!collapseKey.equals(that.collapseKey)) return false;
         if (!notificationChannel.equals(that.notificationChannel)) return false;
+        if (!notificationTag.equals(that.notificationTag)) return false;
         if (!delayWhileIdle.equals(that.delayWhileIdle)) return false;
         if (!deliveryPriority.equals(that.deliveryPriority)) return false;
         if (!extra.equals(that.extra)) return false;
@@ -328,6 +341,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         int result = alert.hashCode();
         result = 31 * result + collapseKey.hashCode();
         result = 31 * result + notificationChannel.hashCode();
+        result = 31 * result + notificationTag.hashCode();
         result = 31 * result + timeToLive.hashCode();
         result = 31 * result + delayWhileIdle.hashCode();
         result = 31 * result + deliveryPriority.hashCode();
@@ -353,6 +367,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         private String alert = null;
         private String collapseKey = null;
         private String notificationChannel = null;
+        private String notificationTag = null;
         private PushExpiry timeToLive = null;
         private Boolean delayWhileIdle = null;
         private String deliveryPriority = null;
@@ -404,6 +419,17 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
          */
         public Builder setNotificationChannel(String notificationChannel) {
             this.notificationChannel = notificationChannel;
+            return this;
+        }
+
+        /**
+         * Set the notification tag string.
+         *
+         * @param notificationTag String
+         * @return Builder
+         */
+        public Builder setNotificationTag(String notificationTag) {
+            this.notificationTag = notificationTag;
             return this;
         }
 
