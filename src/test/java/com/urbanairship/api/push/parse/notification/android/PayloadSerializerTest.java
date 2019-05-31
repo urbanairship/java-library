@@ -67,6 +67,7 @@ public class PayloadSerializerTest {
                 .setAlert("Hi")
                 .setCategory(Category.ALARM)
                 .setCollapseKey("blah")
+                .setNotificationChannel("channel1")
                 .setDelayWhileIdle(true)
                 .setDeliveryPriority("high")
                 .setInteractive(interactive)
@@ -87,6 +88,7 @@ public class PayloadSerializerTest {
         String json = "{" +
                 "\"alert\":\"Hi\"," +
                 "\"collapse_key\":\"blah\"," +
+                "\"notification_channel\":\"channel1\"," +
                 "\"time_to_live\":12345," +
                 "\"delivery_priority\":\"high\"," +
                 "\"delay_while_idle\":true," +

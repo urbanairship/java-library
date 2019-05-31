@@ -19,6 +19,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
 
     private final Optional<String> alert;
     private final Optional<String> collapseKey;
+    private final Optional<String> notificationChannel;
     private final Optional<PushExpiry> timeToLive;
     private final Optional<String> deliveryPriority;
     private final Optional<Boolean> delayWhileIdle;
@@ -41,6 +42,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
     private AndroidDevicePayload(Builder builder) {
         this.alert = Optional.fromNullable(builder.alert);
         this.collapseKey = Optional.fromNullable(builder.collapseKey);
+        this.notificationChannel = Optional.fromNullable(builder.notificationChannel);
         this.timeToLive = Optional.fromNullable(builder.timeToLive);
         this.deliveryPriority = Optional.fromNullable(builder.deliveryPriority);
         this.delayWhileIdle = Optional.fromNullable(builder.delayWhileIdle);
@@ -100,6 +102,15 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
      */
     public Optional<String> getCollapseKey() {
         return collapseKey;
+    }
+
+    /**
+     * Get the notification channel.
+     *
+     * @return Optional String notification channel
+     */
+    public Optional<String> getNotificationChannel() {
+        return notificationChannel;
     }
 
     /**
@@ -260,6 +271,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         return "AndroidDevicePayload{" +
                 "alert=" + alert +
                 ", collapseKey=" + collapseKey +
+                ", notificationChannel=" + notificationChannel +
                 ", timeToLive=" + timeToLive +
                 ", delayWhileIdle=" + delayWhileIdle +
                 ", deliveryPriority=" + deliveryPriority +
@@ -290,6 +302,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         if (!alert.equals(that.alert)) return false;
         if (!category.equals(that.category)) return false;
         if (!collapseKey.equals(that.collapseKey)) return false;
+        if (!notificationChannel.equals(that.notificationChannel)) return false;
         if (!delayWhileIdle.equals(that.delayWhileIdle)) return false;
         if (!deliveryPriority.equals(that.deliveryPriority)) return false;
         if (!extra.equals(that.extra)) return false;
@@ -314,6 +327,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
     public int hashCode() {
         int result = alert.hashCode();
         result = 31 * result + collapseKey.hashCode();
+        result = 31 * result + notificationChannel.hashCode();
         result = 31 * result + timeToLive.hashCode();
         result = 31 * result + delayWhileIdle.hashCode();
         result = 31 * result + deliveryPriority.hashCode();
@@ -338,6 +352,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
     public static class Builder {
         private String alert = null;
         private String collapseKey = null;
+        private String notificationChannel = null;
         private PushExpiry timeToLive = null;
         private Boolean delayWhileIdle = null;
         private String deliveryPriority = null;
@@ -378,6 +393,17 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
          */
         public Builder setCollapseKey(String collapseKey) {
             this.collapseKey = collapseKey;
+            return this;
+        }
+
+        /**
+         * Set the notification channel string.
+         *
+         * @param notificationChannel String
+         * @return Builder
+         */
+        public Builder setNotificationChannel(String notificationChannel) {
+            this.notificationChannel = notificationChannel;
             return this;
         }
 

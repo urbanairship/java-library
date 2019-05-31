@@ -36,6 +36,10 @@ public class AndroidDevicePayloadReader implements JsonObjectReader<AndroidDevic
         builder.setCollapseKey(StringFieldDeserializer.INSTANCE.deserialize(parser, "collapse_key"));
     }
 
+    public void readNotificationChannel(JsonParser parser) throws IOException {
+        builder.setNotificationChannel(StringFieldDeserializer.INSTANCE.deserialize(parser, "notification_channel"));
+    }
+
     public void readTimeToLive(JsonParser parser) throws IOException {
         builder.setTimeToLive(parser.readValueAs(PushExpiry.class));
     }
