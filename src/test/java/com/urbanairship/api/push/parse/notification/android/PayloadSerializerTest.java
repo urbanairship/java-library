@@ -68,6 +68,7 @@ public class PayloadSerializerTest {
                 .setCategory(Category.ALARM)
                 .setCollapseKey("blah")
                 .setNotificationChannel("channel1")
+                .setNotificationTag("nt1")
                 .setDelayWhileIdle(true)
                 .setDeliveryPriority("high")
                 .setInteractive(interactive)
@@ -89,6 +90,7 @@ public class PayloadSerializerTest {
                 "\"alert\":\"Hi\"," +
                 "\"collapse_key\":\"blah\"," +
                 "\"notification_channel\":\"channel1\"," +
+                "\"notification_tag\":\"nt1\"," +
                 "\"time_to_live\":12345," +
                 "\"delivery_priority\":\"high\"," +
                 "\"delay_while_idle\":true," +

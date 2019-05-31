@@ -40,6 +40,10 @@ public class AndroidDevicePayloadReader implements JsonObjectReader<AndroidDevic
         builder.setNotificationChannel(StringFieldDeserializer.INSTANCE.deserialize(parser, "notification_channel"));
     }
 
+    public void readNotificationTag(JsonParser parser) throws IOException {
+        builder.setNotificationTag(StringFieldDeserializer.INSTANCE.deserialize(parser, "notification_tag"));
+    }
+
     public void readTimeToLive(JsonParser parser) throws IOException {
         builder.setTimeToLive(parser.readValueAs(PushExpiry.class));
     }

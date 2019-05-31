@@ -83,8 +83,31 @@ public class PayloadDeserializerTest {
         assertNotNull(payload.getNotificationChannel());
         assertFalse(payload.getAlert().isPresent());
         assertFalse(payload.getExtra().isPresent());
+        assertFalse(payload.getNotificationTag().isPresent());
         assertTrue(payload.getNotificationChannel().isPresent());
         assertEquals("channel1", payload.getNotificationChannel().get());
+        assertEquals(expected, payload);
+    }
+
+    @Test
+    public void testNotificationTag() throws Exception {
+        String json
+                = "{"
+                + "  \"notification_tag\": \"nt1\""
+                + "}";
+
+        AndroidDevicePayload expected = AndroidDevicePayload.newBuilder()
+                .setNotificationTag("nt1")
+                .build();
+
+        AndroidDevicePayload payload = mapper.readValue(json, AndroidDevicePayload.class);
+        assertNotNull(payload);
+        assertNotNull(payload.getNotificationTag());
+        assertFalse(payload.getAlert().isPresent());
+        assertFalse(payload.getExtra().isPresent());
+        assertFalse(payload.getNotificationChannel().isPresent());
+        assertTrue(payload.getNotificationTag().isPresent());
+        assertEquals("nt1", payload.getNotificationTag().get());
         assertEquals(expected, payload);
     }
 
