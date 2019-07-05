@@ -78,7 +78,8 @@ public final class ResponseReportResponse {
         /**
          * Add a mapping of device type and device statistics for listing
          *
-         * @param value String, object DeviceStats
+         * @param value String
+         * @param object DeviceStats
          * @return Builder
          */
         public Builder addDeviceStatsMapping(String value, DeviceStats object) {
