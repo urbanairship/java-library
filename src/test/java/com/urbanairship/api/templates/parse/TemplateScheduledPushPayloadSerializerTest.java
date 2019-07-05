@@ -40,7 +40,8 @@ public class TemplateScheduledPushPayloadSerializerTest {
         String templateScheduledPushPayloadSerialized = MAPPER.writeValueAsString(payload);
         String templateScheduledPushPayloadString =
                 "{" +
-                    "\"audience\":\"ALL\"," + "\"name\":\"Prince\"," +
+                    "\"audience\":\"ALL\"," +
+                    "\"name\":\"Prince\"," +
                     "\"device_types\":[\"ios\",\"android\"]," +
                     "\"merge_data\":{" +
                         "\"template_id\":\"id123\"," +
