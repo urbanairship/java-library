@@ -3,6 +3,7 @@ package com.urbanairship.api.templates.model;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.urbanairship.api.push.model.Campaigns;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.schedule.model.Schedule;
@@ -13,6 +14,7 @@ public class TemplateScheduledPushPayload {
     private final TemplateSelector mergeData;
     private final Schedule schedule;
     private final Optional<String> name;
+    private final Optional<Campaigns> campaigns;
 
     private TemplateScheduledPushPayload(TemplateScheduledPushPayload.Builder builder) {
         this.audience = builder.audience;
@@ -20,6 +22,7 @@ public class TemplateScheduledPushPayload {
         this.mergeData = builder.mergeData;
         this.schedule = builder.schedule;
         this.name = Optional.fromNullable(builder.name);
+        this.campaigns = Optional.fromNullable(builder.campaigns);
     }
 
     /**
@@ -76,6 +79,15 @@ public class TemplateScheduledPushPayload {
         return name;
     }
 
+    /**
+     * Get the campaings for a template push.
+     *
+     * @return A Optional Campaigns object.
+     */
+    public Optional<Campaigns> getCampaigns() {
+        return campaigns;
+    }
+
     @Override
     public String toString() {
         return "TemplatePushPayload{" +
@@ -116,6 +128,7 @@ public class TemplateScheduledPushPayload {
         private TemplateSelector mergeData = null;
         private Schedule schedule = null;
         private String name = null;
+        private Campaigns campaigns = null;
 
         /**
          * Set the template push schedule.
@@ -169,6 +182,17 @@ public class TemplateScheduledPushPayload {
          */
         public TemplateScheduledPushPayload.Builder setName(String name) {
             this.name = name;
+            return this;
+        }
+
+        /**
+         * Set the campaigns
+         *
+         * @param campaigns An object specifying custom campaign categories related to the notification.
+         * @return Builder
+         */
+        public TemplateScheduledPushPayload.Builder setCampaigns(Campaigns campaigns) {
+            this.campaigns = campaigns;
             return this;
         }
 
