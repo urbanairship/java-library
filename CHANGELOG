@@ -3,7 +3,7 @@
 -------------------------
 - Added support for scheduled template pushes.
 - Added additional android push payload fields.
-- Updated maven compiler plugin to 3.8.1
+- Updated maven compiler plugin to 3.8.1.
 
 -------------------------
 4.2.0 24MAY19
