@@ -67,6 +67,8 @@ public class PayloadSerializerTest {
                 .setAlert("Hi")
                 .setCategory(Category.ALARM)
                 .setCollapseKey("blah")
+                .setNotificationChannel("channel1")
+                .setNotificationTag("nt1")
                 .setDelayWhileIdle(true)
                 .setDeliveryPriority("high")
                 .setInteractive(interactive)
@@ -74,6 +76,8 @@ public class PayloadSerializerTest {
                 .setPriority(1)
                 .setPublicNotification(publicNotification)
                 .setSound("cowbell.mp3")
+                .setIcon("icon.xml")
+                .setIconColor("#012345")
                 .setStyle(bigTextStyle)
                 .setSummary("A summary")
                 .setTimeToLive(expiry)
@@ -85,6 +89,8 @@ public class PayloadSerializerTest {
         String json = "{" +
                 "\"alert\":\"Hi\"," +
                 "\"collapse_key\":\"blah\"," +
+                "\"notification_channel\":\"channel1\"," +
+                "\"notification_tag\":\"nt1\"," +
                 "\"time_to_live\":12345," +
                 "\"delivery_priority\":\"high\"," +
                 "\"delay_while_idle\":true," +
@@ -127,6 +133,8 @@ public class PayloadSerializerTest {
                 "}," +
                 "\"summary\":\"A summary\"," +
                 "\"sound\":\"cowbell.mp3\"," +
+                "\"icon\":\"icon.xml\"," +
+                "\"icon_color\":\"#012345\"," +
                 "\"category\":\"alarm\"," +
                 "\"priority\":1," +
                 "\"style\":{" +

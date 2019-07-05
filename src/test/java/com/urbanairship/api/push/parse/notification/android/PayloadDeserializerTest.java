@@ -68,6 +68,50 @@ public class PayloadDeserializerTest {
     }
 
     @Test
+    public void testNotificationChannel() throws Exception {
+        String json
+                = "{"
+                + "  \"notification_channel\": \"channel1\""
+                + "}";
+
+        AndroidDevicePayload expected = AndroidDevicePayload.newBuilder()
+                .setNotificationChannel("channel1")
+                .build();
+
+        AndroidDevicePayload payload = mapper.readValue(json, AndroidDevicePayload.class);
+        assertNotNull(payload);
+        assertNotNull(payload.getNotificationChannel());
+        assertFalse(payload.getAlert().isPresent());
+        assertFalse(payload.getExtra().isPresent());
+        assertFalse(payload.getNotificationTag().isPresent());
+        assertTrue(payload.getNotificationChannel().isPresent());
+        assertEquals("channel1", payload.getNotificationChannel().get());
+        assertEquals(expected, payload);
+    }
+
+    @Test
+    public void testNotificationTag() throws Exception {
+        String json
+                = "{"
+                + "  \"notification_tag\": \"nt1\""
+                + "}";
+
+        AndroidDevicePayload expected = AndroidDevicePayload.newBuilder()
+                .setNotificationTag("nt1")
+                .build();
+
+        AndroidDevicePayload payload = mapper.readValue(json, AndroidDevicePayload.class);
+        assertNotNull(payload);
+        assertNotNull(payload.getNotificationTag());
+        assertFalse(payload.getAlert().isPresent());
+        assertFalse(payload.getExtra().isPresent());
+        assertFalse(payload.getNotificationChannel().isPresent());
+        assertTrue(payload.getNotificationTag().isPresent());
+        assertEquals("nt1", payload.getNotificationTag().get());
+        assertEquals(expected, payload);
+    }
+
+    @Test
     public void testTimeToLive() throws Exception {
         String json
                 = "{"
@@ -335,6 +379,30 @@ public class PayloadDeserializerTest {
         AndroidDevicePayload payload = mapper.readValue(json, AndroidDevicePayload.class);
         assertNotNull(payload);
         assertEquals(payload.getSound().get(), "cowbell.mp3");
+    }
+
+    @Test
+    public void testIcon() throws Exception {
+        String json =
+                "{" +
+                        "\"icon\": \"icon.xml\"" +
+                 "}";
+
+        AndroidDevicePayload payload = mapper.readValue(json, AndroidDevicePayload.class);
+        assertNotNull(payload);
+        assertEquals(payload.getIcon().get(), "icon.xml");
+    }
+
+    @Test
+    public void testIconColor() throws Exception {
+        String json =
+                "{" +
+                        "\"icon_color\": \"#012345\"" +
+                 "}";
+
+        AndroidDevicePayload payload = mapper.readValue(json, AndroidDevicePayload.class);
+        assertNotNull(payload);
+        assertEquals(payload.getIconColor().get(), "#012345");
     }
 
     @Test

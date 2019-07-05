@@ -24,6 +24,14 @@ public class AndroidDevicePayloadSerializer extends JsonSerializer<AndroidDevice
             jgen.writeStringField("collapse_key", payload.getCollapseKey().get());
         }
 
+        if (payload.getNotificationChannel().isPresent()) {
+            jgen.writeStringField("notification_channel", payload.getNotificationChannel().get());
+        }
+
+        if (payload.getNotificationTag().isPresent()) {
+            jgen.writeStringField("notification_tag", payload.getNotificationTag().get());
+        }
+
         if (payload.getTimeToLive().isPresent()) {
             jgen.writeObjectField("time_to_live", payload.getTimeToLive().get());
         }
@@ -62,6 +70,14 @@ public class AndroidDevicePayloadSerializer extends JsonSerializer<AndroidDevice
 
         if (payload.getSound().isPresent()) {
             jgen.writeStringField("sound", payload.getSound().get());
+        }
+
+        if (payload.getIcon().isPresent()) {
+            jgen.writeStringField("icon", payload.getIcon().get());
+        }
+
+        if (payload.getIconColor().isPresent()) {
+            jgen.writeStringField("icon_color", payload.getIconColor().get());
         }
 
         if (payload.getCategory().isPresent()) {
