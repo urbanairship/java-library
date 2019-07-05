@@ -16,8 +16,10 @@ public class TemplateScheduledPushPayloadSerializer extends JsonSerializer<Templ
         jgen.writeObjectField("device_types", value.getDeviceTypes());
         jgen.writeObjectField("merge_data", value.getMergeData());
         jgen.writeObjectField("schedule", value.getSchedule());
-        jgen.writeObjectField("name", value.getName());
 
+        if(value.getName().isPresent()) {
+            jgen.writeObjectField("name", value.getName().get());
+        }
 
         jgen.writeEndObject();
     }
