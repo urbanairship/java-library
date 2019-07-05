@@ -2,6 +2,7 @@ package com.urbanairship.api.templates.parse;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.urbanairship.api.push.model.Campaigns;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.audience.Selectors;
@@ -20,6 +21,10 @@ public class TemplateScheduledPushPayloadSerializerTest {
 
     @Test
     public void testTemplateScheduledPushPayloadSerializer() throws Exception {
+        Campaigns campaigns = Campaigns.newBuilder()
+                .addCategory("first_category")
+                .addCategory("second_category")
+                .build();
 
         TemplateSelector mergeData = TemplateSelector.newBuilder()
                 .setTemplateId("id123")
@@ -34,6 +39,7 @@ public class TemplateScheduledPushPayloadSerializerTest {
                 .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS, DeviceType.ANDROID))
                 .setMergeData(mergeData)
                 .setSchedule(schedule)
+                .setCampaigns(campaigns)
                 .setName("Prince")
                 .build();
 
@@ -43,6 +49,9 @@ public class TemplateScheduledPushPayloadSerializerTest {
                     "\"audience\":\"ALL\"," +
                     "\"name\":\"Prince\"," +
                     "\"device_types\":[\"ios\",\"android\"]," +
+                    "\"campaigns\": {" +
+                        "\"categories\": [\"first_category\", \"second_category\"]" +
+                    "}," +
                     "\"merge_data\":{" +
                         "\"template_id\":\"id123\"," +
                         "\"substitutions\":{" +
