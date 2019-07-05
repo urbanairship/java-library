@@ -36,6 +36,14 @@ public class AndroidDevicePayloadReader implements JsonObjectReader<AndroidDevic
         builder.setCollapseKey(StringFieldDeserializer.INSTANCE.deserialize(parser, "collapse_key"));
     }
 
+    public void readNotificationChannel(JsonParser parser) throws IOException {
+        builder.setNotificationChannel(StringFieldDeserializer.INSTANCE.deserialize(parser, "notification_channel"));
+    }
+
+    public void readNotificationTag(JsonParser parser) throws IOException {
+        builder.setNotificationTag(StringFieldDeserializer.INSTANCE.deserialize(parser, "notification_tag"));
+    }
+
     public void readTimeToLive(JsonParser parser) throws IOException {
         builder.setTimeToLive(parser.readValueAs(PushExpiry.class));
     }
@@ -78,6 +86,14 @@ public class AndroidDevicePayloadReader implements JsonObjectReader<AndroidDevic
 
     public void readSound(JsonParser parser) throws IOException {
         builder.setSound(parser.readValueAs(String.class));
+    }
+
+    public void readIcon(JsonParser parser) throws IOException {
+        builder.setIcon(parser.readValueAs(String.class));
+    }
+
+    public void readIconColor(JsonParser parser) throws IOException {
+        builder.setIconColor(StringFieldDeserializer.INSTANCE.deserialize(parser, "icon_color"));
     }
 
     public void readPriority(JsonParser parser) throws IOException {
