@@ -1,4 +1,11 @@
 -------------------------
+4.3.0 05JUL19
+-------------------------
+- Added support for scheduled template pushes.
+- Added additional android push payload fields.
+- Updated maven compiler plugin to 3.8.1
+
+-------------------------
 4.2.0 24MAY19
 -------------------------
 - Updated to Jackson version 2.9.9 due to security vulnerability.
