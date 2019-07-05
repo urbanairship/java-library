@@ -52,7 +52,8 @@ public final class DevicesReportResponse {
         /**
          * Add a mapping of device type and device statistics for listing
          *
-         * @param value String, object DeviceTypeStats
+         * @param value String
+         * @param object DeviceTypeStats
          * @return Builder
          */
         public Builder addDeviceTypeStatsMapping(String value, DeviceTypeStats object) {
