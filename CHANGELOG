@@ -1,4 +1,81 @@
 -------------------------
+4.3.0 05JUL19
+-------------------------
+- Added support for scheduled template pushes.
+- Added additional android push payload fields.
+- Updated maven compiler plugin to 3.8.1.
+
+-------------------------
+4.2.0 24MAY19
+-------------------------
+- Updated to Jackson version 2.9.9 due to security vulnerability.
+- Added Named User field to channel lookups.
+
+-------------------------
+4.1.0 26MAR19
+-------------------------
+- Added support for Response reporting.
+- Added support for Devices reporting.
+- Added support for more iOS alert extras.
+- Updated to Jackson version 2.9.8 due to security vulnerability.
+- Fixed an issue with handling request errors from the template API.
+- Updated RequestError parsing to handle additional white spaces.
+
+-------------------------
+4.0.2 11DEC18
+-------------------------
+- Fixed a crash when using SMS create and send.
+
+-------------------------
+4.0.1 10DEC18
+-------------------------
+- Fixed a crash when using create and send templates.
+
+-------------------------
+4.0.0 10DEC18
+-------------------------
+- Added support for eMail create and send.
+- Added support for sms create and send.
+- Added support for sms notifications.
+- Added support for email notifications.
+- Updated to guava version 27.0-jre.
+- Removed the deprecated device type 'all'.
+
+-------------------------
+3.3.0 30OCT18
+-------------------------
+- Added support for SMS registrations.
+- Updated to Jackson version 2.9.7.
+- Deprecated 'all' as a selectable device type.
+
+-------------------------
+3.2.0 17SEPT18
+-------------------------
+- Added support for the Require Interaction web notify feature.
+
+-------------------------
+3.1.0 11SEPT18
+-------------------------
+- Added support for Predictive Send Time Optimization.
+
+-------------------------
+3.0.1 28JUN18
+-------------------------
+- Updated to async-http-client 2.4.8.
+
+-------------------------
+3.0.0 23MAR18
+-------------------------
+- Updated the underlying HTTP client to fix a bug when trying to use a proxy server over HTTPS.
+- Added support for implementing a custom HTTP client.
+- Added support for creating and pushing to open channels.
+
+-------------------------
+2.1.0 20DEC17
+-------------------------
+- Added support for Campaigns.
+
+-------------------------
 2.0.0 29AUG17
 -------------------------
 - Added support for server-side custom events.

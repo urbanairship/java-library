@@ -62,7 +62,7 @@ public class PushRequest implements Request<PushResponse> {
     /**
      * Create a push request.
      *
-     * @param payloadList List<PushPayload>
+     * @param payloadList List of PushPayload objects
      * @return PushRequest
      */
     public static PushRequest newRequest(List<PushPayload> payloadList) {
@@ -72,7 +72,7 @@ public class PushRequest implements Request<PushResponse> {
     /**
      * Add additional payloads to a batch push request
      *
-     * @param newPayload
+     * @param newPayload PushPayload
      * @return PushRequest
      */
     public PushRequest addPayload(PushPayload newPayload) {
@@ -84,7 +84,7 @@ public class PushRequest implements Request<PushResponse> {
     /**
      * Add additional payloads to a batch push request
      *
-     * @param newPayloads
+     * @param newPayloads List of PushPayload objects
      * @return PushRequest
      */
     public PushRequest addPayloads(List<PushPayload> newPayloads) {

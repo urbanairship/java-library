@@ -199,6 +199,12 @@ public class Selectors {
         return value(SelectorType.CHANNEL, channel);
     }
 
+    /* Sms Sender used to send to all SMS devices associated with the sender */
+
+    public static final Selector smsBroadcast(String sender) {
+        return value(SelectorType.SMS_SENDER, sender);
+    }
+
     /* iOS channels */
 
     public static final Selector iosChannel(String iosChannel) {
@@ -267,6 +273,20 @@ public class Selectors {
 
     public static final Selector amazonDevices(Collection<String> ids) {
         return compound(SelectorType.OR, SelectorType.AMAZON_CHANNEL, ids);
+    }
+
+    /* Open Channels */
+
+    public static final Selector open(String openChannel) {
+        return value(SelectorType.OPEN_CHANNEL, openChannel);
+    }
+
+    public static final Selector openChannelDevices(String ... ids) {
+        return compound(SelectorType.OR, SelectorType.OPEN_CHANNEL, ids);
+    }
+
+    public static final Selector openChannelDevices(Collection<String> ids) {
+        return compound(SelectorType.OR, SelectorType.OPEN_CHANNEL, ids);
     }
 
     /* Logical operators */

@@ -10,7 +10,7 @@ import com.google.common.base.Optional;
 /**
  * Base Interface for the Android Style objects.
  *
- * @param <T>
+ * @param <T> Style Type
  */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,

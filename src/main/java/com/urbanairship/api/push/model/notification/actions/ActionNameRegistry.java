@@ -10,8 +10,8 @@ import com.google.common.collect.ImmutableMap;
  * Every pre-defined action has a 'short name' and 'long name' on the
  * mobile device. This class enables name lookup, based on the particular action's
  * class.
- * <p/>
- * The mapping of actions to short & long names is maintained in the Push API v3 spec.
+ *
+ * The mapping of actions to short and long names is maintained in the Push API v3 spec.
  */
 public final class ActionNameRegistry {
 

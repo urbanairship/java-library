@@ -9,7 +9,9 @@ import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
+import com.urbanairship.api.push.model.notification.email.EmailPayload;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
+import com.urbanairship.api.push.model.notification.open.OpenPayload;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import com.urbanairship.api.push.model.notification.web.WebDevicePayload;
 import com.urbanairship.api.push.model.notification.wns.WNSDevicePayload;
@@ -42,17 +44,22 @@ public class Notifications {
     /* Simple alert deviceType overrides */
 
     public static DevicePayloadOverride alert(DeviceType deviceType, String text) {
-        switch (deviceType) {
-        case IOS:
+        if (deviceType.isOpenPlatform()) {
+            return openPayloadAlert(text, deviceType);
+        }
+
+        switch (deviceType.getIdentifier()) {
+        case "ios":
             return iosAlert(text);
-        case ANDROID:
+        case "android":
             return androidAlert(text);
-        case WNS:
+        case "wns":
             return wnsAlert(text);
-        case AMAZON:
+        case "amazon":
             return admAlert(text);
-        case WEB:
+        case "web":
             return webAlert(text);
+
         default:
             throw unknownDeviceType(deviceType.getIdentifier());
         }
@@ -88,14 +95,18 @@ public class Notifications {
                 .build();
     }
 
+    public static OpenPayload openPayloadAlert(String text, DeviceType deviceType) {
+        return OpenPayload.newBuilder()
+                .setAlert(text)
+                .setDeviceType(deviceType)
+                .build();
+    }
+
     /* Platform selector (device_types) */
 
     public static DeviceTypeData deviceTypes(String ... names) {
         DeviceTypeData.Builder deviceTypes = DeviceTypeData.newBuilder();
         for (String name : names) {
-            if (name.equalsIgnoreCase("all")) {
-                return DeviceTypeData.all();
-            }
             Optional<DeviceType> deviceType = DeviceType.find(name);
             if (! deviceType.isPresent()) {
                 throw unknownDeviceType(name);

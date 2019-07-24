@@ -6,12 +6,12 @@ package com.urbanairship.api.push.model.notification.actions;
 
 /**
  * Notification actions.
- * @param <A>
+ * @param <A> Action type
  */
 public interface Action<A> {
     /**
      * Content/parameters for the action.
-     * @return <A>
+     * @return A
      */
     A getValue();
 
@@ -24,7 +24,7 @@ public interface Action<A> {
     /**
      * A marker interface to distinguish "open" actions from vanilla
      * actions.
-     * @param <A>
+     * @param <A> OpenAction type
      */
     interface OpenAction<A> extends Action<A> { }
 }

@@ -6,7 +6,6 @@ package com.urbanairship.api.push.model;
 
 import com.google.common.base.Optional;
 
-
 /**
  * Optional features for a Push payload for the Urban Airship API.
  * Created for future optional features to be added.
@@ -32,7 +31,7 @@ public class PushOptions extends PushModelObject {
 
     /**
      * Get the expiry (TTL).  This is optional.
-     * @return Optional<<T>Expiry</T>>
+     * @return Optional&lt;Expiry&gt;
      **/
     public Optional<PushExpiry> getExpiry() {
         return expiry;
@@ -40,7 +39,7 @@ public class PushOptions extends PushModelObject {
 
     /**
      * Get the no_throttle value.  This is optional.
-     * @return Optional<<T>noThrottle</T>>
+     * @return Optional&lt;noThrottle&gt;
      **/
     public Optional<PushNoThrottle> getNoThrottle() {
         return noThrottle;
@@ -57,10 +56,11 @@ public class PushOptions extends PushModelObject {
 
         PushOptions that = (PushOptions) o;
 
-        if (!expiry.equals(that.expiry)) {
+        if (expiry != null && !expiry.equals(that.expiry)) {
             return false;
         }
-        return noThrottle.equals(that.noThrottle);
+
+        return !(noThrottle != null ? !noThrottle.equals(that.noThrottle) : that.noThrottle != null);
     }
 
     @Override
@@ -69,7 +69,6 @@ public class PushOptions extends PushModelObject {
         result = 31 * result + noThrottle.hashCode();
         return result;
     }
-
 
     @Override
     public String toString() {
@@ -109,6 +108,4 @@ public class PushOptions extends PushModelObject {
             return new PushOptions(Optional.fromNullable(expiry),Optional.fromNullable(noThrottle));
         }
     }
-
-
 }

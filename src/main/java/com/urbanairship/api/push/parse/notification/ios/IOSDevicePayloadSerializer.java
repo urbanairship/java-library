@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
+import com.urbanairship.api.push.model.notification.ios.IOSSoundData;
 
 import java.io.IOException;
 
@@ -18,10 +19,6 @@ public class IOSDevicePayloadSerializer extends JsonSerializer<IOSDevicePayload>
 
         if (payload.getAlertData().isPresent()) {
             jgen.writeObjectField("alert", payload.getAlertData().get());
-        }
-
-        if (payload.getSound().isPresent()) {
-            jgen.writeStringField("sound", payload.getSound().get());
         }
 
         if (payload.getBadge().isPresent()) {
@@ -64,12 +61,20 @@ public class IOSDevicePayloadSerializer extends JsonSerializer<IOSDevicePayload>
             jgen.writeBooleanField("mutable_content", payload.getMutableContent().get());
         }
 
+        if (payload.getSound().isPresent()) {
+            jgen.writeObjectField("sound", payload.getSound().get());
+        }
+
         if (payload.getMediaAttachment().isPresent()) {
             jgen.writeObjectField("media_attachment", payload.getMediaAttachment().get());
         }
 
         if (payload.getCollapseId().isPresent()) {
             jgen.writeStringField("collapse_id", payload.getCollapseId().get());
+        }
+
+        if (payload.getThreadId().isPresent()) {
+            jgen.writeStringField("thread_id", payload.getThreadId().get());
         }
 
         jgen.writeEndObject();

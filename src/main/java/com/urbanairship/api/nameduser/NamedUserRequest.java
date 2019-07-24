@@ -65,6 +65,11 @@ public class NamedUserRequest implements Request<String> {
      */
     public NamedUserRequest setChannel(String channelId, ChannelType channelType) {
         payload.put(CHANNEL_KEY, channelId);
+
+        if (channelType.equals(ChannelType.OPEN) || channelType.equals(ChannelType.WEB)) {
+            return this;
+        }
+
         payload.put(DEVICE_TYPE_KEY, channelType.getIdentifier());
         return this;
     }
@@ -102,7 +107,6 @@ public class NamedUserRequest implements Request<String> {
     public String getRequestBody() {
         Preconditions.checkArgument(!payload.isEmpty(), "Request payload cannot be empty");
         Preconditions.checkArgument(payload.containsKey(CHANNEL_KEY), "Channel ID required for named user association or disassociation requests");
-        Preconditions.checkArgument(payload.containsKey(DEVICE_TYPE_KEY), "Device type required for named user association or disassociation requests");
 
         if (path.equals(API_NAMED_USERS_ASSOCIATE)) {
             Preconditions.checkArgument(payload.containsKey(NAMED_USER_ID_KEY), "Named User ID required for named user association requests");

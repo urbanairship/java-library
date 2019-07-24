@@ -39,6 +39,7 @@ public class PlatformStatsRequest implements Request<PlatformStatsResponse> {
     /**
      * Create a platform stats request.
      *
+     * @param type PlatformStatsRequestType
      * @return PlatformStatsRequest
      */
     public static PlatformStatsRequest newRequest(PlatformStatsRequestType type) {
@@ -59,6 +60,7 @@ public class PlatformStatsRequest implements Request<PlatformStatsResponse> {
     /**
      * Set the request start date
      *
+     * @param start DateTime
      * @return PlatformStatsRequest
      */
     public PlatformStatsRequest setStart(DateTime start) {
@@ -69,6 +71,7 @@ public class PlatformStatsRequest implements Request<PlatformStatsResponse> {
     /**
      * Set the request end date
      *
+     * @param end DateTime
      * @return PlatformStatsRequest
      */
     public PlatformStatsRequest setEnd(DateTime end) {
@@ -79,6 +82,7 @@ public class PlatformStatsRequest implements Request<PlatformStatsResponse> {
     /**
      * Set the request precision
      *
+     * @param precision Precision
      * @return DateTime
      */
     public PlatformStatsRequest setPrecision(Precision precision) {

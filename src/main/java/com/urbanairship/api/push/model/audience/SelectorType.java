@@ -21,6 +21,7 @@ public enum SelectorType {
     AMAZON_CHANNEL("amazon_channel", SelectorCategory.VALUE, true, true, DeviceType.AMAZON),
     IOS_CHANNEL("ios_channel", SelectorCategory.VALUE, true, true, DeviceType.IOS),
     ANDROID_CHANNEL("android_channel", SelectorCategory.VALUE, true, true, DeviceType.ANDROID),
+    OPEN_CHANNEL("open_channel", SelectorCategory.VALUE),
     CHANNEL("channel", SelectorCategory.VALUE),
 
     AND("and", SelectorCategory.COMPOUND),
@@ -28,6 +29,9 @@ public enum SelectorType {
     NOT("not", SelectorCategory.COMPOUND),
 
     LOCATION("location", SelectorCategory.LOCATION),
+
+    SMS("sms_id", SelectorCategory.SMS),
+    SMS_SENDER("sms_sender", SelectorCategory.VALUE),
 
     ALL("all", SelectorCategory.ATOMIC),
     TRIGGERED("triggered", SelectorCategory.ATOMIC);

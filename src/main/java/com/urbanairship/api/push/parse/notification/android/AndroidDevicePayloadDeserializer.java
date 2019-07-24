@@ -31,6 +31,16 @@ public class AndroidDevicePayloadDeserializer extends JsonDeserializer<AndroidDe
                             reader.readCollapseKey(json);
                         }
                     })
+                    .put("notification_channel", new FieldParser<AndroidDevicePayloadReader>() {
+                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                            reader.readNotificationChannel(json);
+                        }
+                    })
+                    .put("notification_tag", new FieldParser<AndroidDevicePayloadReader>() {
+                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                            reader.readNotificationTag(json);
+                        }
+                    })
                     .put("time_to_live", new FieldParser<AndroidDevicePayloadReader>() {
                         public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
                             reader.readTimeToLive(json);
@@ -84,6 +94,16 @@ public class AndroidDevicePayloadDeserializer extends JsonDeserializer<AndroidDe
                     .put("sound", new FieldParser<AndroidDevicePayloadReader>() {
                         public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
                             reader.readSound(json);
+                        }
+                    })
+                    .put("icon", new FieldParser<AndroidDevicePayloadReader>() {
+                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                            reader.readIcon(json);
+                        }
+                    })
+                    .put("icon_color", new FieldParser<AndroidDevicePayloadReader>() {
+                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                            reader.readIconColor(json);
                         }
                     })
                     .put("priority", new FieldParser<AndroidDevicePayloadReader>() {

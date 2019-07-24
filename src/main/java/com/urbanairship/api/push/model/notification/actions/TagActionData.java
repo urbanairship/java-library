@@ -40,22 +40,22 @@ public abstract class TagActionData extends PushModelObject {
     }
 
     /**
-     * When true, this object represents a single tag (and calling {@link TagActionData.getSingleTag} will succeed).
-     * Otherwise, this represents a set of tags (and calling {@link TagActionData.getTagSet} will succeed).
+     * When true, this object represents a single tag (and calling {@link #getSingleTag()} will succeed).
+     * Otherwise, this represents a set of tags (and calling {@link #getTagSet()} will succeed).
      * @return boolean
      */
     public abstract boolean isSingle();
 
     /**
      * Returns the tag represented, if this object was constructed
-     * with {@link TagActionData.single}, otherwise throw an exception.
+     * with {@link #single(String)}, otherwise throw an exception.
      * @return String
      */
     public abstract String getSingleTag();
 
     /**
      * Returns the tags represented, if this object was constructed
-     * with {@link TagActionData.set}, otherwise throw an exception.
+     * with {@link #set(Set)}, otherwise throw an exception.
      * @return Set of tags
      */
     public abstract Set<String> getTagSet();

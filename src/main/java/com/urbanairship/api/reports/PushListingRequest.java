@@ -74,6 +74,7 @@ public class PushListingRequest implements Request<PushListingResponse> {
     /**
      * Set the request start date
      *
+     * @param start DateTime
      * @return PushListingRequest
      */
     public PushListingRequest setStart(DateTime start) {
@@ -93,6 +94,7 @@ public class PushListingRequest implements Request<PushListingResponse> {
     /**
      * Set the request end date
      *
+     * @param end DateTime
      * @return PushListingRequest
      */
     public PushListingRequest setEnd(DateTime end) {
@@ -112,6 +114,7 @@ public class PushListingRequest implements Request<PushListingResponse> {
     /**
      * Set the page limit
      *
+     * @param limit Integer
      * @return Integer
      */
     public PushListingRequest setLimit(Integer limit) {
@@ -131,6 +134,7 @@ public class PushListingRequest implements Request<PushListingResponse> {
     /**
      * Set the starting push ID
      *
+     * @param pushIdStart String
      * @return String
      */
     public PushListingRequest setPushIdStart(String pushIdStart) {

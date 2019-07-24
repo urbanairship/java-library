@@ -30,8 +30,8 @@ public class PushNoThrottle extends PushModelObject {
     }
 
     /**
-     * Get the no_throttle value as Booleand.  This is optional.
-     * @return Optional<<T>value</T>>
+     * Get the no_throttle value as Boolean.  This is optional.
+     * @return Optional&lt;value&gt;
      */
     public Optional<Boolean> getValue() {
         return value;
@@ -75,7 +75,7 @@ public class PushNoThrottle extends PushModelObject {
          * @param value Boolean
          * @return Builder
          **/
-        public Builder setValue(boolean value) {
+        public Builder setValue(Boolean value) {
             this.value = value;
             return this;
         }

@@ -32,7 +32,6 @@ public class PayloadSerializerTest {
         assertEquals(expected, json);
     }
 
-
     @Test
     public void testEmptyAlert() throws Exception {
         IOSDevicePayload payload = IOSDevicePayload.newBuilder()
@@ -54,19 +53,23 @@ public class PayloadSerializerTest {
 
         IOSDevicePayload payload = IOSDevicePayload.newBuilder()
                 .setAlert(IOSAlertData.newBuilder()
+                        .setTitle("T")
                         .setBody("B")
                         .setActionLocKey("ALK")
                         .setLocKey("LK")
                         .setLocArgs(ImmutableList.of("arg1", "arg2"))
                         .setLaunchImage("LI")
+                        .setTitleLocArgs(ImmutableList.of("arg3", "arg4"))
+                        .setTitleLocKey("TLK")
+                        .setSummaryArg("SA")
+                        .setSummaryArgCount(1)
                         .build())
                 .build();
 
         String json = mapper.writeValueAsString(payload);
 
-
         String expected
-            = "{\"alert\":{\"body\":\"B\",\"action-loc-key\":\"ALK\",\"loc-key\":\"LK\",\"loc-args\":[\"arg1\",\"arg2\"],\"launch-image\":\"LI\"}}";
+            = "{\"alert\":{\"body\":\"B\",\"action-loc-key\":\"ALK\",\"loc-key\":\"LK\",\"loc-args\":[\"arg1\",\"arg2\"],\"launch-image\":\"LI\",\"title\":\"T\",\"title-loc-args\":[\"arg3\",\"arg4\"],\"title-loc-key\":\"TLK\",\"summary-arg\":\"SA\",\"summary-arg-count\":1}}";
 
         assertEquals(expected, json);
     }
@@ -85,7 +88,6 @@ public class PayloadSerializerTest {
         String json = mapper.writeValueAsString(payload);
 
         String expected
-
             = "{\"alert\":{\"action-loc-key\":\"ALK\",\"loc-key\":\"LK\",\"loc-args\":[\"arg1\",\"arg2\"],\"launch-image\":\"LI\"}}";
 
         assertEquals(expected, json);
@@ -160,6 +162,22 @@ public class PayloadSerializerTest {
     }
 
     @Test
+    public void testSound() throws Exception {
+        IOSSoundData soundData = IOSSoundData.newBuilder()
+                .setCritical(true)
+                .setVolume(1.0)
+                .setName("Goliath")
+                .build();
+
+        String json = mapper.writeValueAsString(soundData);
+
+        String expected
+                = "{\"critical\":true,\"volume\":1.0,\"name\":\"Goliath\"}";
+
+        assertEquals(expected, json);
+    }
+
+    @Test
     public void testMediaAttachment() throws Exception {
 
         Crop crop = Crop.newBuilder()
@@ -192,12 +210,14 @@ public class PayloadSerializerTest {
                 .setMutableContent(true)
                 .setSubtitle("subtitle")
                 .setMediaAttachment(mediaAttachment)
+                .setSound("just a string file name")
                 .setCollapseId("collapseId")
+                .setThreadId("threadId")
                 .build();
 
         String json = mapper.writeValueAsString(payload);
         String expected
-                = "{\"alert\":\"alert\",\"subtitle\":\"subtitle\",\"mutable_content\":true,\"media_attachment\":{\"url\":\"http://www.google.com\",\"options\":{\"time\":10,\"crop\":{\"x\":0.1,\"y\":0.2,\"width\":0.3,\"height\":0.4},\"hidden\":true},\"content\":{\"body\":\"content body\",\"title\":\"content title\",\"subtitle\":\"content subtitle\"}},\"collapse_id\":\"collapseId\"}";
+                = "{\"alert\":\"alert\",\"subtitle\":\"subtitle\",\"mutable_content\":true,\"sound\":\"just a string file name\",\"media_attachment\":{\"url\":\"http://www.google.com\",\"options\":{\"time\":10,\"crop\":{\"x\":0.1,\"y\":0.2,\"width\":0.3,\"height\":0.4},\"hidden\":true},\"content\":{\"body\":\"content body\",\"title\":\"content title\",\"subtitle\":\"content subtitle\"}},\"collapse_id\":\"collapseId\",\"thread_id\":\"threadId\"}";
 
         assertEquals(expected, json);
     }

@@ -19,6 +19,8 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
 
     private final Optional<String> alert;
     private final Optional<String> collapseKey;
+    private final Optional<String> notificationChannel;
+    private final Optional<String> notificationTag;
     private final Optional<PushExpiry> timeToLive;
     private final Optional<String> deliveryPriority;
     private final Optional<Boolean> delayWhileIdle;
@@ -30,6 +32,8 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
     private final Optional<String> summary;
     private final Optional<Style> style;
     private final Optional<String> sound;
+    private final Optional<String> icon;
+    private final Optional<String> iconColor;
     // Android L features
     private final Optional<Integer> priority;
     private final Optional<Category> category;
@@ -39,6 +43,8 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
     private AndroidDevicePayload(Builder builder) {
         this.alert = Optional.fromNullable(builder.alert);
         this.collapseKey = Optional.fromNullable(builder.collapseKey);
+        this.notificationChannel = Optional.fromNullable(builder.notificationChannel);
+        this.notificationTag = Optional.fromNullable(builder.notificationTag);
         this.timeToLive = Optional.fromNullable(builder.timeToLive);
         this.deliveryPriority = Optional.fromNullable(builder.deliveryPriority);
         this.delayWhileIdle = Optional.fromNullable(builder.delayWhileIdle);
@@ -54,6 +60,8 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         this.summary = Optional.fromNullable(builder.summary);
         this.style = Optional.fromNullable(builder.style);
         this.sound = Optional.fromNullable(builder.sound);
+        this.icon = Optional.fromNullable(builder.icon);
+        this.iconColor = Optional.fromNullable(builder.iconColor);
         this.priority = Optional.fromNullable(builder.priority);
         this.category = Optional.fromNullable(builder.category);
         this.visibility = Optional.fromNullable(builder.visibility);
@@ -96,6 +104,24 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
      */
     public Optional<String> getCollapseKey() {
         return collapseKey;
+    }
+
+    /**
+     * Get the notification channel.
+     *
+     * @return Optional String notification channel
+     */
+    public Optional<String> getNotificationChannel() {
+        return notificationChannel;
+    }
+
+    /**
+     * Get the notification tag.
+     *
+     * @return Optional String notification tag
+     */
+    public Optional<String> getNotificationTag() {
+        return notificationTag;
     }
 
     /**
@@ -198,6 +224,24 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
     }
 
     /**
+     * Get the icon string.
+     *
+     * @return Optional String icon
+     */
+    public Optional<String> getIcon() {
+        return icon;
+    }
+
+    /**
+     * Get the icon color string.
+     *
+     * @return Optional String icon color
+     */
+    public Optional<String> getIconColor() {
+        return iconColor;
+    }
+
+    /**
      * Get the priority specifier.
      *
      * @return Optional integer between -2 and 2.
@@ -238,6 +282,8 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         return "AndroidDevicePayload{" +
                 "alert=" + alert +
                 ", collapseKey=" + collapseKey +
+                ", notificationChannel=" + notificationChannel +
+                ", notificationTag=" + notificationTag +
                 ", timeToLive=" + timeToLive +
                 ", delayWhileIdle=" + delayWhileIdle +
                 ", deliveryPriority=" + deliveryPriority +
@@ -249,6 +295,8 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
                 ", summary=" + summary +
                 ", style=" + style +
                 ", sound=" + sound +
+                ", icon=" + icon +
+                ", iconColor=" + iconColor +
                 ", priority=" + priority +
                 ", category=" + category +
                 ", visibility=" + visibility +
@@ -266,6 +314,8 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         if (!alert.equals(that.alert)) return false;
         if (!category.equals(that.category)) return false;
         if (!collapseKey.equals(that.collapseKey)) return false;
+        if (!notificationChannel.equals(that.notificationChannel)) return false;
+        if (!notificationTag.equals(that.notificationTag)) return false;
         if (!delayWhileIdle.equals(that.delayWhileIdle)) return false;
         if (!deliveryPriority.equals(that.deliveryPriority)) return false;
         if (!extra.equals(that.extra)) return false;
@@ -274,6 +324,8 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         if (!priority.equals(that.priority)) return false;
         if (!style.equals(that.style)) return false;
         if (!sound.equals(that.sound)) return false;
+        if (!icon.equals(that.icon)) return false;
+        if (!iconColor.equals(that.iconColor)) return false;
         if (!summary.equals(that.summary)) return false;
         if (!timeToLive.equals(that.timeToLive)) return false;
         if (!title.equals(that.title)) return false;
@@ -288,6 +340,8 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
     public int hashCode() {
         int result = alert.hashCode();
         result = 31 * result + collapseKey.hashCode();
+        result = 31 * result + notificationChannel.hashCode();
+        result = 31 * result + notificationTag.hashCode();
         result = 31 * result + timeToLive.hashCode();
         result = 31 * result + delayWhileIdle.hashCode();
         result = 31 * result + deliveryPriority.hashCode();
@@ -299,6 +353,8 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         result = 31 * result + summary.hashCode();
         result = 31 * result + style.hashCode();
         result = 31 * result + sound.hashCode();
+        result = 31 * result + icon.hashCode();
+        result = 31 * result + iconColor.hashCode();
         result = 31 * result + priority.hashCode();
         result = 31 * result + category.hashCode();
         result = 31 * result + visibility.hashCode();
@@ -310,6 +366,8 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
     public static class Builder {
         private String alert = null;
         private String collapseKey = null;
+        private String notificationChannel = null;
+        private String notificationTag = null;
         private PushExpiry timeToLive = null;
         private Boolean delayWhileIdle = null;
         private String deliveryPriority = null;
@@ -321,6 +379,8 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         private String summary = null;
         private Style style = null;
         private String sound = null;
+        private String icon = null;
+        private String iconColor = null;
         // Android L features
         private Integer priority = null;
         private Category category = null;
@@ -348,6 +408,28 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
          */
         public Builder setCollapseKey(String collapseKey) {
             this.collapseKey = collapseKey;
+            return this;
+        }
+
+        /**
+         * Set the notification channel string.
+         *
+         * @param notificationChannel String
+         * @return Builder
+         */
+        public Builder setNotificationChannel(String notificationChannel) {
+            this.notificationChannel = notificationChannel;
+            return this;
+        }
+
+        /**
+         * Set the notification tag string.
+         *
+         * @param notificationTag String
+         * @return Builder
+         */
+        public Builder setNotificationTag(String notificationTag) {
+            this.notificationTag = notificationTag;
             return this;
         }
 
@@ -485,6 +567,28 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
          */
         public Builder setSound(String sound) {
             this.sound = sound;
+            return this;
+        }
+
+        /**
+         * Set the icon string.
+         *
+         * @param icon String
+         * @return Builder
+         */
+        public Builder setIcon(String icon) {
+            this.icon = icon;
+            return this;
+        }
+
+        /**
+         * Set the icon color string.
+         *
+         * @param iconColor String
+         * @return Builder
+         */
+        public Builder setIconColor(String iconColor) {
+            this.iconColor = iconColor;
             return this;
         }
 

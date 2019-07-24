@@ -2,7 +2,14 @@ package com.urbanairship.api.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.client.parse.RequestErrorObjectMapper;
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -70,6 +77,57 @@ public class RequestErrorTest {
                 .build())
             .build();
         assertEquals("Error in the details", error.getDetails().get(), testDetails);
+    }
+
+    @Test
+    public void testTemplateRequestErrorDeserialization() throws IOException {
+        String response = "{\n" +
+                "  \"ok\": false,\n" +
+                "  \"error\": \"child \\\"id\\\" fails because [\\\"id\\\" must be a valid GUID]\",\n" +
+                "  \"details\": [\n" +
+                "    {\n" +
+                "      \"message\": \"\\\"id\\\" must be a valid GUID\",\n" +
+                "      \"path\": [\n" +
+                "        \"id\"\n" +
+                "      ],\n" +
+                "      \"type\": \"string.guid\",\n" +
+                "      \"context\": {\n" +
+                "        \"value\": \"template-id-123\",\n" +
+                "        \"key\": \"id\",\n" +
+                "        \"label\": \"id\"\n" +
+                "      }\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
+
+        RequestError error = RequestError.errorFromResponse(response, RequestError.UA_APPLICATION_JSON_V3);
+
+        Assert.assertFalse(error.getOk());
+
+        String errorMessage = error.getError();
+        Assert.assertEquals("\"id\" must be a valid GUID", errorMessage);
+    }
+
+    @Test
+    public void testSpaceInContentType() throws IOException {
+        String errorJSON = "{\n" +
+                "    \"ok\" : false,\n" +
+                "    \"operation_id\" : \"operation id\",\n" +
+                "    \"error\" : \"Invalid push content\",\n" +
+                "    \"error_code\" : 40001,\n" +
+                "    \"details\" : {\n" +
+                "        \"error\" : \"error message\",\n" +
+                "        \"path\" : \"push.wns.text\",\n" +
+                "        \"location\" : {\n" +
+                "            \"line\" : 47,\n" +
+                "            \"column\" : 12\n" +
+                "        }\n" +
+                "    }\n" +
+                "}";
+
+        RequestError errorWithSpace = RequestError.errorFromResponse(errorJSON, "application/ vnd.urbanairship+json");
+        RequestError errorWithoutSpace = RequestError.errorFromResponse(errorJSON, "application/vnd.urbanairship+json");
+        assertEquals(errorWithoutSpace, errorWithSpace);
     }
 
     @Test
