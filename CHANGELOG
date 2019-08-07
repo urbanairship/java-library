@@ -1,4 +1,9 @@
 -------------------------
+4.3.1 07AUG19
+-------------------------
+- Updated to Jackson Databind version 2.9.9.2 due to security vulnerability.
+
+-------------------------
 4.3.0 05JUL19
 -------------------------
 - Added support for scheduled template pushes.
