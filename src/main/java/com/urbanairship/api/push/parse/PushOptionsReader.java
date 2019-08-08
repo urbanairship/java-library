@@ -5,6 +5,7 @@
 package com.urbanairship.api.push.parse;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.urbanairship.api.common.parse.BooleanFieldDeserializer;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.PushOptions;
@@ -21,6 +22,10 @@ public class PushOptionsReader implements JsonObjectReader<PushOptions> {
 
     public void readExpiry(JsonParser parser) throws IOException {
         builder.setExpiry(parser.readValueAs(PushExpiry.class));
+    }
+
+    public void readNoThrottle(JsonParser parser) throws IOException {
+        builder.setNoThrottle(BooleanFieldDeserializer.INSTANCE.deserialize(parser, "no_throttle"));
     }
 
     @Override
