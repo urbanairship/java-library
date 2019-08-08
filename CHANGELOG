@@ -1,4 +1,9 @@
 -------------------------
+4.4.0 08AUG19
+-------------------------
+- Added support for no_throttle push option.
+
+-------------------------
 4.3.0 05JUL19
 -------------------------
 - Added support for scheduled template pushes.
