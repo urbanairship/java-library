@@ -19,6 +19,9 @@ public class PushOptionsSerializer extends JsonSerializer<PushOptions> {
         if (payload.getExpiry().isPresent()) {
             jgen.writeObjectField("expiry", payload.getExpiry().get());
         }
+        if (payload.getNoThrottle().isPresent()) {
+            jgen.writeBooleanField("no_throttle", payload.getNoThrottle().get());
+        }
 
         jgen.writeEndObject();
     }
