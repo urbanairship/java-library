@@ -1,5 +1,6 @@
 package com.urbanairship.api.push.parse;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.DeviceType;
@@ -126,6 +127,26 @@ public class PushOptionsTest {
         assertTrue(options.getExpiry().isPresent());
         PushExpiry expiry = options.getExpiry().get();
         assertEquals(seconds, expiry.getExpirySeconds().get());
+    }
+
+    @Test
+    public void testParsingNoThrottle() throws Exception {
+        String json = "{" +
+                "\"no_throttle\": true" +
+                "}";
+
+        PushOptions pushOptions = PushOptions.newBuilder().setNoThrottle(true).build();
+
+        String objectJson = mapper.writeValueAsString(pushOptions);
+        PushOptions roundTrip = mapper.readValue(objectJson, PushOptions.class);
+
+        assertEquals(true, roundTrip.getNoThrottle().get());
+
+        objectJson = mapper.writeValueAsString(roundTrip);
+        JsonNode actual = mapper.readTree(objectJson);
+        JsonNode expected = mapper.readTree(json);
+
+        assertEquals(expected, actual);
     }
 
     @Test

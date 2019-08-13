@@ -1,6 +1,7 @@
 -------------------------
-4.3.1 07AUG19
+4.4.0 13AUG19
 -------------------------
+- Added support for no_throttle push option.
 - Updated to Jackson Databind version 2.9.9.2 due to security vulnerability.
 
 -------------------------
