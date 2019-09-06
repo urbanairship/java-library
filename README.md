@@ -21,7 +21,7 @@ Manual installation
 Clone the repository, and use
 
 ```
-    mvn package
+    ./mvnw package
 ```
 
 to build the jar. Add the jar, located at a path similar to:
@@ -33,7 +33,7 @@ to build the jar. Add the jar, located at a path similar to:
 If you would like a copy of the javadocs, use
 
 ```
-    mvn javadoc:javadoc
+    ./mvnw javadoc:javadoc
 ```
 
 
