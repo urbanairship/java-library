@@ -1,4 +1,9 @@
 -------------------------
+4.4.1
+-------------------------
+- Updated to Jackson to versions 2.9.10 due to security vulnerability in jackson core.
+
+-------------------------
 4.4.0 13AUG19
 -------------------------
 - Added support for no_throttle push option.
