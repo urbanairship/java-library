@@ -213,7 +213,7 @@ public class UrbanAirshipClientTest {
 
         AsyncRequestClient asyncClient = (AsyncRequestClient) client.getRequestClient();
 
-        assertEquals("https://go.urbanairship.eu", asyncClient.getBaseUri().toString());
+        assertEquals("https://go.airship.eu", asyncClient.getBaseUri().toString());
     }
 
     @Test
