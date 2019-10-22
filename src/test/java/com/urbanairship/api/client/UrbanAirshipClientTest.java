@@ -204,6 +204,31 @@ public class UrbanAirshipClientTest {
     }
 
     @Test
+    public void testSetEUBaseUri() {
+        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
+                .setBaseUri(UrbanAirshipClient.EU_URI)
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        AsyncRequestClient asyncClient = (AsyncRequestClient) client.getRequestClient();
+
+        assertEquals("https://go.urbanairship.eu", asyncClient.getBaseUri().toString());
+    }
+
+    @Test
+    public void testDefaultBaseUri() {
+        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
+                .setKey("key")
+                .setSecret("secret")
+                .build();
+
+        AsyncRequestClient asyncClient = (AsyncRequestClient) client.getRequestClient();
+
+        assertEquals("https://go.urbanairship.com", asyncClient.getBaseUri().toString());
+    }
+
+    @Test
     public void testAPIClientBuilderWithOptionalProxyInfo() throws Exception {
         Realm realm = new Realm.Builder("user", "password")
                 .setScheme(Realm.AuthScheme.BASIC)
@@ -223,6 +248,12 @@ public class UrbanAirshipClientTest {
         assertEquals("password", proxyClient.getClientConfig().getRealm().getPassword());
 
         proxyClient.close();
+    }
+
+    public void test() {
+        UrbanAirshipClient newClient = UrbanAirshipClient.newBuilder().build();
+        newClient.getUserAgent();
+        String userAgent = client.getUserAgent();
     }
 
     @Test
