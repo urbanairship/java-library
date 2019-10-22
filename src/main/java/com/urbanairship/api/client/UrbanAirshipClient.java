@@ -34,6 +34,8 @@ public class UrbanAirshipClient implements Closeable {
 
     private String userAgent;
 
+    public static final String EU_URI = "https://go.airship.eu";
+
     private UrbanAirshipClient(Builder builder) {
         this.client = builder.client;
         userAgent = getUserAgent();
@@ -174,6 +176,7 @@ public class UrbanAirshipClient implements Closeable {
         private String key;
         private String secret;
         private String bearerToken;
+        private String baseUri = "https://go.urbanairship.com";
         private RequestClient client;
 
         /**
@@ -193,6 +196,20 @@ public class UrbanAirshipClient implements Closeable {
          */
         public Builder setSecret(String appSecret) {
             this.secret = appSecret;
+            return this;
+        }
+
+        /**
+         * Changes base URI.
+         * Without changing URI, it defaults to
+         * https://go.urbanairship.com.
+         * To send to European Servers use
+         * UrbanAirshipClient.EU_URI
+         * @param baseUri String baseUri used for requests
+         * @return Builder
+         */
+        public Builder setBaseUri(String baseUri) {
+            this.baseUri = baseUri;
             return this;
         }
 
@@ -238,6 +255,7 @@ public class UrbanAirshipClient implements Closeable {
 
             if (client == null) {
                 client = AsyncRequestClient.newBuilder()
+                        .setBaseUri(baseUri)
                         .build();
             }
 
