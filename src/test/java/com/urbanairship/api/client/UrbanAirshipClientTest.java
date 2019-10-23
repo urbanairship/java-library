@@ -250,12 +250,6 @@ public class UrbanAirshipClientTest {
         proxyClient.close();
     }
 
-    public void test() {
-        UrbanAirshipClient newClient = UrbanAirshipClient.newBuilder().build();
-        newClient.getUserAgent();
-        String userAgent = client.getUserAgent();
-    }
-
     @Test
     public void testGetUserAgent() {
         String userAgent = client.getUserAgent();
