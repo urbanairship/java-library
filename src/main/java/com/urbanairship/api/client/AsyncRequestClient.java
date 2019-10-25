@@ -61,6 +61,15 @@ public class AsyncRequestClient implements RequestClient {
     }
 
     /**
+     * Get the base URI used for the client.
+     *
+     * @return URI
+     */
+    public URI getBaseUri() {
+        return baseUri;
+    }
+
+    /**
      * Get the proxy server.
      *
      * @return Optional ProxyServer
