@@ -204,7 +204,7 @@ public class UrbanAirshipClientTest {
     }
 
     @Test
-    public void testSetEUBaseUri() {
+    public void testSetEUBaseUri() throws IOException {
         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
                 .setBaseUri(UrbanAirshipClient.EU_URI)
                 .setKey("key")
@@ -214,10 +214,12 @@ public class UrbanAirshipClientTest {
         AsyncRequestClient asyncClient = (AsyncRequestClient) client.getRequestClient();
 
         assertEquals("https://go.airship.eu", asyncClient.getBaseUri().toString());
+
+        client.close();
     }
 
     @Test
-    public void testDefaultBaseUri() {
+    public void testDefaultBaseUri() throws IOException {
         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
                 .setKey("key")
                 .setSecret("secret")
@@ -226,6 +228,8 @@ public class UrbanAirshipClientTest {
         AsyncRequestClient asyncClient = (AsyncRequestClient) client.getRequestClient();
 
         assertEquals("https://go.urbanairship.com", asyncClient.getBaseUri().toString());
+
+        client.close();
     }
 
     @Test
