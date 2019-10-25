@@ -1,5 +1,5 @@
 -------------------------
-4.5.0
+4.5.0 25OCT19
 -------------------------
 - Updated to Jackson to versions 2.9.10 due to security vulnerability in jackson core.
 - Added support for EU URI in UrbanAirshipClient.
