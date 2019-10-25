@@ -119,6 +119,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -142,7 +144,7 @@ public class UrbanAirshipClientTest {
     @Before
     public void setup() {
         asyncRequestClient = AsyncRequestClient.newBuilder()
-                .setBaseUri("http://localhost:8080")
+                .setBaseUri("http://localhost:" + wireMockRule.port())
                 .setMaxRetries(5)
                 .setRetryPredicate(new Predicate<FilterContext>() {
                     @Override
@@ -169,7 +171,7 @@ public class UrbanAirshipClientTest {
     }
 
     @ClassRule
-    public static WireMockClassRule wireMockRule = new WireMockClassRule();
+    public static WireMockClassRule wireMockRule = new WireMockClassRule(wireMockConfig().dynamicPort().dynamicHttpsPort());
 
     @Rule
     public WireMockClassRule instanceRule = wireMockRule;
@@ -204,7 +206,7 @@ public class UrbanAirshipClientTest {
     }
 
     @Test
-    public void testSetEUBaseUri() throws IOException {
+    public void testSetEUBaseUri() throws Exception {
         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
                 .setBaseUri(UrbanAirshipClient.EU_URI)
                 .setKey("key")
@@ -219,7 +221,7 @@ public class UrbanAirshipClientTest {
     }
 
     @Test
-    public void testDefaultBaseUri() throws IOException {
+    public void testDefaultBaseUri() throws Exception {
         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
                 .setKey("key")
                 .setSecret("secret")
@@ -238,7 +240,7 @@ public class UrbanAirshipClientTest {
                 .setScheme(Realm.AuthScheme.BASIC)
                 .build();
 
-        ProxyServer proxyServer = new ProxyServer.Builder("test.urbanairship.com", 8080)
+        ProxyServer proxyServer = new ProxyServer.Builder("test.urbanairship.com", wireMockRule.port())
                 .setRealm(realm)
                 .build();
 
@@ -247,7 +249,7 @@ public class UrbanAirshipClientTest {
                 .build();
 
         assertEquals("test.urbanairship.com", proxyClient.getProxyServer().get().getHost());
-        assertEquals(8080, proxyClient.getProxyServer().get().getPort());
+        assertEquals(wireMockRule.port(), proxyClient.getProxyServer().get().getPort());
         assertEquals("user", proxyClient.getClientConfig().getRealm().getPrincipal());
         assertEquals("password", proxyClient.getClientConfig().getRealm().getPassword());
 
@@ -467,7 +469,7 @@ public class UrbanAirshipClientTest {
     @SuppressWarnings("unchecked")
     public void testRetryIsNonBlocking() throws Exception {
         asyncRequestClient = AsyncRequestClient.newBuilder()
-            .setBaseUri("http://localhost:8080")
+            .setBaseUri("http://localhost:" + wireMockRule.port())
             .setMaxRetries(1000)
             .build();
 
@@ -520,7 +522,7 @@ public class UrbanAirshipClientTest {
     @SuppressWarnings("unchecked")
     public void testClose() throws Exception {
         asyncRequestClient = AsyncRequestClient.newBuilder()
-            .setBaseUri("http://localhost:8080")
+            .setBaseUri("http://localhost:" + wireMockRule.port())
             .setMaxRetries(1000)
             .build();
 
@@ -740,13 +742,13 @@ public class UrbanAirshipClientTest {
                 .setScheme(Realm.AuthScheme.BASIC)
                 .build();
 
-        ProxyServer proxyServer = new ProxyServer.Builder("localhost", 8080)
+        ProxyServer proxyServer = new ProxyServer.Builder("localhost", wireMockRule.port())
                 .setRealm(localRealm)
                 .build();
 
         // Setup a client and a push payload
         AsyncRequestClient proxyClient = AsyncRequestClient.newBuilder()
-            .setBaseUri("http://localhost:8080")
+            .setBaseUri("http://localhost:" + wireMockRule.port())
             .setProxyServer(proxyServer)
             .build();
 
