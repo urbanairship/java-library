@@ -10,10 +10,7 @@ import org.apache.http.entity.ContentType;
 import org.junit.Test;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -91,10 +88,12 @@ public class ChannelTagRequestTest {
         String iosChannel1 = UUID.randomUUID().toString();
         String iosChannel2 = UUID.randomUUID().toString();
         String androidChannel = UUID.randomUUID().toString();
+        String channel = UUID.randomUUID().toString();
 
         String expected = "{" +
               "\"audience\":{" +
                 "\"ios_channel\":[\"" + iosChannel1+ "\",\"" + iosChannel2 +"\"]," +
+                "\"channel\":[\"" + channel + "\"]," +
                 "\"android_channel\":[\"" + androidChannel + "\"]" +
               "}," +
               "\"set\":{" +
@@ -109,6 +108,7 @@ public class ChannelTagRequestTest {
         ChannelTagRequest request = ChannelTagRequest.newRequest()
             .addIOSChannels(iosChannels)
             .addAndroidChannel(androidChannel)
+            .addGenericChannel(channel)
             .setTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
             .setTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
             .setTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"));
@@ -124,10 +124,12 @@ public class ChannelTagRequestTest {
         String iosChannel1 = UUID.randomUUID().toString();
         String iosChannel2 = UUID.randomUUID().toString();
         String androidChannel = UUID.randomUUID().toString();
+        String channel = UUID.randomUUID().toString();
 
         String expected = "{" +
               "\"audience\":{" +
                 "\"ios_channel\":[\"" + iosChannel1+ "\",\"" + iosChannel2 +"\"]," +
+                "\"channel\":[\"" + channel + "\"]," +
                 "\"android_channel\":[\"" + androidChannel + "\"]" +
               "}," +
               "\"remove\":{" +
@@ -147,6 +149,7 @@ public class ChannelTagRequestTest {
         ChannelTagRequest request = ChannelTagRequest.newRequest()
             .addIOSChannels(iosChannels)
             .addAndroidChannel(androidChannel)
+            .addGenericChannel(channel)
             .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
             .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
             .addTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"))

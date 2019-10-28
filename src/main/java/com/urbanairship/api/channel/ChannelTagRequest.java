@@ -30,6 +30,7 @@ public class ChannelTagRequest implements Request<String> {
     private static final String IOS_CHANNEL_KEY = "ios_channel";
     private static final String ANDROID_CHANNEL_KEY = "android_channel";
     private static final String AMAZON_CHANNEL_KEY = "amazon_channel";
+    private static final String GENERIC_CHANNEL_KEY = "channel";
     private static final String AUDIENCE_KEY = "audience";
     private static final String ADD_KEY = "add";
     private static final String REMOVE_KEY = "remove";
@@ -138,6 +139,37 @@ public class ChannelTagRequest implements Request<String> {
      */
     public ChannelTagRequest addAmazonChannels(Set<String> channels) {
         appendMapValues(AMAZON_CHANNEL_KEY, channels, this.audience);
+        return this;
+    }
+
+    /**
+     * Add a generic channel that is either a Open, Web, Sms, or Email channel.
+     *
+     * @param channel String
+     * @return ChannelTagRequest
+     */
+    public ChannelTagRequest addGenericChannel(String channel) {
+        return addGenericChannels(channel);
+    }
+
+    /**
+     * Add multiple channels that are either Open, Web, Sms, or Email channels.
+     *
+     * @param channels String... of Channel IDs
+     * @return ChannelTagRequest
+     */
+    public ChannelTagRequest addGenericChannels(String... channels) {
+        return  addGenericChannels(new HashSet<>(Arrays.asList(channels)));
+    }
+
+    /**
+     * Add a set of channels that are either Open, Web, Sms, or Email channels.
+     *
+     * @param channels Set of channel IDs
+     * @return ChannelTagRequest
+     */
+    public ChannelTagRequest addGenericChannels(Set<String> channels) {
+        appendMapValues(GENERIC_CHANNEL_KEY, channels, this.audience);
         return this;
     }
 
