@@ -143,7 +143,7 @@ public class ChannelTagRequest implements Request<String> {
     }
 
     /**
-     * Add a generic channel that is either a Open, Web, Sms, or Email channel.
+     * Add a generic channel that is either a Open, Web, SMS, or Email channel.
      *
      * @param channel String
      * @return ChannelTagRequest
@@ -163,7 +163,7 @@ public class ChannelTagRequest implements Request<String> {
     }
 
     /**
-     * Add a set of channels that are either Open, Web, Sms, or Email channels.
+     * Add a set of channels that are either Open, Web, SMS, or Email channels.
      *
      * @param channels Set of channel IDs
      * @return ChannelTagRequest
