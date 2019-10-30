@@ -23,6 +23,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /***
@@ -102,10 +104,13 @@ public class CreateAndSendEmailTest {
                         .build())
                 .build();
 
+        Map<String, String> substitutions = new HashMap<>();
+        substitutions.put("name", "New Person Esq");
+        substitutions.put("location", "City, State");
+
         EmailChannel templateNewChannel = EmailChannel.newBuilder()
                 .setAddress("new@email.com")
-                .addSubstitution("name", "New Person Esq")
-                .addSubstitution("location", "City, State")
+                .addAllSubstitutions(substitutions)
                 .build();
 
         EmailChannel templateBenChannel = EmailChannel.newBuilder()

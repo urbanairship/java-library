@@ -16,6 +16,10 @@ public class SmsTemplateSerializer extends JsonSerializer<SmsTemplate> {
             jgen.writeObjectField("fields", smsTemplate.getSmsFields().get());
         }
 
+        if (smsTemplate.getTemplateId().isPresent()) {
+            jgen.writeStringField("template_id", smsTemplate.getTemplateId().get());
+        }
+
         jgen.writeEndObject();
     }
 }
