@@ -2,8 +2,8 @@
 4.6.0 XXOCT19
 -------------------------
 - Added support for tags on Open, SMS, Email, and Web channels.
+- Added support for create and send SMS to a template ID.
 - Fixed a bug in adding email substitutions.
--
 
 -------------------------
 4.5.0 25OCT19
