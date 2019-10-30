@@ -10,7 +10,10 @@ import org.apache.http.entity.ContentType;
 import org.junit.Test;
 
 import java.net.URI;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
