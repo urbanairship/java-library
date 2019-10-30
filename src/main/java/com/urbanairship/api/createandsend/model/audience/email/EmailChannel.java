@@ -124,7 +124,7 @@ public class EmailChannel {
          * @return EmailChannel Builder
          */
         public Builder addAllSubstitutions(Map<String, String> substitutions) {
-            substitutions.putAll(substitutions);
+            this.substitutions.putAll(substitutions);
             return this;
         }
 

@@ -1,5 +1,6 @@
 package com.urbanairship.api.createandsend;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.common.parse.DateFormats;
@@ -21,6 +22,7 @@ import org.junit.Test;
 import static junit.framework.Assert.assertEquals;
 
 import java.io.IOException;
+import java.util.UUID;
 
 public class CreateAndSendSmsTest {
     private SmsPayload smsPayload;
@@ -117,10 +119,18 @@ public class CreateAndSendSmsTest {
         String expectedJson = "{\"fields\":{\"alert\":\"smsFieldAlert\"}}";
         String actualJson = MAPPER.writeValueAsString(smsPayloadWithTemplate.getSmsTemplate().get());
 
+        String templateId = UUID.randomUUID().toString();
+        String templateIdJson = "{\"template_id\":\"" + templateId + "\"}";
+        SmsTemplate smsTemplate = SmsTemplate.newBuilder().setTemplateId(templateId).build();
+
         JsonNode actualNode = MAPPER.readTree(actualJson);
         JsonNode expectedNode = MAPPER.readTree(expectedJson);
 
+        JsonNode actualTemplateIdNode = MAPPER.readTree(MAPPER.writeValueAsString(smsTemplate));
+        JsonNode expectedTemplateIdNode = MAPPER.readTree(templateIdJson);
+
         assertEquals(expectedNode, actualNode);
+        assertEquals(expectedTemplateIdNode, actualTemplateIdNode);
     }
 
     @Test
