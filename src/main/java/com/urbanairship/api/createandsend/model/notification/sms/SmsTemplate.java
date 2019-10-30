@@ -8,9 +8,11 @@ import com.google.common.base.Optional;
  */
 public class SmsTemplate {
     private final Optional<SmsFields> smsFields;
+    private final Optional<String> templateId;
 
     private SmsTemplate(Builder builder) {
         this.smsFields = Optional.fromNullable(builder.smsFields);
+        this.templateId = Optional.fromNullable(builder.templateId);
     }
 
     public static Builder newBuilder() {
@@ -25,10 +27,20 @@ public class SmsTemplate {
         return smsFields;
     }
 
+    /**
+     * Get the template ID.
+     *
+     * @return Optional String
+     */
+    public Optional<String> getTemplateId() {
+        return templateId;
+    }
+
     @Override
     public String toString() {
         return "SmsTemplate{" +
                 "smsFields=" + smsFields +
+                ", templateId=" + templateId +
                 '}';
     }
 
@@ -37,16 +49,18 @@ public class SmsTemplate {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SmsTemplate that = (SmsTemplate) o;
-        return Objects.equal(smsFields, that.smsFields);
+        return Objects.equal(smsFields, that.smsFields) &&
+                Objects.equal(templateId, that.templateId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(smsFields);
+        return Objects.hashCode(smsFields, templateId);
     }
 
     public static class Builder {
         private SmsFields smsFields;
+        private String templateId;
 
         /**
          * Set the template you want to construct for the message.
@@ -58,6 +72,17 @@ public class SmsTemplate {
          */
         public Builder setSmsFields(SmsFields smsFields) {
             this.smsFields = smsFields;
+            return this;
+        }
+
+        /**
+         * Set the ID of a template that you created in the Airship UI that you want to use in a create-and-send payload.
+         *
+         * @param templateId String
+         * @return SmsTemplateBuilder
+         */
+        public Builder setTemplateId(String templateId) {
+            this.templateId = templateId;
             return this;
         }
 
