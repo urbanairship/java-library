@@ -153,7 +153,7 @@ public class ChannelTagRequest implements Request<String> {
     }
 
     /**
-     * Add multiple channels that are either Open, Web, Sms, or Email channels.
+     * Add multiple channels that are either Open, Web, SMS, or Email channels.
      *
      * @param channels String... of Channel IDs
      * @return ChannelTagRequest
