@@ -1,4 +1,9 @@
 -------------------------
+4.6.0 XXOCT19
+-------------------------
+- Added support for tags on Open, SMS, Email, and Web channels.
+
+-------------------------
 4.5.0 25OCT19
 -------------------------
 - Updated to Jackson to versions 2.9.10 due to security vulnerability in jackson core.
