@@ -22,6 +22,8 @@ import org.junit.Test;
 import static junit.framework.Assert.assertEquals;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class CreateAndSendSmsTest {
@@ -38,12 +40,15 @@ public class CreateAndSendSmsTest {
 
         dateString = dateTime.toString(DateFormats.DATE_FORMATTER);
 
+        Map<String, String> substitutions = new HashMap<>();
+        substitutions.put("key1", "value1");
+        substitutions.put("key2", "value2");
+
         SmsChannel smsChannel = SmsChannel.newBuilder()
                 .setSender("sender")
                 .setMsisdn("msisdn")
                 .setOptedIn(dateTime)
-                .addSubstitution("key1", "value1")
-                .addSubstitution("key2", "value2")
+                .addAllSubstitutions(substitutions)
                 .build();
 
         SmsChannel smsChannel1 = SmsChannel.newBuilder()
