@@ -1,4 +1,9 @@
 -------------------------
+4.6.1 31OCT19
+-------------------------
+- Fixed a bug in adding SMS substitutions.
+
+-------------------------
 4.6.0 30OCT19
 -------------------------
 - Added support for tags on Open, SMS, Email, and Web channels.
