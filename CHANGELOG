@@ -1,4 +1,9 @@
 -------------------------
+4.6.2 08NOV19
+-------------------------
+- Updated to Jackson Core version 2.10.0 due to a security vulnerability.
+
+-------------------------
 4.6.1 31OCT19
 -------------------------
 - Fixed a bug in adding SMS substitutions.
