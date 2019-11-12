@@ -1,14 +1,15 @@
-Urban Airship Java Client Library
+Airship Java Client Library
 =================================
 
-This is the official supported Java library for the Urban Airship API.
+This is the official supported Java library for the Airship API. Please reach out to
+http://support.airship.com directly with any issues that need attention.
 
 
 Documentation
 =============
 
-General documentation can be found here: http://docs.urbanairship.com/
-Java client library documentation can be found here: http://docs.urbanairship.com/reference/libraries/java/index.html
+General documentation can be found here: http://docs.airship.com/
+Java client library documentation can be found here: https://docs.airship.com/api/libraries/java/
 
 
 Installation
