@@ -1,4 +1,15 @@
 -------------------------
+4.7.0 15NOV19
+-------------------------
+- Updated to Joda Time 2.10.3
+- Updated to Joda Convert 2.2.1
+- Updated to Maven Source Plugin 3.1.0
+- Updated to Maven Javadoc Plugin 3.1.1
+- Updated to Maven Shade Plugin 3.2.1
+- Updated to JaCoco Maven Plugin 0.8.4
+- Updated to async-http-client 2.10.4
+
+-------------------------
 4.6.2 08NOV19
 -------------------------
 - Updated to Jackson Core version 2.10.0 due to a security vulnerability.
