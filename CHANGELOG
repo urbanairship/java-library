@@ -1,4 +1,10 @@
 -------------------------
+5.0.0 JAN20
+-------------------------
+- Changed the way non 2XX responses are handled. Instead of throwing exceptions the response will return
+the response containing the status codes.
+
+-------------------------
 4.6.2 08NOV19
 -------------------------
 - Updated to Jackson Core version 2.10.0 due to a security vulnerability.

@@ -31,7 +31,7 @@ public class RequestRetryFilter implements ResponseFilter {
     private static final Predicate<FilterContext> DEFAULT_PREDICATE = new Predicate<FilterContext>() {
         @Override
         public boolean apply(FilterContext input) {
-            return !input.getRequest().getMethod().equals("POST") && input.getResponseStatus().getStatusCode() >= 500;
+            return !input.getRequest().getMethod().equals("POST") && input.getResponseStatus().getStatusCode() == 503;
         }
     };
 
@@ -65,10 +65,7 @@ public class RequestRetryFilter implements ResponseFilter {
 
             if (asyncHandler.getRetryCount() >= maxRetries && retryPredicate.apply(ctx)) {
                 log.warn(String.format("Request failed with status code %s after %s attempts", statusCode, asyncHandler.getRetryCount()));
-                throw new ServerException.Builder()
-                        .setStatusText(ctx.getResponseStatus().getStatusText())
-                        .setStatusCode(statusCode)
-                        .build();
+                return ctx;
             }
         }
 
