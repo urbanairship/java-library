@@ -48,8 +48,6 @@ public class ClientExceptionTest {
 
     @After
     public void tearDown() throws Exception {
-        MockingDetails mockingDetails = Mockito.mockingDetails(httpResponseStatus);
-
         //TODO figure out why this is failing (httpResponseStatus and httpHeaders both fail similarly).
         Mockito.verifyNoMoreInteractions(httpResponseStatus);
         //Mockito.verifyNoMoreInteractions(httpResponseStatus, responseCallback, parser, httpHeaders);
