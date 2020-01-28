@@ -3,37 +3,32 @@ package com.urbanairship.api.client;
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
-import com.sun.security.ntlm.Client;
-import com.urbanairship.api.channel.ChannelRequest;
-import com.urbanairship.api.channel.model.ChannelResponse;
 import io.netty.handler.codec.http.HttpHeaders;
 import org.asynchttpclient.HttpResponseBodyPart;
 import org.asynchttpclient.HttpResponseStatus;
-
 import org.asynchttpclient.filter.FilterContext;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
-import org.mockito.*;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
-import java.io.IOException;
+import java.util.*;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
 
 public class ClientExceptionTest {
-    public final static String CONTENT_TYPE_KEY = "Content-type";
 
     @Mock
     HttpResponseStatus httpResponseStatus;
     @Mock
-    HttpResponseStatus notFoundHttpResponseStatus;
-    @Mock
     Optional<ResponseCallback> responseCallback;
+    @Mock
+    HttpResponseStatus notFoundHttpResponseStatus;
     @Mock
     HttpResponseBodyPart bodyPart;
     @Mock
@@ -53,16 +48,23 @@ public class ClientExceptionTest {
         Mockito.when(httpResponseStatus.getStatusCode()).thenReturn(401);
         Mockito.when(httpResponseStatus.getStatusText()).thenReturn("401 Unauthorized");
         Mockito.when(notFoundHttpResponseStatus.getStatusCode()).thenReturn(404);
-        Mockito.when(notFoundHttpResponseStatus.getStatusText()).thenReturn("404 Not Found");
+        Mockito.when(notFoundHttpResponseStatus.getStatusText()).thenReturn("404 Invalid Channel Id.");
+
+        List<Map.Entry<String, String>> entries = new LinkedList<>();
+        entries.add(new AbstractMap.SimpleEntry<>("Content-Length", "61"));
+        entries.add(new AbstractMap.SimpleEntry<>("Connection", "keep-alive"));
+        entries.add(new AbstractMap.SimpleEntry<>("Date", "Tue, 28 Jan 2020 20:42:04 GMT"));
+        entries.add(new AbstractMap.SimpleEntry<>("Content-Type", "application/vnd.urbanairship+json;version=3"));
+
+        Mockito.when(httpHeaders.entries()).thenReturn(entries);
     }
 
     @After
     public void tearDown() throws Exception {
         //TODO figure out why this is failing (httpResponseStatus and httpHeaders both fail similarly).
         //Mockito.verifyNoMoreInteractions(httpResponseStatus);
-        //Mockito.verifyNoMoreInteractions(httpResponseStatus, responseCallback, parser, httpHeaders);
+        Mockito.verifyNoMoreInteractions(httpResponseStatus, responseCallback, parser, httpHeaders);
     }
-
     @Test
     @SuppressWarnings({"ThrowableResultOfMethodCallIgnored", "ThrowableInstanceNeverThrown"})
     public void testClientException() {
@@ -73,20 +75,19 @@ public class ClientExceptionTest {
                 .build();
 
         ClientException testException = ClientException.newBuilder()
-                .setStatusText("Unauthorized")
-                .setStatusCode(401)
+                .setStatusText("Not Found")
+                .setStatusCode(404)
                 .setRequestError(requestError)
                 .build();
 
         assertEquals("HTTP response code incorrect",
-                testException.getStatusCode(), 401);
+                testException.getStatusCode(), 404);
         assertEquals("APIError incorrect",
                 testException.getError().get(), requestError);
         assertEquals("Status message incorrect",
-                testException.getStatusText(), "Unauthorized");
+                testException.getStatusText(), "Not Found");
         assertEquals("Exception message incorrect",
-                testException.getMessage(), "Unauthorized");
-
+                testException.getMessage(), "Not Found");
     }
 
     @Test
@@ -101,23 +102,22 @@ public class ClientExceptionTest {
 
         asyncHandler.onHeadersReceived(httpHeaders);
 
-        ClientException clientException = null;
         try {
             asyncHandler.onBodyPartReceived(bodyPart);
-        } catch (Exception e) {
-            assertTrue(e instanceof ClientException);
-            clientException = (ClientException)e;
+            throw new RuntimeException("This line should never be reached.");
+        } catch (ClientException e) {
+            assertEquals(401, e.getStatusCode());
         }
 
-        assertNotNull(clientException);
-        assertEquals(401, clientException.getStatusCode());
+        Mockito.verify(httpResponseStatus, Mockito.times(1)).getStatusCode();
+        Mockito.verify(httpResponseStatus, Mockito.times(1)).getStatusText();
+        Mockito.verify(httpHeaders, Mockito.times(1)).get(anyString());
         Mockito.verifyZeroInteractions(responseCallback);
         Mockito.verifyZeroInteractions(parser);
     }
 
     @Test
-    public void testNotFoundStatusCode() throws Exception {
-        //TODO Finish this test. 404 should no longer throw an exception
+    public void testNotFoundStatusCodeNoException() throws Exception {
         ResponseAsyncHandler asyncHandler = new ResponseAsyncHandler(responseCallback, parser);
 
         Mockito.when(bodyPart.getBodyPartBytes()).thenReturn("{\"ok\":false,\"error\":\"Invalid channel id.\",\"error_code\":40404}".getBytes());
@@ -130,6 +130,7 @@ public class ClientExceptionTest {
 
         asyncHandler.onBodyPartReceived(bodyPart);
 
+        Mockito.verify(httpHeaders, Mockito.times(1)).entries();
         Mockito.verifyZeroInteractions(responseCallback);
         Mockito.verifyZeroInteractions(parser);
     }
