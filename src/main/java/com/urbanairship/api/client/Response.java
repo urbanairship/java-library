@@ -11,7 +11,7 @@ import java.util.Map;
 
 /**
  * Response encapsulates relevant data about responses from the
- * Urban Airship API. This is the object returned for successful API requests.
+ * Urban Airship API. This is the object returned for all API requests except unauthorized responses.
  * It contains an optional parsed API response body object with
  * the details of the Urban Airship response specifically, as well as the
  * API response headers and status code.
