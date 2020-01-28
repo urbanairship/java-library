@@ -666,12 +666,12 @@ public class UrbanAirshipClientTest {
         asyncRequestClient.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
             @Override
             public void completed(Response response) {
+                assertEquals(503, response.getStatus());
+                latch.countDown();
             }
 
             @Override
             public void error(Throwable throwable) {
-                assertTrue(throwable instanceof ServerException);
-                latch.countDown();
             }
         }, new HashMap<String, String>());
 
@@ -700,13 +700,12 @@ public class UrbanAirshipClientTest {
         client.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
             @Override
             public void completed(Response response) {
-
+                assertEquals(500, response.getStatus());
+                latch.countDown();
             }
 
             @Override
             public void error(Throwable throwable) {
-                assertTrue(throwable instanceof ServerException);
-                latch.countDown();
             }
         });
 
@@ -735,12 +734,12 @@ public class UrbanAirshipClientTest {
         client.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
             @Override
             public void completed(Response response) {
+                assertEquals(500, response.getStatus());
+                latch.countDown();
             }
 
             @Override
             public void error(Throwable throwable) {
-                assertTrue(throwable instanceof ServerException);
-                latch.countDown();
             }
         });
 
@@ -768,12 +767,12 @@ public class UrbanAirshipClientTest {
         client.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
             @Override
             public void completed(Response response) {
+                assertEquals(503, response.getStatus());
+                latch.countDown();
             }
 
             @Override
             public void error(Throwable throwable) {
-                assertTrue(throwable instanceof ServerException);
-                latch.countDown();
             }
         });
 
