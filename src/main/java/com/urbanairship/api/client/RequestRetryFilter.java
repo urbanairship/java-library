@@ -31,7 +31,7 @@ public class RequestRetryFilter implements ResponseFilter {
     private static final Predicate<FilterContext> DEFAULT_PREDICATE = new Predicate<FilterContext>() {
         @Override
         public boolean apply(FilterContext input) {
-            return !input.getRequest().getMethod().equals("POST") && input.getResponseStatus().getStatusCode() == 503;
+            return !input.getRequest().getMethod().equals("POST") && input.getResponseStatus().getStatusCode() >= 500;
         }
     };
 
