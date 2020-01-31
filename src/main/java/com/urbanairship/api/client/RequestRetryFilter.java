@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  * The default predicate logic allows for retries on all non-POST 5xxs. The maximum non-post request retry limit is also
  * configured in the {@link com.urbanairship.api.client.UrbanAirshipClient} builder and defaults to 10.
  * If the count is below the max retry limit and the predicate allows for a retry, the request will be replayed with an
- * exponential backoff. If the limit is reached and the predicate allows for a retry, a ServerException is thrown.
+ * exponential backoff. If the limit is reached and the predicate allows for a retry, a response is returned with the status code of the failed request.
  */
 public class RequestRetryFilter implements ResponseFilter {
 
@@ -65,10 +65,7 @@ public class RequestRetryFilter implements ResponseFilter {
 
             if (asyncHandler.getRetryCount() >= maxRetries && retryPredicate.apply(ctx)) {
                 log.warn(String.format("Request failed with status code %s after %s attempts", statusCode, asyncHandler.getRetryCount()));
-                throw new ServerException.Builder()
-                        .setStatusText(ctx.getResponseStatus().getStatusText())
-                        .setStatusCode(statusCode)
-                        .build();
+                return ctx;
             }
         }
 
