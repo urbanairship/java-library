@@ -52,3 +52,11 @@ Add the following to your pom.xml
         <!-- Replace VERSION with the version you want to use -->
     </dependency>
 ```
+
+Upgrading to 5.X.X
+------------------
+
+Changed the way all API responses that are not 2XX, 401, or 403 are handled (these will remain as they were previously).
+For all other response codes, instead of throwing exceptions the library will now return a response that contains the status code that was received.
+Exceptions will continue to be thrown when the library encounters 401s and 403s.
+Please examine any retry logic in your implementation to see if you need to make changes.
