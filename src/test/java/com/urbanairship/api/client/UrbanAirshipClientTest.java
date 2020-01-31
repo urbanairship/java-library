@@ -88,6 +88,9 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -119,13 +122,13 @@ import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
 
 public class UrbanAirshipClientTest {
 
@@ -137,12 +140,16 @@ public class UrbanAirshipClientTest {
         BasicConfigurator.configure();
     }
 
+    @Mock
+    Predicate<FilterContext> retryPredicate;
+
     private UrbanAirshipClient client;
     private AsyncRequestClient asyncRequestClient;
 
     // Set up the client
     @Before
     public void setup() {
+        MockitoAnnotations.initMocks(this);
         asyncRequestClient = AsyncRequestClient.newBuilder()
                 .setBaseUri("http://localhost:" + wireMockRule.port())
                 .setMaxRetries(5)
@@ -466,6 +473,44 @@ public class UrbanAirshipClientTest {
     }
 
     @Test
+    public void testRetryResponse() throws Exception {
+        Mockito.when(retryPredicate.apply(any(FilterContext.class))).thenReturn(true);
+
+        AsyncRequestClient asyncClient = AsyncRequestClient.newBuilder()
+                .setBaseUri("http://localhost:" + wireMockRule.port())
+                .setMaxRetries(5)
+                .setRetryPredicate(retryPredicate)
+                .build();
+
+        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
+                .setKey("key")
+                .setSecret("secret")
+                .setClient(asyncClient)
+                .build();
+
+        PushPayload payload = PushPayload.newBuilder()
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setNotification(Notifications.alert("Foo"))
+                .build();
+
+        // Setup a stubbed response for the server
+        stubFor(post(urlEqualTo("/api/push/")).inScenario("test")
+                .whenScenarioStateIs("Started")
+                .willReturn(aResponse()
+                        .withStatus(503))
+                .willSetStateTo("Retry"));
+
+        stubFor(post(urlEqualTo("/api/push/")).inScenario("test")
+                .whenScenarioStateIs("Retry")
+                .willReturn(aResponse()
+                        .withStatus(503)));
+
+        Response<PushResponse> response = client.execute(PushRequest.newRequest(payload));
+        assertEquals(response.getStatus(), 503);
+    }
+
+    @Test
     @SuppressWarnings("unchecked")
     public void testRetryIsNonBlocking() throws Exception {
         asyncRequestClient = AsyncRequestClient.newBuilder()
@@ -621,12 +666,12 @@ public class UrbanAirshipClientTest {
         asyncRequestClient.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
             @Override
             public void completed(Response response) {
+                assertEquals(503, response.getStatus());
+                latch.countDown();
             }
 
             @Override
             public void error(Throwable throwable) {
-                assertTrue(throwable instanceof ServerException);
-                latch.countDown();
             }
         }, new HashMap<String, String>());
 
@@ -655,13 +700,12 @@ public class UrbanAirshipClientTest {
         client.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
             @Override
             public void completed(Response response) {
-
+                assertEquals(500, response.getStatus());
+                latch.countDown();
             }
 
             @Override
             public void error(Throwable throwable) {
-                assertTrue(throwable instanceof ServerException);
-                latch.countDown();
             }
         });
 
@@ -690,12 +734,12 @@ public class UrbanAirshipClientTest {
         client.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
             @Override
             public void completed(Response response) {
+                assertEquals(500, response.getStatus());
+                latch.countDown();
             }
 
             @Override
             public void error(Throwable throwable) {
-                assertTrue(throwable instanceof ServerException);
-                latch.countDown();
             }
         });
 
@@ -723,12 +767,12 @@ public class UrbanAirshipClientTest {
         client.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
             @Override
             public void completed(Response response) {
+                assertEquals(503, response.getStatus());
+                latch.countDown();
             }
 
             @Override
             public void error(Throwable throwable) {
-                assertTrue(throwable instanceof ServerException);
-                latch.countDown();
             }
         });
 
