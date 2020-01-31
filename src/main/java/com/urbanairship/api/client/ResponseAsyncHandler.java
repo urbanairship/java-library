@@ -54,17 +54,13 @@ class ResponseAsyncHandler<T> implements AsyncHandler<Response> {
     public State onStatusReceived(HttpResponseStatus responseStatus) throws Exception {
         statusCode = responseStatus.getStatusCode();
 
-        if (statusCode >= 200 && statusCode < 300) {
-            responseBuilder.setStatus(responseStatus.getStatusCode());
-            isSuccessful = true;
-        } else if (statusCode >= 500) {
-            serverExceptionBuilder.setStatusCode(statusCode);
-            serverExceptionBuilder.setStatusText(responseStatus.getStatusText());
+        if (statusCode == 401 || statusCode == 403) {
+            exceptionBuilder.setStatusCode(statusCode);
+            exceptionBuilder.setStatusText(responseStatus.getStatusText());
             isSuccessful = false;
         } else {
-            exceptionBuilder.setStatusText(responseStatus.getStatusText());
-            exceptionBuilder.setStatusCode(statusCode);
-            isSuccessful = false;
+            responseBuilder.setStatus(responseStatus.getStatusCode());
+            isSuccessful = true;
         }
 
         return State.CONTINUE;
@@ -88,13 +84,8 @@ class ResponseAsyncHandler<T> implements AsyncHandler<Response> {
         if (!isSuccessful) {
             // The response body for an error won't be very big, so we can throw here without needing to aggregate.
             RequestError error = RequestError.errorFromResponse(body, exceptionContentType);
-            if (statusCode >= 500) {
-                serverExceptionBuilder.setRequestError(error);
-                throw serverExceptionBuilder.build();
-            } else {
-                exceptionBuilder.setRequestError(error);
-                throw exceptionBuilder.build();
-            }
+            exceptionBuilder.setRequestError(error);
+            throw exceptionBuilder.build();
         }
 
         bodyBuilder.append(body);
