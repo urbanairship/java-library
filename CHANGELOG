@@ -1,7 +1,10 @@
 -------------------------
 5.0.0 31JAN20
 -------------------------
-- Changed the way non 2XX responses are handled. Instead of throwing exceptions a response will be returned containing the status codes.
+- Changed the way all API responses that are not 2XX, 401, or 403 are handled (these will remain as they were previously).
+For all other response codes, instead of throwing exceptions the library will now return a response that contains the status code
+that was received. Exceptions will continue to be thrown when the library encounters 401s and 403s.
+Please examine any retry logic in your implementation to see if you need to make changes.
 
 -------------------------
 4.7.0 15NOV19
