@@ -1,5 +1,5 @@
 -------------------------
-5.0.0 JAN20
+5.0.0 31JAN20
 -------------------------
 - Changed the way non 2XX responses are handled. Instead of throwing exceptions a response will be returned containing the status codes.
 

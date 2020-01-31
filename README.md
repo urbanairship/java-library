@@ -52,3 +52,11 @@ Add the following to your pom.xml
         <!-- Replace VERSION with the version you want to use -->
     </dependency>
 ```
+
+Upgrading to 5.X.X
+------------------
+
+This update changes the way non 2XX, 401, or 403 responses are handled by the library using the default UrbanAirshipClient.
+Now instead of throwing an exception with non 2XX responses, the library will no longer throw an exception. A response will return
+containing the status code with the request. Your implementation may need to change in order to handle non 2XX responses correctly.
+2XX, 401, and 403 responses remain unchanged.
