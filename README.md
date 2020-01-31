@@ -56,7 +56,7 @@ Add the following to your pom.xml
 Upgrading to 5.X.X
 ------------------
 
-This update changes the way non 2XX, 401, or 403 responses are handled by the library using the default UrbanAirshipClient.
-Now instead of throwing an exception with non 2XX responses, the library will no longer throw an exception. A response will return
-containing the status code with the request. Your implementation may need to change in order to handle non 2XX responses correctly.
-2XX, 401, and 403 responses remain unchanged.
+Changed the way all API responses that are not 2XX, 401, or 403 are handled (these will remain as they were previously).
+For all other response codes, instead of throwing exceptions the library will now return a response that contains the status code that was received.
+Exceptions will continue to be thrown when the library encounters 401s and 403s.
+Please examine any retry logic in your implementation to see if you need to make changes.
