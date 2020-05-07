@@ -6,10 +6,14 @@ package com.urbanairship.api.push.model;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.SelectorType;
+import com.urbanairship.api.push.model.localization.Localization;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
+
+import java.util.List;
 
 /**
  * Represents a Push payload for the Urban Airship API
@@ -18,6 +22,7 @@ public final class PushPayload extends PushModelObject {
 
     private final Selector audience;
     private final Optional<Notification> notification;
+    private final Optional<ImmutableList<Localization>> localizations;
     private final Optional<RichPushMessage> message;
     private final DeviceTypeData deviceTypes;
     private final Optional<PushOptions> pushOptions;
@@ -38,7 +43,8 @@ public final class PushPayload extends PushModelObject {
                         DeviceTypeData deviceTypes,
                         Optional<PushOptions> pushOptions,
                         Optional<InApp> inApp,
-                        Optional<Campaigns> campaigns) {
+                        Optional<Campaigns> campaigns,
+                        ImmutableList<Localization> localizations) {
         this.audience = audience;
         this.notification = notification;
         this.message = message;
@@ -46,6 +52,12 @@ public final class PushPayload extends PushModelObject {
         this.pushOptions = pushOptions;
         this.inApp = inApp;
         this.campaigns = campaigns;
+
+        if (localizations.isEmpty()) {
+            this.localizations = Optional.absent();
+        } else {
+            this.localizations = Optional.of(localizations);
+        }
     }
 
     /**
@@ -108,6 +120,14 @@ public final class PushPayload extends PushModelObject {
      */
     public Optional<Campaigns> getCampaigns() {
         return campaigns;
+    }
+
+    /**
+     * Get the localizations.
+     * @return An Optional immutable list of Localizations in the push payload.
+     */
+    public Optional<ImmutableList<Localization>> getLocalizations() {
+        return localizations;
     }
 
     @Override
@@ -179,6 +199,7 @@ public final class PushPayload extends PushModelObject {
         private PushOptions pushOptions = null;
         private InApp inApp = null;
         private Campaigns campaigns = null;
+        private ImmutableList.Builder<Localization> localizationsBuilder = ImmutableList.builder();
 
         private Builder() { }
 
@@ -253,6 +274,16 @@ public final class PushPayload extends PushModelObject {
         }
 
         /**
+         * Add a Localization.
+         * @param localization Localization
+         * @return Builder
+         */
+        public Builder addLocalization(Localization localization) {
+            localizationsBuilder.add(localization);
+            return this;
+        }
+
+        /**
          * Build a PushPayload object. Will fail if any of the following
          * preconditions are not met.
          * <pre>
@@ -266,6 +297,7 @@ public final class PushPayload extends PushModelObject {
          * @return PushPayload
          */
         public PushPayload build() {
+            ImmutableList<Localization> localizations = localizationsBuilder.build();
             Preconditions.checkArgument(!(notification == null && message == null && inApp == null),
                     "At least one of 'notification', 'message', or 'inApp' must be set.");
             Preconditions.checkNotNull(audience, "'audience' must be set");
@@ -278,7 +310,8 @@ public final class PushPayload extends PushModelObject {
                     deviceTypes,
                     Optional.fromNullable(pushOptions),
                     Optional.fromNullable(inApp),
-                    Optional.fromNullable(campaigns)
+                    Optional.fromNullable(campaigns),
+                    localizations
             );
         }
     }
