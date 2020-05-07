@@ -1,4 +1,10 @@
 -------------------------
+5.1.0
+-------------------------
+- Added support for localized messages.
+
+
+-------------------------
 5.0.0 31JAN20
 -------------------------
 - Changed the way all API responses that are not 2XX, 401, or 403 are handled (these will remain as they were previously).

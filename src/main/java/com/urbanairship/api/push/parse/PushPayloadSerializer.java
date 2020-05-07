@@ -8,8 +8,10 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.urbanairship.api.push.model.PushPayload;
+import com.urbanairship.api.push.model.localization.Localization;
 
 import java.io.IOException;
+import java.util.List;
 
 public class PushPayloadSerializer extends JsonSerializer<PushPayload> {
 
@@ -35,6 +37,17 @@ public class PushPayloadSerializer extends JsonSerializer<PushPayload> {
         }
         if (payload.getCampaigns().isPresent()) {
             jgen.writeObjectField("campaigns", payload.getCampaigns().get());
+        }
+        if (payload.getLocalizations().isPresent()) {
+            List<Localization> localizations = payload.getLocalizations().get();
+
+            jgen.writeArrayFieldStart("localizations");
+
+            for (Localization localization : localizations) {
+                jgen.writeObject(localization);
+            }
+
+            jgen.writeEndArray();
         }
         jgen.writeEndObject();
     }
