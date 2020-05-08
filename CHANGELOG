@@ -1,4 +1,11 @@
 -------------------------
+5.1.0 08MAY20
+-------------------------
+- Added support for localized messages.
+- Updated to log4j version 2.13.2 due to a security vulnerability.
+
+
+-------------------------
 5.0.0 31JAN20
 -------------------------
 - Changed the way all API responses that are not 2XX, 401, or 403 are handled (these will remain as they were previously).
