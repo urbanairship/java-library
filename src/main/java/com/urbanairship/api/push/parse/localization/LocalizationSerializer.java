@@ -1,0 +1,30 @@
+package com.urbanairship.api.push.parse.localization;
+
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.urbanairship.api.push.model.localization.Localization;
+
+import java.io.IOException;
+
+public class LocalizationSerializer extends JsonSerializer<Localization> {
+    @Override
+    public void serialize(Localization localization, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+        jgen.writeStartObject();
+
+        jgen.writeStringField("language", localization.getLanguage());
+        jgen.writeStringField("country", localization.getCountry());
+
+        if (localization.getNotification().isPresent()) {
+            jgen.writeObjectField("notification", localization.getNotification().get());
+        }
+        if (localization.getRichPushMessage().isPresent()) {
+            jgen.writeObjectField("message", localization.getRichPushMessage().get());
+        }
+        if (localization.getInApp().isPresent()) {
+            jgen.writeObjectField("in_app", localization.getInApp().get());
+        }
+
+        jgen.writeEndObject();
+    }
+}

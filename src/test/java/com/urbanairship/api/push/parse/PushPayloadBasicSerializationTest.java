@@ -11,6 +11,7 @@ import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.audience.location.LocationIdentifier;
 import com.urbanairship.api.push.model.audience.location.LocationSelector;
 import com.urbanairship.api.push.model.audience.sms.SmsSelector;
+import com.urbanairship.api.push.model.localization.Localization;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
@@ -314,6 +315,50 @@ public class PushPayloadBasicSerializationTest {
         assertEquals(inAppMessage.getAlert(), "This part appears in-app!");
         assertEquals(inAppMessage.getDisplayType(), "banner");
         assertEquals(inAppMessage.getDisplay().get().getPosition().get(), Position.TOP);
+    }
+
+    @Test
+    public void testLocalizations() throws Exception {
+        String json = "{\n" +
+                "    \"audience\": {\n" +
+                "        \"tag\": \"testTag\"\n" +
+                "    },\n" +
+                "    \"device_types\": [\n" +
+                "        \"android\"\n" +
+                "    ],\n" +
+                "    \"notification\": {\n" +
+                "        \"alert\": \"alert test\"\n" +
+                "    },\n" +
+                "    \"localizations\": [\n" +
+                "        {\n" +
+                "            \"language\": \"de\",\n" +
+                "            \"country\": \"AT\",\n" +
+                "            \"notification\": {\n" +
+                "                \"alert\": \"Grüss Gott\"\n" +
+                "            }\n" +
+                "        }\n" +
+                "    ]\n" +
+                "}";
+
+        JsonNode expectedJson = mapper.readTree(json);
+
+        Localization localization = Localization.newBuilder()
+                .setCountry("AT")
+                .setLanguage("de")
+                .setNotification(Notifications.alert("Grüss Gott"))
+                .build();
+
+        PushPayload pushPayload = PushPayload.newBuilder()
+                .setNotification(Notifications.alert("alert test"))
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.ANDROID))
+                .setAudience(Selectors.tag("testTag"))
+                .addLocalization(localization)
+                .build();
+
+        String pushPayloadStr = mapper.writeValueAsString(pushPayload);
+        JsonNode actualJson = mapper.readTree(pushPayloadStr);
+
+        assertEquals(expectedJson, actualJson);
     }
 
 

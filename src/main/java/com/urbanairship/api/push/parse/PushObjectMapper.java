@@ -61,6 +61,7 @@ import com.urbanairship.api.push.model.audience.location.LocationSelector;
 import com.urbanairship.api.push.model.audience.location.RecentDateRange;
 import com.urbanairship.api.push.model.audience.location.SegmentDefinition;
 import com.urbanairship.api.push.model.audience.sms.SmsSelector;
+import com.urbanairship.api.push.model.localization.Localization;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.notification.Notification;
@@ -108,6 +109,7 @@ import com.urbanairship.api.push.parse.audience.location.RecentDateRangeDeserial
 import com.urbanairship.api.push.parse.audience.location.RecentDateRangeSerializer;
 import com.urbanairship.api.push.parse.audience.location.SegmentDefinitionDeserializer;
 import com.urbanairship.api.push.parse.audience.sms.SmsSelectorSerializer;
+import com.urbanairship.api.push.parse.localization.LocalizationSerializer;
 import com.urbanairship.api.push.parse.notification.InteractiveDeserializer;
 import com.urbanairship.api.push.parse.notification.InteractiveSerializer;
 import com.urbanairship.api.push.parse.notification.NotificationDeserializer;
@@ -360,6 +362,9 @@ public class PushObjectMapper {
                 .addSerializer(UninstallEmailChannel.class,
                         new UninstallEmailChannelSerializer())
                 .addSerializer((EmailPayload.class), new EmailPayloadSerializer())
+
+                /* LOCALIZATION */
+                .addSerializer(Localization.class, new LocalizationSerializer())
 
                 /* Create And Send */
                 .addSerializer(SmsFields.class, new SmsFieldsSerializer())
