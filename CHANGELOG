@@ -1,7 +1,8 @@
 -------------------------
-5.1.0
+5.1.0 08MAY20
 -------------------------
 - Added support for localized messages.
+- Updated to log4j version 2.13.2 due to a security vulnerability.
 
 
 -------------------------
