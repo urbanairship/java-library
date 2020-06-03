@@ -32,12 +32,12 @@ public class CustomEventRequestTest {
             .setSessionId("sessionId")
             .build();
 
-    DateTime occured = new DateTime(2015, 5, 2, 2, 31, 22, DateTimeZone.UTC);
+    DateTime occurred = new DateTime(2015, 5, 2, 2, 31, 22, DateTimeZone.UTC);
 
     CustomEventPayload customEventPayload = CustomEventPayload.newBuilder()
             .setCustomEventBody(customEventBody)
             .setCustomEventUser(customEventUser)
-            .setOccurred(occured)
+            .setOccurred(occurred)
             .build();
 
     CustomEventRequest customEventRequest = CustomEventRequest.newRequest(customEventPayload);
@@ -70,8 +70,8 @@ public class CustomEventRequestTest {
     public void testURI() throws Exception {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
-        URI expextedURI = URI.create("https://go.urbanairship.com/api/custom-events/");
-        assertEquals(customEventRequest.getUri(baseURI), expextedURI);
+        URI expectedURI = URI.create("https://go.urbanairship.com/api/custom-events/");
+        assertEquals(customEventRequest.getUri(baseURI), expectedURI);
     }
 
     @Test
