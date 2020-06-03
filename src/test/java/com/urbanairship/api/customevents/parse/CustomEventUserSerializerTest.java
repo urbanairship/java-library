@@ -30,6 +30,16 @@ public class CustomEventUserSerializerTest {
                 .setChannel("amazonChannel")
                 .build();
 
+        CustomEventUser webUser = CustomEventUser.newBuilder()
+                .setCustomEventChannelType(CustomEventChannelType.WEB_CHANNEL)
+                .setChannel("webChannel")
+                .build();
+
+        CustomEventUser genericUser = CustomEventUser.newBuilder()
+                .setCustomEventChannelType(CustomEventChannelType.GENERIC_CHANNEL)
+                .setChannel("genericChannel")
+                .build();
+
         String iosJson = MAPPER.writeValueAsString(iosUser);
         String iosExpected = "{\"ios_channel\":\"iOSChannel\"}";
         assertEquals(iosJson, iosExpected);
@@ -41,5 +51,13 @@ public class CustomEventUserSerializerTest {
         String amazonJson = MAPPER.writeValueAsString(amazonUser);
         String amazonExpected = "{\"amazon_channel\":\"amazonChannel\"}";
         assertEquals(amazonJson, amazonExpected);
+
+        String webJson = MAPPER.writeValueAsString(webUser);
+        String webExpected = "{\"web_channel\":\"webChannel\"}";
+        assertEquals(webJson, webExpected);
+
+        String genericJson = MAPPER.writeValueAsString(genericUser);
+        String genericExpected = "{\"channel\":\"genericChannel\"}";
+        assertEquals(genericJson, genericExpected);
     }
 }
