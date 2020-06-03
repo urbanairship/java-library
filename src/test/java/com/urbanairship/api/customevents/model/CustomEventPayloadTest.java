@@ -20,7 +20,7 @@ public class CustomEventPayloadTest {
                 .setChannel("e393d28e-23b2-4a22-9ace-dc539a5b07a8")
                 .build();
 
-        Map<String, String> properties = new HashMap<String, String>();
+        Map<String, Object> properties = new HashMap<String, Object>();
         properties.put("category", "mens shoes");
         properties.put("id", "pid-11046546");
         properties.put("description", "sky high");

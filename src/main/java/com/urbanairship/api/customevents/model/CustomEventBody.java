@@ -14,7 +14,7 @@ public class CustomEventBody {
     private final Optional<String> transaction;
     private final Optional<String> interactionId;
     private final Optional<String> interactionType;
-    private final Optional<ImmutableMap<String, String>> properties;
+    private final Optional<ImmutableMap<String, Object>> properties;
     private final String sessionId;
 
     private CustomEventBody(Builder builder) {
@@ -105,7 +105,7 @@ public class CustomEventBody {
      *
      * @return Optional ImmutableMap of Strings
      */
-    public Optional<ImmutableMap<String, String>> getProperties() {
+    public Optional<ImmutableMap<String, Object>> getProperties() {
         return properties;
     }
 
@@ -155,7 +155,7 @@ public class CustomEventBody {
         private String transaction = null;
         private String interactionId = null;
         private String interactionType = null;
-        private ImmutableMap.Builder<String, String> properties = ImmutableMap.builder();
+        private ImmutableMap.Builder<String, Object> properties = ImmutableMap.builder();
         private String sessionId = null;
 
         private Builder() {
@@ -234,10 +234,10 @@ public class CustomEventBody {
          * Maximum 255 character string length.
          *
          * @param key String
-         * @param value String
+         * @param value Object
          * @return CustomEventBody Builder
          */
-        public Builder addPropertiesEntry(String key, String value) {
+        public Builder addPropertiesEntry(String key, Object value) {
             this.properties.put(key, value);
             return this;
         }
@@ -247,10 +247,10 @@ public class CustomEventBody {
          * custom properties. Events are limited to 100 properties.
          * Maximum 255 character string length.
          *
-         * @param entries A Map of Strings
+         * @param entries A Map of Objects
          * @return CustomEventBody Builder
          */
-        public Builder addAllPropertyEntries(Map<String, String> entries) {
+        public Builder addAllPropertyEntries(Map<String, Object> entries) {
             this.properties.putAll(entries);
             return this;
         }
