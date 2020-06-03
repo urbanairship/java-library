@@ -257,7 +257,7 @@ public class CustomEventBody {
 
         /**
          * Set the sessionID. The user session during which the event occurred.
-         * You must supply and maintain session identifiers.
+         * You must maintain session identifiers.
          *
          * @param sessionId String
          * @return CustomEventBody Builder
@@ -269,7 +269,6 @@ public class CustomEventBody {
 
         public CustomEventBody build() {
             Preconditions.checkNotNull(name, "'name' must be set");
-            Preconditions.checkNotNull(sessionId, "'sessionId' must be set");
 
             return new CustomEventBody(this);
         }
