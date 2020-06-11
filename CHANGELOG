@@ -1,4 +1,9 @@
 -------------------------
+5.1.1 11JUN20
+-------------------------
+- Fixed a crash when parsing responses that are not json.
+
+-------------------------
 5.1.0 08MAY20
 -------------------------
 - Added support for localized messages.
