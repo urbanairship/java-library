@@ -4,6 +4,7 @@
 
 package com.urbanairship.api.client;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.google.common.base.Optional;
 import io.netty.handler.codec.http.HttpHeaders;
 import org.apache.commons.lang.StringUtils;
@@ -95,7 +96,13 @@ class ResponseAsyncHandler<T> implements AsyncHandler<Response> {
     @Override
     public Response onCompleted() throws Exception {
         if (StringUtils.isNotBlank(bodyBuilder.toString())) {
-            responseBuilder.setBody(parser.parse(bodyBuilder.toString()));
+            try {
+                responseBuilder.setBody(parser.parse(bodyBuilder.toString()));
+            } catch (JsonParseException e) {
+                log.debug(String.format("Could not parse the response: %s", bodyBuilder.toString()), e);
+                onThrowable(e);
+                return responseBuilder.build();
+            }
         }
 
         Response response = responseBuilder.build();
