@@ -3,11 +3,7 @@ package com.urbanairship.api.customevents;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
-import com.urbanairship.api.customevents.model.CustomEventBody;
-import com.urbanairship.api.customevents.model.CustomEventChannelType;
-import com.urbanairship.api.customevents.model.CustomEventPayload;
-import com.urbanairship.api.customevents.model.CustomEventResponse;
-import com.urbanairship.api.customevents.model.CustomEventUser;
+import com.urbanairship.api.customevents.model.*;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.apache.http.entity.ContentType;
 import org.joda.time.DateTime;
@@ -32,12 +28,14 @@ public class CustomEventRequestTest {
             .setSessionId("sessionId")
             .build();
 
-    DateTime occured = new DateTime(2015, 5, 2, 2, 31, 22, DateTimeZone.UTC);
+    CustomEventOccurred customEventOccurred = CustomEventOccurred.newBuilder()
+            .setOccurred("2016-05-02T02:31:22")
+            .build();
 
     CustomEventPayload customEventPayload = CustomEventPayload.newBuilder()
             .setCustomEventBody(customEventBody)
             .setCustomEventUser(customEventUser)
-            .setOccurred(occured)
+            .setCustomEventOccurred(customEventOccurred)
             .build();
 
     CustomEventRequest customEventRequest = CustomEventRequest.newRequest(customEventPayload);

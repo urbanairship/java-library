@@ -2,15 +2,21 @@ package com.urbanairship.api.customevents.model;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.urbanairship.api.push.model.Campaigns;
+import org.joda.time.DateTime;
 
 public class CustomEventUser {
 
     private final CustomEventChannelType channelType;
     private final String channel;
+    private final String namedUser;
+    private final String occurred;
 
     private CustomEventUser(Builder builder) {
         this.channelType = builder.channelType;
         this.channel = builder.channel;
+        this.namedUser = builder.namedUser;
+        this.occurred = builder.occurred;
     }
 
     /**
@@ -62,12 +68,22 @@ public class CustomEventUser {
         return channel;
     }
 
+    public String getNamedUser() {
+        return namedUser;
+    }
+
+    public String getOccurred() {
+        return occurred;
+    }
+
     /**
      * CustomEventUser Builder
      */
     public static class Builder {
         private String channel = null;
         private CustomEventChannelType channelType = null;
+        private String namedUser;
+        private String occurred;
 
         /**
          * Set the Urban Airship channel identifier for the user who triggered the event.
@@ -77,6 +93,17 @@ public class CustomEventUser {
          */
         public Builder setChannel(String channel) {
             this.channel = channel;
+            return this;
+        }
+
+        /**
+         * Set the Urban Airship namedUser identifier for the user who triggered the event.
+         *
+         * @param namedUser String
+         * @return CustomEventUser Builder
+         */
+        public Builder setNamedUser(String namedUser) {
+            this.namedUser = namedUser;
             return this;
         }
 
@@ -93,7 +120,7 @@ public class CustomEventUser {
 
         public CustomEventUser build() {
             Preconditions.checkNotNull(channelType, "'channelType' must not be null");
-            Preconditions.checkNotNull(channel, "'channel' must not be null");
+            Preconditions.checkNotNull(channel, "Must contain either 'channel' or 'namedUser'");
 
             return new CustomEventUser(this);
         }

@@ -36,14 +36,15 @@ public class CustomEventPayloadTest {
                 .setSessionId("22404b07-3f8f-4e42-a4ff-a996c18fa9f1")
                 .build();
 
-        DateTime occurred = new DateTime(2015, 5, 2, 2, 31, 22, DateTimeZone.UTC);
-
-        CustomEventPayload customEventPayload = CustomEventPayload.newBuilder()
-                .setCustomEventBody(customEventBody)
-                .setCustomEventUser(customEventUser)
-                .setOccurred(occurred)
+        CustomEventOccurred customEventOccurred = CustomEventOccurred.newBuilder()
+                .setOccurred("2016-05-02T02:31:22")
                 .build();
 
+        CustomEventPayload customEventPayload = CustomEventPayload.newBuilder()
+                .setCustomEventOccurred(customEventOccurred)
+                .setCustomEventUser(customEventUser)
+                .setCustomEventBody(customEventBody)
+                .build();
 
         assertTrue(customEventPayload.getCustomEventBody().getProperties().isPresent());
         assertEquals(4, customEventPayload.getCustomEventBody().getProperties().get().size());
@@ -60,6 +61,6 @@ public class CustomEventPayloadTest {
         assertEquals("e393d28e-23b2-4a22-9ace-dc539a5b07a8", customEventPayload.getCustomEventUser().getChannel());
         assertEquals(CustomEventChannelType.ANDROID_CHANNEL, customEventPayload.getCustomEventUser().getChannelType());
 
-        assertEquals(occurred, customEventPayload.getOccurred());
+        assertEquals(customEventOccurred, customEventPayload.getCustomEventOccurred());
     }
 }
