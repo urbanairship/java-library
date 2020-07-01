@@ -11,12 +11,14 @@ public class CustomEventSerializer extends JsonSerializer<CustomEventPayload> {
 
     @Override
     public void serialize(CustomEventPayload event, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+        jgen.writeStartArray();
         jgen.writeStartObject();
-
+        //"occurred' object used instead of datetime for consistency and ease of serializing.
         jgen.writeObjectField("occurred", event.getCustomEventOccurred().getOccurred());
         jgen.writeObjectField("user", event.getCustomEventUser());
         jgen.writeObjectField("body", event.getCustomEventBody());
 
         jgen.writeEndObject();
+        jgen.writeEndArray();
     }
 }

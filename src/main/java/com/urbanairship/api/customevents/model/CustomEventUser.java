@@ -10,13 +10,11 @@ public class CustomEventUser {
     private final CustomEventChannelType channelType;
     private final String channel;
     private final String namedUser;
-    private final String occurred;
 
     private CustomEventUser(Builder builder) {
         this.channelType = builder.channelType;
         this.channel = builder.channel;
         this.namedUser = builder.namedUser;
-        this.occurred = builder.occurred;
     }
 
     /**
@@ -59,7 +57,7 @@ public class CustomEventUser {
     }
 
     /**
-     * Get the Urban Airship channel identifier for the user who triggered the event.
+     * Get the Airship channel identifier for the user who triggered the event.
      *
      * @return String
 
@@ -67,13 +65,14 @@ public class CustomEventUser {
     public String getChannel() {
         return channel;
     }
+    /**
+     * Get the Airship named user identifier for the user who triggered the event.
+     *
+     * @return String
 
+     */
     public String getNamedUser() {
         return namedUser;
-    }
-
-    public String getOccurred() {
-        return occurred;
     }
 
     /**
@@ -83,7 +82,6 @@ public class CustomEventUser {
         private String channel = null;
         private CustomEventChannelType channelType = null;
         private String namedUser;
-        private String occurred;
 
         /**
          * Set the Urban Airship channel identifier for the user who triggered the event.
@@ -97,7 +95,7 @@ public class CustomEventUser {
         }
 
         /**
-         * Set the Urban Airship namedUser identifier for the user who triggered the event.
+         * Set the  Airship named user identifier for the user who triggered the event.
          *
          * @param namedUser String
          * @return CustomEventUser Builder
@@ -120,7 +118,9 @@ public class CustomEventUser {
 
         public CustomEventUser build() {
             Preconditions.checkNotNull(channelType, "'channelType' must not be null");
-            Preconditions.checkNotNull(channel, "Must contain either 'channel' or 'namedUser'");
+            if(namedUser == null || namedUser.isEmpty()) {
+                Preconditions.checkNotNull(channel, "Must contain either 'channel' or 'namedUser'");
+            }
 
             return new CustomEventUser(this);
         }
