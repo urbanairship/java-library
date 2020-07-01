@@ -30,8 +30,8 @@ public class CustomEventPayloadSerializerTest {
         Map<String, String> properties = new HashMap<String, String>();
         properties.put("category", "mens shoes");
         properties.put("id", "pid-11046546");
-        properties.put("description", "sky high");
-        properties.put("brand", "victory");
+        properties.put("description", "Sneaker purchase");
+        properties.put("brand", "Victory Sneakers");
 
         CustomEventBody customEventBody = CustomEventBody.newBuilder()
                 .setName("purchased")
@@ -44,7 +44,7 @@ public class CustomEventPayloadSerializerTest {
                 .build();
 
         CustomEventOccurred customEventOccurred = CustomEventOccurred.newBuilder()
-                .setOccurred("2015-05-02T02:31:22")
+                .setOccurred("2016-05-02T02:31:22")
                 .build();
 
         CustomEventPayload customEventPayload = CustomEventPayload.newBuilder()
@@ -54,7 +54,7 @@ public class CustomEventPayloadSerializerTest {
                 .build();
 
         String json = MAPPER.writeValueAsString(customEventPayload);
-        String expected = "{\"occurred\": \"2015-05-02T02:31:22\",\"user\": {\"android_channel\": \"e393d28e-23b2-4a22-9ace-dc539a5b07a8\"},\"body\": {\"name\": \"purchased\",\"value\": 120.49,\"transaction\": \"886f53d4-3e0f-46d7-930e-c2792dac6e0a\",\"interaction_id\": \"your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234\",\"interaction_type\": \"url\",\"properties\": {\"category\": \"mens shoes\",\"id\": \"pid-11046546\",\"description\": \"sky high\",\"brand\": \"victory\"},\"session_id\": \"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\"}}";
+        String expected = "[{\"occurred\":\"2016-05-02T09:31:22\",\"user\":{\"channel\":\"e393d28e-23b2-4a22-9ace-dc539a5b07a8\"},\"body\":{\"name\":\"purchased\",\"session_id\":\"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\",\"interaction_id\":\"your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234\",\"interaction_type\":\"url\",\"transaction\":\"886f53d4-3e0f-46d7-930e-c2792dac6e0a\",\"properties\":{\"description\":\"Sneaker purchase\",\"id\":\"pid-11046546\",\"category\":\"mens shoes\",\"brand\":\"Victory Sneakers\"},\"value\":120.49}}]";
 
         JsonNode jsonFromObject = MAPPER.readTree(json);
         JsonNode jsonFromString = MAPPER.readTree(expected);
@@ -78,8 +78,8 @@ public class CustomEventPayloadSerializerTest {
         Map<String, String> properties = new HashMap<String, String>();
         properties.put("category", "mens shoes");
         properties.put("id", "pid-11046546");
-        properties.put("description", "sky high");
-        properties.put("brand", "victory");
+        properties.put("description", "Sneaker purchase");
+        properties.put("brand", "Victory Sneakers");
 
         CustomEventBody customEventBody = CustomEventBody.newBuilder()
                 .setName("purchased")
@@ -99,50 +99,7 @@ public class CustomEventPayloadSerializerTest {
 
         String json = MAPPER.writeValueAsString(customEventPayload);
 
-        String expected = "[\n" +
-                "   {\n" +
-                "      \"occurred\": \"2016-05-02T02:31:22\",\n" +
-                "      \"user\": {\n" +
-                "         \"channel\": \"e393d28e-23b2-4a22-9ace-dc539a5b07a8\"\n" +
-                "      },\n" +
-                "      \"body\": {\n" +
-                "         \"name\": \"purchased\",\n" +
-                "         \"value\": 239.85,\n" +
-                "         \"transaction\": \"886f53d4-3e0f-46d7-930e-c2792dac6e0a\",\n" +
-                "         \"interaction_id\": \"your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234\",\n" +
-                "         \"interaction_type\": \"url\",\n" +
-                "         \"properties\": {\n" +
-                "            \"description\": \"Sneaker purchase\",\n" +
-                "            \"brand\": \"Victory Sneakers\",\n" +
-                "            \"colors\": [\n" +
-                "             \"red\",\n" +
-                "             \"blue\"\n" +
-                "            ],\n" +
-                "            \"items\": [\n" +
-                "               {\n" +
-                "                  \"text\": \"New Line Sneakers\",\n" +
-                "                  \"price\": \"$ 79.95\"\n" +
-                "               },\n" +
-                "               {\n" +
-                "                  \"text\": \"Old Line Sneakers\",\n" +
-                "                  \"price\": \"$ 79.95\"\n" +
-                "               },\n" +
-                "               {\n" +
-                "                  \"text\": \"Blue Line Sneakers\",\n" +
-                "                  \"price\": \"$ 79.95\"\n" +
-                "               }\n" +
-                "            ],\n" +
-                "            \"name\": \"Hugh Manbeing\",\n" +
-                "            \"userLocation\": {\n" +
-                "               \"state\": \"CO\",\n" +
-                "               \"zip\": \"80202\"\n" +
-                "            }\n" +
-                "         },\n" +
-                "         \"session_id\": \"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\"\n" +
-                "      }\n" +
-                "   }\n" +
-                "]";
-
+        String expected = "[{\"occurred\":\"2016-05-02T09:31:22\",\"user\":{\"channel\":\"e393d28e-23b2-4a22-9ace-dc539a5b07a8\"},\"body\":{\"name\":\"purchased\",\"session_id\":\"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\",\"interaction_id\":\"your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234\",\"interaction_type\":\"url\",\"transaction\":\"886f53d4-3e0f-46d7-930e-c2792dac6e0a\",\"properties\":{\"description\":\"Sneaker purchase\",\"id\":\"pid-11046546\",\"category\":\"mens shoes\",\"brand\":\"Victory Sneakers\"},\"value\":120.49}}]";
         JsonNode jsonFromObject = MAPPER.readTree(json);
         JsonNode jsonFromString = MAPPER.readTree(expected);
 
@@ -159,14 +116,7 @@ public class CustomEventPayloadSerializerTest {
 
         String user_json = MAPPER.writeValueAsString(customEventUser);
 
-        String expected = "[\n" +
-                "   {\"user\": {\n" +
-                "         \"channel\": \"e393d28e-23b2-4a22-9ace-dc539a5b07a8\"\n" +
-                "      },\n" +
-                "      \"body\": {\n" +
-                        "\n}" +
-                    "\n}" +
-                "\n]";
+        String expected = "{\"channel\": \"e393d28e-23b2-4a22-9ace-dc539a5b07a8\"}}";
 
         JsonNode user_jsonFromObject = MAPPER.readTree(user_json);
         JsonNode user_jsonFromString = MAPPER.readTree(expected);
@@ -183,16 +133,7 @@ public class CustomEventPayloadSerializerTest {
 
         String user_json = MAPPER.writeValueAsString(customEventUser);
 
-        String expected = "[\n" +
-                "   {\n" +
-                "      \"occurred\": \"2016-05-02T02:31:22\",\n" +
-                "      \"user\": {\n" +
-                "         \"named_user_id\": \"hugh.manbeing\"\n" +
-                "      },\n" +
-                "      \"body\": {\n" +
-                "\n}" +
-                "\n}" +
-                "\n]";
+        String expected = "{\"named_user_id\":\"hugh.manbeing\"}";
 
         JsonNode user_jsonFromObject = MAPPER.readTree(user_json);
         JsonNode user_jsonFromString = MAPPER.readTree(expected);
@@ -210,8 +151,8 @@ public class CustomEventPayloadSerializerTest {
         Map<String, String> properties = new HashMap<String, String>();
         properties.put("category", "mens shoes");
         properties.put("id", "pid-11046546");
-        properties.put("description", "sky high");
-        properties.put("brand", "victory");
+        properties.put("description", "Sneaker purchase");
+        properties.put("brand", "Victory Sneakers");
 
         CustomEventOccurred customEventOccurred = CustomEventOccurred.newBuilder()
                 .setOccurred("2016-05-02T02:31:22")
@@ -234,50 +175,7 @@ public class CustomEventPayloadSerializerTest {
                 .build();
 
         String json = MAPPER.writeValueAsString(customEventPayload);
-        String expected = "[\n" +
-                "   {\n" +
-                "      \"occurred\": \"2016-05-02T02:31:22\",\n" +
-                "      \"user\": {\n" +
-                "         \"channel\": \"e393d28e-23b2-4a22-9ace-dc539a5b07a8\"\n" +
-                "      },\n" +
-                "      \"body\": {\n" +
-                "         \"name\": \"purchased\",\n" +
-                "         \"value\": 239.85,\n" +
-                "         \"transaction\": \"886f53d4-3e0f-46d7-930e-c2792dac6e0a\",\n" +
-                "         \"interaction_id\": \"your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234\",\n" +
-                "         \"interaction_type\": \"url\",\n" +
-                "         \"properties\": {\n" +
-                "            \"description\": \"Sneaker purchase\",\n" +
-                "            \"brand\": \"Victory Sneakers\",\n" +
-                "            \"colors\": [\n" +
-                "             \"red\",\n" +
-                "             \"blue\"\n" +
-                "            ],\n" +
-                "            \"items\": [\n" +
-                "               {\n" +
-                "                  \"text\": \"New Line Sneakers\",\n" +
-                "                  \"price\": \"$ 79.95\"\n" +
-                "               },\n" +
-                "               {\n" +
-                "                  \"text\": \"Old Line Sneakers\",\n" +
-                "                  \"price\": \"$ 79.95\"\n" +
-                "               },\n" +
-                "               {\n" +
-                "                  \"text\": \"Blue Line Sneakers\",\n" +
-                "                  \"price\": \"$ 79.95\"\n" +
-                "               }\n" +
-                "            ],\n" +
-                "            \"name\": \"Hugh Manbeing\",\n" +
-                "            \"userLocation\": {\n" +
-                "               \"state\": \"CO\",\n" +
-                "               \"zip\": \"80202\"\n" +
-                "            }\n" +
-                "         },\n" +
-                "         \"session_id\": \"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\"\n" +
-                "      }\n" +
-                "   }\n" +
-                "]";
-
+        String expected = "[{\"occurred\":\"2016-05-02T09:31:22\",\"user\":{\"channel\":\"e393d28e-23b2-4a22-9ace-dc539a5b07a8\"},\"body\":{\"name\":\"purchased\",\"session_id\":\"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\",\"interaction_id\":\"your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234\",\"interaction_type\":\"url\",\"transaction\":\"886f53d4-3e0f-46d7-930e-c2792dac6e0a\",\"properties\":{\"description\":\"Sneaker purchase\",\"id\":\"pid-11046546\",\"category\":\"mens shoes\",\"brand\":\"Victory Sneakers\"},\"value\":120.49}}]";
         JsonNode jsonFromObject = MAPPER.readTree(json);
         JsonNode jsonFromString = MAPPER.readTree(expected);
 
@@ -289,14 +187,14 @@ public class CustomEventPayloadSerializerTest {
     public void testNamedUserFullPayload() throws IOException {
         CustomEventUser customEventUser = CustomEventUser.newBuilder()
                 .setCustomEventChannelType(CustomEventChannelType.ANDROID_CHANNEL)
-                .setChannel("e393d28e-23b2-4a22-9ace-dc539a5b07a8")
+                .setNamedUser("hugh.manbeing")
                 .build();
 
         Map<String, String> properties = new HashMap<String, String>();
         properties.put("category", "mens shoes");
         properties.put("id", "pid-11046546");
-        properties.put("description", "sky high");
-        properties.put("brand", "victory");
+        properties.put("description", "Sneaker purchase");
+        properties.put("brand", "Victory Sneakers");
 
         CustomEventBody customEventBody = CustomEventBody.newBuilder()
                 .setName("purchased")
@@ -306,6 +204,7 @@ public class CustomEventPayloadSerializerTest {
                 .setInteractionType("url")
                 .addAllPropertyEntries(properties)
                 .setSessionId("22404b07-3f8f-4e42-a4ff-a996c18fa9f1")
+                //TODO: Write test for session ID missing
                 .build();
 
         CustomEventOccurred customEventOccurred = CustomEventOccurred.newBuilder()
@@ -319,50 +218,8 @@ public class CustomEventPayloadSerializerTest {
                 .build();
 
         String json = MAPPER.writeValueAsString(customEventPayload);
-        String expected = "[\n" +
-                "   {\n" +
-                "      \"occurred\": \"2016-05-02T02:31:22\",\n" +
-                "      \"user\": {\n" +
-                "         \"named_user_id\": \"hugh.manbeing\"\n" +
-                "      },\n" +
-                "      \"body\": {\n" +
-                "         \"name\": \"purchased\",\n" +
-                "         \"value\": 239.85,\n" +
-                "         \"transaction\": \"886f53d4-3e0f-46d7-930e-c2792dac6e0a\",\n" +
-                "         \"interaction_id\": \"your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234\",\n" +
-                "         \"interaction_type\": \"url\",\n" +
-                "         \"properties\": {\n" +
-                "            \"description\": \"Sneaker purchase\",\n" +
-                "            \"brand\": \"Victory Sneakers\",\n" +
-                "            \"colors\": [\n" +
-                "             \"red\",\n" +
-                "             \"blue\"\n" +
-                "            ],\n" +
-                "            \"items\": [\n" +
-                "               {\n" +
-                "                  \"text\": \"New Line Sneakers\",\n" +
-                "                  \"price\": \"$ 79.95\"\n" +
-                "               },\n" +
-                "               {\n" +
-                "                  \"text\": \"Old Line Sneakers\",\n" +
-                "                  \"price\": \"$ 79.95\"\n" +
-                "               },\n" +
-                "               {\n" +
-                "                  \"text\": \"Blue Line Sneakers\",\n" +
-                "                  \"price\": \"$ 79.95\"\n" +
-                "               }\n" +
-                "            ],\n" +
-                "            \"name\": \"Hugh Manbeing\",\n" +
-                "            \"userLocation\": {\n" +
-                "               \"state\": \"CO\",\n" +
-                "               \"zip\": \"80202\"\n" +
-                "            }\n" +
-                "         },\n" +
-                "         \"session_id\": \"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\"\n" +
-                "      }\n" +
-                "   }\n" +
-                "]";
-
+        // validated in custom event api on 2020-6-30 16:28:50"
+        String expected = "[{\"occurred\":\"2016-05-02T09:31:22\",\"user\":{\"named_user_id\":\"hugh.manbeing\"},\"body\":{\"name\":\"purchased\",\"session_id\":\"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\",\"interaction_id\":\"your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234\",\"interaction_type\":\"url\",\"transaction\":\"886f53d4-3e0f-46d7-930e-c2792dac6e0a\",\"properties\":{\"description\":\"Sneaker purchase\",\"id\":\"pid-11046546\",\"category\":\"mens shoes\",\"brand\":\"Victory Sneakers\"},\"value\":120.49}}]";
         JsonNode jsonFromObject = MAPPER.readTree(json);
         JsonNode jsonFromString = MAPPER.readTree(expected);
 
