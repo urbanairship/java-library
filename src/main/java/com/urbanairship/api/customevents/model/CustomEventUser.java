@@ -9,12 +9,10 @@ public class CustomEventUser {
 
     private final CustomEventChannelType channelType;
     private final String channel;
-    private final String namedUser;
 
     private CustomEventUser(Builder builder) {
         this.channelType = builder.channelType;
         this.channel = builder.channel;
-        this.namedUser = builder.namedUser;
     }
 
     /**
@@ -65,15 +63,6 @@ public class CustomEventUser {
     public String getChannel() {
         return channel;
     }
-    /**
-     * Get the Airship named user identifier for the user who triggered the event.
-     *
-     * @return String
-
-     */
-    public String getNamedUser() {
-        return namedUser;
-    }
 
     /**
      * CustomEventUser Builder
@@ -81,7 +70,6 @@ public class CustomEventUser {
     public static class Builder {
         private String channel = null;
         private CustomEventChannelType channelType = null;
-        private String namedUser;
 
         /**
          * Set the Urban Airship channel identifier for the user who triggered the event.
@@ -94,16 +82,6 @@ public class CustomEventUser {
             return this;
         }
 
-        /**
-         * Set the  Airship named user identifier for the user who triggered the event.
-         *
-         * @param namedUser String
-         * @return CustomEventUser Builder
-         */
-        public Builder setNamedUser(String namedUser) {
-            this.namedUser = namedUser;
-            return this;
-        }
 
         /**
          * Set the channel type.
@@ -118,9 +96,6 @@ public class CustomEventUser {
 
         public CustomEventUser build() {
             Preconditions.checkNotNull(channelType, "'channelType' must not be null");
-            if(namedUser == null || namedUser.isEmpty()) {
-                Preconditions.checkNotNull(channel, "Must contain either 'channel' or 'namedUser'");
-            }
 
             return new CustomEventUser(this);
         }

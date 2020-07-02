@@ -2,7 +2,6 @@ package com.urbanairship.api.customevents.parse;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.urbanairship.api.common.parse.JsonObjectReader;
-import com.urbanairship.api.customevents.model.CustomEventOccurred;
 import com.urbanairship.api.customevents.model.CustomEventPayload;
 import com.urbanairship.api.customevents.model.CustomEventBody;
 import com.urbanairship.api.customevents.model.CustomEventUser;
@@ -27,7 +26,7 @@ public class CustomEventReader implements JsonObjectReader<CustomEventPayload> {
     }
 
     public void readOccured(JsonParser parser) throws IOException {
-        builder.setCustomEventOccurred(parser.readValueAs(CustomEventOccurred.class));
+        builder.setOccurred(parser.readValueAs(DateTime.class));
     }
 
     @Override

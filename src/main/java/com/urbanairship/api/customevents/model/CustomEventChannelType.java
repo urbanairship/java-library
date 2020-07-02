@@ -5,7 +5,8 @@ import com.google.common.base.Optional;
 public enum CustomEventChannelType {
     IOS_CHANNEL("ios_channel"),
     ANDROID_CHANNEL("android_channel"),
-    AMAZON_CHANNEL("amazon_channel");
+    AMAZON_CHANNEL("amazon_channel"),
+    NAMED_USER_CHANNEL("named_user_id");
 
     private final String identifier;
 

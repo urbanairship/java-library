@@ -2,16 +2,17 @@ package com.urbanairship.api.customevents.model;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.urbanairship.api.push.model.Campaigns;
 import com.urbanairship.api.push.model.PushModelObject;
 import org.joda.time.DateTime;
 
 public class CustomEventPayload extends PushModelObject {
-    private final CustomEventOccurred customEventOccurred;
+    private final DateTime occurred;
     private final CustomEventBody customEventBody;
     private final CustomEventUser customEventUser;
 
     private CustomEventPayload(Builder builder) {
-        this.customEventOccurred = builder.customEventOccurred;
+        this.occurred = builder.occurred;
         this.customEventBody = builder.customEventBody;
         this.customEventUser = builder.customEventUser;
     }
@@ -30,8 +31,8 @@ public class CustomEventPayload extends PushModelObject {
      *
      * @return DateTime
      */
-    public CustomEventOccurred getCustomEventOccurred() {
-        return customEventOccurred;
+    public DateTime getOccurred() {
+        return occurred;
     }
 
     /**
@@ -55,14 +56,14 @@ public class CustomEventPayload extends PushModelObject {
 
         CustomEventPayload payload = (CustomEventPayload) o;
 
-        return Objects.equal(customEventOccurred, payload.customEventOccurred) &&
+        return Objects.equal(occurred, payload.occurred) &&
                 Objects.equal(customEventBody, payload.customEventBody) &&
                 Objects.equal(customEventUser, payload.customEventUser);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(customEventOccurred, customEventBody, customEventUser);
+        return Objects.hashCode(occurred, customEventBody, customEventUser);
     }
 
     /**
@@ -81,18 +82,18 @@ public class CustomEventPayload extends PushModelObject {
      * CustomEventPayload Builder.
      */
     public static class Builder {
-        private CustomEventOccurred customEventOccurred = null;
+        private DateTime occurred = null;
         private CustomEventBody customEventBody = null;
         private CustomEventUser customEventUser = null;
 
         /**
          * Set the date and time when the event occurred.
          *
-         * @param customEventOccurred DateTime
+         * @param occurred DateTime
          * @return CustomEventPayload Builder
          */
-        public Builder setCustomEventOccurred(CustomEventOccurred customEventOccurred) {
-            this.customEventOccurred = customEventOccurred;
+        public Builder setOccurred(DateTime occurred) {
+            this.occurred = occurred;
             return this;
         }
 
@@ -120,7 +121,7 @@ public class CustomEventPayload extends PushModelObject {
         }
 
         public CustomEventPayload build() {
-            Preconditions.checkNotNull(customEventOccurred, "'customEventOccurred' must not be null");
+            Preconditions.checkNotNull(occurred, "'occurred' must not be null");
             Preconditions.checkNotNull(customEventBody, "'customEventBody' must not be null");
             Preconditions.checkNotNull(customEventUser, "'customEventUser' must not be null");
 
