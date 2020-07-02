@@ -33,6 +33,13 @@ public class CustomEventUserDeserializer {
                     reader.readChannel(CustomEventChannelType.IOS_CHANNEL, json);
                 }
             })
+            .put("named_user_channel", new FieldParser<CustomEventUserReader>() {
+                @Override
+                public void parse(CustomEventUserReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                    reader.readChannel(CustomEventChannelType.NAMED_USER_CHANNEL, json);
+                }
+            })
+
             .build()
     );
 }
