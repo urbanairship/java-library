@@ -2,8 +2,6 @@ package com.urbanairship.api.customevents.model;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.urbanairship.api.push.model.Campaigns;
-import org.joda.time.DateTime;
 
 public class CustomEventUser {
 
@@ -81,7 +79,6 @@ public class CustomEventUser {
             this.channel = channel;
             return this;
         }
-
 
         /**
          * Set the channel type.
