@@ -43,18 +43,17 @@ public class CustomEventPayloadSerializerTest {
                 .setSessionId("22404b07-3f8f-4e42-a4ff-a996c18fa9f1")
                 .build();
 
-        CustomEventOccurred customEventOccurred = CustomEventOccurred.newBuilder()
-                .setOccurred("2016-05-02T02:31:22")
-                .build();
+        // The date and time when the event occurred.
+        DateTime occurred = new DateTime(2015, 5, 2, 2, 31, 22, DateTimeZone.UTC);
 
         CustomEventPayload customEventPayload = CustomEventPayload.newBuilder()
-                .setCustomEventOccurred(customEventOccurred)
+                .setOccurred(occurred)
                 .setCustomEventBody(customEventBody)
                 .setCustomEventUser(customEventUser)
                 .build();
 
         String json = MAPPER.writeValueAsString(customEventPayload);
-        String expected = "[{\"occurred\":\"2016-05-02T09:31:22\",\"user\":{\"channel\":\"e393d28e-23b2-4a22-9ace-dc539a5b07a8\"},\"body\":{\"name\":\"purchased\",\"session_id\":\"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\",\"interaction_id\":\"your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234\",\"interaction_type\":\"url\",\"transaction\":\"886f53d4-3e0f-46d7-930e-c2792dac6e0a\",\"properties\":{\"description\":\"Sneaker purchase\",\"id\":\"pid-11046546\",\"category\":\"mens shoes\",\"brand\":\"Victory Sneakers\"},\"value\":120.49}}]";
+        String expected = "[{\"occurred\":\"2015-05-02T02:31:22\",\"user\":{\"android_channel\":\"e393d28e-23b2-4a22-9ace-dc539a5b07a8\"},\"body\":{\"name\":\"purchased\",\"session_id\":\"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\",\"interaction_id\":\"your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234\",\"interaction_type\":\"url\",\"transaction\":\"886f53d4-3e0f-46d7-930e-c2792dac6e0a\",\"properties\":{\"description\":\"Sneaker purchase\",\"id\":\"pid-11046546\",\"category\":\"mens shoes\",\"brand\":\"Victory Sneakers\"},\"value\":120.49}}]";
 
         JsonNode jsonFromObject = MAPPER.readTree(json);
         JsonNode jsonFromString = MAPPER.readTree(expected);
@@ -66,9 +65,8 @@ public class CustomEventPayloadSerializerTest {
     @Test
     public void testCustomEventWithChannel() throws IOException {
 
-        CustomEventOccurred customEventOccurred = CustomEventOccurred.newBuilder()
-                .setOccurred("2016-05-02T02:31:22")
-                .build();
+        // The date and time when the event occurred.
+        DateTime occurred = new DateTime(2015, 5, 2, 2, 31, 22, DateTimeZone.UTC);
 
         CustomEventUser customEventUser = CustomEventUser.newBuilder()
                 .setCustomEventChannelType(CustomEventChannelType.ANDROID_CHANNEL)
@@ -92,14 +90,14 @@ public class CustomEventPayloadSerializerTest {
                 .build();
 
         CustomEventPayload customEventPayload = CustomEventPayload.newBuilder()
-                .setCustomEventOccurred(customEventOccurred)
+                .setOccurred(occurred)
                 .setCustomEventUser(customEventUser)
                 .setCustomEventBody(customEventBody)
                 .build();
 
         String json = MAPPER.writeValueAsString(customEventPayload);
 
-        String expected = "[{\"occurred\":\"2016-05-02T09:31:22\",\"user\":{\"channel\":\"e393d28e-23b2-4a22-9ace-dc539a5b07a8\"},\"body\":{\"name\":\"purchased\",\"session_id\":\"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\",\"interaction_id\":\"your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234\",\"interaction_type\":\"url\",\"transaction\":\"886f53d4-3e0f-46d7-930e-c2792dac6e0a\",\"properties\":{\"description\":\"Sneaker purchase\",\"id\":\"pid-11046546\",\"category\":\"mens shoes\",\"brand\":\"Victory Sneakers\"},\"value\":120.49}}]";
+        String expected = "[{\"occurred\":\"2015-05-02T02:31:22\",\"user\":{\"android_channel\":\"e393d28e-23b2-4a22-9ace-dc539a5b07a8\"},\"body\":{\"name\":\"purchased\",\"session_id\":\"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\",\"interaction_id\":\"your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234\",\"interaction_type\":\"url\",\"transaction\":\"886f53d4-3e0f-46d7-930e-c2792dac6e0a\",\"properties\":{\"description\":\"Sneaker purchase\",\"id\":\"pid-11046546\",\"category\":\"mens shoes\",\"brand\":\"Victory Sneakers\"},\"value\":120.49}}]";
         JsonNode jsonFromObject = MAPPER.readTree(json);
         JsonNode jsonFromString = MAPPER.readTree(expected);
 
@@ -116,7 +114,7 @@ public class CustomEventPayloadSerializerTest {
 
         String user_json = MAPPER.writeValueAsString(customEventUser);
 
-        String expected = "{\"channel\": \"e393d28e-23b2-4a22-9ace-dc539a5b07a8\"}}";
+        String expected = "{\"android_channel\": \"e393d28e-23b2-4a22-9ace-dc539a5b07a8\"}}";
 
         JsonNode user_jsonFromObject = MAPPER.readTree(user_json);
         JsonNode user_jsonFromString = MAPPER.readTree(expected);
@@ -127,8 +125,8 @@ public class CustomEventPayloadSerializerTest {
     @Test
     public void testNamedUserCustomEventUser() throws IOException {
         CustomEventUser customEventUser = CustomEventUser.newBuilder()
-                .setCustomEventChannelType(CustomEventChannelType.ANDROID_CHANNEL)
-                .setNamedUser("hugh.manbeing")
+                .setCustomEventChannelType(CustomEventChannelType.NAMED_USER_CHANNEL)
+                .setChannel("hugh.manbeing")
                 .build();
 
         String user_json = MAPPER.writeValueAsString(customEventUser);
@@ -154,9 +152,8 @@ public class CustomEventPayloadSerializerTest {
         properties.put("description", "Sneaker purchase");
         properties.put("brand", "Victory Sneakers");
 
-        CustomEventOccurred customEventOccurred = CustomEventOccurred.newBuilder()
-                .setOccurred("2016-05-02T02:31:22")
-                .build();
+        // The date and time when the event occurred.
+        DateTime occurred = new DateTime(2015, 5, 2, 2, 31, 22, DateTimeZone.UTC);
 
         CustomEventBody customEventBody = CustomEventBody.newBuilder()
                 .setName("purchased")
@@ -171,11 +168,11 @@ public class CustomEventPayloadSerializerTest {
         CustomEventPayload customEventPayload = CustomEventPayload.newBuilder()
                 .setCustomEventBody(customEventBody)
                 .setCustomEventUser(customEventUser)
-                .setCustomEventOccurred(customEventOccurred)
+                .setOccurred(occurred)
                 .build();
 
         String json = MAPPER.writeValueAsString(customEventPayload);
-        String expected = "[{\"occurred\":\"2016-05-02T09:31:22\",\"user\":{\"channel\":\"e393d28e-23b2-4a22-9ace-dc539a5b07a8\"},\"body\":{\"name\":\"purchased\",\"session_id\":\"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\",\"interaction_id\":\"your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234\",\"interaction_type\":\"url\",\"transaction\":\"886f53d4-3e0f-46d7-930e-c2792dac6e0a\",\"properties\":{\"description\":\"Sneaker purchase\",\"id\":\"pid-11046546\",\"category\":\"mens shoes\",\"brand\":\"Victory Sneakers\"},\"value\":120.49}}]";
+        String expected = "[{\"occurred\":\"2015-05-02T02:31:22\",\"user\":{\"android_channel\":\"e393d28e-23b2-4a22-9ace-dc539a5b07a8\"},\"body\":{\"name\":\"purchased\",\"session_id\":\"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\",\"interaction_id\":\"your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234\",\"interaction_type\":\"url\",\"transaction\":\"886f53d4-3e0f-46d7-930e-c2792dac6e0a\",\"properties\":{\"description\":\"Sneaker purchase\",\"id\":\"pid-11046546\",\"category\":\"mens shoes\",\"brand\":\"Victory Sneakers\"},\"value\":120.49}}]";
         JsonNode jsonFromObject = MAPPER.readTree(json);
         JsonNode jsonFromString = MAPPER.readTree(expected);
 
@@ -186,8 +183,8 @@ public class CustomEventPayloadSerializerTest {
     @Test
     public void testNamedUserFullPayload() throws IOException {
         CustomEventUser customEventUser = CustomEventUser.newBuilder()
-                .setCustomEventChannelType(CustomEventChannelType.ANDROID_CHANNEL)
-                .setNamedUser("hugh.manbeing")
+                .setCustomEventChannelType(CustomEventChannelType.NAMED_USER_CHANNEL)
+                .setChannel("hugh.manbeing")
                 .build();
 
         Map<String, String> properties = new HashMap<String, String>();
@@ -204,22 +201,20 @@ public class CustomEventPayloadSerializerTest {
                 .setInteractionType("url")
                 .addAllPropertyEntries(properties)
                 .setSessionId("22404b07-3f8f-4e42-a4ff-a996c18fa9f1")
-                //TODO: Write test for session ID missing
                 .build();
 
-        CustomEventOccurred customEventOccurred = CustomEventOccurred.newBuilder()
-                .setOccurred("2016-05-02T02:31:22")
-                .build();
+        // The date and time when the event occurred.
+        DateTime occurred = new DateTime(2015, 5, 2, 2, 31, 22, DateTimeZone.UTC);
 
         CustomEventPayload customEventPayload = CustomEventPayload.newBuilder()
                 .setCustomEventBody(customEventBody)
                 .setCustomEventUser(customEventUser)
-                .setCustomEventOccurred(customEventOccurred)
+                .setOccurred(occurred)
                 .build();
 
         String json = MAPPER.writeValueAsString(customEventPayload);
         // validated in custom event api on 2020-6-30 16:28:50"
-        String expected = "[{\"occurred\":\"2016-05-02T09:31:22\",\"user\":{\"named_user_id\":\"hugh.manbeing\"},\"body\":{\"name\":\"purchased\",\"session_id\":\"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\",\"interaction_id\":\"your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234\",\"interaction_type\":\"url\",\"transaction\":\"886f53d4-3e0f-46d7-930e-c2792dac6e0a\",\"properties\":{\"description\":\"Sneaker purchase\",\"id\":\"pid-11046546\",\"category\":\"mens shoes\",\"brand\":\"Victory Sneakers\"},\"value\":120.49}}]";
+        String expected = "[{\"occurred\":\"2015-05-02T02:31:22\",\"user\":{\"named_user_id\":\"hugh.manbeing\"},\"body\":{\"name\":\"purchased\",\"session_id\":\"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\",\"interaction_id\":\"your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234\",\"interaction_type\":\"url\",\"transaction\":\"886f53d4-3e0f-46d7-930e-c2792dac6e0a\",\"properties\":{\"description\":\"Sneaker purchase\",\"id\":\"pid-11046546\",\"category\":\"mens shoes\",\"brand\":\"Victory Sneakers\"},\"value\":120.49}}]";
         JsonNode jsonFromObject = MAPPER.readTree(json);
         JsonNode jsonFromString = MAPPER.readTree(expected);
 

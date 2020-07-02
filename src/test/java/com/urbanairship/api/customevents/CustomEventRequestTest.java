@@ -28,14 +28,13 @@ public class CustomEventRequestTest {
             .setSessionId("sessionId")
             .build();
 
-    CustomEventOccurred customEventOccurred = CustomEventOccurred.newBuilder()
-            .setOccurred("2016-05-02T02:31:22")
-            .build();
+    // The date and time when the event occurred.
+    DateTime occurred = new DateTime(2015, 5, 2, 2, 31, 22, DateTimeZone.UTC);
 
     CustomEventPayload customEventPayload = CustomEventPayload.newBuilder()
             .setCustomEventBody(customEventBody)
             .setCustomEventUser(customEventUser)
-            .setCustomEventOccurred(customEventOccurred)
+            .setOccurred(occurred)
             .build();
 
     CustomEventRequest customEventRequest = CustomEventRequest.newRequest(customEventPayload);

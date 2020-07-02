@@ -20,10 +20,7 @@ public class CustomEventUserSerializer extends JsonSerializer<CustomEventUser> {
         Map<String, String> channelMap = new HashMap<>();
 
         if (eventUser.getChannel() != null) {
-            channelMap.put("channel", eventUser.getChannel());
-        }
-        if (eventUser.getNamedUser() != null) {
-            channelMap.put("named_user_id", eventUser.getNamedUser());
+            channelMap.put(eventUser.getChannelType().getIdentifier(), eventUser.getChannel());
         }
 
         userList.add(channelMap);
