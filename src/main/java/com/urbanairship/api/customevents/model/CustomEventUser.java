@@ -53,7 +53,7 @@ public class CustomEventUser {
     }
 
     /**
-     * Get the Urban Airship channel identifier for the user who triggered the event.
+     * Get the Airship channel identifier for the user who triggered the event.
      *
      * @return String
 
@@ -70,7 +70,7 @@ public class CustomEventUser {
         private CustomEventChannelType channelType = null;
 
         /**
-         * Set the Urban Airship channel identifier for the user who triggered the event.
+         * Set the Airship channel identifier for the user who triggered the event.
          *
          * @param channel String
          * @return CustomEventUser Builder
