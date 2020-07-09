@@ -23,7 +23,7 @@ public class CustomEventPayloadSerializerTest {
     private static final ObjectMapper MAPPER = PushObjectMapper.getInstance();
 
     @Test
-    public void testFullPayloadChannel() throws IOException {
+    public void testFullPayload() throws IOException {
         CustomEventUser customEventUser = CustomEventUser.newBuilder()
                 .setCustomEventChannelType(CustomEventChannelType.ANDROID_CHANNEL)
                 .setChannel("e393d28e-23b2-4a22-9ace-dc539a5b07a8")
