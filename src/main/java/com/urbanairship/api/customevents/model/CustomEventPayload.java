@@ -2,7 +2,6 @@ package com.urbanairship.api.customevents.model;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.urbanairship.api.push.model.Campaigns;
 import com.urbanairship.api.push.model.PushModelObject;
 import org.joda.time.DateTime;
 
