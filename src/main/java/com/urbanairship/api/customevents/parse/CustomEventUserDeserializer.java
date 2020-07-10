@@ -33,7 +33,8 @@ public class CustomEventUserDeserializer {
                     reader.readChannel(CustomEventChannelType.IOS_CHANNEL, json);
                 }
             })
-            .put("named_user_channel", new FieldParser<CustomEventUserReader>() {
+                    // This entire deserializer is to be deleted in PR https://github.com/urbanairship/java-library-dev/pull/212, changed it to id anyway.
+            .put("named_user_id", new FieldParser<CustomEventUserReader>() {
                 @Override
                 public void parse(CustomEventUserReader reader, JsonParser json, DeserializationContext context) throws IOException {
                     reader.readChannel(CustomEventChannelType.NAMED_USER_CHANNEL, json);
