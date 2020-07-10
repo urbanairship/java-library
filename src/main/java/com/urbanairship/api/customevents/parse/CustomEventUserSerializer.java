@@ -13,16 +13,14 @@ public class CustomEventUserSerializer extends JsonSerializer<CustomEventUser> {
 
     @Override
     public void serialize(CustomEventUser eventUser, JsonGenerator jgen, SerializerProvider provider) throws IOException {
-
-        Map<String, String> channelMap = new HashMap<>();
+        jgen.writeStartObject();
 
         if (eventUser.getChannel().isPresent()) {
-            channelMap.put(eventUser.getChannelType().get().getIdentifier(), eventUser.getChannel().get());
+            jgen.writeStringField(eventUser.getChannelType().get().getIdentifier(), eventUser.getChannel().get());
         }
         if (eventUser.getNamedUserId().isPresent()) {
-            channelMap.put("named_user_id", eventUser.getNamedUserId().get());
+            jgen.writeStringField("named_user_id", eventUser.getNamedUserId().get());
         }
-
-        jgen.writeObject(channelMap);
+        jgen.writeEndObject();
     }
 }

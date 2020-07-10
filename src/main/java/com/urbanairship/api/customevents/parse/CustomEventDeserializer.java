@@ -17,10 +17,10 @@ public class CustomEventDeserializer extends JsonDeserializer<CustomEventPayload
 
     private static final FieldParserRegistry<CustomEventPayload, CustomEventReader> FIELD_PARSERS = new MapFieldParserRegistry<CustomEventPayload, CustomEventReader>(
             ImmutableMap.<String, FieldParser<CustomEventReader>>builder()
-            .put("occurred", new FieldParser<CustomEventReader>() {
+            .put("occured", new FieldParser<CustomEventReader>() {
                 @Override
                 public void parse(CustomEventReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                    reader.readOccurred(json);
+                    reader.readOccured(json);
                 }
             })
             .put("user", new FieldParser<CustomEventReader>() {
