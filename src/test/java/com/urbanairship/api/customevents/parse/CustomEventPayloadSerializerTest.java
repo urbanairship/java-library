@@ -123,23 +123,6 @@ public class CustomEventPayloadSerializerTest {
     }
 
     @Test
-    public void testNamedUserCustomEventUser() throws IOException {
-        CustomEventUser customEventUser = CustomEventUser.newBuilder()
-                .setCustomEventChannelType(CustomEventChannelType.NAMED_USER_CHANNEL)
-                .setChannel("hugh.manbeing")
-                .build();
-
-        String user_json = MAPPER.writeValueAsString(customEventUser);
-
-        String expected = "{\"named_user_id\":\"hugh.manbeing\"}";
-
-        JsonNode user_jsonFromObject = MAPPER.readTree(user_json);
-        JsonNode user_jsonFromString = MAPPER.readTree(expected);
-
-        assertEquals(user_jsonFromString, user_jsonFromObject);
-    }
-
-    @Test
     public void testChannelIdFullPayload() throws IOException {
         CustomEventUser customEventUser = CustomEventUser.newBuilder()
                 .setCustomEventChannelType(CustomEventChannelType.ANDROID_CHANNEL)
