@@ -331,7 +331,6 @@ public class CustomEventPayloadSerializerTest {
         JsonNode jsonFromObject = MAPPER.readTree(json);
         JsonNode jsonFromString = MAPPER.readTree(expected);
 
-
         assertEquals(jsonFromString, jsonFromObject);
     }
 

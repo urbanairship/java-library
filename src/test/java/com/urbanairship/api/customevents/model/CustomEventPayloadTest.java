@@ -36,7 +36,6 @@ public class CustomEventPayloadTest {
                 .setSessionId("22404b07-3f8f-4e42-a4ff-a996c18fa9f1")
                 .build();
 
-        // The date and time when the event occurred.
         DateTime occurred = new DateTime(2016, 5, 2, 2, 31, 22, DateTimeZone.UTC);
 
         CustomEventPayload customEventPayload = CustomEventPayload.newBuilder()
