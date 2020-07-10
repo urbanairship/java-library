@@ -25,7 +25,7 @@ public class CustomEventReader implements JsonObjectReader<CustomEventPayload> {
         builder.setCustomEventBody(parser.readValueAs(CustomEventBody.class));
     }
 
-    public void readOccurred(JsonParser parser) throws IOException {
+    public void readOccured(JsonParser parser) throws IOException {
         builder.setOccurred(parser.readValueAs(DateTime.class));
     }
 
