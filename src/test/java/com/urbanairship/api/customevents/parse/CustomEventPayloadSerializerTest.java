@@ -80,46 +80,6 @@ public class CustomEventPayloadSerializerTest {
     }
 
     @Test
-    public void testChannelIdFullPayload() throws IOException {
-        CustomEventUser customEventUser = CustomEventUser.newBuilder()
-                .setCustomEventChannelType(CustomEventChannelType.ANDROID_CHANNEL)
-                .setChannel("e393d28e-23b2-4a22-9ace-dc539a5b07a8")
-                .build();
-
-        Map<String, String> properties = new HashMap<String, String>();
-        properties.put("category", "mens shoes");
-        properties.put("id", "pid-11046546");
-        properties.put("description", "Sneaker purchase");
-        properties.put("brand", "Victory Sneakers");
-
-        DateTime occurred = new DateTime(2015, 5, 2, 2, 31, 22, DateTimeZone.UTC);
-
-        CustomEventBody customEventBody = CustomEventBody.newBuilder()
-                .setName("purchased")
-                .setValue(new BigDecimal(120.49))
-                .setTransaction("886f53d4-3e0f-46d7-930e-c2792dac6e0a")
-                .setInteractionId("your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234")
-                .setInteractionType("url")
-                .addAllPropertyEntries(properties)
-                .setSessionId("22404b07-3f8f-4e42-a4ff-a996c18fa9f1")
-                .build();
-
-        CustomEventPayload customEventPayload = CustomEventPayload.newBuilder()
-                .setCustomEventBody(customEventBody)
-                .setCustomEventUser(customEventUser)
-                .setOccurred(occurred)
-                .build();
-
-        String json = MAPPER.writeValueAsString(customEventPayload);
-        String expected = "{\"occurred\":\"2015-05-02T02:31:22\",\"user\":{\"android_channel\":\"e393d28e-23b2-4a22-9ace-dc539a5b07a8\"},\"body\":{\"name\":\"purchased\",\"session_id\":\"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\",\"interaction_id\":\"your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234\",\"interaction_type\":\"url\",\"transaction\":\"886f53d4-3e0f-46d7-930e-c2792dac6e0a\",\"properties\":{\"description\":\"Sneaker purchase\",\"id\":\"pid-11046546\",\"category\":\"mens shoes\",\"brand\":\"Victory Sneakers\"},\"value\":120.49}}]";
-        JsonNode jsonFromObject = MAPPER.readTree(json);
-        JsonNode jsonFromString = MAPPER.readTree(expected);
-
-
-        assertEquals(jsonFromString, jsonFromObject);
-    }
-
-    @Test
     public void testNamedUserFullPayload() throws IOException {
         CustomEventUser customEventUser = CustomEventUser.newBuilder()
                 .setNamedUserId("hugh.manbeing")
