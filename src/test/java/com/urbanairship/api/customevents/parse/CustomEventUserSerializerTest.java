@@ -33,15 +33,15 @@ public class CustomEventUserSerializerTest {
 
         String iosJson = MAPPER.writeValueAsString(iosUser);
         String iosExpected = "{\"ios_channel\":\"iOSChannel\"}";
-        assertEquals(iosJson, iosExpected);
+        assertEquals(iosExpected, iosJson);
 
         String androidJson = MAPPER.writeValueAsString(androidUser);
         String androidExpected = "{\"android_channel\":\"androidChannel\"}";
-        assertEquals(androidJson, androidExpected);
+        assertEquals(androidExpected, androidJson);
 
         String amazonJson = MAPPER.writeValueAsString(amazonUser);
         String amazonExpected = "{\"amazon_channel\":\"amazonChannel\"}";
-        assertEquals(amazonJson, amazonExpected);
+        assertEquals(amazonExpected, amazonJson);
     }
 
     @Test
