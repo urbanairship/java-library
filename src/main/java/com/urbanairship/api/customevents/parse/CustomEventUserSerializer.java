@@ -6,8 +6,6 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.urbanairship.api.customevents.model.CustomEventUser;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class CustomEventUserSerializer extends JsonSerializer<CustomEventUser> {
 
