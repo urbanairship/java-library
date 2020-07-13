@@ -69,14 +69,14 @@ public class CustomEventPayloadSerializerTest {
                 .setChannel("e393d28e-23b2-4a22-9ace-dc539a5b07a8")
                 .build();
 
-        String user_json = MAPPER.writeValueAsString(customEventUser);
+        String userJson = MAPPER.writeValueAsString(customEventUser);
 
         String expected = "{\"android_channel\": \"e393d28e-23b2-4a22-9ace-dc539a5b07a8\"}}";
 
-        JsonNode user_jsonFromObject = MAPPER.readTree(user_json);
-        JsonNode user_jsonFromString = MAPPER.readTree(expected);
+        JsonNode userJsonFromObject = MAPPER.readTree(userJson);
+        JsonNode userJsonFromString = MAPPER.readTree(expected);
 
-        assertEquals(user_jsonFromString, user_jsonFromObject);
+        assertEquals(userJsonFromString, userJsonFromObject);
     }
 
     @Test
