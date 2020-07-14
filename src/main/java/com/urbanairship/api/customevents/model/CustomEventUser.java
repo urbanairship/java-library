@@ -1,16 +1,19 @@
 package com.urbanairship.api.customevents.model;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 public class CustomEventUser {
 
-    private final CustomEventChannelType channelType;
-    private final String channel;
+    private final Optional<CustomEventChannelType> channelType;
+    private final Optional<String> channel;
+    private final Optional<String> namedUserId;
 
     private CustomEventUser(Builder builder) {
-        this.channelType = builder.channelType;
-        this.channel = builder.channel;
+        this.channelType = Optional.fromNullable(builder.channelType);
+        this.channel = Optional.fromNullable(builder.channel);
+        this.namedUserId = Optional.fromNullable(builder.namedUserId);
     }
 
     /**
@@ -27,7 +30,7 @@ public class CustomEventUser {
      *
      * @return CustomEventChannelType
      */
-    public CustomEventChannelType getChannelType() {
+    public Optional<CustomEventChannelType> getChannelType() {
         return channelType;
     }
 
@@ -53,30 +56,52 @@ public class CustomEventUser {
     }
 
     /**
-     * Get the Urban Airship channel identifier for the user who triggered the event.
+     * Get the Airship channel identifier for the user who triggered the event.
      *
      * @return String
 
      */
-    public String getChannel() {
+    public Optional<String> getChannel() {
         return channel;
+    }
+
+    /**
+     * Get the Airship named user identifier for the named user who triggered the event.
+     *
+     * @return String
+
+     */
+    public Optional<String> getNamedUserId() {
+        return namedUserId;
     }
 
     /**
      * CustomEventUser Builder
      */
     public static class Builder {
-        private String channel = null;
-        private CustomEventChannelType channelType = null;
+        private String channel;
+        private CustomEventChannelType channelType;
+        private String namedUserId;
 
         /**
-         * Set the Urban Airship channel identifier for the user who triggered the event.
+         * Set the Airship channel identifier for the user who triggered the event.
          *
          * @param channel String
          * @return CustomEventUser Builder
          */
         public Builder setChannel(String channel) {
             this.channel = channel;
+            return this;
+        }
+
+        /**
+         * Set the Airship named user identifier for the named user who triggered the event.
+         *
+         * @param namedUserId String
+         * @return CustomEventUser Builder
+         */
+        public Builder setNamedUserId(String namedUserId) {
+            this.namedUserId = namedUserId;
             return this;
         }
 
@@ -92,8 +117,10 @@ public class CustomEventUser {
         }
 
         public CustomEventUser build() {
-            Preconditions.checkNotNull(channelType, "'channelType' must not be null");
-            Preconditions.checkNotNull(channel, "'channel' must not be null");
+            Preconditions.checkArgument(((channelType != null && channel != null) || namedUserId != null),
+                    "Must provide channel and channelType, or namedUserId");
+            Preconditions.checkArgument((!(channelType != null && channel != null && namedUserId != null)),
+                    "Must provide either channel and channelType or namedUserId, not both");
 
             return new CustomEventUser(this);
         }
