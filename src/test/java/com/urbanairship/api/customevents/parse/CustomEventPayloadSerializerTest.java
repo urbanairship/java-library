@@ -9,7 +9,9 @@ import com.urbanairship.api.customevents.model.CustomEventUser;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -19,6 +21,9 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
 public class CustomEventPayloadSerializerTest {
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     private static final ObjectMapper MAPPER = PushObjectMapper.getInstance();
 
@@ -118,120 +123,38 @@ public class CustomEventPayloadSerializerTest {
         assertEquals(jsonFromString, jsonFromObject);
     }
 
-    @Test( expected = IllegalArgumentException.class)
+    @Test
     public void testNoChannelType() throws IOException {
+
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage("Must provide channel and channelType, or namedUserId");
+
         CustomEventUser customEventUser = CustomEventUser.newBuilder()
                 .setChannel("e393d28e-23b2-4a22-9ace-dc539a5b07a8")
                 .build();
-
-        Map<String, String> properties = new HashMap<String, String>();
-        properties.put("category", "mens shoes");
-        properties.put("id", "pid-11046546");
-        properties.put("description", "Sneaker purchase");
-        properties.put("brand", "Victory Sneakers");
-
-        CustomEventBody customEventBody = CustomEventBody.newBuilder()
-                .setName("purchased")
-                .setValue(new BigDecimal(120.49))
-                .setTransaction("886f53d4-3e0f-46d7-930e-c2792dac6e0a")
-                .setInteractionId("your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234")
-                .setInteractionType("url")
-                .addAllPropertyEntries(properties)
-                .setSessionId("22404b07-3f8f-4e42-a4ff-a996c18fa9f1")
-                .build();
-
-        DateTime occurred = new DateTime(2015, 5, 2, 2, 31, 22, DateTimeZone.UTC);
-
-        CustomEventPayload customEventPayload = CustomEventPayload.newBuilder()
-                .setCustomEventBody(customEventBody)
-                .setCustomEventUser(customEventUser)
-                .setOccurred(occurred)
-                .build();
-
-        String json = MAPPER.writeValueAsString(customEventPayload);
-        String expected = "{\"occurred\":\"2015-05-02T02:31:22\",\"user\":{\"named_user_id\":\"hugh.manbeing\"},\"body\":{\"name\":\"purchased\",\"session_id\":\"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\",\"interaction_id\":\"your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234\",\"interaction_type\":\"url\",\"transaction\":\"886f53d4-3e0f-46d7-930e-c2792dac6e0a\",\"properties\":{\"description\":\"Sneaker purchase\",\"id\":\"pid-11046546\",\"category\":\"mens shoes\",\"brand\":\"Victory Sneakers\"},\"value\":120.49}}";
-        JsonNode jsonFromObject = MAPPER.readTree(json);
-        JsonNode jsonFromString = MAPPER.readTree(expected);
-
-        assertEquals(jsonFromString, jsonFromObject);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testChannelTypeNoChannel() throws IOException {
+    @Test
+    public void testChannelTypeNoChannel() throws IOException, IllegalArgumentException {
+
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage("Must provide channel and channelType, or namedUserId");
+
         CustomEventUser customEventUser = CustomEventUser.newBuilder()
                 .setCustomEventChannelType(CustomEventChannelType.ANDROID_CHANNEL)
                 .build();
-
-        Map<String, String> properties = new HashMap<String, String>();
-        properties.put("category", "mens shoes");
-        properties.put("id", "pid-11046546");
-        properties.put("description", "Sneaker purchase");
-        properties.put("brand", "Victory Sneakers");
-
-        CustomEventBody customEventBody = CustomEventBody.newBuilder()
-                .setName("purchased")
-                .setValue(new BigDecimal(120.49))
-                .setTransaction("886f53d4-3e0f-46d7-930e-c2792dac6e0a")
-                .setInteractionId("your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234")
-                .setInteractionType("url")
-                .addAllPropertyEntries(properties)
-                .setSessionId("22404b07-3f8f-4e42-a4ff-a996c18fa9f1")
-                .build();
-
-        DateTime occurred = new DateTime(2015, 5, 2, 2, 31, 22, DateTimeZone.UTC);
-
-        CustomEventPayload customEventPayload = CustomEventPayload.newBuilder()
-                .setCustomEventBody(customEventBody)
-                .setCustomEventUser(customEventUser)
-                .setOccurred(occurred)
-                .build();
-
-        String json = MAPPER.writeValueAsString(customEventPayload);
-        String expected = "{\"occurred\":\"2015-05-02T02:31:22\",\"user\":{\"named_user_id\":\"hugh.manbeing\"},\"body\":{\"name\":\"purchased\",\"session_id\":\"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\",\"interaction_id\":\"your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234\",\"interaction_type\":\"url\",\"transaction\":\"886f53d4-3e0f-46d7-930e-c2792dac6e0a\",\"properties\":{\"description\":\"Sneaker purchase\",\"id\":\"pid-11046546\",\"category\":\"mens shoes\",\"brand\":\"Victory Sneakers\"},\"value\":120.49}}";
-        JsonNode jsonFromObject = MAPPER.readTree(json);
-        JsonNode jsonFromString = MAPPER.readTree(expected);
-
-        assertEquals(jsonFromString, jsonFromObject);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNamedUserAndChannel() throws IOException {
+
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage("Must provide either channel and channelType or namedUserId, not both");
+
         CustomEventUser customEventUser = CustomEventUser.newBuilder()
                 .setNamedUserId("hugh.manbeing")
                 .setChannel("e393d28e-23b2-4a22-9ace-dc539a5b07a8")
                 .setCustomEventChannelType(CustomEventChannelType.ANDROID_CHANNEL)
                 .build();
-
-        Map<String, String> properties = new HashMap<String, String>();
-        properties.put("category", "mens shoes");
-        properties.put("id", "pid-11046546");
-        properties.put("description", "Sneaker purchase");
-        properties.put("brand", "Victory Sneakers");
-
-        CustomEventBody customEventBody = CustomEventBody.newBuilder()
-                .setName("purchased")
-                .setValue(new BigDecimal(120.49))
-                .setTransaction("886f53d4-3e0f-46d7-930e-c2792dac6e0a")
-                .setInteractionId("your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234")
-                .setInteractionType("url")
-                .addAllPropertyEntries(properties)
-                .setSessionId("22404b07-3f8f-4e42-a4ff-a996c18fa9f1")
-                .build();
-
-        DateTime occurred = new DateTime(2015, 5, 2, 2, 31, 22, DateTimeZone.UTC);
-
-        CustomEventPayload customEventPayload = CustomEventPayload.newBuilder()
-                .setCustomEventBody(customEventBody)
-                .setCustomEventUser(customEventUser)
-                .setOccurred(occurred)
-                .build();
-
-        String json = MAPPER.writeValueAsString(customEventPayload);
-        String expected = "{\"occurred\":\"2015-05-02T02:31:22\",\"user\":{\"named_user_id\":\"hugh.manbeing\"},\"body\":{\"name\":\"purchased\",\"session_id\":\"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\",\"interaction_id\":\"your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234\",\"interaction_type\":\"url\",\"transaction\":\"886f53d4-3e0f-46d7-930e-c2792dac6e0a\",\"properties\":{\"description\":\"Sneaker purchase\",\"id\":\"pid-11046546\",\"category\":\"mens shoes\",\"brand\":\"Victory Sneakers\"},\"value\":120.49}}";
-        JsonNode jsonFromObject = MAPPER.readTree(json);
-        JsonNode jsonFromString = MAPPER.readTree(expected);
-
-        assertEquals(jsonFromString, jsonFromObject);
     }
-
 }
