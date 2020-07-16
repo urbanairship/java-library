@@ -61,5 +61,42 @@ public class CustomEventPayloadTest {
         assertEquals(CustomEventChannelType.ANDROID_CHANNEL, customEventPayload.getCustomEventUser().getChannelType());
 
         assertEquals(occurred, customEventPayload.getOccurred());
+   }
+
+    @Test
+    public void testScalarProperties() {
+
+        CustomEventUser customEventUser = CustomEventUser.newBuilder()
+                .setChannel("e393d28e-23b2-4a22-9ace-dc539a5b07a8")
+                .setCustomEventChannelType(CustomEventChannelType.ANDROID_CHANNEL)
+                .build();
+
+        DateTime occurred = new DateTime(2015, 5, 2, 2, 31, 22, DateTimeZone.UTC);
+
+        Map<String,PropValue> properties = new HashMap<String, String>();
+        properties.put("amount", PropValue propValue = new PropValue(51) );
+        properties.put("isThisTrue",  PropValue propValue = new PropValue(true));
+        properties.put("name",  PropValue propValue = new PropValue("Sally"));
+
+        CustomEventBody customEventBody = CustomEventBody.newBuilder()
+                .addAllPropertyEntries(properties)
+                .build();
+
+        CustomEventPayload customEventPayload = CustomEventPayload.newBuilder()
+                .setOccurred(occurred)
+                .setCustomEventBody(customEventBody)
+                .setCustomEventUser(customEventUser)
+                .build();
+
+        assertEquals(customEventPayload.getCustomEventBody().getProperties().size(), 3);
+        assertTrue(customEventPayload.getCustomEventBody().getProperties().get("amount").isNumber());
+        assertTrue(customEventPayload.getCustomEventBody().getProperties().get("isThisTrue").isBoolean());
+        assertTrue(customEventPayload.getCustomEventBody().getProperties().get("name").isString());
+        customEventPayload.getCustomEventBody().getProperties().forEach(
+                (property, propValue) -> assertTrue(propValue.isScalar())
+        );
+        customEventPayload.getCustomEventBody().getProperties().forEach(
+                (property, propValue) -> assertTrue(propValue.isPrimitive())
+        );
     }
 }
