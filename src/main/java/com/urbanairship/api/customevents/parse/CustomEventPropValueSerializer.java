@@ -1,41 +1,37 @@
 package com.urbanairship.api.customevents.parse;
 
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.urbanairship.api.customevents.model.CustomEventPropValue;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class CustomEventCustomEventPropValueSerializer  {
+public class CustomEventPropValueSerializer extends JsonSerializer<CustomEventPropValue> {
 
     @Override
-
      public void serialize(CustomEventPropValue customEventPropValue, JsonGenerator jgen, SerializerProvider provider)
             throws IOException {
 
-        jgen.writeStartObject();
-
-        jgen.writeStringField(customEventPropValue.get.getIdentifier(), eventUser.getChannel());
-
-
-        if (src.isArray()) {
-            return context.serialize(src.getAsList(), typeOfList);
+        if (customEventPropValue.isArray()) {
+            jgen.writeObject((customEventPropValue.getAsList()));
         }
-        if (src.isObject()) {
-            return context.serialize(src.getAsMap(), typeOfMap);
+        if (customEventPropValue.isObject()) {
+            jgen.writeObject((customEventPropValue.getAsMap()));
         }
-        if (src.isBoolean()) {
-            return new JsonPrimitive(src.getAsBoolean());
+        if (customEventPropValue.isBoolean()) {
+            jgen.writeObject((customEventPropValue.getAsBoolean()));
         }
-        if (src.isNumber()) {
-            return new JsonPrimitive(src.getAsNumber());
+        if (customEventPropValue.isNumber()) {
+            jgen.writeNumber(customEventPropValue.getAsNumber().doubleValue());
         }
-        return new JsonPrimitive(src.getAsString());
-
-
-        jgen.writeEndObject();
+        if (customEventPropValue.isString()) {
+            jgen.writeString((customEventPropValue.getAsString()));
+        }
     }
 
 }

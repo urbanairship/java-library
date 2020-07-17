@@ -48,7 +48,7 @@ public class CustomEventPayloadTest {
         assertTrue(customEventPayload.getCustomEventBody().getProperties().isPresent());
         assertEquals(4, customEventPayload.getCustomEventBody().getProperties().get().size());
         assertTrue(customEventPayload.getCustomEventBody().getProperties().get().containsKey("description"));
-        assertEquals("victory", customEventPayload.getCustomEventBody().getProperties().get().get("brand"));
+        assertEquals("victory", customEventPayload.getCustomEventBody().getProperties().get().get("brand").getAsString());
 
         assertEquals("purchased", customEventPayload.getCustomEventBody().getName());
         assertEquals(new BigDecimal(120.49), customEventPayload.getCustomEventBody().getValue().get());
@@ -81,6 +81,8 @@ public class CustomEventPayloadTest {
         properties.put("name", CustomEventPropValue.of("Sally"));
 
         CustomEventBody customEventBody = CustomEventBody.newBuilder()
+                .setName("purchased")
+                .setSessionId("22404b07-3f8f-4e42-a4ff-a996c18fa9f1")
                 .addAllPropertyEntries(properties)
                 .build();
 
