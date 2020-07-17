@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.customevents.model.CustomEventPayload;
 import com.urbanairship.api.customevents.model.CustomEventBody;
 import com.urbanairship.api.customevents.model.CustomEventChannelType;
+import com.urbanairship.api.customevents.model.CustomEventPropValue;
 import com.urbanairship.api.customevents.model.CustomEventUser;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.joda.time.DateTime;
@@ -29,11 +30,12 @@ public class CustomEventPayloadSerializerTest {
                 .setChannel("e393d28e-23b2-4a22-9ace-dc539a5b07a8")
                 .build();
 
-        Map<String, String> properties = new HashMap<String, String>();
-        properties.put("category", "mens shoes");
-        properties.put("id", "pid-11046546");
-        properties.put("description", "sky high");
-        properties.put("brand", "victory");
+        Map<String, CustomEventPropValue> properties = new HashMap<>();
+
+        properties.put("category", CustomEventPropValue.of("mens shoes"));
+        properties.put("id",  CustomEventPropValue.of("pid-11046546"));
+        properties.put("description", CustomEventPropValue.of( "sky high"));
+        properties.put("brand",  CustomEventPropValue.of("victory"));
 
         CustomEventBody customEventBody = CustomEventBody.newBuilder()
                 .setName("purchased")

@@ -38,9 +38,11 @@ import com.urbanairship.api.createandsend.parse.notification.sms.SmsFieldsSerial
 import com.urbanairship.api.createandsend.parse.notification.sms.SmsTemplateSerializer;
 import com.urbanairship.api.customevents.model.CustomEventPayload;
 import com.urbanairship.api.customevents.model.CustomEventBody;
+import com.urbanairship.api.customevents.model.CustomEventPropValue;
 import com.urbanairship.api.customevents.model.CustomEventResponse;
 import com.urbanairship.api.customevents.model.CustomEventUser;
 import com.urbanairship.api.customevents.parse.CustomEventBodySerializer;
+import com.urbanairship.api.customevents.parse.CustomEventPropValueSerializer;
 import com.urbanairship.api.customevents.parse.CustomEventResponseDeserializer;
 import com.urbanairship.api.customevents.parse.CustomEventSerializer;
 import com.urbanairship.api.customevents.parse.CustomEventUserSerializer;
@@ -345,6 +347,7 @@ public class PushObjectMapper {
                 .addSerializer(CustomEventUser.class, new CustomEventUserSerializer())
                 .addSerializer(CustomEventPayload.class, new CustomEventSerializer())
                 .addSerializer(CustomEventBody.class, new CustomEventBodySerializer())
+                .addSerializer(CustomEventPropValue.class, new CustomEventPropValueSerializer())
 
                 .addDeserializer(CustomEventResponse.class, new CustomEventResponseDeserializer())
 

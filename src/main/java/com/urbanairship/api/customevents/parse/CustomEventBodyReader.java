@@ -36,9 +36,9 @@ public class CustomEventBodyReader implements JsonObjectReader<CustomEventBody> 
         builder.setInteractionType(StringFieldDeserializer.INSTANCE.deserialize(parser, "interaction_type"));
     }
 
-    public void readProperties(JsonParser parser) throws IOException {
-        builder.addAllPropertyEntries(MapOfStringsDeserializer.INSTANCE.deserialize(parser, "properties"));
-    }
+//    public void readProperties(JsonParser parser) throws IOException {
+//        builder.addAllPropertyEntries(MapOfStringsDeserializer.INSTANCE.deserialize(parser, "properties"));
+//    }
 
     public void readSessionId(JsonParser parser) throws IOException {
         builder.setSessionId(StringFieldDeserializer.INSTANCE.deserialize(parser, "session_id"));
