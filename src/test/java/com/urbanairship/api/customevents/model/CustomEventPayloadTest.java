@@ -20,11 +20,11 @@ public class CustomEventPayloadTest {
                 .setChannel("e393d28e-23b2-4a22-9ace-dc539a5b07a8")
                 .build();
 
-        Map<String, String> properties = new HashMap<String, String>();
-        properties.put("category", "mens shoes");
-        properties.put("id", "pid-11046546");
-        properties.put("description", "sky high");
-        properties.put("brand", "victory");
+        Map<String, CustomEventPropValue> properties = new HashMap<String, CustomEventPropValue>();
+        properties.put("category", CustomEventPropValue.of("mens shoes"));
+        properties.put("id", CustomEventPropValue.of("pid-11046546"));
+        properties.put("description", CustomEventPropValue.of("sky high"));
+        properties.put("brand", CustomEventPropValue.of("victory"));
 
         CustomEventBody customEventBody = CustomEventBody.newBuilder()
                 .setName("purchased")
@@ -73,10 +73,12 @@ public class CustomEventPayloadTest {
 
         DateTime occurred = new DateTime(2015, 5, 2, 2, 31, 22, DateTimeZone.UTC);
 
-        Map<String,PropValue> properties = new HashMap<String, String>();
-        properties.put("amount", PropValue propValue = new PropValue(51) );
-        properties.put("isThisTrue",  PropValue propValue = new PropValue(true));
-        properties.put("name",  PropValue propValue = new PropValue("Sally"));
+
+        Map<String,CustomEventPropValue> properties = new HashMap<>();
+
+        properties.put("amount", CustomEventPropValue.of(51));
+        properties.put("isThisTrue", CustomEventPropValue.of(true));
+        properties.put("name", CustomEventPropValue.of("Sally"));
 
         CustomEventBody customEventBody = CustomEventBody.newBuilder()
                 .addAllPropertyEntries(properties)
@@ -88,14 +90,14 @@ public class CustomEventPayloadTest {
                 .setCustomEventUser(customEventUser)
                 .build();
 
-        assertEquals(customEventPayload.getCustomEventBody().getProperties().size(), 3);
-        assertTrue(customEventPayload.getCustomEventBody().getProperties().get("amount").isNumber());
-        assertTrue(customEventPayload.getCustomEventBody().getProperties().get("isThisTrue").isBoolean());
-        assertTrue(customEventPayload.getCustomEventBody().getProperties().get("name").isString());
-        customEventPayload.getCustomEventBody().getProperties().forEach(
+        assertEquals(customEventPayload.getCustomEventBody().getProperties().get().size(), 3);
+        assertTrue(customEventPayload.getCustomEventBody().getProperties().get().get("amount").isNumber());
+        assertTrue(customEventPayload.getCustomEventBody().getProperties().get().get("isThisTrue").isBoolean());
+        assertTrue(customEventPayload.getCustomEventBody().getProperties().get().get("name").isString());
+        customEventPayload.getCustomEventBody().getProperties().get().forEach(
                 (property, propValue) -> assertTrue(propValue.isScalar())
         );
-        customEventPayload.getCustomEventBody().getProperties().forEach(
+        customEventPayload.getCustomEventBody().getProperties().get().forEach(
                 (property, propValue) -> assertTrue(propValue.isPrimitive())
         );
     }
