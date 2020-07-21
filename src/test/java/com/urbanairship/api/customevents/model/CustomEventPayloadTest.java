@@ -26,6 +26,8 @@ public class CustomEventPayloadTest {
         properties.put("description", CustomEventPropValue.of("sky high"));
         properties.put("brand", CustomEventPropValue.of("victory"));
 
+        System.out.println(properties);
+
         CustomEventBody customEventBody = CustomEventBody.newBuilder()
                 .setName("purchased")
                 .setValue(new BigDecimal(120.49))
@@ -94,6 +96,9 @@ public class CustomEventPayloadTest {
 
         assertEquals(customEventPayload.getCustomEventBody().getProperties().get().size(), 3);
         assertTrue(customEventPayload.getCustomEventBody().getProperties().get().get("amount").isNumber());
+        assertEquals(51, customEventPayload.getCustomEventBody().getProperties().get().get("amount").getAsNumber());
+        assertEquals(true, customEventPayload.getCustomEventBody().getProperties().get().get("isThisTrue").getAsBoolean());
+        assertEquals("Sally", customEventPayload.getCustomEventBody().getProperties().get().get("name").getAsString());
         assertTrue(customEventPayload.getCustomEventBody().getProperties().get().get("isThisTrue").isBoolean());
         assertTrue(customEventPayload.getCustomEventBody().getProperties().get().get("name").isString());
         customEventPayload.getCustomEventBody().getProperties().get().forEach(
