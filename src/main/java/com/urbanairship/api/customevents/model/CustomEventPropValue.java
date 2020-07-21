@@ -15,7 +15,6 @@ public class CustomEventPropValue {
     private static final CustomEventPropValue FALSE_INSTANCE = new CustomEventPropValue(false);
 
     private final Object value;
-    private final boolean legacy;
 
     public static CustomEventPropValue of(boolean value) {
         return value ? TRUE_INSTANCE : FALSE_INSTANCE;
@@ -37,23 +36,9 @@ public class CustomEventPropValue {
         return new CustomEventPropValue(ImmutableMap.copyOf(value));
     }
 
-    public static CustomEventPropValue ofLegacy(String scalarValue) {
-        return new CustomEventPropValue(scalarValue, true);
-    }
-
     private CustomEventPropValue(Object value) {
-        this(value, false);
-    }
-
-    private CustomEventPropValue(Object value, boolean legacy) {
         this.value = value;
-        this.legacy = legacy;
     }
-
-    public boolean isLegacy() {
-        return legacy;
-    }
-
 
     public boolean isBoolean() {
         return value instanceof Boolean;
@@ -118,7 +103,6 @@ public class CustomEventPropValue {
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("value", value)
-                .add("legacy", legacy)
                 .toString();
     }
 
@@ -127,12 +111,11 @@ public class CustomEventPropValue {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CustomEventPropValue propValue = (CustomEventPropValue) o;
-        return legacy == propValue.legacy &&
-                Objects.equals(value, propValue.value);
+        return Objects.equals(value, propValue.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(value, legacy);
+        return Objects.hash(value);
     }
 }

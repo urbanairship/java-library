@@ -6,10 +6,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.urbanairship.api.customevents.model.CustomEventPropValue;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.math.BigDecimal;
 
 public class CustomEventPropValueSerializer extends JsonSerializer<CustomEventPropValue> {
 
@@ -18,7 +15,7 @@ public class CustomEventPropValueSerializer extends JsonSerializer<CustomEventPr
             throws IOException {
 
         if (customEventPropValue.isArray()) {
-            jgen.writeObject((customEventPropValue.getAsList()));
+            jgen.writeObject(customEventPropValue.getAsList());
         }
         if (customEventPropValue.isObject()) {
             jgen.writeObject((customEventPropValue.getAsMap()));
@@ -27,7 +24,7 @@ public class CustomEventPropValueSerializer extends JsonSerializer<CustomEventPr
             jgen.writeObject((customEventPropValue.getAsBoolean()));
         }
         if (customEventPropValue.isNumber()) {
-            jgen.writeNumber(customEventPropValue.getAsNumber().doubleValue());
+            jgen.writeNumber((BigDecimal) customEventPropValue.getAsNumber());
         }
         if (customEventPropValue.isString()) {
             jgen.writeString((customEventPropValue.getAsString()));
