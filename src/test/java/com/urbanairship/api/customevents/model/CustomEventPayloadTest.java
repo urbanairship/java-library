@@ -156,7 +156,7 @@ public class CustomEventPayloadTest {
 
         properties.put("items", CustomEventPropValue.of(items));
         properties.put("numbers", CustomEventPropValue.of(numbers));
-        properties.put("shoes", CustomEventPropValue.of((Iterable) shoes));
+        properties.put("shoes", CustomEventPropValue.of(shoes));
 
         CustomEventBody customEventBody = CustomEventBody.newBuilder()
                 .setName("purchased")
@@ -184,6 +184,65 @@ public class CustomEventPayloadTest {
         );
         customEventPayload.getCustomEventBody().getProperties().get().get("shoes").getAsList().forEach(
                 propValue -> assertTrue(propValue.isObject())
+        );
+    }
+
+    @Test
+    public void testObjectProperties() {
+
+        CustomEventUser customEventUser = CustomEventUser.newBuilder()
+                .setChannel("e393d28e-23b2-4a22-9ace-dc539a5b07a8")
+                .setCustomEventChannelType(CustomEventChannelType.ANDROID_CHANNEL)
+                .build();
+
+        DateTime occurred = new DateTime(2015, 5, 2, 2, 31, 22, DateTimeZone.UTC);
+
+
+        Map<String, CustomEventPropValue> properties = new HashMap<>();
+
+        Map<String, CustomEventPropValue> something = new HashMap<>();
+
+        something.put("aThing", CustomEventPropValue.of("thing"));
+        something.put("somethingElse", CustomEventPropValue.of("this thing"));
+
+        Map<String, CustomEventPropValue> numbers = new HashMap<>();
+
+        numbers.put("high", CustomEventPropValue.of(3));
+        numbers.put("low", CustomEventPropValue.of(0));
+
+        Map<String, CustomEventPropValue> booleans = new HashMap<>();
+
+        booleans.put("testing", CustomEventPropValue.of(true));
+        booleans.put("passing", CustomEventPropValue.of(false));
+
+        properties.put("something", CustomEventPropValue.of(something));
+        properties.put("numbers", CustomEventPropValue.of(numbers));
+        properties.put("booleans", CustomEventPropValue.of(booleans));
+
+        CustomEventBody customEventBody = CustomEventBody.newBuilder()
+                .setName("purchased")
+                .setSessionId("22404b07-3f8f-4e42-a4ff-a996c18fa9f1")
+                .addAllPropertyEntries(properties)
+                .build();
+
+        CustomEventPayload customEventPayload = CustomEventPayload.newBuilder()
+                .setOccurred(occurred)
+                .setCustomEventBody(customEventBody)
+                .setCustomEventUser(customEventUser)
+                .build();
+
+        assertEquals(customEventPayload.getCustomEventBody().getProperties().get().size(), 3);
+        customEventPayload.getCustomEventBody().getProperties().get().forEach(
+                (property, propValue) -> assertTrue(propValue.isObject())
+        );
+        customEventPayload.getCustomEventBody().getProperties().get().get("something").getAsMap().values().forEach(
+                propValue -> assertTrue(propValue.isString())
+        );
+        customEventPayload.getCustomEventBody().getProperties().get().get("numbers").getAsMap().values().forEach(
+                propValue -> assertTrue(propValue.isNumber())
+        );
+        customEventPayload.getCustomEventBody().getProperties().get().get("booleans").getAsMap().values().forEach(
+                propValue -> assertTrue(propValue.isBoolean())
         );
     }
 }
