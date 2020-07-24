@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,7 +127,7 @@ public class CustomEventPayloadTest {
 
         List<CustomEventPropValue> items = new ArrayList<>();
         items.add(CustomEventPropValue.of("la croix"));
-        items.add(CustomEventPropValue.of("more lacroix"));
+        items.add(CustomEventPropValue.of("more la croix"));
 
         List<CustomEventPropValue> numbers = new ArrayList<>();
         numbers.add(CustomEventPropValue.of(1));
@@ -175,7 +176,6 @@ public class CustomEventPayloadTest {
                 (property, propValue) -> assertTrue(propValue.isArray())
         );
 
-        System.out.println(customEventPayload.getCustomEventBody().getProperties().get());
         customEventPayload.getCustomEventBody().getProperties().get().get("items").getAsList().forEach(
                  propValue-> assertTrue(propValue.isString())
         );
@@ -185,6 +185,19 @@ public class CustomEventPayloadTest {
         customEventPayload.getCustomEventBody().getProperties().get().get("shoes").getAsList().forEach(
                 propValue -> assertTrue(propValue.isObject())
         );
+
+        customEventPayload.getCustomEventBody().getProperties().get().get("items").getAsList().forEach(
+                propValue -> assertTrue(propValue.getAsString().equals("la croix") ||
+                        propValue.getAsString().equals("more la croix")));
+
+        customEventPayload.getCustomEventBody().getProperties().get().get("numbers").getAsList().forEach(
+                propValue -> assertTrue(propValue.getAsNumber().equals(1) ||
+                        propValue.getAsNumber().equals(22.23) ||
+                        propValue.getAsNumber().equals(0)));
+
+        customEventPayload.getCustomEventBody().getProperties().get().get("items").getAsList().forEach(
+                propValue -> assertTrue(propValue.getAsString().equals("la croix") ||
+                        propValue.getAsString().equals("more la croix")));
     }
 
     @Test
