@@ -29,8 +29,6 @@ public class CustomEventPayloadTest {
         properties.put("description", CustomEventPropValue.of("sky high"));
         properties.put("brand", CustomEventPropValue.of("victory"));
 
-        System.out.println(properties);
-
         CustomEventBody customEventBody = CustomEventBody.newBuilder()
                 .setName("purchased")
                 .setValue(new BigDecimal(120.49))
@@ -140,8 +138,6 @@ public class CustomEventPayloadTest {
         bootsMap.put("color", CustomEventPropValue.of("black"));
         bootsMap.put("waterproof", CustomEventPropValue.of(false));
 
-        List<CustomEventPropValue> shoes = new ArrayList<>();
-
         CustomEventPropValue boots = CustomEventPropValue.of(bootsMap);
 
         Map<String, CustomEventPropValue> sneakersMap = new HashMap<>();
@@ -151,6 +147,8 @@ public class CustomEventPayloadTest {
         sneakersMap.put("clearance", CustomEventPropValue.of(true));
 
         CustomEventPropValue sneakers = CustomEventPropValue.of(sneakersMap);
+
+        List<CustomEventPropValue> shoes = new ArrayList<>();
 
         shoes.add(boots);
         shoes.add(sneakers);
@@ -195,9 +193,14 @@ public class CustomEventPayloadTest {
                         propValue.getAsNumber().equals(22.23) ||
                         propValue.getAsNumber().equals(0)));
 
-        customEventPayload.getCustomEventBody().getProperties().get().get("items").getAsList().forEach(
-                propValue -> assertTrue(propValue.getAsString().equals("la croix") ||
-                        propValue.getAsString().equals("more la croix")));
+       customEventPayload.getCustomEventBody().getProperties().get().get("shoes").getAsList().forEach(
+                propValue ->
+                        assertTrue(propValue.getAsMap().get("color").getAsString().equals("black") ||
+                        propValue.getAsMap().get("price").getAsString().equals(40) ||
+                        propValue.getAsMap().get("clearance").getAsString().equals(false) ||
+                        propValue.getAsMap().get("color").getAsString().equals("red") ||
+                        propValue.getAsMap().get("price").getAsString().equals(10) ||
+                        propValue.getAsMap().get("clearance").getAsString().equals(true)));
     }
 
     @Test
