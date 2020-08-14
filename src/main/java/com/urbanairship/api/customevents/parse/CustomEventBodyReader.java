@@ -3,6 +3,7 @@ package com.urbanairship.api.customevents.parse;
 import com.fasterxml.jackson.core.JsonParser;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
+import com.urbanairship.api.common.parse.MapOfCustomEventPropDeserializer;
 import com.urbanairship.api.common.parse.MapOfStringsDeserializer;
 import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import com.urbanairship.api.customevents.model.CustomEventBody;
@@ -36,9 +37,9 @@ public class CustomEventBodyReader implements JsonObjectReader<CustomEventBody> 
         builder.setInteractionType(StringFieldDeserializer.INSTANCE.deserialize(parser, "interaction_type"));
     }
 
-//    public void readProperties(JsonParser parser) throws IOException {
-//        builder.addAllPropertyEntries(MapOfStringsDeserializer.INSTANCE.deserialize(parser, "properties"));
-//    }
+    public void readProperties(JsonParser parser) throws IOException {
+        builder.addAllPropertyEntries(MapOfCustomEventPropDeserializer.INSTANCE.deserialize(parser, "properties"));
+    }
 
     public void readSessionId(JsonParser parser) throws IOException {
         builder.setSessionId(StringFieldDeserializer.INSTANCE.deserialize(parser, "session_id"));
