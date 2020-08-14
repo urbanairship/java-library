@@ -52,7 +52,6 @@ public class CustomEventPayloadTest {
                 .setOccurred(occurred)
                 .build();
 
-
         assertTrue(customEventPayload.getCustomEventBody().getProperties().isPresent());
         assertEquals(4, customEventPayload.getCustomEventBody().getProperties().get().size());
         assertTrue(customEventPayload.getCustomEventBody().getProperties().get().containsKey("description"));
@@ -79,7 +78,6 @@ public class CustomEventPayloadTest {
                 .build();
 
         DateTime occurred = new DateTime(2015, 5, 2, 2, 31, 22, DateTimeZone.UTC);
-
 
         Map<String,CustomEventPropValue> properties = new HashMap<>();
 
@@ -120,7 +118,6 @@ public class CustomEventPayloadTest {
         JsonNode jsonFromString = MAPPER.readTree(expected);
 
         assertEquals(jsonFromString, jsonFromObject);
-
     }
 
     @Test
@@ -132,9 +129,7 @@ public class CustomEventPayloadTest {
 
         DateTime occurred = new DateTime(2015, 5, 2, 2, 31, 22, DateTimeZone.UTC);
 
-
         Map<String,CustomEventPropValue> properties = new HashMap<>();
-
 
         List<CustomEventPropValue> items = new ArrayList<>();
         items.add(CustomEventPropValue.of("la croix"));
@@ -233,7 +228,6 @@ public class CustomEventPayloadTest {
                 .build();
 
         DateTime occurred = new DateTime(2015, 5, 2, 2, 31, 22, DateTimeZone.UTC);
-
 
         Map<String, CustomEventPropValue> properties = new HashMap<>();
 
