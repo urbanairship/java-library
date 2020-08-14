@@ -1,12 +1,15 @@
 package com.urbanairship.api.customevents.model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +18,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class CustomEventPayloadTest {
+
+    private static final ObjectMapper MAPPER = PushObjectMapper.getInstance();
 
     @Test
     public void testBuilder() {
@@ -67,8 +72,7 @@ public class CustomEventPayloadTest {
    }
 
     @Test
-    public void testScalarProperties() {
-
+    public void testScalarProperties() throws JsonProcessingException {
         CustomEventUser customEventUser = CustomEventUser.newBuilder()
                 .setChannel("e393d28e-23b2-4a22-9ace-dc539a5b07a8")
                 .setCustomEventChannelType(CustomEventChannelType.ANDROID_CHANNEL)
@@ -108,10 +112,19 @@ public class CustomEventPayloadTest {
         customEventPayload.getCustomEventBody().getProperties().get().forEach(
                 (property, propValue) -> assertTrue(propValue.isPrimitive())
         );
+
+        String json = MAPPER.writeValueAsString(customEventPayload);
+        String expected = "{\"body\":{\"name\":\"purchased\",\"session_id\":\"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\",\"properties\":{\"amount\":51,\"isThisTrue\":true,\"name\":\"Sally\"}},\"occurred\":\"2015-05-02T02:31:22\",\"user\":{\"android_channel\":\"e393d28e-23b2-4a22-9ace-dc539a5b07a8\"}}";
+
+        JsonNode jsonFromObject = MAPPER.readTree(json);
+        JsonNode jsonFromString = MAPPER.readTree(expected);
+
+        assertEquals(jsonFromString, jsonFromObject);
+
     }
 
     @Test
-    public void testArrayProperties() {
+    public void testArrayProperties() throws JsonProcessingException {
         CustomEventUser customEventUser = CustomEventUser.newBuilder()
                 .setChannel("e393d28e-23b2-4a22-9ace-dc539a5b07a8")
                 .setCustomEventChannelType(CustomEventChannelType.ANDROID_CHANNEL)
@@ -201,10 +214,18 @@ public class CustomEventPayloadTest {
                         propValue.getAsMap().get("color").getAsString().equals("red") ||
                         propValue.getAsMap().get("price").getAsString().equals(10) ||
                         propValue.getAsMap().get("clearance").getAsString().equals(true)));
+
+        String json = MAPPER.writeValueAsString(customEventPayload);
+        String expected = "{\"body\":{\"name\":\"purchased\",\"session_id\":\"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\",\"properties\":{\"numbers\":[1,22.23,0],\"items\":[\"la croix\",\"more la croix\"],\"shoes\":[{\"color\":\"black\",\"price\":40,\"waterproof\":false},{\"color\":\"red\",\"price\":10,\"clearance\":true}]}},\"occurred\":\"2015-05-02T02:31:22\",\"user\":{\"android_channel\":\"e393d28e-23b2-4a22-9ace-dc539a5b07a8\"}}";
+
+        JsonNode jsonFromObject = MAPPER.readTree(json);
+        JsonNode jsonFromString = MAPPER.readTree(expected);
+
+        assertEquals(jsonFromString, jsonFromObject);
     }
 
     @Test
-    public void testObjectProperties() {
+    public void testObjectProperties() throws JsonProcessingException {
 
         CustomEventUser customEventUser = CustomEventUser.newBuilder()
                 .setChannel("e393d28e-23b2-4a22-9ace-dc539a5b07a8")
@@ -254,11 +275,33 @@ public class CustomEventPayloadTest {
         customEventPayload.getCustomEventBody().getProperties().get().get("something").getAsMap().values().forEach(
                 propValue -> assertTrue(propValue.isString())
         );
+        assertEquals("thing", customEventPayload.getCustomEventBody().getProperties().get().get("something").getAsMap().get("aThing").getAsString()
+        );
+        assertEquals("this thing", customEventPayload.getCustomEventBody().getProperties().get().get("something").getAsMap().get("somethingElse").getAsString()
+        );
         customEventPayload.getCustomEventBody().getProperties().get().get("numbers").getAsMap().values().forEach(
                 propValue -> assertTrue(propValue.isNumber())
+        );
+        assertEquals(3, customEventPayload.getCustomEventBody().getProperties().get().get("numbers").getAsMap().get("high").getAsNumber()
+        );
+        assertEquals(0 , customEventPayload.getCustomEventBody().getProperties().get().get("numbers").getAsMap().get("low").getAsNumber()
+        );
+        assertEquals(false, customEventPayload.getCustomEventBody().getProperties().get().get("booleans").getAsMap().get("passing").getAsBoolean()
         );
         customEventPayload.getCustomEventBody().getProperties().get().get("booleans").getAsMap().values().forEach(
                 propValue -> assertTrue(propValue.isBoolean())
         );
+        assertEquals(true , customEventPayload.getCustomEventBody().getProperties().get().get("booleans").getAsMap().get("testing").getAsBoolean()
+        );
+        assertEquals(false, customEventPayload.getCustomEventBody().getProperties().get().get("booleans").getAsMap().get("passing").getAsBoolean()
+        );
+
+        String json = MAPPER.writeValueAsString(customEventPayload);
+        String expected = "{\"body\":{\"name\":\"purchased\",\"session_id\":\"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\",\"properties\":{\"numbers\":{\"high\":3,\"low\":0},\"booleans\":{\"testing\":true,\"passing\":false},\"something\":{\"aThing\":\"thing\",\"somethingElse\":\"this thing\"}}},\"occurred\":\"2015-05-02T02:31:22\",\"user\":{\"android_channel\":\"e393d28e-23b2-4a22-9ace-dc539a5b07a8\"}}";
+
+        JsonNode jsonFromObject = MAPPER.readTree(json);
+        JsonNode jsonFromString = MAPPER.readTree(expected);
+
+        assertEquals(jsonFromString, jsonFromObject);
     }
 }
