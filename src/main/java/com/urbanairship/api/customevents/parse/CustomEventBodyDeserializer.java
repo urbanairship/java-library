@@ -41,11 +41,11 @@ public class CustomEventBodyDeserializer extends JsonDeserializer<CustomEventBod
                             reader.readInteractionType(json);
                         }
                     })
-//                    .put("properties", new FieldParser<CustomEventBodyReader>() {
-//                        public void parse(CustomEventBodyReader reader, JsonParser json, DeserializationContext context) throws IOException {
-//                            reader.readProperties(json);
-//                        }
-//                    })
+                    .put("properties", new FieldParser<CustomEventBodyReader>() {
+                        public void parse(CustomEventBodyReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                            reader.readProperties(json);
+                        }
+                    })
                     .put("session_id", new FieldParser<CustomEventBodyReader>() {
                         public void parse(CustomEventBodyReader reader, JsonParser json, DeserializationContext context) throws IOException {
                             reader.readSessionId(json);
