@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.customevents.model.CustomEventBody;
 import com.urbanairship.api.customevents.model.CustomEventChannelType;
-import com.urbanairship.api.customevents.model.CustomEventPropValue;
 import com.urbanairship.api.customevents.model.CustomEventPayload;
 import com.urbanairship.api.customevents.model.CustomEventUser;
 import com.urbanairship.api.push.parse.PushObjectMapper;
@@ -35,12 +34,11 @@ public class CustomEventPayloadSerializerTest {
                 .setChannel("e393d28e-23b2-4a22-9ace-dc539a5b07a8")
                 .build();
 
-        Map<String, CustomEventPropValue> properties = new HashMap<>();
-
-        properties.put("category", CustomEventPropValue.of("mens shoes"));
-        properties.put("id",  CustomEventPropValue.of("pid-11046546"));
-        properties.put("description", CustomEventPropValue.of( "sky high"));
-        properties.put("brand",  CustomEventPropValue.of("victory"));
+        Map<String, String> properties = new HashMap<String, String>();
+        properties.put("category", "mens shoes");
+        properties.put("id", "pid-11046546");
+        properties.put("description", "sky high");
+        properties.put("brand", "victory");
 
         CustomEventBody customEventBody = CustomEventBody.newBuilder()
                 .setName("purchased")
@@ -92,11 +90,11 @@ public class CustomEventPayloadSerializerTest {
                 .setNamedUserId("hugh.manbeing")
                 .build();
 
-        Map<String, CustomEventPropValue> properties = new HashMap<>();
-        properties.put("category", CustomEventPropValue.of("mens shoes"));
-        properties.put("id", CustomEventPropValue.of("pid-11046546"));
-        properties.put("description", CustomEventPropValue.of("Sneaker purchase"));
-        properties.put("brand", CustomEventPropValue.of("Victory Sneakers"));
+        Map<String, String> properties = new HashMap<>();
+        properties.put("category", "mens shoes");
+        properties.put("id", "pid-11046546");
+        properties.put("description", "Sneaker purchase");
+        properties.put("brand", "Victory Sneakers");
 
         CustomEventBody customEventBody = CustomEventBody.newBuilder()
                 .setName("purchased")
@@ -120,6 +118,7 @@ public class CustomEventPayloadSerializerTest {
         String expected = "{\"occurred\":\"2015-05-02T02:31:22\",\"user\":{\"named_user_id\":\"hugh.manbeing\"},\"body\":{\"name\":\"purchased\",\"session_id\":\"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\",\"interaction_id\":\"your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234\",\"interaction_type\":\"url\",\"transaction\":\"886f53d4-3e0f-46d7-930e-c2792dac6e0a\",\"properties\":{\"description\":\"Sneaker purchase\",\"id\":\"pid-11046546\",\"category\":\"mens shoes\",\"brand\":\"Victory Sneakers\"},\"value\":120.49}}";
         JsonNode jsonFromObject = MAPPER.readTree(json);
         JsonNode jsonFromString = MAPPER.readTree(expected);
+
 
         assertEquals(jsonFromString, jsonFromObject);
     }
