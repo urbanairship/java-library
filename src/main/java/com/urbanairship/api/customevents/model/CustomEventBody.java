@@ -15,7 +15,7 @@ public class CustomEventBody {
     private final Optional<String> interactionId;
     private final Optional<String> interactionType;
     private final Optional<ImmutableMap<String, CustomEventPropertyValue>> properties;
-    private final String sessionId;
+    private final Optional<String> sessionId;
 
     private CustomEventBody(Builder builder) {
         this.name = builder.name;
@@ -30,7 +30,7 @@ public class CustomEventBody {
             this.properties = Optional.of(builder.properties.build());
         }
 
-        this.sessionId = builder.sessionId;
+        this.sessionId = Optional.fromNullable(builder.sessionId);
     }
 
     /**
@@ -140,9 +140,9 @@ public class CustomEventBody {
      * Get the sessionID. The user session during which the event occurred.
      * You must supply and maintain session identifiers.
      *
-     * @return String
+     * @return Optional<String></String>
      */
-    public String getSessionId() {
+    public Optional<String> getSessionId() {
         return sessionId;
     }
 
@@ -269,7 +269,6 @@ public class CustomEventBody {
 
         public CustomEventBody build() {
             Preconditions.checkNotNull(name, "'name' must be set");
-            Preconditions.checkNotNull(sessionId, "'sessionId' must be set");
 
             return new CustomEventBody(this);
         }

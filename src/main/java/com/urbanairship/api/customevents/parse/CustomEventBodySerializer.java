@@ -14,8 +14,10 @@ public class CustomEventBodySerializer extends JsonSerializer<CustomEventBody> {
         jgen.writeStartObject();
 
         jgen.writeStringField("name", body.getName());
-        jgen.writeStringField("session_id", body.getSessionId());
 
+        if (body.getSessionId().isPresent()) {
+            jgen.writeStringField("session_id", body.getSessionId().get());
+        }
         if (body.getInteractionId().isPresent()) {
             jgen.writeStringField("interaction_id", body.getInteractionId().get());
         }
