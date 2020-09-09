@@ -23,13 +23,13 @@ public final class ScheduleDetailsSerializer extends JsonSerializer<ScheduleDeta
 
         jgen.writeObjectField("href", value.getJobId());
 
-        jgen.writeObjectField("schedule", value.getSchedulePayload().getSchedule());
+        jgen.writeObjectField("schedule", value.getSchedulePayloadResponse().getSchedule());
 
-        if(value.getSchedulePayload().getName().isPresent()) {
-            jgen.writeStringField("name",value.getSchedulePayload().getName().get());
+        if(value.getSchedulePayloadResponse().getName().isPresent()) {
+            jgen.writeStringField("name",value.getSchedulePayloadResponse().getName().get());
         }
 
-        jgen.writeObjectField("push", value.getSchedulePayload().getPushPayload());
+        jgen.writeObjectField("push", value.getSchedulePayloadResponse().getPushPayload());
 
         jgen.writeEndObject();
     }

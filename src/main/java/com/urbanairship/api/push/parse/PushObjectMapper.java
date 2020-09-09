@@ -179,9 +179,10 @@ import com.urbanairship.api.push.parse.notification.wns.WNSToastSerializer;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.ScheduleDetails;
 import com.urbanairship.api.schedule.model.SchedulePayload;
+import com.urbanairship.api.schedule.model.SchedulePayloadResponse;
 import com.urbanairship.api.schedule.parse.ScheduleDeserializer;
 import com.urbanairship.api.schedule.parse.ScheduleDetailsSerializer;
-import com.urbanairship.api.schedule.parse.SchedulePayloadDeserializer;
+import com.urbanairship.api.schedule.parse.SchedulePayloadResponseDeserializer;
 import com.urbanairship.api.schedule.parse.ScheduleSerializer;
 import com.urbanairship.api.schedule.parse.ScheduledPayloadSerializer;
 
@@ -321,7 +322,7 @@ public class PushObjectMapper {
                 .addDeserializer(RichPushIcon.class, new RichPushIconDeserializer())
 
                 /* Schedules */
-                .addDeserializer(SchedulePayload.class, SchedulePayloadDeserializer.INSTANCE)
+                .addDeserializer(SchedulePayloadResponse.class, SchedulePayloadResponseDeserializer.INSTANCE)
                 .addSerializer(SchedulePayload.class, ScheduledPayloadSerializer.INSTANCE)
                 .addDeserializer(Schedule.class, ScheduleDeserializer.INSTANCE)
                 .addSerializer(Schedule.class, ScheduleSerializer.INSTANCE)

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
-import com.urbanairship.api.schedule.model.SchedulePayload;
+import com.urbanairship.api.schedule.model.SchedulePayloadResponse;
 import com.urbanairship.api.schedule.model.ScheduleResponse;
 
 import java.io.IOException;
@@ -49,7 +49,7 @@ public final class ScheduleResponseReader implements JsonObjectReader<ScheduleRe
     }
 
     public void readSchedulePayloads(JsonParser jsonParser) throws IOException {
-        builder.addAllSchedulePayload((List<SchedulePayload>) jsonParser.readValueAs(new TypeReference<List<SchedulePayload>>() {
+        builder.addAllSchedulePayload((List<SchedulePayloadResponse>) jsonParser.readValueAs(new TypeReference<List<SchedulePayloadResponse>>() {
         }));
     }
 

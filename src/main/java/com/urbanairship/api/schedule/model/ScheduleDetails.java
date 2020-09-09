@@ -10,19 +10,19 @@ import com.google.common.base.Preconditions;
 public final class ScheduleDetails extends ScheduleModelObject {
 
     private final String jobId;
-    private final SchedulePayload schedulePayload;
+    private final SchedulePayloadResponse schedulePayloadResponse;
 
     public static Builder newBuilder() {
         return new Builder();
     }
 
-    private ScheduleDetails(String jobId, SchedulePayload schedulePayload) {
-        this.schedulePayload = schedulePayload;
+    private ScheduleDetails(String jobId, SchedulePayloadResponse schedulePayloadResponse) {
+        this.schedulePayloadResponse = schedulePayloadResponse;
         this.jobId = jobId;
     }
 
-    public SchedulePayload getSchedulePayload() {
-        return schedulePayload;
+    public SchedulePayloadResponse getSchedulePayloadResponse() {
+        return schedulePayloadResponse;
     }
 
     public String getJobId() {
@@ -33,13 +33,13 @@ public final class ScheduleDetails extends ScheduleModelObject {
     public String toString() {
         return "ScheduleDetails{" +
                 "jobId='" + jobId + '\'' +
-                ", schedulePayload=" + schedulePayload +
+                ", schedulePayloadResponse=" + schedulePayloadResponse +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(jobId, schedulePayload);
+        return Objects.hashCode(jobId, schedulePayloadResponse);
     }
 
     @Override
@@ -52,18 +52,18 @@ public final class ScheduleDetails extends ScheduleModelObject {
         }
         final ScheduleDetails other = (ScheduleDetails) obj;
         return Objects.equal(this.jobId, other.jobId)
-                && Objects.equal(this.schedulePayload, other.schedulePayload);
+                && Objects.equal(this.schedulePayloadResponse, other.schedulePayloadResponse);
     }
 
     public static final class Builder {
 
         private String jobId = null;
-        private SchedulePayload schedulePayload = null;
+        private SchedulePayloadResponse schedulePayloadResponse = null;
 
         private Builder() { }
 
-        public Builder setSchedulePayload(SchedulePayload schedulePayload) {
-            this.schedulePayload = schedulePayload;
+        public Builder setSchedulePayloadResponse(SchedulePayloadResponse schedulePayloadResponse) {
+            this.schedulePayloadResponse = schedulePayloadResponse;
             return this;
         }
 
@@ -73,10 +73,10 @@ public final class ScheduleDetails extends ScheduleModelObject {
         }
 
         public ScheduleDetails build() {
-            Preconditions.checkNotNull(schedulePayload, "schedule payload must be provided");
+            Preconditions.checkNotNull(schedulePayloadResponse, "schedule payload must be provided");
             Preconditions.checkNotNull(jobId, "job id must be provided");
 
-            return new ScheduleDetails(jobId, schedulePayload);
+            return new ScheduleDetails(jobId, schedulePayloadResponse);
         }
     }
 }
