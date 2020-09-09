@@ -4,13 +4,14 @@ package com.urbanairship.api.schedule;
  * Copyright (c) 2013-2016.  Urban Airship and Contributors
  */
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.google.common.base.Preconditions;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
-import com.urbanairship.api.push.model.PushPayload;
-import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.schedule.model.ScheduleResponse;
 import com.urbanairship.api.schedule.parse.ScheduleObjectMapper;
@@ -19,7 +20,9 @@ import org.apache.http.entity.ContentType;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,51 +32,54 @@ import java.util.Map;
 public class ScheduleRequest implements Request<ScheduleResponse> {
 
     final static String API_SCHEDULE_PATH = "/api/schedules/";
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
-    private final Schedule schedule;
-    private final PushPayload pushPayload;
+    private final List<SchedulePayload> schedulePayloads = new ArrayList<>();
     private final String path;
     private final HttpMethod method;
-    private String name;
 
-    private ScheduleRequest(Schedule schedule, PushPayload pushPayload, HttpMethod method, String path) {
-        this.schedule = schedule;
-        this.pushPayload = pushPayload;
+    private ScheduleRequest(SchedulePayload schedulePayload, HttpMethod method, String path) {
+        schedulePayloads.add(schedulePayload);
         this.path = path;
         this.method = method;
+    }
+
+    private ScheduleRequest(List<SchedulePayload> schedulePayloads, HttpMethod method, String path) {
+        Preconditions.checkNotNull(schedulePayloads, "Schedule pushes required when creating a schedule request.");
+        if (schedulePayloads.isEmpty()) {
+            throw new IllegalStateException("Schedule payloads cannot be empty.");
+        }
+        this.path = path;
+        this.method = method;
+        this.schedulePayloads.addAll(schedulePayloads);
     }
 
     /**
      * Create a scheduled push request.
      *
-     * @param schedule Schedule
-     * @param payload PushPayload
+     * @param schedulePayload SchedulePayload
      * @return ScheduleRequest
      */
-    public static ScheduleRequest newRequest(Schedule schedule, PushPayload payload) {
-        Preconditions.checkNotNull(schedule, "Schedule may not be null");
-        Preconditions.checkNotNull(payload, "Push payload may not be null");
-        return new ScheduleRequest(schedule, payload, HttpMethod.POST, API_SCHEDULE_PATH);
+    public static ScheduleRequest newRequest(SchedulePayload schedulePayload) {
+        Preconditions.checkNotNull(schedulePayload, "Schedule Push may not be null");
+        return new ScheduleRequest(schedulePayload, HttpMethod.POST, API_SCHEDULE_PATH);
+    }
+
+    public static ScheduleRequest newRequest(List<SchedulePayload> schedulePayloads) {
+        return new ScheduleRequest(schedulePayloads, HttpMethod.POST, API_SCHEDULE_PATH);
     }
 
     /**
      * Create a request to update a scheduled push.
      *
-     * @param schedule Schedule
-     * @param payload PushPayload
+     * @param schedulePayload SchedulePayload
      * @param scheduleId String
      * @return ScheduleRequest
      */
-    public static ScheduleRequest newUpdateRequest(Schedule schedule, PushPayload payload, String scheduleId) {
+    public static ScheduleRequest newUpdateRequest(SchedulePayload schedulePayload, String scheduleId) {
         Preconditions.checkArgument(StringUtils.isNotEmpty(scheduleId), "Schedule ID may not be mull");
-        Preconditions.checkNotNull(schedule, "Schedule may not be null");
-        Preconditions.checkNotNull(payload, "Push payload may not be null");
-        return new ScheduleRequest(schedule, payload, HttpMethod.PUT, API_SCHEDULE_PATH + scheduleId);
-    }
-
-    public ScheduleRequest setName(String name) {
-        this.name = name;
-        return this;
+        Preconditions.checkNotNull(schedulePayload, "Schedule Push may not be null");
+        return new ScheduleRequest(schedulePayload, HttpMethod.PUT, API_SCHEDULE_PATH + scheduleId);
     }
 
     @Override
@@ -96,12 +102,22 @@ public class ScheduleRequest implements Request<ScheduleResponse> {
 
     @Override
     public String getRequestBody() {
-        return SchedulePayload.newBuilder()
-                .setName(name)
-                .setPushPayload(pushPayload)
-                .setSchedule(schedule)
-                .build()
-                .toJSON();
+        if (this.schedulePayloads.size() == 1) {
+            return schedulePayloads.get(0).toJSON();
+        }
+
+        ArrayNode arrayNode = MAPPER.createArrayNode();
+
+        for (SchedulePayload schedulePayload : this.schedulePayloads) {
+            try {
+                JsonNode pushJson = MAPPER.readTree(schedulePayload.toJSON());
+                arrayNode.add(pushJson);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return arrayNode.toString();
     }
 
     @Override

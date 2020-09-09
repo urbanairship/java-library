@@ -42,8 +42,8 @@ public class ScheduleRequestTest {
         .setSchedule(schedule)
         .build();
 
-    ScheduleRequest scheduleRequest = ScheduleRequest.newRequest(schedule, pushPayload);
-    ScheduleRequest updateScheduleRequest = ScheduleRequest.newUpdateRequest(schedule, pushPayload, "id");
+    ScheduleRequest scheduleRequest = ScheduleRequest.newRequest(schedulePayload);
+    ScheduleRequest updateScheduleRequest = ScheduleRequest.newUpdateRequest(schedulePayload, "id");
 
     @Test
     public void testContentType() throws Exception {

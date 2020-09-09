@@ -4,7 +4,7 @@ import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
-import com.urbanairship.api.schedule.model.SchedulePayload;
+import com.urbanairship.api.schedule.model.SchedulePayloadResponse;
 import com.urbanairship.api.schedule.parse.ScheduleObjectMapper;
 import org.junit.Test;
 
@@ -107,7 +107,7 @@ public class ScheduleListingRequestTest {
                     .setCount(1)
                     .setTotalCount(1)
                     .setOk(true)
-                    .addSchedule(ScheduleObjectMapper.getInstance().readValue(response, SchedulePayload.class))
+                    .addSchedule(ScheduleObjectMapper.getInstance().readValue(response, SchedulePayloadResponse.class))
                     .build();
             }
         };

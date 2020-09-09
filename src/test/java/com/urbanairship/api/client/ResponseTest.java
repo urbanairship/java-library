@@ -22,7 +22,7 @@ import com.urbanairship.api.reports.model.PushInfoResponse;
 import com.urbanairship.api.reports.model.PushListingResponse;
 import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
 import com.urbanairship.api.schedule.model.Schedule;
-import com.urbanairship.api.schedule.model.SchedulePayload;
+import com.urbanairship.api.schedule.model.SchedulePayloadResponse;
 import com.urbanairship.api.schedule.model.ScheduleResponse;
 import com.urbanairship.api.segments.model.SegmentListingResponse;
 import com.urbanairship.api.segments.model.SegmentListingView;
@@ -115,7 +115,7 @@ public class ResponseTest {
                 new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
         httpResponse.setHeader(CONTENT_TYPE_KEY, CONTENT_TYPE);
 
-        SchedulePayload sample = SchedulePayload.newBuilder()
+        SchedulePayloadResponse sample = SchedulePayloadResponse.newBuilder()
                 .setSchedule(Schedule.newBuilder()
                         .setScheduledTimestamp(DateTime.now())
                         .build())

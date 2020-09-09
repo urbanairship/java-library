@@ -5,7 +5,7 @@ import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
 import com.urbanairship.api.schedule.model.Schedule;
-import com.urbanairship.api.schedule.model.SchedulePayload;
+import com.urbanairship.api.schedule.model.SchedulePayloadResponse;
 import com.urbanairship.api.schedule.parse.ScheduleObjectMapper;
 import org.junit.Test;
 
@@ -39,7 +39,7 @@ public class ListSchedulesResponseTest {
             assertTrue(response.getTotal_Count() == 6);
             assertTrue(response.getNext_Page() == null);
 
-            List<SchedulePayload> list = response.getSchedules();
+            List<SchedulePayloadResponse> list = response.getSchedules();
 
             assertTrue(list.get(0).getUrl().get().equals("https://go.urbanairship.com/api/schedules/5a60e0a6-9aa7-449f-a038-6806e572baf3"));
             assertTrue(list.get(0).getPushIds().toString().equals("[8430f2e0-ec07-4c1e-adc4-0c7c7978e648]"));
@@ -92,7 +92,7 @@ public class ListSchedulesResponseTest {
             assertTrue(response.getTotal_Count() == 6);
             assertTrue(response.getNext_Page().equals("puppies"));
 
-            List<SchedulePayload> list = response.getSchedules();
+            List<SchedulePayloadResponse> list = response.getSchedules();
 
             assertTrue(list.get(0).getUrl().get().equals("https://go.urbanairship.com/api/schedules/5a60e0a6-9aa7-449f-a038-6806e572baf3"));
             assertTrue(list.get(0).getPushIds().toString().equals("[8430f2e0-ec07-4c1e-adc4-0c7c7978e648]"));
