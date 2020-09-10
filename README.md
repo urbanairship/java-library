@@ -53,10 +53,55 @@ Add the following to your pom.xml
     </dependency>
 ```
 
-Upgrading to 5.X.X
+Upgrading to 6.X.X
 ------------------
 
-Changed the way all API responses that are not 2XX, 401, or 403 are handled (these will remain as they were previously).
-For all other response codes, instead of throwing exceptions the library will now return a response that contains the status code that was received.
-Exceptions will continue to be thrown when the library encounters 401s and 403s.
-Please examine any retry logic in your implementation to see if you need to make changes.
+Schedule requests now require a SchedulePayload object:
+
+```
+    SchedulePayload schedulePayload = SchedulePayload.newBuilder()
+        .setName("optionalName")
+        .setSchedule(Schedule.newBuilder()
+            .setScheduledTimestamp(dateTime)
+            .build())
+        .setPushPayload(PushPayload.newBuilder()
+            .setDeviceTypes(DeviceTypeData.of(DeviceType.ANDROID))
+            .setNotification(Notifications.alert("Simple alert"))
+            .setAudience(Selectors.tag("tag"))
+            .build())
+        .build();
+
+    ScheduleRequest scheduleRequest = ScheduleRequest.newRequest(schedulePayload);
+```
+
+Schedule responses now contain an Immutable list of SchedulePayloadResponse objects instead of SchedulePayload objects
+inside the response body.
+
+```
+    Response<ScheduleResponse> response = client.execute(scheduleRequest);
+    ImmutableList<SchedulePayloadResponse> schedulePayloadResponses = response.getBody().get().getSchedulePayloadResponses();
+```
+
+When creating a custom event request the CustomEventBody now requires CustomEventPropertyValue objects to support complex property objects.
+
+```
+    CustomEventPropertyValue customEventProperty = CustomEventPropertyValue.of("victory");
+
+    List<CustomEventPropertyValue> items = new ArrayList<>();
+    items.add(CustomEventPropertyValue.of("la croix"));
+    items.add(CustomEventPropertyValue.of("more la croix"));
+
+    CustomEventBody customEventBody = CustomEventBody.newBuilder()
+        .setName("purchased")
+        .addPropertiesEntry("brand", customEventProperty)
+        .addPropertiesEntry("items", CustomEventPropertyValue.of(items))
+        .build();
+
+    CustomEventPayload customEventPayload = CustomEventPayload.newBuilder()
+        .setCustomEventBody(customEventBody)
+        .setCustomEventUser(customEventUser)
+        .setOccurred(occurred)
+        .build();
+```
+
+CustomEventBody.getSessionId() will now return an Optional String instead of a String.
