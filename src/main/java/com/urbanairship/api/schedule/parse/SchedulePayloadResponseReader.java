@@ -10,17 +10,17 @@ import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.schedule.model.Schedule;
-import com.urbanairship.api.schedule.model.SchedulePayload;
+import com.urbanairship.api.schedule.model.SchedulePayloadResponse;
 
 import java.io.IOException;
 import java.util.List;
 
-public final class SchedulePayloadReader implements JsonObjectReader<SchedulePayload> {
+public final class SchedulePayloadResponseReader implements JsonObjectReader<SchedulePayloadResponse> {
 
-    private final SchedulePayload.Builder builder;
+    private final SchedulePayloadResponse.Builder builder;
 
-    public SchedulePayloadReader() {
-        this.builder = SchedulePayload.newBuilder();
+    public SchedulePayloadResponseReader() {
+        this.builder = SchedulePayloadResponse.newBuilder();
     }
 
     public void readSchedule(JsonParser jsonParser) throws IOException {
@@ -44,7 +44,7 @@ public final class SchedulePayloadReader implements JsonObjectReader<SchedulePay
     }
 
     @Override
-    public SchedulePayload validateAndBuild() throws IOException {
+    public SchedulePayloadResponse validateAndBuild() throws IOException {
         try {
             return builder.build();
         }

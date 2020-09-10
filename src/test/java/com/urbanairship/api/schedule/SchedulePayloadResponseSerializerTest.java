@@ -11,12 +11,13 @@ import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.schedule.model.BestTime;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
+import com.urbanairship.api.schedule.model.SchedulePayloadResponse;
 import com.urbanairship.api.schedule.parse.ScheduleObjectMapper;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Test;
 
-public class SchedulePayloadSerializerTest {
+public class SchedulePayloadResponseSerializerTest {
 
     private static final ObjectMapper MAPPER = ScheduleObjectMapper.getInstance();
 
@@ -41,6 +42,37 @@ public class SchedulePayloadSerializerTest {
         String properJson = "{\"schedule\":{\"scheduled_time\":\"2013-05-05T00:00:01\"},\"push\":{\"audience\":{\"tag\":\"tag\"},\"device_types\":[\"ios\"],\"notification\":{\"alert\":\"alert\"},\"options\":{}}}";
 
         org.junit.Assert.assertEquals(json, properJson);
+    }
+
+    @Test
+    public void testMultipleSchedules() {
+
+        String expectedJsonStr = "[\n" +
+                "  {\n" +
+                "    \"name\": \"Morning People\",\n" +
+                "    \"schedule\": {\n" +
+                "        \"scheduled_time\": \"2018-06-03T09:15:00\"\n" +
+                "    },\n" +
+                "    \"push\": {\n" +
+                "        \"audience\": { \"tag\": \"earlyBirds\" },\n" +
+                "        \"notification\": { \"alert\": \"Good Day Sunshine\" },\n" +
+                "        \"device_types\": [ \"ios\", \"android\" ]\n" +
+                "    }\n" +
+                "  },\n" +
+                "  {\n" +
+                "    \"name\": \"Everybody Else\",\n" +
+                "    \"schedule\": {\n" +
+                "        \"best_time\": {\n" +
+                "          \"send_date\": \"2018-06-03\"\n" +
+                "        }\n" +
+                "    },\n" +
+                "    \"push\": {\n" +
+                "        \"audience\": { \"tag\": \"normalPeople\" },\n" +
+                "        \"notification\": { \"alert\": \"Stay Up Late\" },\n" +
+                "        \"device_types\": [ \"ios\", \"android\" ]\n" +
+                "    }\n" +
+                "  }\n" +
+                "]";
     }
 
     @Test
@@ -77,7 +109,7 @@ public class SchedulePayloadSerializerTest {
                 .setNotification(Notification.newBuilder().setAlert("alert").build())
                 .setPushOptions(PushOptions.newBuilder().build())
                 .build();
-        SchedulePayload schedulePayload = SchedulePayload.newBuilder()
+        SchedulePayloadResponse schedulePayload = SchedulePayloadResponse.newBuilder()
                 .setSchedule(Schedule.newBuilder()
                         .build())
                 .setPushPayload(pushPayload)
@@ -98,7 +130,7 @@ public class SchedulePayloadSerializerTest {
                 .setNotification(Notification.newBuilder().setAlert("alert").build())
                 .setPushOptions(PushOptions.newBuilder().build())
                 .build();
-        SchedulePayload schedulePayload = SchedulePayload.newBuilder()
+        SchedulePayloadResponse schedulePayload = SchedulePayloadResponse.newBuilder()
                 .setSchedule(Schedule.newBuilder()
                         .setScheduledTimestamp(new DateTime("2013-05-05T00:00:01", DateTimeZone.UTC))
                         .build())
@@ -118,7 +150,7 @@ public class SchedulePayloadSerializerTest {
                 .setLocalScheduledTimestamp(new DateTime("2013-05-05T00:00:01", DateTimeZone.UTC))
                 .build();
 
-        SchedulePayload schedulePayloadLocal = SchedulePayload.newBuilder()
+        SchedulePayloadResponse schedulePayloadLocal = SchedulePayloadResponse.newBuilder()
                 .setSchedule(schedule)
                 .setPushPayload(pushPayloadLocal)
                 .build();

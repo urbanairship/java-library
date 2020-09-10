@@ -7,7 +7,6 @@ import com.urbanairship.api.push.model.PushOptions;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
-import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.schedule.model.BestTime;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;

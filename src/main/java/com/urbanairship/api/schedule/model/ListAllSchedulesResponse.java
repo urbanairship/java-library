@@ -17,9 +17,9 @@ public final class ListAllSchedulesResponse {
     private final int count;
     private final int totalCount;
     private final String nextPage;
-    private final ImmutableList<SchedulePayload> scheduleObjects;
+    private final ImmutableList<SchedulePayloadResponse> scheduleObjects;
 
-    private ListAllSchedulesResponse(boolean ok, int count, int totalCount, String nextPage, ImmutableList<SchedulePayload> response) {
+    private ListAllSchedulesResponse(boolean ok, int count, int totalCount, String nextPage, ImmutableList<SchedulePayloadResponse> response) {
         this.ok = ok;
         this.count = count;
         this.totalCount = totalCount;
@@ -47,7 +47,7 @@ public final class ListAllSchedulesResponse {
         return nextPage;
     }
 
-    public List<SchedulePayload> getSchedules() {
+    public List<SchedulePayloadResponse> getSchedules() {
         return scheduleObjects;
     }
 
@@ -89,7 +89,7 @@ public final class ListAllSchedulesResponse {
         private int count;
         private int total_count;
         private String next_page;
-        private ImmutableList.Builder<SchedulePayload> scheduleresponse = ImmutableList.builder();
+        private ImmutableList.Builder<SchedulePayloadResponse> scheduleresponse = ImmutableList.builder();
 
         private Builder() {
         }
@@ -114,12 +114,12 @@ public final class ListAllSchedulesResponse {
             return this;
         }
 
-        public Builder addSchedule(SchedulePayload schedule) {
+        public Builder addSchedule(SchedulePayloadResponse schedule) {
             this.scheduleresponse.add(schedule);
             return this;
         }
 
-        public Builder addAllSchedule(Iterable<? extends SchedulePayload> schedulelist) {
+        public Builder addAllSchedule(Iterable<? extends SchedulePayloadResponse> schedulelist) {
             this.scheduleresponse.addAll(schedulelist);
             return this;
         }

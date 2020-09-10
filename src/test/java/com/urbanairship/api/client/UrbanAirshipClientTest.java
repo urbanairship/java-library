@@ -52,6 +52,7 @@ import com.urbanairship.api.schedule.ScheduleListingRequest;
 import com.urbanairship.api.schedule.ScheduleRequest;
 import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
 import com.urbanairship.api.schedule.model.Schedule;
+import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.schedule.model.ScheduleResponse;
 import com.urbanairship.api.segments.SegmentDeleteRequest;
 import com.urbanairship.api.segments.SegmentListingRequest;
@@ -1072,7 +1073,13 @@ public class UrbanAirshipClientTest {
                 .withStatus(201)));
 
         try {
-            Response<ScheduleResponse> response = client.execute(ScheduleRequest.newRequest(schedule, pushPayload).setName("Test"));
+            SchedulePayload schedulePayload = SchedulePayload.newBuilder()
+                    .setPushPayload(pushPayload)
+                    .setSchedule(schedule)
+                    .setName("Test")
+                    .build();
+
+            Response<ScheduleResponse> response = client.execute(ScheduleRequest.newRequest(schedulePayload));
 
             // Verify components of the underlying request
             verify(postRequestedFor(urlEqualTo("/api/schedules/"))
@@ -1128,7 +1135,13 @@ public class UrbanAirshipClientTest {
                 .withStatus(201)));
 
         try {
-            Response<ScheduleResponse> response = client.execute(ScheduleRequest.newUpdateRequest(schedule, pushPayload, "id").setName("test"));
+            SchedulePayload schedulePayload = SchedulePayload.newBuilder()
+                    .setSchedule(schedule)
+                    .setPushPayload(pushPayload)
+                    .setName("test")
+                    .build();
+
+            Response<ScheduleResponse> response = client.execute(ScheduleRequest.newUpdateRequest(schedulePayload, "id"));
 
             // Verify components of the underlying request
             verify(putRequestedFor(urlEqualTo("/api/schedules/id"))

@@ -38,9 +38,11 @@ import com.urbanairship.api.createandsend.parse.notification.sms.SmsFieldsSerial
 import com.urbanairship.api.createandsend.parse.notification.sms.SmsTemplateSerializer;
 import com.urbanairship.api.customevents.model.CustomEventPayload;
 import com.urbanairship.api.customevents.model.CustomEventBody;
+import com.urbanairship.api.customevents.model.CustomEventPropertyValue;
 import com.urbanairship.api.customevents.model.CustomEventResponse;
 import com.urbanairship.api.customevents.model.CustomEventUser;
 import com.urbanairship.api.customevents.parse.CustomEventBodySerializer;
+import com.urbanairship.api.customevents.parse.CustomEventPropertyValueSerializer;
 import com.urbanairship.api.customevents.parse.CustomEventResponseDeserializer;
 import com.urbanairship.api.customevents.parse.CustomEventSerializer;
 import com.urbanairship.api.customevents.parse.CustomEventUserSerializer;
@@ -177,9 +179,10 @@ import com.urbanairship.api.push.parse.notification.wns.WNSToastSerializer;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.ScheduleDetails;
 import com.urbanairship.api.schedule.model.SchedulePayload;
+import com.urbanairship.api.schedule.model.SchedulePayloadResponse;
 import com.urbanairship.api.schedule.parse.ScheduleDeserializer;
 import com.urbanairship.api.schedule.parse.ScheduleDetailsSerializer;
-import com.urbanairship.api.schedule.parse.SchedulePayloadDeserializer;
+import com.urbanairship.api.schedule.parse.SchedulePayloadResponseDeserializer;
 import com.urbanairship.api.schedule.parse.ScheduleSerializer;
 import com.urbanairship.api.schedule.parse.ScheduledPayloadSerializer;
 
@@ -319,7 +322,7 @@ public class PushObjectMapper {
                 .addDeserializer(RichPushIcon.class, new RichPushIconDeserializer())
 
                 /* Schedules */
-                .addDeserializer(SchedulePayload.class, SchedulePayloadDeserializer.INSTANCE)
+                .addDeserializer(SchedulePayloadResponse.class, SchedulePayloadResponseDeserializer.INSTANCE)
                 .addSerializer(SchedulePayload.class, ScheduledPayloadSerializer.INSTANCE)
                 .addDeserializer(Schedule.class, ScheduleDeserializer.INSTANCE)
                 .addSerializer(Schedule.class, ScheduleSerializer.INSTANCE)
@@ -345,6 +348,7 @@ public class PushObjectMapper {
                 .addSerializer(CustomEventUser.class, new CustomEventUserSerializer())
                 .addSerializer(CustomEventPayload.class, new CustomEventSerializer())
                 .addSerializer(CustomEventBody.class, new CustomEventBodySerializer())
+                .addSerializer(CustomEventPropertyValue.class, new CustomEventPropertyValueSerializer())
 
                 .addDeserializer(CustomEventResponse.class, new CustomEventResponseDeserializer())
 

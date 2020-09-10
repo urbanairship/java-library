@@ -14,8 +14,8 @@ public class CustomEventBody {
     private final Optional<String> transaction;
     private final Optional<String> interactionId;
     private final Optional<String> interactionType;
-    private final Optional<ImmutableMap<String, String>> properties;
-    private final String sessionId;
+    private final Optional<ImmutableMap<String, CustomEventPropertyValue>> properties;
+    private final Optional<String> sessionId;
 
     private CustomEventBody(Builder builder) {
         this.name = builder.name;
@@ -30,7 +30,7 @@ public class CustomEventBody {
             this.properties = Optional.of(builder.properties.build());
         }
 
-        this.sessionId = builder.sessionId;
+        this.sessionId = Optional.fromNullable(builder.sessionId);
     }
 
     /**
@@ -105,7 +105,7 @@ public class CustomEventBody {
      *
      * @return Optional ImmutableMap of Strings
      */
-    public Optional<ImmutableMap<String, String>> getProperties() {
+    public Optional<ImmutableMap<String, CustomEventPropertyValue>> getProperties() {
         return properties;
     }
 
@@ -140,9 +140,9 @@ public class CustomEventBody {
      * Get the sessionID. The user session during which the event occurred.
      * You must supply and maintain session identifiers.
      *
-     * @return String
+     * @return Optional<String></String>
      */
-    public String getSessionId() {
+    public Optional<String> getSessionId() {
         return sessionId;
     }
 
@@ -155,7 +155,7 @@ public class CustomEventBody {
         private String transaction = null;
         private String interactionId = null;
         private String interactionType = null;
-        private ImmutableMap.Builder<String, String> properties = ImmutableMap.builder();
+        private ImmutableMap.Builder<String, CustomEventPropertyValue> properties = ImmutableMap.builder();
         private String sessionId = null;
 
         private Builder() {
@@ -234,10 +234,10 @@ public class CustomEventBody {
          * Maximum 255 character string length.
          *
          * @param key String
-         * @param value String
+         * @param value CustomEventPropertyValue
          * @return CustomEventBody Builder
          */
-        public Builder addPropertiesEntry(String key, String value) {
+        public Builder addPropertiesEntry(String key, CustomEventPropertyValue value) {
             this.properties.put(key, value);
             return this;
         }
@@ -250,7 +250,7 @@ public class CustomEventBody {
          * @param entries A Map of Strings
          * @return CustomEventBody Builder
          */
-        public Builder addAllPropertyEntries(Map<String, String> entries) {
+        public Builder addAllPropertyEntries(Map<String, CustomEventPropertyValue> entries) {
             this.properties.putAll(entries);
             return this;
         }
@@ -269,7 +269,6 @@ public class CustomEventBody {
 
         public CustomEventBody build() {
             Preconditions.checkNotNull(name, "'name' must be set");
-            Preconditions.checkNotNull(sessionId, "'sessionId' must be set");
 
             return new CustomEventBody(this);
         }
