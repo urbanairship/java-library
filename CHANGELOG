@@ -1,4 +1,11 @@
 -------------------------
+6.0.0 10SEP20
+-------------------------
+- Added support for complex custom event properties.
+- Schedule requests can send multiple request payloads in a single request.
+- Custom event session ID is now optional.
+
+-------------------------
 5.1.1 11JUN20
 -------------------------
 - Fixed a crash when parsing responses that are not json.

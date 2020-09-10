@@ -13,8 +13,12 @@ public class CustomEventUserSerializer extends JsonSerializer<CustomEventUser> {
     public void serialize(CustomEventUser eventUser, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         jgen.writeStartObject();
 
-        jgen.writeStringField(eventUser.getChannelType().getIdentifier(), eventUser.getChannel());
-
+        if (eventUser.getChannel().isPresent()) {
+            jgen.writeStringField(eventUser.getChannelType().get().getIdentifier(), eventUser.getChannel().get());
+        }
+        if (eventUser.getNamedUserId().isPresent()) {
+            jgen.writeStringField("named_user_id", eventUser.getNamedUserId().get());
+        }
         jgen.writeEndObject();
     }
 }

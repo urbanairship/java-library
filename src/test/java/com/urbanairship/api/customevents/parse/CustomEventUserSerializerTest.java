@@ -2,6 +2,7 @@ package com.urbanairship.api.customevents.parse;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Optional;
 import com.urbanairship.api.customevents.model.CustomEventChannelType;
 import com.urbanairship.api.customevents.model.CustomEventUser;
 import com.urbanairship.api.push.parse.PushObjectMapper;
@@ -32,14 +33,25 @@ public class CustomEventUserSerializerTest {
 
         String iosJson = MAPPER.writeValueAsString(iosUser);
         String iosExpected = "{\"ios_channel\":\"iOSChannel\"}";
-        assertEquals(iosJson, iosExpected);
+        assertEquals(iosExpected, iosJson);
 
         String androidJson = MAPPER.writeValueAsString(androidUser);
         String androidExpected = "{\"android_channel\":\"androidChannel\"}";
-        assertEquals(androidJson, androidExpected);
+        assertEquals(androidExpected, androidJson);
 
         String amazonJson = MAPPER.writeValueAsString(amazonUser);
         String amazonExpected = "{\"amazon_channel\":\"amazonChannel\"}";
-        assertEquals(amazonJson, amazonExpected);
+        assertEquals(amazonExpected, amazonJson);
+    }
+
+    @Test
+    public void testNamedUser() throws Exception {
+        CustomEventUser namedUser = CustomEventUser.newBuilder()
+                .setNamedUserId("hugh.manbeing")
+                .build();
+
+        String namedUserJson = MAPPER.writeValueAsString(namedUser);
+        String namedUserExpected = "{\"named_user_id\":\"hugh.manbeing\"}";
+        assertEquals(namedUserExpected, namedUserJson);
     }
 }

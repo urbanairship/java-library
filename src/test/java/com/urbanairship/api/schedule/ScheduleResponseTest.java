@@ -21,8 +21,8 @@ public class ScheduleResponseTest {
             assertTrue(response.getOperationId().equals("47ecebe0-27c4-11e4-ad5c-001b21c78f20"));
             assertTrue(response.getScheduleUrls().get(0).equals("https://go.urbanairship.com/api/schedules/4f636bb9-e278-4af8-8fe4-873809acbd87"));
             assertTrue(response.getScheduleIds().get(0).equals("4f636bb9-e278-4af8-8fe4-873809acbd87"));
-            assertTrue(response.getSchedulePayloads().get(0).getUrl().get().equals("https://go.urbanairship.com/api/schedules/4f636bb9-e278-4af8-8fe4-873809acbd87"));
-            assertTrue(response.getSchedulePayloads().get(0).getPushPayload().getNotification().get().getAlert().get().equals("Scheduled API v3"));
+            assertTrue(response.getSchedulePayloadResponses().get(0).getUrl().get().equals("https://go.urbanairship.com/api/schedules/4f636bb9-e278-4af8-8fe4-873809acbd87"));
+            assertTrue(response.getSchedulePayloadResponses().get(0).getPushPayload().getNotification().get().getAlert().get().equals("Scheduled API v3"));
         } catch (Exception ex) {
             fail("Exception " + ex.getMessage());
         }

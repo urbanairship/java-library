@@ -18,14 +18,14 @@ public final class ScheduleResponse {
     private final String operationId;
     private final ImmutableList<String> scheduleUrls;
     private final ImmutableList<String> scheduleIds;
-    private final ImmutableList<SchedulePayload> schedulePayloads;
+    private final ImmutableList<SchedulePayloadResponse> schedulePayloadResponses;
 
-    private ScheduleResponse(boolean ok, String operationId, ImmutableList<String> scheduleUrls, ImmutableList<String> scheduleIds, ImmutableList<SchedulePayload> schedulePayloads) {
+    private ScheduleResponse(boolean ok, String operationId, ImmutableList<String> scheduleUrls, ImmutableList<String> scheduleIds, ImmutableList<SchedulePayloadResponse> schedulePayloadResponses) {
         this.ok = ok;
         this.operationId = operationId;
         this.scheduleUrls = scheduleUrls;
         this.scheduleIds = scheduleIds;
-        this.schedulePayloads = schedulePayloads;
+        this.schedulePayloadResponses = schedulePayloadResponses;
     }
 
     /**
@@ -79,8 +79,8 @@ public final class ScheduleResponse {
         return scheduleIds;
     }
 
-    public ImmutableList<SchedulePayload> getSchedulePayloads() {
-        return schedulePayloads;
+    public ImmutableList<SchedulePayloadResponse> getSchedulePayloadResponses() {
+        return schedulePayloadResponses;
     }
 
     @Override
@@ -90,13 +90,13 @@ public final class ScheduleResponse {
                 ", operationId='" + operationId + '\'' +
                 ", scheduleUrls=" + scheduleUrls +
                 ", scheduleIds=" + scheduleIds +
-                ", schedulePayloads=" + schedulePayloads +
+                ", schedulePayloadResponses=" + schedulePayloadResponses +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(ok, operationId, scheduleUrls, scheduleIds, schedulePayloads);
+        return Objects.hashCode(ok, operationId, scheduleUrls, scheduleIds, schedulePayloadResponses);
     }
 
     @Override
@@ -108,7 +108,7 @@ public final class ScheduleResponse {
             return false;
         }
         final ScheduleResponse other = (ScheduleResponse) obj;
-        return Objects.equal(this.ok, other.ok) && Objects.equal(this.operationId, other.operationId) && Objects.equal(this.scheduleUrls, other.scheduleUrls) && Objects.equal(this.scheduleIds, other.scheduleIds) && Objects.equal(this.schedulePayloads, other.schedulePayloads);
+        return Objects.equal(this.ok, other.ok) && Objects.equal(this.operationId, other.operationId) && Objects.equal(this.scheduleUrls, other.scheduleUrls) && Objects.equal(this.scheduleIds, other.scheduleIds) && Objects.equal(this.schedulePayloadResponses, other.schedulePayloadResponses);
     }
 
     /**
@@ -120,7 +120,7 @@ public final class ScheduleResponse {
         private String operationId;
         private ImmutableList.Builder<String> scheduleUrls = ImmutableList.builder();
         private ImmutableList.Builder<String> scheduleIds = ImmutableList.builder();
-        private ImmutableList.Builder<SchedulePayload> schedulePayloads = ImmutableList.builder();
+        private ImmutableList.Builder<SchedulePayloadResponse> schedulePayloads = ImmutableList.builder();
 
         private Builder() {
         }
@@ -155,12 +155,12 @@ public final class ScheduleResponse {
             return this;
         }
 
-        public Builder addSchedulePayload(SchedulePayload schedulePayload) {
-            this.schedulePayloads.add(schedulePayload);
+        public Builder addSchedulePayload(SchedulePayloadResponse schedulePayloadResponse) {
+            this.schedulePayloads.add(schedulePayloadResponse);
             return this;
         }
 
-        public Builder addAllSchedulePayload(Iterable<? extends SchedulePayload> schedulePayloads) {
+        public Builder addAllSchedulePayload(Iterable<? extends SchedulePayloadResponse> schedulePayloads) {
             this.schedulePayloads.addAll(schedulePayloads);
             return this;
         }
