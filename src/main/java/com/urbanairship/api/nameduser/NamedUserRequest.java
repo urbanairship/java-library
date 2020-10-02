@@ -30,6 +30,7 @@ public class NamedUserRequest implements Request<String> {
     private static final String CHANNEL_KEY = "channel_id";
     private static final String DEVICE_TYPE_KEY = "device_type";
     private static final String NAMED_USER_ID_KEY = "named_user_id";
+    private static final String EMAIL_KEY = "email_address";
 
     private final String path;
     private final Map<String, String> payload = new HashMap<String, String>();
@@ -66,11 +67,24 @@ public class NamedUserRequest implements Request<String> {
     public NamedUserRequest setChannel(String channelId, ChannelType channelType) {
         payload.put(CHANNEL_KEY, channelId);
 
-        if (channelType.equals(ChannelType.OPEN) || channelType.equals(ChannelType.WEB)) {
+        if (channelType.equals(ChannelType.OPEN) || channelType.equals(ChannelType.WEB) ||
+                channelType.equals(ChannelType.EMAIL) || channelType.equals(ChannelType.SMS)) {
             return this;
         }
 
         payload.put(DEVICE_TYPE_KEY, channelType.getIdentifier());
+        return this;
+    }
+
+    /**
+     * Set an email address to associate or disassociate.
+     * The email must be registered to airship before an association can be made.
+     *
+     * @param email String
+     * @return NamedUserRequest
+     */
+    public NamedUserRequest setEmail(String email) {
+        payload.put(EMAIL_KEY, email);
         return this;
     }
 
@@ -106,7 +120,8 @@ public class NamedUserRequest implements Request<String> {
     @Override
     public String getRequestBody() {
         Preconditions.checkArgument(!payload.isEmpty(), "Request payload cannot be empty");
-        Preconditions.checkArgument(payload.containsKey(CHANNEL_KEY), "Channel ID required for named user association or disassociation requests");
+        Preconditions.checkArgument(payload.containsKey(CHANNEL_KEY) || payload.containsKey(EMAIL_KEY), "Channel ID or email address is required for named user association or disassociation requests.");
+        Preconditions.checkArgument(!(payload.containsKey(CHANNEL_KEY) && payload.containsKey(EMAIL_KEY)), "Both Channel ID and email cannot be set. Set either the channel ID or the email address.");
 
         if (path.equals(API_NAMED_USERS_ASSOCIATE)) {
             Preconditions.checkArgument(payload.containsKey(NAMED_USER_ID_KEY), "Named User ID required for named user association requests");
