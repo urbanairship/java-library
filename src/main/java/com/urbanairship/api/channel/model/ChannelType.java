@@ -16,7 +16,8 @@ public enum ChannelType {
     ANDROID("android"),
     WEB("web"),
     OPEN("open"),
-    EMAIL("email");
+    EMAIL("email"),
+    SMS("sms");
 
     private final String identifier;
 

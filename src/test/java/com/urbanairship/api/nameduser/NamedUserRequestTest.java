@@ -1,5 +1,6 @@
 package com.urbanairship.api.nameduser;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.channel.model.ChannelType;
@@ -7,7 +8,9 @@ import com.urbanairship.api.client.Request;
 import com.urbanairship.api.nameduser.parse.NamedUserObjectMapper;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.http.entity.ContentType;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -17,6 +20,9 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 
 public class NamedUserRequestTest {
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     private final ObjectMapper mapper = NamedUserObjectMapper.getInstance();
     private final String channelId = UUID.randomUUID().toString();
@@ -62,6 +68,86 @@ public class NamedUserRequestTest {
 
         assertEquals(associationRequest.getRequestBody(), associateRequestBody);
         assertEquals(disassociationRequest.getRequestBody(), disassociateRequestBody);
+    }
+
+    @Test
+    public void testEmailChannelRequestBody() throws Exception {
+        String namedUserId = "namedUser";
+
+        NamedUserRequest namedUserRequest = NamedUserRequest.newAssociationRequest();
+        namedUserRequest.setChannel(channelId, ChannelType.EMAIL);
+        namedUserRequest.setNamedUserId(namedUserId);
+
+        NamedUserRequest disassociateRequest = NamedUserRequest.newDisassociationRequest();
+        disassociateRequest.setNamedUserId(namedUserId);
+        disassociateRequest.setChannel(channelId, ChannelType.EMAIL);
+
+        String jsonStr = "{\"channel_id\":\"" + channelId + "\",\"named_user_id\":\""+ namedUserId +"\"}";
+
+        JsonNode expectedJson = mapper.readTree(jsonStr);
+        JsonNode actualJson = mapper.readTree(namedUserRequest.getRequestBody());
+        JsonNode actualJsonDisassociate = mapper.readTree(disassociateRequest.getRequestBody());
+
+        assertEquals(expectedJson, actualJson);
+        assertEquals(expectedJson, actualJsonDisassociate);
+    }
+
+    @Test
+    public void testEmailRequestBody() throws Exception {
+        String emailAddress = "testEmail@test.com";
+        String namedUserId = "namedUser";
+
+        NamedUserRequest namedUserRequest = NamedUserRequest.newAssociationRequest();
+        namedUserRequest.setNamedUserId(namedUserId);
+        namedUserRequest.setEmail(emailAddress);
+
+        NamedUserRequest disassociateRequest = NamedUserRequest.newDisassociationRequest();
+        disassociateRequest.setNamedUserId(namedUserId);
+        disassociateRequest.setEmail(emailAddress);
+
+        String jsonStr = "{\"email_address\":\"" + emailAddress + "\",\"named_user_id\":\""+ namedUserId +"\"}";
+
+        JsonNode expectedJson = mapper.readTree(jsonStr);
+        JsonNode actualJson = mapper.readTree(namedUserRequest.getRequestBody());
+        JsonNode actualJsonDisassociate = mapper.readTree(disassociateRequest.getRequestBody());
+
+        assertEquals(expectedJson, actualJson);
+        assertEquals(expectedJson, actualJsonDisassociate);
+    }
+
+    @Test
+    public void testSmsRequestBody() throws Exception {
+        String namedUserId = "namedUser";
+
+        NamedUserRequest namedUserRequest = NamedUserRequest.newAssociationRequest();
+        namedUserRequest.setChannel(channelId, ChannelType.SMS);
+        namedUserRequest.setNamedUserId(namedUserId);
+
+        NamedUserRequest disassociateRequest = NamedUserRequest.newDisassociationRequest();
+        disassociateRequest.setNamedUserId(namedUserId);
+        disassociateRequest.setChannel(channelId, ChannelType.SMS);
+
+        String jsonStr = "{\"channel_id\":\"" + channelId + "\",\"named_user_id\":\""+ namedUserId +"\"}";
+
+        JsonNode expectedJson = mapper.readTree(jsonStr);
+        JsonNode actualJson = mapper.readTree(namedUserRequest.getRequestBody());
+        JsonNode actualJsonDisassociate = mapper.readTree(disassociateRequest.getRequestBody());
+
+        assertEquals(expectedJson, actualJson);
+        assertEquals(expectedJson, actualJsonDisassociate);
+    }
+
+    @Test
+    public void testEmailAndChannel() {
+        NamedUserRequest namedUserRequest = NamedUserRequest.newAssociationRequest();
+        namedUserRequest.setChannel(channelId, ChannelType.EMAIL);
+        namedUserRequest.setNamedUserId("namedUserId");
+        namedUserRequest.setEmail("testEmail@test.com");
+
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage("Both Channel ID and email cannot be set. Set either the channel ID or the email address.");
+
+        namedUserRequest.getRequestBody();
     }
 
     @Test
