@@ -101,9 +101,6 @@ public final class EmailChannelResponse {
          * @return EmailChannelResponse
          */
         public EmailChannelResponse build() {
-            if (ok != false) {
-                Preconditions.checkArgument(channelId != null);
-            }
 
             return new EmailChannelResponse(ok, channelId);
         }
