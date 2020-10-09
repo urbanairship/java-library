@@ -140,7 +140,7 @@ public class CustomEventBody {
      * Get the sessionID. The user session during which the event occurred.
      * You must supply and maintain session identifiers.
      *
-     * @return Optional<String></String>
+     * @return Optional String
      */
     public Optional<String> getSessionId() {
         return sessionId;
