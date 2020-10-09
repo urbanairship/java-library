@@ -39,8 +39,19 @@ public class NamedUserViewDeserializer extends JsonDeserializer<NamedUserView> {
                     reader.readChannelView(jsonParser);
                 }
             })
-            .build()
-    );
+            .put("attributes", new FieldParser<NamedUserViewReader>() {
+                @Override
+                public void parse(NamedUserViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                    reader.readAttributes(jsonParser);
+                }
+            })
+            .put("user_attributes", new FieldParser<NamedUserViewReader>() {
+                @Override
+                public void parse(NamedUserViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                    reader.readUserAttributes(jsonParser);
+                }
+            })
+            .build());
 
     private final StandardObjectDeserializer<NamedUserView, ?> deserializer;
 

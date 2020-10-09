@@ -38,6 +38,8 @@ public final class ChannelView {
     private final Optional<OpenChannel> open;
     private final Optional<String> address;
     private final Optional<String> namedUser;
+    private final ImmutableMap<String, String> attributes;
+    private final ImmutableMap<String, String> deviceAttributes;
 
     private ChannelView(Builder builder) {
         this.channelId = builder.channelId;
@@ -56,6 +58,8 @@ public final class ChannelView {
         this.open = Optional.fromNullable(builder.openChannel);
         this.address = Optional.fromNullable(builder.address);
         this.namedUser = Optional.fromNullable(builder.namedUser);
+        this.attributes = builder.attributes.build();
+        this.deviceAttributes = builder.deviceAttributes.build();
     }
 
     /**
@@ -213,6 +217,24 @@ public final class ChannelView {
         return namedUser;
     }
 
+    /**
+     * Get attributes associated with the channel.
+     *
+     * @return Map of Strings attributes
+     */
+    public ImmutableMap<String, String> getAttributes() {
+        return attributes;
+    }
+
+    /**
+     * Get device attributes associated with the channel.
+     *
+     * @return Map of Strings deviceAttributes
+     */
+    public ImmutableMap<String, String> getDeviceAttributes() {
+        return deviceAttributes;
+    }
+
     @Override
     public String toString() {
         return "ChannelView{" +
@@ -232,15 +254,9 @@ public final class ChannelView {
                 ", open=" + open +
                 ", address=" + address +
                 ", namedUser=" + namedUser +
+                ", attributes=" + attributes +
+                ", deviceAttributes=" + deviceAttributes +
                 '}';
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(channelId, channelType, installed, optIn,
-                background, pushAddress, created, lastRegistration,
-                alias, tags, tagGroups, iosSettings,
-                web, open, address, namedUser);
     }
 
     @Override
@@ -263,12 +279,22 @@ public final class ChannelView {
                 Objects.equal(web, that.web) &&
                 Objects.equal(open, that.open) &&
                 Objects.equal(address, that.address) &&
-                Objects.equal(namedUser, that.namedUser);
+                Objects.equal(namedUser, that.namedUser) &&
+                Objects.equal(attributes, that.attributes) &&
+                Objects.equal(deviceAttributes, that.deviceAttributes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(channelId, channelType, installed, optIn, background, pushAddress, created, lastRegistration,
+                alias, tags, tagGroups, iosSettings, web, open, address, namedUser, attributes, deviceAttributes);
     }
 
     public final static class Builder {
         private final ImmutableSet.Builder<String> tags = ImmutableSet.builder();
         private final ImmutableMap.Builder<String, ImmutableSet<String>> tagGroups = ImmutableMap.builder();
+        private final ImmutableMap.Builder<String, String> attributes = ImmutableMap.builder();
+        private final ImmutableMap.Builder<String, String> deviceAttributes = ImmutableMap.builder();
         private String channelId = null;
         private String channelType = null;
         private Boolean optIn = null;
@@ -285,6 +311,32 @@ public final class ChannelView {
         private String namedUser = null;
 
         private Builder() {
+        }
+
+        /**
+         * Add all attributes to the channel.
+         *
+         * @param attributes Map of Strings attributes
+         * @return Builder
+         */
+        public Builder addAllAttributes(Map<String, String> attributes) {
+            for (String key : attributes.keySet()) {
+                this.attributes.put(key, String.valueOf(attributes.get(key)));
+            }
+            return this;
+        }
+
+        /**
+         * Add all device attributes to the channel.
+         *
+         * @param deviceAttributes Map of Strings deviceAttributes
+         * @return Builder
+         */
+        public Builder addAllDeviceAttributes(Map<String, String> deviceAttributes) {
+            for (String key : deviceAttributes.keySet()) {
+                this.deviceAttributes.put(key, String.valueOf(deviceAttributes.get(key)));
+            }
+            return this;
         }
 
         /**

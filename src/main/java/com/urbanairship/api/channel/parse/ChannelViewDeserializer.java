@@ -118,8 +118,19 @@ public final class ChannelViewDeserializer extends JsonDeserializer<ChannelView>
                             reader.readNamedUser(jsonParser);
                         }
                     })
-                    .build()
-    );
+                    .put("attributes", new FieldParser<ChannelViewReader>() {
+                        @Override
+                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readAttributes(jsonParser);
+                        }
+                    })
+                    .put("device_attributes", new FieldParser<ChannelViewReader>() {
+                        @Override
+                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readDeviceAttributes(jsonParser);
+                        }
+                    })
+                    .build());
 
     private final StandardObjectDeserializer<ChannelView, ?> deserializer;
 

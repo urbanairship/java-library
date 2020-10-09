@@ -10,13 +10,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.urbanairship.api.channel.model.ChannelView;
+import com.urbanairship.api.channel.model.attributes.Attribute;
 import com.urbanairship.api.channel.model.ios.IosSettings;
 import com.urbanairship.api.channel.model.ios.QuietTime;
 import com.urbanairship.api.channel.model.open.OpenChannel;
 import com.urbanairship.api.channel.parse.ChannelViewDeserializer;
+import com.urbanairship.api.channel.parse.attributes.AttributeSerializer;
 import com.urbanairship.api.channel.parse.ios.IosSettingsDeserializer;
 import com.urbanairship.api.channel.parse.ios.QuietTimeDeserializer;
 import com.urbanairship.api.channel.parse.open.OpenChannelDeserializer;
+import com.urbanairship.api.nameduser.model.NamedUserAttributePayload;
+import com.urbanairship.api.nameduser.model.NamedUserAttributeResponse;
 import com.urbanairship.api.nameduser.model.NamedUserListingResponse;
 import com.urbanairship.api.nameduser.model.NamedUserView;
 import com.urbanairship.api.push.parse.PushObjectMapper;
@@ -32,6 +36,9 @@ public class NamedUserObjectMapper {
         MODULE.addDeserializer(NamedUserView.class, new NamedUserViewDeserializer());
         MODULE.addDeserializer(NamedUserListingResponse.class, new NamedUserlListingResponseDeserializer());
         MODULE.addDeserializer(OpenChannel.class, new OpenChannelDeserializer());
+        MODULE.addDeserializer(NamedUserAttributeResponse.class, new NamedUserAttributeResponseDeserializer());
+        MODULE.addSerializer(NamedUserAttributePayload.class, new NamedUserAttributePayloadSerializer());
+        MODULE.addSerializer(Attribute.class, new AttributeSerializer());
 
         MAPPER.registerModule(MODULE);
         MAPPER.registerModule(PushObjectMapper.getModule());
