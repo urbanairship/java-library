@@ -1,4 +1,13 @@
 -------------------------
+6.1.0 09OCT20
+-------------------------
+- Added support for adding attributes to channels and named users.
+- Added support for SMS channel named user associations.
+- Added support for Email address named user associations.
+- Fixed a crash when doing email uninstall requests.
+- Fixed a bug in Email channel named user associations.
+
+-------------------------
 6.0.0 10SEP20
 -------------------------
 - Added support for complex custom event properties.
