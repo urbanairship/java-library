@@ -6,6 +6,8 @@ package com.urbanairship.api.nameduser.parse;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.channel.model.ChannelView;
@@ -15,10 +17,13 @@ import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import com.urbanairship.api.nameduser.model.NamedUserView;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
 public class NamedUserViewReader implements JsonObjectReader<NamedUserView> {
+    ObjectMapper mapper = NamedUserObjectMapper.getInstance();
     private NamedUserView.Builder builder;
 
     public NamedUserViewReader() {
@@ -38,6 +43,16 @@ public class NamedUserViewReader implements JsonObjectReader<NamedUserView> {
     public void readChannelView(JsonParser jsonParser) throws  IOException {
         Set<ChannelView> channels = jsonParser.readValueAs(new TypeReference<Set<ChannelView>>() {});
         builder.setChannelViews(ImmutableSet.copyOf(channels));
+    }
+
+    public void readAttributes(JsonParser jsonParser) throws IOException {
+        Map<String, String> result = mapper.readValue(jsonParser, HashMap.class);
+        builder.addAllAttributes(result);
+    }
+
+    public void readUserAttributes(JsonParser jsonParser) throws IOException {
+        Map<String, String> result = mapper.readValue(jsonParser, HashMap.class);
+        builder.addAllUserAttributes(result);
     }
 
     @Override

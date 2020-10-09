@@ -51,6 +51,14 @@ public class ChannelViewDeserializeTest {
                 "\"installed\" : true," +
                 "\"opt_in\" : true," +
                 "\"background\" : true," +
+                    "\"attributes\": {\n" +
+                    "      \"customerid\": 20,\n" +
+                    "      \"email\": \"email@test.com\"\n" +
+                    "    }," +
+                    "\"device_attributes\": {\n" +
+                    "      \"customerid\": 10,\n" +
+                    "      \"email\": \"email2@test.com\"\n" +
+                    "    }," +
                 "  \"ios\" : {" +
                 "    \"badge\": 0," +
                 "    \"quiettime\": {" +
@@ -83,6 +91,10 @@ public class ChannelViewDeserializeTest {
         assertTrue(channel.getBackground().get());
         assertEquals(ChannelType.IOS.getIdentifier(), channel.getChannelType());
         assertTrue(channel.getIosSettings().isPresent());
+        assertEquals("email@test.com", channel.getAttributes().get("email"));
+        assertEquals("20", channel.getAttributes().get("customerid"));
+        assertEquals("email2@test.com", channel.getDeviceAttributes().get("email"));
+        assertEquals("10", channel.getDeviceAttributes().get("customerid"));
         assertEquals(0, channel.getIosSettings().get().getBadge());
         assertEquals("22:00", channel.getIosSettings().get().getQuietTime().get().getStart());
         assertEquals("06:00", channel.getIosSettings().get().getQuietTime().get().getEnd());

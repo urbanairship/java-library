@@ -67,6 +67,16 @@ public class NamedUserViewTest {
                 "\"tags\": {" +
                     "\"crm\": [\"tag1\", \"tag2\"]" +
                 "}," +
+                "\"attributes\": {\n" +
+                "        \"item_purchased\": \"Fur removal tool\",\n" +
+                "        \"cats_name\": \"Sammy\",\n" +
+                "        \"pets_age\": 12\n" +
+                "      },\n" +
+                "\"user_attributes\": {\n" +
+                "        \"ua_country\": \"US\",\n" +
+                "        \"ua_language\": \"en\",\n" +
+                "        \"ua_tz\": \"America/Los_Angeles\"\n" +
+                "      }," +
                 "\"channels\": [" +
                     "{" +
                         "\"channel_id\" : \"abcdef\"," +
@@ -129,6 +139,8 @@ public class NamedUserViewTest {
         assertTrue(firstChannel.getBackground().get());
         assertEquals(ChannelType.IOS.getIdentifier(), firstChannel.getChannelType());
         assertTrue(firstChannel.getIosSettings().isPresent());
+        assertEquals("12", namedUserView.getAttributes().get("pets_age"));
+        assertEquals("US", namedUserView.getUserAttributes().get("ua_country"));
         assertEquals(0, firstChannel.getIosSettings().get().getBadge());
         assertEquals("22:00", firstChannel.getIosSettings().get().getQuietTime().get().getStart());
         assertEquals("06:00", firstChannel.getIosSettings().get().getQuietTime().get().getEnd());

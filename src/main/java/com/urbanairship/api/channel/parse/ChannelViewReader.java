@@ -6,6 +6,7 @@ package com.urbanairship.api.channel.parse;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -26,11 +27,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 public final class ChannelViewReader implements JsonObjectReader<ChannelView> {
     private static final Logger log = LoggerFactory.getLogger(UrbanAirshipClient.class);
+    private static final ObjectMapper MAPPER = ChannelObjectMapper.getInstance();
 
     private final ChannelView.Builder builder;
 
@@ -102,6 +105,16 @@ public final class ChannelViewReader implements JsonObjectReader<ChannelView> {
 
     public void readNamedUser(JsonParser jsonParser) throws IOException {
         builder.setNamedUser(jsonParser.readValueAs(String.class));
+    }
+
+    public void readAttributes(JsonParser jsonParser) throws IOException {
+        Map<String, String> result = MAPPER.readValue(jsonParser, HashMap.class);
+        builder.addAllAttributes(result);
+    }
+
+    public void readDeviceAttributes(JsonParser jsonParser) throws IOException {
+        Map<String, String> result = MAPPER.readValue(jsonParser, HashMap.class);
+        builder.addAllDeviceAttributes(result);
     }
 
     @Override

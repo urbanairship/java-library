@@ -4,9 +4,12 @@
 
 package com.urbanairship.api.nameduser.model;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.channel.model.ChannelView;
+
+import java.util.Map;
 
 /**
  * Represents a single named user object.
@@ -16,6 +19,8 @@ public class NamedUserView {
     private final String namedUserId;
     private final ImmutableMap<String, ImmutableSet<String>> namedUserTags;
     private final ImmutableSet<ChannelView> channelViews;
+    private final ImmutableMap<String, String> attributes;
+    private final ImmutableMap<String, String> userAttributes;
 
     /**
      * New NamedUserView builder.
@@ -28,10 +33,14 @@ public class NamedUserView {
 
     private NamedUserView(String namedUserId,
                           ImmutableMap<String, ImmutableSet<String>> namedUserTags,
-                          ImmutableSet<ChannelView> channelViews) {
+                          ImmutableSet<ChannelView> channelViews,
+                          ImmutableMap<String, String> attributes,
+                          ImmutableMap<String, String> userAttributes) {
         this.namedUserId = namedUserId;
         this.namedUserTags = namedUserTags;
         this.channelViews = channelViews;
+        this.attributes = attributes;
+        this.userAttributes = userAttributes;
     }
 
     /**
@@ -61,41 +70,58 @@ public class NamedUserView {
         return channelViews;
     }
 
+    /**
+     * Get map of attributes associated to the named user.
+     *
+     * @return ImmutableMap &lt;String,String&gt; attributes
+     */
+    public ImmutableMap<String, String> getAttributes() {
+        return attributes;
+    }
+
+    /**
+     * Get map of user attributes on the named user.
+     *
+     * @return ImmutableMap &lt;String,String&gt; userAttributes
+     */
+    public ImmutableMap<String, String> getUserAttributes() {
+        return userAttributes;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         NamedUserView that = (NamedUserView) o;
-
-        if (!channelViews.equals(that.channelViews)) return false;
-        if (!namedUserId.equals(that.namedUserId)) return false;
-        if (!namedUserTags.equals(that.namedUserTags)) return false;
-
-        return true;
+        return Objects.equal(namedUserId, that.namedUserId) &&
+                Objects.equal(namedUserTags, that.namedUserTags) &&
+                Objects.equal(channelViews, that.channelViews) &&
+                Objects.equal(attributes, that.attributes) &&
+                Objects.equal(userAttributes, that.userAttributes);
     }
 
     @Override
     public int hashCode() {
-        int result = namedUserId.hashCode();
-        result = 31 * result + namedUserTags.hashCode();
-        result = 31 * result + channelViews.hashCode();
-        return result;
+        return Objects.hashCode(namedUserId, namedUserTags, channelViews, attributes, userAttributes);
     }
 
     @Override
     public String toString() {
         return "NamedUserView{" +
-            "namedUserId='" + namedUserId + '\'' +
-            ", namedUserTags=" + namedUserTags +
-            ", channelViews=" + channelViews +
-            '}';
+                "namedUserId='" + namedUserId + '\'' +
+                ", namedUserTags=" + namedUserTags +
+                ", channelViews=" + channelViews +
+                ", attributes=" + attributes +
+                ", userAttributes=" + userAttributes +
+                '}';
     }
 
     public final static class Builder {
         private String namedUserId = null;
         private ImmutableMap<String, ImmutableSet<String>> namedUserTags = null;
         private ImmutableSet<ChannelView> channelViews = null;
+        private ImmutableMap.Builder<String, String> attributes = ImmutableMap.builder();
+        private ImmutableMap.Builder<String, String> userAttributes = ImmutableMap.builder();
 
         private Builder() { }
 
@@ -132,15 +158,45 @@ public class NamedUserView {
         }
 
         /**
+         * Add all attributes to the named user.
+         *
+         * @param attributes Map of Strings attributes
+         * @return Builder
+         */
+        public Builder addAllAttributes(Map<String, String> attributes) {
+            for (String key : attributes.keySet()) {
+                this.attributes.put(key, String.valueOf(attributes.get(key)));
+            }
+            return this;
+        }
+
+        /**
+         * Add all user attributes to the named user.
+         *
+         * @param userAttributes Map of Strings userAttributes
+         * @return Builder
+         */
+        public Builder addAllUserAttributes(Map<String, String> userAttributes) {
+            for (String key : userAttributes.keySet()) {
+                this.userAttributes.put(key, String.valueOf(userAttributes.get(key)));
+            }
+            return this;
+        }
+
+        /**
          * Build the NamedUserView object
          * @return NamedUserView
          */
         public NamedUserView build() {
+            ImmutableMap<String, String> attributes = this.attributes.build();
+            ImmutableMap<String, String> userAttributes = this.userAttributes.build();
 
             return new NamedUserView(
                 namedUserId,
                 namedUserTags,
-                channelViews
+                channelViews,
+                attributes,
+                userAttributes
             );
         }
     }
