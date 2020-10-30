@@ -1,4 +1,9 @@
 -------------------------
+6.1.1
+-------------------------
+- Fixed a bug in verifying bearer token auth for requests where it is required.
+
+-------------------------
 6.1.0 09OCT20
 -------------------------
 - Added support for adding attributes to channels and named users.
