@@ -91,10 +91,10 @@ public class UrbanAirshipClient implements Closeable {
         String auth;
 
         if (request.bearerTokenAuthRequired()) {
-            Preconditions.checkNotNull(bearerToken.get(), "Bearer token required for request: " + request);
+            Preconditions.checkArgument(bearerToken.isPresent(), "Bearer token required for request: " + request);
             auth = "Bearer " + getBearerToken().get();
         } else {
-            Preconditions.checkNotNull(getAppSecret().get(), "App secret required for request: " + request);
+            Preconditions.checkArgument(getAppSecret().isPresent(), "App secret required for request: " + request);
             auth = "Basic " + BaseEncoding.base64().encode((getAppKey() + ":" + getAppSecret().get()).getBytes());
         }
 
