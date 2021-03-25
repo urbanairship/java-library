@@ -2,6 +2,7 @@
 6.1.1
 -------------------------
 - Fixed a bug in verifying bearer token auth for requests where it is required.
+- Fixed a crash caused when parsing web, sms, and email payloads.
 
 -------------------------
 6.1.0 09OCT20

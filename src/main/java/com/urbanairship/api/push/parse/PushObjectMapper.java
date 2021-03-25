@@ -151,6 +151,7 @@ import com.urbanairship.api.push.parse.notification.richpush.RichPushIconDeseria
 import com.urbanairship.api.push.parse.notification.richpush.RichPushIconSerializer;
 import com.urbanairship.api.push.parse.notification.richpush.RichPushMessageDeserializer;
 import com.urbanairship.api.push.parse.notification.richpush.RichPushMessageSerializer;
+import com.urbanairship.api.push.parse.notification.sms.SmsPayloadDeserializer;
 import com.urbanairship.api.push.parse.notification.sms.SmsPayloadSerializer;
 import com.urbanairship.api.push.parse.notification.web.WebDevicePayloadDeserializer;
 import com.urbanairship.api.push.parse.notification.web.WebDevicePayloadSerializer;
@@ -203,6 +204,7 @@ public class PushObjectMapper {
         ADMDevicePayloadDeserializer admPayloadDS = new ADMDevicePayloadDeserializer();
         WebDevicePayloadDeserializer webPayloadDS = new WebDevicePayloadDeserializer();
         EmailPayloadDeserializer emailPayloadDS = new EmailPayloadDeserializer();
+        SmsPayloadDeserializer smsPayloadDS = new SmsPayloadDeserializer();
 
         NotificationDeserializer notificationDeserializer = new NotificationDeserializer(
                 ImmutableMap.<DeviceType, JsonDeserializer<? extends DevicePayloadOverride>>builder()
@@ -211,6 +213,8 @@ public class PushObjectMapper {
                         .put(DeviceType.ANDROID, androidPayloadDS)
                         .put(DeviceType.AMAZON, admPayloadDS)
                         .put(DeviceType.EMAIL, emailPayloadDS)
+                        .put(DeviceType.SMS, smsPayloadDS)
+                        .put(DeviceType.WEB, webPayloadDS)
                         .build());
 
         MODULE
