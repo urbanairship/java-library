@@ -7,6 +7,7 @@ import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import com.urbanairship.api.push.model.notification.email.EmailPayload;
 import com.urbanairship.api.push.model.notification.email.MessageType;
 
+import java.awt.*;
 import java.io.IOException;
 
 public class EmailPayloadReader implements JsonObjectReader<EmailPayload> {
@@ -30,7 +31,8 @@ public class EmailPayloadReader implements JsonObjectReader<EmailPayload> {
     }
 
     public void readMessageType(JsonParser parser) throws IOException {
-        builder.setMessageType(parser.readValueAs(MessageType.class));
+        String messageType = StringFieldDeserializer.INSTANCE.deserialize(parser, "message_type");
+        builder.setMessageType(MessageType.find(messageType).get());
     }
 
     public void readSenderName(JsonParser parser) throws IOException {
@@ -42,7 +44,7 @@ public class EmailPayloadReader implements JsonObjectReader<EmailPayload> {
     }
 
     public void readReplyTo(JsonParser parser) throws IOException {
-        builder.setSenderName(StringFieldDeserializer.INSTANCE.deserialize(parser, "reply_to"));
+        builder.setReplyTo(StringFieldDeserializer.INSTANCE.deserialize(parser, "reply_to"));
     }
 
     @Override
