@@ -91,8 +91,10 @@ import com.urbanairship.api.push.model.notification.open.OpenPayload;
 import com.urbanairship.api.push.model.notification.richpush.RichPushIcon;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import com.urbanairship.api.push.model.notification.sms.SmsPayload;
+import com.urbanairship.api.push.model.notification.web.Button;
 import com.urbanairship.api.push.model.notification.web.WebDevicePayload;
 import com.urbanairship.api.push.model.notification.web.WebIcon;
+import com.urbanairship.api.push.model.notification.web.WebImage;
 import com.urbanairship.api.push.model.notification.wns.WNSAudioData;
 import com.urbanairship.api.push.model.notification.wns.WNSBadgeData;
 import com.urbanairship.api.push.model.notification.wns.WNSBinding;
@@ -153,10 +155,14 @@ import com.urbanairship.api.push.parse.notification.richpush.RichPushMessageDese
 import com.urbanairship.api.push.parse.notification.richpush.RichPushMessageSerializer;
 import com.urbanairship.api.push.parse.notification.sms.SmsPayloadDeserializer;
 import com.urbanairship.api.push.parse.notification.sms.SmsPayloadSerializer;
+import com.urbanairship.api.push.parse.notification.web.ButtonDeserializer;
+import com.urbanairship.api.push.parse.notification.web.ButtonSerializer;
 import com.urbanairship.api.push.parse.notification.web.WebDevicePayloadDeserializer;
 import com.urbanairship.api.push.parse.notification.web.WebDevicePayloadSerializer;
 import com.urbanairship.api.push.parse.notification.web.WebIconDeserializer;
 import com.urbanairship.api.push.parse.notification.web.WebIconSerializer;
+import com.urbanairship.api.push.parse.notification.web.WebImageDeserializer;
+import com.urbanairship.api.push.parse.notification.web.WebImageSerializer;
 import com.urbanairship.api.push.parse.notification.wns.WNSAudioDeserializer;
 import com.urbanairship.api.push.parse.notification.wns.WNSAudioSerializer;
 import com.urbanairship.api.push.parse.notification.wns.WNSBadgeDeserializer;
@@ -311,6 +317,10 @@ public class PushObjectMapper {
                 .addDeserializer(WebDevicePayload.class, webPayloadDS)
                 .addSerializer(WebIcon.class, new WebIconSerializer())
                 .addDeserializer(WebIcon.class, new WebIconDeserializer())
+                .addSerializer(Button.class, new ButtonSerializer())
+                .addDeserializer(Button.class, new ButtonDeserializer())
+                .addSerializer(WebImage.class, new WebImageSerializer())
+                .addDeserializer(WebImage.class, new WebImageDeserializer())
 
                 /* SMS */
                 .addSerializer(SmsPayload.class, new SmsPayloadSerializer())

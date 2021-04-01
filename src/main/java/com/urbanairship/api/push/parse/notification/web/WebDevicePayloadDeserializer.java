@@ -42,6 +42,30 @@ public class WebDevicePayloadDeserializer extends JsonDeserializer<WebDevicePayl
                             reader.readRequireInteraction(json);
                         }
                     })
+                    .put("actions", new FieldParser<WebDevicePayloadReader>() {
+                        @Override
+                        public void parse(WebDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                            reader.readActions(json);
+                        }
+                    })
+                    .put("image", new FieldParser<WebDevicePayloadReader>() {
+                        @Override
+                        public void parse(WebDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                            reader.readWebImage(json);
+                        }
+                    })
+                    .put("time_to_live", new FieldParser<WebDevicePayloadReader>() {
+                        @Override
+                        public void parse(WebDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                            reader.readExpiry(json);
+                        }
+                    })
+                    .put("buttons", new FieldParser<WebDevicePayloadReader>() {
+                        @Override
+                        public void parse(WebDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                            reader.readButtons(json);
+                        }
+                    })
                     .build()
     );
 

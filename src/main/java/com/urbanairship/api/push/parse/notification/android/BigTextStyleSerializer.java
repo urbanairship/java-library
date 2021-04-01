@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.urbanairship.api.push.model.notification.android.BigTextStyle;
-import com.urbanairship.api.push.model.notification.android.Style;
 
 import java.io.IOException;
 
@@ -17,9 +16,6 @@ public class BigTextStyleSerializer extends JsonSerializer<BigTextStyle> {
 
     @Override
     public void serialize(BigTextStyle style, JsonGenerator jgen, SerializerProvider provider) throws IOException {
-        //jgen.writeStartObject();
-
-        jgen.writeStringField("type", Style.Type.BIG_TEXT.getStyleType());
         jgen.writeStringField("big_text", style.getContent());
         if (style.getTitle().isPresent()) {
             jgen.writeStringField("title", style.getTitle().get());
@@ -27,8 +23,6 @@ public class BigTextStyleSerializer extends JsonSerializer<BigTextStyle> {
         if (style.getSummary().isPresent()) {
             jgen.writeStringField("summary", style.getSummary().get());
         }
-
-        //jgen.writeEndObject();
     }
 
 
