@@ -1,8 +1,11 @@
 package com.urbanairship.api.push.parse.notification.ios;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.push.model.notification.actions.Actions;
+import com.urbanairship.api.push.model.notification.actions.OpenExternalURLAction;
 import com.urbanairship.api.push.model.notification.ios.IOSAlertData;
 import com.urbanairship.api.push.model.notification.ios.IOSBadgeData;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
@@ -13,6 +16,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.math.BigDecimal;
+import java.net.URI;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -391,5 +395,29 @@ public class PayloadDeserializerTest {
         assertTrue(payload.getMediaAttachment().get().getContent().get().getBody().get().equals("content body"));
         assertTrue(payload.getMediaAttachment().get().getContent().get().getSubtitle().get().equals("content subtitle"));
         assertTrue(payload.getMediaAttachment().get().getContent().get().getTitle().get().equals("content title"));
+    }
+
+    @Test
+    public void testRoundTripDeserialization() throws Exception {
+        URI uri = URI.create("http://www.airship.com");
+
+        OpenExternalURLAction externalURLAction = new OpenExternalURLAction(uri);
+
+        Actions actions = Actions.newBuilder()
+                .setOpen(externalURLAction)
+                .build();
+
+
+        IOSDevicePayload payload = IOSDevicePayload.newBuilder()
+                .setActions(actions)
+                .setTargetContentId("targetContentId")
+                .setAlert("Alert")
+                .build();
+
+        String json = mapper.writeValueAsString(payload);
+
+        IOSDevicePayload roundTripPayload = mapper.readValue(json, IOSDevicePayload.class);
+
+        assertEquals(payload, roundTripPayload);
     }
 }

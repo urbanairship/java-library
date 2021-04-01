@@ -12,6 +12,7 @@ import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.urbanairship.api.push.model.notification.Interactive;
+import com.urbanairship.api.push.model.notification.actions.Actions;
 
 import java.util.Map;
 import java.util.Objects;
@@ -36,6 +37,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
     private final Optional<Boolean> mutableContent;
     private final Optional<String> collapseId;
     private final Optional<String> threadId;
+    private final Optional<Actions> actions;
+    private final Optional<String> targetContentId;
 
     private IOSDevicePayload(Optional<IOSAlertData> alert,
                              Optional<IOSBadgeData> badge,
@@ -51,7 +54,9 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                              Optional<IOSSoundData> sound,
                              Optional<Boolean> mutableContent,
                              Optional<String> collapseId,
-                             Optional<String> threadId) {
+                             Optional<String> threadId,
+                             Optional<Actions> actions,
+                             Optional<String> targetContentId) {
         this.alert = alert;
         this.badge = badge;
         this.contentAvailable = contentAvailable;
@@ -67,6 +72,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         this.mutableContent = mutableContent;
         this.collapseId = collapseId;
         this.threadId = threadId;
+        this.actions = actions;
+        this.targetContentId = targetContentId;
     }
 
     /**
@@ -230,6 +237,26 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         return threadId;
     }
 
+    /**
+     * Get the Actions.
+     * These describe actions to be performed by the SDK when a user interacts with the notification.
+     *
+     * @return Optional Action
+     */
+    public Optional<Actions> getActions() {
+        return actions;
+    }
+
+    /**
+     * Get the target content id.
+     * The identifier of the window to bring forward when the notification is opened. Used for multi-window content, such as App Clips.
+     *
+     * @return Optional String target content id.
+     */
+    public Optional<String> getTargetContentId() {
+        return targetContentId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -249,12 +276,14 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                 Objects.equals(sound, that.sound) &&
                 Objects.equals(mutableContent, that.mutableContent) &&
                 Objects.equals(collapseId, that.collapseId) &&
-                Objects.equals(threadId, that.threadId);
+                Objects.equals(threadId, that.threadId) &&
+                Objects.equals(actions, that.actions) &&
+                Objects.equals(targetContentId, that.targetContentId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(alert, extra, badge, contentAvailable, expiry, priority, category, interactive, title, subtitle, mediaAttachment, sound, mutableContent, collapseId, threadId);
+        return Objects.hash(alert, extra, badge, contentAvailable, expiry, priority, category, interactive, title, subtitle, mediaAttachment, sound, mutableContent, collapseId, threadId, actions, targetContentId);
     }
 
     @Override
@@ -275,6 +304,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                 ", mutableContent=" + mutableContent +
                 ", collapseId=" + collapseId +
                 ", threadId=" + threadId +
+                ", actions=" + actions +
+                ", targetContentId=" + targetContentId +
                 '}';
     }
 
@@ -294,6 +325,9 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         private Boolean mutableContent = null;
         private String collapseId = null;
         private String threadId = null;
+        private Actions actions;
+        private String targetContentId;
+
 
         private Builder() { }
 
@@ -493,6 +527,28 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         }
 
         /**
+         * Set the Actions.
+         * These describe actions to be performed by the SDK when a user interacts with the notification.
+         *
+         * @return Builder
+         */
+        public Builder setActions(Actions actions) {
+            this.actions = actions;
+            return this;
+        }
+
+        /**
+         * Set the target content id.
+         * The identifier of the window to bring forward when the notification is opened. Used for multi-window content, such as App Clips.
+         *
+         * @return Builder
+         */
+        public Builder setTargetContentId(String targetContentId) {
+            this.targetContentId = targetContentId;
+            return this;
+        }
+
+        /**
          * Build IOSDevicePayload
          * @return IOSDevicePayload
          */
@@ -512,7 +568,9 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                     Optional.fromNullable(sound),
                     Optional.fromNullable(mutableContent),
                     Optional.fromNullable(collapseId),
-                    Optional.fromNullable(threadId));
+                    Optional.fromNullable(threadId),
+                    Optional.fromNullable(actions),
+                    Optional.fromNullable(targetContentId));
         }
     }
 }

@@ -12,6 +12,7 @@ import com.urbanairship.api.common.parse.MapOfStringsDeserializer;
 import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.notification.Interactive;
+import com.urbanairship.api.push.model.notification.actions.Actions;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
 import com.urbanairship.api.push.model.notification.android.Category;
 import com.urbanairship.api.push.model.notification.android.PublicNotification;
@@ -110,6 +111,10 @@ public class AndroidDevicePayloadReader implements JsonObjectReader<AndroidDevic
 
     public void readPublicNotification(JsonParser parser) throws IOException {
         builder.setPublicNotification(parser.readValueAs(PublicNotification.class));
+    }
+
+    public void readActions(JsonParser parser) throws IOException {
+        builder.setActions(parser.readValueAs(Actions.class));
     }
 
     @Override

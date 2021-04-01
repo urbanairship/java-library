@@ -55,6 +55,24 @@ public class NotificationDeserializer extends JsonDeserializer<Notification> {
                         reader.readPlatformDevicePayloadOverride(DeviceType.AMAZON, jsonParser, deserializationContext);
                     }
                 })
+            .put("sms", new FieldParser<NotificationReader>() {
+                    @Override
+                    public void parse(NotificationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                        reader.readPlatformDevicePayloadOverride(DeviceType.SMS, jsonParser, deserializationContext);
+                    }
+            })
+            .put("web", new FieldParser<NotificationReader>() {
+                    @Override
+                    public void parse(NotificationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                        reader.readPlatformDevicePayloadOverride(DeviceType.WEB, jsonParser, deserializationContext);
+                    }
+            })
+            .put("email", new FieldParser<NotificationReader>() {
+                @Override
+                public void parse(NotificationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                    reader.readPlatformDevicePayloadOverride(DeviceType.EMAIL, jsonParser, deserializationContext);
+                }
+            })
             .put("actions", new FieldParser<NotificationReader>() {
                     @Override
                     public void parse(NotificationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {

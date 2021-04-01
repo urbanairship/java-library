@@ -36,6 +36,42 @@ public class ADMDevicePayloadSerializer extends JsonSerializer<ADMDevicePayload>
             jgen.writeObjectField("interactive", payload.getInteractive().get());
         }
 
+        if (payload.getActions().isPresent()) {
+            jgen.writeObjectField("actions", payload.getActions().get());
+        }
+
+        if (payload.getIcon().isPresent()) {
+            jgen.writeStringField("icon", payload.getIcon().get());
+        }
+
+        if (payload.getIconColor().isPresent()) {
+            jgen.writeStringField("icon_color", payload.getIconColor().get());
+        }
+
+        if (payload.getNotificationChannel().isPresent()) {
+            jgen.writeStringField("notification_channel", payload.getNotificationChannel().get());
+        }
+
+        if (payload.getNotificationTag().isPresent()) {
+            jgen.writeStringField("notification_tag", payload.getNotificationTag().get());
+        }
+
+        if (payload.getSound().isPresent()) {
+            jgen.writeStringField("sound", payload.getSound().get());
+        }
+
+        if (payload.getSummary().isPresent()) {
+            jgen.writeStringField("summary", payload.getSummary().get());
+        }
+
+        if (payload.getTitle().isPresent()) {
+            jgen.writeStringField("title", payload.getTitle().get());
+        }
+
+        if (payload.getStyle().isPresent()) {
+            jgen.writeObjectField("style", payload.getStyle().get());
+        }
+
         jgen.writeEndObject();
     }
 }

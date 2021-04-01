@@ -12,6 +12,11 @@ import com.urbanairship.api.channel.ChannelTagRequest;
 import com.urbanairship.api.channel.model.ChannelResponse;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.common.parse.DateFormats;
+import com.urbanairship.api.customevents.CustomEventRequest;
+import com.urbanairship.api.customevents.model.CustomEventBody;
+import com.urbanairship.api.customevents.model.CustomEventChannelType;
+import com.urbanairship.api.customevents.model.CustomEventPayload;
+import com.urbanairship.api.customevents.model.CustomEventUser;
 import com.urbanairship.api.experiments.ExperimentRequest;
 import com.urbanairship.api.experiments.model.Experiment;
 import com.urbanairship.api.experiments.model.ExperimentResponse;
@@ -91,6 +96,7 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -186,6 +192,9 @@ public class UrbanAirshipClientTest {
 
     @Rule
     public WireMockClassRule instanceRule = wireMockRule;
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Test(expected = NullPointerException.class)
     public void testAPIClientThrowsForNoAppKey() {
@@ -3421,5 +3430,25 @@ public class UrbanAirshipClientTest {
             fail("Exception thrown " + ex);
         }
 
+    }
+
+    @Test
+    public void testInvalidBearerAuth() throws IOException {
+        CustomEventPayload customEventPayload = CustomEventPayload.newBuilder()
+                .setCustomEventBody(CustomEventBody.newBuilder()
+                        .setName("name")
+                        .build())
+                .setCustomEventUser(CustomEventUser.newBuilder()
+                        .setCustomEventChannelType(CustomEventChannelType.ANDROID_CHANNEL)
+                        .setChannel("channelId")
+                        .build())
+                .setOccurred(DateTime.now())
+                .build();
+
+        CustomEventRequest request = CustomEventRequest.newRequest(customEventPayload);
+
+        expectedException.expect(IllegalArgumentException.class);
+
+        client.execute(request);
     }
 }

@@ -24,7 +24,6 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
     private final Optional<String> senderAddress;
     private final Optional<String> uaAddress;
     private final Optional<String> replyTo;
-    private final DeviceType deviceType;
 
     private EmailPayload(Builder builder) {
         this.alert = Optional.fromNullable(builder.alert);
@@ -36,7 +35,6 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
         this.senderAddress = Optional.fromNullable((builder.senderAddress));
         this.uaAddress = Optional.fromNullable((builder.uaAddress));
         this.replyTo = Optional.fromNullable((builder.replyTo));
-        this.deviceType = builder.deviceType;
     }
 
     public static Builder newBuilder() {
@@ -50,7 +48,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
      */
     @Override
     public DeviceType getDeviceType() {
-        return deviceType.EMAIL;
+        return DeviceType.EMAIL;
     }
 
     /**
@@ -279,18 +277,18 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
 
         /**
          * Set the device type for the email channel payload.
+         * @deprecated This method is not needed since DeviceType.EMAIL is always returned from EmailPayload.
          *
          * @param deviceType DeviceType
          * @return EmailPayload Builder
          */
+        @Deprecated
         public Builder setDeviceType(DeviceType deviceType) {
             this.deviceType = deviceType;
             return this;
         }
 
         public EmailPayload build() {
-
-            Preconditions.checkNotNull(deviceType, "DeviceType must be set.");
 
             Preconditions.checkNotNull(subject, "Subject must be set.");
 

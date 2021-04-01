@@ -11,7 +11,9 @@ import com.urbanairship.api.common.parse.MapOfStringsDeserializer;
 import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.notification.Interactive;
+import com.urbanairship.api.push.model.notification.actions.Actions;
 import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
+import com.urbanairship.api.push.model.notification.android.Style;
 
 import java.io.IOException;
 
@@ -40,6 +42,42 @@ public class ADMDevicePayloadReader implements JsonObjectReader<ADMDevicePayload
 
     public void readInteractive(JsonParser parser) throws IOException {
         builder.setInteractive(parser.readValueAs(Interactive.class));
+    }
+
+    public void readActions(JsonParser parser) throws IOException {
+        builder.setActions(parser.readValueAs(Actions.class));
+    }
+
+    public void readIcon(JsonParser parser) throws IOException {
+        builder.setIcon(StringFieldDeserializer.INSTANCE.deserialize(parser, "icon"));
+    }
+
+    public void readIconColor(JsonParser parser) throws IOException {
+        builder.setIconColor(StringFieldDeserializer.INSTANCE.deserialize(parser, "icon_color"));
+    }
+
+    public void readNotificationChannel(JsonParser parser) throws IOException {
+        builder.setNotificationChannel(StringFieldDeserializer.INSTANCE.deserialize(parser, "notification_channel"));
+    }
+
+    public void readNotificationTag(JsonParser parser) throws IOException {
+        builder.setNotificationTag(StringFieldDeserializer.INSTANCE.deserialize(parser, "notification_tag"));
+    }
+
+    public void readSound(JsonParser parser) throws IOException {
+        builder.setSound(StringFieldDeserializer.INSTANCE.deserialize(parser, "sound"));
+    }
+
+    public void readSummary(JsonParser parser) throws IOException {
+        builder.setSummary(StringFieldDeserializer.INSTANCE.deserialize(parser, "summary"));
+    }
+
+    public void readTitle(JsonParser parser) throws IOException {
+        builder.setTitle(StringFieldDeserializer.INSTANCE.deserialize(parser, "title"));
+    }
+
+    public void readStyle(JsonParser parser) throws IOException {
+        builder.setStyle(parser.readValueAs(Style.class));
     }
 
     @Override

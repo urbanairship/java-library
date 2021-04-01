@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.createandsend.model.audience.email.EmailChannel;
+import com.urbanairship.api.createandsend.model.notification.email.EmailTemplate;
 import com.urbanairship.api.push.model.*;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.Selectors;
@@ -16,9 +18,12 @@ import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.notification.Notifications;
 import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
+import com.urbanairship.api.push.model.notification.email.EmailPayload;
+import com.urbanairship.api.push.model.notification.email.MessageType;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import com.urbanairship.api.push.model.notification.sms.SmsPayload;
+import com.urbanairship.api.push.model.notification.web.WebDevicePayload;
 import com.urbanairship.api.push.model.notification.wns.WNSDevicePayload;
 import org.apache.commons.lang.RandomStringUtils;
 import org.joda.time.DateTime;
@@ -49,8 +54,11 @@ public class PushPayloadBasicSerializationTest {
                         .build())
                 .build();
 
+        Notification smsNotification = Notifications.notification(smsPayload);
+        String notificationPayload = mapper.writeValueAsString(smsNotification);
+
         PushPayload pushPayload = PushPayload.newBuilder()
-                .setNotification(Notifications.notification(smsPayload))
+                .setNotification(smsNotification)
                 .setAudience(SmsSelector.newBuilder()
                         .setMsisdn("15552243311")
                         .setSender("12345")
@@ -68,6 +76,104 @@ public class PushPayloadBasicSerializationTest {
         JsonNode expectedNode = mapper.readTree(expected);
 
         assertEquals(expectedNode, actualNode);
+
+        Notification notificationRoundTrip = mapper.readValue(notificationPayload, Notification.class);
+
+        assertEquals(smsNotification, notificationRoundTrip);
+    }
+
+    @Test
+    public void testWebChannel() throws Exception {
+        WebDevicePayload webDevicePayload = WebDevicePayload.newBuilder()
+                .setAlert("web alert")
+                .setTitle("web title")
+                .build();
+
+        Notification webNotification = Notifications.notification(webDevicePayload);
+        String smsNotificationString = mapper.writeValueAsString(webNotification);
+
+        PushPayload pushPayload = PushPayload.newBuilder()
+                .setNotification(webNotification)
+                .setAudience(Selectors.tag("testTag"))
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.WEB))
+                .build();
+
+        String serializedPayload = mapper.writeValueAsString(pushPayload);
+        String expected = "{\n" +
+                "  \"audience\": {\n" +
+                "    \"tag\": \"testTag\"\n" +
+                "  },\n" +
+                "  \"device_types\": [\n" +
+                "    \"web\"\n" +
+                "  ],\n" +
+                "  \"notification\": {\n" +
+                "    \"web\": {\n" +
+                "      \"alert\": \"web alert\",\n" +
+                "      \"title\": \"web title\"\n" +
+                "    }\n" +
+                "  }\n" +
+                "}";
+
+        JsonNode expectedNode = mapper.readTree(expected);
+        JsonNode actualNode = mapper.readTree(serializedPayload);
+
+        assertEquals(expectedNode, actualNode);
+
+        Notification roundTripNotification = mapper.readValue(smsNotificationString, Notification.class);
+
+        assertEquals(webNotification, roundTripNotification);
+    }
+
+    @Test
+    public void testEmailChannel() throws Exception {
+        EmailPayload emailPayload = EmailPayload.newBuilder()
+                .setSenderName("senderName")
+                .setHtmlBody("html body")
+                .setMessageType(MessageType.TRANSACTIONAL)
+                .setPlaintextBody("plain text")
+                .setSenderAddress("senderAddress")
+                .setReplyTo("replyTo")
+                .setSubject("subject")
+                .build();
+
+        Notification emailNotification = Notifications.notification(emailPayload);
+        String emailNotificationString = mapper.writeValueAsString(emailNotification);
+
+        PushPayload pushPayload = PushPayload.newBuilder()
+                .setNotification(emailNotification)
+                .setAudience(Selectors.tag("testTag"))
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.EMAIL))
+                .build();
+
+        String serializedPayload = mapper.writeValueAsString(pushPayload);
+        String expected = "{\n" +
+                "  \"audience\": {\n" +
+                "    \"tag\": \"testTag\"\n" +
+                "  },\n" +
+                "  \"device_types\": [\n" +
+                "    \"email\"\n" +
+                "  ],\n" +
+                "  \"notification\": {\n" +
+                "    \"email\": {\n" +
+                "      \"subject\": \"subject\",\n" +
+                "      \"html_body\": \"html body\",\n" +
+                "      \"plaintext_body\": \"plain text\",\n" +
+                "      \"message_type\": \"transactional\",\n" +
+                "      \"sender_name\": \"senderName\",\n" +
+                "      \"sender_address\": \"senderAddress\",\n" +
+                "      \"reply_to\": \"replyTo\"\n" +
+                "    }\n" +
+                "  }\n" +
+                "}";
+
+        JsonNode expectedNode = mapper.readTree(expected);
+        JsonNode actualNode = mapper.readTree(serializedPayload);
+
+        assertEquals(expectedNode, actualNode);
+
+        Notification roundTripNotification = mapper.readValue(emailNotificationString, Notification.class);
+
+        assertEquals(emailNotification, roundTripNotification);
     }
 
     @Test
