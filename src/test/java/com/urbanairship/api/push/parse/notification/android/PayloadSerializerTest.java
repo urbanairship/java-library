@@ -8,6 +8,7 @@ import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.notification.actions.Actions;
 import com.urbanairship.api.push.model.notification.actions.AddTagAction;
+import com.urbanairship.api.push.model.notification.actions.OpenExternalURLAction;
 import com.urbanairship.api.push.model.notification.actions.RemoveTagAction;
 import com.urbanairship.api.push.model.notification.actions.TagActionData;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
@@ -18,6 +19,8 @@ import com.urbanairship.api.push.model.notification.android.Style;
 import com.urbanairship.api.push.model.notification.android.Wearable;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.junit.Test;
+
+import java.net.URI;
 
 import static org.junit.Assert.assertEquals;
 
@@ -63,6 +66,14 @@ public class PayloadSerializerTest {
                 .setExpirySeconds(12345)
                 .build();
 
+        URI uri = URI.create("http://www.urbanairship.com");
+
+        OpenExternalURLAction externalURLAction = new OpenExternalURLAction(uri);
+
+        Actions actions = Actions.newBuilder()
+                .setOpen(externalURLAction)
+                .build();
+
         AndroidDevicePayload payload = AndroidDevicePayload.newBuilder()
                 .setAlert("Hi")
                 .setCategory(Category.ALARM)
@@ -83,80 +94,89 @@ public class PayloadSerializerTest {
                 .setTimeToLive(expiry)
                 .setTitle("A title")
                 .setVisibility(1)
-                .setWearable(wearable) 
+                .setWearable(wearable)
+                .setActions(actions)
                 .build();
 
-        String json = "{" +
-                "\"alert\":\"Hi\"," +
-                "\"collapse_key\":\"blah\"," +
-                "\"notification_channel\":\"channel1\"," +
-                "\"notification_tag\":\"nt1\"," +
-                "\"time_to_live\":12345," +
-                "\"delivery_priority\":\"high\"," +
-                "\"delay_while_idle\":true," +
-                "\"interactive\":{" +
-                    "\"type\":\"ua_yes_no_foreground\"," +
-                    "\"button_actions\":{" +
-                        "\"yes\":{" +
-                            "\"add_tag\":\"butter\"" +
-                         "}," +
-                         "\"no\":{" +
-                            "\"remove_tag\":\"cool\"" +
-                        "}" +
-                    "}" +
-                "}," +
-                "\"title\":\"A title\"," +
-                "\"local_only\":true," +
-                "\"wearable\":{" +
-                    "\"background_image\":\"https://yolo.pizza.biz/\"," +
-                    "\"interactive\":{" +
-                        "\"type\":\"ua_yes_no_foreground\"," +
-                        "\"button_actions\":{" +
-                            "\"yes\":{" +
-                               "\"add_tag\":\"butter\"" +
-                            "}," +
-                            "\"no\":{" +
-                               "\"remove_tag\":\"cool\"" +
-                            "}" +
-                         "}" +
-                     "}," +
-                     "\"extra_pages\":[" +
-                         "{" +
-                            "\"title\":\"Title1\"," +
-                            "\"alert\":\"An alert\"" +
-                         "}," +
-                         "{" +
-                            "\"title\":\"Title2\"," +
-                            "\"alert\":\"An alert again\"" +
-                         "}" +
-                     "]" +
-                "}," +
-                "\"summary\":\"A summary\"," +
-                "\"sound\":\"cowbell.mp3\"," +
-                "\"icon\":\"icon.xml\"," +
-                "\"icon_color\":\"#012345\"," +
-                "\"category\":\"alarm\"," +
-                "\"priority\":1," +
-                "\"style\":{" +
-                    "\"type\":\"big_text\"," +
-                    "\"big_text\":\"big text\"," +
-                    "\"title\":\"big text title\"," +
-                    "\"summary\":\"big text summary\"" +
-                "}," +
-                "\"time_to_live\":12345," +
-                "\"visibility\":1," +
-                "\"public_notification\": {" +
-                    "\"title\": \"A greeting\"," +
-                    "\"alert\": \"Hello!\"," +
-                    "\"summary\": \"A summary\"" +
-                "}" +
-        "}";
+        String json = "{\n" +
+                "  \"alert\": \"Hi\",\n" +
+                "  \"collapse_key\": \"blah\",\n" +
+                "  \"notification_channel\": \"channel1\",\n" +
+                "  \"notification_tag\": \"nt1\",\n" +
+                "  \"time_to_live\": 12345,\n" +
+                "  \"delivery_priority\": \"high\",\n" +
+                "  \"delay_while_idle\": true,\n" +
+                "  \"interactive\": {\n" +
+                "    \"type\": \"ua_yes_no_foreground\",\n" +
+                "    \"button_actions\": {\n" +
+                "      \"yes\": {\n" +
+                "        \"add_tag\": \"butter\"\n" +
+                "      },\n" +
+                "      \"no\": {\n" +
+                "        \"remove_tag\": \"cool\"\n" +
+                "      }\n" +
+                "    }\n" +
+                "  },\n" +
+                "  \"title\": \"A title\",\n" +
+                "  \"local_only\": true,\n" +
+                "  \"wearable\": {\n" +
+                "    \"background_image\": \"https://yolo.pizza.biz/\",\n" +
+                "    \"interactive\": {\n" +
+                "      \"type\": \"ua_yes_no_foreground\",\n" +
+                "      \"button_actions\": {\n" +
+                "        \"yes\": {\n" +
+                "          \"add_tag\": \"butter\"\n" +
+                "        },\n" +
+                "        \"no\": {\n" +
+                "          \"remove_tag\": \"cool\"\n" +
+                "        }\n" +
+                "      }\n" +
+                "    },\n" +
+                "    \"extra_pages\": [\n" +
+                "      {\n" +
+                "        \"title\": \"Title1\",\n" +
+                "        \"alert\": \"An alert\"\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"title\": \"Title2\",\n" +
+                "        \"alert\": \"An alert again\"\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  },\n" +
+                "  \"summary\": \"A summary\",\n" +
+                "  \"sound\": \"cowbell.mp3\",\n" +
+                "  \"icon\": \"icon.xml\",\n" +
+                "  \"icon_color\": \"#012345\",\n" +
+                "  \"category\": \"alarm\",\n" +
+                "  \"priority\": 1,\n" +
+                "  \"style\": {\n" +
+                "    \"type\": \"big_text\",\n" +
+                "    \"big_text\": \"big text\",\n" +
+                "    \"title\": \"big text title\",\n" +
+                "    \"summary\": \"big text summary\"\n" +
+                "  },\n" +
+                "  \"time_to_live\": 12345,\n" +
+                "  \"visibility\": 1,\n" +
+                "  \"public_notification\": {\n" +
+                "    \"summary\": \"A summary\",\n" +
+                "    \"alert\": \"Hello!\",\n" +
+                "    \"title\": \"A greeting\"\n" +
+                "  },\n" +
+                "  \"actions\": {\n" +
+                "    \"open\": {\n" +
+                "      \"type\": \"url\",\n" +
+                "      \"content\": \"http://www.urbanairship.com\"\n" +
+                "    }\n" +
+                "  }\n" +
+                "}";
         String parsedJson = MAPPER.writeValueAsString(payload);
 
+        AndroidDevicePayload roundTripPayload = MAPPER.readValue(parsedJson, AndroidDevicePayload.class);
 
         JsonNode expected = MAPPER.readTree(json);
         JsonNode actual = MAPPER.readTree(parsedJson);
 
         assertEquals(expected, actual);
+        assertEquals(payload, roundTripPayload);
     }
 }
