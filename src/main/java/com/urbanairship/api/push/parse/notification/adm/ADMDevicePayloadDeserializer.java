@@ -46,6 +46,60 @@ public class ADMDevicePayloadDeserializer extends JsonDeserializer<ADMDevicePayl
                         reader.readInteractive(json);
                     }
                 })
+            .put("actions", new FieldParser<ADMDevicePayloadReader>() {
+                @Override
+                public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                    reader.readActions(json);
+                }
+            })
+            .put("icon", new FieldParser<ADMDevicePayloadReader>() {
+                @Override
+                public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                    reader.readIcon(json);
+                }
+            })
+            .put("icon_color", new FieldParser<ADMDevicePayloadReader>() {
+                @Override
+                public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                    reader.readIconColor(json);
+                }
+            })
+            .put("notification_channel", new FieldParser<ADMDevicePayloadReader>() {
+                @Override
+                public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                    reader.readNotificationChannel(json);
+                }
+            })
+            .put("notification_tag", new FieldParser<ADMDevicePayloadReader>() {
+                @Override
+                public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                    reader.readNotificationTag(json);
+                }
+            })
+            .put("sound", new FieldParser<ADMDevicePayloadReader>() {
+                @Override
+                public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                    reader.readSound(json);
+                }
+            })
+            .put("summary", new FieldParser<ADMDevicePayloadReader>() {
+                @Override
+                public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                    reader.readSummary(json);
+                }
+            })
+            .put("title", new FieldParser<ADMDevicePayloadReader>() {
+                @Override
+                public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                    reader.readTitle(json);
+                }
+            })
+            .put("style", new FieldParser<ADMDevicePayloadReader>() {
+                @Override
+                public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                    reader.readStyle(json);
+                }
+            })
             .build()
             );
 

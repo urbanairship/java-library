@@ -126,6 +126,12 @@ public class AndroidDevicePayloadDeserializer extends JsonDeserializer<AndroidDe
                             reader.readPublicNotification(json);
                         }
                     })
+                    .put("actions", new FieldParser<AndroidDevicePayloadReader>() {
+                        @Override
+                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                            reader.readActions(json);
+                        }
+                    })
                     .build()
     );
 

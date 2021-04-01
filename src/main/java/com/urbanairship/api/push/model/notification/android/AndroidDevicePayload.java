@@ -12,6 +12,7 @@ import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.urbanairship.api.push.model.notification.Interactive;
+import com.urbanairship.api.push.model.notification.actions.Actions;
 
 import java.util.Map;
 
@@ -39,6 +40,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
     private final Optional<Category> category;
     private final Optional<Integer> visibility;
     private final Optional<PublicNotification> publicNotification;
+    private final Optional<Actions> actions;
 
     private AndroidDevicePayload(Builder builder) {
         this.alert = Optional.fromNullable(builder.alert);
@@ -66,6 +68,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         this.category = Optional.fromNullable(builder.category);
         this.visibility = Optional.fromNullable(builder.visibility);
         this.publicNotification = Optional.fromNullable(builder.publicNotification);
+        this.actions = Optional.fromNullable(builder.actions);
     }
 
     /**
@@ -277,6 +280,15 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         return publicNotification;
     }
 
+    /**
+     * Get the actions object that describes Actions to be performed by the SDK when a user interacts with the notification.
+     *
+     * @return Optional Actions object.
+     */
+    public Optional<Actions> getActions() {
+        return actions;
+    }
+
     @Override
     public String toString() {
         return "AndroidDevicePayload{" +
@@ -300,6 +312,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
                 ", priority=" + priority +
                 ", category=" + category +
                 ", visibility=" + visibility +
+                ", actions=" + actions +
                 ", publicNotification=" + publicNotification +
                 '}';
     }
@@ -331,7 +344,8 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         if (!title.equals(that.title)) return false;
         if (!visibility.equals(that.visibility)) return false;
         if (!wearable.equals(that.wearable)) return false;
-        if (!publicNotification.equals(this.publicNotification)) return false;
+        if (!publicNotification.equals(that.publicNotification)) return false;
+        if (!actions.equals(that.actions)) return false;
 
         return true;
     }
@@ -359,6 +373,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         result = 31 * result + category.hashCode();
         result = 31 * result + visibility.hashCode();
         result = 31 * result + publicNotification.hashCode();
+        result = 31 * result + actions.hashCode();
 
         return result;
     }
@@ -386,6 +401,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         private Category category = null;
         private Integer visibility = null;
         private PublicNotification publicNotification = null;
+        private Actions actions;
 
         private Builder() { }
 
@@ -635,6 +651,17 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
          */
         public Builder setPublicNotification(PublicNotification publicNotification) {
             this.publicNotification = publicNotification;
+            return this;
+        }
+
+        /**
+         * Describes Actions to be performed by the SDK when a user interacts with the notification.
+         *
+         * @param actions Actions
+         * @return Builder
+         */
+        public Builder setActions(Actions actions) {
+            this.actions = actions;
             return this;
         }
 

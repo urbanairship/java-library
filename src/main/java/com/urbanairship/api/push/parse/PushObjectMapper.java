@@ -91,8 +91,10 @@ import com.urbanairship.api.push.model.notification.open.OpenPayload;
 import com.urbanairship.api.push.model.notification.richpush.RichPushIcon;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import com.urbanairship.api.push.model.notification.sms.SmsPayload;
+import com.urbanairship.api.push.model.notification.web.Button;
 import com.urbanairship.api.push.model.notification.web.WebDevicePayload;
 import com.urbanairship.api.push.model.notification.web.WebIcon;
+import com.urbanairship.api.push.model.notification.web.WebImage;
 import com.urbanairship.api.push.model.notification.wns.WNSAudioData;
 import com.urbanairship.api.push.model.notification.wns.WNSBadgeData;
 import com.urbanairship.api.push.model.notification.wns.WNSBinding;
@@ -151,11 +153,16 @@ import com.urbanairship.api.push.parse.notification.richpush.RichPushIconDeseria
 import com.urbanairship.api.push.parse.notification.richpush.RichPushIconSerializer;
 import com.urbanairship.api.push.parse.notification.richpush.RichPushMessageDeserializer;
 import com.urbanairship.api.push.parse.notification.richpush.RichPushMessageSerializer;
+import com.urbanairship.api.push.parse.notification.sms.SmsPayloadDeserializer;
 import com.urbanairship.api.push.parse.notification.sms.SmsPayloadSerializer;
+import com.urbanairship.api.push.parse.notification.web.ButtonDeserializer;
+import com.urbanairship.api.push.parse.notification.web.ButtonSerializer;
 import com.urbanairship.api.push.parse.notification.web.WebDevicePayloadDeserializer;
 import com.urbanairship.api.push.parse.notification.web.WebDevicePayloadSerializer;
 import com.urbanairship.api.push.parse.notification.web.WebIconDeserializer;
 import com.urbanairship.api.push.parse.notification.web.WebIconSerializer;
+import com.urbanairship.api.push.parse.notification.web.WebImageDeserializer;
+import com.urbanairship.api.push.parse.notification.web.WebImageSerializer;
 import com.urbanairship.api.push.parse.notification.wns.WNSAudioDeserializer;
 import com.urbanairship.api.push.parse.notification.wns.WNSAudioSerializer;
 import com.urbanairship.api.push.parse.notification.wns.WNSBadgeDeserializer;
@@ -203,6 +210,7 @@ public class PushObjectMapper {
         ADMDevicePayloadDeserializer admPayloadDS = new ADMDevicePayloadDeserializer();
         WebDevicePayloadDeserializer webPayloadDS = new WebDevicePayloadDeserializer();
         EmailPayloadDeserializer emailPayloadDS = new EmailPayloadDeserializer();
+        SmsPayloadDeserializer smsPayloadDS = new SmsPayloadDeserializer();
 
         NotificationDeserializer notificationDeserializer = new NotificationDeserializer(
                 ImmutableMap.<DeviceType, JsonDeserializer<? extends DevicePayloadOverride>>builder()
@@ -211,6 +219,8 @@ public class PushObjectMapper {
                         .put(DeviceType.ANDROID, androidPayloadDS)
                         .put(DeviceType.AMAZON, admPayloadDS)
                         .put(DeviceType.EMAIL, emailPayloadDS)
+                        .put(DeviceType.SMS, smsPayloadDS)
+                        .put(DeviceType.WEB, webPayloadDS)
                         .build());
 
         MODULE
@@ -307,6 +317,10 @@ public class PushObjectMapper {
                 .addDeserializer(WebDevicePayload.class, webPayloadDS)
                 .addSerializer(WebIcon.class, new WebIconSerializer())
                 .addDeserializer(WebIcon.class, new WebIconDeserializer())
+                .addSerializer(Button.class, new ButtonSerializer())
+                .addDeserializer(Button.class, new ButtonDeserializer())
+                .addSerializer(WebImage.class, new WebImageSerializer())
+                .addDeserializer(WebImage.class, new WebImageDeserializer())
 
                 /* SMS */
                 .addSerializer(SmsPayload.class, new SmsPayloadSerializer())

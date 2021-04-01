@@ -2,11 +2,15 @@ package com.urbanairship.api.push.model.notification.web;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.DeviceType;
+import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
+import com.urbanairship.api.push.model.notification.actions.Actions;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,12 +23,25 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
     private final Optional<ImmutableMap<String, String>> extra;
     private final Optional<WebIcon> webIcon;
     private final Optional<Boolean> requireInteraction;
+    private final Optional<Actions> actions;
+    private final Optional<WebImage> webImage;
+    private final Optional<PushExpiry> expiry;
+    private final Optional<ImmutableList<Button>> buttons;
 
     private WebDevicePayload(Builder builder) {
         this.alert = Optional.fromNullable(builder.alert);
         this.title = Optional.fromNullable(builder.title);
         this.webIcon = Optional.fromNullable(builder.webIcon);
         this.requireInteraction = Optional.fromNullable(builder.requireInteraction);
+        this.actions = Optional.fromNullable(builder.actions);
+        this.webImage = Optional.fromNullable(builder.webImage);
+        this.expiry = Optional.fromNullable(builder.expiry);
+
+        if (builder.buttons.build().isEmpty()) {
+            this.buttons = Optional.absent();
+        } else {
+            this.buttons = Optional.of(builder.buttons.build());
+        }
 
         if (builder.extra.build().isEmpty()) {
             this.extra = Optional.absent();
@@ -98,6 +115,47 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
         return requireInteraction;
     }
 
+    /**
+     * Get the Actions.
+     * Describes Actions to be performed by the SDK when a user interacts with the notification.
+     *
+     * @return Optional Actions
+     */
+    public Optional<Actions> getActions() {
+        return actions;
+    }
+
+    /**
+     * Get the WebImage object.
+     * A object that describes an image to be used with the web alert.
+     *
+     * @return Optional WebImage
+     */
+    public Optional<WebImage> getWebImage() {
+        return webImage;
+    }
+
+    /**
+     * Get the PushExpiry
+     * Delivery expiration, as either absolute ISO UTC timestamp, or number of seconds from now.
+     *
+     * @return Optional PushExpiry
+     */
+    public Optional<PushExpiry> getExpiry() {
+        return expiry;
+    }
+
+    /**
+     * Get the List of buttons.
+     * Contains one or two buttons that perform actions for the web notification.
+     * If you do not specify actions for a button, the button closes the notification without performing an action.
+     *
+     * @return Optional ImmutableList of Button objects.
+     */
+    public Optional<ImmutableList<Button>> getButtons() {
+        return buttons;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -112,13 +170,17 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
                 Objects.equal(title, payload.title) &&
                 Objects.equal(extra, payload.extra) &&
                 Objects.equal(webIcon, payload.webIcon)&&
-                Objects.equal(requireInteraction, payload.requireInteraction);
+                Objects.equal(requireInteraction, payload.requireInteraction) &&
+                Objects.equal(actions, payload.actions) &&
+                Objects.equal(webImage, payload.webImage) &&
+                Objects.equal(expiry, payload.expiry) &&
+                Objects.equal(buttons, payload.buttons);
     }
 
     @Override
     public int hashCode() {
         return Objects.hashCode(alert, title, extra, webIcon,
-                requireInteraction);
+                requireInteraction, actions, webImage, expiry, buttons);
     }
 
     @Override
@@ -129,6 +191,10 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
                 ", extra=" + extra +
                 ", webIcon=" + webIcon +
                 ", requireInteraction=" + requireInteraction +
+                ", actions=" + actions +
+                ", webImage=" + webImage +
+                ", expiry=" + expiry +
+                ", buttons=" + buttons +
                 '}';
     }
 
@@ -141,6 +207,10 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
         private ImmutableMap.Builder<String, String> extra = ImmutableMap.builder();
         private WebIcon webIcon = null;
         private Boolean requireInteraction = null;
+        private Actions actions = null;
+        private WebImage webImage = null;
+        private PushExpiry expiry = null;
+        private ImmutableList.Builder<Button> buttons = ImmutableList.builder();
 
         private Builder() { }
 
@@ -208,6 +278,68 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
          */
         public Builder setRequireInteraction(boolean value){
             this.requireInteraction = value;
+            return this;
+        }
+
+        /**
+         * Set the Actions.
+         * Describes Actions to be performed by the SDK when a user interacts with the notification.
+         *
+         * @param actions Actions
+         * @return Builder
+         */
+        public Builder setActions(Actions actions) {
+            this.actions = actions;
+            return this;
+        }
+
+        /**
+         * Set the WebImage object.
+         * A object that describes an image to be used with the web alert.
+         *
+         * @param webImage WebImage
+         * @return Builder
+         */
+        public Builder setWebImage(WebImage webImage) {
+            this.webImage = webImage;
+            return this;
+        }
+
+        /**
+         * Set the PushExpiry
+         * Delivery expiration, as either absolute ISO UTC timestamp, or number of seconds from now.
+         *
+         * @param expiry PushExpiry
+         * @return Builder
+         */
+        public Builder setExpiry(PushExpiry expiry) {
+            this.expiry = expiry;
+            return this;
+        }
+
+        /**
+         * Add a Button.
+         * Contains one or two buttons that perform actions for the web notification.
+         * If you do not specify actions for a button, the button closes the notification without performing an action.
+         *
+         * @param button Button
+         * @return Builder
+         */
+        public Builder addButton(Button button) {
+            buttons.add(button);
+            return this;
+        }
+
+        /**
+         * Add iterable of Button objects.
+         * Contains one or two buttons that perform actions for the web notification.
+         * If you do not specify actions for a button, the button closes the notification without performing an action.
+         *
+         * @param buttons Buttons
+         * @return Builder
+         */
+        public Builder addAllButtons(Iterable<? extends Button> buttons) {
+            this.buttons.addAll(buttons);
             return this;
         }
 

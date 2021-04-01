@@ -104,6 +104,10 @@ public class AndroidDevicePayloadSerializer extends JsonSerializer<AndroidDevice
             jgen.writeObjectField("public_notification", payload.getPublicNotification().get());
         }
 
+        if (payload.getActions().isPresent()) {
+            jgen.writeObjectField("actions", payload.getActions().get());
+        }
+
         jgen.writeEndObject();
     }
 }
