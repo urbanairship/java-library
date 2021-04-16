@@ -14,6 +14,7 @@ import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.notification.actions.Actions;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
+import com.urbanairship.api.push.model.notification.android.AndroidTemplate;
 import com.urbanairship.api.push.model.notification.android.Category;
 import com.urbanairship.api.push.model.notification.android.PublicNotification;
 import com.urbanairship.api.push.model.notification.android.Style;
@@ -115,6 +116,10 @@ public class AndroidDevicePayloadReader implements JsonObjectReader<AndroidDevic
 
     public void readActions(JsonParser parser) throws IOException {
         builder.setActions(parser.readValueAs(Actions.class));
+    }
+
+    public void readTemplate(JsonParser parser) throws IOException {
+        builder.setTemplate(parser.readValueAs(AndroidTemplate.class));
     }
 
     @Override

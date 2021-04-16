@@ -100,6 +100,12 @@ public class ADMDevicePayloadDeserializer extends JsonDeserializer<ADMDevicePayl
                     reader.readStyle(json);
                 }
             })
+            .put("template", new FieldParser<ADMDevicePayloadReader>() {
+                @Override
+                public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                    reader.readTemplate(json);
+                }
+            })
             .build()
             );
 

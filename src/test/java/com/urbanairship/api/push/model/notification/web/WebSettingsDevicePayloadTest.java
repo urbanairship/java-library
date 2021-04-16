@@ -42,6 +42,19 @@ public class WebSettingsDevicePayloadTest {
         assertTrue(m.getRequireInteraction().isPresent());
         assertEquals(true, m.getRequireInteraction().get());
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testIncorrectTemplateConfiguration() {
+        WebFields webFields = WebFields.newBuilder()
+                .setAlert("alert field")
+                .build();
+
+        WebTemplate webTemplate = WebTemplate.newBuilder()
+                .setTemplateId("templateId")
+                .setFields(webFields)
+                .build();
+
+    }
 }
 
 

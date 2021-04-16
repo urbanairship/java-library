@@ -2,6 +2,7 @@ package com.urbanairship.api.push.parse.notification.ios;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.jknack.handlebars.internal.HbsParser;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.notification.actions.Actions;
@@ -9,7 +10,9 @@ import com.urbanairship.api.push.model.notification.actions.OpenExternalURLActio
 import com.urbanairship.api.push.model.notification.ios.IOSAlertData;
 import com.urbanairship.api.push.model.notification.ios.IOSBadgeData;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
+import com.urbanairship.api.push.model.notification.ios.IOSFields;
 import com.urbanairship.api.push.model.notification.ios.IOSSoundData;
+import com.urbanairship.api.push.model.notification.ios.IOSTemplate;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.junit.Rule;
 import org.junit.Test;
@@ -419,5 +422,114 @@ public class PayloadDeserializerTest {
         IOSDevicePayload roundTripPayload = mapper.readValue(json, IOSDevicePayload.class);
 
         assertEquals(payload, roundTripPayload);
+    }
+
+    @Test
+    public void testTemplatesIosFieldsDeserialization() throws Exception {
+        IOSFields iosFieldsExpected = IOSFields.newBuilder()
+                .setAlert("{{NAME}} stymies the {{OTHER_TEAM}} for San Francisco's first perfect game in franchise history.")
+                .setSubtitle("San Francisco Giants {{DATE}}")
+                .setTitle("{{NAME}} Throws a Perfect Game")
+                .build();
+
+        String json = "{\n" +
+                "  \"title\": \"{{NAME}} Throws a Perfect Game\",\n" +
+                "  \"alert\": \"{{NAME}} stymies the {{OTHER_TEAM}} for San Francisco's first perfect game in franchise history.\",\n" +
+                "  \"subtitle\": \"San Francisco Giants {{DATE}}\"\n" +
+                "}";
+
+        IOSFields iosFieldsActual = mapper.readValue(json, IOSFields.class);
+
+        String roundTripJsonStr = mapper.writeValueAsString(iosFieldsActual);
+        JsonNode iosFieldsExpectedJson = mapper.readTree(json);
+        JsonNode iosFieldsActualJson = mapper.readTree(roundTripJsonStr);
+
+        assertEquals(iosFieldsExpected, iosFieldsActual);
+        assertEquals(iosFieldsExpectedJson, iosFieldsActualJson);
+    }
+
+    @Test
+    public void testTemplateDeserialization() throws Exception {
+        IOSFields iosFields = IOSFields.newBuilder()
+                .setAlert("{{NAME}} stymies the {{OTHER_TEAM}} for San Francisco's first perfect game in franchise history.")
+                .setSubtitle("San Francisco Giants {{DATE}}")
+                .setTitle("{{NAME}} Throws a Perfect Game")
+                .build();
+
+        IOSTemplate iosTemplateWithFields = IOSTemplate.newBuilder()
+                .setFields(iosFields)
+                .build();
+
+        IOSTemplate iosTemplateWithId = IOSTemplate.newBuilder()
+                .setTemplateId("templateId")
+                .build();
+
+        String json = mapper.writeValueAsString(iosTemplateWithFields);
+        String jsonWithId = mapper.writeValueAsString(iosTemplateWithId);
+
+        String jsonStrExpected = "{\n" +
+                "  \"fields\": {\n" +
+                "    \"alert\": \"{{NAME}} stymies the {{OTHER_TEAM}} for San Francisco's first perfect game in franchise history.\",\n" +
+                "    \"subtitle\": \"San Francisco Giants {{DATE}}\",\n" +
+                "    \"title\": \"{{NAME}} Throws a Perfect Game\"\n" +
+                "  }\n" +
+                "}";
+
+        String jsonStrExpectedWithId = "{\"template_id\":\"templateId\"}";
+
+        IOSTemplate iosTemplateWithFieldsRoundTrip = mapper.readValue(json, IOSTemplate.class);
+        IOSTemplate iosTemplateWithIdRoundTrip = mapper.readValue(jsonWithId, IOSTemplate.class);
+
+        assertEquals(iosTemplateWithFields, iosTemplateWithFieldsRoundTrip);
+        assertEquals(iosTemplateWithId, iosTemplateWithIdRoundTrip);
+
+        JsonNode expectedJson = mapper.readTree(jsonStrExpected);
+        JsonNode expectedJsonWithId = mapper.readTree(jsonStrExpectedWithId);
+
+        JsonNode actualJson = mapper.readTree(json);
+        JsonNode actualJsonWithId = mapper.readTree(jsonWithId);
+
+        assertEquals(expectedJson, actualJson);
+        assertEquals(expectedJsonWithId, actualJsonWithId);
+    }
+
+    @Test
+    public void testPayloadWithTemplate() throws Exception {
+        IOSFields iosFields = IOSFields.newBuilder()
+                .setAlert("{{NAME}} stymies the {{OTHER_TEAM}} for San Francisco's first perfect game in franchise history.")
+                .setSubtitle("San Francisco Giants {{DATE}}")
+                .setTitle("{{NAME}} Throws a Perfect Game")
+                .build();
+
+        IOSTemplate iosTemplateWithFields = IOSTemplate.newBuilder()
+                .setFields(iosFields)
+                .build();
+
+        IOSDevicePayload payload = IOSDevicePayload.newBuilder()
+                .setIosTemplate(iosTemplateWithFields)
+                .build();
+
+        String json = mapper.writeValueAsString(payload);
+
+        IOSDevicePayload roundTripPayload = mapper.readValue(json, IOSDevicePayload.class);
+
+        assertEquals(payload, roundTripPayload);
+    }
+
+    @Test
+    public void testPayloadWithTemplateId() throws Exception {
+        IOSTemplate iosTemplateWithId = IOSTemplate.newBuilder()
+                .setTemplateId("templateId")
+                .build();
+
+        IOSDevicePayload iosDevicePayload = IOSDevicePayload.newBuilder()
+                .setIosTemplate(iosTemplateWithId)
+                .build();
+
+        String actualJson = mapper.writeValueAsString(iosDevicePayload);
+
+        IOSDevicePayload roundTripIosDevicePayload = mapper.readValue(actualJson, IOSDevicePayload.class);
+
+        assertEquals(iosDevicePayload, roundTripIosDevicePayload);
     }
 }

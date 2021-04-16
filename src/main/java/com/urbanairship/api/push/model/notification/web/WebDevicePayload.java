@@ -27,6 +27,7 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
     private final Optional<WebImage> webImage;
     private final Optional<PushExpiry> expiry;
     private final Optional<ImmutableList<Button>> buttons;
+    private final Optional<WebTemplate> template;
 
     private WebDevicePayload(Builder builder) {
         this.alert = Optional.fromNullable(builder.alert);
@@ -36,6 +37,7 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
         this.actions = Optional.fromNullable(builder.actions);
         this.webImage = Optional.fromNullable(builder.webImage);
         this.expiry = Optional.fromNullable(builder.expiry);
+        this.template = Optional.fromNullable(builder.webTemplate);
 
         if (builder.buttons.build().isEmpty()) {
             this.buttons = Optional.absent();
@@ -156,6 +158,15 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
         return buttons;
     }
 
+    /**
+     * Get the template with web-specific message.
+     *
+     * @return Optional WebTemplate
+     */
+    public Optional<WebTemplate> getTemplate() {
+        return template;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -174,13 +185,14 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
                 Objects.equal(actions, payload.actions) &&
                 Objects.equal(webImage, payload.webImage) &&
                 Objects.equal(expiry, payload.expiry) &&
-                Objects.equal(buttons, payload.buttons);
+                Objects.equal(buttons, payload.buttons) &&
+                Objects.equal(template, payload.template);
     }
 
     @Override
     public int hashCode() {
         return Objects.hashCode(alert, title, extra, webIcon,
-                requireInteraction, actions, webImage, expiry, buttons);
+                requireInteraction, actions, webImage, expiry, buttons, template);
     }
 
     @Override
@@ -195,6 +207,7 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
                 ", webImage=" + webImage +
                 ", expiry=" + expiry +
                 ", buttons=" + buttons +
+                ", template=" + template +
                 '}';
     }
 
@@ -211,6 +224,7 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
         private WebImage webImage = null;
         private PushExpiry expiry = null;
         private ImmutableList.Builder<Button> buttons = ImmutableList.builder();
+        private WebTemplate webTemplate = null;
 
         private Builder() { }
 
@@ -340,6 +354,17 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
          */
         public Builder addAllButtons(Iterable<? extends Button> buttons) {
             this.buttons.addAll(buttons);
+            return this;
+        }
+
+        /**
+         * Set a template with web-specific message.
+         *
+         * @param webTemplate WebTemplate
+         * @return Builder
+         */
+        public Builder setTemplate(WebTemplate webTemplate) {
+            this.webTemplate = webTemplate;
             return this;
         }
 

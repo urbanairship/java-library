@@ -72,6 +72,10 @@ public class ADMDevicePayloadSerializer extends JsonSerializer<ADMDevicePayload>
             jgen.writeObjectField("style", payload.getStyle().get());
         }
 
+        if (payload.getTemplate().isPresent()) {
+            jgen.writeObjectField("template", payload.getTemplate().get());
+        }
+
         jgen.writeEndObject();
     }
 }

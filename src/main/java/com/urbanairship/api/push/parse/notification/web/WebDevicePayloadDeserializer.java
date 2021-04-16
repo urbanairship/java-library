@@ -66,6 +66,12 @@ public class WebDevicePayloadDeserializer extends JsonDeserializer<WebDevicePayl
                             reader.readButtons(json);
                         }
                     })
+                    .put("template", new FieldParser<WebDevicePayloadReader>() {
+                        @Override
+                        public void parse(WebDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                            reader.readTemplate(json);
+                        }
+                    })
                     .build()
     );
 

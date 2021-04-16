@@ -4,9 +4,11 @@
 
 package com.urbanairship.api.templates.parse;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.schedule.model.Schedule;
@@ -34,6 +36,8 @@ public class TemplatesObjectMapper {
         MAPPER.registerModule(MODULE);
         MAPPER.registerModule(new JodaModule());
         MAPPER.registerModule(PushObjectMapper.getModule());
+        MAPPER.setSerializationInclusion(JsonInclude.Include.NON_ABSENT);
+        MAPPER.registerModule(new Jdk8Module());
     }
 
     public static SimpleModule getModule() {

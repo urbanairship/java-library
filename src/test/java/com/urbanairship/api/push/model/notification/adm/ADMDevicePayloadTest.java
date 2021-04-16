@@ -45,4 +45,17 @@ public class ADMDevicePayloadTest {
             .setShare(new ShareAction("foo"))
             .build()));
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testIncorrectTemplateConfiguration() {
+        ADMFields admFields = ADMFields.newBuilder()
+                .setAlert("alert field")
+                .build();
+
+        ADMTemplate admTemplate = ADMTemplate.newBuilder()
+                .setTemplateId("templateId")
+                .setFields(admFields)
+                .build();
+
+    }
 }

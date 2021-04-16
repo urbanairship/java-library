@@ -32,6 +32,7 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
     private final Optional<String> summary;
     private final Optional<String> title;
     private final Optional<Style> style;
+    private final Optional<ADMTemplate> template;
 
     private ADMDevicePayload(Builder builder) {
         this.alert = Optional.fromNullable(builder.alert);
@@ -52,6 +53,7 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
         this.summary = Optional.fromNullable(builder.summary);
         this.title = Optional.fromNullable(builder.title);
         this.style = Optional.fromNullable(builder.style);
+        this.template = Optional.fromNullable(builder.template);
     }
 
     public static Builder newBuilder() {
@@ -169,6 +171,15 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
         return style;
     }
 
+    /**
+     * Get the template with amazon-specific message.
+     *
+     * @return Optional ADMTemplate
+     */
+    public Optional<ADMTemplate> getTemplate() {
+        return template;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -187,12 +198,13 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
                 Objects.equal(sound, that.sound) &&
                 Objects.equal(summary, that.summary) &&
                 Objects.equal(title, that.title) &&
-                Objects.equal(style, that.style);
+                Objects.equal(style, that.style) &&
+                Objects.equal(template, that.template);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(alert, consolidationKey, expiresAfter, extra, interactive, actions, icon, iconColor, notificationChannel, notificationTag, sound, summary, title, style);
+        return Objects.hashCode(alert, consolidationKey, expiresAfter, extra, interactive, actions, icon, iconColor, notificationChannel, notificationTag, sound, summary, title, style, template);
     }
 
     public static class Builder {
@@ -210,6 +222,7 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
         private String summary = null;
         private String title = null;
         private Style style = null;
+        private ADMTemplate template = null;
 
         private Builder() { }
 
@@ -334,6 +347,17 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
          */
         public Builder setStyle(Style style) {
             this.style = style;
+            return this;
+        }
+
+        /**
+         * Set a template with amazon-specific message.
+         *
+         * @param template ADMTemplate
+         * @return Builder
+         */
+        public Builder setTemplate(ADMTemplate template) {
+            this.template = template;
             return this;
         }
 

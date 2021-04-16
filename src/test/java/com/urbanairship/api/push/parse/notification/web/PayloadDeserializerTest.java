@@ -1,8 +1,11 @@
 package com.urbanairship.api.push.parse.notification.web;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.push.model.notification.web.WebDevicePayload;
+import com.urbanairship.api.push.model.notification.web.WebFields;
 import com.urbanairship.api.push.model.notification.web.WebIcon;
+import com.urbanairship.api.push.model.notification.web.WebTemplate;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.junit.Test;
 
@@ -116,5 +119,48 @@ public class PayloadDeserializerTest {
         WebDevicePayload payload = MAPPER.readValue(json, WebDevicePayload.class);
         assertNotNull(payload);
         assertEquals(expected.getRequireInteraction().get(), payload.getRequireInteraction().get());
+    }
+
+    @Test
+    public void testRoundTrip() throws Exception {
+        WebIcon webIcon = WebIcon.newBuilder()
+                .setUrl("example.com")
+                .build();
+
+        WebFields webFields = WebFields.newBuilder()
+                .setAlert("Vote now, {{name}}!")
+                .setTitle("Geese? Or ducks!")
+                .setWebIcon(webIcon)
+                .build();
+
+        WebTemplate webTemplate = WebTemplate.newBuilder()
+                .setFields(webFields)
+                .build();
+
+        WebDevicePayload webDevicePayload = WebDevicePayload.newBuilder()
+                .setTemplate(webTemplate)
+                .build();
+
+        String expectedJsonStr = "{\n" +
+                "  \"template\": {\n" +
+                "    \"fields\": {\n" +
+                "      \"alert\": \"Vote now, {{name}}!\",\n" +
+                "      \"icon\": {\n" +
+                "        \"url\": \"example.com\"\n" +
+                "      },\n" +
+                "      \"title\": \"Geese? Or ducks!\"\n" +
+                "    }\n" +
+                "  }\n" +
+                "}";
+
+        String actualJsonStr = MAPPER.writeValueAsString(webDevicePayload);
+
+        WebDevicePayload roundTripWebDevicePayload = MAPPER.readValue(actualJsonStr, WebDevicePayload.class);
+
+        JsonNode expectedJson = MAPPER.readTree(expectedJsonStr);
+        JsonNode actualJson = MAPPER.readTree(actualJsonStr);
+
+        assertEquals(expectedJson, actualJson);
+        assertEquals(webDevicePayload, roundTripWebDevicePayload);
     }
 }
