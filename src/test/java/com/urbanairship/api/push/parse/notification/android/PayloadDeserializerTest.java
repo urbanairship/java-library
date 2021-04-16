@@ -1,5 +1,6 @@
 package com.urbanairship.api.push.parse.notification.android;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -9,6 +10,8 @@ import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.notification.actions.Actions;
 import com.urbanairship.api.push.model.notification.actions.ShareAction;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
+import com.urbanairship.api.push.model.notification.android.AndroidFields;
+import com.urbanairship.api.push.model.notification.android.AndroidTemplate;
 import com.urbanairship.api.push.model.notification.android.Category;
 import com.urbanairship.api.push.model.notification.android.PublicNotification;
 import com.urbanairship.api.push.model.notification.android.Style;
@@ -16,6 +19,7 @@ import com.urbanairship.api.push.model.notification.android.Wearable;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -459,5 +463,90 @@ public class PayloadDeserializerTest {
         assertEquals(publicNotification.getSummary().get(), "A summary");
         assertEquals(publicNotification.getTitle().get(), "A title");
         assertEquals(publicNotification.getAlert().get(), "An alert");
+    }
+
+    @Test
+    public void testTemplate() throws Exception {
+        AndroidFields fields = AndroidFields.newBuilder()
+                .setTitle("Shoe sale on {{level}} floor!")
+                .setAlert("All the shoes are on sale {{name}}!")
+                .setSummary("Don't miss out!")
+                .setIcon("shoes")
+                .setIconColor("{{iconColor}}")
+                .build();
+
+        AndroidTemplate template = AndroidTemplate.newBuilder()
+                .setFields(fields)
+                .build();
+
+        AndroidTemplate templateWithId = AndroidTemplate.newBuilder()
+                .setTemplateId("608f1f6c-8860-c617-a803-b187b491568e")
+                .build();
+
+        Map<String, String> entries = new HashMap<>();
+        entries.put("url", "http://example.com");
+        entries.put("story_id", "1234");
+
+        AndroidDevicePayload androidDevicePayload = AndroidDevicePayload.newBuilder()
+                .setTemplate(template)
+                .setNotificationChannel("promos")
+                .addAllExtraEntries(entries)
+                .build();
+
+        AndroidDevicePayload androidDevicePayloadWithId = AndroidDevicePayload.newBuilder()
+                .setTemplate(templateWithId)
+                .setNotificationChannel("promos")
+                .addAllExtraEntries(entries)
+                .build();
+
+
+        String actualJsonStr = mapper.writeValueAsString(androidDevicePayload);
+
+        AndroidDevicePayload androidDevicePayloadRoundTrip = mapper.readValue(actualJsonStr, AndroidDevicePayload.class);
+
+        assertEquals(androidDevicePayload, androidDevicePayloadRoundTrip);
+
+        String json = "{\n" +
+                "  \"notification_channel\": \"promos\",\n" +
+                "  \"extra\": {\n" +
+                "    \"story_id\": \"1234\",\n" +
+                "    \"url\": \"http://example.com\"\n" +
+                "  },\n" +
+                "  \"template\": {\n" +
+                "    \"fields\": {\n" +
+                "      \"alert\": \"All the shoes are on sale {{name}}!\",\n" +
+                "      \"icon\": \"shoes\",\n" +
+                "      \"icon_color\": \"{{iconColor}}\",\n" +
+                "      \"summary\": \"Don't miss out!\",\n" +
+                "      \"title\": \"Shoe sale on {{level}} floor!\"\n" +
+                "    }\n" +
+                "  }\n" +
+                "}";
+
+        JsonNode expectedJson = mapper.readTree(json);
+        JsonNode actualJson = mapper.readTree(actualJsonStr);
+
+        assertEquals(expectedJson, actualJson);
+
+        String jsonWithId = "{\n" +
+                "  \"notification_channel\": \"promos\",\n" +
+                "  \"extra\": {\n" +
+                "    \"story_id\": \"1234\",\n" +
+                "    \"url\": \"http://example.com\"\n" +
+                "  },\n" +
+                "  \"template\": {\n" +
+                "    \"template_id\": \"608f1f6c-8860-c617-a803-b187b491568e\"\n" +
+                "  }\n" +
+                "}";
+
+        String jsonWithIdActual = mapper.writeValueAsString(androidDevicePayloadWithId);
+
+        AndroidDevicePayload roundTripPayloadWithId = mapper.readValue(jsonWithIdActual, AndroidDevicePayload.class);
+
+        JsonNode expectedJsonWithTemplateId = mapper.readTree(jsonWithId);
+        JsonNode actualJsonWithTemplateId = mapper.readTree(jsonWithIdActual);
+
+        assertEquals(expectedJsonWithTemplateId, actualJsonWithTemplateId);
+        assertEquals(androidDevicePayloadWithId, roundTripPayloadWithId);
     }
 }

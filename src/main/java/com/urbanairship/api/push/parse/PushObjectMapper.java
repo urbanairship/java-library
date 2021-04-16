@@ -4,11 +4,13 @@
 
 package com.urbanairship.api.push.parse;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.channel.model.email.EmailChannelResponse;
 import com.urbanairship.api.channel.model.email.RegisterEmailChannel;
@@ -78,7 +80,11 @@ import com.urbanairship.api.push.model.notification.actions.RemoveTagAction;
 import com.urbanairship.api.push.model.notification.actions.ShareAction;
 import com.urbanairship.api.push.model.notification.actions.TagActionData;
 import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
+import com.urbanairship.api.push.model.notification.adm.ADMFields;
+import com.urbanairship.api.push.model.notification.adm.ADMTemplate;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
+import com.urbanairship.api.push.model.notification.android.AndroidFields;
+import com.urbanairship.api.push.model.notification.android.AndroidTemplate;
 import com.urbanairship.api.push.model.notification.android.BigPictureStyle;
 import com.urbanairship.api.push.model.notification.android.BigTextStyle;
 import com.urbanairship.api.push.model.notification.android.Category;
@@ -93,8 +99,10 @@ import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import com.urbanairship.api.push.model.notification.sms.SmsPayload;
 import com.urbanairship.api.push.model.notification.web.Button;
 import com.urbanairship.api.push.model.notification.web.WebDevicePayload;
+import com.urbanairship.api.push.model.notification.web.WebFields;
 import com.urbanairship.api.push.model.notification.web.WebIcon;
 import com.urbanairship.api.push.model.notification.web.WebImage;
+import com.urbanairship.api.push.model.notification.web.WebTemplate;
 import com.urbanairship.api.push.model.notification.wns.WNSAudioData;
 import com.urbanairship.api.push.model.notification.wns.WNSBadgeData;
 import com.urbanairship.api.push.model.notification.wns.WNSBinding;
@@ -132,8 +140,12 @@ import com.urbanairship.api.push.parse.notification.actions.TagActionDataDeseria
 import com.urbanairship.api.push.parse.notification.actions.TagActionDataSerializer;
 import com.urbanairship.api.push.parse.notification.adm.ADMDevicePayloadDeserializer;
 import com.urbanairship.api.push.parse.notification.adm.ADMDevicePayloadSerializer;
+import com.urbanairship.api.push.parse.notification.adm.ADMFieldsDeserializer;
+import com.urbanairship.api.push.parse.notification.adm.ADMTemplateDeserializer;
 import com.urbanairship.api.push.parse.notification.android.AndroidDevicePayloadDeserializer;
 import com.urbanairship.api.push.parse.notification.android.AndroidDevicePayloadSerializer;
+import com.urbanairship.api.push.parse.notification.android.AndroidFieldsDeserializer;
+import com.urbanairship.api.push.parse.notification.android.AndroidTemplateDeserializer;
 import com.urbanairship.api.push.parse.notification.android.BigPictureStyleDeserializer;
 import com.urbanairship.api.push.parse.notification.android.BigPictureStyleSerializer;
 import com.urbanairship.api.push.parse.notification.android.BigTextStyleDeserializer;
@@ -159,10 +171,12 @@ import com.urbanairship.api.push.parse.notification.web.ButtonDeserializer;
 import com.urbanairship.api.push.parse.notification.web.ButtonSerializer;
 import com.urbanairship.api.push.parse.notification.web.WebDevicePayloadDeserializer;
 import com.urbanairship.api.push.parse.notification.web.WebDevicePayloadSerializer;
+import com.urbanairship.api.push.parse.notification.web.WebFieldsDeserializer;
 import com.urbanairship.api.push.parse.notification.web.WebIconDeserializer;
 import com.urbanairship.api.push.parse.notification.web.WebIconSerializer;
 import com.urbanairship.api.push.parse.notification.web.WebImageDeserializer;
 import com.urbanairship.api.push.parse.notification.web.WebImageSerializer;
+import com.urbanairship.api.push.parse.notification.web.WebTemplateDeserializer;
 import com.urbanairship.api.push.parse.notification.wns.WNSAudioDeserializer;
 import com.urbanairship.api.push.parse.notification.wns.WNSAudioSerializer;
 import com.urbanairship.api.push.parse.notification.wns.WNSBadgeDeserializer;
@@ -272,6 +286,8 @@ public class PushObjectMapper {
                 .addDeserializer(IOSMediaContent.class, new IOSMediaContentDeserializer())
                 .addSerializer(IOSSoundData.class, new IOSSoundDataSerializer())
                 .addDeserializer(IOSSoundData.class, new IOSSoundDataDeserializer())
+                .addDeserializer(IOSFields.class, new IOSFieldsDeserializer())
+                .addDeserializer(IOSTemplate.class, new IOSTemplateDeserializer())
 
                 /* WNS enums */
                 .addSerializer(WNSToastData.Duration.class, new WNSDurationSerializer())
@@ -311,6 +327,8 @@ public class PushObjectMapper {
                 .addDeserializer(Category.class, new CategoryDeserializer())
                 .addSerializer(PublicNotification.class, new PublicNotificationSerializer())
                 .addDeserializer(PublicNotification.class, new PublicNotificationDeserializer())
+                .addDeserializer(AndroidTemplate.class, new AndroidTemplateDeserializer())
+                .addDeserializer(AndroidFields.class, new AndroidFieldsDeserializer())
 
                 /* WebSettings */
                 .addSerializer(WebDevicePayload.class, new WebDevicePayloadSerializer())
@@ -321,6 +339,8 @@ public class PushObjectMapper {
                 .addDeserializer(Button.class, new ButtonDeserializer())
                 .addSerializer(WebImage.class, new WebImageSerializer())
                 .addDeserializer(WebImage.class, new WebImageDeserializer())
+                .addDeserializer(WebTemplate.class, new WebTemplateDeserializer())
+                .addDeserializer(WebFields.class, new WebFieldsDeserializer())
 
                 /* SMS */
                 .addSerializer(SmsPayload.class, new SmsPayloadSerializer())
@@ -328,6 +348,8 @@ public class PushObjectMapper {
                 /* AMAZON */
                 .addSerializer(ADMDevicePayload.class, new ADMDevicePayloadSerializer())
                 .addDeserializer(ADMDevicePayload.class, admPayloadDS)
+                .addDeserializer(ADMTemplate.class, new ADMTemplateDeserializer())
+                .addDeserializer(ADMFields.class, new ADMFieldsDeserializer())
 
                 /* Rich Push */
                 .addSerializer(RichPushMessage.class, new RichPushMessageSerializer())
@@ -398,7 +420,9 @@ public class PushObjectMapper {
 
         MAPPER.registerModule(MODULE);
         MAPPER.registerModule(CommonObjectMapper.getModule());
+        MAPPER.registerModule(new Jdk8Module());
         MAPPER.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+        MAPPER.setSerializationInclusion(JsonInclude.Include.NON_ABSENT);
     }
 
     public static SimpleModule getModule() {

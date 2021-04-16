@@ -38,5 +38,18 @@ public class AndroidDevicePayloadTest {
                 .build();
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testIncorrectTemplateConfiguration() {
+        AndroidFields androidFields = AndroidFields.newBuilder()
+                .setAlert("alert field")
+                .build();
+
+        AndroidTemplate androidTemplate = AndroidTemplate.newBuilder()
+                .setTemplateId("templateId")
+                .setFields(androidFields)
+                .build();
+
+    }
+
 }
 

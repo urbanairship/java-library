@@ -132,6 +132,12 @@ public class AndroidDevicePayloadDeserializer extends JsonDeserializer<AndroidDe
                             reader.readActions(json);
                         }
                     })
+                    .put("template", new FieldParser<AndroidDevicePayloadReader>() {
+                        @Override
+                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                            reader.readTemplate(json);
+                        }
+                    })
                     .build()
     );
 

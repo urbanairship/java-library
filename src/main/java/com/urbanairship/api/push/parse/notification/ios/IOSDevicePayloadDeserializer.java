@@ -117,6 +117,12 @@ public class IOSDevicePayloadDeserializer extends JsonDeserializer<IOSDevicePayl
                     reader.readTargetContentId(json);
                 }
             })
+            .put("template", new FieldParser<IOSDevicePayloadReader>() {
+                @Override
+                public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                    reader.readIosTemplate(json);
+                }
+            })
             .build()
             );
 

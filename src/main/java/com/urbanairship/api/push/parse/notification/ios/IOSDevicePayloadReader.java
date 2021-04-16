@@ -15,6 +15,7 @@ import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.notification.actions.Actions;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
+import com.urbanairship.api.push.model.notification.ios.IOSTemplate;
 
 import java.io.IOException;
 
@@ -95,6 +96,11 @@ public class IOSDevicePayloadReader implements JsonObjectReader<IOSDevicePayload
     public void readTargetContentId(JsonParser parser) throws IOException {
         builder.setTargetContentId(StringFieldDeserializer.INSTANCE.deserialize(parser, "target_content_id"));
     }
+
+    public void readIosTemplate(JsonParser parser) throws IOException {
+        builder.setIosTemplate(parser.readValueAs(IOSTemplate.class));
+    }
+
     @Override
     public IOSDevicePayload validateAndBuild() throws IOException {
         try {
