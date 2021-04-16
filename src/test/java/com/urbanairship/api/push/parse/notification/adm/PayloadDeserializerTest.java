@@ -1,5 +1,6 @@
 package com.urbanairship.api.push.parse.notification.adm;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.DeviceType;
@@ -12,6 +13,8 @@ import com.urbanairship.api.push.model.notification.actions.Actions;
 import com.urbanairship.api.push.model.notification.actions.OpenExternalURLAction;
 import com.urbanairship.api.push.model.notification.actions.ShareAction;
 import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
+import com.urbanairship.api.push.model.notification.adm.ADMFields;
+import com.urbanairship.api.push.model.notification.adm.ADMTemplate;
 import com.urbanairship.api.push.model.notification.android.BigPictureStyle;
 import com.urbanairship.api.push.model.notification.android.BigTextStyle;
 import com.urbanairship.api.push.parse.PushObjectMapper;
@@ -101,6 +104,48 @@ public class PayloadDeserializerTest {
 
         ADMDevicePayload roundTripPayload = mapper.readValue(payloadStr, ADMDevicePayload.class);
 
+        assertEquals(admDevicePayload, roundTripPayload);
+    }
+
+    @Test
+    public void templatePushRoundTripTest() throws IOException {
+        ADMFields admFields = ADMFields.newBuilder()
+                .setTitle("Shoe sale on {{level}} floor!")
+                .setAlert("All the shoes are on sale {{name}}!")
+                .setSummary("Don't miss out!")
+                .setIcon("shoes")
+                .setIconColor("{{iconColor}}")
+                .build();
+
+        ADMTemplate admTemplate = ADMTemplate.newBuilder()
+                .setFields(admFields)
+                .build();
+
+        ADMDevicePayload admDevicePayload = ADMDevicePayload.newBuilder()
+                .setTemplate(admTemplate)
+                .build();
+
+
+        String expectedStr = "{\n" +
+                "      \"template\": {\n" +
+                "         \"fields\": {\n" +
+                "            \"title\": \"Shoe sale on {{level}} floor!\",\n" +
+                "            \"alert\": \"All the shoes are on sale {{name}}!\",\n" +
+                "            \"summary\": \"Don't miss out!\",\n" +
+                "            \"icon\": \"shoes\",\n" +
+                "            \"icon_color\": \"{{iconColor}}\"\n" +
+                "         }\n" +
+                "      }\n" +
+                "   }";
+
+        String actualStr = mapper.writeValueAsString(admDevicePayload);
+
+        ADMDevicePayload roundTripPayload = mapper.readValue(actualStr, ADMDevicePayload.class);
+
+        JsonNode expectedJson = mapper.readTree(expectedStr);
+        JsonNode actualJson = mapper.readTree(actualStr);
+
+        assertEquals(expectedJson, actualJson);
         assertEquals(admDevicePayload, roundTripPayload);
     }
 }

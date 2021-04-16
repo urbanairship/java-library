@@ -85,6 +85,10 @@ public class IOSDevicePayloadSerializer extends JsonSerializer<IOSDevicePayload>
             jgen.writeStringField("target_content_id", payload.getTargetContentId().get());
         }
 
+        if (payload.getIosTemplate().isPresent()) {
+            jgen.writeObjectField("template", payload.getIosTemplate().get());
+        }
+
         jgen.writeEndObject();
     }
 }

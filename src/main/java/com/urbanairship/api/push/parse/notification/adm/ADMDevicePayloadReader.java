@@ -13,6 +13,7 @@ import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.notification.actions.Actions;
 import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
+import com.urbanairship.api.push.model.notification.adm.ADMTemplate;
 import com.urbanairship.api.push.model.notification.android.Style;
 
 import java.io.IOException;
@@ -78,6 +79,10 @@ public class ADMDevicePayloadReader implements JsonObjectReader<ADMDevicePayload
 
     public void readStyle(JsonParser parser) throws IOException {
         builder.setStyle(parser.readValueAs(Style.class));
+    }
+
+    public void readTemplate(JsonParser parser) throws IOException {
+        builder.setTemplate(parser.readValueAs(ADMTemplate.class));
     }
 
     @Override

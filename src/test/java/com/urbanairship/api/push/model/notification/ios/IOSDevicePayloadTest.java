@@ -112,4 +112,17 @@ public class IOSDevicePayloadTest {
         assertEquals("unique ID", m.getThreadId().get());
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testIncorrectTemplateConfiguration() {
+        IOSFields iosFields = IOSFields.newBuilder()
+                .setAlert("alert field")
+                .build();
+
+        IOSTemplate iosTemplate = IOSTemplate.newBuilder()
+                .setTemplateId("templateId")
+                .setFields(iosFields)
+                .build();
+
+    }
+
 }

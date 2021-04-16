@@ -41,6 +41,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
     private final Optional<Integer> visibility;
     private final Optional<PublicNotification> publicNotification;
     private final Optional<Actions> actions;
+    private final Optional<AndroidTemplate> template;
 
     private AndroidDevicePayload(Builder builder) {
         this.alert = Optional.fromNullable(builder.alert);
@@ -69,6 +70,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         this.visibility = Optional.fromNullable(builder.visibility);
         this.publicNotification = Optional.fromNullable(builder.publicNotification);
         this.actions = Optional.fromNullable(builder.actions);
+        this.template = Optional.fromNullable(builder.template);
     }
 
     /**
@@ -289,6 +291,15 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         return actions;
     }
 
+    /**
+     * Get the template with android-specific message.
+     *
+     * @return Optional AndroidTemplate
+     */
+    public Optional<AndroidTemplate> getTemplate() {
+        return template;
+    }
+
     @Override
     public String toString() {
         return "AndroidDevicePayload{" +
@@ -314,6 +325,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
                 ", visibility=" + visibility +
                 ", actions=" + actions +
                 ", publicNotification=" + publicNotification +
+                ", template=" + template +
                 '}';
     }
 
@@ -346,6 +358,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         if (!wearable.equals(that.wearable)) return false;
         if (!publicNotification.equals(that.publicNotification)) return false;
         if (!actions.equals(that.actions)) return false;
+        if (!template.equals(that.template)) return false;
 
         return true;
     }
@@ -374,6 +387,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         result = 31 * result + visibility.hashCode();
         result = 31 * result + publicNotification.hashCode();
         result = 31 * result + actions.hashCode();
+        result = 31 * result + template.hashCode();
 
         return result;
     }
@@ -402,6 +416,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         private Integer visibility = null;
         private PublicNotification publicNotification = null;
         private Actions actions;
+        private AndroidTemplate template;
 
         private Builder() { }
 
@@ -662,6 +677,17 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
          */
         public Builder setActions(Actions actions) {
             this.actions = actions;
+            return this;
+        }
+
+        /**
+         * Set a template with android-specific message.
+         *
+         * @param template AndroidTemplate
+         * @return Builder
+         */
+        public Builder setTemplate(AndroidTemplate template) {
+            this.template = template;
             return this;
         }
 

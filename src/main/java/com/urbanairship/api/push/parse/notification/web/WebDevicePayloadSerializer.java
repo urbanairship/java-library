@@ -53,6 +53,10 @@ public class WebDevicePayloadSerializer extends JsonSerializer<WebDevicePayload>
             jgen.writeEndArray();
         }
 
+        if (payload.getTemplate().isPresent()) {
+            jgen.writeObjectField("template", payload.getTemplate().get());
+        }
+
         jgen.writeEndObject();
     }
 }
