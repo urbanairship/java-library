@@ -13,6 +13,7 @@ import com.urbanairship.api.push.model.notification.web.Button;
 import com.urbanairship.api.push.model.notification.web.WebDevicePayload;
 import com.urbanairship.api.push.model.notification.web.WebIcon;
 import com.urbanairship.api.push.model.notification.web.WebImage;
+import com.urbanairship.api.push.model.notification.web.WebTemplate;
 
 import java.io.IOException;
 import java.util.List;
@@ -62,6 +63,10 @@ public class WebDevicePayloadReader implements JsonObjectReader<WebDevicePayload
         });
 
         builder.addAllButtons(buttons);
+    }
+
+    public void readTemplate(JsonParser parser) throws IOException {
+        builder.setTemplate(parser.readValueAs(WebTemplate.class));
     }
 
     @Override

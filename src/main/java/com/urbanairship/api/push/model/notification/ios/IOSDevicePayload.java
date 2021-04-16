@@ -39,6 +39,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
     private final Optional<String> threadId;
     private final Optional<Actions> actions;
     private final Optional<String> targetContentId;
+    private final Optional<IOSTemplate> iosTemplate;
 
     private IOSDevicePayload(Optional<IOSAlertData> alert,
                              Optional<IOSBadgeData> badge,
@@ -56,7 +57,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                              Optional<String> collapseId,
                              Optional<String> threadId,
                              Optional<Actions> actions,
-                             Optional<String> targetContentId) {
+                             Optional<String> targetContentId,
+                             Optional<IOSTemplate> iosTemplate) {
         this.alert = alert;
         this.badge = badge;
         this.contentAvailable = contentAvailable;
@@ -74,6 +76,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         this.threadId = threadId;
         this.actions = actions;
         this.targetContentId = targetContentId;
+        this.iosTemplate = iosTemplate;
     }
 
     /**
@@ -257,6 +260,15 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         return targetContentId;
     }
 
+    /**
+     * Get the template with iOS-specific message.
+     *
+     * @return Optional IOSTemplate iosTemplate
+     */
+    public Optional<IOSTemplate> getIosTemplate() {
+        return iosTemplate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -278,12 +290,14 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                 Objects.equals(collapseId, that.collapseId) &&
                 Objects.equals(threadId, that.threadId) &&
                 Objects.equals(actions, that.actions) &&
-                Objects.equals(targetContentId, that.targetContentId);
+                Objects.equals(targetContentId, that.targetContentId) &&
+                Objects.equals(iosTemplate, that.iosTemplate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(alert, extra, badge, contentAvailable, expiry, priority, category, interactive, title, subtitle, mediaAttachment, sound, mutableContent, collapseId, threadId, actions, targetContentId);
+        return Objects.hash(alert, extra, badge, contentAvailable, expiry, priority, category, interactive, title, subtitle,
+                mediaAttachment, sound, mutableContent, collapseId, threadId, actions, targetContentId, iosTemplate);
     }
 
     @Override
@@ -306,6 +320,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                 ", threadId=" + threadId +
                 ", actions=" + actions +
                 ", targetContentId=" + targetContentId +
+                ", iosTemplate=" + iosTemplate +
                 '}';
     }
 
@@ -327,6 +342,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         private String threadId = null;
         private Actions actions;
         private String targetContentId;
+        private IOSTemplate iosTemplate;
 
 
         private Builder() { }
@@ -549,6 +565,17 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         }
 
         /**
+         * Set a template with iOS-specific message.
+         *
+         * @param iosTemplate IOSTemplate
+         * @return Builder
+         */
+        public Builder setIosTemplate(IOSTemplate iosTemplate) {
+            this.iosTemplate = iosTemplate;
+            return this;
+        }
+
+        /**
          * Build IOSDevicePayload
          * @return IOSDevicePayload
          */
@@ -570,7 +597,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                     Optional.fromNullable(collapseId),
                     Optional.fromNullable(threadId),
                     Optional.fromNullable(actions),
-                    Optional.fromNullable(targetContentId));
+                    Optional.fromNullable(targetContentId),
+                    Optional.fromNullable(iosTemplate));
         }
     }
 }

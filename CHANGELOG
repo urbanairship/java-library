@@ -1,4 +1,11 @@
 -------------------------
+6.3.0 16APR21
+-------------------------
+- Added Template support for ADM, Android, iOS and Web payloads.
+- Updated to guava version 30.0 due to a security vulnerability.
+- Updated to junit version 4.13.1 due to a security vulnerability.
+
+-------------------------
 6.2.0 01APR21
 -------------------------
 - Fixed a bug in verifying bearer token auth for requests where it is required.
