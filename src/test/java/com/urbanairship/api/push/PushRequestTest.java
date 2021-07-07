@@ -34,8 +34,14 @@ public class PushRequestTest {
             .setNotification(Notifications.alert("Bar"))
             .build();
 
-    PushRequest pushRequest = PushRequest.newRequest(payload).addPayload(payload2);
-    PushRequest validateRequest = PushRequest.newRequest(payload).addPayload(payload2).setValidateOnly(true);
+    PushPayload payload3 = PushPayload.newBuilder()
+            .setAudience(Selectors.attribute("pseudo","equals","John"))
+            .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+            .setNotification(Notifications.alert("Baz"))
+            .build();
+
+    PushRequest pushRequest = PushRequest.newRequest(payload).addPayload(payload2).addPayload(payload3);
+    PushRequest validateRequest = PushRequest.newRequest(payload).addPayload(payload2).addPayload(payload3).setValidateOnly(true);
 
     @Test
     public void testContentType() throws Exception {
@@ -51,8 +57,8 @@ public class PushRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(pushRequest.getRequestBody(), "[{\"audience\":\"ALL\",\"device_types\":[\"ios\"],\"notification\":{\"alert\":\"Foo\"}},{\"audience\":\"ALL\",\"device_types\":[\"ios\"],\"notification\":{\"alert\":\"Bar\"}}]");
-        assertEquals(validateRequest.getRequestBody(), "[{\"audience\":\"ALL\",\"device_types\":[\"ios\"],\"notification\":{\"alert\":\"Foo\"}},{\"audience\":\"ALL\",\"device_types\":[\"ios\"],\"notification\":{\"alert\":\"Bar\"}}]");
+        assertEquals(pushRequest.getRequestBody(), "[{\"audience\":\"ALL\",\"device_types\":[\"ios\"],\"notification\":{\"alert\":\"Foo\"}},{\"audience\":\"ALL\",\"device_types\":[\"ios\"],\"notification\":{\"alert\":\"Bar\"}},{\"audience\":{\"attribute\":\"pseudo\",\"operator\":\"equals\",\"value\":\"John\"},\"device_types\":[\"ios\"],\"notification\":{\"alert\":\"Baz\"}}]");
+        assertEquals(validateRequest.getRequestBody(), "[{\"audience\":\"ALL\",\"device_types\":[\"ios\"],\"notification\":{\"alert\":\"Foo\"}},{\"audience\":\"ALL\",\"device_types\":[\"ios\"],\"notification\":{\"alert\":\"Bar\"}},{\"audience\":{\"attribute\":\"pseudo\",\"operator\":\"equals\",\"value\":\"John\"},\"device_types\":[\"ios\"],\"notification\":{\"alert\":\"Baz\"}}]");
     }
 
     @Test
