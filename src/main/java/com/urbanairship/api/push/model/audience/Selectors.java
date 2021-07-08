@@ -23,6 +23,8 @@ public class Selectors {
 
     public static final String GROUP_ATTR = "group";
     public static final String CLASS_ATTR = "tag_class";
+    public static final String ATTR_VALUE = "value";
+    public static final String ATTR_OPERATOR = "operator";
 
     public static final Selector atomic(SelectorType type) {
         return BasicSelector.newBuilder()
@@ -179,6 +181,17 @@ public class Selectors {
         return compound(SelectorType.OR, SelectorType.SEGMENT, segments);
     }
 
+    /* Attributes */
+
+    public static final Selector attribute(String fieldName, String operator, String value) {
+        return BasicValueSelector.newBuilder()
+            .setType(SelectorType.ATTRIBUTE)
+            .setValue(fieldName)
+            .addAttribute(ATTR_OPERATOR, operator)
+            .addAttribute(ATTR_VALUE, value)
+            .build();
+        }
+        
     /* Device tokens */
 
     public static final Selector deviceToken(String deviceToken) {

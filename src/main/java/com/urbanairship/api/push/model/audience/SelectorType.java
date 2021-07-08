@@ -14,6 +14,7 @@ public enum SelectorType {
     SEGMENT("segment", SelectorCategory.VALUE),
     NAMED_USER("named_user", SelectorCategory.VALUE),
     STATIC_LIST("static_list", SelectorCategory.VALUE),
+    ATTRIBUTE("attribute", SelectorCategory.VALUE),
 
     DEVICE_TOKEN("device_token", SelectorCategory.VALUE, true, DeviceType.IOS),
     APID("apid", SelectorCategory.VALUE, true, DeviceType.ANDROID),
