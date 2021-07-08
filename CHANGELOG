@@ -1,4 +1,9 @@
 -------------------------
+6.3.1 XXJUL21
+-------------------------
+- Added support for email Attachments.
+
+-------------------------
 6.3.0 16APR21
 -------------------------
 - Added Template support for ADM, Android, iOS and Web payloads.

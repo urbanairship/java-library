@@ -3,9 +3,11 @@ package com.urbanairship.api.createandsend.model.notification.email;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
+import com.urbanairship.api.push.model.notification.email.Attachment;
 import com.urbanairship.api.push.model.notification.email.MessageType;
 import org.apache.commons.lang.StringUtils;
 
@@ -25,6 +27,7 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
     private final Optional<String> senderAddress;
     private final Optional<String> replyTo;
     private final Optional<EmailTemplate> emailTemplate;
+    private final Optional<ImmutableList<Attachment>> attachments;
 
     private CreateAndSendEmailPayload(Builder builder) {
         this.alert = Optional.fromNullable(builder.alert);
@@ -37,6 +40,12 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
         this.replyTo = Optional.fromNullable((builder.replyTo));
         this.bypassOptInLevel = Optional.fromNullable(builder.byPassOptInLevel);
         this.emailTemplate = Optional.fromNullable(builder.emailTemplate);
+
+        if (builder.attachments.build().isEmpty()) {
+            this.attachments = Optional.absent();
+        } else {
+            this.attachments = Optional.fromNullable(builder.attachments.build());
+        }
     }
 
     public static Builder newBuilder() {
@@ -145,6 +154,15 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
         return bypassOptInLevel;
     }
 
+    /**
+     * Optional, Get the Attachment objects, each containing an id string which represents an email attachment.
+     *
+     * @return Optional ImmutableList attachments
+     */
+    public Optional<ImmutableList<Attachment>> getAttachments() {
+        return attachments;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -159,12 +177,13 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
                 Objects.equal(senderName, that.senderName) &&
                 Objects.equal(senderAddress, that.senderAddress) &&
                 Objects.equal(replyTo, that.replyTo) &&
-                Objects.equal(emailTemplate, that.emailTemplate);
+                Objects.equal(emailTemplate, that.emailTemplate) &&
+                Objects.equal(attachments, that.attachments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(bypassOptInLevel, alert, subject, htmlBody, plaintextBody, messageType, senderName, senderAddress, replyTo, emailTemplate);
+        return Objects.hashCode(bypassOptInLevel, alert, subject, htmlBody, plaintextBody, messageType, senderName, senderAddress, replyTo, emailTemplate, attachments);
     }
 
     @Override
@@ -180,6 +199,7 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
                 ", senderAddress=" + senderAddress +
                 ", replyTo=" + replyTo +
                 ", emailTemplate=" + emailTemplate +
+                ", attachments=" + attachments +
                 '}';
     }
 
@@ -198,6 +218,7 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
         private DeviceType deviceType = null;
         private Boolean byPassOptInLevel = null;
         private EmailTemplate emailTemplate = null;
+        private ImmutableList.Builder<Attachment> attachments = ImmutableList.builder();
 
         private Builder() {
         }
@@ -300,6 +321,17 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
          */
         public Builder setEmailTemplate(EmailTemplate emailTemplate) {
             this.emailTemplate = emailTemplate;
+            return this;
+        }
+
+        /**
+         * Add an Attachment objects, each containing an id string which represents an email attachment.
+         *
+         * @param attachment Attachment
+         * @return CreateAndSendEmailPayload Builder
+         */
+        public Builder addAttachment(Attachment attachment) {
+            this.attachments.add(attachment);
             return this;
         }
 
