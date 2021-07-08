@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.urbanairship.api.push.model.notification.email.Attachment;
 import com.urbanairship.api.createandsend.model.notification.email.CreateAndSendEmailPayload;
 
 import java.io.IOException;
@@ -49,6 +50,16 @@ public class CreateAndSendEmailPayloadSerializer extends JsonSerializer<CreateAn
 
         if (payload.getEmailTemplate().isPresent()) {
             jgen.writeObjectField("template", payload.getEmailTemplate().get());
+        }
+
+        if (payload.getAttachments().isPresent()) {
+            jgen.writeArrayFieldStart("attachments");
+
+            for (Attachment attachment : payload.getAttachments().get()) {
+                jgen.writeObject(attachment);
+            }
+
+            jgen.writeEndArray();
         }
 
         jgen.writeEndObject();

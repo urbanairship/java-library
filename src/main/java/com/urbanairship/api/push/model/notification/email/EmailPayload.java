@@ -2,6 +2,7 @@ package com.urbanairship.api.push.model.notification.email;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
@@ -24,6 +25,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
     private final Optional<String> senderAddress;
     private final Optional<String> uaAddress;
     private final Optional<String> replyTo;
+    private final Optional<ImmutableList<Attachment>> attachments;
 
     private EmailPayload(Builder builder) {
         this.alert = Optional.fromNullable(builder.alert);
@@ -35,6 +37,11 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
         this.senderAddress = Optional.fromNullable((builder.senderAddress));
         this.uaAddress = Optional.fromNullable((builder.uaAddress));
         this.replyTo = Optional.fromNullable((builder.replyTo));
+        if (builder.attachments.build().isEmpty()) {
+            this.attachments = Optional.absent();
+        } else {
+            this.attachments = Optional.fromNullable(builder.attachments.build());
+        }
     }
 
     public static Builder newBuilder() {
@@ -133,6 +140,16 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
         return replyTo;
     }
 
+    /**
+     * Optional, Get the Attachment objects, each containing an id string which represents an email attachment.
+     *
+     * @return Optional ImmutableList attachments
+     */
+    public Optional<ImmutableList<Attachment>> getAttachments() {
+        return attachments;
+    }
+
+
     @Override
     public String toString() {
         return "EmailPayload{" +
@@ -144,6 +161,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
                 ", senderAddress=" + senderAddress +
                 ", uaAddress=" + uaAddress +
                 ", replyTo=" + replyTo +
+                ", attachments=" + attachments +
                 '}';
     }
 
@@ -159,13 +177,14 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
                 Objects.equals(getSenderName(), that.getSenderName()) &&
                 Objects.equals(getSenderAddress(), that.getSenderAddress()) &&
                 Objects.equals(getUaAddress(), that.getUaAddress()) &&
-                Objects.equals(getReplyTo(), that.getReplyTo());
+                Objects.equals(getReplyTo(), that.getReplyTo()) &&
+                Objects.equals(getAttachments(), that.getAttachments());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getSubject(), getHtmlBody(), getPlaintextBody(), getMessageType(), getSenderName(),
-                getSenderAddress(), getUaAddress(), getReplyTo());
+                getSenderAddress(), getUaAddress(), getReplyTo(), getAttachments());
     }
 
     /**
@@ -182,6 +201,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
         private String uaAddress = null;
         private String replyTo = null;
         private DeviceType deviceType = null;
+        private ImmutableList.Builder<Attachment> attachments = ImmutableList.builder();
 
         private Builder() {
         }
@@ -285,6 +305,17 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
         @Deprecated
         public Builder setDeviceType(DeviceType deviceType) {
             this.deviceType = deviceType;
+            return this;
+        }
+
+        /**
+         * Add an Attachment objects, each containing an id string which represents an email attachment.
+         *
+         * @param attachment Attachment
+         * @return EmailPayload Builder
+         */
+        public Builder addAttachment(Attachment attachment) {
+            this.attachments.add(attachment);
             return this;
         }
 

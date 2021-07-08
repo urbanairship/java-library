@@ -3,10 +3,10 @@ package com.urbanairship.api.createandsend;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.channel.parse.ChannelObjectMapper;
-import com.urbanairship.api.client.UrbanAirshipClient;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.createandsend.model.audience.email.EmailChannel;
 import com.urbanairship.api.createandsend.model.audience.email.EmailChannels;
+import com.urbanairship.api.push.model.notification.email.Attachment;
 import com.urbanairship.api.createandsend.model.notification.email.CreateAndSendEmailPayload;
 import com.urbanairship.api.createandsend.model.notification.email.EmailFields;
 import com.urbanairship.api.createandsend.model.notification.email.EmailTemplate;
@@ -126,12 +126,22 @@ public class CreateAndSendEmailTest {
 
         CreateAndSendAudience templateAudience = new CreateAndSendAudience(templateChannels);
 
+        Attachment attachment = Attachment.newBuilder()
+                .setId("firstAttachmentId")
+                .build();
+
+        Attachment secondAttachment = Attachment.newBuilder()
+                .setId("secondAttachmentId")
+                .build();
+
         templateEmailPayload = createAndSendEmailPayload.newBuilder()
                 .setMessageType(MessageType.COMMERCIAL)
                 .setSenderName("Urban Airship")
                 .setSenderAddress("team@urbanairship.com")
                 .setReplyTo("no-reply@urbanairship.com")
                 .setEmailTemplate(template)
+                .addAttachment(attachment)
+                .addAttachment(secondAttachment)
                 .build();
 
         Notification templateNotification = Notification.newBuilder()
@@ -245,37 +255,45 @@ public class CreateAndSendEmailTest {
     @Test
     public void testCreateAndSendEmailTemplate() throws IOException {
         String templateFieldsString = "{\n" +
-                "    \"audience\": {\n" +
-                "        \"create_and_send\": [\n" +
-                "            {\n" +
-                "                \"ua_address\": \"new@email.com\",\n" +
-                "                \"name\": \"New Person Esq\",\n" +
-                "                \"location\": \"City, State\"\n" +
-                "            },\n" +
-                "            {\n" +
-                "                \"ua_address\": \"ben@icetown.com\",\n" +
-                "                \"name\": \"Ben Wyatt\",\n" +
-                "                \"location\": \"Pawnee, IN\"\n" +
-                "            }\n" +
-                "        ]\n" +
-                "    },\n" +
-                "    \"device_types\": [\n" +
-                "        \"email\"\n" +
-                "    ],\n" +
-                "    \"notification\": {\n" +
-                "        \"email\": {\n" +
-                "            \"message_type\": \"commercial\",\n" +
-                "            \"sender_name\": \"Urban Airship\",\n" +
-                "            \"sender_address\": \"team@urbanairship.com\",\n" +
-                "            \"reply_to\": \"no-reply@urbanairship.com\",\n" +
-                "            \"template\": {\n" +
-                "                \"fields\": {\n" +
-                "                    \"plaintext_body\": \"Hope you're enjoying our store in {{location}} [[ua-unsubscribe href=\\\\\\\"http://unsubscribe.urbanairship.com/email/success.html\\\\\\\"]]\",\n" +
-                "                    \"subject\": \"Hi there, {{name}}\"\n" +
-                "                }\n" +
-                "            }\n" +
+                "  \"audience\": {\n" +
+                "    \"create_and_send\": [\n" +
+                "      {\n" +
+                "        \"ua_address\": \"new@email.com\",\n" +
+                "        \"name\": \"New Person Esq\",\n" +
+                "        \"location\": \"City, State\"\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"ua_address\": \"ben@icetown.com\",\n" +
+                "        \"name\": \"Ben Wyatt\",\n" +
+                "        \"location\": \"Pawnee, IN\"\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  },\n" +
+                "  \"device_types\": [\n" +
+                "    \"email\"\n" +
+                "  ],\n" +
+                "  \"notification\": {\n" +
+                "    \"email\": {\n" +
+                "      \"message_type\": \"commercial\",\n" +
+                "      \"sender_name\": \"Urban Airship\",\n" +
+                "      \"sender_address\": \"team@urbanairship.com\",\n" +
+                "      \"reply_to\": \"no-reply@urbanairship.com\",\n" +
+                "      \"template\": {\n" +
+                "        \"fields\": {\n" +
+                "          \"plaintext_body\": \"Hope you're enjoying our store in {{location}} [[ua-unsubscribe href=\\\\\\\"http://unsubscribe.urbanairship.com/email/success.html\\\\\\\"]]\",\n" +
+                "          \"subject\": \"Hi there, {{name}}\"\n" +
                 "        }\n" +
+                "      },\n" +
+                "      \"attachments\": [\n" +
+                "        {\n" +
+                "          \"id\": \"firstAttachmentId\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "          \"id\": \"secondAttachmentId\"\n" +
+                "        }\n" +
+                "      ]\n" +
                 "    }\n" +
+                "  }\n" +
                 "}";
 
         JsonNode actual = null;
