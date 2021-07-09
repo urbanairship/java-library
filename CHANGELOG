@@ -1,7 +1,8 @@
 -------------------------
-6.3.1 XXJUL21
+6.4.0 09JUL21
 -------------------------
 - Added support for email Attachments.
+- Added Attribute support for push payload audience.
 
 -------------------------
 6.3.0 16APR21
