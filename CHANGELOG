@@ -1,4 +1,10 @@
 -------------------------
+6.4.0 09JUL21
+-------------------------
+- Added support for email Attachments.
+- Added Attribute support for push payload audience.
+
+-------------------------
 6.3.0 16APR21
 -------------------------
 - Added Template support for ADM, Android, iOS and Web payloads.
