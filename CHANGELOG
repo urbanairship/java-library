@@ -1,5 +1,5 @@
 -------------------------
-6.4.0 16AUG21
+6.4.1 16AUG21
 -------------------------
 - Updates async-http-client to 2.12.4 to address a security vulnerability.
 
