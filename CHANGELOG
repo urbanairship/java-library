@@ -1,7 +1,7 @@
 -------------------------
 6.4.1 16AUG21
 -------------------------
-- Updates async-http-client to 2.12.4 to address a security vulnerability.
+- Updates async-http-client to 2.12.3 to address a security vulnerability.
 
 -------------------------
 6.4.0 09JUL21
