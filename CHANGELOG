@@ -1,4 +1,9 @@
 -------------------------
+6.4.0 16AUG21
+-------------------------
+- Updates async-http-client to 2.12.4 to address a security vulnerability.
+
+-------------------------
 6.4.0 09JUL21
 -------------------------
 - Added support for email Attachments.
