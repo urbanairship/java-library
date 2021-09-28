@@ -1,4 +1,8 @@
 -------------------------
+6.4.2 28SEP21
+-------------------------
+- Updates user agent string to include app key.
+-------------------------
 6.4.1 16AUG21
 -------------------------
 - Updates async-http-client to 2.12.3 to address a security vulnerability.
