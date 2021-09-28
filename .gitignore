@@ -12,3 +12,8 @@ docs/packages.rst
 \#*#
 /example/target
 /example/.idea
+.vscode/
+.settings/
+.classpath
+.factorypath
+.project
