@@ -53,7 +53,6 @@ public class UrbanAirshipClient implements Closeable {
         return new Builder();
     }
 
-
     public <T> Future<Response> executeAsync(final Request<T> request, ResponseCallback callback) {
         return client.executeAsync(request, callback, createHeaders(request));
     }
@@ -119,7 +118,7 @@ public class UrbanAirshipClient implements Closeable {
             try {
                 props.load(stream);
                 stream.close();
-                userAgent = "UAJavaLib/" + props.get("client.version");
+                userAgent = "UAJavaLib/" + props.get("client.version") + " " + getAppKey();
             } catch (IOException e) {
                 log.error("Failed to retrieve client user agent due to IOException - setting to \"UNKNOWN\"", e);
             }
@@ -138,6 +137,7 @@ public class UrbanAirshipClient implements Closeable {
 
     /**
      * Get the app key.
+     * 
      * @return The app key.
      */
     public String getAppKey() {
@@ -146,6 +146,7 @@ public class UrbanAirshipClient implements Closeable {
 
     /**
      * Get the app secret.
+     * 
      * @return The app secret.
      */
     public Optional<String> getAppSecret() {
@@ -154,6 +155,7 @@ public class UrbanAirshipClient implements Closeable {
 
     /**
      * Get the bearer token.
+     * 
      * @return The bearer token.
      */
     public Optional<String> getBearerToken() {
@@ -162,6 +164,7 @@ public class UrbanAirshipClient implements Closeable {
 
     /**
      * Get the request client.
+     * 
      * @return The RequestClient.
      */
     public RequestClient getRequestClient() {
@@ -181,6 +184,7 @@ public class UrbanAirshipClient implements Closeable {
 
         /**
          * Set the app key.
+         * 
          * @param key String app key
          * @return Builder
          */
@@ -191,6 +195,7 @@ public class UrbanAirshipClient implements Closeable {
 
         /**
          * Set the app secret.
+         * 
          * @param appSecret String app secret
          * @return Builder
          */
@@ -200,11 +205,10 @@ public class UrbanAirshipClient implements Closeable {
         }
 
         /**
-         * Changes base URI.
-         * Without changing URI, it defaults to
-         * https://go.urbanairship.com.
-         * To send to European Servers use
+         * Changes base URI. Without changing URI, it defaults to
+         * https://go.urbanairship.com. To send to European Servers use
          * UrbanAirshipClient.EU_URI
+         * 
          * @param baseUri String baseUri used for requests
          * @return Builder
          */
@@ -215,6 +219,7 @@ public class UrbanAirshipClient implements Closeable {
 
         /**
          * Set the bearer token.
+         * 
          * @param bearerToken String bearer token
          * @return Builder
          */
@@ -225,6 +230,7 @@ public class UrbanAirshipClient implements Closeable {
 
         /**
          * Set a custom client.
+         * 
          * @param client RequestClient client
          * @return Builder
          */
@@ -233,10 +239,10 @@ public class UrbanAirshipClient implements Closeable {
             return this;
         }
 
-
         /**
-         * Build an UrbanAirshipClient object.  Will fail if any of the following
+         * Build an UrbanAirshipClient object. Will fail if any of the following
          * preconditions are not met.
+         * 
          * <pre>
          * 1. App key or client must be set.
          * 2. App secret or bearer token must be set if no client is provided.
@@ -254,9 +260,7 @@ public class UrbanAirshipClient implements Closeable {
             }
 
             if (client == null) {
-                client = AsyncRequestClient.newBuilder()
-                        .setBaseUri(baseUri)
-                        .build();
+                client = AsyncRequestClient.newBuilder().setBaseUri(baseUri).build();
             }
 
             return new UrbanAirshipClient(this);
