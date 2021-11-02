@@ -73,7 +73,11 @@ public class PayloadDeserializerTest {
                 + "    \"title-loc-args\" : ["
                 + "        \"arg4\", \"arg5\""
                 + "      ],"
-                + "    \"title-loc-key\" : \"Special Key\""
+                + "    \"title-loc-key\" : \"Special Key\","
+                + "       \"subtitle-loc-args\" : ["
+                + "        \"arg6\", \"arg7\""
+                + "      ],"
+                + "    \"subtitle-loc-key\" : \"Another Special Key\""
                 + "  }"
                 + "}";
 
@@ -89,6 +93,8 @@ public class PayloadDeserializerTest {
                         .setSummaryArgCount(1)
                         .setTitleLocArgs(ImmutableList.of("arg4", "arg5"))
                         .setTitleLocKey("Special Key")
+                        .setSubtitleLocArgs(ImmutableList.of("arg6", "arg7"))
+                        .setSubtitleLocKey("Another Special Key")
                         .build())
                 .build();
 
@@ -112,6 +118,8 @@ public class PayloadDeserializerTest {
         assertEquals(1, alert.getSummaryArgCount().get().intValue());
         assertEquals(2, alert.getTitleLocArgs().get().size());
         assertEquals("Special Key", alert.getTitleLocKey().get());
+        assertEquals(2, alert.getSubtitleLocArgs().get().size());
+        assertEquals("Another Special Key", alert.getSubtitleLocKey().get());
     }
 
     @Test

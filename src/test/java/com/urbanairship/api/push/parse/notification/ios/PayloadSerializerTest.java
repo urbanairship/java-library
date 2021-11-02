@@ -63,13 +63,15 @@ public class PayloadSerializerTest {
                         .setTitleLocKey("TLK")
                         .setSummaryArg("SA")
                         .setSummaryArgCount(1)
+                        .setSubtitleLocArgs(ImmutableList.of("arg5","arg6"))
+                        .setSubtitleLocKey("PNL")
                         .build())
                 .build();
 
         String json = mapper.writeValueAsString(payload);
 
         String expected
-            = "{\"alert\":{\"body\":\"B\",\"action-loc-key\":\"ALK\",\"loc-key\":\"LK\",\"loc-args\":[\"arg1\",\"arg2\"],\"launch-image\":\"LI\",\"title\":\"T\",\"title-loc-args\":[\"arg3\",\"arg4\"],\"title-loc-key\":\"TLK\",\"summary-arg\":\"SA\",\"summary-arg-count\":1}}";
+            = "{\"alert\":{\"body\":\"B\",\"action-loc-key\":\"ALK\",\"loc-key\":\"LK\",\"loc-args\":[\"arg1\",\"arg2\"],\"launch-image\":\"LI\",\"title\":\"T\",\"title-loc-args\":[\"arg3\",\"arg4\"],\"title-loc-key\":\"TLK\",\"summary-arg\":\"SA\",\"summary-arg-count\":1,\"subtitle-loc-args\":[\"arg5\",\"arg6\"],\"subtitle-loc-key\":\"PNL\"}}";
 
         assertEquals(expected, json);
     }

@@ -56,6 +56,16 @@ public class IOSAlertDataSerializer extends JsonSerializer<IOSAlertData> {
             if (alert.getSummaryArgCount().isPresent()) {
                 jgen.writeNumberField("summary-arg-count", alert.getSummaryArgCount().get());
             }
+            if (alert.getSubtitleLocArgs().isPresent()) {
+                jgen.writeArrayFieldStart("subtitle-loc-args");
+                for (String value : alert.getSubtitleLocArgs().get()) {
+                    jgen.writeString(value);
+                }
+                jgen.writeEndArray();
+            }
+            if (alert.getSubtitleLocKey().isPresent()) {
+                jgen.writeStringField("subtitle-loc-key", alert.getSubtitleLocKey().get());
+            }
             jgen.writeEndObject();
         }
     }
