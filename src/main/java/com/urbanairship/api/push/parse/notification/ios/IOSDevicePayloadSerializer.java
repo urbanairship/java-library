@@ -89,6 +89,11 @@ public class IOSDevicePayloadSerializer extends JsonSerializer<IOSDevicePayload>
             jgen.writeObjectField("template", payload.getIosTemplate().get());
         }
 
+        if (payload.getIosInterruptionLevel().isPresent()) {
+            jgen.writeStringField("interruption_level", payload.getIosInterruptionLevel().get().getInterruptionLevel());
+        }
+
+
         jgen.writeEndObject();
     }
 }

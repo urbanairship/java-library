@@ -11,6 +11,7 @@ import com.urbanairship.api.push.model.notification.ios.IOSAlertData;
 import com.urbanairship.api.push.model.notification.ios.IOSBadgeData;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 import com.urbanairship.api.push.model.notification.ios.IOSFields;
+import com.urbanairship.api.push.model.notification.ios.IOSInterruptionLevel;
 import com.urbanairship.api.push.model.notification.ios.IOSSoundData;
 import com.urbanairship.api.push.model.notification.ios.IOSTemplate;
 import com.urbanairship.api.push.parse.PushObjectMapper;
@@ -540,4 +541,22 @@ public class PayloadDeserializerTest {
 
         assertEquals(iosDevicePayload, roundTripIosDevicePayload);
     }
+
+    @Test
+    public void testInterruptionLevel() throws Exception {
+
+        IOSInterruptionLevel test = IOSInterruptionLevel.ACTIVE;
+
+        IOSDevicePayload payload = IOSDevicePayload.newBuilder()
+                .setIosInterruptionLevel(test)
+                .build();
+
+        String json = mapper.writeValueAsString(payload);
+
+        IOSDevicePayload roundTripPayload = mapper.readValue(json, IOSDevicePayload.class);
+        System.out.println(roundTripPayload);
+
+        assertEquals(payload, roundTripPayload);
+    }
+
 }

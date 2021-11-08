@@ -224,4 +224,19 @@ public class PayloadSerializerTest {
         assertEquals(expected, json);
     }
 
+    @Test
+    public void testInterruptionLevel() throws Exception {
+        IOSDevicePayload payload = IOSDevicePayload.newBuilder()
+                .setAlert("alert")
+                .setIosInterruptionLevel(IOSInterruptionLevel.CRITICAL)
+                .build();
+
+        String json = mapper.writeValueAsString(payload);
+
+        String expected
+            = "{\"alert\":\"alert\",\"interruption_level\":\"critical\"}";
+
+        assertEquals(expected, json);
+    }
+
 }
