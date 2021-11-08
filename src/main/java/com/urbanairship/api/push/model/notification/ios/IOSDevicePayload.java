@@ -40,6 +40,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
     private final Optional<Actions> actions;
     private final Optional<String> targetContentId;
     private final Optional<IOSTemplate> iosTemplate;
+    private final Optional<IOSInterruptionLevel> iosInterruptionLevel;
 
     private IOSDevicePayload(Optional<IOSAlertData> alert,
                              Optional<IOSBadgeData> badge,
@@ -58,7 +59,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                              Optional<String> threadId,
                              Optional<Actions> actions,
                              Optional<String> targetContentId,
-                             Optional<IOSTemplate> iosTemplate) {
+                             Optional<IOSTemplate> iosTemplate,
+                             Optional<IOSInterruptionLevel> iosInterruptionLevel) {
         this.alert = alert;
         this.badge = badge;
         this.contentAvailable = contentAvailable;
@@ -77,6 +79,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         this.actions = actions;
         this.targetContentId = targetContentId;
         this.iosTemplate = iosTemplate;
+        this.iosInterruptionLevel = iosInterruptionLevel;
     }
 
     /**
@@ -267,6 +270,15 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
      */
     public Optional<IOSTemplate> getIosTemplate() {
         return iosTemplate;
+    }  
+
+    /**
+     * Get the interruption level.
+     *
+     * @return Optional IOSInterruptionLevel iosInterruptionLevel
+     */
+    public Optional<IOSInterruptionLevel> getIosInterruptionLevel() {
+        return iosInterruptionLevel;
     }
 
     @Override
@@ -291,13 +303,14 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                 Objects.equals(threadId, that.threadId) &&
                 Objects.equals(actions, that.actions) &&
                 Objects.equals(targetContentId, that.targetContentId) &&
-                Objects.equals(iosTemplate, that.iosTemplate);
+                Objects.equals(iosTemplate, that.iosTemplate) &&
+                Objects.equals(iosInterruptionLevel, that.iosInterruptionLevel);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(alert, extra, badge, contentAvailable, expiry, priority, category, interactive, title, subtitle,
-                mediaAttachment, sound, mutableContent, collapseId, threadId, actions, targetContentId, iosTemplate);
+                mediaAttachment, sound, mutableContent, collapseId, threadId, actions, targetContentId, iosTemplate, iosInterruptionLevel);
     }
 
     @Override
@@ -321,6 +334,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                 ", actions=" + actions +
                 ", targetContentId=" + targetContentId +
                 ", iosTemplate=" + iosTemplate +
+                ", iosInterruptionLevel=" + iosInterruptionLevel +
                 '}';
     }
 
@@ -343,6 +357,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         private Actions actions;
         private String targetContentId;
         private IOSTemplate iosTemplate;
+        private IOSInterruptionLevel iosInterruptionLevel;
 
 
         private Builder() { }
@@ -574,6 +589,18 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
             this.iosTemplate = iosTemplate;
             return this;
         }
+        
+        /**
+         * Set an interruption level.
+         *
+         * @param iosInterruptionLevel IOSInterruptionLevel
+         * @return Builder
+         */
+        public Builder setIosInterruptionLevel(IOSInterruptionLevel iosInterruptionLevel) {
+            this.iosInterruptionLevel = iosInterruptionLevel;
+            return this;
+        }
+        
 
         /**
          * Build IOSDevicePayload
@@ -598,7 +625,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                     Optional.fromNullable(threadId),
                     Optional.fromNullable(actions),
                     Optional.fromNullable(targetContentId),
-                    Optional.fromNullable(iosTemplate));
+                    Optional.fromNullable(iosTemplate),
+                    Optional.fromNullable(iosInterruptionLevel));
         }
     }
 }
