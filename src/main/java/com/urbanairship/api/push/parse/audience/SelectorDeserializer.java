@@ -153,6 +153,12 @@ public class SelectorDeserializer extends JsonDeserializer<Selector> {
                         reader.readValueSelector(SelectorType.ANDROID_CHANNEL, parser, context);
                     }
                 })
+                .put("channel", new FieldParser<SelectorReader>() {
+                    @Override
+                    public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
+                        reader.readValueSelector(SelectorType.CHANNEL, parser, context);
+                    }
+                })
 
                         // Compound selectors
                 .put("and", new FieldParser<SelectorReader>() {
