@@ -559,4 +559,12 @@ public class PayloadDeserializerTest {
         assertEquals(payload, roundTripPayload);
     }
 
+    public void testRelevanceScore() throws Exception {
+        String json
+            = "{"
+            + "  \"relevance_score\": 0.5"
+            + "}";
+        IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
+        assertTrue(payload.getRelevanceScore().get().equals(0.5));
+    }      
 }

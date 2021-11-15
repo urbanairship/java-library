@@ -80,6 +80,7 @@ public class IOSDevicePayloadTest {
                 .setSoundData(iosSoundData)
                 .setMutableContent(true)
                 .setThreadId("unique ID")
+                .setRelevanceScore(0.5)
                 .build();
 
         assertTrue(m.getExtra().isPresent());
@@ -110,6 +111,7 @@ public class IOSDevicePayloadTest {
         Boolean hidden = true;
         assertEquals(hidden, m.getMediaAttachment().get().getOptions().get().getHidden().get());
         assertEquals("unique ID", m.getThreadId().get());
+        assertEquals(0.5, m.getRelevanceScore().get().doubleValue(), 0.0f);
     }
 
     @Test(expected = IllegalArgumentException.class)
