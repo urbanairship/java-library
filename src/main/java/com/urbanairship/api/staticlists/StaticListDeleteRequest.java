@@ -81,4 +81,9 @@ public class StaticListDeleteRequest implements Request<String> {
     public boolean bearerTokenAuthRequired() {
         return false;
     }
+
+    @Override
+    public boolean canUseBearerTokenAuth() {
+        return true;
+    }
 }

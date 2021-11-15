@@ -143,4 +143,9 @@ public class LocationRequest implements Request<LocationResponse> {
         return false;
     }
 
+    @Override
+    public boolean canUseBearerTokenAuth() {
+        return true;
+    }
+
 }

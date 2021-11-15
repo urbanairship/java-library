@@ -154,4 +154,9 @@ public class NamedUserRequest implements Request<String> {
         return false;
     }
 
+    @Override
+    public boolean canUseBearerTokenAuth() {
+        return true;
+    }
+
 }

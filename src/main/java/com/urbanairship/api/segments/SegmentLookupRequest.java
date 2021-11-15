@@ -83,4 +83,9 @@ public class SegmentLookupRequest implements Request<SegmentView> {
     public boolean bearerTokenAuthRequired() {
         return false;
     }
+
+    @Override
+    public boolean canUseBearerTokenAuth() {
+        return true;
+    }
 }

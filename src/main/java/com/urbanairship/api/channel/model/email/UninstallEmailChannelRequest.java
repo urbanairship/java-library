@@ -82,4 +82,9 @@ public class UninstallEmailChannelRequest implements Request<EmailChannelRespons
     public boolean bearerTokenAuthRequired() {
         return false;
     }
+
+    @Override
+    public boolean canUseBearerTokenAuth() {
+        return true;
+    }
 }

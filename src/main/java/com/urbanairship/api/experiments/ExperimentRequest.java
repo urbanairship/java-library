@@ -100,6 +100,11 @@ public class ExperimentRequest implements Request<ExperimentResponse> {
     public boolean bearerTokenAuthRequired() {
         return false;
     }
+
+    @Override
+    public boolean canUseBearerTokenAuth() {
+        return false;
+    }
 }
 
 

@@ -143,4 +143,9 @@ public class SmsRegistrationRequest implements Request<SmsRegistrationResponse> 
     public boolean bearerTokenAuthRequired() {
         return false;
     }
+
+    @Override
+    public boolean canUseBearerTokenAuth() {
+        return true;
+    }
 }
