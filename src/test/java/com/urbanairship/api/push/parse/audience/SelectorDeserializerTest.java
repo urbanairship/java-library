@@ -61,6 +61,16 @@ public class SelectorDeserializerTest {
     }
 
     @Test
+    public void testChannelCase() throws Exception {
+        String channel = UUID.randomUUID().toString();
+        String json = "{\"channel\": \"" + channel + "\"}";
+        BasicValueSelector value = (BasicValueSelector) mapper.readValue(json, Selector.class);
+        assertTrue(value.getType() == SelectorType.CHANNEL);
+        assertEquals(value.getValue(), channel);
+    }
+
+
+    @Test
     public void testNamedUserCase() throws Exception {
         String namedUser = "FakeNamedUser";
         String json = "{\"named_user\": \"" + namedUser + "\"}";
