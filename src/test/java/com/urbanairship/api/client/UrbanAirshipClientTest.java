@@ -155,6 +155,7 @@ public class UrbanAirshipClientTest {
 
     private UrbanAirshipClient client;
     private AsyncRequestClient asyncRequestClient;
+    private UrbanAirshipClient bearerTokenClient;
 
     // Set up the client
     @Before
@@ -174,6 +175,12 @@ public class UrbanAirshipClientTest {
         client = UrbanAirshipClient.newBuilder()
                 .setKey("key")
                 .setSecret("secret")
+                .setClient(asyncRequestClient)
+                .build();
+
+        bearerTokenClient = UrbanAirshipClient.newBuilder()
+                .setKey("key")
+                .setBearerToken("bearerToken")
                 .setClient(asyncRequestClient)
                 .build();
     }
@@ -3450,5 +3457,14 @@ public class UrbanAirshipClientTest {
         expectedException.expect(IllegalArgumentException.class);
 
         client.execute(request);
+    }
+    
+    @Test
+    public void testRequestNotSupportedWithBearerAuth() throws IOException {
+        TemplateDeleteRequest templateDeleteRequest = TemplateDeleteRequest.newRequest("templateId");
+
+        expectedException.expect(IllegalArgumentException.class);
+
+        bearerTokenClient.execute(templateDeleteRequest);
     }
 }

@@ -119,4 +119,9 @@ public class ChannelRequest implements Request<ChannelResponse> {
     public boolean bearerTokenAuthRequired() {
         return false;
     }
+
+    @Override
+    public boolean canUseBearerTokenAuth() {
+        return true;
+    }
 }

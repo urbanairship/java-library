@@ -167,4 +167,9 @@ public class CreateAndSendRequest implements Request<PushResponse> {
     public boolean bearerTokenAuthRequired() {
         return false;
     }
+
+    @Override
+    public boolean canUseBearerTokenAuth() {
+        return true;
+    }
 }

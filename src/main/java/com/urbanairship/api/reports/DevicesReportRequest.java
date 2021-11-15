@@ -105,4 +105,9 @@ public class DevicesReportRequest implements Request<DevicesReport> {
 
     @Override
     public boolean bearerTokenAuthRequired() { return false; }
+
+    @Override
+    public boolean canUseBearerTokenAuth() {
+        return true;
+    }
 }

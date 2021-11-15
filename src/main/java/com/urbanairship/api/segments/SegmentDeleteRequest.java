@@ -81,4 +81,9 @@ public class SegmentDeleteRequest implements Request<String> {
     public boolean bearerTokenAuthRequired() {
         return false;
     }
+
+    @Override
+    public boolean canUseBearerTokenAuth() {
+        return true;
+    }
 }

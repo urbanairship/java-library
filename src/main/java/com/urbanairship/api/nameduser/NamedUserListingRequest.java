@@ -105,4 +105,9 @@ public class NamedUserListingRequest implements Request<NamedUserListingResponse
     public boolean bearerTokenAuthRequired() {
         return false;
     }
+
+    @Override
+    public boolean canUseBearerTokenAuth() {
+        return true;
+    }
 }
