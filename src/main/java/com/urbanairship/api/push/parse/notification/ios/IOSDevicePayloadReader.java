@@ -105,6 +105,10 @@ public class IOSDevicePayloadReader implements JsonObjectReader<IOSDevicePayload
     public void readIosInterruptionLevel(JsonParser parser) throws IOException {
         builder.setIosInterruptionLevel(parser.readValueAs(IOSInterruptionLevel.class));
     }
+    
+    public void readRelevanceScore(JsonParser parser) throws IOException {
+        builder.setRelevanceScore(parser.getDoubleValue());
+    }
 
     @Override
     public IOSDevicePayload validateAndBuild() throws IOException {

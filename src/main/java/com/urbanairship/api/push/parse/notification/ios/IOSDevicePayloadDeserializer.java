@@ -129,6 +129,11 @@ public class IOSDevicePayloadDeserializer extends JsonDeserializer<IOSDevicePayl
                     reader.readIosInterruptionLevel(json);
                 }
             })
+            .put("relevance_score", new FieldParser<IOSDevicePayloadReader>() {
+                public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                reader.readRelevanceScore(json);
+                }
+            })
             .build()
             );
 

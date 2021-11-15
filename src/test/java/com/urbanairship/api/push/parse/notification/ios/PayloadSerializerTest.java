@@ -239,4 +239,15 @@ public class PayloadSerializerTest {
         assertEquals(expected, json);
     }
 
+
+    @Test
+    public void testRelevanceScore() throws Exception {
+        String json =
+                "{" +
+                        "\"relevance_score\": 1.0" +
+                "}";
+
+        IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
+        assertEquals(payload.getRelevanceScore().get().doubleValue(), 1.0, 0.0f);
+    }
 }
