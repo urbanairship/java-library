@@ -2,6 +2,7 @@ package com.urbanairship.api.schedule;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.push.model.DeviceType;
+import com.google.common.base.Optional;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
 import com.urbanairship.api.schedule.model.Schedule;
@@ -11,6 +12,7 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -37,7 +39,7 @@ public class ListSchedulesResponseTest {
             assertTrue(response.getOk());
             assertTrue(response.getCount() == 5);
             assertTrue(response.getTotal_Count() == 6);
-            assertTrue(response.getNext_Page() == null);
+            assertEquals(response.getNext_Page(), Optional.absent());
 
             List<SchedulePayloadResponse> list = response.getSchedules();
 
@@ -90,7 +92,7 @@ public class ListSchedulesResponseTest {
             assertTrue(response.getOk());
             assertTrue(response.getCount() == 5);
             assertTrue(response.getTotal_Count() == 6);
-            assertTrue(response.getNext_Page().equals("puppies"));
+            assertEquals(response.getNext_Page(), Optional.of("puppies"));
 
             List<SchedulePayloadResponse> list = response.getSchedules();
 
