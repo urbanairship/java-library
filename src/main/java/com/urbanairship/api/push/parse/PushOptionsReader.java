@@ -28,6 +28,10 @@ public class PushOptionsReader implements JsonObjectReader<PushOptions> {
         builder.setNoThrottle(BooleanFieldDeserializer.INSTANCE.deserialize(parser, "no_throttle"));
     }
 
+    public void readPersonalization(JsonParser parser) throws IOException {
+        builder.setPersonalization(BooleanFieldDeserializer.INSTANCE.deserialize(parser, "personalization"));
+    }
+
     @Override
     public PushOptions validateAndBuild() throws IOException {
         return builder.build();
