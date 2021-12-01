@@ -31,6 +31,8 @@ import org.joda.time.DateTimeZone;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -467,6 +469,61 @@ public class PushPayloadBasicSerializationTest {
         assertEquals(expectedJson, actualJson);
     }
 
+
+    @Test
+    public void testGlobalAttributes() throws Exception {
+        String json = "{\n" +
+                "    \"audience\": {\n" +
+                "        \"tag\": \"testTag\"\n" +
+                "    },\n" +
+                "    \"device_types\": [\n" +
+                "        \"android\"\n" +
+                "    ],\n" +
+                "    \"notification\": {\n" +
+                "        \"alert\": \"alert test\"\n" +
+                "    },\n" +
+                "    \"global_attributes\": {\n" +
+                "        \"test\": \"toto\",\n" +
+                "        \"test2\": [\n" +
+                "          {\n" +
+                "         \"text2\": \"allo\",\n" +
+                "        \"text\": \"hello\"\n" +
+                "          },\n" +
+                "          {\n" +
+                "          \"text2\": \"bye\",\n" +
+                "          \"text\": \"bonjour\"\n" +
+                "          }\n" +
+                "        ]\n" +
+                "      }\n" +
+                "}";
+
+
+        JsonNode expectedJson = mapper.readTree(json);
+
+        ArrayList<Object> list = new ArrayList<Object>();
+
+        HashMap<String, String> mMap = new HashMap<String, String>();
+        mMap.put("text","hello");
+        mMap.put("text2","allo");
+        list.add(mMap);
+        mMap = new HashMap<String, String>();
+        mMap.put("text","bonjour");
+        mMap.put("text2","bye");
+        list.add(mMap);
+
+        PushPayload pushPayload = PushPayload.newBuilder()
+                .setNotification(Notifications.alert("alert test"))
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.ANDROID))
+                .setAudience(Selectors.tag("testTag"))
+                .addGlobalAttributes("test", "toto")
+                .addGlobalAttributes("test2", list)
+                .build();
+
+        String pushPayloadStr = mapper.writeValueAsString(pushPayload);
+        JsonNode actualJson = mapper.readTree(pushPayloadStr);
+
+        assertEquals(expectedJson, actualJson);
+    }
 
     // TODO: split this into individual tests
     @Test
