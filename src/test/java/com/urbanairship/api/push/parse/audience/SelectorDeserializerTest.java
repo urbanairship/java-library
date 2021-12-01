@@ -87,6 +87,19 @@ public class SelectorDeserializerTest {
     }
 
     @Test
+    public void testDeserializeAttribute() throws Exception {
+        String json = "{\n"
+                + "  \"attribute\" : \"birthday\",\n"
+                + "  \"operator\" : \"equals\",\n"
+                + "  \"value\" : \"now\",\n"
+                + "  \"match_precision\" : \"month_day\"\n"
+                + "}";
+        Selector value = mapper.readValue(json, Selector.class);
+        assertTrue(value.getType() == SelectorType.ATTRIBUTE);
+        assertTrue(value instanceof ValueSelector);
+    }
+
+    @Test
     public void testTagClass() throws Exception {
         String json = "{\n"
                 + "  \"tag\" : \"1\",\n"
