@@ -60,6 +60,13 @@ public class IOSAlertDataReader implements JsonObjectReader<IOSAlertData> {
     public void readTitleLocKey(JsonParser parser) throws IOException {
         builder.setTitleLocKey(StringFieldDeserializer.INSTANCE.deserialize(parser, "title-loc-key"));
     }
+    public void readSubtitleLocArgs(JsonParser parser) throws IOException {
+        builder.setSubtitleLocArgs(ListOfStringsDeserializer.INSTANCE.deserialize(parser, "subtitle-loc-args"));
+    }
+
+    public void readSubtitleLocKey(JsonParser parser) throws IOException {
+        builder.setSubtitleLocKey(StringFieldDeserializer.INSTANCE.deserialize(parser, "subtitle-loc-key"));
+    }
 
     @Override
         public IOSAlertData validateAndBuild() throws IOException {

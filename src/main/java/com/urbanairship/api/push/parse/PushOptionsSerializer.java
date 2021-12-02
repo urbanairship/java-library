@@ -22,6 +22,9 @@ public class PushOptionsSerializer extends JsonSerializer<PushOptions> {
         if (payload.getNoThrottle().isPresent()) {
             jgen.writeBooleanField("no_throttle", payload.getNoThrottle().get());
         }
+        if (payload.getPersonalization().isPresent()) {
+            jgen.writeBooleanField("personalization", payload.getPersonalization().get());
+        }
 
         jgen.writeEndObject();
     }

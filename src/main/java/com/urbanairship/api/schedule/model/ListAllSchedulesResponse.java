@@ -6,6 +6,7 @@ package com.urbanairship.api.schedule.model;
 
 
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
@@ -16,10 +17,10 @@ public final class ListAllSchedulesResponse {
     private final boolean ok;
     private final int count;
     private final int totalCount;
-    private final String nextPage;
+    private final Optional<String> nextPage;
     private final ImmutableList<SchedulePayloadResponse> scheduleObjects;
 
-    private ListAllSchedulesResponse(boolean ok, int count, int totalCount, String nextPage, ImmutableList<SchedulePayloadResponse> response) {
+    private ListAllSchedulesResponse(boolean ok, int count, int totalCount,  Optional<String> nextPage, ImmutableList<SchedulePayloadResponse> response) {
         this.ok = ok;
         this.count = count;
         this.totalCount = totalCount;
@@ -43,7 +44,7 @@ public final class ListAllSchedulesResponse {
         return totalCount;
     }
 
-    public String getNext_Page() {
+    public Optional<String> getNext_Page() {
         return nextPage;
     }
 
@@ -88,7 +89,7 @@ public final class ListAllSchedulesResponse {
         private boolean ok = false;
         private int count;
         private int total_count;
-        private String next_page;
+        private String next_page = null;
         private ImmutableList.Builder<SchedulePayloadResponse> scheduleresponse = ImmutableList.builder();
 
         private Builder() {
@@ -128,7 +129,7 @@ public final class ListAllSchedulesResponse {
             Preconditions.checkNotNull(count, "count must be set to build APIListScheduleResponse");
             Preconditions.checkNotNull(total_count, "total count must be set to build APIListScheduleResponse");
             Preconditions.checkNotNull(scheduleresponse, "sch must be set to build APIListScheduleResponse");
-            return new ListAllSchedulesResponse(ok, count, total_count, next_page, scheduleresponse.build());
+            return new ListAllSchedulesResponse(ok, count, total_count, Optional.fromNullable(next_page), scheduleresponse.build());
         }
     }
 }

@@ -81,4 +81,9 @@ public class TemplateDeleteRequest implements Request<TemplateResponse> {
     public boolean bearerTokenAuthRequired() {
         return false;
     }
+
+    @Override
+    public boolean canUseBearerTokenAuth() {
+        return false;
+    }
 }

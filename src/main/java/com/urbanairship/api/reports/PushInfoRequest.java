@@ -83,4 +83,9 @@ public class PushInfoRequest implements Request<PushInfoResponse> {
     public boolean bearerTokenAuthRequired() {
         return false;
     }
+
+    @Override
+    public boolean canUseBearerTokenAuth() {
+        return true;
+    }
 }

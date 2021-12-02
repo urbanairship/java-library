@@ -152,4 +152,9 @@ public class PlatformStatsRequest implements Request<PlatformStatsResponse> {
     public boolean bearerTokenAuthRequired() {
         return false;
     }
+
+    @Override
+    public boolean canUseBearerTokenAuth() {
+        return true;
+    }
 }

@@ -16,10 +16,12 @@ public class PushOptions extends PushModelObject {
 
     private final Optional<PushExpiry> expiry;
     private final Optional<Boolean> noThrottle;
+    private final Optional<Boolean> personalization;
 
     private PushOptions(Builder builder) {
         expiry = Optional.fromNullable(builder.expiry);
         noThrottle = Optional.fromNullable(builder.noThrottle);
+        personalization = Optional.fromNullable(builder.personalization);
     }
 
     /**
@@ -47,9 +49,17 @@ public class PushOptions extends PushModelObject {
         return noThrottle;
     }
 
+    /**
+     * Get the personalization value. If true, the push will allow personalization.
+     * @return Optional Boolean
+     */
+    public Optional<Boolean> getPersonalization() {
+        return personalization;
+    }
+
     @Override
     public int hashCode() {
-        return Objects.hashCode(expiry, noThrottle);
+        return Objects.hashCode(expiry, noThrottle, personalization);
     }
 
     @Override
@@ -58,7 +68,8 @@ public class PushOptions extends PushModelObject {
         if (o == null || getClass() != o.getClass()) return false;
         PushOptions that = (PushOptions) o;
         return Objects.equal(expiry, that.expiry) &&
-                Objects.equal(noThrottle, that.noThrottle);
+                Objects.equal(noThrottle, that.noThrottle) &&
+                Objects.equal(personalization, that.personalization);
     }
 
     @Override
@@ -66,12 +77,15 @@ public class PushOptions extends PushModelObject {
         return "PushOptions{" +
                 "expiry=" + expiry +
                 ", noThrottle=" + noThrottle +
+                ", personalization=" + personalization +
                 '}';
     }
 
     public static class Builder {
         private PushExpiry expiry = null;
         private Boolean noThrottle = null;
+        private Boolean personalization = null;
+
 
         private Builder() { }
 
@@ -95,6 +109,16 @@ public class PushOptions extends PushModelObject {
               this.noThrottle = noThrottle;
               return this;
         }
+
+        /**
+         * Set the personalization option. If true, the push will allow personalization.
+         * @param personalization Boolean
+         * @return PushOptions Builder
+         */
+        public Builder setPersonalization(Boolean personalization) {
+            this.personalization = personalization;
+            return this;
+      }
 
         public PushOptions build() {
             return new PushOptions(this);

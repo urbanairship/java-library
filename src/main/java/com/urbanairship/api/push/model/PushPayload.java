@@ -7,6 +7,7 @@ package com.urbanairship.api.push.model;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.SelectorType;
 import com.urbanairship.api.push.model.localization.Localization;
@@ -28,7 +29,7 @@ public final class PushPayload extends PushModelObject {
     private final Optional<PushOptions> pushOptions;
     private final Optional<InApp> inApp;
     private final Optional<Campaigns> campaigns;
-
+    private final ImmutableMap<String, Object> globalAttributes;
     /**
      * PushPayload builder
      * @return Builder
@@ -44,7 +45,8 @@ public final class PushPayload extends PushModelObject {
                         Optional<PushOptions> pushOptions,
                         Optional<InApp> inApp,
                         Optional<Campaigns> campaigns,
-                        ImmutableList<Localization> localizations) {
+                        ImmutableList<Localization> localizations,
+                        ImmutableMap<String, Object> globalAttributes) {
         this.audience = audience;
         this.notification = notification;
         this.message = message;
@@ -52,6 +54,7 @@ public final class PushPayload extends PushModelObject {
         this.pushOptions = pushOptions;
         this.inApp = inApp;
         this.campaigns = campaigns;
+        this.globalAttributes = globalAttributes;
 
         if (localizations.isEmpty()) {
             this.localizations = Optional.absent();
@@ -130,6 +133,14 @@ public final class PushPayload extends PushModelObject {
         return localizations;
     }
 
+    /**
+     * Get the global attributes.
+     * @return An Optional immutable map of global attributes in the push payload.
+     */
+    public ImmutableMap<String, Object> getGlobalAttributes() {
+        return globalAttributes;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -162,6 +173,9 @@ public final class PushPayload extends PushModelObject {
         if (campaigns != null ? !campaigns.equals(that.campaigns) : that.campaigns != null) {
             return false;
         }
+        if (globalAttributes != null ? !globalAttributes.equals(that.globalAttributes) : that.globalAttributes != null) {
+            return false;
+        }
 
         return true;
     }
@@ -175,6 +189,7 @@ public final class PushPayload extends PushModelObject {
         result = 31 * result + (pushOptions != null ? pushOptions.hashCode() : 0);
         result = 31 * result + (inApp != null ? inApp.hashCode() : 0);
         result = 31 * result + (campaigns != null ? campaigns.hashCode() : 0);
+        result = 31 * result + (globalAttributes != null ? globalAttributes.hashCode() : 0);
         return result;
     }
 
@@ -188,6 +203,7 @@ public final class PushPayload extends PushModelObject {
                 ", pushOptions=" + pushOptions +
                 ", inApp=" + inApp +
                 ", campaigns=" + campaigns +
+                ", globalAttributes=" + globalAttributes +
                 '}';
     }
 
@@ -200,6 +216,7 @@ public final class PushPayload extends PushModelObject {
         private InApp inApp = null;
         private Campaigns campaigns = null;
         private ImmutableList.Builder<Localization> localizationsBuilder = ImmutableList.builder();
+        private ImmutableMap.Builder<String, Object> globalAttributesBuilder = ImmutableMap.builder();
 
         private Builder() { }
 
@@ -284,6 +301,16 @@ public final class PushPayload extends PushModelObject {
         }
 
         /**
+         * Add a global attribute.
+         * @param globalAttributes ImmutableMap
+         * @return Builder
+         */
+        public Builder addGlobalAttributes(String k, Object o) {
+            this.globalAttributesBuilder.put(k, o);
+            return this;
+        }
+
+        /**
          * Build a PushPayload object. Will fail if any of the following
          * preconditions are not met.
          * <pre>
@@ -298,6 +325,7 @@ public final class PushPayload extends PushModelObject {
          */
         public PushPayload build() {
             ImmutableList<Localization> localizations = localizationsBuilder.build();
+            ImmutableMap<String, Object> globalAttributes = globalAttributesBuilder.build();
             Preconditions.checkArgument(!(notification == null && message == null && inApp == null),
                     "At least one of 'notification', 'message', or 'inApp' must be set.");
             Preconditions.checkNotNull(audience, "'audience' must be set");
@@ -311,7 +339,8 @@ public final class PushPayload extends PushModelObject {
                     Optional.fromNullable(pushOptions),
                     Optional.fromNullable(inApp),
                     Optional.fromNullable(campaigns),
-                    localizations
+                    localizations,
+                    globalAttributes
             );
         }
     }

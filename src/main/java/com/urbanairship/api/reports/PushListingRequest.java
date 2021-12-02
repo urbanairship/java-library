@@ -200,4 +200,9 @@ public class PushListingRequest implements Request<PushListingResponse> {
     public boolean bearerTokenAuthRequired() {
         return false;
     }
+
+    @Override
+    public boolean canUseBearerTokenAuth() {
+        return true;
+    }
 }

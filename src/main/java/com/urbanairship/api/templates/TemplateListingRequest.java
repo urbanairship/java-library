@@ -131,4 +131,9 @@ public class TemplateListingRequest implements Request<TemplateListingResponse> 
     public boolean bearerTokenAuthRequired() {
         return false;
     }
+
+    @Override
+    public boolean canUseBearerTokenAuth() {
+        return false;
+    }
 }

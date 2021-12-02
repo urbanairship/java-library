@@ -125,4 +125,9 @@ public class ResponseReportRequest implements Request<ResponseReport> {
 
     @Override
     public boolean bearerTokenAuthRequired() { return false; }
+
+    @Override
+    public boolean canUseBearerTokenAuth() {
+        return true;
+    }
 }

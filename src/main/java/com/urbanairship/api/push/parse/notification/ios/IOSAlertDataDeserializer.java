@@ -73,6 +73,16 @@ public class IOSAlertDataDeserializer extends JsonDeserializer<IOSAlertData> {
                         reader.readTitleLocKey(json);
                     }
             })
+            .put("subtitle-loc-args", new FieldParser<IOSAlertDataReader>() {
+                public void parse(IOSAlertDataReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                    reader.readSubtitleLocArgs(json);
+                }
+            })
+            .put("subtitle-loc-key", new FieldParser<IOSAlertDataReader>() {
+                public void parse(IOSAlertDataReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                    reader.readSubtitleLocKey(json);
+                }
+            })
             .build()
             );
 

@@ -63,13 +63,15 @@ public class PayloadSerializerTest {
                         .setTitleLocKey("TLK")
                         .setSummaryArg("SA")
                         .setSummaryArgCount(1)
+                        .setSubtitleLocArgs(ImmutableList.of("arg5","arg6"))
+                        .setSubtitleLocKey("PNL")
                         .build())
                 .build();
 
         String json = mapper.writeValueAsString(payload);
 
         String expected
-            = "{\"alert\":{\"body\":\"B\",\"action-loc-key\":\"ALK\",\"loc-key\":\"LK\",\"loc-args\":[\"arg1\",\"arg2\"],\"launch-image\":\"LI\",\"title\":\"T\",\"title-loc-args\":[\"arg3\",\"arg4\"],\"title-loc-key\":\"TLK\",\"summary-arg\":\"SA\",\"summary-arg-count\":1}}";
+            = "{\"alert\":{\"body\":\"B\",\"action-loc-key\":\"ALK\",\"loc-key\":\"LK\",\"loc-args\":[\"arg1\",\"arg2\"],\"launch-image\":\"LI\",\"title\":\"T\",\"title-loc-args\":[\"arg3\",\"arg4\"],\"title-loc-key\":\"TLK\",\"summary-arg\":\"SA\",\"summary-arg-count\":1,\"subtitle-loc-args\":[\"arg5\",\"arg6\"],\"subtitle-loc-key\":\"PNL\"}}";
 
         assertEquals(expected, json);
     }
@@ -222,4 +224,30 @@ public class PayloadSerializerTest {
         assertEquals(expected, json);
     }
 
+    @Test
+    public void testInterruptionLevel() throws Exception {
+        IOSDevicePayload payload = IOSDevicePayload.newBuilder()
+                .setAlert("alert")
+                .setIosInterruptionLevel(IOSInterruptionLevel.CRITICAL)
+                .build();
+
+        String json = mapper.writeValueAsString(payload);
+
+        String expected
+            = "{\"alert\":\"alert\",\"interruption_level\":\"critical\"}";
+
+        assertEquals(expected, json);
+    }
+
+
+    @Test
+    public void testRelevanceScore() throws Exception {
+        String json =
+                "{" +
+                        "\"relevance_score\": 1.0" +
+                "}";
+
+        IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
+        assertEquals(payload.getRelevanceScore().get().doubleValue(), 1.0, 0.0f);
+    }
 }

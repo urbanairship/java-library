@@ -92,4 +92,9 @@ public class SegmentListingRequest implements Request<SegmentListingResponse> {
     public boolean bearerTokenAuthRequired() {
         return false;
     }
+
+    @Override
+    public boolean canUseBearerTokenAuth() {
+        return true;
+    }
 }

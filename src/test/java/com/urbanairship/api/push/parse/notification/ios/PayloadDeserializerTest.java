@@ -11,6 +11,7 @@ import com.urbanairship.api.push.model.notification.ios.IOSAlertData;
 import com.urbanairship.api.push.model.notification.ios.IOSBadgeData;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 import com.urbanairship.api.push.model.notification.ios.IOSFields;
+import com.urbanairship.api.push.model.notification.ios.IOSInterruptionLevel;
 import com.urbanairship.api.push.model.notification.ios.IOSSoundData;
 import com.urbanairship.api.push.model.notification.ios.IOSTemplate;
 import com.urbanairship.api.push.parse.PushObjectMapper;
@@ -73,7 +74,11 @@ public class PayloadDeserializerTest {
                 + "    \"title-loc-args\" : ["
                 + "        \"arg4\", \"arg5\""
                 + "      ],"
-                + "    \"title-loc-key\" : \"Special Key\""
+                + "    \"title-loc-key\" : \"Special Key\","
+                + "       \"subtitle-loc-args\" : ["
+                + "        \"arg6\", \"arg7\""
+                + "      ],"
+                + "    \"subtitle-loc-key\" : \"Another Special Key\""
                 + "  }"
                 + "}";
 
@@ -89,6 +94,8 @@ public class PayloadDeserializerTest {
                         .setSummaryArgCount(1)
                         .setTitleLocArgs(ImmutableList.of("arg4", "arg5"))
                         .setTitleLocKey("Special Key")
+                        .setSubtitleLocArgs(ImmutableList.of("arg6", "arg7"))
+                        .setSubtitleLocKey("Another Special Key")
                         .build())
                 .build();
 
@@ -112,6 +119,8 @@ public class PayloadDeserializerTest {
         assertEquals(1, alert.getSummaryArgCount().get().intValue());
         assertEquals(2, alert.getTitleLocArgs().get().size());
         assertEquals("Special Key", alert.getTitleLocKey().get());
+        assertEquals(2, alert.getSubtitleLocArgs().get().size());
+        assertEquals("Another Special Key", alert.getSubtitleLocKey().get());
     }
 
     @Test
@@ -532,4 +541,30 @@ public class PayloadDeserializerTest {
 
         assertEquals(iosDevicePayload, roundTripIosDevicePayload);
     }
+
+    @Test
+    public void testInterruptionLevel() throws Exception {
+
+        IOSInterruptionLevel test = IOSInterruptionLevel.ACTIVE;
+
+        IOSDevicePayload payload = IOSDevicePayload.newBuilder()
+                .setIosInterruptionLevel(test)
+                .build();
+
+        String json = mapper.writeValueAsString(payload);
+
+        IOSDevicePayload roundTripPayload = mapper.readValue(json, IOSDevicePayload.class);
+        System.out.println(roundTripPayload);
+
+        assertEquals(payload, roundTripPayload);
+    }
+
+    public void testRelevanceScore() throws Exception {
+        String json
+            = "{"
+            + "  \"relevance_score\": 0.5"
+            + "}";
+        IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
+        assertTrue(payload.getRelevanceScore().get().equals(0.5));
+    }      
 }
