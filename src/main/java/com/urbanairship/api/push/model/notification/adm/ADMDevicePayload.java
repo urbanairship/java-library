@@ -261,6 +261,7 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
          * Describes Actions to be performed by the SDK when a user interacts with the notification.
          *
          * @return Optional Actions
+         * @param actions Actions
          */
         public Builder setActions(Actions actions) {
             this.actions = actions;
@@ -271,6 +272,7 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
          * Set the string representing an image file included in the application’s resources.
          *
          * @return Optional String
+         * @param icon String
          */
         public Builder setIcon(String icon) {
             this.icon = icon;
@@ -281,6 +283,7 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
          * Set the string representing the icon color in API Color Format. i.e. ‘#rrggbb’
          *
          * @return Optional String
+         * @param iconColor String
          */
         public Builder setIconColor(String iconColor) {
             this.iconColor = iconColor;
@@ -291,6 +294,7 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
          * Set the string representing a notification channel. Used to group notifications with similar behavior.
          *
          * @return Optional String
+         * @param notificationChannel String
          */
         public Builder setNotificationChannel(String notificationChannel) {
             this.notificationChannel = notificationChannel;
@@ -302,6 +306,7 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
          * If a message is currently displaying and has a tag set, sending another message with the same tag will replace the posted notification.
          *
          * @return Optional String
+         * @param notificationTag String
          */
         public Builder setNotificationTag(String notificationTag) {
             this.notificationTag = notificationTag;
@@ -312,6 +317,7 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
          * Set the string representing a sound file name included in the application’s resources.
          *
          * @return Optional String
+         * @param sound String
          */
         public Builder setSound(String sound) {
             this.sound = sound;
@@ -322,6 +328,7 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
          * Set the string representing a summary/subtitle of the notification.
          *
          * @return Optional String
+         * @param summary String
          */
         public Builder setSummary(String summary) {
             this.summary = summary;
@@ -332,6 +339,7 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
          * Set the string representing the title of the notification. The default value is the name of the app.
          *
          * @return Optional String
+         * @param title String
          */
         public Builder setTitle(String title) {
             this.title = title;
@@ -344,6 +352,7 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
          * by adding the style to the platform specific notification payload on Android platforms.
          *
          * @return Optional String
+         * @param style Style
          */
         public Builder setStyle(Style style) {
             this.style = style;
