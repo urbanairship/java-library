@@ -302,7 +302,8 @@ public final class PushPayload extends PushModelObject {
 
         /**
          * Add a global attribute.
-         * @param globalAttributes ImmutableMap
+         * @param k String
+         * @param o Object
          * @return Builder
          */
         public Builder addGlobalAttributes(String k, Object o) {
