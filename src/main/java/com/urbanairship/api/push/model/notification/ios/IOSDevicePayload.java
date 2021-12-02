@@ -578,6 +578,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
          * These describe actions to be performed by the SDK when a user interacts with the notification.
          *
          * @return Builder
+         * @param actions Actions
          */
         public Builder setActions(Actions actions) {
             this.actions = actions;
@@ -589,6 +590,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
          * The identifier of the window to bring forward when the notification is opened. Used for multi-window content, such as App Clips.
          *
          * @return Builder
+         * @param targetContentId String
          */
         public Builder setTargetContentId(String targetContentId) {
             this.targetContentId = targetContentId;
