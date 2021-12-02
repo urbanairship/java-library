@@ -115,6 +115,12 @@ public class SelectorDeserializer extends JsonDeserializer<Selector> {
                         reader.readValueSelector(SelectorType.STATIC_LIST, parser, context);
                     }
                 })
+                .put("attribute", new FieldParser<SelectorReader>() {
+                    @Override
+                    public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
+                        reader.readValueSelector(SelectorType.ATTRIBUTE, parser, context);
+                    }
+                })
 
                         // Device ID value selectors
                 .put("device_token", new FieldParser<SelectorReader>() {
@@ -151,6 +157,12 @@ public class SelectorDeserializer extends JsonDeserializer<Selector> {
                     @Override
                     public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
                         reader.readValueSelector(SelectorType.ANDROID_CHANNEL, parser, context);
+                    }
+                })
+                .put("channel", new FieldParser<SelectorReader>() {
+                    @Override
+                    public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
+                        reader.readValueSelector(SelectorType.CHANNEL, parser, context);
                     }
                 })
 

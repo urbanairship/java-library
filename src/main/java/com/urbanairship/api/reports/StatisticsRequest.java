@@ -91,5 +91,10 @@ public class StatisticsRequest implements Request<List<StatisticsResponse>> {
     public boolean bearerTokenAuthRequired() {
         return false;
     }
+    //This needs to be tested
+    @Override
+    public boolean canUseBearerTokenAuth() {
+        return true;
+    }
 
 }

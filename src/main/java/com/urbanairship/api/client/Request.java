@@ -42,4 +42,6 @@ public interface Request<T> {
     ResponseParser<T> getResponseParser();
 
     boolean bearerTokenAuthRequired();
+
+    boolean canUseBearerTokenAuth();
 }

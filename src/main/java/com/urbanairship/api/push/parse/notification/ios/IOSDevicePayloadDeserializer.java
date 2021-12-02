@@ -123,6 +123,17 @@ public class IOSDevicePayloadDeserializer extends JsonDeserializer<IOSDevicePayl
                     reader.readIosTemplate(json);
                 }
             })
+            .put("interruption_level", new FieldParser<IOSDevicePayloadReader>() {
+                @Override
+                public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                    reader.readIosInterruptionLevel(json);
+                }
+            })
+            .put("relevance_score", new FieldParser<IOSDevicePayloadReader>() {
+                public void parse(IOSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                reader.readRelevanceScore(json);
+                }
+            })
             .build()
             );
 

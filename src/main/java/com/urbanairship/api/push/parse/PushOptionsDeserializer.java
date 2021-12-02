@@ -32,6 +32,12 @@ public class PushOptionsDeserializer extends JsonDeserializer<PushOptions> {
                 reader.readNoThrottle(parser);
             }
         })
+        .put("personalization", new FieldParser<PushOptionsReader>() {
+            @Override
+            public void parse(PushOptionsReader reader, JsonParser parser, DeserializationContext context) throws IOException {
+                reader.readPersonalization(parser);
+            }
+        })
         .build()
     );
 

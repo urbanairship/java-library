@@ -73,4 +73,9 @@ public class OpenChannelRequest implements Request<OpenChannelResponse> {
     public boolean bearerTokenAuthRequired() {
         return false;
     }
+
+    @Override
+    public boolean canUseBearerTokenAuth() {
+        return false;
+    }
 }

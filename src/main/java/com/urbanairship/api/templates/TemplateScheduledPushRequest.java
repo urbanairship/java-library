@@ -119,4 +119,9 @@ public class TemplateScheduledPushRequest implements Request<ScheduleResponse> {
     public boolean bearerTokenAuthRequired() {
         return false;
     }
+
+    @Override
+    public boolean canUseBearerTokenAuth() {
+        return false;
+    }
 }

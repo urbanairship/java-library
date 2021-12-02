@@ -22,6 +22,8 @@ public final class IOSAlertData extends PushModelObject {
     private final Optional<String> title;
     private final Optional<List<String>> titleLocArgs;
     private final Optional<String> titleLocKey;
+    private final Optional<List<String>> subtitleLocArgs;
+    private final Optional<String> subtitleLocKey;
 
     private IOSAlertData(Optional<String> body,
                          Optional<String> actionLocKey,
@@ -32,7 +34,9 @@ public final class IOSAlertData extends PushModelObject {
                          Optional<Integer> summaryArgCount,
                          Optional<String> title,
                          Optional<List<String>> titleLocArgs,
-                         Optional<String> titleLocKey) {
+                         Optional<String> titleLocKey,
+                         Optional<List<String>> subtitleLocArgs,
+                         Optional<String> subtitleLocKey) {
         this.body = body;
         this.actionLocKey = actionLocKey;
         this.locKey = locKey;
@@ -43,6 +47,8 @@ public final class IOSAlertData extends PushModelObject {
         this.title = title;
         this.titleLocArgs = titleLocArgs;
         this.titleLocKey = titleLocKey;
+        this.subtitleLocArgs = subtitleLocArgs;
+        this.subtitleLocKey = subtitleLocKey;
     }
 
     public static Builder newBuilder() {
@@ -95,6 +101,13 @@ public final class IOSAlertData extends PushModelObject {
     public Optional<String> getTitleLocKey() {
         return titleLocKey;
     }
+    public Optional<List<String>> getSubtitleLocArgs() {
+        return subtitleLocArgs;
+    }
+
+    public Optional<String> getSubtitleLocKey() {
+        return subtitleLocKey;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -110,12 +123,15 @@ public final class IOSAlertData extends PushModelObject {
                 Objects.equals(summaryArgCount, that.summaryArgCount) &&
                 Objects.equals(title, that.title) &&
                 Objects.equals(titleLocArgs, that.titleLocArgs) &&
-                Objects.equals(titleLocKey, that.titleLocKey);
+                Objects.equals(titleLocKey, that.titleLocKey) &&
+                Objects.equals(subtitleLocArgs, that.subtitleLocArgs) &&
+                Objects.equals(subtitleLocKey, that.subtitleLocKey);
+                
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(body, actionLocKey, locKey, locArgs, launchImage, summaryArg, summaryArgCount, title, titleLocArgs, titleLocKey);
+        return Objects.hash(body, actionLocKey, locKey, locArgs, launchImage, summaryArg, summaryArgCount, title, titleLocArgs, titleLocKey, subtitleLocArgs, subtitleLocKey);
     }
 
     @Override
@@ -131,6 +147,8 @@ public final class IOSAlertData extends PushModelObject {
                 ", title=" + title +
                 ", titleLocArgs=" + titleLocArgs +
                 ", titleLocKey=" + titleLocKey +
+                ", subtitleLocArgs=" + subtitleLocArgs +
+                ", subtitleLocKey=" + subtitleLocKey +
                 '}';
     }
 
@@ -145,6 +163,8 @@ public final class IOSAlertData extends PushModelObject {
         private String title = null;
         private List<String> titleLocArgs = null;
         private String titleLocKey = null;
+        private List<String> subtitleLocArgs = null;
+        private String subtitleLocKey = null;
 
         private Builder() { }
 
@@ -197,6 +217,15 @@ public final class IOSAlertData extends PushModelObject {
             this.titleLocKey = value;
             return this;
         }
+        public Builder setSubtitleLocArgs(List<String> value) {
+            this.subtitleLocArgs = value;
+            return this;
+        }
+
+        public Builder setSubtitleLocKey(String value) {
+            this.subtitleLocKey = value;
+            return this;
+        }
 
         public IOSAlertData build() {
             return new IOSAlertData(Optional.fromNullable(body),
@@ -208,7 +237,9 @@ public final class IOSAlertData extends PushModelObject {
                                     Optional.fromNullable(summaryArgCount),
                                     Optional.fromNullable(title),
                                     Optional.fromNullable(titleLocArgs),
-                                    Optional.fromNullable(titleLocKey));
+                                    Optional.fromNullable(titleLocKey),
+                                    Optional.fromNullable(subtitleLocArgs),
+                                    Optional.fromNullable(subtitleLocKey));
         }
     }
 }

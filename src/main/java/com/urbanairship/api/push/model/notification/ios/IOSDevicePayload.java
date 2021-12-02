@@ -5,6 +5,7 @@
 package com.urbanairship.api.push.model.notification.ios;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.DeviceType;
@@ -40,6 +41,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
     private final Optional<Actions> actions;
     private final Optional<String> targetContentId;
     private final Optional<IOSTemplate> iosTemplate;
+    private final Optional<IOSInterruptionLevel> iosInterruptionLevel;
+    private final Optional<Double> relevanceScore;
 
     private IOSDevicePayload(Optional<IOSAlertData> alert,
                              Optional<IOSBadgeData> badge,
@@ -58,7 +61,9 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                              Optional<String> threadId,
                              Optional<Actions> actions,
                              Optional<String> targetContentId,
-                             Optional<IOSTemplate> iosTemplate) {
+                             Optional<IOSTemplate> iosTemplate,
+                             Optional<IOSInterruptionLevel> iosInterruptionLevel,
+                             Optional<Double> relevanceScore) {
         this.alert = alert;
         this.badge = badge;
         this.contentAvailable = contentAvailable;
@@ -77,6 +82,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         this.actions = actions;
         this.targetContentId = targetContentId;
         this.iosTemplate = iosTemplate;
+        this.iosInterruptionLevel = iosInterruptionLevel;
+        this.relevanceScore = relevanceScore;
     }
 
     /**
@@ -267,6 +274,24 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
      */
     public Optional<IOSTemplate> getIosTemplate() {
         return iosTemplate;
+    }  
+
+    /**
+     * Get the interruption level.
+     *
+     * @return Optional IOSInterruptionLevel iosInterruptionLevel
+     */
+    public Optional<IOSInterruptionLevel> getIosInterruptionLevel() {
+        return iosInterruptionLevel;
+    }
+
+    /**
+     * Get the relevance score for iOS  message.
+     *
+     * @return Optional Double relevanceScore
+     */
+    public Optional<Double> getRelevanceScore(){
+        return relevanceScore;
     }
 
     @Override
@@ -291,13 +316,15 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                 Objects.equals(threadId, that.threadId) &&
                 Objects.equals(actions, that.actions) &&
                 Objects.equals(targetContentId, that.targetContentId) &&
-                Objects.equals(iosTemplate, that.iosTemplate);
+                Objects.equals(iosTemplate, that.iosTemplate) &&
+                Objects.equals(iosInterruptionLevel, that.iosInterruptionLevel) &&
+                Objects.equals(relevanceScore, that.relevanceScore);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(alert, extra, badge, contentAvailable, expiry, priority, category, interactive, title, subtitle,
-                mediaAttachment, sound, mutableContent, collapseId, threadId, actions, targetContentId, iosTemplate);
+                mediaAttachment, sound, mutableContent, collapseId, threadId, actions, targetContentId, iosTemplate, iosInterruptionLevel, relevanceScore);
     }
 
     @Override
@@ -321,6 +348,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                 ", actions=" + actions +
                 ", targetContentId=" + targetContentId +
                 ", iosTemplate=" + iosTemplate +
+                ", iosInterruptionLevel=" + iosInterruptionLevel +
+                ", relevanceScore=" + relevanceScore +
                 '}';
     }
 
@@ -343,6 +372,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         private Actions actions;
         private String targetContentId;
         private IOSTemplate iosTemplate;
+        private IOSInterruptionLevel iosInterruptionLevel;
+        private Double relevanceScore;
 
 
         private Builder() { }
@@ -574,6 +605,33 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
             this.iosTemplate = iosTemplate;
             return this;
         }
+        
+        /**
+         * Set an interruption level.
+         *
+         * @param iosInterruptionLevel IOSInterruptionLevel
+         * @return Builder
+         */
+        public Builder setIosInterruptionLevel(IOSInterruptionLevel iosInterruptionLevel) {
+            this.iosInterruptionLevel = iosInterruptionLevel;
+            return this;
+        }
+        
+
+        /**
+         * Set the relevance score.
+         *
+         * @param relevanceScore Double
+         * @return Builder
+         */
+        public Builder setRelevanceScore(Double relevanceScore) {
+            Preconditions.checkArgument(
+                relevanceScore >= 0.0 && relevanceScore <= 1.0,
+                    "Relevance score must be a number between 0.0 and 1.0."
+            );
+            this.relevanceScore = relevanceScore;
+            return this;
+        }
 
         /**
          * Build IOSDevicePayload
@@ -598,7 +656,9 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                     Optional.fromNullable(threadId),
                     Optional.fromNullable(actions),
                     Optional.fromNullable(targetContentId),
-                    Optional.fromNullable(iosTemplate));
+                    Optional.fromNullable(iosTemplate),
+                    Optional.fromNullable(iosInterruptionLevel),
+                    Optional.fromNullable(relevanceScore));
         }
     }
 }

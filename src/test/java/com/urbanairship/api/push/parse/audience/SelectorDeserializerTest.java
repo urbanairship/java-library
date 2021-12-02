@@ -61,6 +61,16 @@ public class SelectorDeserializerTest {
     }
 
     @Test
+    public void testChannelCase() throws Exception {
+        String channel = UUID.randomUUID().toString();
+        String json = "{\"channel\": \"" + channel + "\"}";
+        BasicValueSelector value = (BasicValueSelector) mapper.readValue(json, Selector.class);
+        assertTrue(value.getType() == SelectorType.CHANNEL);
+        assertEquals(value.getValue(), channel);
+    }
+
+
+    @Test
     public void testNamedUserCase() throws Exception {
         String namedUser = "FakeNamedUser";
         String json = "{\"named_user\": \"" + namedUser + "\"}";
@@ -73,6 +83,19 @@ public class SelectorDeserializerTest {
     public void testDeserializeTag() throws Exception {
         Selector value = mapper.readValue("{ \"tag\" : \"derp\" }", Selector.class);
         assertTrue(value.getType() == SelectorType.TAG);
+        assertTrue(value instanceof ValueSelector);
+    }
+
+    @Test
+    public void testDeserializeAttribute() throws Exception {
+        String json = "{\n"
+                + "  \"attribute\" : \"birthday\",\n"
+                + "  \"operator\" : \"equals\",\n"
+                + "  \"value\" : \"now\",\n"
+                + "  \"match_precision\" : \"month_day\"\n"
+                + "}";
+        Selector value = mapper.readValue(json, Selector.class);
+        assertTrue(value.getType() == SelectorType.ATTRIBUTE);
         assertTrue(value instanceof ValueSelector);
     }
 

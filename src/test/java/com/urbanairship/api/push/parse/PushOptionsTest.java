@@ -193,5 +193,25 @@ public class PushOptionsTest {
                 .build();
     }
 
+    @Test
+    public void testParsingPersonalization() throws Exception {
+        String json = "{" +
+                "\"personalization\": true" +
+                "}";
+
+        PushOptions pushOptions = PushOptions.newBuilder().setPersonalization(true).build();
+
+        String objectJson = mapper.writeValueAsString(pushOptions);
+        PushOptions roundTrip = mapper.readValue(objectJson, PushOptions.class);
+
+        assertEquals(true, roundTrip.getPersonalization().get());
+
+        objectJson = mapper.writeValueAsString(roundTrip);
+        JsonNode actual = mapper.readTree(objectJson);
+        JsonNode expected = mapper.readTree(json);
+
+        assertEquals(expected, actual);
+    }
+
 
 }

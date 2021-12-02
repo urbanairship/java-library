@@ -1,4 +1,18 @@
 -------------------------
+6.4.3 02DEC21
+-------------------------
+- Add global attributes feature for push
+- Add personalization to push options
+- Add support for bearer token authentication
+- Add Relevance Score feature for iOS
+- Add Interruption Level feature for iOS
+- Add subtitle loc args and key to iOS
+- Next page is now optional for schedules list
+- Channel selector support for schedules list
+- Attributes selector support for schedules list
+- Use Jackson BOM to manage Jackson artifacts
+
+-------------------------
 6.4.2 28SEP21
 -------------------------
 - Updates user agent string to include app key.

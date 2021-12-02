@@ -86,4 +86,9 @@ public class NamedUserAttributeRequest implements Request<NamedUserAttributeResp
     public boolean bearerTokenAuthRequired() {
         return false;
     }
+
+    @Override
+    public boolean canUseBearerTokenAuth() {
+        return false;
+    }
 }

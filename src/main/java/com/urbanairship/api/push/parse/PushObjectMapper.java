@@ -288,6 +288,8 @@ public class PushObjectMapper {
                 .addDeserializer(IOSSoundData.class, new IOSSoundDataDeserializer())
                 .addDeserializer(IOSFields.class, new IOSFieldsDeserializer())
                 .addDeserializer(IOSTemplate.class, new IOSTemplateDeserializer())
+                .addDeserializer(IOSInterruptionLevel.class, new IOSInterruptionLevelDeserializer())
+
 
                 /* WNS enums */
                 .addSerializer(WNSToastData.Duration.class, new WNSDurationSerializer())
