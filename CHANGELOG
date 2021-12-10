@@ -1,3 +1,7 @@
+6.4.4 10DEC21
+-------------------------
+- Updates log4j-core to 2.15.0 to address a security vulnerability.
+
 -------------------------
 6.4.3 02DEC21
 -------------------------
