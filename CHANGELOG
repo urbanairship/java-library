@@ -1,4 +1,9 @@
 -------------------------
+6.4.6 20DEC21
+-------------------------
+- Removes log4j dependency.
+
+-------------------------
 6.4.5 14DEC21
 -------------------------
 - Updates log4j-core and log4j-api to 2.16.0 to address a security vulnerability.
