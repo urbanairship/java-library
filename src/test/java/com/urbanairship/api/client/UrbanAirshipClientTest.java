@@ -81,9 +81,6 @@ import com.urbanairship.api.templates.model.TemplateListingResponse;
 import com.urbanairship.api.templates.model.TemplatePushPayload;
 import com.urbanairship.api.templates.model.TemplateResponse;
 import com.urbanairship.api.templates.model.TemplateSelector;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.core.config.Configurator;
-import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.asynchttpclient.DefaultAsyncHttpClientConfig;
 import org.asynchttpclient.Realm;
 import org.asynchttpclient.filter.FilterContext;
@@ -144,11 +141,6 @@ public class UrbanAirshipClientTest {
     public final static String CONTENT_TYPE_KEY = "Content-type";
     public final static String APP_JSON = "application/json";
     public final static String TEXT_CSV = "text/csv";
-
-    static {
-        Configurator.initialize(new DefaultConfiguration());
-        Configurator.setRootLevel(Level.WARN);
-    }
 
     @Mock
     Predicate<FilterContext> retryPredicate;
