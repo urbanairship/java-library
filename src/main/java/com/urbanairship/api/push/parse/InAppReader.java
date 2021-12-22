@@ -7,9 +7,9 @@ import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.push.model.Display;
 import com.urbanairship.api.push.model.InApp;
+import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.notification.actions.Actions;
-import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.util.Map;
@@ -28,7 +28,7 @@ public class InAppReader implements JsonObjectReader<InApp> {
     }
 
     public void readExpiry(JsonParser parser) throws IOException {
-        builder.setExpiry(parser.readValueAs(DateTime.class));
+        builder.setExpiry(parser.readValueAs(PushExpiry.class));
     }
 
     public void readDisplay(JsonParser parser) throws IOException {
