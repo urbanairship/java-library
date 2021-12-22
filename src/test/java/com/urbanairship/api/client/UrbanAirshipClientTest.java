@@ -55,6 +55,7 @@ import com.urbanairship.api.schedule.ListSchedulesOrderType;
 import com.urbanairship.api.schedule.ScheduleDeleteRequest;
 import com.urbanairship.api.schedule.ScheduleListingRequest;
 import com.urbanairship.api.schedule.ScheduleRequest;
+import com.urbanairship.api.schedule.ScheduleStatusRequest;
 import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
@@ -3458,5 +3459,53 @@ public class UrbanAirshipClientTest {
         expectedException.expect(IllegalArgumentException.class);
 
         bearerTokenClient.execute(templateDeleteRequest);
+    }
+
+    @Test
+    public void testPauseStatusSpecificSchedule() {
+        stubFor(post(urlEqualTo("/api/schedules/id/pause"))
+            .willReturn(aResponse()
+                .withStatus(204)));
+
+        try {
+            Response<String> response = client.execute(ScheduleStatusRequest.pauseScheduleRequest("id"));
+
+            // Verify components of the underlying HttpRequest
+            verify(postRequestedFor(urlEqualTo("/api/schedules/id/pause")));
+            List<LoggedRequest> requests = findAll(postRequestedFor(
+                urlEqualTo("/api/schedules/id/pause")));
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+            assertEquals(204, response.getStatus());
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testResumeStatusSpecificSchedule() {
+        stubFor(post(urlEqualTo("/api/schedules/id/resume"))
+            .willReturn(aResponse()
+                .withStatus(204)));
+
+        try {
+            Response<String> response = client.execute(ScheduleStatusRequest.resumeScheduleRequest("id"));
+
+            // Verify components of the underlying HttpRequest
+            verify(postRequestedFor(urlEqualTo("/api/schedules/id/resume")));
+            List<LoggedRequest> requests = findAll(postRequestedFor(
+                urlEqualTo("/api/schedules/id/resume")));
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+            assertEquals(204, response.getStatus());
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
     }
 }
