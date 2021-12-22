@@ -21,6 +21,7 @@ import com.urbanairship.api.experiments.ExperimentRequest;
 import com.urbanairship.api.experiments.model.Experiment;
 import com.urbanairship.api.experiments.model.ExperimentResponse;
 import com.urbanairship.api.experiments.model.VariantPushPayload;
+import com.urbanairship.api.inbox.InboxDeleteRequest;
 import com.urbanairship.api.experiments.model.Variant;
 import com.urbanairship.api.location.LocationRequest;
 import com.urbanairship.api.location.model.BoundedBox;
@@ -3485,6 +3486,29 @@ public class UrbanAirshipClientTest {
         }
     }
 
+    public void testDeleteSpecificInbox() {
+        stubFor(delete(urlEqualTo("/api/user/messages/id"))
+            .willReturn(aResponse()
+                .withStatus(202)));
+
+        try {
+            Response<String> response = client.execute(InboxDeleteRequest.newRequest("id"));
+
+            // Verify components of the underlying HttpRequest
+            verify(deleteRequestedFor(urlEqualTo("/api/user/messages/id")));
+            List<LoggedRequest> requests = findAll(deleteRequestedFor(
+                urlEqualTo("/api/user/messages/id")));
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+            assertEquals(204, response.getStatus());
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
+    }
+
     @Test
     public void testResumeStatusSpecificSchedule() {
         stubFor(post(urlEqualTo("/api/schedules/id/resume"))
@@ -3504,6 +3528,7 @@ public class UrbanAirshipClientTest {
             // The response is tested elsewhere, just check that it exists
             assertNotNull(response);
             assertEquals(204, response.getStatus());
+            assertEquals(202, response.getStatus());
         } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
