@@ -22,6 +22,7 @@ public class PushExpiryTest {
         PushExpiry.newBuilder()
                 .setExpirySeconds(1000)
                 .setExpiryTimeStamp(DateTime.now())
+                .setExpiryPersonalization("{{ expiry }}")
                 .build();
     }
 

@@ -22,23 +22,31 @@ public class PushExpiryDeserializer extends JsonDeserializer<PushExpiry> {
     public PushExpiry deserialize(JsonParser parser, DeserializationContext context) throws IOException {
         try {
             JsonToken token = parser.getCurrentToken();
-            switch (token) {
-
-                case VALUE_STRING:
-                    return PushExpiry.newBuilder()
-                        .setExpiryTimeStamp(DATE_TIME_DESERIALIZER.deserialize(parser, context))
-                        .build();
-
-                case VALUE_NUMBER_INT:
-                    int expiry = parser.getIntValue();
-                    return PushExpiry.newBuilder()
-                        .setExpirySeconds(expiry)
-                        .build();
-
-                default:
-                    throw APIParsingException.raise(String.format("Unexpected token '%s' while parsing expiry time", token.name()), parser);
+            if (token == JsonToken.VALUE_STRING && parser.getText().startsWith("{{") && parser.getText().endsWith("}}")) {
+                String expiry = parser.getText();
+                return PushExpiry.newBuilder()
+                    .setExpiryPersonalization(expiry)
+                    .build();                
             }
-        }
+
+            else if (token == JsonToken.VALUE_STRING) {
+                return PushExpiry.newBuilder()
+                .setExpiryTimeStamp(DATE_TIME_DESERIALIZER.deserialize(parser, context))
+                .build();
+
+            }
+
+            else if (token == JsonToken.VALUE_NUMBER_INT) {
+                int expiry = parser.getIntValue();
+                return PushExpiry.newBuilder()
+                    .setExpirySeconds(expiry)
+                    .build();
+            }
+            
+            else {
+                throw APIParsingException.raise(String.format("Unexpected token '%s' while parsing expiry time", token.name()), parser);
+            }
+    }
         catch ( APIParsingException e ) {
             throw e;
         } catch ( Exception e ) {

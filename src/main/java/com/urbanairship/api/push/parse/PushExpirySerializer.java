@@ -22,5 +22,8 @@ public class PushExpirySerializer extends JsonSerializer<PushExpiry> {
         if (payload.getExpirySeconds().isPresent()) {
             jgen.writeNumber(payload.getExpirySeconds().get());
         }
+        if (payload.getExpiryPersonalization().isPresent()) {
+            jgen.writeString(payload.getExpiryPersonalization().get());
+        }
     }
 }

@@ -17,11 +17,14 @@ public class PushExpiry extends PushModelObject {
 
     private final Optional<Integer> expirySeconds;
     private final Optional<DateTime> expiryTimeStamp;
+    private final Optional<String> expiryPersonalization;
 
     private PushExpiry(Optional<Integer> expirySeconds,
-                       Optional<DateTime> expiryTimeStamp) {
+                       Optional<DateTime> expiryTimeStamp,
+                       Optional<String> expiryPersonalization) {
         this.expirySeconds = expirySeconds;
         this.expiryTimeStamp = expiryTimeStamp;
+        this.expiryPersonalization = expiryPersonalization;
     }
 
     /**
@@ -47,6 +50,15 @@ public class PushExpiry extends PushModelObject {
     public Optional<DateTime> getExpiryTimeStamp() {
         return expiryTimeStamp;
     }
+
+    /**
+     * Get the expiry as a personalized field.  This is optional.
+     * @return Optional&lt;expiryPersonalization&gt;
+     */
+    public Optional<String> getExpiryPersonalization() {
+        return expiryPersonalization;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -79,12 +91,14 @@ public class PushExpiry extends PushModelObject {
         return "PushOptionsPayload{" +
                 "expirySeconds=" + expirySeconds +
                 ", expiryTimeStamp=" + expiryTimeStamp +
+                ", expiryPersonalization=" + expiryPersonalization +
                 '}';
     }
 
     public static class Builder {
         private Integer expirySeconds = null;
         private DateTime expiryTimeStamp = null;
+        private String expiryPersonalization = null;
 
         private Builder() { }
 
@@ -108,8 +122,18 @@ public class PushExpiry extends PushModelObject {
             return this;
         }
 
+        /**
+         * Set the expiry as a personalized field (only for templates)
+         * @param value String
+         * @return String
+         **/
+        public Builder setExpiryPersonalization(String value) {
+            this.expiryPersonalization = value;
+            return this;
+        }        
+
         public PushExpiry build() {
-            if (expiryTimeStamp == null && expirySeconds == null) {
+            if (expiryTimeStamp == null && expirySeconds == null && expiryPersonalization == null) {
                 throw new APIParsingException("Expiry time can not be null");
             }
             if (expiryTimeStamp != null && expirySeconds != null) {
@@ -118,8 +142,12 @@ public class PushExpiry extends PushModelObject {
             if (expirySeconds != null && expirySeconds < 0) {
                 throw new APIParsingException("Expiry time may not be negative");
             }
+            if (expiryPersonalization != null && !expiryPersonalization.startsWith("{{") && !expiryPersonalization.endsWith("}}")) {
+                throw new APIParsingException("Expiry string must be a personalized field");
+            }
             return new PushExpiry(Optional.fromNullable(expirySeconds),
-                                  Optional.fromNullable(expiryTimeStamp));
+                                  Optional.fromNullable(expiryTimeStamp),
+                                  Optional.fromNullable(expiryPersonalization));
         }
     }
 
