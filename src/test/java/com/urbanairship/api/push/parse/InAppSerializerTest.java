@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.push.model.Display;
 import com.urbanairship.api.push.model.InApp;
 import com.urbanairship.api.push.model.Position;
+import com.urbanairship.api.push.model.PushExpiry;
+
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Test;
@@ -37,8 +39,8 @@ public class InAppSerializerTest {
                 .setPosition(Position.TOP)
                 .build();
 
-        DateTime expiry = new DateTime(2017, 4, 15, 11, 30, DateTimeZone.UTC);
-
+        DateTime timestamp = new DateTime(2017, 4, 15, 11, 30, DateTimeZone.UTC);
+        PushExpiry expiry = PushExpiry.newBuilder().setExpiryTimeStamp(timestamp).build();
         InApp inApp = InApp.newBuilder()
                 .setAlert("test alert")
                 .setDisplay(display)

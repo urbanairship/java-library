@@ -14,7 +14,8 @@ public class InAppTest {
     @Test
     public void testInAppMessage() {
 
-        DateTime expiry = new DateTime(2017, 4, 15, 11, 30, DateTimeZone.UTC);
+        DateTime timestamp = new DateTime(2017, 4, 15, 11, 30, DateTimeZone.UTC);
+        PushExpiry expiry = PushExpiry.newBuilder().setExpiryTimeStamp(timestamp).build();
 
         InApp inApp = InApp.newBuilder()
                 .setAlert("test alert")
@@ -24,6 +25,6 @@ public class InAppTest {
         assertNotNull(inApp);
         assertEquals("test alert", inApp.getAlert());
         assertEquals(expiry, inApp.getExpiry().get());
-        assertTrue(inApp.getExpiry().get() instanceof DateTime);
+        assertTrue(inApp.getExpiry().get() instanceof PushExpiry);
     }
 }

@@ -18,7 +18,7 @@ public class InAppSerializer extends JsonSerializer<InApp> {
         jsonGenerator.writeStringField("display_type", inApp.getDisplayType());
 
         if (inApp.getExpiry().isPresent()) {
-            jsonGenerator.writeStringField("expiry", (DateFormats.DATE_FORMATTER.print(inApp.getExpiry().get())));
+            jsonGenerator.writeObjectField("expiry", inApp.getExpiry().get());
         }
 
         if (inApp.getDisplay().isPresent()) {
