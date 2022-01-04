@@ -20,6 +20,8 @@ import com.urbanairship.api.channel.model.attributes.audience.AttributeAudience;
 import com.urbanairship.api.channel.model.email.RegisterEmailChannel;
 import com.urbanairship.api.channel.model.email.EmailChannelResponse;
 import com.urbanairship.api.channel.model.SmsRegistrationResponse;
+import com.urbanairship.api.channel.model.ChannelUninstallDevice;
+import com.urbanairship.api.channel.model.ChannelUninstallResponse;
 import com.urbanairship.api.channel.model.ios.IosSettings;
 import com.urbanairship.api.channel.model.ios.QuietTime;
 import com.urbanairship.api.channel.model.open.OpenChannel;
@@ -66,6 +68,8 @@ public class ChannelObjectMapper {
         MODULE.addSerializer(ChannelAttributesPayload.class, new ChannelAttributesPayloadSerializer());
         MODULE.addDeserializer(ChannelAttributesResponse.class, new ChannelAttributesResponseDeserializer());
         MODULE.addSerializer(AttributeAudience.class, new AttributeAudienceSerializer());
+        MODULE.addSerializer(ChannelUninstallDevice.class, new ChannelUninstallDeviceSerializer());
+        MODULE.addDeserializer(ChannelUninstallResponse.class, new ChannelUninstallResponseDeserializer());
         MODULE.addSerializer(SubscriptionListPayload.class, new SubscriptionListPayloadSerializer());
         MODULE.addDeserializer(SubscriptionListResponse.class, new SubscriptionListResponseDeserializer());
         MODULE.addSerializer(ChannelAudience.class, new ChannelAudienceSerializer());
