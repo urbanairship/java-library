@@ -21,6 +21,7 @@ public class Constants {
     public static final String ALIAS = "alias";
     public static final String TAGS = "tags";
     public static final String TAG_GROUPS = "tag_groups";
+    public static final String ATTRIBUTES = "attributes";
     // Platform-specific
     public static final String IOS = "ios";
     public static final String BADGE = "badge";
@@ -51,6 +52,13 @@ public class Constants {
     public static final String VALUE = "value";
     public static final String ACTION = "action";
     public static final String TIMESTAMP = "timestamp";
+
+    // Actions
+    public static final String ADD_KEY = "add";
+    public static final String SET_KEY = "set";
+    public static final String REMOVE_KEY = "remove";
+
+
 
     private Constants() {
     }
