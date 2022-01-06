@@ -3528,7 +3528,6 @@ public class UrbanAirshipClientTest {
             // The response is tested elsewhere, just check that it exists
             assertNotNull(response);
             assertEquals(204, response.getStatus());
-            assertEquals(202, response.getStatus());
         } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
