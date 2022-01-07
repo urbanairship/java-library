@@ -1,4 +1,16 @@
 -------------------------
+7.0.0 06JAN22
+-------------------------
+- Datetime expiry object has been replaced by PushExpiry object for InApp.
+- Added optional personalized field for pushExpiry in templates.
+- Added support for inbox/message center delete.
+- Added support for schedules status.
+- Added support for channels uninstall.
+- Added support for subscriptions list.
+- Added support for named users uninstall.
+- Added support for named users update.
+
+-------------------------
 6.4.6 20DEC21
 -------------------------
 - Removes log4j dependency.
