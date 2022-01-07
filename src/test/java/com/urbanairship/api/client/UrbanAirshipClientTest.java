@@ -21,6 +21,7 @@ import com.urbanairship.api.experiments.ExperimentRequest;
 import com.urbanairship.api.experiments.model.Experiment;
 import com.urbanairship.api.experiments.model.ExperimentResponse;
 import com.urbanairship.api.experiments.model.VariantPushPayload;
+import com.urbanairship.api.inbox.InboxDeleteRequest;
 import com.urbanairship.api.experiments.model.Variant;
 import com.urbanairship.api.location.LocationRequest;
 import com.urbanairship.api.location.model.BoundedBox;
@@ -55,6 +56,7 @@ import com.urbanairship.api.schedule.ListSchedulesOrderType;
 import com.urbanairship.api.schedule.ScheduleDeleteRequest;
 import com.urbanairship.api.schedule.ScheduleListingRequest;
 import com.urbanairship.api.schedule.ScheduleRequest;
+import com.urbanairship.api.schedule.ScheduleStatusRequest;
 import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.SchedulePayload;
@@ -3458,5 +3460,76 @@ public class UrbanAirshipClientTest {
         expectedException.expect(IllegalArgumentException.class);
 
         bearerTokenClient.execute(templateDeleteRequest);
+    }
+
+    @Test
+    public void testPauseStatusSpecificSchedule() {
+        stubFor(post(urlEqualTo("/api/schedules/id/pause"))
+            .willReturn(aResponse()
+                .withStatus(204)));
+
+        try {
+            Response<String> response = client.execute(ScheduleStatusRequest.pauseScheduleRequest("id"));
+
+            // Verify components of the underlying HttpRequest
+            verify(postRequestedFor(urlEqualTo("/api/schedules/id/pause")));
+            List<LoggedRequest> requests = findAll(postRequestedFor(
+                urlEqualTo("/api/schedules/id/pause")));
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+            assertEquals(204, response.getStatus());
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    public void testDeleteSpecificInbox() {
+        stubFor(delete(urlEqualTo("/api/user/messages/id"))
+            .willReturn(aResponse()
+                .withStatus(202)));
+
+        try {
+            Response<String> response = client.execute(InboxDeleteRequest.newRequest("id"));
+
+            // Verify components of the underlying HttpRequest
+            verify(deleteRequestedFor(urlEqualTo("/api/user/messages/id")));
+            List<LoggedRequest> requests = findAll(deleteRequestedFor(
+                urlEqualTo("/api/user/messages/id")));
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+            assertEquals(204, response.getStatus());
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
+    }
+
+    @Test
+    public void testResumeStatusSpecificSchedule() {
+        stubFor(post(urlEqualTo("/api/schedules/id/resume"))
+            .willReturn(aResponse()
+                .withStatus(204)));
+
+        try {
+            Response<String> response = client.execute(ScheduleStatusRequest.resumeScheduleRequest("id"));
+
+            // Verify components of the underlying HttpRequest
+            verify(postRequestedFor(urlEqualTo("/api/schedules/id/resume")));
+            List<LoggedRequest> requests = findAll(postRequestedFor(
+                urlEqualTo("/api/schedules/id/resume")));
+            // There should only be one request
+            assertEquals(requests.size(), 1);
+
+            // The response is tested elsewhere, just check that it exists
+            assertNotNull(response);
+            assertEquals(204, response.getStatus());
+        } catch (Exception ex) {
+            fail("Exception thrown " + ex);
+        }
     }
 }

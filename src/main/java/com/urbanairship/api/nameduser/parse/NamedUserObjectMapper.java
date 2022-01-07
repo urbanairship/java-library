@@ -22,6 +22,9 @@ import com.urbanairship.api.channel.parse.open.OpenChannelDeserializer;
 import com.urbanairship.api.nameduser.model.NamedUserAttributePayload;
 import com.urbanairship.api.nameduser.model.NamedUserAttributeResponse;
 import com.urbanairship.api.nameduser.model.NamedUserListingResponse;
+import com.urbanairship.api.nameduser.model.NamedUserUpdateChannel;
+import com.urbanairship.api.nameduser.model.NamedUserUpdatePayload;
+import com.urbanairship.api.nameduser.model.NamedUserUpdateResponse;
 import com.urbanairship.api.nameduser.model.NamedUserView;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 
@@ -39,6 +42,9 @@ public class NamedUserObjectMapper {
         MODULE.addDeserializer(NamedUserAttributeResponse.class, new NamedUserAttributeResponseDeserializer());
         MODULE.addSerializer(NamedUserAttributePayload.class, new NamedUserAttributePayloadSerializer());
         MODULE.addSerializer(Attribute.class, new AttributeSerializer());
+        MODULE.addSerializer(NamedUserUpdateChannel.class, new NamedUserUpdateChannelSerializer());
+        MODULE.addSerializer(NamedUserUpdatePayload.class, new NamedUserUpdatePayloadSerializer());
+        MODULE.addDeserializer(NamedUserUpdateResponse.class, new NamedUserUpdateResponseDeserializer());
 
         MAPPER.registerModule(MODULE);
         MAPPER.registerModule(PushObjectMapper.getModule());
