@@ -10,7 +10,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.notification.actions.Actions;
-import org.joda.time.DateTime;
 
 import java.util.Map;
 import java.util.Objects;
@@ -21,7 +20,7 @@ import java.util.Objects;
 public class InApp {
     private final String alert;
     private final String displayType;
-    private final Optional<DateTime> expiry;
+    private final Optional<PushExpiry> expiry;
     private final Optional<Display> display;
     private final Optional<Actions> actions;
     private final Optional<Interactive> interactive;
@@ -71,9 +70,9 @@ public class InApp {
     /**
      * Get the message expiry time.
      *
-     * @return An optional DateTime object specifying when the message expires.
+     * @return An optional PushExpiry object specifying when the message expires.
      */
-    public Optional<DateTime> getExpiry() {
+    public Optional<PushExpiry> getExpiry() {
         return expiry;
     }
 
@@ -152,7 +151,7 @@ public class InApp {
         private String alert = null;
         // Note: Currently "banner" is the only acceptable option.
         private String displayType = "banner";
-        private DateTime expiry = null;
+        private PushExpiry expiry = null;
         private Display display = null;
         private Actions actions = null;
         private Interactive interactive = null;
@@ -172,10 +171,10 @@ public class InApp {
         /**
          * Set the message expiry.
          *
-         * @param expiry A DateTime object representing the message expiry.
+         * @param expiry A PushExpiry object representing the message expiry.
          * @return Builder
          */
-        public Builder setExpiry(DateTime expiry) {
+        public Builder setExpiry(PushExpiry expiry) {
             this.expiry = expiry;
             return this;
         }

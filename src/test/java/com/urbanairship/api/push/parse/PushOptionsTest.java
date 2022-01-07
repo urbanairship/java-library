@@ -213,5 +213,19 @@ public class PushOptionsTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void testParsingExpiryPersonalization() throws Exception {
+        String json
+                = "{"
+                + "\"expiry\":\"{{ expiry }}\""
+                + "}";
+
+        PushOptions options = mapper.readValue(json, PushOptions.class);
+        String personalization = "{{ expiry }}";
+
+        assertTrue(options.getExpiry().isPresent());
+        PushExpiry expiry = options.getExpiry().get();
+        assertEquals(personalization, expiry.getExpiryPersonalization().get());
+    }
 
 }
