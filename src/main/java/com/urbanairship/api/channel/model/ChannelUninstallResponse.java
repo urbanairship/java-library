@@ -27,7 +27,7 @@ public class ChannelUninstallResponse {
 
     @Override
     public String toString() {
-        return "NamedUserUpdateResponse{" +
+        return "ChannelUninstallResponse{" +
                 "ok=" + ok +
                 ",error='" + error + '\'' +
                 '}';
