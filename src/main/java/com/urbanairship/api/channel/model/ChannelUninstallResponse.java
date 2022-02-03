@@ -59,8 +59,8 @@ public class ChannelUninstallResponse {
             return this;
         }
 
-        public Builder setError(Optional<String> string) {
-            this.error = string;
+        public Builder setError(Optional<String> error) {
+            this.error = error;
             return this;
         }
 
