@@ -4,6 +4,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.push.model.PushModelObject;
 
@@ -23,6 +24,8 @@ public class RegisterEmailChannel extends PushModelObject {
     private final Optional<String> timezone;
     private final Optional<String> localeCountry;
     private final Optional<String> localeLanguage;
+    private final Optional<OptInMode> emailOptInMode;
+    private final Optional<Map<String, String>> properties;
 
     //Protected to facilitate subclassing for create and send child object
     protected RegisterEmailChannel(Builder builder) {
@@ -33,11 +36,18 @@ public class RegisterEmailChannel extends PushModelObject {
         this.timezone = Optional.fromNullable(builder.timezone);
         this.localeCountry = Optional.fromNullable(builder.localeCountry);
         this.localeLanguage = Optional.fromNullable(builder.localeLanguage);
+        this.emailOptInMode = Optional.fromNullable((builder.emailOptInMode));
 
         if (builder.tags.build().isEmpty()) {
             this.tags = Optional.absent();
         } else {
             this.tags = Optional.of(builder.tags.build());
+        }
+
+        if (!builder.properties.build().isEmpty()) {
+            this.properties = Optional.fromNullable(builder.properties.build());
+        } else {
+            properties = Optional.absent();
         }
     }
 
@@ -96,6 +106,24 @@ public class RegisterEmailChannel extends PushModelObject {
     }
 
     /**
+     * Get the channel email opt in mode.
+     *
+     * @return Optional OptInMode emailOptInMode
+     */
+    public Optional<OptInMode> getEmailOptInMode() {
+        return emailOptInMode;
+    }
+
+    /**
+     * Get properties for the channel email.
+     * 
+     * @return Optional Map of Strings
+     */
+    public Optional<Map<String, String>> getProperties() {
+        return properties;
+    }
+
+    /**
      * New RegisterEmailChannel builder.
      *
      * @return Builder
@@ -116,7 +144,9 @@ public class RegisterEmailChannel extends PushModelObject {
                 Objects.equal(timezone, that.timezone) &&
                 Objects.equal(localeCountry, that.localeCountry) &&
                 Objects.equal(localeLanguage, that.localeLanguage) &&
-                Objects.equal(emailOptInLevel, that.emailOptInLevel);
+                Objects.equal(emailOptInLevel, that.emailOptInLevel)&&
+                Objects.equal(emailOptInMode, that.emailOptInMode)&&
+                Objects.equal(properties, that.properties);
     }
 
     @Override
@@ -130,12 +160,14 @@ public class RegisterEmailChannel extends PushModelObject {
                 ", timezone=" + timezone +
                 ", localeCountry=" + localeCountry +
                 ", localeLanguage=" + localeLanguage +
+                ", emailOptInMode=" + emailOptInMode +
+                ", properties=" + properties +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(type, emailOptInLevel, address, setTags, tags, timezone, localeCountry, localeLanguage);
+        return Objects.hashCode(type, emailOptInLevel, address, setTags, tags, timezone, localeCountry, localeLanguage, emailOptInMode, properties);
     }
 
     /**
@@ -150,6 +182,8 @@ public class RegisterEmailChannel extends PushModelObject {
         private String localeCountry;
         private String localeLanguage;
         private Map<OptInLevel, String> emailOptInLevel = new HashMap<>();
+        private OptInMode emailOptInMode;
+        private ImmutableMap.Builder<String, String> properties = ImmutableMap.builder();
 
         protected Builder() {
         }
@@ -250,6 +284,41 @@ public class RegisterEmailChannel extends PushModelObject {
          */
         public Builder setLocaleLanguage(String locale_language) {
             this.localeLanguage = locale_language;
+            return this;
+        }
+
+        /**
+         * Set the channel's address, a Unique identifier of the object
+         * used as the primary ID in the delivery tier (Email).
+         *
+         * @param emailOptInMode OptInMode
+         * @return RegisterEmailChannel Builder
+         */
+        public Builder setEmailOptInMode(OptInMode emailOptInMode) {
+            this.emailOptInMode = emailOptInMode;
+            return this;
+        }
+
+        /**
+         * Add a property.
+         * 
+         * @param key String
+         * @param value String
+         * @return EmailChannel Builder
+         */
+        public Builder addProperty(String key, String value) {
+            properties.put(key, value);
+            return this;
+        }
+
+        /**
+         * Add all properties values.
+         * 
+         * @param properties Map of Strings.
+         * @return EmailChannel Builder
+         */
+        public Builder addAllProperties(Map<String, String> properties) {
+            this.properties.putAll(properties);
             return this;
         }
 
