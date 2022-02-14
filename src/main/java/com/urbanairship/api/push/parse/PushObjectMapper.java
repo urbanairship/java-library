@@ -15,6 +15,7 @@ import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.channel.model.email.EmailChannelResponse;
 import com.urbanairship.api.channel.model.email.RegisterEmailChannel;
 import com.urbanairship.api.channel.model.email.UninstallEmailChannel;
+import com.urbanairship.api.channel.model.email.UpdateEmailChannel;
 import com.urbanairship.api.channel.model.open.OpenChannel;
 import com.urbanairship.api.channel.model.sms.UpdateSmsChannel;
 import com.urbanairship.api.channel.model.open.Channel;
@@ -29,6 +30,8 @@ import com.urbanairship.api.createandsend.parse.notification.email.CreateAndSend
 import com.urbanairship.api.channel.parse.email.RegisterEmailChannelResponseDeserializer;
 import com.urbanairship.api.channel.parse.email.RegisterEmailChannelSerializer;
 import com.urbanairship.api.channel.parse.email.UninstallEmailChannelSerializer;
+import com.urbanairship.api.channel.parse.email.UpdateEmailChannelResponseDeserializer;
+import com.urbanairship.api.channel.parse.email.UpdateEmailChannelSerializer;
 import com.urbanairship.api.channel.parse.open.ChannelSerializer;
 import com.urbanairship.api.channel.parse.open.OpenChannelSerializer;
 import com.urbanairship.api.channel.parse.sms.UpdateSmsChannelSerializer;
@@ -406,6 +409,8 @@ public class PushObjectMapper {
                 .addSerializer(UninstallEmailChannel.class,
                         new UninstallEmailChannelSerializer())
                 .addSerializer((EmailPayload.class), new EmailPayloadSerializer())
+                .addSerializer(UpdateEmailChannel.class, new UpdateEmailChannelSerializer())
+                .addDeserializer(EmailChannelResponse.class, new UpdateEmailChannelResponseDeserializer())
 
                 /* LOCALIZATION */
                 .addSerializer(Localization.class, new LocalizationSerializer())
