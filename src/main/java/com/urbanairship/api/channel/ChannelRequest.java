@@ -26,6 +26,8 @@ public class ChannelRequest implements Request<ChannelResponse> {
 
     private final static String API_CHANNELS_LIST = "/api/channels/";
     private final static String API_SMS_CHANNEL = "/api/channels/sms/";
+    private final static String API_EMAIL_CHANNEL = "/api/channels/email/";
+
 
     private final String path;
 
@@ -75,6 +77,18 @@ public class ChannelRequest implements Request<ChannelResponse> {
         Preconditions.checkNotNull(sender, "Sender cannot be null.");
 
         return new ChannelRequest(API_SMS_CHANNEL + msisdn + "/" + sender);
+    }
+
+    /**
+     * Create a request for looking up an email channel.
+     *
+     * @param email The mobile phone number you want to look up. Must be numerical characters with no leading zeros.
+     * @return ChannelRequest
+     */
+    public static ChannelRequest newEmailLookupRequest(String email) {
+        Preconditions.checkNotNull(email, "email cannot be null.");
+
+        return new ChannelRequest(API_EMAIL_CHANNEL + email);
     }
 
     @Override

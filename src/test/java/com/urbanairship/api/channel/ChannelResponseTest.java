@@ -6,7 +6,8 @@ import com.urbanairship.api.channel.model.ChannelResponse;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.channel.model.ChannelView;
 import com.urbanairship.api.channel.parse.ChannelObjectMapper;
-import com.urbanairship.api.push.model.DeviceType;
+
+import org.joda.time.DateTime;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -370,5 +371,58 @@ public class ChannelResponseTest {
         assertTrue(smsChannel.getTagGroups().get("ua_channel_type").contains("sms"));
         assertTrue(smsChannel.getTagGroups().get("ua_sender_id").contains("12345678912"));
         assertEquals("f0840bf7-1bf2-4546-9b13-1e48e1f20298", smsChannel.getChannelId());
+    }
+
+    @Test
+    public void testEmailChannelLookup() throws IOException {
+
+        ChannelView channelView = ChannelView.newBuilder()
+            .setChannelId("f0840bf7-1bf2-4546-9b13-1e48e1f20298")
+            .setChannelType("email")
+            .setInstalled(true)
+            .setPushAddress(null)
+            .setAlias(null)
+            .addTag("toto")
+            .setCommercialOptedIn(DateTime.parse("2013-01-24T23:55:05.000Z"))
+            .setCommercialOptedOut(DateTime.parse("2013-01-24T23:55:05.000Z"))
+            .setTransactionalOptedIn(DateTime.parse("2013-01-24T23:55:05.000Z"))
+            .setTransactionalOptedOut(DateTime.parse("2013-01-24T23:55:05.000Z"))
+            .setCreated(DateTime.parse("2018-10-05T15:18:00.000Z"))
+            .setOptIn(true)
+            .setLastRegistration(DateTime.parse("2018-10-05T15:18:00.000Z"))
+            .build();
+
+        ChannelResponse channelResponse = ChannelResponse.newBuilder()
+            .setOk(true)
+            .setChannelObject(channelView)
+            .build();
+
+
+        String jsonResponse = "{\n" +
+                "    \"ok\": true,\n" +
+                "    \"channel\": {\n" +
+                "        \"channel_id\": \"f0840bf7-1bf2-4546-9b13-1e48e1f20298\",\n" +
+                "        \"device_type\": \"email\",\n" +
+                "        \"installed\": true,\n" +
+                "        \"push_address\": null,\n" +
+                "        \"named_user_id\": null,\n" +
+                "        \"alias\": null,\n" +
+                "        \"tags\": [\"toto\"],\n" +
+                "        \"commercial_opted_in\": \"2013-01-25T00:55:05.000+01:00\",\n" +
+                "        \"commercial_opted_out\": \"2013-01-25T00:55:05.000+01:00\",\n" +
+                "        \"transactional_opted_in\": \"2013-01-25T00:55:05.000+01:00\",\n" +
+                "        \"transactional_opted_out\": \"2013-01-25T00:55:05.000+01:00\",\n" +
+                "        \"created\": \"2018-10-05T17:18:00.000+02:00\",\n" +
+                "        \"opt_in\": true,\n" +
+                "        \"last_registration\": \"2018-10-05T17:18:00.000+02:00\"\n" +
+                "    }\n" +
+                "}";
+
+        ChannelResponse response = MAPPER.readValue(jsonResponse, ChannelResponse.class);
+
+        ChannelView emailChannel = response.getChannelView().get();
+        assertNotNull(emailChannel);
+        assertEquals(response, channelResponse);
+
     }
 }
