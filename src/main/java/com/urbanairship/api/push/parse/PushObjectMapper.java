@@ -38,6 +38,7 @@ import com.urbanairship.api.channel.parse.sms.UpdateSmsChannelSerializer;
 import com.urbanairship.api.common.parse.CommonObjectMapper;
 import com.urbanairship.api.createandsend.model.notification.*;
 import com.urbanairship.api.createandsend.parse.notification.CreateAndSendPayloadSerializer;
+import com.urbanairship.api.createandsend.parse.notification.CreateAndSendSchedulePayloadSerializer;
 import com.urbanairship.api.createandsend.parse.notification.email.EmailFieldsSerializer;
 import com.urbanairship.api.createandsend.parse.notification.email.EmailTemplateSerializer;
 import com.urbanairship.api.createandsend.parse.notification.email.VariableDetailSerializer;
@@ -424,7 +425,8 @@ public class PushObjectMapper {
                 .addSerializer(EmailFields.class, new EmailFieldsSerializer())
                 .addSerializer(VariableDetail.class, new VariableDetailSerializer())
                 .addSerializer(CreateAndSendAudience.class, new CreateAndSendAudienceSerializer())
-                .addSerializer(CreateAndSendEmailPayload.class, new CreateAndSendEmailPayloadSerializer());
+                .addSerializer(CreateAndSendEmailPayload.class, new CreateAndSendEmailPayloadSerializer())
+                .addSerializer(CreateAndSendSchedulePayload.class, new CreateAndSendSchedulePayloadSerializer());
 
 
         MAPPER.registerModule(MODULE);
