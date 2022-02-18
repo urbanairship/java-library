@@ -130,6 +130,30 @@ public final class ChannelViewDeserializer extends JsonDeserializer<ChannelView>
                             reader.readDeviceAttributes(jsonParser);
                         }
                     })
+                    .put("commercial_opted_in", new FieldParser<ChannelViewReader>() {
+                        @Override
+                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readCommercialOptedIn(jsonParser);
+                        }
+                    })
+                    .put("commercial_opted_out", new FieldParser<ChannelViewReader>() {
+                        @Override
+                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readCommercialOptedOut(jsonParser);
+                        }
+                    })
+                    .put("transactional_opted_in", new FieldParser<ChannelViewReader>() {
+                        @Override
+                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readTransactionalOptedIn(jsonParser);
+                        }
+                    })
+                    .put("transactional_opted_out", new FieldParser<ChannelViewReader>() {
+                        @Override
+                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                            reader.readTransactionalOptedOut(jsonParser);
+                        }
+                    })
                     .build());
 
     private final StandardObjectDeserializer<ChannelView, ?> deserializer;

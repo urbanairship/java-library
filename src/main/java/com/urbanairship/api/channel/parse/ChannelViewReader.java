@@ -117,6 +117,22 @@ public final class ChannelViewReader implements JsonObjectReader<ChannelView> {
         builder.addAllDeviceAttributes(result);
     }
 
+    public void readCommercialOptedIn(JsonParser jsonParser) throws IOException {
+        builder.setCommercialOptedIn(jsonParser.readValueAs(DateTime.class));
+    }
+
+    public void readCommercialOptedOut(JsonParser jsonParser) throws IOException {
+        builder.setCommercialOptedOut(jsonParser.readValueAs(DateTime.class));
+    }
+
+    public void readTransactionalOptedIn(JsonParser jsonParser) throws IOException {
+        builder.setTransactionalOptedIn(jsonParser.readValueAs(DateTime.class));
+    }
+
+    public void readTransactionalOptedOut(JsonParser jsonParser) throws IOException {
+        builder.setTransactionalOptedOut(jsonParser.readValueAs(DateTime.class));
+    }
+
     @Override
     public ChannelView validateAndBuild() throws IOException {
         try {

@@ -40,6 +40,11 @@ public final class ChannelView {
     private final Optional<String> namedUser;
     private final ImmutableMap<String, String> attributes;
     private final ImmutableMap<String, String> deviceAttributes;
+    private final Optional<DateTime> commercialOptedIn;
+    private final Optional<DateTime> commercialOptedOut;
+    private final Optional<DateTime> transactionalOptedIn;
+    private final Optional<DateTime> transactionalOptedOut;
+
 
     private ChannelView(Builder builder) {
         this.channelId = builder.channelId;
@@ -60,6 +65,11 @@ public final class ChannelView {
         this.namedUser = Optional.fromNullable(builder.namedUser);
         this.attributes = builder.attributes.build();
         this.deviceAttributes = builder.deviceAttributes.build();
+        this.commercialOptedIn = Optional.fromNullable(builder.commercialOptedIn);
+        this.commercialOptedOut = Optional.fromNullable(builder.commercialOptedOut);
+        this.transactionalOptedIn = Optional.fromNullable(builder.transactionalOptedIn);
+        this.transactionalOptedOut = Optional.fromNullable(builder.transactionalOptedOut);
+
     }
 
     /**
@@ -235,6 +245,42 @@ public final class ChannelView {
         return deviceAttributes;
     }
 
+    /**
+     * Get the time of commercialOptedIn date
+     *
+     * @return Optional DateTime of commercialOptedIn date
+     */
+    public Optional<DateTime> getCommercialOptedIn() {
+        return commercialOptedIn;
+    }
+
+    /**
+     * Get the time of commercialOptedOut date
+     *
+     * @return Optional DateTime of commercialOptedOut date
+     */
+    public Optional<DateTime> getCommercialOptedOut() {
+        return commercialOptedOut;
+    }
+
+    /**
+     * Get the time of transactionalOptedIn date
+     *
+     * @return Optional DateTime of transactionalOptedIn date
+     */
+    public Optional<DateTime> getTransactionalOptedIn() {
+        return transactionalOptedIn;
+    }
+
+    /**
+     * Get the time of transactionalOptedOut date
+     *
+     * @return Optional DateTime of transactionalOptedOut date
+     */
+    public Optional<DateTime> getTransactionalOptedOut() {
+        return transactionalOptedOut;
+    }
+
     @Override
     public String toString() {
         return "ChannelView{" +
@@ -256,6 +302,10 @@ public final class ChannelView {
                 ", namedUser=" + namedUser +
                 ", attributes=" + attributes +
                 ", deviceAttributes=" + deviceAttributes +
+                ", commercialOptedIn=" + commercialOptedIn +
+                ", commercialOptedOut=" + commercialOptedOut +
+                ", transactionalOptedIn=" + transactionalOptedIn +
+                ", transactionalOptedOut=" + transactionalOptedOut +
                 '}';
     }
 
@@ -281,13 +331,18 @@ public final class ChannelView {
                 Objects.equal(address, that.address) &&
                 Objects.equal(namedUser, that.namedUser) &&
                 Objects.equal(attributes, that.attributes) &&
-                Objects.equal(deviceAttributes, that.deviceAttributes);
+                Objects.equal(deviceAttributes, that.deviceAttributes) &&
+                Objects.equal(commercialOptedIn, that.commercialOptedIn) &&
+                Objects.equal(commercialOptedOut, that.commercialOptedOut) &&
+                Objects.equal(transactionalOptedIn, that.transactionalOptedIn) &&
+                Objects.equal(transactionalOptedOut, that.transactionalOptedOut);
+                
     }
 
     @Override
     public int hashCode() {
         return Objects.hashCode(channelId, channelType, installed, optIn, background, pushAddress, created, lastRegistration,
-                alias, tags, tagGroups, iosSettings, web, open, address, namedUser, attributes, deviceAttributes);
+                alias, tags, tagGroups, iosSettings, web, open, address, namedUser, attributes, deviceAttributes, commercialOptedIn, commercialOptedOut, transactionalOptedIn, transactionalOptedOut);
     }
 
     public final static class Builder {
@@ -309,6 +364,10 @@ public final class ChannelView {
         private OpenChannel openChannel = null;
         private String address = null;
         private String namedUser = null;
+        private DateTime commercialOptedIn = null;
+        private DateTime commercialOptedOut = null;
+        private DateTime transactionalOptedIn = null;
+        private DateTime transactionalOptedOut = null;
 
         private Builder() {
         }
@@ -543,6 +602,47 @@ public final class ChannelView {
             this.namedUser = namedUser;
             return this;
         }
+
+        /**
+         * Set the commercialOptedIn time
+         * @param commercialOptedIn DateTime
+         * @return Builder
+         */
+        public Builder setCommercialOptedIn(DateTime commercialOptedIn) {
+            this.commercialOptedIn = commercialOptedIn;
+            return this;
+        }
+
+        /**
+         * Set the commercialOptedOut time
+         * @param commercialOptedOut DateTime
+         * @return Builder
+         */
+        public Builder setCommercialOptedOut(DateTime commercialOptedOut) {
+            this.commercialOptedOut = commercialOptedOut;
+            return this;
+        }
+
+        /**
+         * Set the transactionalOptedIn time
+         * @param transactionalOptedIn DateTime
+         * @return Builder
+         */
+        public Builder setTransactionalOptedIn(DateTime transactionalOptedIn) {
+            this.transactionalOptedIn = transactionalOptedIn;
+            return this;
+        }
+
+        /**
+         * Set the transactionalOptedOut time
+         * @param transactionalOptedOut DateTime
+         * @return Builder
+         */
+        public Builder setTransactionalOptedOut(DateTime transactionalOptedOut) {
+            this.transactionalOptedOut = transactionalOptedOut;
+            return this;
+        }
+
 
         /**
          * Build the ChannelView object
