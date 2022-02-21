@@ -2,7 +2,6 @@ package com.urbanairship.api.channel.model.email;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
 
 public final class EmailChannelResponse {
 

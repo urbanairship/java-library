@@ -9,14 +9,13 @@ import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.model.ScheduleResponse;
 import com.urbanairship.api.schedule.parse.ScheduleObjectMapper;
-import com.urbanairship.api.templates.model.TemplatePushPayload;
-import com.urbanairship.api.templates.model.TemplateResponse;
 import com.urbanairship.api.templates.model.TemplateScheduledPushPayload;
 import com.urbanairship.api.templates.model.TemplateSelector;
 import com.urbanairship.api.templates.parse.TemplatesObjectMapper;
 import org.apache.http.HttpHeaders;
 import org.apache.http.entity.ContentType;
 import org.joda.time.DateTime;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,8 +23,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-
-import static junit.framework.Assert.assertEquals;
 
 public class TemplateScheduledPushRequestTest {
 
@@ -59,20 +56,20 @@ public class TemplateScheduledPushRequestTest {
 
     @Test
     public void testContentType() throws Exception {
-        assertEquals(request.getContentType(), ContentType.APPLICATION_JSON);
-        assertEquals(requestValidateOnly.getContentType(), ContentType.APPLICATION_JSON);
+        Assert.assertEquals(request.getContentType(), ContentType.APPLICATION_JSON);
+        Assert.assertEquals(requestValidateOnly.getContentType(), ContentType.APPLICATION_JSON);
     }
 
     @Test
     public void testMethod() throws Exception {
-        assertEquals(request.getHttpMethod(), Request.HttpMethod.POST);
-        assertEquals(requestValidateOnly.getHttpMethod(), Request.HttpMethod.POST);
+        Assert.assertEquals(request.getHttpMethod(), Request.HttpMethod.POST);
+        Assert.assertEquals(requestValidateOnly.getHttpMethod(), Request.HttpMethod.POST);
     }
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(request.getRequestBody(), mapper.writeValueAsString(payload));
-        assertEquals(requestValidateOnly.getRequestBody(), mapper.writeValueAsString(payload));
+        Assert.assertEquals(request.getRequestBody(), mapper.writeValueAsString(payload));
+        Assert.assertEquals(requestValidateOnly.getRequestBody(), mapper.writeValueAsString(payload));
     }
 
     @Test
@@ -81,8 +78,8 @@ public class TemplateScheduledPushRequestTest {
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
-        assertEquals(request.getRequestHeaders(), headers);
-        assertEquals(requestValidateOnly.getRequestHeaders(), headers);
+        Assert.assertEquals(request.getRequestHeaders(), headers);
+        Assert.assertEquals(requestValidateOnly.getRequestHeaders(), headers);
     }
 
     @Test
@@ -90,10 +87,10 @@ public class TemplateScheduledPushRequestTest {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
         URI expectedUri = URI.create("https://go.urbanairship.com" + PATH_NAME);
-        assertEquals(request.getUri(baseURI), expectedUri);
+        Assert.assertEquals(request.getUri(baseURI), expectedUri);
 
         expectedUri = URI.create("https://go.urbanairship.com" + PATH_NAME + "validate/");
-        assertEquals(requestValidateOnly.getUri(baseURI), expectedUri);
+        Assert.assertEquals(requestValidateOnly.getUri(baseURI), expectedUri);
     }
 
     @Test
@@ -120,8 +117,8 @@ public class TemplateScheduledPushRequestTest {
             }
         };
 
-        assertEquals(request.getResponseParser().parse(responseJson), responseParser.parse(responseJson));
-        assertEquals(requestValidateOnly.getResponseParser().parse(responseJson), responseParser.parse(responseJson));
+        Assert.assertEquals(request.getResponseParser().parse(responseJson), responseParser.parse(responseJson));
+        Assert.assertEquals(requestValidateOnly.getResponseParser().parse(responseJson), responseParser.parse(responseJson));
     }
 
 }

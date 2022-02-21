@@ -10,7 +10,6 @@ import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.urbanairship.api.push.model.notification.actions.Actions;
 
-import java.util.List;
 import java.util.Map;
 
 /**

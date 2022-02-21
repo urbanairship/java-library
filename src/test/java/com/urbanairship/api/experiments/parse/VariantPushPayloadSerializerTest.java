@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.experiments.model.VariantPushPayload;
 import com.urbanairship.api.push.model.InApp;
 import com.urbanairship.api.push.model.notification.Notification;
-import org.junit.Test;
 
-import static junit.framework.Assert.assertEquals;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class VariantPushPayloadSerializerTest {
 
@@ -27,6 +27,6 @@ public class VariantPushPayloadSerializerTest {
         String partialPushPayloadSerialized = MAPPER.writeValueAsString(partialPushPayload);
         VariantPushPayload partialPushPayloadFromJson = MAPPER.readValue(partialPushPayloadSerialized, VariantPushPayload.class);
 
-        assertEquals(partialPushPayloadFromJson, partialPushPayload);
+        Assert.assertEquals(partialPushPayloadFromJson, partialPushPayload);
     }
 }

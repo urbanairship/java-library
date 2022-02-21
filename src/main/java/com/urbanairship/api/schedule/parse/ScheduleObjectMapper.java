@@ -1,6 +1,5 @@
 package com.urbanairship.api.schedule.parse;
 
-import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -19,7 +18,7 @@ import com.urbanairship.api.schedule.model.ScheduleResponse;
 public class ScheduleObjectMapper {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    private static final SimpleModule MODULE = new SimpleModule("Schedule API Module", new Version(1, 0, 0, null));
+    private static final SimpleModule MODULE = new SimpleModule("Schedule API Module");
 
     static {
         MODULE

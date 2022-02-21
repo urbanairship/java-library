@@ -7,10 +7,9 @@ import com.urbanairship.api.push.model.notification.android.BigPictureStyle;
 import com.urbanairship.api.push.model.notification.android.BigTextStyle;
 import com.urbanairship.api.push.model.notification.android.InboxStyle;
 import com.urbanairship.api.push.parse.PushObjectMapper;
+
+import org.junit.Assert;
 import org.junit.Test;
-
-import static junit.framework.Assert.assertEquals;
-
 public class StyleSerializerTest {
     private static final ObjectMapper MAPPER = PushObjectMapper.getInstance();
 
@@ -35,7 +34,7 @@ public class StyleSerializerTest {
         JsonNode parsedBigTextNode = MAPPER.readTree(parsedBigText);
         JsonNode bigPictureStyleJsonNode = MAPPER.readTree(bigPictureStyleJson);
 
-        assertEquals(parsedBigTextNode, bigPictureStyleJsonNode);
+        Assert.assertEquals(parsedBigTextNode, bigPictureStyleJsonNode);
     }
 
     @Test
@@ -59,7 +58,7 @@ public class StyleSerializerTest {
         JsonNode fromObj = MAPPER.readTree(parsedBigText);
         JsonNode fromStr = MAPPER.readTree(bigTextStyleJson);
 
-        assertEquals(fromObj, fromStr);
+        Assert.assertEquals(fromObj, fromStr);
     }
 
     @Test
@@ -83,6 +82,6 @@ public class StyleSerializerTest {
         JsonNode fromObj = MAPPER.readTree(parsedInbox);
         JsonNode fromStr = MAPPER.readTree(styleInboxJson);
 
-        assertEquals(fromObj, fromStr);
+        Assert.assertEquals(fromObj, fromStr);
     }
 }

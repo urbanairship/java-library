@@ -1,6 +1,5 @@
 package com.urbanairship.api.push.parse.audience;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.push.model.audience.Selectors;

@@ -14,8 +14,6 @@ import com.urbanairship.api.push.model.localization.Localization;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 
-import java.util.List;
-
 /**
  * Represents a Push payload for the Urban Airship API
  */

@@ -5,13 +5,10 @@ import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.reports.model.DevicesReport;
-import com.urbanairship.api.reports.model.Precision;
-import com.urbanairship.api.reports.model.ResponseReport;
 import com.urbanairship.api.reports.parse.ReportsObjectMapper;
 import org.apache.http.entity.ContentType;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.Period;
 import org.junit.Before;
 import org.junit.Test;
 

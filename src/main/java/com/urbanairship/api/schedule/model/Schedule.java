@@ -20,8 +20,6 @@ public final class Schedule extends ScheduleModelObject {
     private final Boolean localTimePresent;
     private final Optional<BestTime> bestTime;
 
-    // TODO local, global, etc
-
     private Schedule(Builder builder) {
         this.scheduledTimestamp = builder.scheduledTimestamp;
         this.localTimePresent = builder.localTimePresent;

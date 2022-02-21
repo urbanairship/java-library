@@ -15,8 +15,6 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-import static junit.framework.Assert.assertEquals;
-
 public class TemplateDeleteRequestTest {
 
     private final static ObjectMapper mapper = TemplatesObjectMapper.getInstance();
@@ -31,7 +29,7 @@ public class TemplateDeleteRequestTest {
 
     @Test
     public void testContentType() throws Exception {
-        assertEquals(request.getContentType(), null);
+        Assert.assertEquals(request.getContentType(), null);
     }
 
     @Test

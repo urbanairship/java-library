@@ -27,7 +27,7 @@ public class ScheduleTest {
     @Test
     public void testScheduledTimeAndBestTimeBothAbsent() throws Exception {
         thrown.expect(IllegalArgumentException.class);
-        Schedule schedule = Schedule.newBuilder()
+        Schedule.newBuilder()
                 .build();
     }
 
@@ -38,7 +38,7 @@ public class ScheduleTest {
     public void testScheduledTimeAndBestTimeBothPresent() throws Exception {
         thrown.expect(IllegalArgumentException.class);
 
-        Schedule schedule = Schedule.newBuilder()
+        Schedule.newBuilder()
                 .setScheduledTimestamp(dateTime)
                 .setBestTime(BestTime.newBuilder()
                         .setSendDate(dateTime)

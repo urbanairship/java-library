@@ -7,8 +7,6 @@ package com.urbanairship.api.push.model;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
-import java.util.Objects;
-
 /**
  * The Campaigns Object associates the notification
  * with the categories that you add in the categories field.
