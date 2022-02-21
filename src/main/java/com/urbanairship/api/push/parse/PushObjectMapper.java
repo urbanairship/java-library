@@ -5,7 +5,6 @@
 package com.urbanairship.api.push.parse;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -216,7 +215,7 @@ import com.urbanairship.api.schedule.parse.ScheduledPayloadSerializer;
 public class PushObjectMapper {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    private static final SimpleModule MODULE = new SimpleModule("Push API Module", new Version(1, 0, 0, null));
+    private static final SimpleModule MODULE = new SimpleModule("Push API Module");
 
     static {
         WNSBindingDeserializer bindingDS = new WNSBindingDeserializer();

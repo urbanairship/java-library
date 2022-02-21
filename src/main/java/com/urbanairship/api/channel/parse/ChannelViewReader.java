@@ -7,24 +7,19 @@ package com.urbanairship.api.channel.parse;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.channel.Constants;
-import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.channel.model.ChannelView;
 import com.urbanairship.api.channel.model.ios.IosSettings;
 import com.urbanairship.api.channel.model.open.OpenChannel;
 import com.urbanairship.api.channel.model.web.WebSettings;
-import com.urbanairship.api.client.UrbanAirshipClient;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.BooleanFieldDeserializer;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.common.parse.ListOfStringsDeserializer;
 import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -32,7 +27,6 @@ import java.util.Map;
 import java.util.Set;
 
 public final class ChannelViewReader implements JsonObjectReader<ChannelView> {
-    private static final Logger log = LoggerFactory.getLogger(UrbanAirshipClient.class);
     private static final ObjectMapper MAPPER = ChannelObjectMapper.getInstance();
 
     private final ChannelView.Builder builder;

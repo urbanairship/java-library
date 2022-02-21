@@ -6,7 +6,6 @@ package com.urbanairship.api.experiments.model;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
 
 /**
  * Represents a response from the Urban Airship API for Experiments.

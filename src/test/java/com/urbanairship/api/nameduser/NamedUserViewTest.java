@@ -14,9 +14,6 @@ import org.junit.Test;
 import java.util.HashSet;
 import java.util.Set;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
-
 public class NamedUserViewTest {
 
     private final ObjectMapper mapper = NamedUserObjectMapper.getInstance();
@@ -41,17 +38,17 @@ public class NamedUserViewTest {
             "}";
 
         NamedUserView namedUserView = mapper.readValue(json, NamedUserView.class);
-        assertEquals(namedUserView.getNamedUserId(), "user-id-1234");
-        assertTrue(namedUserView.getNamedUserTags().containsKey("crm"));
+        Assert.assertEquals(namedUserView.getNamedUserId(), "user-id-1234");
+        Assert.assertTrue(namedUserView.getNamedUserTags().containsKey("crm"));
         Set<String> tags = new HashSet<String>();
         tags.add("tag1");
         tags.add("tag2");
-        assertEquals(namedUserView.getNamedUserTags().get("crm"), tags);
+        Assert.assertEquals(namedUserView.getNamedUserTags().get("crm"), tags);
 
         ChannelView channel = namedUserView.getChannelViews().iterator().next();
         Assert.assertFalse(channel.isOptIn());
         Assert.assertFalse(channel.getBackground().isPresent());
-        assertEquals(ChannelType.IOS.getIdentifier(), channel.getChannelType());
+        Assert.assertEquals(ChannelType.IOS.getIdentifier(), channel.getChannelType());
         Assert.assertFalse(channel.getAlias().isPresent());
         Assert.assertFalse(channel.getIosSettings().isPresent());
         Assert.assertFalse(channel.getPushAddress().isPresent());
@@ -117,12 +114,12 @@ public class NamedUserViewTest {
                 "]" +
             "}";
         NamedUserView namedUserView =  mapper.readValue(json, NamedUserView.class);
-        assertEquals(namedUserView.getNamedUserId(), "user-id-1234");
-        assertTrue(namedUserView.getNamedUserTags().containsKey("crm"));
+        Assert.assertEquals(namedUserView.getNamedUserId(), "user-id-1234");
+        Assert.assertTrue(namedUserView.getNamedUserTags().containsKey("crm"));
         Set<String> tags = new HashSet<String>();
         tags.add("tag1");
         tags.add("tag2");
-        assertEquals(namedUserView.getNamedUserTags().get("crm"), tags);
+        Assert.assertEquals(namedUserView.getNamedUserTags().get("crm"), tags);
 
         ChannelView firstChannel;
         ChannelView secondChannel;
@@ -134,32 +131,32 @@ public class NamedUserViewTest {
             secondChannel = namedUserView.getChannelViews().asList().get(1);
         }
 
-        assertTrue(firstChannel.isOptIn());
-        assertTrue(firstChannel.getBackground().isPresent());
-        assertTrue(firstChannel.getBackground().get());
-        assertEquals(ChannelType.IOS.getIdentifier(), firstChannel.getChannelType());
-        assertTrue(firstChannel.getIosSettings().isPresent());
-        assertEquals("12", namedUserView.getAttributes().get("pets_age"));
-        assertEquals("US", namedUserView.getUserAttributes().get("ua_country"));
-        assertEquals(0, firstChannel.getIosSettings().get().getBadge());
-        assertEquals("22:00", firstChannel.getIosSettings().get().getQuietTime().get().getStart());
-        assertEquals("06:00", firstChannel.getIosSettings().get().getQuietTime().get().getEnd());
-        assertEquals("America/Los_Angeles", firstChannel.getIosSettings().get().getTimezone().get());
-        assertEquals("address", firstChannel.getPushAddress().get());
-        assertEquals("alias", firstChannel.getAlias().get());
+        Assert.assertTrue(firstChannel.isOptIn());
+        Assert.assertTrue(firstChannel.getBackground().isPresent());
+        Assert.assertTrue(firstChannel.getBackground().get());
+        Assert.assertEquals(ChannelType.IOS.getIdentifier(), firstChannel.getChannelType());
+        Assert.assertTrue(firstChannel.getIosSettings().isPresent());
+        Assert.assertEquals("12", namedUserView.getAttributes().get("pets_age"));
+        Assert.assertEquals("US", namedUserView.getUserAttributes().get("ua_country"));
+        Assert.assertEquals(0, firstChannel.getIosSettings().get().getBadge());
+        Assert.assertEquals("22:00", firstChannel.getIosSettings().get().getQuietTime().get().getStart());
+        Assert.assertEquals("06:00", firstChannel.getIosSettings().get().getQuietTime().get().getEnd());
+        Assert.assertEquals("America/Los_Angeles", firstChannel.getIosSettings().get().getTimezone().get());
+        Assert.assertEquals("address", firstChannel.getPushAddress().get());
+        Assert.assertEquals("alias", firstChannel.getAlias().get());
         ImmutableSet<String> expectedTags = new ImmutableSet.Builder<String>()
             .addAll(Sets.newHashSet("tag1", "tag2")).build();
-        assertEquals(expectedTags, firstChannel.getTags());
+        Assert.assertEquals(expectedTags, firstChannel.getTags());
         ImmutableMap<String, ImmutableSet<String>> expectedTagGroups = new ImmutableMap.Builder<String, ImmutableSet<String>>()
             .put("group1", new ImmutableSet.Builder<String>()
                 .addAll(Sets.newHashSet("tag1OfGroup1", "tag2OfGroup1")).build())
             .put("group2", new ImmutableSet.Builder<String>()
                 .addAll(Sets.newHashSet("tag1OfGroup2", "tag2OfGroup2")).build())
             .build();
-        assertEquals(expectedTagGroups, firstChannel.getTagGroups());
+        Assert.assertEquals(expectedTagGroups, firstChannel.getTagGroups());
         Assert.assertFalse(secondChannel.isOptIn());
         Assert.assertFalse(secondChannel.getBackground().isPresent());
-        assertEquals(ChannelType.IOS.getIdentifier(), secondChannel.getChannelType());
+        Assert.assertEquals(ChannelType.IOS.getIdentifier(), secondChannel.getChannelType());
         Assert.assertFalse(secondChannel.getAlias().isPresent());
         Assert.assertFalse(secondChannel.getIosSettings().isPresent());
         Assert.assertFalse(secondChannel.getPushAddress().isPresent());

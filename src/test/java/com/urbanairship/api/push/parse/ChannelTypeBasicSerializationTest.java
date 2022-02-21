@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.push.model.DeviceType;
 import org.junit.Test;
 
-import java.util.EnumSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;

@@ -2,7 +2,6 @@ package com.urbanairship.api.push.parse.notification.ios;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.jknack.handlebars.internal.HbsParser;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.notification.actions.Actions;
@@ -393,7 +392,7 @@ public class PayloadDeserializerTest {
         assertTrue(payload.getMediaAttachment().get().getUrl().equals("https://media.giphy.com/media/JYsWwF82EGnpC/giphy.gif"));
 
         //Sound
-        assertTrue(payload.getSound().get().equals("beep boop"));
+        assertTrue(payload.getSoundData().get().getName().get().equals("beep boop"));
 
         //options
         assertTrue(payload.getMediaAttachment().get().getOptions().get().getTime().get().equals(10));

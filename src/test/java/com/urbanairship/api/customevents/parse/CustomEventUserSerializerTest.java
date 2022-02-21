@@ -2,7 +2,6 @@ package com.urbanairship.api.customevents.parse;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Optional;
 import com.urbanairship.api.customevents.model.CustomEventChannelType;
 import com.urbanairship.api.customevents.model.CustomEventUser;
 import com.urbanairship.api.push.parse.PushObjectMapper;

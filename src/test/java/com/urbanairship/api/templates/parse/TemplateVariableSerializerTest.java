@@ -2,9 +2,9 @@ package com.urbanairship.api.templates.parse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.templates.model.TemplateVariable;
-import org.junit.Test;
 
-import static junit.framework.Assert.assertEquals;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class TemplateVariableSerializerTest {
 
@@ -28,6 +28,6 @@ public class TemplateVariableSerializerTest {
                         "\"default_value\":\"Dr.\"" +
                 "}";
 
-        assertEquals(templateVariableJson, rawJson);
+        Assert.assertEquals(templateVariableJson, rawJson);
     }
 }

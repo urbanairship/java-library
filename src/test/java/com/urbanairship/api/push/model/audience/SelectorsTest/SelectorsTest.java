@@ -25,7 +25,5 @@ public class SelectorsTest {
         BasicCompoundSelector cpdSelector = (BasicCompoundSelector) compound;
         Selector[] selectors = Iterables.toArray(cpdSelector.getChildren(), Selector.class);
         assertEquals("There should be two selectors", selectors.length, 2);
-        // TODO add specific selector id checking
-        System.out.println("foo");
     }
 }

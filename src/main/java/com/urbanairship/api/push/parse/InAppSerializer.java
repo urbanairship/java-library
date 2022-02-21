@@ -3,7 +3,6 @@ package com.urbanairship.api.push.parse;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.push.model.InApp;
 
 import java.io.IOException;

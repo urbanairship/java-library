@@ -11,10 +11,8 @@ import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.notification.Notifications;
-import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.schedule.model.BestTime;
 import com.urbanairship.api.schedule.model.Schedule;
-import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.schedule.model.SchedulePayloadResponse;
 import com.urbanairship.api.schedule.model.ScheduleResponse;
 import com.urbanairship.api.schedule.parse.ScheduleObjectMapper;
@@ -56,14 +54,14 @@ public class SchedulePayloadResponseDeserializerTest {
         SchedulePayloadResponse payload = MAPPER.readValue(json, SchedulePayloadResponse.class);
 
         org.junit.Assert.assertNotNull(payload);
-        junit.framework.Assert.assertEquals(payload.getName(), Optional.of(name));
-        junit.framework.Assert.assertEquals(payload.getSchedule().getScheduledTimestamp(), DateFormats.DATE_PARSER.parseDateTime("2013-05-05 00:00:01"));
+        Assert.assertEquals(payload.getName(), Optional.of(name));
+        Assert.assertEquals(payload.getSchedule().getScheduledTimestamp(), DateFormats.DATE_PARSER.parseDateTime("2013-05-05 00:00:01"));
 
         List<SchedulePayloadResponse> payloadList = MAPPER.readValue(json, new TypeReference<List<SchedulePayloadResponse>>() {
         });
 
         org.junit.Assert.assertNotNull(payloadList);
-        junit.framework.Assert.assertEquals(payloadList.size(), 1);
+        Assert.assertEquals(payloadList.size(), 1);
     }
 
     @Test
@@ -105,7 +103,7 @@ public class SchedulePayloadResponseDeserializerTest {
 
         SchedulePayloadResponse fromJson = MAPPER.readValue(json, SchedulePayloadResponse.class);
 
-        junit.framework.Assert.assertEquals(expected, fromJson);
+        Assert.assertEquals(expected, fromJson);
     }
 
     @Test
@@ -222,8 +220,8 @@ public class SchedulePayloadResponseDeserializerTest {
         SchedulePayloadResponse payload = MAPPER.readValue(json, SchedulePayloadResponse.class);
 
         org.junit.Assert.assertNotNull(payload);
-        junit.framework.Assert.assertEquals(payload.getName(), Optional.<String>absent());
-        junit.framework.Assert.assertEquals(payload.getSchedule().getScheduledTimestamp(), DateFormats.DATE_PARSER.parseDateTime("2013-05-05 00:00:01"));
+        Assert.assertEquals(payload.getName(), Optional.<String>absent());
+        Assert.assertEquals(payload.getSchedule().getScheduledTimestamp(), DateFormats.DATE_PARSER.parseDateTime("2013-05-05 00:00:01"));
     }
 
     @Test

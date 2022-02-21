@@ -3,9 +3,9 @@ package com.urbanairship.api.templates.parse;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.templates.model.TemplateSelector;
-import org.junit.Test;
 
-import static junit.framework.Assert.assertEquals;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class TemplateSelectorSerializerTest {
 
@@ -35,6 +35,6 @@ public class TemplateSelectorSerializerTest {
         JsonNode jsonFromObject = MAPPER.readTree(templateSelectorSerialized);
         JsonNode jsonFromString = MAPPER.readTree(templateSelectorJson);
 
-        assertEquals(jsonFromObject, jsonFromString);
+        Assert.assertEquals(jsonFromObject, jsonFromString);
     }
 }

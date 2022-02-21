@@ -174,7 +174,6 @@ public class RegisterEmailChannel extends PushModelObject {
      * Create RegisterEmailChannel Builder
      */
     public final static class Builder {
-        private ChannelType type;
         private String address;
         private String timezone;
         private ImmutableList.Builder<String> tags = ImmutableList.builder();

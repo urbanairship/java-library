@@ -15,8 +15,6 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-import static junit.framework.Assert.assertEquals;
-
 public class TemplateListingRequestTest {
 
     private final static ObjectMapper mapper = TemplatesObjectMapper.getInstance();
@@ -35,20 +33,20 @@ public class TemplateListingRequestTest {
 
     @Test
     public void testContentType() throws Exception {
-        assertEquals(lookupRequest.getContentType(), null);
-        assertEquals(listingRequest.getContentType(), null);
+        Assert.assertEquals(lookupRequest.getContentType(), null);
+        Assert.assertEquals(listingRequest.getContentType(), null);
     }
 
     @Test
     public void testMethod() throws Exception {
-        assertEquals(lookupRequest.getHttpMethod(), Request.HttpMethod.GET);
-        assertEquals(listingRequest.getHttpMethod(), Request.HttpMethod.GET);
+        Assert.assertEquals(lookupRequest.getHttpMethod(), Request.HttpMethod.GET);
+        Assert.assertEquals(listingRequest.getHttpMethod(), Request.HttpMethod.GET);
     }
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(lookupRequest.getRequestBody(), null);
-        assertEquals(listingRequest.getRequestBody(), null);
+        Assert.assertEquals(lookupRequest.getRequestBody(), null);
+        Assert.assertEquals(listingRequest.getRequestBody(), null);
     }
 
     @Test
@@ -56,8 +54,8 @@ public class TemplateListingRequestTest {
         Map<String, String> headers = new HashMap<String, String>();
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
-        assertEquals(lookupRequest.getRequestHeaders(), headers);
-        assertEquals(listingRequest.getRequestHeaders(), headers);
+        Assert.assertEquals(lookupRequest.getRequestHeaders(), headers);
+        Assert.assertEquals(listingRequest.getRequestHeaders(), headers);
     }
 
     @Test
@@ -68,7 +66,7 @@ public class TemplateListingRequestTest {
         Assert.assertEquals(listingRequest.getUri(baseURI), expectedUri);
 
         expectedUri = URI.create("https://go.urbanairship.com" + LOOKUP_PATH);
-        assertEquals(lookupRequest.getUri(baseURI), expectedUri);
+        Assert.assertEquals(lookupRequest.getUri(baseURI), expectedUri);
     }
 
     @Test
@@ -164,8 +162,8 @@ public class TemplateListingRequestTest {
             }
         };
 
-        assertEquals(lookupRequest.getResponseParser().parse(lookupJson), responseParser.parse(lookupJson));
-        assertEquals(listingRequest.getResponseParser().parse(listingJson), responseParser.parse(listingJson));
+        Assert.assertEquals(lookupRequest.getResponseParser().parse(lookupJson), responseParser.parse(lookupJson));
+        Assert.assertEquals(listingRequest.getResponseParser().parse(listingJson), responseParser.parse(listingJson));
     }
 
 }

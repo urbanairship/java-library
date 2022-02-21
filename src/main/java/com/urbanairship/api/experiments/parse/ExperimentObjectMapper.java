@@ -4,7 +4,6 @@
 
 package com.urbanairship.api.experiments.parse;
 
-import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -18,7 +17,7 @@ import com.urbanairship.api.push.parse.*;
 public class ExperimentObjectMapper {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    private static final SimpleModule MODULE = new SimpleModule("Experiment API Module", new Version(1, 0, 0, null));
+    private static final SimpleModule MODULE = new SimpleModule("Experiment API Module");
 
     static {
         MODULE

@@ -6,10 +6,8 @@ import com.urbanairship.api.experiments.model.Variant;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.schedule.model.Schedule;
 import org.joda.time.DateTime;
+import org.junit.Assert;
 import org.junit.Test;
-
-import static junit.framework.Assert.assertEquals;
-
 public class VariantSerializerTest {
 
     private static final ObjectMapper MAPPER = ExperimentObjectMapper.getInstance();
@@ -36,6 +34,6 @@ public class VariantSerializerTest {
         String variantSerialized = MAPPER.writeValueAsString(variant);
         Variant variantFromJson = MAPPER.readValue(variantSerialized, Variant.class);
 
-        assertEquals(variantFromJson, variant);
+        Assert.assertEquals(variantFromJson, variant);
     }
 }

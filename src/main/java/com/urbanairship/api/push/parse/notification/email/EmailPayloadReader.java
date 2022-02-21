@@ -7,7 +7,6 @@ import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import com.urbanairship.api.push.model.notification.email.EmailPayload;
 import com.urbanairship.api.push.model.notification.email.MessageType;
 
-import java.awt.*;
 import java.io.IOException;
 
 public class EmailPayloadReader implements JsonObjectReader<EmailPayload> {

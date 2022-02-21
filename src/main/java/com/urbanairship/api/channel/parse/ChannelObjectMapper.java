@@ -4,7 +4,6 @@
 
 package com.urbanairship.api.channel.parse;
 
-import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -51,7 +50,7 @@ import com.urbanairship.api.push.parse.PushObjectMapper;
 public class ChannelObjectMapper {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    private static final SimpleModule MODULE = new SimpleModule("Channels API Module", new Version(1, 0, 0, null));
+    private static final SimpleModule MODULE = new SimpleModule("Channels API Module");
 
     static {
         MODULE.addDeserializer(IosSettings.class, new IosSettingsDeserializer());

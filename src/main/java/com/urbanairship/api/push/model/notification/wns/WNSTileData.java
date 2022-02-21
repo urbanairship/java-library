@@ -66,7 +66,6 @@ public class WNSTileData {
         }
 
         public WNSTileData build() {
-            // TODO: must have at least one binding
             return new WNSTileData(bindingsBuilder.build());
         }
     }
