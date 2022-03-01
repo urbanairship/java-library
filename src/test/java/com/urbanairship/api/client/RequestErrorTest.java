@@ -142,14 +142,4 @@ public class RequestErrorTest {
         assertEquals(RequestError.errorFromResponse(errorString, "text/html"), error);
         assertEquals("Error in error string", error.getError(), "Unauthorized");
     }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testThrowsOnNullString() throws Exception {
-        @SuppressWarnings("UnusedAssignment") RequestError error = RequestError.newBuilder().build();
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testThrowsOnEmptyError() throws Exception {
-        @SuppressWarnings("UnusedAssignment") RequestError error = RequestError.newBuilder().setError("").build();
-    }
 }

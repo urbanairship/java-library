@@ -212,7 +212,7 @@ public class PayloadSerializerTest {
                 .setMutableContent(true)
                 .setSubtitle("subtitle")
                 .setMediaAttachment(mediaAttachment)
-                .setSound("just a string file name")
+                .setSoundData(IOSSoundData.newBuilder().setName("just a string file name").build())
                 .setCollapseId("collapseId")
                 .setThreadId("threadId")
                 .build();

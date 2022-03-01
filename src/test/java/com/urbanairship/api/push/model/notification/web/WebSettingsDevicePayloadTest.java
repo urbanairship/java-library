@@ -49,7 +49,7 @@ public class WebSettingsDevicePayloadTest {
                 .setAlert("alert field")
                 .build();
 
-        WebTemplate webTemplate = WebTemplate.newBuilder()
+        WebTemplate.newBuilder()
                 .setTemplateId("templateId")
                 .setFields(webFields)
                 .build();

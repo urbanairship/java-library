@@ -110,7 +110,7 @@ public class TemplateScheduledPushRequestTest {
                 "      }\n" +
                 "   ]}";
 
-        final ResponseParser responseParser = new ResponseParser<ScheduleResponse>() {
+        final ResponseParser<ScheduleResponse> responseParser = new ResponseParser<ScheduleResponse>() {
             @Override
             public ScheduleResponse parse(String response) throws IOException {
                 return ScheduleObjectMapper.getInstance().readValue(response, ScheduleResponse.class);

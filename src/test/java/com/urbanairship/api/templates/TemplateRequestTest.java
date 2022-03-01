@@ -122,7 +122,7 @@ public class TemplateRequestTest {
 
     @Test
     public void testResponseParser() throws Exception {
-        final ResponseParser responseParser = new ResponseParser<TemplateResponse>() {
+        final ResponseParser<TemplateResponse> responseParser = new ResponseParser<TemplateResponse>() {
             @Override
             public TemplateResponse parse(String response) throws IOException {
                 return mapper.readValue(response, TemplateResponse.class);

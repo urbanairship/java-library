@@ -155,7 +155,7 @@ public class TemplateListingRequestTest {
 
 
 
-        final ResponseParser responseParser = new ResponseParser<TemplateListingResponse>() {
+        final ResponseParser<TemplateListingResponse> responseParser = new ResponseParser<TemplateListingResponse>() {
             @Override
             public TemplateListingResponse parse(String response) throws IOException {
                 return mapper.readValue(response, TemplateListingResponse.class);

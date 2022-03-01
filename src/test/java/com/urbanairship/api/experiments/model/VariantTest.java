@@ -35,7 +35,7 @@ public class VariantTest {
 
     @Test(expected = Exception.class)
     public void testInvalidVariant() {
-        Variant variant = Variant.newBuilder()
+        Variant.newBuilder()
                 .setName("name")
                 .build();
     }

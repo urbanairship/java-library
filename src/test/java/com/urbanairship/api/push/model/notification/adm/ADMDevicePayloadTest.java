@@ -52,7 +52,7 @@ public class ADMDevicePayloadTest {
                 .setAlert("alert field")
                 .build();
 
-        ADMTemplate admTemplate = ADMTemplate.newBuilder()
+        ADMTemplate.newBuilder()
                 .setTemplateId("templateId")
                 .setFields(admFields)
                 .build();

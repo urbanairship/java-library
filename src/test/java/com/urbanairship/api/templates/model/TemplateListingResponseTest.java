@@ -159,7 +159,7 @@ public class TemplateListingResponseTest {
         templates.add(template1);
         templates.add(template2);
 
-        TemplateListingResponse response = TemplateListingResponse.newBuilder()
+        TemplateListingResponse.newBuilder()
                 .setOk(true)
                 .setTemplates(templates)
                 .setTemplate(template1)

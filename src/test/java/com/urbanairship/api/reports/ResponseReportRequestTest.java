@@ -79,7 +79,7 @@ public class ResponseReportRequestTest {
 
     @Test
     public void testReportParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<ResponseReport>() {
+        ResponseParser<ResponseReport> responseParser = new ResponseParser<ResponseReport>() {
             @Override
             public ResponseReport parse(String response) throws IOException {
                return mapper.readValue(response, ResponseReport.class);

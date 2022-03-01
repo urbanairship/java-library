@@ -34,7 +34,7 @@ public class TemplatePushPayloadTest {
 
     @Test(expected = Exception.class)
     public void testInvalidTemplatePushPayload() {
-        TemplatePushPayload payload = TemplatePushPayload.newBuilder()
+        TemplatePushPayload.newBuilder()
                 .setAudience(Selectors.tag("tag"))
                 .build();
     }

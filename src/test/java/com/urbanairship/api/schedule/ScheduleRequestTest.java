@@ -86,7 +86,7 @@ public class ScheduleRequestTest {
 
     @Test
     public void testScheduleParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<ScheduleResponse>() {
+        ResponseParser<ScheduleResponse> responseParser = new ResponseParser<ScheduleResponse>() {
             @Override
             public ScheduleResponse parse(String response) throws IOException {
                 return ScheduleObjectMapper.getInstance().readValue(response, ScheduleResponse.class);

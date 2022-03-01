@@ -77,7 +77,7 @@ public class ScheduleListingRequestTest {
 
     @Test
     public void testListSchedulesParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<ListAllSchedulesResponse>() {
+        ResponseParser<ListAllSchedulesResponse> responseParser = new ResponseParser<ListAllSchedulesResponse>() {
             @Override
             public ListAllSchedulesResponse parse(String response) throws IOException {
                 return ScheduleObjectMapper.getInstance().readValue(response, ListAllSchedulesResponse.class);
@@ -100,7 +100,7 @@ public class ScheduleListingRequestTest {
 
     @Test
     public void testListSingleScheduleParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<ListAllSchedulesResponse>() {
+        ResponseParser<ListAllSchedulesResponse> responseParser = new ResponseParser<ListAllSchedulesResponse>() {
             @Override
             public ListAllSchedulesResponse parse(String response) throws IOException {
                 return ListAllSchedulesResponse.newBuilder()

@@ -5,9 +5,7 @@ import com.urbanairship.api.schedule.model.Schedule;
 import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 public class ScheduleTest {
 
@@ -18,17 +16,15 @@ public class ScheduleTest {
         dateTime = DateTime.now();
     }
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
     /**
      * Neither setScheduledTimestamp nor setBestTime called
      */
     @Test
     public void testScheduledTimeAndBestTimeBothAbsent() throws Exception {
-        thrown.expect(IllegalArgumentException.class);
-        Schedule.newBuilder()
-                .build();
+        Assert.assertThrows(IllegalArgumentException.class, () -> {
+            Schedule.newBuilder()
+            .build();
+        });
     }
 
     /**
@@ -36,14 +32,14 @@ public class ScheduleTest {
      */
     @Test
     public void testScheduledTimeAndBestTimeBothPresent() throws Exception {
-        thrown.expect(IllegalArgumentException.class);
-
-        Schedule.newBuilder()
-                .setScheduledTimestamp(dateTime)
-                .setBestTime(BestTime.newBuilder()
-                        .setSendDate(dateTime)
-                        .build())
-                .build();
+        Assert.assertThrows(IllegalArgumentException.class, () -> {
+            Schedule.newBuilder()
+            .setScheduledTimestamp(dateTime)
+            .setBestTime(BestTime.newBuilder()
+                    .setSendDate(dateTime)
+                    .build())
+            .build();
+        });
     }
 
     /**

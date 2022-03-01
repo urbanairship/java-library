@@ -1,10 +1,8 @@
 package com.urbanairship.api.staticlists;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
-import com.urbanairship.api.staticlists.parse.StaticListsObjectMapper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +23,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class StaticListDownloadRequestTest {
-    private static final ObjectMapper mapper = StaticListsObjectMapper.getInstance();
     private static final String TEST_LIST_NAME = "testlist";
     private static final String STATIC_LIST_DOWNLOAD_PATH = "/api/lists/" + TEST_LIST_NAME + "/csv";
     private static final String OUTPUT_FILE_PATH = "src/test/data/out.csv";
@@ -99,6 +96,7 @@ public class StaticListDownloadRequestTest {
             fileString.append(line).append("\n");
         }
         assertEquals(response, fileString.toString());
+        br.close();
     }
 
     @After

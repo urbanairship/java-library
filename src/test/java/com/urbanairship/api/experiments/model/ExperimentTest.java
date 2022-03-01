@@ -50,7 +50,7 @@ public class ExperimentTest {
                 .addVariant(variantTwo)
                 .build();
 
-        List variants = new ArrayList();
+        List<Variant> variants = new ArrayList<Variant>();
         variants.add(variantOne);
         variants.add(variantTwo);
 
@@ -65,7 +65,7 @@ public class ExperimentTest {
 
     @Test(expected = Exception.class)
     public void testInvalidExperiment() {
-        Experiment experiment = Experiment.newBuilder()
+        Experiment.newBuilder()
                 .setAudience(Selectors.tag("tag"))
                 .build();
     }

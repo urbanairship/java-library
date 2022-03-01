@@ -69,7 +69,7 @@ public class ParseActionsTest {
             assertTrue("Tag " + tag + " not found in round-trip data", tags.contains(tag));
         }
     }
-
+    @SuppressWarnings({"unchecked","rawtypes"})
     private <A extends Action> Optional<A> getAction(Actions actions, ActionType type, Class<A> klass) {
         for (Action a : actions.allActions()) {
             if (a.getActionType() == type && a.getClass() == klass) {

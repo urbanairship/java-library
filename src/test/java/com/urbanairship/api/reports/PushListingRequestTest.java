@@ -81,7 +81,7 @@ public class PushListingRequestTest {
 
     @Test
     public void testPushParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<PushListingResponse>() {
+        ResponseParser<PushListingResponse> responseParser = new ResponseParser<PushListingResponse>() {
             @Override
             public PushListingResponse parse(String response) throws IOException {
                 return mapper.readValue(response, PushListingResponse.class);
