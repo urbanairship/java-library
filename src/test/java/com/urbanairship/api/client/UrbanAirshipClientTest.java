@@ -279,7 +279,7 @@ public class UrbanAirshipClientTest {
 
     @Test
     public void testGetUserAgent() {
-        String userAgent = client.getUserAgent();
+        String userAgent = client.getUserAgent("key");
         assertNotNull(userAgent);
         assertFalse(userAgent.equals("UNKNOWN"));
         assertFalse(userAgent.equals("UAJavaLib/UNKNOWN"));
