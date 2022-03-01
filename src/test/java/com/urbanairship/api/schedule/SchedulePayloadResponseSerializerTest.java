@@ -45,37 +45,6 @@ public class SchedulePayloadResponseSerializerTest {
     }
 
     @Test
-    public void testMultipleSchedules() {
-
-        String expectedJsonStr = "[\n" +
-                "  {\n" +
-                "    \"name\": \"Morning People\",\n" +
-                "    \"schedule\": {\n" +
-                "        \"scheduled_time\": \"2018-06-03T09:15:00\"\n" +
-                "    },\n" +
-                "    \"push\": {\n" +
-                "        \"audience\": { \"tag\": \"earlyBirds\" },\n" +
-                "        \"notification\": { \"alert\": \"Good Day Sunshine\" },\n" +
-                "        \"device_types\": [ \"ios\", \"android\" ]\n" +
-                "    }\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"name\": \"Everybody Else\",\n" +
-                "    \"schedule\": {\n" +
-                "        \"best_time\": {\n" +
-                "          \"send_date\": \"2018-06-03\"\n" +
-                "        }\n" +
-                "    },\n" +
-                "    \"push\": {\n" +
-                "        \"audience\": { \"tag\": \"normalPeople\" },\n" +
-                "        \"notification\": { \"alert\": \"Stay Up Late\" },\n" +
-                "        \"device_types\": [ \"ios\", \"android\" ]\n" +
-                "    }\n" +
-                "  }\n" +
-                "]";
-    }
-
-    @Test
     public void testBestTimeSerialization() throws Exception {
         BestTime bestTime = BestTime.newBuilder()
                 .setSendDate(new DateTime("2013-05-05T00:00:01", DateTimeZone.UTC))

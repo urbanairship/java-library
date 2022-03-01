@@ -103,7 +103,7 @@ public class TemplatePushRequestTest {
                  "}";
 
 
-        final ResponseParser responseParser = new ResponseParser<TemplateResponse>() {
+        final ResponseParser<TemplateResponse> responseParser = new ResponseParser<TemplateResponse>() {
             @Override
             public TemplateResponse parse(String response) throws IOException {
                 return mapper.readValue(response, TemplateResponse.class);

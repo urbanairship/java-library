@@ -62,7 +62,7 @@ public class SegmentLookupRequestTest {
 
     @Test
     public void testParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<SegmentView>() {
+        ResponseParser<SegmentView> responseParser = new ResponseParser<SegmentView>() {
             @Override
             public SegmentView parse(String response) throws IOException {
                 return mapper.readValue(response, SegmentView.class);

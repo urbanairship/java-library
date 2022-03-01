@@ -6,7 +6,6 @@ import com.urbanairship.api.channel.model.ChannelResponse;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.channel.model.ChannelView;
 import com.urbanairship.api.channel.parse.ChannelObjectMapper;
-
 import org.joda.time.DateTime;
 import org.junit.Test;
 

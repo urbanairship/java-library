@@ -76,7 +76,7 @@ public class DevicesReportRequestTest {
 
     @Test
     public void testReportParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<DevicesReport>() {
+        ResponseParser<DevicesReport> responseParser = new ResponseParser<DevicesReport>() {
             @Override
             public DevicesReport parse(String response) throws IOException {
                 return mapper.readValue(response, DevicesReport.class);

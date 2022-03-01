@@ -83,7 +83,7 @@ public class LocationViewTest {
 
         assertEquals(2, center.size());
 
-        Point testPoint = Point.newBuilder()
+        Point.newBuilder()
                 .setLatitude(5.0D)
                 .setLongitude(6.0D)
                 .build();
@@ -115,7 +115,7 @@ public class LocationViewTest {
 
         assertEquals(1, center.size());
 
-        Point testPoint = Point.newBuilder()
+        Point.newBuilder()
                 .setLatitude(5.0D)
                 .setLongitude(6.0D)
                 .build();

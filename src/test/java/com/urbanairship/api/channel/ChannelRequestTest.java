@@ -73,7 +73,7 @@ public class ChannelRequestTest {
 
     @Test
     public void testChannelListingParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<ChannelResponse>() {
+        ResponseParser<ChannelResponse> responseParser = new ResponseParser<ChannelResponse>() {
             @Override
             public ChannelResponse parse(String response) throws IOException {
                 return mapper.readValue(response, ChannelResponse.class);
@@ -206,7 +206,7 @@ public class ChannelRequestTest {
 
     @Test
     public void testChannelLookupParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<ChannelResponse>() {
+        ResponseParser<ChannelResponse> responseParser = new ResponseParser<ChannelResponse>() {
             @Override
             public ChannelResponse parse(String response) throws IOException {
                 return mapper.readValue(response, ChannelResponse.class);

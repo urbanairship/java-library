@@ -1,9 +1,5 @@
 package com.urbanairship.api.reports.model;
 
-
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
 
 import java.util.UUID;
@@ -18,9 +14,6 @@ public class PushListingResponseTest {
 
         UUID one = UUID.randomUUID();
         UUID two = UUID.randomUUID();
-
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-        DateTime dt = formatter.parseDateTime("2013-07-31 21:27:38");
 
         PushInfoResponse obj = PushInfoResponse.newBuilder()
                 .setPushId(one)

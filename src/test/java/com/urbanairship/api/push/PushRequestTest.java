@@ -84,7 +84,7 @@ public class PushRequestTest {
 
     @Test
     public void testPushParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<PushResponse>() {
+        ResponseParser<PushResponse> responseParser = new ResponseParser<PushResponse>() {
             @Override
             public PushResponse parse(String response) throws IOException {
                 return PushObjectMapper.getInstance().readValue(response, PushResponse.class);
@@ -97,7 +97,7 @@ public class PushRequestTest {
 
     @Test
     public void testPushValidationParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<PushResponse>() {
+        ResponseParser<PushResponse> responseParser = new ResponseParser<PushResponse>() {
             @Override
             public PushResponse parse(String response) throws IOException {
                 return PushObjectMapper.getInstance().readValue(response, PushResponse.class);

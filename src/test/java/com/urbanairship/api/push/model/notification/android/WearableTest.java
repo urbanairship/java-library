@@ -1,6 +1,5 @@
 package com.urbanairship.api.push.model.notification.android;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.notification.actions.Actions;

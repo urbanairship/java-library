@@ -23,7 +23,7 @@ public class TemplateSelectorTest {
 
     @Test(expected=Exception.class)
     public void testInvalidTemplateSelector() {
-        TemplateSelector selector = TemplateSelector.newBuilder()
+        TemplateSelector.newBuilder()
                 .addSubstitution("NAME", "Sam")
                 .addSubstitution("TITLE", "Ms.")
                 .build();

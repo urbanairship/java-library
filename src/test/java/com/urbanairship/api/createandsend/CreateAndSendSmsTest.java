@@ -100,7 +100,7 @@ public class CreateAndSendSmsTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testBadPayload() {
-        SmsPayload smsPayload = SmsPayload.newBuilder()
+        SmsPayload.newBuilder()
                 .setAlert("Awesome Alert")
                 .setSmsTemplate(smsTemplate)
                 .build();

@@ -72,7 +72,7 @@ public class NamedUserListingRequestTest {
 
     @Test
     public void testListingParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<NamedUserListingResponse>() {
+        ResponseParser<NamedUserListingResponse> responseParser = new ResponseParser<NamedUserListingResponse>() {
             @Override
             public NamedUserListingResponse parse(String response) throws IOException {
                 return mapper.readValue(response, NamedUserListingResponse.class);
@@ -124,7 +124,7 @@ public class NamedUserListingRequestTest {
 
     @Test
     public void testLookupParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<NamedUserListingResponse>() {
+        ResponseParser<NamedUserListingResponse> responseParser = new ResponseParser<NamedUserListingResponse>() {
             @Override
             public NamedUserListingResponse parse(String response) throws IOException {
                 return mapper.readValue(response, NamedUserListingResponse.class);

@@ -3,18 +3,15 @@ package com.urbanairship.api.experiments.parse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.experiments.model.VariantPushPayload;
-import org.junit.Rule;
+
+import org.junit.Assert;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class VariantPushPayloadDeserializerTest {
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     private static final ObjectMapper MAPPER = ExperimentObjectMapper.getInstance();
 
@@ -37,11 +34,15 @@ public class VariantPushPayloadDeserializerTest {
 
     @Test
     public void testEmptyPartialPushPayload() throws Exception {
-        expectedException.expect(APIParsingException.class);
-        expectedException.expectMessage("At least one of 'notification' or 'inApp' must be set.");
+        Exception exception = Assert.assertThrows(APIParsingException.class, () -> {
+            String emptyPayloadString = "{}";
+            MAPPER.readValue(emptyPayloadString, VariantPushPayload.class);
+        });
+        
+        String expectedMessage = "At least one of 'notification' or 'inApp' must be set.";
+        String actualMessage = exception.getMessage();
 
-        String emptyPayloadString = "{}";
-        VariantPushPayload payload = MAPPER.readValue(emptyPayloadString, VariantPushPayload.class);
+        Assert.assertTrue(actualMessage.contains(expectedMessage));
     }
 
 }

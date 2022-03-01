@@ -75,7 +75,7 @@ public class OpenChannelRequestTest {
 
     @Test
     public void testCustomEventParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<OpenChannelResponse>() {
+        ResponseParser<OpenChannelResponse> responseParser = new ResponseParser<OpenChannelResponse>() {
             @Override
             public OpenChannelResponse parse(String response) throws IOException {
                 return ChannelObjectMapper.getInstance().readValue(response, OpenChannelResponse.class);

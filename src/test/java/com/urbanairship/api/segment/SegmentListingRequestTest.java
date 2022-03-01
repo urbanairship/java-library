@@ -61,7 +61,7 @@ public class SegmentListingRequestTest {
 
     @Test
     public void testListParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<SegmentListingResponse>() {
+        ResponseParser<SegmentListingResponse> responseParser = new ResponseParser<SegmentListingResponse>() {
             @Override
             public SegmentListingResponse parse(String response) throws IOException {
                 return mapper.readValue(response, SegmentListingResponse.class);

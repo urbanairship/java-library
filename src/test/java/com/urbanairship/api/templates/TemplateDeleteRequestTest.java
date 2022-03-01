@@ -66,7 +66,7 @@ public class TemplateDeleteRequestTest {
                 "\"operation_id\": \"a6394ff8-8a65-4494-ad06-677eb8b7ad6a\"" +
                 "}";
 
-        final ResponseParser responseParser = new ResponseParser<TemplateResponse>() {
+        final ResponseParser<TemplateResponse> responseParser = new ResponseParser<TemplateResponse>() {
             @Override
             public TemplateResponse parse(String response) throws IOException {
                 return mapper.readValue(response, TemplateResponse.class);

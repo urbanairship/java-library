@@ -56,7 +56,7 @@ public class LocationRequestTest {
 
     @Test
     public void testListingParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<LocationResponse>() {
+        ResponseParser<LocationResponse> responseParser = new ResponseParser<LocationResponse>() {
             @Override
             public LocationResponse parse(String response) throws IOException {
                 return mapper.readValue(response, LocationResponse.class);

@@ -110,7 +110,7 @@ public class ExperimentRequestTest {
 
     @Test
     public void testResponseParser() throws Exception {
-        final ResponseParser responseParser = new ResponseParser<ExperimentResponse>() {
+        final ResponseParser<ExperimentResponse> responseParser = new ResponseParser<ExperimentResponse>() {
             @Override
             public ExperimentResponse parse(String response) throws IOException {
                 return mapper.readValue(response, ExperimentResponse.class);

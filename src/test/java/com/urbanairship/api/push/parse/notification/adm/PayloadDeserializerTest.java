@@ -78,7 +78,7 @@ public class PayloadDeserializerTest {
                 .setTitle("title")
                 .build();
 
-        String bigTextStr = mapper.writeValueAsString(bigTextStyle);
+        mapper.writeValueAsString(bigTextStyle);
 
         ADMDevicePayload admDevicePayload = ADMDevicePayload.newBuilder()
                 .setAlert("Some Title")

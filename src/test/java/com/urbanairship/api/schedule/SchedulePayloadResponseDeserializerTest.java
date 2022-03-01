@@ -20,15 +20,10 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import java.util.List;
 
 public class SchedulePayloadResponseDeserializerTest {
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     private static final ObjectMapper MAPPER = ScheduleObjectMapper.getInstance();
 
@@ -226,8 +221,8 @@ public class SchedulePayloadResponseDeserializerTest {
 
     @Test
     public void testInvalidScheduleObject() throws Exception {
-        thrown.expect(APIParsingException.class);
-        String json =
+        Assert.assertThrows(APIParsingException.class, () -> {
+                String json =
                 "{" +
                         "\"schedule\": {" +
                         " \"2013-05-05 00:00:01\"" +
@@ -239,14 +234,15 @@ public class SchedulePayloadResponseDeserializerTest {
                         "}" +
                         "}";
 
-        MAPPER.readValue(json, SchedulePayloadResponse.class);
+                MAPPER.readValue(json, SchedulePayloadResponse.class);
+            });
 
     }
 
     @Test
     public void testInvalidName() throws Exception {
-        thrown.expect(APIParsingException .class);
-        String json =
+        Assert.assertThrows(APIParsingException.class, () -> {
+                String json =
                 "{" +
                         "\"schedule\": {" +
                         "\"scheduled_time\": \"2013-05-05 00:00:01\"" +
@@ -261,6 +257,8 @@ public class SchedulePayloadResponseDeserializerTest {
                         "}" +
                         "}";
 
-        MAPPER.readValue(json, SchedulePayloadResponse.class);
+                MAPPER.readValue(json, SchedulePayloadResponse.class);
+            });
+
     }
 }

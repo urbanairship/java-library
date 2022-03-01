@@ -15,7 +15,6 @@ import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload
 import com.urbanairship.api.push.model.notification.android.BigTextStyle;
 import com.urbanairship.api.push.model.notification.android.Category;
 import com.urbanairship.api.push.model.notification.android.PublicNotification;
-import com.urbanairship.api.push.model.notification.android.Style;
 import com.urbanairship.api.push.model.notification.android.Wearable;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.junit.Test;
@@ -36,7 +35,7 @@ public class PayloadSerializerTest {
                 .setSummary("A summary")
                 .build();
 
-        Style bigTextStyle = BigTextStyle.newBuilder()
+        BigTextStyle bigTextStyle = BigTextStyle.newBuilder()
                 .setContent("big text")
                 .setTitle("big text title")
                 .setSummary("big text summary")
