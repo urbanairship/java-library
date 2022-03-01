@@ -18,6 +18,10 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @deprecated Statistics push API is no longer available.
+ */
+@Deprecated
 public class StatisticsRequest implements Request<List<StatisticsResponse>> {
     private final static String API_STATISTICS = "/api/push/stats/";
 
