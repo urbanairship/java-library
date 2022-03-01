@@ -9,6 +9,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.urbanairship.api.common.model.ErrorDetails;
 
 import java.util.List;
 
@@ -19,13 +20,17 @@ public final class ListAllSchedulesResponse {
     private final int totalCount;
     private final Optional<String> nextPage;
     private final ImmutableList<SchedulePayloadResponse> scheduleObjects;
+    private final Optional<String> error;
+    private final Optional<ErrorDetails> errorDetails;
 
-    private ListAllSchedulesResponse(boolean ok, int count, int totalCount,  Optional<String> nextPage, ImmutableList<SchedulePayloadResponse> response) {
+    private ListAllSchedulesResponse(boolean ok, int count, int totalCount,  Optional<String> nextPage, ImmutableList<SchedulePayloadResponse> response, String error, ErrorDetails errorDetails) {
         this.ok = ok;
         this.count = count;
         this.totalCount = totalCount;
         this.nextPage = nextPage;
         this.scheduleObjects = response;
+        this.error = Optional.fromNullable(error);
+        this.errorDetails = Optional.fromNullable(errorDetails);
     }
 
     public static Builder newBuilder() {
@@ -52,9 +57,17 @@ public final class ListAllSchedulesResponse {
         return scheduleObjects;
     }
 
+    public Optional<String> getError() {
+        return error;
+    }
+
+    public Optional<ErrorDetails> getErrorDetails() {
+        return errorDetails;
+    }
+
     @Override
     public int hashCode() {
-        return Objects.hashCode(ok, count, totalCount, nextPage, scheduleObjects);
+        return Objects.hashCode(ok, count, totalCount, nextPage, scheduleObjects, error, errorDetails);
     }
 
     @Override
@@ -66,7 +79,7 @@ public final class ListAllSchedulesResponse {
             return false;
         }
         final ListAllSchedulesResponse other = (ListAllSchedulesResponse) obj;
-        return  Objects.equal(this.ok, other.ok) && Objects.equal(this.count, other.count) && Objects.equal(this.totalCount, other.totalCount) && Objects.equal(this.nextPage, other.nextPage) && Objects.equal(this.scheduleObjects, other.scheduleObjects);
+        return  Objects.equal(this.ok, other.ok) && Objects.equal(this.count, other.count) && Objects.equal(this.totalCount, other.totalCount) && Objects.equal(this.nextPage, other.nextPage) && Objects.equal(this.scheduleObjects, other.scheduleObjects) && Objects.equal(this.error, other.error) && Objects.equal(this.errorDetails, other.errorDetails);
     }
 
     @Override
@@ -78,6 +91,8 @@ public final class ListAllSchedulesResponse {
                 ", totalCount=" + totalCount +
                 ", nextPage=" + nextPage +
                 ", scheduleObjects=" + scheduleObjects +
+                ", error=" + error +
+                ", errorDetails=" + errorDetails +
                 '}';
     }
 
@@ -91,7 +106,9 @@ public final class ListAllSchedulesResponse {
         private int total_count;
         private String next_page = null;
         private ImmutableList.Builder<SchedulePayloadResponse> scheduleresponse = ImmutableList.builder();
-
+        private String error = null;
+        private ErrorDetails errorDetails = null;
+        
         private Builder() {
         }
 
@@ -125,11 +142,21 @@ public final class ListAllSchedulesResponse {
             return this;
         }
 
+        public Builder setError(String error) {
+            this.error = error;
+            return this;
+        }
+    
+        public Builder setErrorDetails(ErrorDetails errorDetails) {
+            this.errorDetails = errorDetails;
+            return this;
+        }
+
         public ListAllSchedulesResponse build() {
             Preconditions.checkNotNull(count, "count must be set to build APIListScheduleResponse");
             Preconditions.checkNotNull(total_count, "total count must be set to build APIListScheduleResponse");
             Preconditions.checkNotNull(scheduleresponse, "sch must be set to build APIListScheduleResponse");
-            return new ListAllSchedulesResponse(ok, count, total_count, Optional.fromNullable(next_page), scheduleresponse.build());
+            return new ListAllSchedulesResponse(ok, count, total_count, Optional.fromNullable(next_page), scheduleresponse.build(), error, errorDetails);
         }
     }
 }

@@ -8,6 +8,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.urbanairship.api.common.model.ErrorDetails;
 
 /**
  * Named user listing response object.
@@ -17,12 +18,16 @@ public class NamedUserListingResponse {
     private final Optional<String> nextPage;
     private final Optional<NamedUserView> namedUserView;
     private final Optional<ImmutableList<NamedUserView>> namedUserViews;
+    private final Optional<String> error;
+    private final Optional<ErrorDetails> errorDetails;
 
-    private NamedUserListingResponse(boolean ok, Optional<String> nextPage, Optional<NamedUserView> namedUserView, Optional<ImmutableList<NamedUserView>> namedUserViews) {
+    private NamedUserListingResponse(boolean ok, Optional<String> nextPage, Optional<NamedUserView> namedUserView, Optional<ImmutableList<NamedUserView>> namedUserViews, String error, ErrorDetails errorDetails) {
         this.ok = ok;
         this.nextPage = nextPage;
         this.namedUserView = namedUserView;
         this.namedUserViews = namedUserViews;
+        this.error = Optional.fromNullable(error);
+        this.errorDetails = Optional.fromNullable(errorDetails);
     }
 
     /**
@@ -70,9 +75,27 @@ public class NamedUserListingResponse {
         return namedUserViews;
     }
 
+    /**
+     * Get the error if present
+     *
+     * @return An Optional String
+     */
+    public Optional<String> getError() {
+        return error;
+    }
+
+    /**
+     * Get the error details if present
+     *
+     * @return An Optional String
+     */
+    public Optional<ErrorDetails> getErrorDetails() {
+        return errorDetails;
+    }
+
     @Override
     public int hashCode() {
-        return Objects.hashCode(ok, nextPage, namedUserView, namedUserViews);
+        return Objects.hashCode(ok, nextPage, namedUserView, namedUserViews, error, errorDetails);
     }
 
     @Override
@@ -84,7 +107,8 @@ public class NamedUserListingResponse {
             return false;
         }
         final NamedUserListingResponse other = (NamedUserListingResponse) obj;
-        return Objects.equal(this.ok, other.ok) && Objects.equal(this.nextPage, other.nextPage) && Objects.equal(this.namedUserView, other.namedUserView) && Objects.equal(this.namedUserViews, other.namedUserViews);
+        return Objects.equal(this.ok, other.ok) && Objects.equal(this.nextPage, other.nextPage) && Objects.equal(this.namedUserView, other.namedUserView) && Objects.equal(this.namedUserViews, other.namedUserViews) &&
+        Objects.equal(this.error, other.error) && Objects.equal(this.errorDetails, other.errorDetails);
     }
 
     @Override
@@ -94,6 +118,8 @@ public class NamedUserListingResponse {
             ", nextPage=" + nextPage +
             ", namedUserView=" + namedUserView +
             ", namedUserViews=" + namedUserViews +
+            ", error=" + error +
+            ", errorDetails=" + errorDetails +
             '}';
     }
 
@@ -103,6 +129,8 @@ public class NamedUserListingResponse {
         private String nextPage = null;
         private NamedUserView namedUserView = null;
         private ImmutableList.Builder<NamedUserView> namedUserViews = ImmutableList.builder();
+        private String error = null;
+        private ErrorDetails errorDetails = null;
 
         private Builder() {
         }
@@ -152,6 +180,28 @@ public class NamedUserListingResponse {
         }
 
         /**
+         * Set the error
+         *
+         * @param error String
+         * @return Builder
+         */
+        public Builder setError(String error) {
+            this.error = error;
+            return this;
+        }
+
+        /**
+         * Set the errorDetails
+         *
+         * @param errorDetails String
+         * @return Builder
+         */
+        public Builder setErrorDetails(ErrorDetails errorDetails) {
+            this.errorDetails = errorDetails;
+            return this;
+        }
+
+        /**
          * Build the NamedUserListingResponse object
          *
          * <pre>
@@ -165,7 +215,7 @@ public class NamedUserListingResponse {
                 Preconditions.checkArgument(nextPage == null && namedUserViews.build().isEmpty());
             }
 
-            return new NamedUserListingResponse(ok, Optional.fromNullable(nextPage), Optional.fromNullable(namedUserView), Optional.fromNullable(namedUserViews.build()));
+            return new NamedUserListingResponse(ok, Optional.fromNullable(nextPage), Optional.fromNullable(namedUserView), Optional.fromNullable(namedUserViews.build()), error, errorDetails);
         }
     }
 }

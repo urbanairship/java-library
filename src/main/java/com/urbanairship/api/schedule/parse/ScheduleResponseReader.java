@@ -6,6 +6,7 @@ package com.urbanairship.api.schedule.parse;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.urbanairship.api.common.model.ErrorDetails;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.schedule.model.SchedulePayloadResponse;
@@ -51,6 +52,14 @@ public final class ScheduleResponseReader implements JsonObjectReader<ScheduleRe
     public void readSchedulePayloads(JsonParser jsonParser) throws IOException {
         builder.addAllSchedulePayload((List<SchedulePayloadResponse>) jsonParser.readValueAs(new TypeReference<List<SchedulePayloadResponse>>() {
         }));
+    }
+
+    public void readError(JsonParser jsonParser) throws IOException {
+        builder.setError(jsonParser.readValueAs(String.class));
+    }
+
+    public void readErrorDetails(JsonParser jsonParser) throws IOException {
+        builder.setErrorDetails(jsonParser.readValueAs(ErrorDetails.class));
     }
 
     @Override

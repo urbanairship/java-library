@@ -35,6 +35,18 @@ public class StaticListListingResponseDeserializer extends JsonDeserializer<Stat
                                     reader.readStaticListObjects(jsonParser);
                                 }
                             })
+                            .put("error", new FieldParser<StaticListListingResponseReader>() {
+                                @Override
+                                public void parse(StaticListListingResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                    reader.readError(jsonParser);
+                                }
+                            })
+                            .put("details", new FieldParser<StaticListListingResponseReader>() {
+                                @Override
+                                public void parse(StaticListListingResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                    reader.readErrorDetails(jsonParser);
+                                }
+                            })
                             .build()
             );
 

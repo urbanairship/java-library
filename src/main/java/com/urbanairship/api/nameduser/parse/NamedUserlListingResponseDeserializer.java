@@ -46,6 +46,18 @@ public class NamedUserlListingResponseDeserializer extends JsonDeserializer<Name
                         reader.readNamedUsers(jsonParser);
                     }
                 })
+                .put("error", new FieldParser<NamedUserListingResponseReader>() {
+                    @Override
+                    public void parse(NamedUserListingResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                        reader.readError(jsonParser);
+                    }
+                })
+                .put("details", new FieldParser<NamedUserListingResponseReader>() {
+                    @Override
+                    public void parse(NamedUserListingResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                        reader.readErrorDetails(jsonParser);
+                    }
+                })
                 .build()
         );
 

@@ -1,10 +1,14 @@
 package com.urbanairship.api.templates.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.push.model.notification.Notification;
+import com.urbanairship.api.templates.parse.TemplatesObjectMapper;
+
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -164,6 +168,23 @@ public class TemplateListingResponseTest {
                 .setTemplates(templates)
                 .setTemplate(template1)
                 .build();
+    }
+
+    @Test
+    public void testErrorAPITemplateLookupResponse() throws IOException {
+        String jsonResponse = "{\n" +
+                "    \"ok\": false,\n" +
+                "    \"error\": \"error\",\n" +
+                "    \"details\": {\n" +
+                "        \"error\": \"error\"\n" +
+                "    }\n" +
+                "}";
+
+        ObjectMapper mapper = TemplatesObjectMapper.getInstance();
+        TemplateListingResponse response = mapper.readValue(jsonResponse, TemplateListingResponse.class);
+        assertEquals("error", response.getError().get());
+        assertEquals("error", response.getErrorDetails().get().getError().get());
+        assertEquals(false, response.getOk());
     }
 
 }

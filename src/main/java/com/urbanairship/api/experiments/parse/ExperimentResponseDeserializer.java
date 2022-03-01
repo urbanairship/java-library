@@ -46,6 +46,18 @@ public class ExperimentResponseDeserializer extends JsonDeserializer<ExperimentR
                                     reader.readExperimentId(jsonParser);
                                 }
                             })
+                            .put("error", new FieldParser<ExperimentResponseReader>() {
+                                @Override
+                                public void parse(ExperimentResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                    reader.readError(jsonParser);
+                                }
+                            })
+                            .put("details", new FieldParser<ExperimentResponseReader>() {
+                                @Override
+                                public void parse(ExperimentResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                    reader.readErrorDetails(jsonParser);
+                                }
+                            })
                             .build()
             );
 

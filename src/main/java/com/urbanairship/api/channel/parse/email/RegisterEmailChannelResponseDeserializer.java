@@ -31,6 +31,18 @@ public class RegisterEmailChannelResponseDeserializer extends JsonDeserializer<E
                             reader.readChannelId(parser);
                         }
                     })
+                    .put("error", new FieldParser<RegisterEmailChannelResponseReader>() {
+                        @Override
+                        public void parse(RegisterEmailChannelResponseReader reader, JsonParser parser, DeserializationContext context) throws IOException {
+                            reader.readError(parser);
+                        }
+                    })
+                    .put("details", new FieldParser<RegisterEmailChannelResponseReader>() {
+                        @Override
+                        public void parse(RegisterEmailChannelResponseReader reader, JsonParser parser, DeserializationContext context) throws IOException {
+                            reader.readErrorDetails(parser);
+                        }
+                    })
                     .build()
     );
 

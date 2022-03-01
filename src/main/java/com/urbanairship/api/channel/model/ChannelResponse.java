@@ -8,6 +8,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.urbanairship.api.common.model.ErrorDetails;
 
 /**
  * Channel listing response object
@@ -17,16 +18,20 @@ public class ChannelResponse {
     private final Optional<String> nextPage;
     private final Optional<ChannelView> channelObject;
     private final Optional<ImmutableList<ChannelView>> channelObjects;
+    private final Optional<String> error;
+    private final Optional<ErrorDetails> errorDetails;
 
     private ChannelResponse() {
-        this(false, null, null, null);
+        this(false, null, null, null, null, null);
     }
 
-    private ChannelResponse(boolean ok, String nextPage, Optional<ChannelView> channelObject, Optional<ImmutableList<ChannelView>> channelObjects) {
+    private ChannelResponse(boolean ok, String nextPage, Optional<ChannelView> channelObject, Optional<ImmutableList<ChannelView>> channelObjects, String error, ErrorDetails errorDetails) {
         this.ok = ok;
         this.nextPage = Optional.fromNullable(nextPage);
         this.channelObject = channelObject;
         this.channelObjects = channelObjects;
+        this.error = Optional.fromNullable(error);
+        this.errorDetails = Optional.fromNullable(errorDetails);
     }
 
     /**
@@ -74,19 +79,39 @@ public class ChannelResponse {
         return channelObjects;
     }
 
+    /**
+     * Get the error if present
+     *
+     * @return An Optional String
+     */
+    public Optional<String> getError() {
+        return error;
+    }
+
+    /**
+     * Get the error details if present
+     *
+     * @return An Optional String
+     */
+    public Optional<ErrorDetails> getErrorDetails() {
+        return errorDetails;
+    }
+
     @Override
     public String toString() {
-        return "APIListAllChannelsResponse{" +
+        return "ChannelResponse{" +
             "ok=" + ok +
             ", nextPage='" + nextPage + '\'' +
             ", channelObject=" + channelObject +
             ", channelObjects=" + channelObjects +
+            ", error=" + error +
+            ", errorDetails=" + errorDetails +
             '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(ok, nextPage, channelObject, channelObjects);
+        return Objects.hashCode(ok, nextPage, channelObject, channelObjects, error, errorDetails);
     }
 
     @Override
@@ -98,7 +123,8 @@ public class ChannelResponse {
             return false;
         }
         final ChannelResponse other = (ChannelResponse) obj;
-        return Objects.equal(this.ok, other.ok) && Objects.equal(this.nextPage, other.nextPage) && Objects.equal(this.channelObject, other.channelObject) && Objects.equal(this.channelObjects, other.channelObjects);
+        return Objects.equal(this.ok, other.ok) && Objects.equal(this.nextPage, other.nextPage) && Objects.equal(this.channelObject, other.channelObject) && Objects.equal(this.channelObjects, other.channelObjects)
+        && Objects.equal(this.error, other.error) && Objects.equal(this.errorDetails, other.errorDetails);
     }
 
     public static class Builder {
@@ -107,6 +133,8 @@ public class ChannelResponse {
         private String nextPage = null;
         private ChannelView channelObject = null;
         private ImmutableList.Builder<ChannelView> channelObjects = ImmutableList.builder();
+        private String error = null;
+        private ErrorDetails errorDetails = null;
 
         private Builder() {
         }
@@ -167,6 +195,28 @@ public class ChannelResponse {
         }
 
         /**
+         * Set the error
+         *
+         * @param error String
+         * @return Builder
+         */
+        public Builder setError(String error) {
+            this.error = error;
+            return this;
+        }
+
+        /**
+         * Set the errorDetails
+         *
+         * @param errorDetails String
+         * @return Builder
+         */
+        public Builder setErrorDetails(ErrorDetails errorDetails) {
+            this.errorDetails = errorDetails;
+            return this;
+        }
+
+        /**
          * Build the ChannelResponse object
          *
          * <pre>
@@ -180,7 +230,7 @@ public class ChannelResponse {
                 Preconditions.checkArgument(nextPage == null && channelObjects.build().isEmpty());
             }
 
-            return new ChannelResponse(ok, nextPage,Optional.fromNullable(channelObject), Optional.fromNullable(channelObjects.build()));
+            return new ChannelResponse(ok, nextPage,Optional.fromNullable(channelObject), Optional.fromNullable(channelObjects.build()), error, errorDetails);
         }
     }
 }

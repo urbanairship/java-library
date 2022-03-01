@@ -40,6 +40,12 @@ public class NamedUserUpdateResponseDeserializer extends JsonDeserializer<NamedU
                             reader.readTagWarnings(jsonParser);
                         }
                     })
+                    .put("details", new FieldParser<NamedUserUpdateResponseReader>() {
+                        @Override
+                        public void parse(NamedUserUpdateResponseReader reader, JsonParser jsonParser, DeserializationContext context) throws IOException {
+                            reader.readErrorDetails(jsonParser);
+                        }
+                    })
                     .build()
     );
 

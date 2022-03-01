@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -43,5 +44,23 @@ public class PushResponseTest {
         } catch (IOException ex) {
             fail("Exception in PushResponseTest Message: " + ex.getMessage());
         }
+    }
+
+    @Test
+    public void testErrorAPIPushResponse() throws IOException {
+        String jsonResponse = "{\n" +
+                "    \"ok\": false,\n" +
+                "    \"error\": \"error\",\n" +
+                "    \"details\": {\n" +
+                "        \"error\": \"error\"\n" +
+                "    }\n" +
+                "}";
+
+        ObjectMapper mapper = PushObjectMapper.getInstance();
+        PushResponse response = mapper.readValue(jsonResponse, PushResponse.class);
+
+        assertEquals("error", response.getError().get());
+        assertEquals("error", response.getErrorDetails().get().getError().get());
+        assertEquals(false, response.getOk());
     }
 }

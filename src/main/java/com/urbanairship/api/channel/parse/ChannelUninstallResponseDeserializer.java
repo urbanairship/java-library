@@ -28,6 +28,12 @@ public class ChannelUninstallResponseDeserializer extends JsonDeserializer<Chann
                             reader.readError(jsonParser);
                         }
                     })
+                    .put("details", new FieldParser<ChannelUninstallResponseReader>() {
+                        @Override
+                        public void parse(ChannelUninstallResponseReader reader, JsonParser jsonParser, DeserializationContext context) throws IOException {
+                            reader.readErrorDetails(jsonParser);
+                        }
+                    })
                     .build()
     );
 

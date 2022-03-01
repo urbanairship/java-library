@@ -7,6 +7,8 @@ package com.urbanairship.api.experiments.model;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 
+import com.urbanairship.api.common.model.ErrorDetails;
+
 /**
  * Represents a response from the Urban Airship API for Experiments.
  */
@@ -16,16 +18,22 @@ public final class ExperimentResponse {
     private final Optional<String> operationId;
     private final Optional<String> experimentId;
     private final Optional<String> pushId;
+    private final Optional<String> error;
+    private final Optional<ErrorDetails> errorDetails;
 
     private ExperimentResponse(boolean ok,
                               String operationId,
                               String experimentId,
-                              String pushId) {
+                              String pushId,
+                              String error,
+                              ErrorDetails errorDetails) {
 
         this.ok = ok;
         this.operationId = Optional.fromNullable(operationId);
         this.experimentId = Optional.fromNullable(experimentId);
         this.pushId = Optional.fromNullable(pushId);
+        this.error = Optional.fromNullable(error);
+        this.errorDetails = Optional.fromNullable(errorDetails);
     }
 
     /**
@@ -76,6 +84,24 @@ public final class ExperimentResponse {
         return pushId;
     }
 
+     /**
+     * Get the error if present
+     *
+     * @return An Optional String
+     */
+    public Optional<String> getError() {
+        return error;
+    }
+
+    /**
+     * Get the error details if present
+     *
+     * @return An Optional String
+     */
+    public Optional<ErrorDetails> getErrorDetails() {
+        return errorDetails;
+    }    
+
     @Override
     public String toString() {
         return "ExperimentResponse{" +
@@ -83,12 +109,14 @@ public final class ExperimentResponse {
                 ", operationId=" + operationId +
                 ", experimentId=" + experimentId +
                 ", pushId=" + pushId +
+                ", error=" + error +
+                ", errorDetails=" + errorDetails +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(operationId, pushId, ok, experimentId);
+        return Objects.hashCode(operationId, pushId, ok, experimentId, error, errorDetails);
     }
 
     @Override
@@ -103,7 +131,9 @@ public final class ExperimentResponse {
         return Objects.equal(this.operationId, other.operationId)
                 && Objects.equal(this.pushId, other.pushId)
                 && Objects.equal(this.ok, other.ok)
-                && Objects.equal(this.experimentId, other.experimentId);
+                && Objects.equal(this.experimentId, other.experimentId)
+                && Objects.equal(this.error, other.error) 
+                && Objects.equal(this.errorDetails, other.errorDetails);
     }
 
     /**
@@ -115,6 +145,8 @@ public final class ExperimentResponse {
         private String pushId = null;
         private boolean ok = false;
         private String experimentId = null;
+        private String error = null;
+        private ErrorDetails errorDetails = null;
 
         private Builder() {
         }
@@ -164,12 +196,34 @@ public final class ExperimentResponse {
         }
 
         /**
+         * Set the error
+         *
+         * @param error String
+         * @return Builder
+         */
+        public Builder setError(String error) {
+            this.error = error;
+            return this;
+        }
+
+        /**
+         * Set the errorDetails
+         *
+         * @param errorDetails String
+         * @return Builder
+         */
+        public Builder setErrorDetails(ErrorDetails errorDetails) {
+            this.errorDetails = errorDetails;
+            return this;
+        }
+
+        /**
          * Build the ExperimentResponse object.
          *
          * @return ExperimentResponse
          */
         public ExperimentResponse build() {
-            return new ExperimentResponse(ok, operationId, experimentId, pushId);
+            return new ExperimentResponse(ok, operationId, experimentId, pushId, error, errorDetails);
         }
     }
 }

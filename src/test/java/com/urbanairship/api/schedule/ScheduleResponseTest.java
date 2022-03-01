@@ -1,12 +1,17 @@
 package com.urbanairship.api.schedule;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.schedule.model.ScheduleResponse;
 import com.urbanairship.api.schedule.parse.ScheduleObjectMapper;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import java.io.IOException;
 
 public class ScheduleResponseTest {
 
@@ -39,5 +44,23 @@ public class ScheduleResponseTest {
         } catch (Exception ex) {
             fail("Exception " + ex.getMessage());
         }
+    }
+
+    @Test
+    public void testErrorAPIScheduleResponse() throws IOException {
+        String jsonResponse = "{\n" +
+                "    \"ok\": false,\n" +
+                "    \"operation_id\":\"47ecebe0-27c4-11e4-ad5c-001b21c78f20\",\n"  +
+                "    \"error\": \"error\",\n" +
+                "    \"details\": {\n" +
+                "        \"error\": \"error\"\n" +
+                "    }\n" +
+                "}";
+
+        ObjectMapper mapper = ScheduleObjectMapper.getInstance();
+        ScheduleResponse response = mapper.readValue(jsonResponse, ScheduleResponse.class);
+        assertEquals("error", response.getError().get());
+        assertEquals("error", response.getErrorDetails().get().getError().get());
+        assertEquals(false, response.getOk());
     }
 }

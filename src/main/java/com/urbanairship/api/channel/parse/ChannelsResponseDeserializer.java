@@ -46,6 +46,18 @@ public final class ChannelsResponseDeserializer extends JsonDeserializer<Channel
                                     reader.readChannelObjects(jsonParser);
                                 }
                             })
+                            .put("error", new FieldParser<ChannelsResponseReader>() {
+                                @Override
+                                public void parse(ChannelsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                    reader.readError(jsonParser);
+                                }
+                            })
+                            .put("details", new FieldParser<ChannelsResponseReader>() {
+                                @Override
+                                public void parse(ChannelsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                    reader.readErrorDetails(jsonParser);
+                                }
+                            })
                             .build()
             );
 

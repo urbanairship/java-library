@@ -40,6 +40,33 @@ public final class PushListingResponseDeserializer extends JsonDeserializer<Push
                                     reader.readPushInfoObjects(jsonParser);
                                 }
                             })
+                            .put("ok", new FieldParser<PushListingResponseReader>() {
+                                @Override
+                                public void parse(PushListingResponseReader reader,
+                                                  JsonParser jsonParser,
+                                                  DeserializationContext deserializationContext) throws IOException
+                                {
+                                    reader.readOk(jsonParser);
+                                }
+                            })
+                            .put("error", new FieldParser<PushListingResponseReader>() {
+                                @Override
+                                public void parse(PushListingResponseReader reader,
+                                                  JsonParser jsonParser,
+                                                  DeserializationContext deserializationContext) throws IOException
+                                {
+                                    reader.readError(jsonParser);
+                                }
+                            })
+                            .put("details", new FieldParser<PushListingResponseReader>() {
+                                @Override
+                                public void parse(PushListingResponseReader reader,
+                                                  JsonParser jsonParser,
+                                                  DeserializationContext deserializationContext) throws IOException
+                                {
+                                    reader.readErrorDetails(jsonParser);
+                                }
+                            })
                             .build()
             );
 
