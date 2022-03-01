@@ -70,6 +70,30 @@ public final class PushInfoResponseDeserializer extends JsonDeserializer<PushInf
                                     reader.readGroupID(jsonParser);
                                 }
                             })
+                            .put("ok", new FieldParser<PushInfoResponseReader>() {
+                                @Override
+                                public void parse(PushInfoResponseReader reader,
+                                                  JsonParser jsonParser,
+                                                  DeserializationContext deserializationContext) throws IOException {
+                                    reader.readOk(jsonParser);
+                                }
+                            })
+                            .put("error", new FieldParser<PushInfoResponseReader>() {
+                                @Override
+                                public void parse(PushInfoResponseReader reader,
+                                                  JsonParser jsonParser,
+                                                  DeserializationContext deserializationContext) throws IOException {
+                                    reader.readError(jsonParser);
+                                }
+                            })
+                            .put("details", new FieldParser<PushInfoResponseReader>() {
+                                @Override
+                                public void parse(PushInfoResponseReader reader,
+                                                  JsonParser jsonParser,
+                                                  DeserializationContext deserializationContext) throws IOException {
+                                    reader.readErrorDetails(jsonParser);
+                                }
+                            })
                             .build()
             );
 

@@ -28,6 +28,12 @@ public class SubscriptionListResponseDeserializer extends JsonDeserializer<Subsc
                     reader.readError(jsonParser);
                 }
             })
+            .put("details", new FieldParser<SubscriptionListResponseReader>() {
+                @Override
+                public void parse(SubscriptionListResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                    reader.readErrorDetails(jsonParser);
+                }
+            })
             .build()
     );
 

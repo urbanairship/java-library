@@ -5,7 +5,11 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.UUID;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.urbanairship.api.reports.parse.ReportsObjectMapper;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -65,5 +69,22 @@ public class PushInfoResponseTest {
         assertEquals(dt, obj.getPushTime());
         assertFalse(obj.getGroupID().isPresent());
 
+    }
+
+    @Test
+    public void testErrorAPIPushInfoResponse() throws IOException {
+        String jsonResponse = "{\n" +
+                "    \"ok\": false,\n" +
+                "    \"error\": \"error\",\n" +
+                "    \"details\": {\n" +
+                "        \"error\": \"error\"\n" +
+                "    }\n" +
+                "}";
+
+        ObjectMapper mapper = ReportsObjectMapper.getInstance();
+        PushInfoResponse response = mapper.readValue(jsonResponse, PushInfoResponse.class);
+        assertEquals("error", response.getError().get());
+        assertEquals("error", response.getErrorDetails().get().getError().get());
+        assertEquals(false, response.getOk());
     }
 }

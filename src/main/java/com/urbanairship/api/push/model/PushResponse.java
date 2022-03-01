@@ -8,6 +8,7 @@ package com.urbanairship.api.push.model;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.urbanairship.api.common.model.ErrorDetails;
 
 /**
  * Represents a response from the Urban Airship API for Push Notifications.
@@ -19,13 +20,18 @@ public final class PushResponse {
     private final boolean ok;
     private final Optional<ImmutableList<String>> messageIds;
     private final Optional<ImmutableList<String>> contentUrls;
+    private final Optional<String> error;
+    private final Optional<ErrorDetails> errorDetails;
 
-    public PushResponse(String operationId, ImmutableList<String> pushIds, boolean ok, ImmutableList<String> messageIds, ImmutableList<String> contentUrls) {
+    public PushResponse(String operationId, ImmutableList<String> pushIds, boolean ok, ImmutableList<String> messageIds, ImmutableList<String> contentUrls, String error, ErrorDetails errorDetails) {
         this.operationId = Optional.fromNullable(operationId);
         this.pushIds = Optional.fromNullable(pushIds);
         this.ok = ok;
         this.messageIds = Optional.fromNullable(messageIds);
         this.contentUrls = Optional.fromNullable(contentUrls);
+        this.error = Optional.fromNullable(error);
+        this.errorDetails = Optional.fromNullable(errorDetails);
+    
     }
 
     public static Builder newBuilder() {
@@ -70,6 +76,24 @@ public final class PushResponse {
         return contentUrls;
     }
 
+    /**
+     * Get the error if present
+     *
+     * @return An Optional String
+     */
+    public Optional<String> getError() {
+        return error;
+    }
+
+    /**
+     * Get the error details if present
+     *
+     * @return An Optional String
+     */
+    public Optional<ErrorDetails> getErrorDetails() {
+        return errorDetails;
+    }
+
     @Override
     public String toString() {
         return "PushResponse{" +
@@ -78,12 +102,14 @@ public final class PushResponse {
                 ", ok=" + ok +
                 ", messagesIds=" + messageIds +
                 ", contentUrls=" + contentUrls +
+                ", error=" + error +
+                ", errorDetails=" + errorDetails +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(operationId, pushIds, ok, messageIds, contentUrls);
+        return Objects.hashCode(operationId, pushIds, ok, messageIds, contentUrls, error, errorDetails);
     }
 
     @Override
@@ -95,7 +121,7 @@ public final class PushResponse {
             return false;
         }
         final PushResponse other = (PushResponse) obj;
-        return Objects.equal(this.operationId, other.operationId) && Objects.equal(this.pushIds, other.pushIds) && Objects.equal(this.ok, other.ok) && Objects.equal(this.messageIds, other.messageIds) && Objects.equal(this.contentUrls, other.contentUrls);
+        return Objects.equal(this.operationId, other.operationId) && Objects.equal(this.pushIds, other.pushIds) && Objects.equal(this.ok, other.ok) && Objects.equal(this.messageIds, other.messageIds) && Objects.equal(this.contentUrls, other.contentUrls) && Objects.equal(this.error, other.error) && Objects.equal(this.errorDetails, other.errorDetails);
     }
 
     /**
@@ -107,6 +133,8 @@ public final class PushResponse {
         private boolean ok = false;
         private ImmutableList.Builder<String> messageIds = ImmutableList.builder();
         private ImmutableList.Builder<String> contentUrls = ImmutableList.builder();
+        private String error;
+        private ErrorDetails errorDetails;
 
         private Builder() {
         }
@@ -151,8 +179,18 @@ public final class PushResponse {
             return this;
         }
 
+        public Builder setError(String error) {
+            this.error = error;
+            return this;
+        }
+    
+        public Builder setErrorDetails(ErrorDetails errorDetails) {
+            this.errorDetails = errorDetails;
+            return this;
+        }
+
         public PushResponse build() {
-            return new PushResponse(operationId, pushIds.build(), ok, messageIds.build(), contentUrls.build());
+            return new PushResponse(operationId, pushIds.build(), ok, messageIds.build(), contentUrls.build(), error, errorDetails);
 
         }
     }

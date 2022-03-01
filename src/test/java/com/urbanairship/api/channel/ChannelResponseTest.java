@@ -373,8 +373,24 @@ public class ChannelResponseTest {
     }
 
     @Test
-    public void testEmailChannelLookup() throws IOException {
+    public void testErrorChannelLookup() throws IOException {
+        String jsonResponse = "{\n" +
+                "    \"ok\": false,\n" +
+                "    \"error\": \"error\",\n" +
+                "    \"details\": {\n" +
+                "        \"error\": \"error\"\n" +
+                "    }\n" +
+                "}";
 
+        ChannelResponse response = MAPPER.readValue(jsonResponse, ChannelResponse.class);
+
+        assertEquals("error", response.getError().get());
+        assertEquals("error", response.getErrorDetails().get().getError().get());
+        assertEquals(false, response.getOk());
+    }
+  
+    @Test
+    public void testEmailChannelLookup() throws IOException {
         ChannelView channelView = ChannelView.newBuilder()
             .setChannelId("f0840bf7-1bf2-4546-9b13-1e48e1f20298")
             .setChannelType("email")
@@ -418,10 +434,8 @@ public class ChannelResponseTest {
                 "}";
 
         ChannelResponse response = MAPPER.readValue(jsonResponse, ChannelResponse.class);
-
         ChannelView emailChannel = response.getChannelView().get();
         assertNotNull(emailChannel);
         assertEquals(response, channelResponse);
-
     }
 }

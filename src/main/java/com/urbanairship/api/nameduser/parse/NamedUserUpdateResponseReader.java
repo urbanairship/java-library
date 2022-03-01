@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.urbanairship.api.common.model.ErrorDetails;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.nameduser.model.NamedUserUpdateResponse;
@@ -31,6 +32,10 @@ public class NamedUserUpdateResponseReader implements JsonObjectReader<NamedUser
 
     public void readTagWarnings(JsonParser parser) throws IOException {
         builder.setTagWarnings(Optional.fromNullable(parser.readValueAs(new TypeReference<ImmutableList<String>>() {})));
+    }
+
+    public void readErrorDetails(JsonParser parser) throws IOException {
+        builder.setErrorDetails(Optional.fromNullable(parser.readValueAs(ErrorDetails.class)));
     }
 
     @Override

@@ -7,6 +7,7 @@ package com.urbanairship.api.reports.model;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.urbanairship.api.common.model.ErrorDetails;
 
 /**
  * Push listing response object
@@ -15,16 +16,25 @@ public class PushListingResponse {
 
     private final Optional<String> nextPage;
     private final Optional<ImmutableList<PushInfoResponse>> pushInfoObjects;
+    private final Optional<Boolean> ok;
+    private final Optional<String> error;
+    private final Optional<ErrorDetails> errorDetails;
 
     private PushListingResponse() {
-        this(null, null);
+        this(null, null, null, null ,null);
     }
 
     private PushListingResponse(
             String nextPage,
-            Optional<ImmutableList<PushInfoResponse>> pushInfoObjects) {
+            Optional<ImmutableList<PushInfoResponse>> pushInfoObjects,
+            Boolean ok,
+            String error,
+            ErrorDetails errorDetails) {
         this.nextPage = Optional.fromNullable(nextPage);
         this.pushInfoObjects = pushInfoObjects;
+        this.ok = Optional.fromNullable(ok);
+        this.error = Optional.fromNullable(error);
+        this.errorDetails = Optional.fromNullable(errorDetails);
     }
 
     public static Builder newBuilder() {
@@ -50,17 +60,47 @@ public class PushListingResponse {
         return pushInfoObjects;
     }
 
+    /**
+     * Get the OK status as a boolean
+     *
+     * @return boolean
+     */
+    public Optional<Boolean> getOk() {
+        return ok;
+    }
+
+    /**
+     * Get the error if present
+     *
+     * @return An Optional String
+     */
+    public Optional<String> getError() {
+        return error;
+    }
+
+    /**
+     * Get the error details if present
+     *
+     * @return An Optional String
+     */
+    public Optional<ErrorDetails> getErrorDetails() {
+        return errorDetails;
+    }
+
     @Override
     public String toString() {
         return "PushInfoResponse{" +
                 "nextPage='" + nextPage + '\'' +
-                ", pushInfoObjects =" + pushInfoObjects +
+                ", pushInfoObjects=" + pushInfoObjects +
+                ", ok=" + ok +
+                ", error=" + error +
+                ", errorDetails=" + errorDetails +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(nextPage, pushInfoObjects);
+        return Objects.hashCode(nextPage, pushInfoObjects, ok, error, errorDetails);
     }
 
     @Override
@@ -73,12 +113,18 @@ public class PushListingResponse {
         }
         final PushListingResponse other = (PushListingResponse) obj;
         return Objects.equal(this.nextPage, other.nextPage) &&
-                Objects.equal(this.pushInfoObjects, other.pushInfoObjects);
+                Objects.equal(this.pushInfoObjects, other.pushInfoObjects) &&
+                Objects.equal(ok, other.ok) &&
+                Objects.equal(error, other.error) &&
+                Objects.equal(errorDetails, other.errorDetails);
     }
 
     public static class Builder {
         private String nextPage = null;
         private ImmutableList.Builder<PushInfoResponse> pushInfoObjects = ImmutableList.builder();
+        private boolean ok = true;
+        private String error;
+        private ErrorDetails errorDetails;
 
         private Builder() {
         }
@@ -117,12 +163,45 @@ public class PushListingResponse {
         }
 
         /**
+         * Set the ok status
+         *
+         * @param value boolean
+         * @return Builder
+         */
+        public Builder setOk(boolean value) {
+            this.ok = value;
+            return this;
+        }
+
+        /**
+         * Set the error
+         *
+         * @param error String
+         * @return Builder
+         */
+        public Builder setError(String error) {
+            this.error = error;
+            return this;
+        }
+
+        /**
+         * Set the errorDetails
+         *
+         * @param errorDetails String
+         * @return Builder
+         */
+        public Builder setErrorDetails(ErrorDetails errorDetails) {
+            this.errorDetails = errorDetails;
+            return this;
+        }
+
+        /**
          * Build the PushListingResponse object
          *
          * @return PushListingResponse
          */
         public PushListingResponse build() {
-            return new PushListingResponse(nextPage, Optional.fromNullable(pushInfoObjects.build()));
+            return new PushListingResponse(nextPage, Optional.fromNullable(pushInfoObjects.build()), ok, error, errorDetails);
         }
     }
 }

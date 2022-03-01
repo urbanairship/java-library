@@ -36,10 +36,16 @@ public class SmsRegistrationResponseDeserializer extends JsonDeserializer<SmsReg
                             reader.readStatus(parser);
                         }
                     })
-                    .put("errors", new FieldParser<SmsRegistrationResponseReader>() {
+                    .put("error", new FieldParser<SmsRegistrationResponseReader>() {
                         @Override
                         public void parse(SmsRegistrationResponseReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                            reader.readErrors(parser);
+                            reader.readError(parser);
+                        }
+                    })
+                    .put("details", new FieldParser<SmsRegistrationResponseReader>() {
+                        @Override
+                        public void parse(SmsRegistrationResponseReader reader, JsonParser parser, DeserializationContext context) throws IOException {
+                            reader.readErrorDetails(parser);
                         }
                     })
                     .build()

@@ -28,6 +28,18 @@ public class CustomEventResponseDeserializer extends JsonDeserializer<CustomEven
                     reader.readOperationId(jsonParser);
                 }
             })
+            .put("error", new FieldParser<CustomEventResponseReader>() {
+                @Override
+                public void parse(CustomEventResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                    reader.readError(jsonParser);
+                }
+            })
+            .put("details", new FieldParser<CustomEventResponseReader>() {
+                @Override
+                public void parse(CustomEventResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                    reader.readErrorDetails(jsonParser);
+                }
+            })
             .build()
     );
 

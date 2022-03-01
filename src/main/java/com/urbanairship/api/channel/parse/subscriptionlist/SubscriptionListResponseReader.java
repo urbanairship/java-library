@@ -2,6 +2,7 @@ package com.urbanairship.api.channel.parse.subscriptionlist;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.urbanairship.api.channel.model.subscriptionlist.SubscriptionListResponse;
+import com.urbanairship.api.common.model.ErrorDetails;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 
@@ -20,6 +21,10 @@ public class SubscriptionListResponseReader implements JsonObjectReader<Subscrip
 
     public void readError(JsonParser parser) throws IOException {
         builder.setError(parser.readValueAs(String.class));
+    }
+
+    public void readErrorDetails(JsonParser parser) throws IOException {
+        builder.setErrorDetails(parser.readValueAs(ErrorDetails.class));
     }
 
     @Override

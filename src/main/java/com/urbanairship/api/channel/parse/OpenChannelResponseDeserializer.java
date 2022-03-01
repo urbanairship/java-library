@@ -29,6 +29,18 @@ public class OpenChannelResponseDeserializer extends JsonDeserializer<OpenChanne
                     reader.readChannelId(parser);
                 }
             })
+            .put("error", new FieldParser<OpenChannelResponseReader>() {
+                @Override
+                public void parse(OpenChannelResponseReader reader, JsonParser parser, DeserializationContext context) throws IOException {
+                    reader.readError(parser);
+                }
+            })
+            .put("details", new FieldParser<OpenChannelResponseReader>() {
+                @Override
+                public void parse(OpenChannelResponseReader reader, JsonParser parser, DeserializationContext context) throws IOException {
+                    reader.readErrorDetails(parser);
+                }
+            })
             .build()
     );
 

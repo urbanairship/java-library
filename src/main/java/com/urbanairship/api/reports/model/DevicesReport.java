@@ -1,8 +1,9 @@
 package com.urbanairship.api.reports.model;
 
 import com.google.common.collect.ImmutableList;
-import java.util.Optional;
+import com.urbanairship.api.common.model.ErrorDetails;
 
+import java.util.Optional;
 import java.util.Objects;
 
 public class DevicesReport {
@@ -10,12 +11,18 @@ public class DevicesReport {
     private final Optional<String> dateComputed;
     private final Optional<Integer> totalUniqueDevices;
     private final Optional<ImmutableList<DevicesReportResponse>> counts;
+    private final boolean ok;
+    private final Optional<String> error;
+    private final Optional<ErrorDetails> errorDetails;
 
     private DevicesReport(Builder builder) {
         this.dateClosed = Optional.ofNullable(builder.dateClosed);
         this.dateComputed = Optional.ofNullable(builder.dateComputed);
         this.totalUniqueDevices = Optional.ofNullable(builder.totalUniqueDevices);
         this.counts = Optional.ofNullable(builder.counts.build());
+        this.ok = builder.ok;
+        this.error = Optional.ofNullable(builder.error);
+        this.errorDetails = Optional.ofNullable(builder.errorDetails);
     }
 
     public static Builder newBuilder() { return new Builder(); }
@@ -56,6 +63,33 @@ public class DevicesReport {
         return counts;
     }
 
+    /**
+     * Get the OK status as a boolean
+     *
+     * @return boolean
+     */
+    public boolean getOk() {
+        return ok;
+    }
+
+    /**
+     * Get the error if present
+     *
+     * @return An Optional String
+     */
+    public Optional<String> getError() {
+        return error;
+    }
+
+    /**
+     * Get the error details if present
+     *
+     * @return An Optional String
+     */
+    public Optional<ErrorDetails> getErrorDetails() {
+        return errorDetails;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -64,12 +98,15 @@ public class DevicesReport {
         return Objects.equals(dateClosed, that.dateClosed) &&
                 Objects.equals(dateComputed, that.dateComputed) &&
                 Objects.equals(totalUniqueDevices, that.totalUniqueDevices) &&
-                Objects.equals(getCounts(), that.getCounts());
+                Objects.equals(getCounts(), that.getCounts()) &&
+                Objects.equals(ok, that.ok) &&
+                Objects.equals(error, that.error) &&
+                Objects.equals(errorDetails, that.errorDetails);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dateClosed, dateComputed, totalUniqueDevices, getCounts());
+        return Objects.hash(dateClosed, dateComputed, totalUniqueDevices, getCounts(), ok, error, errorDetails);
     }
 
     @Override
@@ -79,6 +116,9 @@ public class DevicesReport {
                 ", dateComputed=" + dateComputed +
                 ", totalUniqueDevices=" + totalUniqueDevices +
                 ", counts=" + counts +
+                ", ok=" + ok +
+                ", error=" + error +
+                ", errorDetails=" + errorDetails +
                 '}';
     }
 
@@ -87,7 +127,10 @@ public class DevicesReport {
         private String dateComputed;
         private Integer totalUniqueDevices;
         private ImmutableList.Builder<DevicesReportResponse> counts = ImmutableList.builder();
-
+        private boolean ok;
+        private String error;
+        private ErrorDetails errorDetails;
+        
         private Builder() {}
 
         /**
@@ -131,6 +174,39 @@ public class DevicesReport {
          */
         public Builder addDevicesReportResponseObject(DevicesReportResponse object) {
             this.counts.add(object);
+            return this;
+        }
+
+        /**
+         * Set the ok status
+         *
+         * @param value boolean
+         * @return Builder
+         */
+        public Builder setOk(boolean value) {
+            this.ok = value;
+            return this;
+        }
+
+        /**
+         * Set the error
+         *
+         * @param error String
+         * @return Builder
+         */
+        public Builder setError(String error) {
+            this.error = error;
+            return this;
+        }
+
+        /**
+         * Set the errorDetails
+         *
+         * @param errorDetails String
+         * @return Builder
+         */
+        public Builder setErrorDetails(ErrorDetails errorDetails) {
+            this.errorDetails = errorDetails;
             return this;
         }
 

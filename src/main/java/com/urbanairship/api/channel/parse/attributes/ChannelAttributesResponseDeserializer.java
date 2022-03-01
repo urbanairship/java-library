@@ -28,6 +28,18 @@ public class ChannelAttributesResponseDeserializer extends JsonDeserializer<Chan
                     reader.readWarning(jsonParser);
                 }
             })
+            .put("error", new FieldParser<ChannelAttributesResponseReader>() {
+                @Override
+                public void parse(ChannelAttributesResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                    reader.readError(jsonParser);
+                }
+            })
+            .put("details", new FieldParser<ChannelAttributesResponseReader>() {
+                @Override
+                public void parse(ChannelAttributesResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                    reader.readErrorDetails(jsonParser);
+                }
+            })
             .build()
     );
 

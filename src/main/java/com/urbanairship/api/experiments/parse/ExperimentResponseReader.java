@@ -5,6 +5,7 @@
 package com.urbanairship.api.experiments.parse;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.urbanairship.api.common.model.ErrorDetails;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.experiments.model.ExperimentResponse;
@@ -33,6 +34,14 @@ public class ExperimentResponseReader implements JsonObjectReader<ExperimentResp
 
     public void readExperimentId(JsonParser jsonParser) throws IOException {
         builder.setExperimentId(jsonParser.readValueAs(String.class));
+    }
+
+    public void readError(JsonParser jsonParser) throws IOException {
+        builder.setError(jsonParser.readValueAs(String.class));
+    }
+
+    public void readErrorDetails(JsonParser jsonParser) throws IOException {
+        builder.setErrorDetails(jsonParser.readValueAs(ErrorDetails.class));
     }
 
     @Override

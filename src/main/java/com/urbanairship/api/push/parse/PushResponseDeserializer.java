@@ -59,6 +59,18 @@ public final class PushResponseDeserializer extends JsonDeserializer<PushRespons
                                     reader.readContentUrls(jsonParser);
                                 }
                             })
+                            .put("error", new FieldParser<PushResponseReader>() {
+                                @Override
+                                public void parse(PushResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                    reader.readError(jsonParser);
+                                }
+                            })
+                            .put("details", new FieldParser<PushResponseReader>() {
+                                @Override
+                                public void parse(PushResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                    reader.readErrorDetails(jsonParser);
+                                }
+                            })
                             .build()
             );
 

@@ -7,6 +7,7 @@ package com.urbanairship.api.templates.model;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.urbanairship.api.common.model.ErrorDetails;
 
 import java.util.List;
 
@@ -22,6 +23,8 @@ public class TemplateListingResponse {
     private final Optional<Integer> totalCount;
     private final Optional<String> nextPage;
     private final Optional<String> prevPage;
+    private final Optional<String> error;
+    private final Optional<ErrorDetails> errorDetails;
 
     private TemplateListingResponse(Builder builder) {
         this.ok = builder.ok;
@@ -31,6 +34,8 @@ public class TemplateListingResponse {
         this.totalCount = Optional.fromNullable(builder.totalCount);
         this.nextPage = Optional.fromNullable(builder.nextPage);
         this.prevPage = Optional.fromNullable(builder.prevPage);
+        this.error = Optional.fromNullable(builder.error);
+        this.errorDetails = Optional.fromNullable(builder.errorDetails);
     }
 
     /**
@@ -105,6 +110,24 @@ public class TemplateListingResponse {
         return prevPage;
     }
 
+    /**
+     * Get the error if present
+     *
+     * @return An Optional String
+     */
+    public Optional<String> getError() {
+        return error;
+    }
+
+    /**
+     * Get the error details if present
+     *
+     * @return An Optional String
+     */
+    public Optional<ErrorDetails> getErrorDetails() {
+        return errorDetails;
+    }
+
     @Override
     public String toString() {
         return "TemplateListingResponse{" +
@@ -115,6 +138,8 @@ public class TemplateListingResponse {
                 ", totalCount=" + totalCount +
                 ", nextPage=" + nextPage +
                 ", prevPage=" + prevPage +
+                ", error=" + error +
+                ", errorDetails=" + errorDetails +
                 '}';
     }
 
@@ -132,6 +157,8 @@ public class TemplateListingResponse {
         if (!template.equals(that.template)) return false;
         if (!templates.equals(that.templates)) return false;
         if (!totalCount.equals(that.totalCount)) return false;
+        if (!error.equals(that.error)) return false;
+        if (!errorDetails.equals(that.errorDetails)) return false;
 
         return true;
     }
@@ -145,6 +172,8 @@ public class TemplateListingResponse {
         result = 31 * result + totalCount.hashCode();
         result = 31 * result + nextPage.hashCode();
         result = 31 * result + prevPage.hashCode();
+        result = 31 * result + error.hashCode();
+        result = 31 * result + errorDetails.hashCode();
         return result;
     }
 
@@ -156,6 +185,8 @@ public class TemplateListingResponse {
         private Integer totalCount = null;
         private String nextPage = null;
         private String prevPage = null;
+        private String error = null;
+        private ErrorDetails errorDetails = null;
 
         /**
          * Set the ok status.
@@ -231,6 +262,28 @@ public class TemplateListingResponse {
          */
         public Builder setPrevPage(String prevPage) {
             this.prevPage = prevPage;
+            return this;
+        }
+
+        /**
+         * Set the error
+         *
+         * @param error String
+         * @return Builder
+         */
+        public Builder setError(String error) {
+            this.error = error;
+            return this;
+        }
+
+        /**
+         * Set the errorDetails
+         *
+         * @param errorDetails String
+         * @return Builder
+         */
+        public Builder setErrorDetails(ErrorDetails errorDetails) {
+            this.errorDetails = errorDetails;
             return this;
         }
 

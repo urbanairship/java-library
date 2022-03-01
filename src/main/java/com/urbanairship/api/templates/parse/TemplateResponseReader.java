@@ -6,6 +6,7 @@ package com.urbanairship.api.templates.parse;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.urbanairship.api.common.model.ErrorDetails;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.templates.model.TemplateResponse;
@@ -35,6 +36,14 @@ public class TemplateResponseReader implements JsonObjectReader<TemplateResponse
     public void addAllPushIds(JsonParser jsonParser) throws IOException {
         builder.addAllPushIds((List<String>)jsonParser.readValueAs(new TypeReference<List<String>>() {
         }));
+    }
+
+    public void readError(JsonParser jsonParser) throws IOException {
+        builder.setError(jsonParser.readValueAs(String.class));
+    }
+
+    public void readErrorDetails(JsonParser jsonParser) throws IOException {
+        builder.setErrorDetails(jsonParser.readValueAs(ErrorDetails.class));
     }
 
     @Override

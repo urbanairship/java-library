@@ -29,6 +29,24 @@ public class ResponseReportDeserializer extends JsonDeserializer<ResponseReport>
                            reader.readResponseObjects(jsonParser);
                         }
                     })
+                    .put("ok", new FieldParser<ResponseReportReader>() {
+                        @Override
+                        public void parse(ResponseReportReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                           reader.readOk(jsonParser);
+                        }
+                    })
+                    .put("error", new FieldParser<ResponseReportReader>() {
+                        @Override
+                        public void parse(ResponseReportReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                           reader.readError(jsonParser);
+                        }
+                    })
+                    .put("details", new FieldParser<ResponseReportReader>() {
+                        @Override
+                        public void parse(ResponseReportReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                           reader.readErrorDetails(jsonParser);
+                        }
+                    })
                     .build()
             );
 

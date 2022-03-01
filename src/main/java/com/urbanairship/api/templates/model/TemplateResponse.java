@@ -6,6 +6,7 @@ package com.urbanairship.api.templates.model;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.urbanairship.api.common.model.ErrorDetails;
 
 import java.util.List;
 
@@ -18,11 +19,15 @@ public class TemplateResponse {
     private final Optional<String> operationId;
     private final Optional<String> templateId;
     private final Optional<ImmutableList<String>> pushIds;
+    private final Optional<String> error;
+    private final Optional<ErrorDetails> errorDetails;
 
     private TemplateResponse(Builder builder) {
         this.ok = builder.ok;
         this.operationId = Optional.fromNullable(builder.operationId);
         this.templateId = Optional.fromNullable(builder.templateId);
+        this.error = Optional.fromNullable(builder.error);
+        this.errorDetails = Optional.fromNullable(builder.errorDetails);
         if (builder.pushIds.build().isEmpty()) {
             this.pushIds = Optional.absent();
         } else {
@@ -75,6 +80,24 @@ public class TemplateResponse {
         return pushIds;
     }
 
+    /**
+     * Get the error if present
+     *
+     * @return An Optional String
+     */
+    public Optional<String> getError() {
+        return error;
+    }
+
+    /**
+     * Get the error details if present
+     *
+     * @return An Optional String
+     */
+    public Optional<ErrorDetails> getErrorDetails() {
+        return errorDetails;
+    }
+
     @Override
     public String toString() {
         return "TemplateResponse{" +
@@ -82,6 +105,8 @@ public class TemplateResponse {
                 ", operationId=" + operationId +
                 ", templateId=" + templateId +
                 ", pushIds=" + pushIds +
+                ", error=" + error +
+                ", errorDetails=" + errorDetails +
                 '}';
     }
 
@@ -96,6 +121,8 @@ public class TemplateResponse {
         if (!operationId.equals(that.operationId)) return false;
         if (!pushIds.equals(that.pushIds)) return false;
         if (!templateId.equals(that.templateId)) return false;
+        if (!error.equals(that.error)) return false;
+        if (!errorDetails.equals(that.errorDetails)) return false;
 
         return true;
     }
@@ -106,6 +133,8 @@ public class TemplateResponse {
         result = 31 * result + operationId.hashCode();
         result = 31 * result + templateId.hashCode();
         result = 31 * result + pushIds.hashCode();
+        result = 31 * result + error.hashCode();
+        result = 31 * result + errorDetails.hashCode();
         return result;
     }
 
@@ -115,6 +144,8 @@ public class TemplateResponse {
         private String operationId = null;
         private String templateId = null;
         private ImmutableList.Builder<String> pushIds = ImmutableList.builder();
+        private String error = null;
+        private ErrorDetails errorDetails = null;
 
         /**
          * Set the ok status.
@@ -168,6 +199,28 @@ public class TemplateResponse {
          */
         public Builder addAllPushIds(List<String> pushIds) {
             this.pushIds.addAll(pushIds);
+            return this;
+        }
+
+        /**
+         * Set the error
+         *
+         * @param error String
+         * @return Builder
+         */
+        public Builder setError(String error) {
+            this.error = error;
+            return this;
+        }
+
+        /**
+         * Set the errorDetails
+         *
+         * @param errorDetails String
+         * @return Builder
+         */
+        public Builder setErrorDetails(ErrorDetails errorDetails) {
+            this.errorDetails = errorDetails;
             return this;
         }
 

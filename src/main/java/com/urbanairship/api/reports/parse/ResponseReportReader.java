@@ -5,6 +5,7 @@ import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.reports.model.ResponseReport;
 import com.urbanairship.api.reports.model.ResponseReportResponse;
 import com.fasterxml.jackson.core.JsonParser;
+import com.urbanairship.api.common.model.ErrorDetails;
 import com.urbanairship.api.common.parse.APIParsingException;
 
 import java.io.IOException;
@@ -21,6 +22,18 @@ public class ResponseReportReader implements JsonObjectReader<ResponseReport> {
 
     public void readResponseObjects(JsonParser jsonParser) throws IOException {
         builder.addResponseObject((List<ResponseReportResponse>) jsonParser.readValueAs(new TypeReference<List<ResponseReportResponse>>() {}));
+    }
+
+    public void readOk(JsonParser jsonParser) throws IOException {
+        builder.setOk(jsonParser.readValueAs(Boolean.class));
+    }
+
+    public void readError(JsonParser jsonParser) throws IOException {
+        builder.setError(jsonParser.readValueAs(String.class));
+    }
+
+    public void readErrorDetails(JsonParser jsonParser) throws IOException {
+        builder.setErrorDetails(jsonParser.readValueAs(ErrorDetails.class));
     }
 
     @Override

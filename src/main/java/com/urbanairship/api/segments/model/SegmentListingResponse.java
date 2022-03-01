@@ -3,14 +3,21 @@ package com.urbanairship.api.segments.model;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.urbanairship.api.common.model.ErrorDetails;
 
 public class SegmentListingResponse {
     private final Optional<String> nextPage;
     private final ImmutableList<SegmentListingView> segmentListingViews;
+    private final Optional<Boolean> ok;
+    private final Optional<String> error;
+    private final Optional<ErrorDetails> errorDetails;
 
-    private SegmentListingResponse(String nextPage, ImmutableList<SegmentListingView> segmentListingViews) {
+    private SegmentListingResponse(String nextPage, ImmutableList<SegmentListingView> segmentListingViews, Boolean ok, String error, ErrorDetails errorDetails) {
         this.nextPage = Optional.fromNullable(nextPage);
         this.segmentListingViews = segmentListingViews;
+        this.ok = Optional.fromNullable(ok);
+        this.error = Optional.fromNullable(error);
+        this.errorDetails = Optional.fromNullable(errorDetails);
     }
 
     /**
@@ -41,17 +48,47 @@ public class SegmentListingResponse {
         return segmentListingViews;
     }
 
+    /**
+     * Get the OK status as a boolean
+     *
+     * @return boolean
+     */
+    public Optional<Boolean> getOk() {
+        return ok;
+    }
+
+    /**
+     * Get the error if present
+     *
+     * @return An Optional String
+     */
+    public Optional<String> getError() {
+        return error;
+    }
+
+    /**
+     * Get the error details if present
+     *
+     * @return An Optional String
+     */
+    public Optional<ErrorDetails> getErrorDetails() {
+        return errorDetails;
+    }
+
     @Override
     public String toString() {
         return "SegmentListingResponse{" +
                 "nextPage=" + nextPage +
                 ", segments=" + segmentListingViews +
+                ", ok=" + ok +
+                ", error=" + error +
+                ", errorDetails=" + errorDetails +
                 "}";
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(nextPage, segmentListingViews);
+        return Objects.hashCode(nextPage, segmentListingViews, ok, error, errorDetails);
     }
 
     @Override
@@ -65,12 +102,18 @@ public class SegmentListingResponse {
         final SegmentListingResponse other = (SegmentListingResponse) obj;
 
         return Objects.equal(this.nextPage, other.nextPage) &&
-                Objects.equal(this.segmentListingViews, other.segmentListingViews);
+                Objects.equal(this.segmentListingViews, other.segmentListingViews) &&
+                Objects.equal(ok, other.ok) &&
+                Objects.equal(error, other.error) &&
+                Objects.equal(errorDetails, other.errorDetails);
     }
 
     public final static class Builder {
         private String nextPage = null;
         private ImmutableList.Builder<SegmentListingView> segmentObjects = ImmutableList.builder();
+        private boolean ok = true;
+        private String error;
+        private ErrorDetails errorDetails;
 
         private Builder() {
         }
@@ -108,8 +151,41 @@ public class SegmentListingResponse {
             return this;
         }
 
+                /**
+         * Set the ok status
+         *
+         * @param value boolean
+         * @return Builder
+         */
+        public Builder setOk(boolean value) {
+            this.ok = value;
+            return this;
+        }
+
+        /**
+         * Set the error
+         *
+         * @param error String
+         * @return Builder
+         */
+        public Builder setError(String error) {
+            this.error = error;
+            return this;
+        }
+
+        /**
+         * Set the errorDetails
+         *
+         * @param errorDetails String
+         * @return Builder
+         */
+        public Builder setErrorDetails(ErrorDetails errorDetails) {
+            this.errorDetails = errorDetails;
+            return this;
+        }
+
         public SegmentListingResponse build() {
-            return new SegmentListingResponse(nextPage, segmentObjects.build());
+            return new SegmentListingResponse(nextPage, segmentObjects.build(), ok, error, errorDetails);
         }
     }
 }
