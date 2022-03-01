@@ -427,9 +427,7 @@ public class PushObjectMapper {
                 .addSerializer(VariableDetail.class, new VariableDetailSerializer())
                 .addSerializer(CreateAndSendAudience.class, new CreateAndSendAudienceSerializer())
                 .addSerializer(CreateAndSendEmailPayload.class, new CreateAndSendEmailPayloadSerializer())
-                .addSerializer(CreateAndSendSchedulePayload.class, new CreateAndSendSchedulePayloadSerializer());
-
-
+                .addSerializer(CreateAndSendSchedulePayload.class, new CreateAndSendSchedulePayloadSerializer())
                 .addDeserializer(ErrorDetails.class, new ErrorDetailsDeserializer());
 
         MAPPER.registerModule(MODULE);
