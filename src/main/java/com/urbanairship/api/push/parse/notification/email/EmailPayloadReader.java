@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.common.parse.StringFieldDeserializer;
+import com.urbanairship.api.createandsend.model.notification.email.EmailTemplate;
 import com.urbanairship.api.push.model.notification.email.EmailPayload;
 import com.urbanairship.api.push.model.notification.email.MessageType;
 
@@ -44,6 +45,10 @@ public class EmailPayloadReader implements JsonObjectReader<EmailPayload> {
 
     public void readReplyTo(JsonParser parser) throws IOException {
         builder.setReplyTo(StringFieldDeserializer.INSTANCE.deserialize(parser, "reply_to"));
+    }
+
+    public void readTemplate(JsonParser jsonParser) throws IOException {
+        builder.setTemplate(jsonParser.readValueAs(EmailTemplate.class));
     }
 
     @Override

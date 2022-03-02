@@ -1,10 +1,13 @@
 package com.urbanairship.api.createandsend.model.notification.email;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
+import java.util.Objects;
+
 
 /**
  * Represents the Email Template in the create and send notification.
@@ -12,15 +15,22 @@ import java.util.List;
 public class EmailTemplate {
     private final Optional<String> templateId;
     private final Optional<List<VariableDetail>> variableDetails;
-    private final Optional<EmailFields> fields;
+    private final Optional<EmailFields> emailFields;
 
-    private EmailTemplate(Builder builder) {
-        this.templateId = Optional.fromNullable(builder.templateId);
-        this.fields = Optional.fromNullable(builder.emailFields);
-        if (!builder.variableDetails.build().isEmpty()) {
-            variableDetails = Optional.fromNullable(builder.variableDetails.build());
+    private EmailTemplate(
+    @JsonProperty("template_id") String templateId,
+    @JsonProperty("variable_details") List<VariableDetail> variableDetails,
+    @JsonProperty("fields") EmailFields emailFields
+    ) {
+        this.templateId = Optional.fromNullable(templateId);
+        this.emailFields = Optional.fromNullable(emailFields);
+        if (variableDetails == null){
+            this.variableDetails = Optional.absent();
+        }
+        else if (!variableDetails.isEmpty()) {
+            this.variableDetails = Optional.fromNullable(variableDetails);
         } else {
-            variableDetails = Optional.absent();
+            this.variableDetails = Optional.absent();
         }
     }
 
@@ -49,7 +59,31 @@ public class EmailTemplate {
     }
 
     public Optional<EmailFields> getFields() {
-        return fields;
+        return emailFields;
+    }
+
+    @Override
+    public String toString() {
+        return "EmailTemplate{" +
+                "templateId=" + templateId+
+                ", fields=" + emailFields +
+                ", variableDetails=" + variableDetails +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof EmailTemplate)) return false;
+        EmailTemplate that = (EmailTemplate) o;
+        return Objects.equals(getTemplateId(), that.getTemplateId()) &&
+                Objects.equals(getFields(), that.getFields()) &&
+                Objects.equals(getVariableDetails(), that.getVariableDetails());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTemplateId(), getFields(), getVariableDetails());
     }
 
     public static class Builder {
@@ -90,7 +124,7 @@ public class EmailTemplate {
         public EmailTemplate build() {
             Preconditions.checkArgument(!(templateId != null && emailFields != null), "the template id or emailFields value must be set, not both.");
             Preconditions.checkArgument(!(templateId == null && emailFields == null), "The template id or email fields must be set.");
-            return new EmailTemplate(this);
+            return new EmailTemplate(templateId, variableDetails.build(), emailFields);
         }
     }
 }

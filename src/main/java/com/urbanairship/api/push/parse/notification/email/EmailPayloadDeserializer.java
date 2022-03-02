@@ -52,6 +52,11 @@ public class EmailPayloadDeserializer extends JsonDeserializer<EmailPayload> {
                             reader.readReplyTo(json);
                         }
                     })
+                    .put("template", new FieldParser<EmailPayloadReader>() {
+                        public void parse(EmailPayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
+                            reader.readTemplate(json);
+                        }
+                    })
                     .build()
     );
 

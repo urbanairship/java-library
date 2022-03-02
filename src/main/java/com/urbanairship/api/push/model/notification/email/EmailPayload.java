@@ -3,9 +3,11 @@ package com.urbanairship.api.push.model.notification.email;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.urbanairship.api.createandsend.model.notification.email.EmailTemplate;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
+
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Objects;
@@ -26,6 +28,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
     private final Optional<String> uaAddress;
     private final Optional<String> replyTo;
     private final Optional<ImmutableList<Attachment>> attachments;
+    private final Optional<EmailTemplate> emailTemplate;
 
     private EmailPayload(Builder builder) {
         this.alert = Optional.fromNullable(builder.alert);
@@ -37,6 +40,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
         this.senderAddress = Optional.fromNullable((builder.senderAddress));
         this.uaAddress = Optional.fromNullable((builder.uaAddress));
         this.replyTo = Optional.fromNullable((builder.replyTo));
+        this.emailTemplate = Optional.fromNullable(builder.emailTemplate);
         if (builder.attachments.build().isEmpty()) {
             this.attachments = Optional.absent();
         } else {
@@ -149,6 +153,10 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
         return attachments;
     }
 
+    public Optional<EmailTemplate> getTemplate() {
+        return emailTemplate;
+    }
+
 
     @Override
     public String toString() {
@@ -162,6 +170,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
                 ", uaAddress=" + uaAddress +
                 ", replyTo=" + replyTo +
                 ", attachments=" + attachments +
+                ", emailTemplate=" + emailTemplate +
                 '}';
     }
 
@@ -178,13 +187,14 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
                 Objects.equals(getSenderAddress(), that.getSenderAddress()) &&
                 Objects.equals(getUaAddress(), that.getUaAddress()) &&
                 Objects.equals(getReplyTo(), that.getReplyTo()) &&
-                Objects.equals(getAttachments(), that.getAttachments());
+                Objects.equals(getAttachments(), that.getAttachments()) &&
+                Objects.equals(getTemplate(), that.getTemplate());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getSubject(), getHtmlBody(), getPlaintextBody(), getMessageType(), getSenderName(),
-                getSenderAddress(), getUaAddress(), getReplyTo(), getAttachments());
+                getSenderAddress(), getUaAddress(), getReplyTo(), getAttachments(), getTemplate());
     }
 
     /**
@@ -202,7 +212,7 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
         private String replyTo = null;
         private DeviceType deviceType = null;
         private ImmutableList.Builder<Attachment> attachments = ImmutableList.builder();
-
+        private EmailTemplate emailTemplate = null;
         private Builder() {
         }
 
@@ -319,34 +329,42 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
             return this;
         }
 
+        public Builder setTemplate(EmailTemplate emailTemplate) {
+            this.emailTemplate = emailTemplate;
+            return this;
+        }
+
         public EmailPayload build() {
 
-            Preconditions.checkNotNull(subject, "Subject must be set.");
+            if(emailTemplate == null) {
 
-            Preconditions.checkArgument(StringUtils.isNotBlank(subject),
-                    "Subject must not be blank");
+                Preconditions.checkNotNull(subject, "Subject must be set.");
 
-            Preconditions.checkNotNull(plaintextBody, "PlaintextBody must be set.");
+                Preconditions.checkArgument(StringUtils.isNotBlank(subject),
+                        "Subject must not be blank");
 
-            Preconditions.checkArgument(StringUtils.isNotBlank(plaintextBody),
-                    "Plaintext Body must not be blank");
+                Preconditions.checkNotNull(plaintextBody, "PlaintextBody must be set.");
 
-            Preconditions.checkNotNull(messageType, "MessageType must be set.");
+                Preconditions.checkArgument(StringUtils.isNotBlank(plaintextBody),
+                        "Plaintext Body must not be blank");
 
-            Preconditions.checkNotNull(senderName, "SenderName must be set.");
+                Preconditions.checkNotNull(messageType, "MessageType must be set.");
 
-            Preconditions.checkArgument(StringUtils.isNotBlank(senderName),
-                    "SenderName must not be blank");
+                Preconditions.checkNotNull(senderName, "SenderName must be set.");
 
-            Preconditions.checkNotNull(senderAddress, "SenderAddress must be set.");
+                Preconditions.checkArgument(StringUtils.isNotBlank(senderName),
+                        "SenderName must not be blank");
 
-            Preconditions.checkArgument(StringUtils.isNotBlank(senderAddress),
-                    "SenderAddress must not be blank");
+                Preconditions.checkNotNull(senderAddress, "SenderAddress must be set.");
 
-            Preconditions.checkNotNull(replyTo, "ReplyTo must be set.");
+                Preconditions.checkArgument(StringUtils.isNotBlank(senderAddress),
+                        "SenderAddress must not be blank");
 
-            Preconditions.checkArgument(StringUtils.isNotBlank(replyTo),
-                    "ReplyTo must not be blank");
+                Preconditions.checkNotNull(replyTo, "ReplyTo must be set.");
+
+                Preconditions.checkArgument(StringUtils.isNotBlank(replyTo),
+                        "ReplyTo must not be blank");
+            }
 
             return new EmailPayload(this);
         }
