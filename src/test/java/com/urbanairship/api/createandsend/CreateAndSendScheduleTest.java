@@ -89,7 +89,7 @@ public class CreateAndSendScheduleTest {
         schedulePayload = CreateAndSendSchedulePayload.newBuilder()
                 .setName("name")
                 .setPayload(payload)
-                .setScheduleTime(DateTime.parse("2022-01-01T00:00:00"))
+                .setScheduleTime(DateTime.parse("2022-01-01T00:00:00.000Z"))
                 .build();
 
         request = CreateAndSendScheduleRequest.newRequest(schedulePayload);
@@ -98,7 +98,7 @@ public class CreateAndSendScheduleTest {
     @Test
     public void testNotification() throws IOException {
         String actualJson = MAPPER.writeValueAsString(schedulePayload);
-        String expectedJson = "{\"schedule\":{\"scheduled_time\":\"2021-12-31T23:00:00\"},\"name\":\"name\",\"push\":{\"audience\":{\"create_and_send\":[{\"ua_msisdn\":\"msisdn\",\"ua_sender\":\"sender\",\"ua_opted_in\":\"" + dateString + "\",\"key1\":\"value1\",\"key2\":\"value2\"},{\"ua_msisdn\":\"msisdn2\",\"ua_sender\":\"sender2\",\"ua_opted_in\":\"" + dateString + "\",\"key3\":\"value3\",\"key4\":\"value4\"}]},\"device_types\":[\"sms\"],\"notification\":{\"sms\":{\"alert\":\"smsAlert\",\"expiry\":1000}}}}";
+        String expectedJson = "{\"schedule\":{\"scheduled_time\":\"2022-01-01T00:00:00\"},\"name\":\"name\",\"push\":{\"audience\":{\"create_and_send\":[{\"ua_msisdn\":\"msisdn\",\"ua_sender\":\"sender\",\"ua_opted_in\":\"" + dateString + "\",\"key1\":\"value1\",\"key2\":\"value2\"},{\"ua_msisdn\":\"msisdn2\",\"ua_sender\":\"sender2\",\"ua_opted_in\":\"" + dateString + "\",\"key3\":\"value3\",\"key4\":\"value4\"}]},\"device_types\":[\"sms\"],\"notification\":{\"sms\":{\"alert\":\"smsAlert\",\"expiry\":1000}}}}";
 
         JsonNode actualNode = MAPPER.readTree(actualJson);
         JsonNode expectedNode = MAPPER.readTree(expectedJson);
