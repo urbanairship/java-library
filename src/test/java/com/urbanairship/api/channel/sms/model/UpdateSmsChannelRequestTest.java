@@ -19,7 +19,7 @@ public class UpdateSmsChannelRequestTest {
     UpdateSmsChannel updateSmsChannel = UpdateSmsChannel.newBuilder()
         .setMsisdn("13609048615")
         .setSender("17372004196")
-        .setOptedIn(DateTime.parse("2021-10-11T02:03:03"))
+        .setOptedIn(DateTime.parse("2021-10-11T02:03:03.000Z"))
         .setLocaleCountry("US")
         .setLocaleLanguage("en")
         .setTimeZone("America/Los_Angeles")
@@ -39,7 +39,7 @@ public class UpdateSmsChannelRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(request.getRequestBody(), "{\"msisdn\":\"13609048615\",\"sender\":\"17372004196\",\"opted_in\":\"2021-10-11T00:03:03\",\"timezone\":\"America/Los_Angeles\",\"locale_country\":\"US\",\"locale_language\":\"en\"}");
+        assertEquals(request.getRequestBody(), "{\"msisdn\":\"13609048615\",\"sender\":\"17372004196\",\"opted_in\":\"2021-10-11T02:03:03\",\"timezone\":\"America/Los_Angeles\",\"locale_country\":\"US\",\"locale_language\":\"en\"}");
     }
 
     @Test
