@@ -2,7 +2,6 @@ package com.urbanairship.api.templates;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.push.model.notification.Notification;
@@ -13,6 +12,7 @@ import com.urbanairship.api.templates.model.TemplateView;
 import com.urbanairship.api.templates.parse.TemplatesObjectMapper;
 import org.apache.http.HttpHeaders;
 import org.apache.http.entity.ContentType;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,8 +20,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-
-import static junit.framework.Assert.assertEquals;
 
 public class TemplateRequestTest {
     private final static ObjectMapper mapper = TemplatesObjectMapper.getInstance().setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -87,14 +85,14 @@ public class TemplateRequestTest {
 
     @Test
     public void testContentType() throws Exception {
-        assertEquals(createRequest.getContentType(), ContentType.APPLICATION_JSON);
-        assertEquals(updateRequest.getContentType(), ContentType.APPLICATION_JSON);
+        Assert.assertEquals(createRequest.getContentType(), ContentType.APPLICATION_JSON);
+        Assert.assertEquals(updateRequest.getContentType(), ContentType.APPLICATION_JSON);
     }
 
     @Test
     public void testMethod() throws Exception {
-        assertEquals(createRequest.getHttpMethod(), Request.HttpMethod.POST);
-        assertEquals(updateRequest.getHttpMethod(), Request.HttpMethod.POST);
+        Assert.assertEquals(createRequest.getHttpMethod(), Request.HttpMethod.POST);
+        Assert.assertEquals(updateRequest.getHttpMethod(), Request.HttpMethod.POST);
     }
 
     @Test
@@ -103,12 +101,12 @@ public class TemplateRequestTest {
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
 
-        assertEquals(createRequest.getRequestHeaders(), headers);
+        Assert.assertEquals(createRequest.getRequestHeaders(), headers);
     }
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(createRequest.getRequestBody(), jsonPayload);
+        Assert.assertEquals(createRequest.getRequestBody(), jsonPayload);
     }
 
     @Test
@@ -116,15 +114,15 @@ public class TemplateRequestTest {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
         URI expectedUri = URI.create("https://go.urbanairship.com" + CREATE_UPDATE_TEMPLATE);
-        assertEquals(createRequest.getUri(baseURI), expectedUri);
+        Assert.assertEquals(createRequest.getUri(baseURI), expectedUri);
 
         expectedUri = URI.create("https://go.urbanairship.com" + CREATE_UPDATE_TEMPLATE + TEMPLATE_NAME);
-        assertEquals(updateRequest.getUri(baseURI), expectedUri);
+        Assert.assertEquals(updateRequest.getUri(baseURI), expectedUri);
     }
 
     @Test
     public void testResponseParser() throws Exception {
-        final ResponseParser responseParser = new ResponseParser<TemplateResponse>() {
+        final ResponseParser<TemplateResponse> responseParser = new ResponseParser<TemplateResponse>() {
             @Override
             public TemplateResponse parse(String response) throws IOException {
                 return mapper.readValue(response, TemplateResponse.class);
@@ -145,8 +143,8 @@ public class TemplateRequestTest {
                 "}";
 
 
-        assertEquals(createRequest.getResponseParser().parse(createJson), responseParser.parse(createJson));
-        assertEquals(updateRequest.getResponseParser().parse(updateJson), responseParser.parse(updateJson));
+        Assert.assertEquals(createRequest.getResponseParser().parse(createJson), responseParser.parse(createJson));
+        Assert.assertEquals(updateRequest.getResponseParser().parse(updateJson), responseParser.parse(updateJson));
     }
 
 }

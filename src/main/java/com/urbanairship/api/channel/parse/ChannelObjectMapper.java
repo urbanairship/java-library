@@ -4,7 +4,6 @@
 
 package com.urbanairship.api.channel.parse;
 
-import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -25,6 +24,7 @@ import com.urbanairship.api.channel.model.ChannelUninstallResponse;
 import com.urbanairship.api.channel.model.ios.IosSettings;
 import com.urbanairship.api.channel.model.ios.QuietTime;
 import com.urbanairship.api.channel.model.open.OpenChannel;
+import com.urbanairship.api.channel.model.sms.UpdateSmsChannel;
 import com.urbanairship.api.channel.model.subscriptionlist.SubscriptionListPayload;
 import com.urbanairship.api.channel.model.subscriptionlist.SubscriptionListResponse;
 import com.urbanairship.api.channel.model.web.Subscription;
@@ -39,6 +39,7 @@ import com.urbanairship.api.channel.parse.email.RegisterEmailChannelSerializer;
 import com.urbanairship.api.channel.parse.ios.IosSettingsDeserializer;
 import com.urbanairship.api.channel.parse.ios.QuietTimeDeserializer;
 import com.urbanairship.api.channel.parse.open.OpenChannelDeserializer;
+import com.urbanairship.api.channel.parse.sms.UpdateSmsChannelSerializer;
 import com.urbanairship.api.channel.parse.subscriptionlist.SubscriptionListPayloadSerializer;
 import com.urbanairship.api.channel.parse.subscriptionlist.SubscriptionListResponseDeserializer;
 import com.urbanairship.api.channel.parse.web.SubscriptionDeserializer;
@@ -49,7 +50,7 @@ import com.urbanairship.api.push.parse.PushObjectMapper;
 public class ChannelObjectMapper {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    private static final SimpleModule MODULE = new SimpleModule("Channels API Module", new Version(1, 0, 0, null));
+    private static final SimpleModule MODULE = new SimpleModule("Channels API Module");
 
     static {
         MODULE.addDeserializer(IosSettings.class, new IosSettingsDeserializer());
@@ -73,6 +74,8 @@ public class ChannelObjectMapper {
         MODULE.addSerializer(SubscriptionListPayload.class, new SubscriptionListPayloadSerializer());
         MODULE.addDeserializer(SubscriptionListResponse.class, new SubscriptionListResponseDeserializer());
         MODULE.addSerializer(ChannelAudience.class, new ChannelAudienceSerializer());
+        MODULE.addSerializer(UpdateSmsChannel.class, new UpdateSmsChannelSerializer());
+
 
         MAPPER.registerModule(MODULE);
         MAPPER.registerModule(new JodaModule());

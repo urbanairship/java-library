@@ -1,6 +1,7 @@
 package com.urbanairship.api.customevents.parse;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.urbanairship.api.common.model.ErrorDetails;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.customevents.model.CustomEventResponse;
@@ -20,6 +21,14 @@ public class CustomEventResponseReader implements JsonObjectReader<CustomEventRe
 
     public void readOperationId(JsonParser jsonParser) throws IOException {
         builder.addOperationId(jsonParser.readValueAs(String.class));
+    }
+
+    public void readError(JsonParser jsonParser) throws IOException {
+        builder.setError(jsonParser.readValueAs(String.class));
+    }
+
+    public void readErrorDetails(JsonParser jsonParser) throws IOException {
+        builder.setErrorDetails(jsonParser.readValueAs(ErrorDetails.class));
     }
 
     public CustomEventResponse validateAndBuild() throws IOException {

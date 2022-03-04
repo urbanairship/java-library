@@ -3,12 +3,14 @@ package com.urbanairship.api.nameduser.model;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.urbanairship.api.common.model.ErrorDetails;
 
 public class NamedUserUpdateResponse {
     private final boolean ok;
     private final Optional<String> error;
     private final Optional<ImmutableList<String>> attributeWarnings;
     private final Optional<ImmutableList<String>> tagWarnings;
+    private final Optional<ErrorDetails> errorDetails;
 
 
     private NamedUserUpdateResponse(Builder builder) {
@@ -16,6 +18,7 @@ public class NamedUserUpdateResponse {
         this.error = builder.error;
         this.attributeWarnings = builder.attributeWarnings;
         this.tagWarnings = builder.tagWarnings;
+        this.errorDetails = builder.errorDetails;
 
     }
 
@@ -39,6 +42,10 @@ public class NamedUserUpdateResponse {
         return tagWarnings;
     }
 
+    public Optional<ErrorDetails> getErrorDetails() {
+        return errorDetails;
+    }
+
     @Override
     public String toString() {
         return "NamedUserUpdateResponse{" +
@@ -46,12 +53,13 @@ public class NamedUserUpdateResponse {
                 ", error='" + error + '\'' +
                 ", attributeWarnings=" + attributeWarnings +
                 ", tagWarnings=" + tagWarnings +
+                ", errorDetails=" + errorDetails +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(ok, error, attributeWarnings, tagWarnings);
+        return Objects.hashCode(ok, error, attributeWarnings, tagWarnings, errorDetails);
     }
 
     @Override
@@ -63,7 +71,9 @@ public class NamedUserUpdateResponse {
             return false;
         }
         final NamedUserUpdateResponse other = (NamedUserUpdateResponse) obj;
-        return Objects.equal(this.ok, other.ok) && Objects.equal(this.error, other.error) && Objects.equal(this.attributeWarnings, other.attributeWarnings) && Objects.equal(this.tagWarnings, other.tagWarnings);
+        return Objects.equal(this.ok, other.ok) && Objects.equal(this.error, other.error) && Objects.equal(this.attributeWarnings, other.attributeWarnings) && Objects.equal(this.tagWarnings, other.tagWarnings) &&
+        Objects.equal(this.errorDetails, other.errorDetails);
+    
     }
 
     public static class Builder {
@@ -71,6 +81,7 @@ public class NamedUserUpdateResponse {
         Optional<String> error;
         Optional<ImmutableList<String>> attributeWarnings;
         Optional<ImmutableList<String>> tagWarnings;
+        Optional<ErrorDetails> errorDetails;
 
 
         public Builder setOk(boolean ok) {
@@ -90,6 +101,11 @@ public class NamedUserUpdateResponse {
 
         public Builder setTagWarnings(Optional<ImmutableList<String>> tagWarnings) {
             this.tagWarnings = tagWarnings;
+            return this;
+        }
+
+        public Builder setErrorDetails(Optional<ErrorDetails> errorDetails) {
+            this.errorDetails = errorDetails;
             return this;
         }
 

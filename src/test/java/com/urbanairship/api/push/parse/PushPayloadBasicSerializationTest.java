@@ -5,13 +5,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
-import com.urbanairship.api.createandsend.model.audience.email.EmailChannel;
-import com.urbanairship.api.createandsend.model.notification.email.EmailTemplate;
 import com.urbanairship.api.push.model.*;
-import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.Selectors;
-import com.urbanairship.api.push.model.audience.location.LocationIdentifier;
-import com.urbanairship.api.push.model.audience.location.LocationSelector;
 import com.urbanairship.api.push.model.audience.sms.SmsSelector;
 import com.urbanairship.api.push.model.localization.Localization;
 import com.urbanairship.api.push.model.notification.Notification;
@@ -525,7 +520,6 @@ public class PushPayloadBasicSerializationTest {
         assertEquals(expectedJson, actualJson);
     }
 
-    // TODO: split this into individual tests
     @Test
     public void testRoundTrip() throws Exception {
 

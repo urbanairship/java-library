@@ -22,6 +22,18 @@ public class NamedUserAttributeResponseDeserializer extends JsonDeserializer<Nam
                             reader.readOk(jsonParser);
                         }
                     })
+                    .put("error", new FieldParser<NamedUserAttributeResponseReader>() {
+                        @Override
+                        public void parse(NamedUserAttributeResponseReader reader, JsonParser jsonParser, DeserializationContext context) throws IOException {
+                            reader.readError(jsonParser);
+                        }
+                    })
+                    .put("details", new FieldParser<NamedUserAttributeResponseReader>() {
+                        @Override
+                        public void parse(NamedUserAttributeResponseReader reader, JsonParser jsonParser, DeserializationContext context) throws IOException {
+                            reader.readErrorDetails(jsonParser);
+                        }
+                    })
                     .build()
     );
 

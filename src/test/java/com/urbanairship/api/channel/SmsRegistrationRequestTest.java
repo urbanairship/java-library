@@ -78,7 +78,7 @@ public class SmsRegistrationRequestTest {
 
     @Test
     public void testSmsRequestParser() throws IOException {
-        ResponseParser parser = new ResponseParser<SmsRegistrationResponse>() {
+        ResponseParser<SmsRegistrationResponse> parser = new ResponseParser<SmsRegistrationResponse>() {
             @Override
             public SmsRegistrationResponse parse(String response) throws IOException {
                 return mapper.readValue(response, SmsRegistrationResponse.class);

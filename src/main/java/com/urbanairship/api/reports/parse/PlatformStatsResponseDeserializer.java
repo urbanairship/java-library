@@ -55,6 +55,24 @@ public class PlatformStatsResponseDeserializer extends JsonDeserializer<Platform
                                     reader.readPlatformStats(jsonParser);
                                 }
                             })
+                            .put("ok", new FieldParser<PlatformStatsResponseReader>() {
+                                @Override
+                                public void parse(PlatformStatsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                    reader.readOk(jsonParser);
+                                }
+                            })
+                            .put("error", new FieldParser<PlatformStatsResponseReader>() {
+                                @Override
+                                public void parse(PlatformStatsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                    reader.readError(jsonParser);
+                                }
+                            })
+                            .put("details", new FieldParser<PlatformStatsResponseReader>() {
+                                @Override
+                                public void parse(PlatformStatsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                    reader.readErrorDetails(jsonParser);
+                                }
+                            })
                             .build()
             );
 

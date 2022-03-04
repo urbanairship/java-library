@@ -3,20 +3,13 @@ package com.urbanairship.api.channel.email.model;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.channel.model.email.EmailTagRequest;
-import com.urbanairship.api.channel.model.email.OptInLevel;
-import com.urbanairship.api.channel.model.email.RegisterEmailChannel;
 import com.urbanairship.api.channel.parse.ChannelObjectMapper;
-import com.urbanairship.api.push.parse.PushObjectMapper;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
+import org.junit.Assert;
+import org.junit.Test;
 import java.io.IOException;
 import java.util.Set;
 import java.util.TreeSet;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class EmailTagRequestTest {
     private static final ObjectMapper MAPPER = ChannelObjectMapper.getInstance();
@@ -56,7 +49,7 @@ public class EmailTagRequestTest {
         JsonNode actual = MAPPER.readTree(emailTagRequest.getRequestBody());
         JsonNode expected = MAPPER.readTree(jsonFromString);
 
-        assertEquals(expected, actual);
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
@@ -85,7 +78,7 @@ public class EmailTagRequestTest {
         JsonNode actual = MAPPER.readTree(emailTagRequest.getRequestBody());
         JsonNode expected = MAPPER.readTree(jsonFromString);
 
-        assertEquals(expected, actual);
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
@@ -112,7 +105,7 @@ public class EmailTagRequestTest {
         JsonNode actual = MAPPER.readTree(emailTagRequest.getRequestBody());
         JsonNode expected = MAPPER.readTree(jsonFromString);
 
-        assertEquals(expected, actual);
+        Assert.assertEquals(expected, actual);
     }
 
     @Test(expected = IllegalArgumentException.class)

@@ -77,7 +77,7 @@ public class CustomEventRequestTest {
 
     @Test
     public void testCustomEventParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<CustomEventResponse>() {
+        ResponseParser<CustomEventResponse> responseParser = new ResponseParser<CustomEventResponse>() {
             @Override
             public CustomEventResponse parse(String response) throws IOException {
                 return PushObjectMapper.getInstance().readValue(response, CustomEventResponse.class);

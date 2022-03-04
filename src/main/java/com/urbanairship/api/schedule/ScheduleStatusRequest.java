@@ -11,7 +11,6 @@ import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.entity.ContentType;
-import org.checkerframework.checker.units.qual.A;
 
 import java.io.IOException;
 import java.net.URI;

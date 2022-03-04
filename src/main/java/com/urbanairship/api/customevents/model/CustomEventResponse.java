@@ -2,14 +2,20 @@ package com.urbanairship.api.customevents.model;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
+import com.urbanairship.api.common.model.ErrorDetails;
 
 public class CustomEventResponse {
     private final Optional<String> operationId;
     private final boolean ok;
+    private final Optional<String> error;
+    private final Optional<ErrorDetails> errorDetails;
 
-    public CustomEventResponse(String operationId, boolean ok) {
+
+    public CustomEventResponse(String operationId, boolean ok, String error, ErrorDetails errorDetails) {
         this.operationId = Optional.fromNullable(operationId);
         this.ok = ok;
+        this.error = Optional.fromNullable(error);
+        this.errorDetails = Optional.fromNullable(errorDetails);
     }
 
     /**
@@ -21,6 +27,43 @@ public class CustomEventResponse {
      */
     public Optional<String> getOperationId() {
         return operationId;
+    }
+
+    /**
+     * Get the response status as a boolean
+     * @return Response status
+     */
+
+    public boolean isOk() {
+        return ok;
+    }
+
+     /**
+     * Get the error if present
+     *
+     * @return An Optional String
+     */
+    public Optional<String> getError() {
+        return error;
+    }
+
+    /**
+     * Get the error details if present
+     *
+     * @return An Optional String
+     */
+    public Optional<ErrorDetails> getErrorDetails() {
+        return errorDetails;
+    }
+
+    @Override
+    public String toString() {
+        return "CustomEventResponse{" +
+                "operationId=" + operationId +
+                ", ok=" + ok +
+                ", error=" + error +
+                ", errorDetails=" + errorDetails +
+                '}';
     }
 
     @Override
@@ -36,21 +79,14 @@ public class CustomEventResponse {
         CustomEventResponse that = (CustomEventResponse) o;
 
         return ok == that.ok &&
-                Objects.equal(operationId, that.operationId);
+                Objects.equal(operationId, that.operationId) && 
+                Objects.equal(this.error, that.error) &&
+                Objects.equal(this.errorDetails, that.errorDetails);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(operationId, ok);
-    }
-
-    /**
-     * Get the response status as a boolean
-     * @return Response status
-     */
-
-    public boolean isOk() {
-        return ok;
+        return Objects.hashCode(operationId, ok, error, errorDetails);
     }
 
     public static Builder newBuilder() {
@@ -60,6 +96,8 @@ public class CustomEventResponse {
     public static class Builder {
         private String operationId;
         private boolean ok = false;
+        private String error = null;
+        private ErrorDetails errorDetails = null;
 
         private Builder() {
 
@@ -75,8 +113,18 @@ public class CustomEventResponse {
             return this;
         }
 
+        public Builder setError(String error) {
+            this.error = error;
+            return this;
+        }
+
+        public Builder setErrorDetails(ErrorDetails errorDetails) {
+            this.errorDetails = errorDetails;
+            return this;
+        }
+
         public CustomEventResponse build() {
-            return new CustomEventResponse(operationId, ok);
+            return new CustomEventResponse(operationId, ok, error, errorDetails);
         }
     }
 }

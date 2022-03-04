@@ -1,12 +1,7 @@
 package com.urbanairship.api.experiments.model;
 
 import com.urbanairship.api.push.model.notification.Notification;
-import com.urbanairship.api.schedule.model.Schedule;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.junit.Test;
-
-import java.math.BigDecimal;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -40,7 +35,7 @@ public class VariantTest {
 
     @Test(expected = Exception.class)
     public void testInvalidVariant() {
-        Variant variant = Variant.newBuilder()
+        Variant.newBuilder()
                 .setName("name")
                 .build();
     }

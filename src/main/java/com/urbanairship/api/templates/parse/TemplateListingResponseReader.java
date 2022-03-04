@@ -6,6 +6,7 @@ package com.urbanairship.api.templates.parse;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.urbanairship.api.common.model.ErrorDetails;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.templates.model.TemplateListingResponse;
@@ -48,6 +49,14 @@ public class TemplateListingResponseReader implements JsonObjectReader<TemplateL
 
     public void readPrevPage(JsonParser jsonParser) throws IOException {
         builder.setPrevPage(jsonParser.readValueAs(String.class));
+    }
+
+    public void readError(JsonParser jsonParser) throws IOException {
+        builder.setError(jsonParser.readValueAs(String.class));
+    }
+
+    public void readErrorDetails(JsonParser jsonParser) throws IOException {
+        builder.setErrorDetails(jsonParser.readValueAs(ErrorDetails.class));
     }
 
     @Override

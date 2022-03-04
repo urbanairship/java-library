@@ -7,6 +7,8 @@ package com.urbanairship.api.reports.model;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.urbanairship.api.common.model.ErrorDetails;
+
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -24,9 +26,12 @@ public final class PushInfoResponse {
     private final PushType pushType;
     private final DateTime pushTime;
     private final Optional<UUID> groupID;
+    private final boolean ok;
+    private final Optional<String> error;
+    private final Optional<ErrorDetails> errorDetails;
 
     private PushInfoResponse() {
-        this(null, 0, 0, null, null, null);
+        this(null, 0, 0, null, null, null, null, null, null);
     }
 
     private PushInfoResponse(UUID pushId,
@@ -34,13 +39,19 @@ public final class PushInfoResponse {
                              int sends,
                              PushType pushType,
                              DateTime pushTime,
-                             UUID groupID) {
+                             UUID groupID,
+                             Boolean ok,
+                             String error,
+                             ErrorDetails errorDetails) {
         this.pushId = pushId;
         this.directResponses = directResponses;
         this.sends = sends;
         this.pushType = pushType;
         this.pushTime = pushTime;
         this.groupID = Optional.fromNullable(groupID);
+        this.ok = ok;
+        this.error = Optional.fromNullable(error);
+        this.errorDetails = Optional.fromNullable(errorDetails);
     }
 
     /**
@@ -108,6 +119,33 @@ public final class PushInfoResponse {
         return groupID;
     }
 
+            /**
+     * Get the OK status as a boolean
+     *
+     * @return boolean
+     */
+    public boolean getOk() {
+        return ok;
+    }
+
+    /**
+     * Get the error if present
+     *
+     * @return An Optional String
+     */
+    public Optional<String> getError() {
+        return error;
+    }
+
+    /**
+     * Get the error details if present
+     *
+     * @return An Optional String
+     */
+    public Optional<ErrorDetails> getErrorDetails() {
+        return errorDetails;
+    }
+
     @Override
     public String toString() {
         return "SinglePushInfoResponse{" +
@@ -117,12 +155,15 @@ public final class PushInfoResponse {
                 ", pushType=" + pushType +
                 ", pushTime=" + pushTime +
                 ", groupID=" + groupID +
+                ", ok=" + ok +
+                ", error=" + error +
+                ", errorDetails=" + errorDetails +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(pushId, directResponses, sends, pushType, pushTime, groupID);
+        return Objects.hashCode(pushId, directResponses, sends, pushType, pushTime, groupID, ok, error, errorDetails);
     }
 
     @Override
@@ -134,7 +175,7 @@ public final class PushInfoResponse {
             return false;
         }
         final PushInfoResponse other = (PushInfoResponse) obj;
-        return Objects.equal(this.pushId, other.pushId) && Objects.equal(this.directResponses, other.directResponses) && Objects.equal(this.sends, other.sends) && Objects.equal(this.pushType, other.pushType) && Objects.equal(this.pushTime, other.pushTime) && Objects.equal(this.groupID, other.groupID);
+        return Objects.equal(this.pushId, other.pushId) && Objects.equal(this.directResponses, other.directResponses) && Objects.equal(this.sends, other.sends) && Objects.equal(this.pushType, other.pushType) && Objects.equal(this.pushTime, other.pushTime) && Objects.equal(this.groupID, other.groupID) && Objects.equal(ok, other.ok) && Objects.equal(error, other.error) && Objects.equal(errorDetails, other.errorDetails);
     }
 
     public enum PushType {
@@ -152,6 +193,9 @@ public final class PushInfoResponse {
         private PushType pushType;
         private DateTime pushTime;
         private UUID groupID;
+        private boolean ok;
+        private String error;
+        private ErrorDetails errorDetails;
 
         private Builder() {
         }
@@ -223,23 +267,55 @@ public final class PushInfoResponse {
             return this;
         }
 
+                /**
+         * Set the ok status
+         *
+         * @param value boolean
+         * @return Builder
+         */
+        public Builder setOk(boolean value) {
+            this.ok = value;
+            return this;
+        }
+
+        /**
+         * Set the error
+         *
+         * @param error String
+         * @return Builder
+         */
+        public Builder setError(String error) {
+            this.error = error;
+            return this;
+        }
+
+        /**
+         * Set the errorDetails
+         *
+         * @param errorDetails String
+         * @return Builder
+         */
+        public Builder setErrorDetails(ErrorDetails errorDetails) {
+            this.errorDetails = errorDetails;
+            return this;
+        }
+
         /**
          * Build the SinglePushInfoResponse object
          *
          * @return SinglePushInfoResponse
          */
         public PushInfoResponse build() {
-            Preconditions.checkNotNull(pushId, "Push UUID cannot be null.");
-            Preconditions.checkNotNull(pushType, "Push Type cannot be null.");
-            Preconditions.checkNotNull(pushTime, "Push Time cannot be null.");
-
             return new PushInfoResponse(
                     pushId,
                     directResponses,
                     sends,
                     pushType,
                     pushTime,
-                    groupID);
+                    groupID,
+                    ok,
+                    error,
+                    errorDetails);
         }
     }
 }

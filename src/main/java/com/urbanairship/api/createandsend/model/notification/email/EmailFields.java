@@ -1,17 +1,26 @@
 package com.urbanairship.api.createandsend.model.notification.email;
 
-import com.google.common.base.Preconditions;
+import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Optional;
 /**
  * Represends the email fields in the notification.
  */
 public class EmailFields {
-    private final String plainTextBody;
     private final String subject;
+    private final String plainTextBody;
+    private final Optional<String> htmlBody;
 
-    private EmailFields(Builder builder) {
-        plainTextBody = builder.plainTextBody;
-        subject = builder.subject;
+
+    private EmailFields(
+        @JsonProperty("subject") String subject,
+        @JsonProperty("plaintext_body") String plainTextBody,
+        @JsonProperty("html_body") String htmlBody
+        ) {
+        this.subject = subject;
+        this.plainTextBody = plainTextBody;
+        this.htmlBody = Optional.fromNullable(htmlBody);
     }
 
     /**
@@ -23,40 +32,70 @@ public class EmailFields {
     }
 
     /**
-     * Get the plain text body of the email you want to send.
-     * @return String
+     * a string representing the subject of the notification.
+     *
+     * @return String subject.
+     */
+    public String getSubject() {
+        return subject;
+    }
+
+    /**
+     * a string value for providing a the plaintext Body of the notification.
+     *
+     * @return String plaintextBody
      */
     public String getPlainTextBody() {
         return plainTextBody;
     }
 
     /**
-     * Get the subject line of the email you want to send.
-     * @return String
+     * Optional, a string value for providing a the HTML body of the notification.
+     *
+     * @return Optional String htmlBody
      */
-    public String getSubject() {
-        return subject;
+    public Optional<String> getHtmlBody() {
+        return htmlBody;
     }
 
-    public static class Builder {
-        private String plainTextBody;
-        private String subject;
+    @Override
+    public String toString() {
+        return "EmailFields{" +
+                "subject=" + subject +
+                ", htmlBody=" + htmlBody +
+                ", plainTextBody=" + plainTextBody +
+                '}';
+    }
 
-        /**
-         * Set the plain text body of the email you want to send.
-         * When "message_type": "commercial", the body must contain a [[ua_unsubscribe]] link,
-         * which will be replaced by the unsubscribe link in Urban Airship.
-         * @param plainTextBody String
-         * @return EmailFields Builder
-         */
-        public Builder setPlainTextBody(String plainTextBody) {
-            this.plainTextBody = plainTextBody;
-            return this;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof EmailFields)) return false;
+        EmailFields that = (EmailFields) o;
+        return Objects.equals(getSubject(), that.getSubject()) &&
+                Objects.equals(getHtmlBody(), that.getHtmlBody()) &&
+                Objects.equals(getPlainTextBody(), that.getPlainTextBody());
+            }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getSubject(), getHtmlBody(), getPlainTextBody());
+    }
+    /**
+     * EmailFields Builder.
+     */
+    public static class Builder {
+        private String subject = null;
+        private String htmlBody = null;
+        private String plainTextBody = null;
+
+        private Builder() {
         }
 
         /**
-         * Set the subject line of the email you want to send.
-         * @param subject String
+         * Optional, a string representing the subject of the notification.
+         *
+         * @param subject Optional String
          * @return EmailFields Builder
          */
         public Builder setSubject(String subject) {
@@ -64,11 +103,30 @@ public class EmailFields {
             return this;
         }
 
-        public EmailFields build() {
-            Preconditions.checkNotNull(plainTextBody, "plain text body cannot be null.");
-            Preconditions.checkNotNull(subject, "subject cannot be null.");
+        /**
+         * Optional, a string representing the HTML body of the notification.
+         *
+         * @param htmlBody Optional String
+         * @return EmailFields Builder
+         */
+        public Builder setHtmlBody(String htmlBody) {
+            this.htmlBody = htmlBody;
+            return this;
+        }
 
-            return new EmailFields(this);
+        /**
+         * Optional, a string representing the plaintext body of the notification.
+         *
+         * @param plainTextBody Optional String
+         * @return EmailFields Builder
+         */
+        public Builder setPlainTextBody(String plainTextBody) {
+            this.plainTextBody = plainTextBody;
+            return this;
+        }
+
+        public EmailFields build() {
+            return new EmailFields(subject, plainTextBody, htmlBody);
         }
     }
 }

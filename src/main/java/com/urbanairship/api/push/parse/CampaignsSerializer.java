@@ -2,7 +2,6 @@ package com.urbanairship.api.push.parse;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.JsonValueSerializer;
 import com.urbanairship.api.push.model.Campaigns;
 import com.fasterxml.jackson.databind.JsonSerializer;
 

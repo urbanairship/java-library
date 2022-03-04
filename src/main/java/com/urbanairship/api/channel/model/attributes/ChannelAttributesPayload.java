@@ -4,7 +4,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.channel.model.ChannelModelObject;
 import com.urbanairship.api.channel.model.attributes.audience.AttributeAudience;
-import com.urbanairship.api.push.model.audience.Selector;
 
 /**
  * Represents a Channel Attributes payload for the Airship API.

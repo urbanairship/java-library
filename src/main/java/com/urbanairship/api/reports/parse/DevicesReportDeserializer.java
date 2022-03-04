@@ -41,6 +41,24 @@ public class DevicesReportDeserializer extends JsonDeserializer<DevicesReport> {
                                     reader.readResponseObjects(jsonParser);
                                 }
                             })
+                            .put("ok", new FieldParser<DevicesReportReader>() {
+                                @Override
+                                public void parse(DevicesReportReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                    reader.readOk(jsonParser);
+                                }
+                            })
+                            .put("error", new FieldParser<DevicesReportReader>() {
+                                @Override
+                                public void parse(DevicesReportReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                    reader.readError(jsonParser);
+                                }
+                            })
+                            .put("details", new FieldParser<DevicesReportReader>() {
+                                @Override
+                                public void parse(DevicesReportReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                    reader.readErrorDetails(jsonParser);
+                                }
+                            })
                             .build()
             );
 

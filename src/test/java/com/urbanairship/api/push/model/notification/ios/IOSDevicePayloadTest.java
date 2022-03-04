@@ -101,7 +101,7 @@ public class IOSDevicePayloadTest {
         assertEquals("content subtitle", m.getMediaAttachment().get().getContent().get().getSubtitle().get());
         assertEquals(true, m.getSoundData().get().getCritical().get());
         assertEquals(0.5, m.getSoundData().get().getVolume().get(), 0.0f);
-        assertEquals("really cool name", m.getSound().get());
+        assertEquals("really cool name", m.getSoundData().get().getName().get());
         Integer time = 10;
         assertEquals(time, m.getMediaAttachment().get().getOptions().get().getTime().get());
         assertEquals(height, m.getMediaAttachment().get().getOptions().get().getCrop().get().getHeight().get());
@@ -120,7 +120,7 @@ public class IOSDevicePayloadTest {
                 .setAlert("alert field")
                 .build();
 
-        IOSTemplate iosTemplate = IOSTemplate.newBuilder()
+        IOSTemplate.newBuilder()
                 .setTemplateId("templateId")
                 .setFields(iosFields)
                 .build();

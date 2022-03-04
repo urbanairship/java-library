@@ -4,18 +4,15 @@
 
 package com.urbanairship.api.common.parse;
 
-import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.datatype.joda.JodaModule;
 import org.joda.time.DateTime;
 
 public class CommonObjectMapper {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    private static final SimpleModule MODULE = new SimpleModule("Common API Module",
-                                                                new Version(1, 0, 0, null));
+    private static final SimpleModule MODULE = new SimpleModule("Common API Module");
     static {
         MODULE
             .addSerializer(DateTime.class, new DateTimeSerializer())

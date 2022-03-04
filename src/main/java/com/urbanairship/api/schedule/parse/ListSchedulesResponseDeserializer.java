@@ -60,6 +60,18 @@ public final class ListSchedulesResponseDeserializer extends JsonDeserializer<Li
                                     reader.readListScheduleResponse(jsonParser);
                                 }
                             })
+                            .put("error", new FieldParser<ListSchedulesResponseReader>() {
+                                @Override
+                                public void parse(ListSchedulesResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                    reader.readError(jsonParser);
+                                }
+                            })
+                            .put("details", new FieldParser<ListSchedulesResponseReader>() {
+                                @Override
+                                public void parse(ListSchedulesResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                                    reader.readErrorDetails(jsonParser);
+                                }
+                            })
                             .build()
             );
 

@@ -13,7 +13,7 @@ public class StyleTest {
 
     @Test(expected = Exception.class)
     public void testNoContent() throws Exception {
-        BigPictureStyle style = BigPictureStyle.newBuilder()
+        BigPictureStyle.newBuilder()
                 .setTitle("Hi")
                 .build();
     }

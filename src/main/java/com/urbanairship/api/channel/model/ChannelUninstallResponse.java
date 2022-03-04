@@ -2,14 +2,17 @@ package com.urbanairship.api.channel.model;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
+import com.urbanairship.api.common.model.ErrorDetails;
 
 public class ChannelUninstallResponse {
     private final boolean ok;
     private final Optional<String> error;
+    private final Optional<ErrorDetails> errorDetails;
 
     private ChannelUninstallResponse(Builder builder) {
         this.ok = builder.ok;
-        this.error = builder.error;
+        this.error = Optional.fromNullable(builder.error);
+        this.errorDetails = Optional.fromNullable(builder.errorDetails);
 
     }
 
@@ -25,17 +28,22 @@ public class ChannelUninstallResponse {
         return error;
     }
 
+    public Optional<ErrorDetails> getErrorDetails() {
+        return errorDetails;
+    }
+
     @Override
     public String toString() {
-        return "NamedUserUpdateResponse{" +
+        return "ChannelUninstallResponse{" +
                 "ok=" + ok +
-                ",error='" + error + '\'' +
+                ", error='" + error +
+                ", errorDetails=" + errorDetails +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(ok, error);
+        return Objects.hashCode(ok, error, errorDetails);
     }
 
     @Override
@@ -47,20 +55,28 @@ public class ChannelUninstallResponse {
             return false;
         }
         final ChannelUninstallResponse other = (ChannelUninstallResponse) obj;
-        return Objects.equal(this.ok, other.ok) && Objects.equal(this.error, other.error);
+        return Objects.equal(this.ok, other.ok) && 
+            Objects.equal(this.error, other.error) &&
+            Objects.equal(this.errorDetails, other.errorDetails);
     }
 
     public static class Builder {
         boolean ok;
-        Optional<String> error;
+        String error;
+        ErrorDetails errorDetails;
 
         public Builder setOk(boolean ok) {
             this.ok = ok;
             return this;
         }
 
-        public Builder setError(Optional<String> string) {
-            this.error = string;
+        public Builder setError(String error) {
+            this.error = error;
+            return this;
+        }
+
+        public Builder setErrorDetails(ErrorDetails errorDetails) {
+            this.errorDetails = errorDetails;
             return this;
         }
 

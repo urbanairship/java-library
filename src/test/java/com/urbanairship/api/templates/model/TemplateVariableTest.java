@@ -36,7 +36,7 @@ public class TemplateVariableTest {
 
     @Test(expected=Exception.class)
     public void testInvalidTemplateVariable() {
-        TemplateVariable variable = TemplateVariable.newBuilder()
+        TemplateVariable.newBuilder()
                 .setName("this_wont_work")
                 .build();
     }

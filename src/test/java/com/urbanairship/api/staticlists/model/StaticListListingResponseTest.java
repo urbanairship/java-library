@@ -1,12 +1,17 @@
 package com.urbanairship.api.staticlists.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Optional;
+import com.urbanairship.api.staticlists.parse.StaticListsObjectMapper;
+
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
+import java.io.IOException;
 
 public class StaticListListingResponseTest {
 
@@ -50,5 +55,22 @@ public class StaticListListingResponseTest {
         assertEquals(updated, response.getStaticListViews().get(1).getLastUpdated());
         assertEquals(Integer.valueOf(1234), response.getStaticListViews().get(1).getChannelCount());
         assertEquals("processing", response.getStaticListViews().get(1).getStatus());
+    }
+
+    @Test
+    public void testErrorAPIStaticListListingResponse() throws IOException {
+        String jsonResponse = "{\n" +
+                "    \"ok\": false,\n" +
+                "    \"error\": \"error\",\n" +
+                "    \"details\": {\n" +
+                "        \"error\": \"error\"\n" +
+                "    }\n" +
+                "}";
+
+        ObjectMapper mapper = StaticListsObjectMapper.getInstance();
+        StaticListListingResponse response = mapper.readValue(jsonResponse, StaticListListingResponse.class);
+        assertEquals("error", response.getError().get());
+        assertEquals("error", response.getErrorDetails().get().getError().get());
+        assertEquals(false, response.getOk());
     }
 }

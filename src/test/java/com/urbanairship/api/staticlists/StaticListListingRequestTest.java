@@ -60,7 +60,7 @@ public class StaticListListingRequestTest {
 
     @Test
     public void testParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<StaticListListingResponse>() {
+        ResponseParser<StaticListListingResponse> responseParser = new ResponseParser<StaticListListingResponse>() {
             @Override
             public StaticListListingResponse parse(String response) throws IOException {
                 return mapper.readValue(response, StaticListListingResponse.class);

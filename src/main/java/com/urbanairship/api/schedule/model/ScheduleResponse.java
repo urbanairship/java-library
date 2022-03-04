@@ -6,8 +6,10 @@ package com.urbanairship.api.schedule.model;
 
 
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.urbanairship.api.common.model.ErrorDetails;
 
 /**
  * Represents a response from the Urban Airship API for Scheduled Notifications.
@@ -19,13 +21,17 @@ public final class ScheduleResponse {
     private final ImmutableList<String> scheduleUrls;
     private final ImmutableList<String> scheduleIds;
     private final ImmutableList<SchedulePayloadResponse> schedulePayloadResponses;
+    private final Optional<String> error;
+    private final Optional<ErrorDetails> errorDetails;
 
-    private ScheduleResponse(boolean ok, String operationId, ImmutableList<String> scheduleUrls, ImmutableList<String> scheduleIds, ImmutableList<SchedulePayloadResponse> schedulePayloadResponses) {
+    private ScheduleResponse(boolean ok, String operationId, ImmutableList<String> scheduleUrls, ImmutableList<String> scheduleIds, ImmutableList<SchedulePayloadResponse> schedulePayloadResponses, String error, ErrorDetails errorDetails) {
         this.ok = ok;
         this.operationId = operationId;
         this.scheduleUrls = scheduleUrls;
         this.scheduleIds = scheduleIds;
         this.schedulePayloadResponses = schedulePayloadResponses;
+        this.error = Optional.fromNullable(error);
+        this.errorDetails = Optional.fromNullable(errorDetails);
     }
 
     /**
@@ -83,6 +89,24 @@ public final class ScheduleResponse {
         return schedulePayloadResponses;
     }
 
+    /**
+     * Get the error if present
+     *
+     * @return An Optional String
+     */
+    public Optional<String> getError() {
+        return error;
+    }
+
+    /**
+     * Get the error details if present
+     *
+     * @return An Optional String
+     */
+    public Optional<ErrorDetails> getErrorDetails() {
+        return errorDetails;
+    }
+
     @Override
     public String toString() {
         return "ScheduleResponse{" +
@@ -91,12 +115,14 @@ public final class ScheduleResponse {
                 ", scheduleUrls=" + scheduleUrls +
                 ", scheduleIds=" + scheduleIds +
                 ", schedulePayloadResponses=" + schedulePayloadResponses +
+                ", error=" + error +
+                ", errorDetails=" + errorDetails +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(ok, operationId, scheduleUrls, scheduleIds, schedulePayloadResponses);
+        return Objects.hashCode(ok, operationId, scheduleUrls, scheduleIds, schedulePayloadResponses, error, errorDetails);
     }
 
     @Override
@@ -108,7 +134,7 @@ public final class ScheduleResponse {
             return false;
         }
         final ScheduleResponse other = (ScheduleResponse) obj;
-        return Objects.equal(this.ok, other.ok) && Objects.equal(this.operationId, other.operationId) && Objects.equal(this.scheduleUrls, other.scheduleUrls) && Objects.equal(this.scheduleIds, other.scheduleIds) && Objects.equal(this.schedulePayloadResponses, other.schedulePayloadResponses);
+        return Objects.equal(this.ok, other.ok) && Objects.equal(this.operationId, other.operationId) && Objects.equal(this.scheduleUrls, other.scheduleUrls) && Objects.equal(this.scheduleIds, other.scheduleIds) && Objects.equal(this.schedulePayloadResponses, other.schedulePayloadResponses) && Objects.equal(this.error, other.error) && Objects.equal(this.errorDetails, other.errorDetails);
     }
 
     /**
@@ -121,6 +147,8 @@ public final class ScheduleResponse {
         private ImmutableList.Builder<String> scheduleUrls = ImmutableList.builder();
         private ImmutableList.Builder<String> scheduleIds = ImmutableList.builder();
         private ImmutableList.Builder<SchedulePayloadResponse> schedulePayloads = ImmutableList.builder();
+        private String error;
+        private ErrorDetails errorDetails;
 
         private Builder() {
         }
@@ -165,10 +193,32 @@ public final class ScheduleResponse {
             return this;
         }
 
+        /**
+         * Set the error
+         *
+         * @param error String
+         * @return Builder
+         */
+        public Builder setError(String error) {
+            this.error = error;
+            return this;
+        }
+
+        /**
+         * Set the errorDetails
+         *
+         * @param errorDetails String
+         * @return Builder
+         */
+        public Builder setErrorDetails(ErrorDetails errorDetails) {
+            this.errorDetails = errorDetails;
+            return this;
+        }
+
         public ScheduleResponse build() {
             Preconditions.checkNotNull(ok, "The ok attribute must be set in order to build ScheduleResponse");
             Preconditions.checkNotNull(operationId, "Operation ID must be set in order to build ScheduleResponse");
-            return new ScheduleResponse(ok, operationId, scheduleUrls.build(), scheduleIds.build(), schedulePayloads.build());
+            return new ScheduleResponse(ok, operationId, scheduleUrls.build(), scheduleIds.build(), schedulePayloads.build(), error, errorDetails);
         }
     }
 }

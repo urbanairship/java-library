@@ -134,7 +134,7 @@ public class PlatformStatsRequestTest {
 
     @Test
     public void testPlatformStatsParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<PlatformStatsResponse>() {
+        ResponseParser<PlatformStatsResponse> responseParser = new ResponseParser<PlatformStatsResponse>() {
             @Override
             public PlatformStatsResponse parse(String response) throws IOException {
                 return mapper.readValue(response, PlatformStatsResponse.class);

@@ -1,4 +1,31 @@
 -------------------------
+7.1.0 04MAR22
+-------------------------
+- Added support for attribute lists listing
+- Added support for attribute lists create
+- Added support for attribute lists errors
+- Added support for attribute lists upload
+- Added support for email attachment
+- Added support for email update
+- Added support for email channel lookup
+- Added support for SMS channel update
+- Added support for custom SMS response
+- Added support for keyword interaction
+- Added support for schedule create and send
+- Added support for open channel uninstall
+- Added support for open channel tags
+- Added support for custom events details listing
+- Added support for create tag list
+- Added support for upload tag list
+- Added support for get tag lists
+- Added errors handling to Responses classes
+- Added missing parameters for register email
+- Removed unused imports
+- Marked location and CSV stats classes as deprecated
+- Fixed schedule email template listing
+- Fixed app key value in User Agent header
+
+-------------------------
 7.0.0 06JAN22
 -------------------------
 - Datetime expiry object has been replaced by PushExpiry object for InApp.

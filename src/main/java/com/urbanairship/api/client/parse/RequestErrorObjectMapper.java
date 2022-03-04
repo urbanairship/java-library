@@ -3,8 +3,6 @@
  */
 
 package com.urbanairship.api.client.parse;
-
-import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.urbanairship.api.client.RequestError;
@@ -18,7 +16,7 @@ Jackson to enable object parsing.
 public final class RequestErrorObjectMapper {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    private static final SimpleModule MODULE = new SimpleModule("Urban Airship API Client Module", new Version(1, 0, 0, null));
+    private static final SimpleModule MODULE = new SimpleModule("Urban Airship API Client Module");
 
     static {
         MODULE.addDeserializer(RequestErrorDetails.Location.class, new StreamLocationDeserializer());

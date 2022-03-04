@@ -134,7 +134,7 @@ public class CreateAndSendEmailTest {
                 .setId("secondAttachmentId")
                 .build();
 
-        templateEmailPayload = createAndSendEmailPayload.newBuilder()
+        templateEmailPayload = CreateAndSendEmailPayload.newBuilder()
                 .setMessageType(MessageType.COMMERCIAL)
                 .setSenderName("Urban Airship")
                 .setSenderAddress("team@urbanairship.com")
@@ -308,7 +308,7 @@ public class CreateAndSendEmailTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testEmailTemplateIdAndFieldsBeingSet() {
-        EmailTemplate emailTemplate = EmailTemplate.newBuilder()
+        EmailTemplate.newBuilder()
                 .setTemplateId("templateId")
                 .setEmailFields(EmailFields.newBuilder()
                         .setPlainTextBody("plainText")
@@ -319,7 +319,7 @@ public class CreateAndSendEmailTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testEmailTemplateIdAndFieldsNullValues() {
-        EmailTemplate emailTemplate = EmailTemplate.newBuilder()
+        EmailTemplate.newBuilder()
                 .build();
     }
 
@@ -329,7 +329,7 @@ public class CreateAndSendEmailTest {
                 .setTemplateId("template_id")
                 .build();
 
-        CreateAndSendEmailPayload payload = CreateAndSendEmailPayload.newBuilder()
+        CreateAndSendEmailPayload.newBuilder()
                 .setMessageType(MessageType.COMMERCIAL)
                 .setSenderName("Urban Airship")
                 .setSubject("Welcome to the Winter Sale!")
@@ -342,7 +342,7 @@ public class CreateAndSendEmailTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testSubjectAndTemplateNull() {
-        CreateAndSendEmailPayload payload = CreateAndSendEmailPayload.newBuilder()
+        CreateAndSendEmailPayload.newBuilder()
                 .setMessageType(MessageType.COMMERCIAL)
                 .setSenderName("Urban Airship")
                 .setPlaintextBody("Hope you're enjoying our store in {{location}} [[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]")
@@ -357,7 +357,7 @@ public class CreateAndSendEmailTest {
                 .setTemplateId("template_id")
                 .build();
 
-        CreateAndSendEmailPayload payload = CreateAndSendEmailPayload.newBuilder()
+        CreateAndSendEmailPayload.newBuilder()
                 .setMessageType(MessageType.COMMERCIAL)
                 .setSenderName("Urban Airship")
                 .setPlaintextBody("Hope you're enjoying our store in {{location}} [[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]")
@@ -369,7 +369,7 @@ public class CreateAndSendEmailTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testPlainTextAndTemplateNull() {
-        CreateAndSendEmailPayload payload = CreateAndSendEmailPayload.newBuilder()
+        CreateAndSendEmailPayload.newBuilder()
                 .setMessageType(MessageType.COMMERCIAL)
                 .setSubject("subject")
                 .setSenderName("Urban Airship")
@@ -384,7 +384,7 @@ public class CreateAndSendEmailTest {
                 .setTemplateId("template_id")
                 .build();
 
-        CreateAndSendEmailPayload payload = CreateAndSendEmailPayload.newBuilder()
+        CreateAndSendEmailPayload.newBuilder()
                 .setMessageType(MessageType.COMMERCIAL)
                 .setSenderName("Urban Airship")
                 .setSenderAddress("team@urbanairship.com")

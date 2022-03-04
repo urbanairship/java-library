@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Iterables;
-import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.DeviceType;
 import org.junit.Test;
 

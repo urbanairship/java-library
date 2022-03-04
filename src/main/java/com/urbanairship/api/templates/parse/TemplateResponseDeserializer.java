@@ -53,6 +53,22 @@ public class TemplateResponseDeserializer extends JsonDeserializer<TemplateRespo
                                     reader.addAllPushIds(jsonParser);
                                 }
                             })
+                            .put("error", new FieldParser<TemplateResponseReader>() {
+                                @Override
+                                public void parse(TemplateResponseReader reader,
+                                                  JsonParser jsonParser,
+                                                  DeserializationContext deserializationContext) throws IOException {
+                                    reader.readError(jsonParser);
+                                }
+                            })
+                            .put("details", new FieldParser<TemplateResponseReader>() {
+                                @Override
+                                public void parse(TemplateResponseReader reader,
+                                                  JsonParser jsonParser,
+                                                  DeserializationContext deserializationContext) throws IOException {
+                                    reader.readErrorDetails(jsonParser);
+                                }
+                            })
                             .build()
             );
 

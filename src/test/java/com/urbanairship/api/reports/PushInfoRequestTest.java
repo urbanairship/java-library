@@ -55,7 +55,7 @@ public class PushInfoRequestTest {
 
     @Test
     public void testPushParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<PushInfoResponse>() {
+        ResponseParser<PushInfoResponse> responseParser = new ResponseParser<PushInfoResponse>() {
             @Override
             public PushInfoResponse parse(String response) throws IOException {
                 return mapper.readValue(response, PushInfoResponse.class);

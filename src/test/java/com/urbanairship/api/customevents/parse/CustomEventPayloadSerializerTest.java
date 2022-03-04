@@ -10,9 +10,8 @@ import com.urbanairship.api.customevents.model.CustomEventUser;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.junit.Rule;
+import org.junit.Assert;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -22,9 +21,6 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
 public class CustomEventPayloadSerializerTest {
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     private static final ObjectMapper MAPPER = PushObjectMapper.getInstance();
 
@@ -127,36 +123,50 @@ public class CustomEventPayloadSerializerTest {
     @Test
     public void testNoChannelType() throws IOException {
 
-        expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage("Must provide channel and channelType, or namedUserId");
-
-        CustomEventUser customEventUser = CustomEventUser.newBuilder()
+        Exception exception = Assert.assertThrows(IllegalArgumentException.class, () -> {
+                CustomEventUser.newBuilder()
                 .setChannel("e393d28e-23b2-4a22-9ace-dc539a5b07a8")
                 .build();
+            });
+        
+        String expectedMessage = "Must provide channel and channelType, or namedUserId";
+        String actualMessage = exception.getMessage();
+
+        Assert.assertTrue(actualMessage.contains(expectedMessage));
+
     }
 
     @Test
     public void testChannelTypeNoChannel() throws IOException, IllegalArgumentException {
 
-        expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage("Must provide channel and channelType, or namedUserId");
-
-        CustomEventUser customEventUser = CustomEventUser.newBuilder()
+        Exception exception = Assert.assertThrows(IllegalArgumentException.class, () -> {
+                CustomEventUser.newBuilder()
                 .setCustomEventChannelType(CustomEventChannelType.ANDROID_CHANNEL)
                 .build();
+            });
+        
+        String expectedMessage = "Must provide channel and channelType, or namedUserId";
+        String actualMessage = exception.getMessage();
+
+        Assert.assertTrue(actualMessage.contains(expectedMessage));
+
     }
 
     @Test
     public void testNamedUserAndChannel() throws IOException {
 
-        expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage("Must provide either channel and channelType or namedUserId, not both");
-
-        CustomEventUser customEventUser = CustomEventUser.newBuilder()
+        Exception exception = Assert.assertThrows(IllegalArgumentException.class, () -> {
+                CustomEventUser.newBuilder()
                 .setNamedUserId("hugh.manbeing")
                 .setChannel("e393d28e-23b2-4a22-9ace-dc539a5b07a8")
                 .setCustomEventChannelType(CustomEventChannelType.ANDROID_CHANNEL)
                 .build();
+            });
+        
+        String expectedMessage = "Must provide either channel and channelType or namedUserId, not both";
+        String actualMessage = exception.getMessage();
+
+        Assert.assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test

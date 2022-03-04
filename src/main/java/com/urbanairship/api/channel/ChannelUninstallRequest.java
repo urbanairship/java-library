@@ -14,7 +14,6 @@ import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
 import org.apache.http.entity.ContentType;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -76,12 +75,7 @@ public class ChannelUninstallRequest implements Request<ChannelUninstallResponse
 
     @Override
     public ResponseParser<ChannelUninstallResponse> getResponseParser() {
-        return new ResponseParser<ChannelUninstallResponse>() {
-            @Override
-            public ChannelUninstallResponse parse(String response) throws IOException {
-                return MAPPER.readValue(response, ChannelUninstallResponse.class);
-            }
-        };
+        return response -> MAPPER.readValue(response, ChannelUninstallResponse.class);
     }
 
     @Override

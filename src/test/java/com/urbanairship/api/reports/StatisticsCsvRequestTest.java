@@ -56,7 +56,7 @@ public class StatisticsCsvRequestTest {
 
     @Test
     public void testStatisticsParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<String>() {
+        ResponseParser<String> responseParser = new ResponseParser<String>() {
             @Override
             public String parse(String response) throws IOException {
                 return response;

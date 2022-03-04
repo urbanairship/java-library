@@ -1,6 +1,5 @@
 package com.urbanairship.api.createandsend;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.common.parse.DateFormats;
@@ -16,10 +15,9 @@ import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.joda.time.DateTime;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import static junit.framework.Assert.assertEquals;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -97,12 +95,12 @@ public class CreateAndSendSmsTest {
         JsonNode actualNode = MAPPER.readTree(actualJson);
         JsonNode expectedNode = MAPPER.readTree(expectedJson);
 
-        assertEquals(expectedNode, actualNode);
+        Assert.assertEquals(expectedNode, actualNode);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testBadPayload() {
-        SmsPayload smsPayload = SmsPayload.newBuilder()
+        SmsPayload.newBuilder()
                 .setAlert("Awesome Alert")
                 .setSmsTemplate(smsTemplate)
                 .build();
@@ -116,7 +114,7 @@ public class CreateAndSendSmsTest {
         JsonNode actualNode = MAPPER.readTree(actualJson);
         JsonNode expectedNode = MAPPER.readTree(expectedJson);
 
-        assertEquals(expectedNode, actualNode);
+        Assert.assertEquals(expectedNode, actualNode);
     }
 
     @Test
@@ -134,8 +132,8 @@ public class CreateAndSendSmsTest {
         JsonNode actualTemplateIdNode = MAPPER.readTree(MAPPER.writeValueAsString(smsTemplate));
         JsonNode expectedTemplateIdNode = MAPPER.readTree(templateIdJson);
 
-        assertEquals(expectedNode, actualNode);
-        assertEquals(expectedTemplateIdNode, actualTemplateIdNode);
+        Assert.assertEquals(expectedNode, actualNode);
+        Assert.assertEquals(expectedTemplateIdNode, actualTemplateIdNode);
     }
 
     @Test
@@ -146,7 +144,7 @@ public class CreateAndSendSmsTest {
         JsonNode actualNode = MAPPER.readTree(actualJson);
         JsonNode expectedNode = MAPPER.readTree(expectedJson);
 
-        assertEquals(expectedNode, actualNode);
+        Assert.assertEquals(expectedNode, actualNode);
     }
 
     @Test
@@ -175,7 +173,7 @@ public class CreateAndSendSmsTest {
         JsonNode actualNode = MAPPER.readTree(actualJson);
         JsonNode expectedNode = MAPPER.readTree(expectedJson);
 
-        assertEquals(expectedNode, actualNode);
+        Assert.assertEquals(expectedNode, actualNode);
     }
 
     @Test
@@ -224,6 +222,6 @@ public class CreateAndSendSmsTest {
         JsonNode actualNode = MAPPER.readTree(actualJson);
         JsonNode expectedNode = MAPPER.readTree(expectedJson);
 
-        assertEquals(expectedNode, actualNode);
+        Assert.assertEquals(expectedNode, actualNode);
     }
 }

@@ -5,11 +5,7 @@ import com.urbanairship.api.client.parse.RequestErrorObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -145,15 +141,5 @@ public class RequestErrorTest {
 
         assertEquals(RequestError.errorFromResponse(errorString, "text/html"), error);
         assertEquals("Error in error string", error.getError(), "Unauthorized");
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testThrowsOnNullString() throws Exception {
-        @SuppressWarnings("UnusedAssignment") RequestError error = RequestError.newBuilder().build();
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testThrowsOnEmptyError() throws Exception {
-        @SuppressWarnings("UnusedAssignment") RequestError error = RequestError.newBuilder().setError("").build();
     }
 }

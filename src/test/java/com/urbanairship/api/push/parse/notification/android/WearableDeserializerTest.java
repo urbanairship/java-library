@@ -6,11 +6,9 @@ import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.notification.android.Wearable;
 import com.urbanairship.api.push.parse.PushObjectMapper;
+
+import org.junit.Assert;
 import org.junit.Test;
-
-import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 
 public class WearableDeserializerTest {
     private final ObjectMapper mapper = PushObjectMapper.getInstance();
@@ -45,21 +43,21 @@ public class WearableDeserializerTest {
                 "}";
 
         Wearable wearable = mapper.readValue(wearableJson, Wearable.class);
-        assertNotNull(wearable);
-        assertEquals(wearable.getBackgroundImage().get(), "https://yolo.pizza.biz/");
+        Assert.assertNotNull(wearable);
+        Assert.assertEquals(wearable.getBackgroundImage().get(), "https://yolo.pizza.biz/");
 
         ImmutableList<ImmutableMap<String,String>> extraPages = wearable.getExtraPages().get();
-        assertNotNull(extraPages);
-        assertEquals(extraPages.get(0).get("title"), "Title1");
-        assertEquals(extraPages.get(0).get("alert"), "An alert");
-        assertEquals(extraPages.get(1).get("title"), "Title2");
-        assertEquals(extraPages.get(1).get("alert"), "An alert again");
+        Assert.assertNotNull(extraPages);
+        Assert.assertEquals(extraPages.get(0).get("title"), "Title1");
+        Assert.assertEquals(extraPages.get(0).get("alert"), "An alert");
+        Assert.assertEquals(extraPages.get(1).get("title"), "Title2");
+        Assert.assertEquals(extraPages.get(1).get("alert"), "An alert again");
 
         Interactive interactive = wearable.getInteractive().get();
-        assertNotNull(interactive);
-        assertEquals(interactive.getType(), "ua_yes_no_foreground");
-        assertEquals(interactive.getButtonActions().get("yes").getAddTags().get().getValue().getSingleTag(), "butter");
-        assertEquals(interactive.getButtonActions().get("yes").getRemoveTags().get().getValue().getSingleTag(), "cake");
-        assertEquals(interactive.getButtonActions().get("no").getRemoveTags().get().getValue().getSingleTag(), "cool");
+        Assert.assertNotNull(interactive);
+        Assert.assertEquals(interactive.getType(), "ua_yes_no_foreground");
+        Assert.assertEquals(interactive.getButtonActions().get("yes").getAddTags().get().getValue().getSingleTag(), "butter");
+        Assert.assertEquals(interactive.getButtonActions().get("yes").getRemoveTags().get().getValue().getSingleTag(), "cake");
+        Assert.assertEquals(interactive.getButtonActions().get("no").getRemoveTags().get().getValue().getSingleTag(), "cool");
     }
 }

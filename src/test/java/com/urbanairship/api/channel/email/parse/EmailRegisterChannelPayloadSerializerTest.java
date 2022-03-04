@@ -3,6 +3,7 @@ package com.urbanairship.api.channel.email.parse;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.channel.model.email.OptInLevel;
+import com.urbanairship.api.channel.model.email.OptInMode;
 import com.urbanairship.api.channel.model.email.RegisterEmailChannel;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 
@@ -25,18 +26,24 @@ public class EmailRegisterChannelPayloadSerializerTest {
                     .setTimeZone("America/Los_Angeles")
                     .setLocaleCountry("US")
                     .setLocaleLanguage("en")
+                    .setEmailOptInMode(OptInMode.CLASSIC)
+                    .addProperty("interests", "newsletter")
                     .build();
 
             String parsedJson = MAPPER.writeValueAsString(registerEmailChannel);
             String jsonString = String.format(" {\n" +
                     "     \"channel\" : {\n" +
                     "        \"type\": \"email\",\n" +
-                    "        \"%s\": \"2018-02-13T11:58:59\",\n" +
                     "        \"address\": \"name@example.com\",\n" +
+                    "        \"%s\": \"2018-02-13T11:58:59\",\n" +
                     "        \"timezone\" : \"America/Los_Angeles\",\n" +
                     "        \"locale_country\" : \"US\",\n" +
                     "        \"locale_language\" : \"en\"\n" +
-                    "     }\n" +
+                    "        },\n" +
+                    "        \"opt_in_mode\" : \"classic\",\n" +
+                    "        \"properties\" : {\n" +
+                    "           \"interests\" : \"newsletter\"\n" +
+                    "        }\n" +
                     "  }",level.getIdentifier());
 
             JsonNode actual = MAPPER.readTree(parsedJson);

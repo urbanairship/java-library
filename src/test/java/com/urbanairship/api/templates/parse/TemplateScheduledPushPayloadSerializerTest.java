@@ -7,13 +7,11 @@ import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.schedule.model.Schedule;
-import com.urbanairship.api.templates.model.TemplatePushPayload;
 import com.urbanairship.api.templates.model.TemplateScheduledPushPayload;
 import com.urbanairship.api.templates.model.TemplateSelector;
 import org.joda.time.DateTime;
+import org.junit.Assert;
 import org.junit.Test;
-
-import static junit.framework.Assert.assertEquals;
 
 public class TemplateScheduledPushPayloadSerializerTest {
 
@@ -64,6 +62,6 @@ public class TemplateScheduledPushPayloadSerializerTest {
         JsonNode jsonFromObject = MAPPER.readTree(templateScheduledPushPayloadSerialized);
         JsonNode jsonFromString = MAPPER.readTree(templateScheduledPushPayloadString);
 
-        assertEquals(jsonFromObject, jsonFromString);
+        Assert.assertEquals(jsonFromObject, jsonFromString);
     }
 }

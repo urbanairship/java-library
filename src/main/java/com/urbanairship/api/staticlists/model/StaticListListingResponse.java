@@ -5,15 +5,21 @@
 package com.urbanairship.api.staticlists.model;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.urbanairship.api.common.model.ErrorDetails;
 
 public class StaticListListingResponse {
     private final boolean ok;
     private final ImmutableList<StaticListView> staticListViews;
+    private final Optional<String> error;
+    private final Optional<ErrorDetails> errorDetails;
 
     private StaticListListingResponse(Builder builder) {
         this.ok = builder.ok;
         this.staticListViews = builder.staticListObjects.build();
+        this.error = Optional.fromNullable(builder.error);
+        this.errorDetails = Optional.fromNullable(builder.errorDetails);
     }
 
     /**
@@ -43,17 +49,37 @@ public class StaticListListingResponse {
         return staticListViews;
     }
 
+    /**
+     * Get the error if present
+     *
+     * @return An Optional String
+     */
+    public Optional<String> getError() {
+        return error;
+    }
+
+    /**
+     * Get the error details if present
+     *
+     * @return An Optional String
+     */
+    public Optional<ErrorDetails> getErrorDetails() {
+        return errorDetails;
+    }
+
     @Override
     public String toString() {
         return "StaticListListingResponse{" +
                 "ok=" + ok +
                 ", staticListViews=" + staticListViews +
+                ", error=" + error +
+                ", errorDetails=" + errorDetails +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(ok, staticListViews);
+        return Objects.hashCode(ok, staticListViews, error, errorDetails);
     }
 
     @Override
@@ -66,13 +92,17 @@ public class StaticListListingResponse {
         }
         final StaticListListingResponse other = (StaticListListingResponse) obj;
         return Objects.equal(this.ok, other.ok) &&
-                Objects.equal(this.staticListViews, other.staticListViews);
+                Objects.equal(this.staticListViews, other.staticListViews) &&
+                Objects.equal(this.error, other.error) &&
+                Objects.equal(this.errorDetails, other.errorDetails);
     }
 
 
     public static class Builder {
         private boolean ok;
         private ImmutableList.Builder<StaticListView> staticListObjects = ImmutableList.builder();
+        private String error;
+        private ErrorDetails errorDetails;
 
         /**
          * Set the ok status.
@@ -104,6 +134,28 @@ public class StaticListListingResponse {
          */
         public Builder addAllStaticLists(Iterable<? extends StaticListView> staticListObjects) {
             this.staticListObjects.addAll(staticListObjects);
+            return this;
+        }
+
+        /**
+         * Set the error
+         *
+         * @param error String
+         * @return Builder
+         */
+        public Builder setError(String error) {
+            this.error = error;
+            return this;
+        }
+
+                /**
+         * Set the errorDetails
+         *
+         * @param errorDetails String
+         * @return Builder
+         */
+        public Builder setErrorDetails(ErrorDetails errorDetails) {
+            this.errorDetails = errorDetails;
             return this;
         }
 
