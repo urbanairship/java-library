@@ -19,7 +19,7 @@ public class UpdateSmsChannelPayloadSerializerTest {
             UpdateSmsChannel updateSmsChannel = UpdateSmsChannel.newBuilder()
                     .setMsisdn("13609048615")
                     .setSender("17372004196")
-                    .setOptedIn(DateTime.parse("2021-10-11T02:03:03"))
+                    .setOptedIn(DateTime.parse("2021-10-11T02:03:03.000Z"))
                     .setLocaleCountry("US")
                     .setLocaleLanguage("en")
                     .setTimeZone("America/Los_Angeles")
@@ -29,7 +29,7 @@ public class UpdateSmsChannelPayloadSerializerTest {
             String jsonString = String.format(" {\n" +
                     "        \"msisdn\": \"13609048615\",\n" +
                     "        \"sender\": \"17372004196\",\n" +
-                    "        \"opted_in\": \"2021-10-11T00:03:03\",\n" +
+                    "        \"opted_in\": \"2021-10-11T02:03:03\",\n" +
                     "        \"timezone\" : \"America/Los_Angeles\",\n" +
                     "        \"locale_country\" : \"US\",\n" +
                     "        \"locale_language\" : \"en\"\n" +
