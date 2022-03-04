@@ -3,7 +3,6 @@ package com.urbanairship.api.push.model.notification.email;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.junit.Test;
 
@@ -14,14 +13,11 @@ public class EmailPayloadTest {
 
     @Test
     public void testBuilder() {
-        DeviceType deviceTypeEmail = DeviceType.open("email");
-
         EmailPayload emailPayload = EmailPayload.newBuilder()
                 .setSubject("Welcome to the Winter Sale! ")
                 .setPlaintextBody("Greetings! Check out our latest winter deals! [[ua-unsubscribe href=\"http://unsubscribe.urbanairship.com/email/success.html\"]]")
                 .setHtmlBody("<h1>Seasons Greetings</h1><p>Check out our winter deals!</p><p><a data-ua-unsubscribe=\"1\" title=\"unsubscribe\" href=\"http://unsubscribe.urbanairship.com/email/success.html\">Unsubscribe</a></p>")
                 .setMessageType(MessageType.COMMERCIAL)
-                .setDeviceType(deviceTypeEmail)
                 .setSenderName("Urban Airship")
                 .setSenderAddress("team@urbanairship.com")
                 .setReplyTo("no-reply@urbanairship.com")
@@ -38,7 +34,6 @@ public class EmailPayloadTest {
 
     @Test
     public void testSerializer() throws JsonProcessingException {
-        DeviceType deviceTypeEmail = DeviceType.open("email");
         String expectedPayloadString = "{\n" +
                 "  \"subject\": \"Welcome to the Winter Sale! \",\n" +
                 "  \"html_body\": \"<h1>Seasons Greetings</h1><p>Check out our winter deals!</p><p><a data-ua-unsubscribe=\\\"1\\\" title=\\\"unsubscribe\\\" href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\">Unsubscribe</a></p>\",\n" +
@@ -70,7 +65,6 @@ public class EmailPayloadTest {
                 .setPlaintextBody("Greetings! Check out our latest winter deals! [[ua-unsubscribe href=\"http://unsubscribe.urbanairship.com/email/success.html\"]]")
                 .setHtmlBody("<h1>Seasons Greetings</h1><p>Check out our winter deals!</p><p><a data-ua-unsubscribe=\"1\" title=\"unsubscribe\" href=\"http://unsubscribe.urbanairship.com/email/success.html\">Unsubscribe</a></p>")
                 .setMessageType(MessageType.COMMERCIAL)
-                .setDeviceType(deviceTypeEmail)
                 .setSenderName("Urban Airship")
                 .setSenderAddress("team@urbanairship.com")
                 .setReplyTo("no-reply@urbanairship.com")

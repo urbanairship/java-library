@@ -32,6 +32,6 @@ public class PartialPushPayloadDeserializerTest {
 
     @Test(expected = Exception.class)
     public void testEmptyPartialPushPayload() {
-        PartialPushPayload payload = PartialPushPayload.newBuilder().build();
+        PartialPushPayload.newBuilder().build();
     }
 }

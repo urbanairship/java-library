@@ -2,7 +2,6 @@ package com.urbanairship.api.experiments;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.experiments.model.Experiment;
@@ -16,6 +15,7 @@ import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
 import org.apache.http.HttpHeaders;
 import org.apache.http.entity.ContentType;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,8 +23,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-
-import static junit.framework.Assert.assertEquals;
 
 public class ExperimentRequestTest {
 
@@ -72,14 +70,14 @@ public class ExperimentRequestTest {
 
     @Test
     public void testContentType() throws Exception {
-        assertEquals(createRequest.getContentType(), ContentType.APPLICATION_JSON);
-        assertEquals(validateRequest.getContentType(), ContentType.APPLICATION_JSON);
+        Assert.assertEquals(createRequest.getContentType(), ContentType.APPLICATION_JSON);
+        Assert.assertEquals(validateRequest.getContentType(), ContentType.APPLICATION_JSON);
     }
 
     @Test
     public void testMethod() throws Exception {
-        assertEquals(createRequest.getHttpMethod(), Request.HttpMethod.POST);
-        assertEquals(validateRequest.getHttpMethod(), Request.HttpMethod.POST);
+        Assert.assertEquals(createRequest.getHttpMethod(), Request.HttpMethod.POST);
+        Assert.assertEquals(validateRequest.getHttpMethod(), Request.HttpMethod.POST);
     }
 
     @Test
@@ -88,14 +86,14 @@ public class ExperimentRequestTest {
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
 
-        assertEquals(createRequest.getRequestHeaders(), headers);
-        assertEquals(validateRequest.getRequestHeaders(), headers);
+        Assert.assertEquals(createRequest.getRequestHeaders(), headers);
+        Assert.assertEquals(validateRequest.getRequestHeaders(), headers);
     }
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(createRequest.getRequestBody(), jsonPayload);
-        assertEquals(validateRequest.getRequestBody(), jsonPayload);
+        Assert.assertEquals(createRequest.getRequestBody(), jsonPayload);
+        Assert.assertEquals(validateRequest.getRequestBody(), jsonPayload);
 
     }
 
@@ -104,15 +102,15 @@ public class ExperimentRequestTest {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
         URI expectedUri = URI.create("https://go.urbanairship.com" + EXPERIMENT_PATH);
-        assertEquals(createRequest.getUri(baseURI), expectedUri);
+        Assert.assertEquals(createRequest.getUri(baseURI), expectedUri);
 
         expectedUri = URI.create("https://go.urbanairship.com" + EXPERIMENT_PATH + "validate/");
-        assertEquals(validateRequest.getUri(baseURI), expectedUri);
+        Assert.assertEquals(validateRequest.getUri(baseURI), expectedUri);
     }
 
     @Test
     public void testResponseParser() throws Exception {
-        final ResponseParser responseParser = new ResponseParser<ExperimentResponse>() {
+        final ResponseParser<ExperimentResponse> responseParser = new ResponseParser<ExperimentResponse>() {
             @Override
             public ExperimentResponse parse(String response) throws IOException {
                 return mapper.readValue(response, ExperimentResponse.class);
@@ -132,7 +130,7 @@ public class ExperimentRequestTest {
                 "}";
 
 
-        assertEquals(createRequest.getResponseParser().parse(createJson), responseParser.parse(createJson));
-        assertEquals(validateRequest.getResponseParser().parse(validateJson), responseParser.parse(validateJson));
+        Assert.assertEquals(createRequest.getResponseParser().parse(createJson), responseParser.parse(createJson));
+        Assert.assertEquals(validateRequest.getResponseParser().parse(validateJson), responseParser.parse(validateJson));
     }
 }

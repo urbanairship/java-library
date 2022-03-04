@@ -4,10 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.push.model.InApp;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.templates.model.PartialPushPayload;
+
+import org.junit.Assert;
 import org.junit.Test;
-
-import static junit.framework.Assert.assertEquals;
-
 public class PartialPushPayloadSerializerTest {
     private static final ObjectMapper MAPPER = TemplatesObjectMapper.getInstance();
 
@@ -30,6 +29,6 @@ public class PartialPushPayloadSerializerTest {
                     "\"in_app\":{\"alert\":\"This is in-app!\",\"display_type\":\"banner\"}" +
                 "}";
 
-        assertEquals(partialPushPayloadSerialized, partialPushPayloadString);
+        Assert.assertEquals(partialPushPayloadSerialized, partialPushPayloadString);
     }
 }

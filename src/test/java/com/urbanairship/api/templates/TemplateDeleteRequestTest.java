@@ -15,8 +15,6 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-import static junit.framework.Assert.assertEquals;
-
 public class TemplateDeleteRequestTest {
 
     private final static ObjectMapper mapper = TemplatesObjectMapper.getInstance();
@@ -31,7 +29,7 @@ public class TemplateDeleteRequestTest {
 
     @Test
     public void testContentType() throws Exception {
-        assertEquals(request.getContentType(), null);
+        Assert.assertEquals(request.getContentType(), null);
     }
 
     @Test
@@ -68,7 +66,7 @@ public class TemplateDeleteRequestTest {
                 "\"operation_id\": \"a6394ff8-8a65-4494-ad06-677eb8b7ad6a\"" +
                 "}";
 
-        final ResponseParser responseParser = new ResponseParser<TemplateResponse>() {
+        final ResponseParser<TemplateResponse> responseParser = new ResponseParser<TemplateResponse>() {
             @Override
             public TemplateResponse parse(String response) throws IOException {
                 return mapper.readValue(response, TemplateResponse.class);

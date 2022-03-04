@@ -14,6 +14,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+
 public class NamedUserListingResponseTest {
     private final ObjectMapper mapper = NamedUserObjectMapper.getInstance();
 
@@ -149,5 +151,22 @@ public class NamedUserListingResponseTest {
         assertEquals("user-id-5678", namedUserView2.getNamedUserId());
         assertTrue(namedUserView2.getNamedUserTags().isEmpty());
         assertTrue(namedUserView2.getChannelViews().isEmpty());
+    }
+
+    @Test
+    public void testErrorAPIListNamedUserResponse() throws IOException {
+        String jsonResponse = "{\n" +
+                "    \"ok\": false,\n" +
+                "    \"error\": \"error\",\n" +
+                "    \"details\": {\n" +
+                "        \"error\": \"error\"\n" +
+                "    }\n" +
+                "}";
+
+        ObjectMapper mapper = NamedUserObjectMapper.getInstance();
+        NamedUserListingResponse response = mapper.readValue(jsonResponse, NamedUserListingResponse.class);
+        assertEquals("error", response.getError().get());
+        assertEquals("error", response.getErrorDetails().get().getError().get());
+        assertEquals(false, response.getOk());
     }
 }

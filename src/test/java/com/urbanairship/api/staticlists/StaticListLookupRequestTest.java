@@ -59,7 +59,7 @@ public class StaticListLookupRequestTest {
 
     @Test
     public void testParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<StaticListView>() {
+        ResponseParser<StaticListView> responseParser = new ResponseParser<StaticListView>() {
             @Override
             public StaticListView parse(String response) throws IOException {
                 return mapper.readValue(response, StaticListView.class);

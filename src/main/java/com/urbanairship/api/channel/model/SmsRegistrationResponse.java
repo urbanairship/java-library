@@ -2,6 +2,7 @@ package com.urbanairship.api.channel.model;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
+import com.urbanairship.api.common.model.ErrorDetails;
 
 /**
  * Sms Registration response object.
@@ -10,13 +11,16 @@ public class SmsRegistrationResponse {
     private final boolean ok;
     private final Optional<String> channelId;
     private final Optional<String> status;
-    private final Optional<String> errors;
-
+    private final Optional<String> error;
+    private final Optional<ErrorDetails> errorDetails;
+    
     private SmsRegistrationResponse(Builder builder) {
         this.ok = builder.ok;
         this.channelId = Optional.fromNullable(builder.channelId);
         this.status = Optional.fromNullable(builder.status);
-        this.errors = Optional.fromNullable(builder.errors);
+        this.error = Optional.fromNullable(builder.error);
+        this.errorDetails = Optional.fromNullable(builder.errorDetails);
+
     }
 
     /**
@@ -53,12 +57,33 @@ public class SmsRegistrationResponse {
         return status;
     }
 
-    /**
-     * Returned with 40x responses; explains reason for the unsuccessful request.
-     * @return Optional String errors
+     /**
+     * Get the error if present
+     *
+     * @return An Optional String
      */
-    public Optional<String> getErrors() {
-        return errors;
+    public Optional<String> getError() {
+        return error;
+    }
+
+    /**
+     * Get the error details if present
+     *
+     * @return An Optional String
+     */
+    public Optional<ErrorDetails> getErrorDetails() {
+        return errorDetails;
+    }
+
+    @Override
+    public String toString() {
+        return "SmsRegistrationResponse{" +
+                "ok=" + ok +
+                ", channelId='" + channelId +
+                ", status='" + status +
+                ", error='" + error +
+                ", errorDetails=" + errorDetails +
+                '}';
     }
 
     @Override
@@ -69,12 +94,13 @@ public class SmsRegistrationResponse {
         return ok == that.ok &&
                 Objects.equal(channelId, that.channelId) &&
                 Objects.equal(status, that.status) &&
-                Objects.equal(errors, that.errors);
+                Objects.equal(error, that.error) &&
+                Objects.equal(errorDetails, that.errorDetails);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(ok, channelId, status, errors);
+        return Objects.hashCode(ok, channelId, status, error, errorDetails);
     }
 
     /**
@@ -84,7 +110,8 @@ public class SmsRegistrationResponse {
         private boolean ok;
         private String channelId = null;
         private String status = null;
-        private String errors = null;
+        private String error = null;
+        private ErrorDetails errorDetails = null;
 
         /**
          * Set ok. If false, the request was unsuccessful.
@@ -119,12 +146,24 @@ public class SmsRegistrationResponse {
         }
 
         /**
-         * Set the request errors. Returned with 40x responses; explains why the request was unsuccessful.
-         * @param errors The request errors that explains why the request was unsuccessful.
-         * @return SmsRegistrationResponse Builder
+         * Set the error
+         *
+         * @param error String
+         * @return Builder
          */
-        public Builder setErrors(String errors) {
-            this.errors = errors;
+        public Builder setError(String error) {
+            this.error = error;
+            return this;
+        }
+
+        /**
+         * Set the errorDetails
+         *
+         * @param errorDetails String
+         * @return Builder
+         */
+        public Builder setErrorDetails(ErrorDetails errorDetails) {
+            this.errorDetails = errorDetails;
             return this;
         }
 

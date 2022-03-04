@@ -10,15 +10,11 @@ import com.urbanairship.api.channel.model.attributes.audience.AttributeAudienceT
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.push.model.audience.sms.SmsSelector;
 import org.joda.time.DateTime;
-import org.junit.Rule;
+import org.junit.Assert;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 public class ChannelAttributesPayloadSerializerTest {
     private final ObjectMapper MAPPER = ChannelObjectMapper.getInstance();
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void testBasicPayload() throws Exception {
@@ -129,21 +125,30 @@ public class ChannelAttributesPayloadSerializerTest {
     public void testAbsentValue() throws Exception {
         DateTime now = DateTime.now();
 
-        expectedException.expect(NullPointerException.class);
-        expectedException.expectMessage("Value must not be null when setting attributes");
-
-        Attribute attribute = Attribute.newBuilder()
+        Exception exception = Assert.assertThrows(NullPointerException.class, () -> {
+                Attribute.newBuilder()
                 .setAction(AttributeAction.SET)
                 .setKey("birthday")
                 .setTimeStamp(now)
                 .build();
+            });
+        
+        String expectedMessage = "Value must not be null when setting attributes";
+        String actualMessage = exception.getMessage();
+
+        Assert.assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
     public void testEmptyAudience() throws Exception {
-        expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage("Device types or SmsSelectors must be added.");
 
-        AttributeAudience audience = AttributeAudience.newBuilder().build();
+        Exception exception = Assert.assertThrows(IllegalArgumentException.class, () -> {
+                AttributeAudience.newBuilder().build();
+        });
+
+        String expectedMessage = "Device types or SmsSelectors must be added.";
+        String actualMessage = exception.getMessage();
+
+        Assert.assertTrue(actualMessage.contains(expectedMessage));
     }
 }

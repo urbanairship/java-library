@@ -2,6 +2,7 @@ package com.urbanairship.api.channel.parse;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.urbanairship.api.channel.model.OpenChannelResponse;
+import com.urbanairship.api.common.model.ErrorDetails;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 
@@ -20,6 +21,14 @@ public class OpenChannelResponseReader implements JsonObjectReader<OpenChannelRe
 
     public void readChannelId(JsonParser parser) throws IOException {
         builder.setChannelId(parser.readValueAs(String.class));
+    }
+
+    public void readError(JsonParser parser) throws IOException {
+        builder.setError(parser.readValueAs(String.class));
+    }
+
+    public void readErrorDetails(JsonParser parser) throws IOException {
+        builder.setErrorDetails(parser.readValueAs(ErrorDetails.class));
     }
 
     @Override

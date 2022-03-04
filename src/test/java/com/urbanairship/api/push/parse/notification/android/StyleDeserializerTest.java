@@ -25,7 +25,7 @@ public class StyleDeserializerTest {
                         "\"summary\":\"big pic summary\"" +
                 "}";
 
-        Style bigTextStyle = mapper.readValue(styleBigPictureJson, BigPictureStyle.class);
+        BigPictureStyle bigTextStyle = mapper.readValue(styleBigPictureJson, BigPictureStyle.class);
         assertNotNull(bigTextStyle);
         assertEquals(bigTextStyle.getTitle().get(), "big pic title");
         assertEquals(bigTextStyle.getSummary().get(), "big pic summary");
@@ -43,7 +43,7 @@ public class StyleDeserializerTest {
                         "\"summary\":\"big text summary\"" +
                 "}";
 
-        Style bigTextStyle = mapper.readValue(styleBigTextJson, BigTextStyle.class);
+        BigTextStyle bigTextStyle = mapper.readValue(styleBigTextJson, BigTextStyle.class);
         assertNotNull(bigTextStyle);
         assertEquals(bigTextStyle.getTitle().get(), "big text title");
         assertEquals(bigTextStyle.getSummary().get(), "big text summary");
@@ -61,7 +61,7 @@ public class StyleDeserializerTest {
                         "\"summary\":\"lines summary\"" +
                 "}";
 
-        Style inboxStyle = mapper.readValue(styleLinesJson, InboxStyle.class);
+        InboxStyle inboxStyle = mapper.readValue(styleLinesJson, InboxStyle.class);
         ImmutableList<String> lines = (ImmutableList<String>) inboxStyle.getContent();
         assertNotNull(inboxStyle);
         assertEquals(inboxStyle.getTitle().get(), "lines title");

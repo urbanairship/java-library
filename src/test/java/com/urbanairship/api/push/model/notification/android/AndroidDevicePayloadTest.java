@@ -44,7 +44,7 @@ public class AndroidDevicePayloadTest {
                 .setAlert("alert field")
                 .build();
 
-        AndroidTemplate androidTemplate = AndroidTemplate.newBuilder()
+        AndroidTemplate.newBuilder()
                 .setTemplateId("templateId")
                 .setFields(androidFields)
                 .build();

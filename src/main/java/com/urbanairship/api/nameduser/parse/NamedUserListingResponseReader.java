@@ -6,6 +6,7 @@ package com.urbanairship.api.nameduser.parse;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.urbanairship.api.common.model.ErrorDetails;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.nameduser.model.NamedUserListingResponse;
@@ -39,6 +40,13 @@ public class NamedUserListingResponseReader implements JsonObjectReader<NamedUse
         }));
     }
 
+    public void readError(JsonParser jsonParser) throws IOException {
+        builder.setError(jsonParser.readValueAs(String.class));
+    }
+
+    public void readErrorDetails(JsonParser jsonParser) throws IOException {
+        builder.setErrorDetails(jsonParser.readValueAs(ErrorDetails.class));
+    }
 
     @Override
     public NamedUserListingResponse validateAndBuild() throws IOException {

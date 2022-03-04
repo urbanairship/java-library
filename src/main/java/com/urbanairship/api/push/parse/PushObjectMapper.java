@@ -5,7 +5,6 @@
 package com.urbanairship.api.push.parse;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,7 +14,9 @@ import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.channel.model.email.EmailChannelResponse;
 import com.urbanairship.api.channel.model.email.RegisterEmailChannel;
 import com.urbanairship.api.channel.model.email.UninstallEmailChannel;
+import com.urbanairship.api.channel.model.email.UpdateEmailChannel;
 import com.urbanairship.api.channel.model.open.OpenChannel;
+import com.urbanairship.api.channel.model.sms.UpdateSmsChannel;
 import com.urbanairship.api.channel.model.open.Channel;
 import com.urbanairship.api.createandsend.model.notification.email.CreateAndSendEmailPayload;
 import com.urbanairship.api.createandsend.model.notification.email.EmailFields;
@@ -28,11 +29,17 @@ import com.urbanairship.api.createandsend.parse.notification.email.CreateAndSend
 import com.urbanairship.api.channel.parse.email.RegisterEmailChannelResponseDeserializer;
 import com.urbanairship.api.channel.parse.email.RegisterEmailChannelSerializer;
 import com.urbanairship.api.channel.parse.email.UninstallEmailChannelSerializer;
+import com.urbanairship.api.channel.parse.email.UpdateEmailChannelResponseDeserializer;
+import com.urbanairship.api.channel.parse.email.UpdateEmailChannelSerializer;
 import com.urbanairship.api.channel.parse.open.ChannelSerializer;
 import com.urbanairship.api.channel.parse.open.OpenChannelSerializer;
+import com.urbanairship.api.common.model.ErrorDetails;
+import com.urbanairship.api.channel.parse.sms.UpdateSmsChannelSerializer;
 import com.urbanairship.api.common.parse.CommonObjectMapper;
+import com.urbanairship.api.common.parse.ErrorDetailsDeserializer;
 import com.urbanairship.api.createandsend.model.notification.*;
 import com.urbanairship.api.createandsend.parse.notification.CreateAndSendPayloadSerializer;
+import com.urbanairship.api.createandsend.parse.notification.CreateAndSendSchedulePayloadSerializer;
 import com.urbanairship.api.createandsend.parse.notification.email.EmailFieldsSerializer;
 import com.urbanairship.api.createandsend.parse.notification.email.EmailTemplateSerializer;
 import com.urbanairship.api.createandsend.parse.notification.email.VariableDetailSerializer;
@@ -210,7 +217,7 @@ import com.urbanairship.api.schedule.parse.ScheduledPayloadSerializer;
 public class PushObjectMapper {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    private static final SimpleModule MODULE = new SimpleModule("Push API Module", new Version(1, 0, 0, null));
+    private static final SimpleModule MODULE = new SimpleModule("Push API Module");
 
     static {
         WNSBindingDeserializer bindingDS = new WNSBindingDeserializer();
@@ -404,6 +411,8 @@ public class PushObjectMapper {
                 .addSerializer(UninstallEmailChannel.class,
                         new UninstallEmailChannelSerializer())
                 .addSerializer((EmailPayload.class), new EmailPayloadSerializer())
+                .addSerializer(UpdateEmailChannel.class, new UpdateEmailChannelSerializer())
+                .addDeserializer(EmailChannelResponse.class, new UpdateEmailChannelResponseDeserializer())
 
                 /* LOCALIZATION */
                 .addSerializer(Localization.class, new LocalizationSerializer())
@@ -417,8 +426,9 @@ public class PushObjectMapper {
                 .addSerializer(EmailFields.class, new EmailFieldsSerializer())
                 .addSerializer(VariableDetail.class, new VariableDetailSerializer())
                 .addSerializer(CreateAndSendAudience.class, new CreateAndSendAudienceSerializer())
-                .addSerializer(CreateAndSendEmailPayload.class, new CreateAndSendEmailPayloadSerializer());
-
+                .addSerializer(CreateAndSendEmailPayload.class, new CreateAndSendEmailPayloadSerializer())
+                .addSerializer(CreateAndSendSchedulePayload.class, new CreateAndSendSchedulePayloadSerializer())
+                .addDeserializer(ErrorDetails.class, new ErrorDetailsDeserializer());
 
         MAPPER.registerModule(MODULE);
         MAPPER.registerModule(CommonObjectMapper.getModule());

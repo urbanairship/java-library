@@ -8,9 +8,8 @@ import com.urbanairship.api.client.Request;
 import com.urbanairship.api.nameduser.parse.NamedUserObjectMapper;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.http.entity.ContentType;
-import org.junit.Rule;
+import org.junit.Assert;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -20,9 +19,6 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 
 public class NamedUserRequestTest {
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     private final ObjectMapper mapper = NamedUserObjectMapper.getInstance();
     private final String channelId = UUID.randomUUID().toString();
@@ -139,15 +135,19 @@ public class NamedUserRequestTest {
 
     @Test
     public void testEmailAndChannel() {
-        NamedUserRequest namedUserRequest = NamedUserRequest.newAssociationRequest();
-        namedUserRequest.setChannel(channelId, ChannelType.EMAIL);
-        namedUserRequest.setNamedUserId("namedUserId");
-        namedUserRequest.setEmail("testEmail@test.com");
+        Exception exception = Assert.assertThrows(IllegalArgumentException.class, () -> {
+            NamedUserRequest namedUserRequest = NamedUserRequest.newAssociationRequest();
+            namedUserRequest.setChannel(channelId, ChannelType.EMAIL);
+            namedUserRequest.setNamedUserId("namedUserId");
+            namedUserRequest.setEmail("testEmail@test.com");
+            namedUserRequest.getRequestBody();
+    
+        });
+    
+        String expectedMessage = "Both Channel ID and email cannot be set. Set either the channel ID or the email address.";
+        String actualMessage = exception.getMessage();
 
-        expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage("Both Channel ID and email cannot be set. Set either the channel ID or the email address.");
-
-        namedUserRequest.getRequestBody();
+        Assert.assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test

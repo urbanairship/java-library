@@ -8,7 +8,6 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
-import com.urbanairship.api.push.model.notification.android.BigPictureStyle;
 import com.urbanairship.api.push.model.notification.android.InboxStyle;
 import com.urbanairship.api.push.model.notification.android.Style;
 

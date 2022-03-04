@@ -31,8 +31,6 @@ public class RecentDateRange extends PushModelObject implements DateRange {
     @Override
     public DateTime getStart() {
         return DateTime.now();
-        // TODO
-        // return now.minus(resolution.getPeriod().toPeriod().multipliedBy(units));
     }
 
     @Override

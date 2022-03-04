@@ -2,7 +2,6 @@ package com.urbanairship.api.push.parse.notification.android;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.PushExpiry;
@@ -14,7 +13,6 @@ import com.urbanairship.api.push.model.notification.android.AndroidFields;
 import com.urbanairship.api.push.model.notification.android.AndroidTemplate;
 import com.urbanairship.api.push.model.notification.android.Category;
 import com.urbanairship.api.push.model.notification.android.PublicNotification;
-import com.urbanairship.api.push.model.notification.android.Style;
 import com.urbanairship.api.push.model.notification.android.Wearable;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.junit.Test;
@@ -312,7 +310,7 @@ public class PayloadDeserializerTest {
     }
 
     @Test
-    public void testStyle() throws Exception {
+    public <T> void testStyle() throws Exception {
         String bigTextJson =
                 "{" +
                         "\"style\":{" +
@@ -346,30 +344,23 @@ public class PayloadDeserializerTest {
 
         AndroidDevicePayload bigTextPayload = mapper.readValue(bigTextJson, AndroidDevicePayload.class);
         assertNotNull(bigTextPayload);
-        Style bigTextStyle = bigTextPayload.getStyle().get();
-        assertEquals(bigTextStyle.getType().getStyleType(), "big_text");
-        assertEquals(bigTextStyle.getSummary().get(), "A summary");
-        assertEquals(bigTextStyle.getTitle().get(), "A title");
-        assertEquals(bigTextStyle.getContent(), "BlahBlah");
+        assertEquals(bigTextPayload.getStyle().get().getType().getStyleType(), "big_text");
+        assertEquals(bigTextPayload.getStyle().get().getSummary().get(), "A summary");
+        assertEquals(bigTextPayload.getStyle().get().getTitle().get(), "A title");
+        assertEquals(bigTextPayload.getStyle().get().getContent(), "BlahBlah");
 
         AndroidDevicePayload bigPicPayload = mapper.readValue(bigPicJson, AndroidDevicePayload.class);
         assertNotNull(bigPicPayload);
-        Style bigPicStyle = bigPicPayload.getStyle().get();
-        assertEquals(bigPicStyle.getType().getStyleType(), "big_picture");
-        assertEquals(bigPicStyle.getSummary().get(), "A summary");
-        assertEquals(bigPicStyle.getTitle().get(), "A title");
-        assertEquals(bigPicStyle.getContent(), "pic.png");
+        assertEquals(bigPicPayload.getStyle().get().getType().getStyleType(), "big_picture");
+        assertEquals(bigPicPayload.getStyle().get().getSummary().get(), "A summary");
+        assertEquals(bigPicPayload.getStyle().get().getTitle().get(), "A title");
+        assertEquals(bigPicPayload.getStyle().get().getContent(), "pic.png");
 
         AndroidDevicePayload inboxPayload = mapper.readValue(inboxJson, AndroidDevicePayload.class);
         assertNotNull(inboxPayload);
-        Style inboxStyle = inboxPayload.getStyle().get();
-        assertEquals(inboxStyle.getType().getStyleType(), "inbox");
-        assertEquals(inboxStyle.getSummary().get(), "lines summary");
-        assertEquals(inboxStyle.getTitle().get(), "lines title");
-        ImmutableList<String> lines = (ImmutableList<String>) inboxStyle.getContent();
-        assertEquals(lines.get(0), "line_1");
-        assertEquals(lines.get(1), "line_2");
-        assertEquals(lines.get(2), "line_3");
+        assertEquals(inboxPayload.getStyle().get().getType().getStyleType(), "inbox");
+        assertEquals(inboxPayload.getStyle().get().getSummary().get(), "lines summary");
+        assertEquals(inboxPayload.getStyle().get().getTitle().get(), "lines title");
 
     }
 

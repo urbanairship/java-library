@@ -41,7 +41,7 @@ public class TemplateScheduledPushPayloadTest {
 
     @Test(expected = Exception.class)
     public void testInvalidTemplateScheduledPushPayload() {
-        TemplateScheduledPushPayload payload = TemplateScheduledPushPayload.newBuilder()
+        TemplateScheduledPushPayload.newBuilder()
                 .setAudience(Selectors.tag("tag"))
                 .build();
     }

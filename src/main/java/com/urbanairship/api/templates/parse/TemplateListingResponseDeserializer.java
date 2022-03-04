@@ -77,6 +77,22 @@ public class TemplateListingResponseDeserializer extends JsonDeserializer<Templa
                                     reader.readPrevPage(jsonParser);
                                 }
                             })
+                            .put("error", new FieldParser<TemplateListingResponseReader>() {
+                                @Override
+                                public void parse(TemplateListingResponseReader reader,
+                                                  JsonParser jsonParser,
+                                                  DeserializationContext deserializationContext) throws IOException {
+                                    reader.readError(jsonParser);
+                                }
+                            })
+                            .put("details", new FieldParser<TemplateListingResponseReader>() {
+                                @Override
+                                public void parse(TemplateListingResponseReader reader,
+                                                  JsonParser jsonParser,
+                                                  DeserializationContext deserializationContext) throws IOException {
+                                    reader.readErrorDetails(jsonParser);
+                                }
+                            })
                             .build()
             );
 

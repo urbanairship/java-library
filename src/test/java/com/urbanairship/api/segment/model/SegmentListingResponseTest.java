@@ -1,12 +1,17 @@
 package com.urbanairship.api.segment.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.segments.model.SegmentListingResponse;
 import com.urbanairship.api.segments.model.SegmentListingView;
+import com.urbanairship.api.segments.parse.SegmentObjectMapper;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
+import java.io.IOException;
 
 
 public class SegmentListingResponseTest {
@@ -82,5 +87,22 @@ public class SegmentListingResponseTest {
         assertEquals(response.getSegmentListingViews().get(4).getSegmentId(), "id5");
         assertEquals(response.getSegmentListingViews().get(4).getCreationDate(), 5);
         assertEquals(response.getSegmentListingViews().get(4).getModificationDate(), 10);
+    }
+
+    @Test
+    public void testErrorAPISegmentListingResponse() throws IOException {
+        String jsonResponse = "{\n" +
+                "    \"ok\": false,\n" +
+                "    \"error\": \"error\",\n" +
+                "    \"details\": {\n" +
+                "        \"error\": \"error\"\n" +
+                "    }\n" +
+                "}";
+
+        ObjectMapper mapper = SegmentObjectMapper.getInstance();
+        SegmentListingResponse response = mapper.readValue(jsonResponse, SegmentListingResponse.class);
+        assertEquals("error", response.getError().get());
+        assertEquals("error", response.getErrorDetails().get().getError().get());
+        assertEquals(false, response.getOk().get());
     }
 }

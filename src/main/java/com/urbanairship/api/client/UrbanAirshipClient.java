@@ -38,10 +38,10 @@ public class UrbanAirshipClient implements Closeable {
 
     private UrbanAirshipClient(Builder builder) {
         this.client = builder.client;
-        userAgent = getUserAgent();
         this.key = builder.key;
         this.secret = Optional.fromNullable(builder.secret);
         this.bearerToken = Optional.fromNullable(builder.bearerToken);
+        userAgent = getUserAgent(builder.key);
     }
 
     /**
@@ -112,7 +112,7 @@ public class UrbanAirshipClient implements Closeable {
      * @return The user agent.
      */
     @VisibleForTesting
-    public String getUserAgent() {
+    public String getUserAgent(String appKey) {
         String userAgent = "UNKNOWN";
         InputStream stream = getClass().getResourceAsStream("/client.properties");
 
@@ -121,7 +121,7 @@ public class UrbanAirshipClient implements Closeable {
             try {
                 props.load(stream);
                 stream.close();
-                userAgent = "UAJavaLib/" + props.get("client.version") + " " + getAppKey();
+                userAgent = "UAJavaLib/" + props.get("client.version") + " " + appKey;
             } catch (IOException e) {
                 log.error("Failed to retrieve client user agent due to IOException - setting to \"UNKNOWN\"", e);
             }

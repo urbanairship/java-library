@@ -1,6 +1,8 @@
 package com.urbanairship.api.reports.model;
 
 import com.google.common.collect.ImmutableList;
+import com.urbanairship.api.common.model.ErrorDetails;
+
 import java.util.Optional;
 
 import java.util.Objects;
@@ -8,10 +10,21 @@ import java.util.Objects;
 public class ResponseReport {
     private final Optional<String> next_page;
     private final Optional<ImmutableList<ResponseReportResponse>> responses;
+    private final Optional<Boolean> ok;
+    private final Optional<String> error;
+    private final Optional<ErrorDetails> errorDetails;
 
-    private ResponseReport(Optional<String> next_page, Optional<ImmutableList<ResponseReportResponse>> responses) {
+    private ResponseReport(
+        Optional<String> next_page, 
+        Optional<ImmutableList<ResponseReportResponse>> responses, 
+        Boolean ok,
+        String error,
+        ErrorDetails errorDetails) {
         this.next_page = next_page;
         this.responses = responses;
+        this.ok = Optional.ofNullable(ok);
+        this.error = Optional.ofNullable(error);
+        this.errorDetails = Optional.ofNullable(errorDetails);
     }
 
     public static Builder newBuilder() { return new Builder(); }
@@ -34,18 +47,48 @@ public class ResponseReport {
         return responses;
     }
 
+        /**
+     * Get the OK status as a boolean
+     *
+     * @return boolean
+     */
+    public Optional<Boolean> getOk() {
+        return ok;
+    }
+
+    /**
+     * Get the error if present
+     *
+     * @return An Optional String
+     */
+    public Optional<String> getError() {
+        return error;
+    }
+
+    /**
+     * Get the error details if present
+     *
+     * @return An Optional String
+     */
+    public Optional<ErrorDetails> getErrorDetails() {
+        return errorDetails;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ResponseReport that = (ResponseReport) o;
         return Objects.equals(next_page, that.next_page) &&
-                Objects.equals(responses, that.responses);
+                Objects.equals(responses, that.responses) &&
+                Objects.equals(ok, that.ok) &&
+                Objects.equals(error, that.error) &&
+                Objects.equals(errorDetails, that.errorDetails);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(next_page, responses);
+        return Objects.hash(next_page, responses, ok, error, errorDetails);
     }
 
     @Override
@@ -53,12 +96,18 @@ public class ResponseReport {
         return "ResponseReport{" +
                 "next_page=" + next_page +
                 ", responses=" + responses +
+                ", ok=" + ok +
+                ", error=" + error +
+                ", errorDetails=" + errorDetails +
                 '}';
     }
 
     public static class Builder {
         private String next_page = null;
         private ImmutableList.Builder<ResponseReportResponse> responses = ImmutableList.builder();
+        private boolean ok = true;
+        private String error;
+        private ErrorDetails errorDetails;
 
         private Builder() {}
 
@@ -96,12 +145,46 @@ public class ResponseReport {
         }
 
         /**
+         * Set the ok status
+         *
+         * @param value boolean
+         * @return Builder
+         */
+        public Builder setOk(boolean value) {
+            this.ok = value;
+            return this;
+        }
+
+        /**
+         * Set the error
+         *
+         * @param error String
+         * @return Builder
+         */
+        public Builder setError(String error) {
+            this.error = error;
+            return this;
+        }
+
+        /**
+         * Set the errorDetails
+         *
+         * @param errorDetails String
+         * @return Builder
+         */
+        public Builder setErrorDetails(ErrorDetails errorDetails) {
+            this.errorDetails = errorDetails;
+            return this;
+        }
+
+
+        /**
          * Build the Response object
          *
          * @return Response
          */
         public ResponseReport build() {
-            return new ResponseReport(Optional.ofNullable(next_page), Optional.ofNullable(responses.build()));
+            return new ResponseReport(Optional.ofNullable(next_page), Optional.ofNullable(responses.build()), ok, error, errorDetails);
         }
     }
 }

@@ -8,9 +8,9 @@ import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
-import org.junit.Test;
 
-import static junit.framework.Assert.assertEquals;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class ExperimentSerializerTest {
 
@@ -49,6 +49,6 @@ public class ExperimentSerializerTest {
         String experimentSerialized = MAPPER.writeValueAsString(experiment);
         Experiment experimentFromJson = MAPPER.readValue(experimentSerialized, Experiment.class);
 
-        assertEquals(experimentFromJson, experiment);
+        Assert.assertEquals(experimentFromJson, experiment);
     }
 }

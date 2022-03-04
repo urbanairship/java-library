@@ -57,7 +57,7 @@ public class StatisticsRequestTest {
 
     @Test
     public void testStatisticsParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<List<StatisticsResponse>>() {
+        ResponseParser<List<StatisticsResponse>> responseParser = new ResponseParser<List<StatisticsResponse>>() {
             @Override
             public List<StatisticsResponse> parse(String response) throws IOException {
                 return mapper.readValue(response, new TypeReference<List<StatisticsResponse>>() {});

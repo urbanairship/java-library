@@ -5,7 +5,6 @@
 package com.urbanairship.api.templates.parse;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
@@ -17,7 +16,7 @@ import com.urbanairship.api.templates.model.*;
 
 public class TemplatesObjectMapper {
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    private static final SimpleModule MODULE = new SimpleModule("Templates API Module", new Version(1, 0, 0, null));
+    private static final SimpleModule MODULE = new SimpleModule("Templates API Module");
 
     static {
         MODULE.addDeserializer(TemplateView.class, new TemplateViewDeserializer());

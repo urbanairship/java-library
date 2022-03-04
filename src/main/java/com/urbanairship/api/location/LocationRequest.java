@@ -29,7 +29,9 @@ import java.util.Map;
 /**
  * The LocationRequest class builds location lookup requests to be executed in
  * the {@link com.urbanairship.api.client.UrbanAirshipClient}.
+ * @deprecated Location API is no longer available.
  */
+@Deprecated
 public class LocationRequest implements Request<LocationResponse> {
 
     private final static String API_LOCATION_PATH = "/api/location/";

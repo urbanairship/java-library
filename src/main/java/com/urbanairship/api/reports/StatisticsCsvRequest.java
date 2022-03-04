@@ -14,7 +14,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
 
-
+/**
+ * @deprecated Statistics push API is no longer available.
+ */
+@Deprecated
 public class StatisticsCsvRequest implements Request<String> {
     private final static String API_STATISTICS = "/api/push/stats/";
 

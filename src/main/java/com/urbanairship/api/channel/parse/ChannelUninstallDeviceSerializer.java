@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.urbanairship.api.channel.model.ChannelUninstallDevice;
 
 import java.io.IOException;
-import java.util.Set;
 
 public class ChannelUninstallDeviceSerializer extends JsonSerializer<ChannelUninstallDevice> {
     @Override

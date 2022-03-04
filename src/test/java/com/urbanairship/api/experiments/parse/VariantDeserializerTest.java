@@ -3,16 +3,13 @@ package com.urbanairship.api.experiments.parse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.experiments.model.Variant;
-import org.junit.Rule;
+
+import org.junit.Assert;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.*;
 
 public class VariantDeserializerTest {
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     private static final ObjectMapper MAPPER = ExperimentObjectMapper.getInstance();
 
@@ -40,11 +37,15 @@ public class VariantDeserializerTest {
 
     @Test
     public void testEmptyVariant() throws Exception {
-        expectedException.expect(APIParsingException.class);
-        expectedException.expectMessage("'variant_push_payload' must be provided.");
+        Exception exception = Assert.assertThrows(APIParsingException.class, () -> {
+            String emptyPayloadString = "{}";
+            MAPPER.readValue(emptyPayloadString, Variant.class);
+        });
+        
+        String expectedMessage = "'variant_push_payload' must be provided.";
+        String actualMessage = exception.getMessage();
 
-        String emptyPayloadString = "{}";
-        Variant variant = MAPPER.readValue(emptyPayloadString, Variant.class);
+        Assert.assertTrue(actualMessage.contains(expectedMessage));
     }
 
 }

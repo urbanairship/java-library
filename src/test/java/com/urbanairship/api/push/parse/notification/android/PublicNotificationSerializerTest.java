@@ -3,10 +3,9 @@ package com.urbanairship.api.push.parse.notification.android;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.push.model.notification.android.PublicNotification;
 import com.urbanairship.api.push.parse.PushObjectMapper;
+
+import org.junit.Assert;
 import org.junit.Test;
-
-import static junit.framework.Assert.assertEquals;
-
 public class PublicNotificationSerializerTest {
     private static final ObjectMapper MAPPER = PushObjectMapper.getInstance();
 
@@ -26,6 +25,6 @@ public class PublicNotificationSerializerTest {
                 .build();
 
         String serializedJson = MAPPER.writeValueAsString(publicNotification);
-        assertEquals(json, serializedJson);
+        Assert.assertEquals(json, serializedJson);
     }
 }

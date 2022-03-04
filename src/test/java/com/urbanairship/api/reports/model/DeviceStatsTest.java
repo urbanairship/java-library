@@ -2,8 +2,9 @@ package com.urbanairship.api.reports.model;
 
 import org.junit.Test;
 
-import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
+import org.junit.Assert;
 
 public class DeviceStatsTest {
 
@@ -15,7 +16,7 @@ public class DeviceStatsTest {
                 .build();
 
         assertNotNull(deviceStats);
-        assertEquals(1123, deviceStats.getDirect().get().intValue());
-        assertEquals(5813, deviceStats.getInfluenced().get().intValue());
+        Assert.assertEquals(1123, deviceStats.getDirect().get().intValue());
+        Assert.assertEquals(5813, deviceStats.getInfluenced().get().intValue());
     }
 }

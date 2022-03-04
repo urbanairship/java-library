@@ -6,6 +6,7 @@ package com.urbanairship.api.staticlists.parse;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.urbanairship.api.common.model.ErrorDetails;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.staticlists.model.StaticListListingResponse;
@@ -28,6 +29,14 @@ public class StaticListListingResponseReader implements JsonObjectReader<StaticL
     public void readStaticListObjects(JsonParser jsonParser) throws IOException {
         builder.addAllStaticLists((List<StaticListView>) jsonParser.readValueAs(new TypeReference<List<StaticListView>>() {
         }));
+    }
+
+    public void readError(JsonParser jsonParser) throws IOException {
+        builder.setError(jsonParser.readValueAs(String.class));
+    }
+
+    public void readErrorDetails(JsonParser jsonParser) throws IOException {
+        builder.setErrorDetails(jsonParser.readValueAs(ErrorDetails.class));
     }
 
     @Override

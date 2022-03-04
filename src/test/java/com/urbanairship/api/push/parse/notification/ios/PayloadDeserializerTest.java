@@ -2,7 +2,6 @@ package com.urbanairship.api.push.parse.notification.ios;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.jknack.handlebars.internal.HbsParser;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.notification.actions.Actions;
@@ -15,9 +14,9 @@ import com.urbanairship.api.push.model.notification.ios.IOSInterruptionLevel;
 import com.urbanairship.api.push.model.notification.ios.IOSSoundData;
 import com.urbanairship.api.push.model.notification.ios.IOSTemplate;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import org.junit.Rule;
+
+import org.junit.Assert;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.math.BigDecimal;
 import java.net.URI;
@@ -30,9 +29,6 @@ import static org.junit.Assert.assertTrue;
 
 public class PayloadDeserializerTest {
     private static final ObjectMapper mapper = PushObjectMapper.getInstance();
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void testAlert() throws Exception {
@@ -169,7 +165,8 @@ public class PayloadDeserializerTest {
 
     @Test
     public void testSoundObjectWithNoName() throws Exception {
-        String json =
+        Exception exception = Assert.assertThrows(APIParsingException.class, () -> {
+                String json =
                 "{"
                 + "  \"sound\": {"
                 + "    \"name\" : \"Billy Bob Thorton\","
@@ -178,9 +175,14 @@ public class PayloadDeserializerTest {
                 + "  }"
                 + "}";
 
-        thrown.expect(APIParsingException.class);
-        thrown.expectMessage("The sound file name cannot be null");
-        mapper.readValue(json, IOSSoundData.class);
+                mapper.readValue(json, IOSSoundData.class);
+            });
+
+        
+        String expectedMessage = "The sound file name cannot be null";
+        String actualMessage = exception.getMessage();
+
+        Assert.assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
@@ -392,8 +394,10 @@ public class PayloadDeserializerTest {
         //Media Attachment
         assertTrue(payload.getMediaAttachment().get().getUrl().equals("https://media.giphy.com/media/JYsWwF82EGnpC/giphy.gif"));
 
+
         //Sound
-        assertTrue(payload.getSound().get().equals("beep boop"));
+        assertTrue(payload.getSoundData().get().getName().get().equals("beep boop"));
+
 
         //options
         assertTrue(payload.getMediaAttachment().get().getOptions().get().getTime().get().equals(10));

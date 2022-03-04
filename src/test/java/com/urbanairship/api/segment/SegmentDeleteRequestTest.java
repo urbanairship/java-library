@@ -1,11 +1,9 @@
 package com.urbanairship.api.segment;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.segments.SegmentDeleteRequest;
-import com.urbanairship.api.segments.parse.SegmentObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,7 +17,6 @@ import static org.junit.Assert.assertEquals;
 public class SegmentDeleteRequestTest {
     private static final String TEST_QUERY_PATH = "/api/segments/";
     private static final String TEST_SEGMENT_ID = "abcdefg";
-    private static final ObjectMapper mapper = SegmentObjectMapper.getInstance();
 
     SegmentDeleteRequest request;
 
@@ -56,7 +53,7 @@ public class SegmentDeleteRequestTest {
 
     @Test
     public void testParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<String>() {
+        ResponseParser<String> responseParser = new ResponseParser<String>() {
             @Override
             public String parse(String response) throws IOException {
                 return response;

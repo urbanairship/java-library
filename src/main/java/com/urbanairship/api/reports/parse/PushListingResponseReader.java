@@ -6,6 +6,7 @@ package com.urbanairship.api.reports.parse;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.urbanairship.api.common.model.ErrorDetails;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.reports.model.PushInfoResponse;
@@ -32,6 +33,18 @@ public final class PushListingResponseReader implements JsonObjectReader<PushLis
                         new TypeReference<List<PushInfoResponse>>() {
                         })
         );
+    }
+
+    public void readOk(JsonParser jsonParser) throws IOException {
+        builder.setOk(jsonParser.readValueAs(Boolean.class));
+    }
+
+    public void readError(JsonParser jsonParser) throws IOException {
+        builder.setError(jsonParser.readValueAs(String.class));
+    }
+
+    public void readErrorDetails(JsonParser jsonParser) throws IOException {
+        builder.setErrorDetails(jsonParser.readValueAs(ErrorDetails.class));
     }
 
     @Override

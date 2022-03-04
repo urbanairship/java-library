@@ -73,7 +73,7 @@ public class ChannelRequestTest {
 
     @Test
     public void testChannelListingParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<ChannelResponse>() {
+        ResponseParser<ChannelResponse> responseParser = new ResponseParser<ChannelResponse>() {
             @Override
             public ChannelResponse parse(String response) throws IOException {
                 return mapper.readValue(response, ChannelResponse.class);
@@ -187,6 +187,10 @@ public class ChannelRequestTest {
             "      \"created\": \"2013-01-25T00:55:05\",\n" +
             "      \"last_registration\": null,\n" +
             "      \"alias\": null,\n" +
+            "      \"commercial_opted_in\": \"2013-01-25T00:55:05\",\n" +
+            "      \"commercial_opted_out\": \"2013-01-25T00:55:05\",\n" +
+            "      \"transactional_opted_in\": \"2013-01-25T00:55:05\",\n" +
+            "      \"transactional_opted_out\": \"2013-01-25T00:55:05\",\n" +
             "      \"tags\": [\n" +
             "        \n" +
             "      ],\n" +
@@ -202,7 +206,7 @@ public class ChannelRequestTest {
 
     @Test
     public void testChannelLookupParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<ChannelResponse>() {
+        ResponseParser<ChannelResponse> responseParser = new ResponseParser<ChannelResponse>() {
             @Override
             public ChannelResponse parse(String response) throws IOException {
                 return mapper.readValue(response, ChannelResponse.class);

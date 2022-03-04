@@ -4,16 +4,16 @@
 
 package com.urbanairship.api.staticlists.parse;
 
-import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.staticlists.model.StaticListListingResponse;
 import com.urbanairship.api.staticlists.model.StaticListView;
 
 public class StaticListsObjectMapper {
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    private static final SimpleModule MODULE = new SimpleModule("Static Lists API Module", new Version(1, 0, 0, null));
+    private static final SimpleModule MODULE = new SimpleModule("Static Lists API Module");
 
     static {
         MODULE.addDeserializer(StaticListView.class, new StaticListViewDeserializer());
@@ -21,6 +21,7 @@ public class StaticListsObjectMapper {
 
         MAPPER.registerModule(MODULE);
         MAPPER.registerModule(new JodaModule());
+        MAPPER.registerModule(PushObjectMapper.getModule());
     }
 
     public static SimpleModule getModule() {

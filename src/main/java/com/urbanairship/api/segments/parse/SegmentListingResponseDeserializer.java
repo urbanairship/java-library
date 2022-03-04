@@ -33,6 +33,30 @@ public class SegmentListingResponseDeserializer extends JsonDeserializer<Segment
                                     reader.readSegments(jsonParser);
                                 }
                             })
+                            .put("ok", new FieldParser<SegmentListingResponseReader>() {
+                                @Override
+                                public void parse(SegmentListingResponseReader reader,
+                                                  JsonParser jsonParser,
+                                                  DeserializationContext deserializationContext) throws IOException {
+                                    reader.readOk(jsonParser);
+                                }
+                            })
+                            .put("error", new FieldParser<SegmentListingResponseReader>() {
+                                @Override
+                                public void parse(SegmentListingResponseReader reader,
+                                                  JsonParser jsonParser,
+                                                  DeserializationContext deserializationContext) throws IOException {
+                                    reader.readError(jsonParser);
+                                }
+                            })
+                            .put("details", new FieldParser<SegmentListingResponseReader>() {
+                                @Override
+                                public void parse(SegmentListingResponseReader reader,
+                                                  JsonParser jsonParser,
+                                                  DeserializationContext deserializationContext) throws IOException {
+                                    reader.readErrorDetails(jsonParser);
+                                }
+                            })
                             .build()
     );
 

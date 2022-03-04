@@ -1,9 +1,7 @@
 package com.urbanairship.api.staticlists;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
-import com.urbanairship.api.staticlists.parse.StaticListsObjectMapper;
 import org.apache.http.entity.ContentType;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +14,6 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
 public class StaticListUploadRequestTest {
-    private static final ObjectMapper mapper = StaticListsObjectMapper.getInstance();
     private static final String TEST_LIST_NAME = "testlist";
     private static final String TEST_CSV_FILE = (new File("src/test/data")).getAbsolutePath() + "/test.csv";
     private static final String STATIC_LIST_UPLOAD_PATH = "/api/lists/" + TEST_LIST_NAME + "/csv";

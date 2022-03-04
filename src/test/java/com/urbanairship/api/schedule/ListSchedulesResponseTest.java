@@ -10,6 +10,7 @@ import com.urbanairship.api.schedule.model.SchedulePayloadResponse;
 import com.urbanairship.api.schedule.parse.ScheduleObjectMapper;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -122,6 +123,23 @@ public class ListSchedulesResponseTest {
         } catch (Exception ex) {
             fail("Exception " + ex.getMessage());
         }
+    }
+
+    @Test
+    public void testErrorAPIScheduleResponse() throws IOException {
+        String jsonResponse = "{\n" +
+                "    \"ok\": false,\n" +
+                "    \"error\": \"error\",\n" +
+                "    \"details\": {\n" +
+                "        \"error\": \"error\"\n" +
+                "    }\n" +
+                "}";
+
+        ObjectMapper mapper = ScheduleObjectMapper.getInstance();
+        ListAllSchedulesResponse response = mapper.readValue(jsonResponse, ListAllSchedulesResponse.class);
+        assertEquals("error", response.getError().get());
+        assertEquals("error", response.getErrorDetails().get().getError().get());
+        assertEquals(false, response.getOk());
     }
 
 }

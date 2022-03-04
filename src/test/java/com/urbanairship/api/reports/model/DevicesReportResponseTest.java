@@ -5,6 +5,11 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.IOException;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.urbanairship.api.reports.parse.ReportsObjectMapper;
+
 public class DevicesReportResponseTest {
 
     @Test
@@ -28,6 +33,23 @@ public class DevicesReportResponseTest {
         assertEquals(2, devicesReportResponse.getDeviceTypeStatsMap().get().get("ios").getUninstalled().get().intValue());
         assertEquals(3, devicesReportResponse.getDeviceTypeStatsMap().get().get("sms").getOptedOut().get().intValue());
         assertEquals(4, devicesReportResponse.getDeviceTypeStatsMap().get().get("sms").getOptedIn().get().intValue());
+    }
+
+    @Test
+    public void testErrorAPIDevicesReportResponse() throws IOException {
+        String jsonResponse = "{\n" +
+                "    \"ok\": false,\n" +
+                "    \"error\": \"error\",\n" +
+                "    \"details\": {\n" +
+                "        \"error\": \"error\"\n" +
+                "    }\n" +
+                "}";
+
+        ObjectMapper mapper = ReportsObjectMapper.getInstance();
+        DevicesReport response = mapper.readValue(jsonResponse, DevicesReport.class);
+        assertEquals("error", response.getError().get());
+        assertEquals("error", response.getErrorDetails().get().getError().get());
+        assertEquals(false, response.getOk());
     }
 
 }

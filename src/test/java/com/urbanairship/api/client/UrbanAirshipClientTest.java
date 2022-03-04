@@ -91,11 +91,11 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Period;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -194,19 +194,16 @@ public class UrbanAirshipClientTest {
     @Rule
     public WireMockClassRule instanceRule = wireMockRule;
 
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
-
     @Test(expected = NullPointerException.class)
     public void testAPIClientThrowsForNoAppKey() {
-        @SuppressWarnings("UnusedAssignment") UrbanAirshipClient apiClient = UrbanAirshipClient.newBuilder()
+        UrbanAirshipClient.newBuilder()
             .setKey("foo")
             .build();
     }
 
     @Test(expected = NullPointerException.class)
     public void testAPIClientThrowsForNoAppSecret() {
-        @SuppressWarnings("UnusedAssignment") UrbanAirshipClient apiClient = UrbanAirshipClient.newBuilder()
+        UrbanAirshipClient.newBuilder()
             .setSecret("foo")
             .build();
     }
@@ -279,7 +276,7 @@ public class UrbanAirshipClientTest {
 
     @Test
     public void testGetUserAgent() {
-        String userAgent = client.getUserAgent();
+        String userAgent = client.getUserAgent("key");
         assertNotNull(userAgent);
         assertFalse(userAgent.equals("UNKNOWN"));
         assertFalse(userAgent.equals("UAJavaLib/UNKNOWN"));
@@ -578,7 +575,6 @@ public class UrbanAirshipClientTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testClose() throws Exception {
         asyncRequestClient = AsyncRequestClient.newBuilder()
             .setBaseUri("http://localhost:" + wireMockRule.port())
@@ -613,7 +609,6 @@ public class UrbanAirshipClientTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testClientException() throws Exception {
 
         PushPayload payload = PushPayload.newBuilder()
@@ -660,7 +655,6 @@ public class UrbanAirshipClientTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testServerExceptionJSONfor503() throws Exception {
 
         PushPayload payload = PushPayload.newBuilder()
@@ -693,7 +687,6 @@ public class UrbanAirshipClientTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testServerExceptionJSONfor500() throws Exception {
 
         PushPayload payload = PushPayload.newBuilder()
@@ -727,7 +720,6 @@ public class UrbanAirshipClientTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testServerExceptionNonJSONfor500() throws Exception {
 
         PushPayload payload = PushPayload.newBuilder()
@@ -761,7 +753,6 @@ public class UrbanAirshipClientTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testServerExceptionNonJSONfor503() throws Exception {
 
         PushPayload payload = PushPayload.newBuilder()
@@ -805,7 +796,7 @@ public class UrbanAirshipClientTest {
                 .build();
 
         // Setup a client and a push payload
-        AsyncRequestClient proxyClient = AsyncRequestClient.newBuilder()
+        AsyncRequestClient.newBuilder()
             .setBaseUri("http://localhost:" + wireMockRule.port())
             .setProxyServer(proxyServer)
             .build();
@@ -3435,31 +3426,31 @@ public class UrbanAirshipClientTest {
 
     @Test
     public void testInvalidBearerAuth() throws IOException {
-        CustomEventPayload customEventPayload = CustomEventPayload.newBuilder()
-                .setCustomEventBody(CustomEventBody.newBuilder()
-                        .setName("name")
-                        .build())
-                .setCustomEventUser(CustomEventUser.newBuilder()
-                        .setCustomEventChannelType(CustomEventChannelType.ANDROID_CHANNEL)
-                        .setChannel("channelId")
-                        .build())
-                .setOccurred(DateTime.now())
-                .build();
+        Assert.assertThrows(IllegalArgumentException.class, () -> {
+            CustomEventPayload customEventPayload = CustomEventPayload.newBuilder()
+            .setCustomEventBody(CustomEventBody.newBuilder()
+                    .setName("name")
+                    .build())
+            .setCustomEventUser(CustomEventUser.newBuilder()
+                    .setCustomEventChannelType(CustomEventChannelType.ANDROID_CHANNEL)
+                    .setChannel("channelId")
+                    .build())
+            .setOccurred(DateTime.now())
+            .build();
 
         CustomEventRequest request = CustomEventRequest.newRequest(customEventPayload);
-
-        expectedException.expect(IllegalArgumentException.class);
-
         client.execute(request);
+
+        });
     }
     
     @Test
     public void testRequestNotSupportedWithBearerAuth() throws IOException {
-        TemplateDeleteRequest templateDeleteRequest = TemplateDeleteRequest.newRequest("templateId");
+        Assert.assertThrows(IllegalArgumentException.class, () -> {
+            TemplateDeleteRequest templateDeleteRequest = TemplateDeleteRequest.newRequest("templateId");
+            bearerTokenClient.execute(templateDeleteRequest);
 
-        expectedException.expect(IllegalArgumentException.class);
-
-        bearerTokenClient.execute(templateDeleteRequest);
+        });
     }
 
     @Test

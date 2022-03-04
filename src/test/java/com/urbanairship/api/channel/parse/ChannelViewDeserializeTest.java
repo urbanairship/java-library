@@ -12,9 +12,6 @@ import com.urbanairship.api.common.parse.APIParsingException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
-
 public class ChannelViewDeserializeTest {
 
 
@@ -34,7 +31,7 @@ public class ChannelViewDeserializeTest {
         ChannelView channel = mapper.readValue(json, ChannelView.class);
         Assert.assertFalse(channel.isOptIn());
         Assert.assertFalse(channel.getBackground().isPresent());
-        assertEquals(ChannelType.IOS.getIdentifier(), channel.getChannelType());
+        Assert.assertEquals(ChannelType.IOS.getIdentifier(), channel.getChannelType());
         Assert.assertFalse(channel.getAlias().isPresent());
         Assert.assertFalse(channel.getIosSettings().isPresent());
         Assert.assertFalse(channel.getPushAddress().isPresent());
@@ -86,32 +83,32 @@ public class ChannelViewDeserializeTest {
 
         ChannelView channel = mapper.readValue(json, ChannelView.class);
 
-        assertTrue(channel.isOptIn());
-        assertTrue(channel.getBackground().isPresent());
-        assertTrue(channel.getBackground().get());
-        assertEquals(ChannelType.IOS.getIdentifier(), channel.getChannelType());
-        assertTrue(channel.getIosSettings().isPresent());
-        assertEquals("email@test.com", channel.getAttributes().get("email"));
-        assertEquals("20", channel.getAttributes().get("customerid"));
-        assertEquals("email2@test.com", channel.getDeviceAttributes().get("email"));
-        assertEquals("10", channel.getDeviceAttributes().get("customerid"));
-        assertEquals(0, channel.getIosSettings().get().getBadge());
-        assertEquals("22:00", channel.getIosSettings().get().getQuietTime().get().getStart());
-        assertEquals("06:00", channel.getIosSettings().get().getQuietTime().get().getEnd());
-        assertEquals("America/Los_Angeles", channel.getIosSettings().get().getTimezone().get());
-        assertEquals("address", channel.getPushAddress().get());
-        assertEquals("alias", channel.getAlias().get());
-        assertEquals("namedUser", channel.getNamedUser().get());
+        Assert.assertTrue(channel.isOptIn());
+        Assert.assertTrue(channel.getBackground().isPresent());
+        Assert.assertTrue(channel.getBackground().get());
+        Assert.assertEquals(ChannelType.IOS.getIdentifier(), channel.getChannelType());
+        Assert.assertTrue(channel.getIosSettings().isPresent());
+        Assert.assertEquals("email@test.com", channel.getAttributes().get("email"));
+        Assert.assertEquals("20", channel.getAttributes().get("customerid"));
+        Assert.assertEquals("email2@test.com", channel.getDeviceAttributes().get("email"));
+        Assert.assertEquals("10", channel.getDeviceAttributes().get("customerid"));
+        Assert.assertEquals(0, channel.getIosSettings().get().getBadge());
+        Assert.assertEquals("22:00", channel.getIosSettings().get().getQuietTime().get().getStart());
+        Assert.assertEquals("06:00", channel.getIosSettings().get().getQuietTime().get().getEnd());
+        Assert.assertEquals("America/Los_Angeles", channel.getIosSettings().get().getTimezone().get());
+        Assert.assertEquals("address", channel.getPushAddress().get());
+        Assert.assertEquals("alias", channel.getAlias().get());
+        Assert.assertEquals("namedUser", channel.getNamedUser().get());
         ImmutableSet<String> expectedTags = new ImmutableSet.Builder<String>()
             .addAll(Sets.newHashSet("tag1", "tag2")).build();
-        assertEquals(expectedTags, channel.getTags());
+            Assert.assertEquals(expectedTags, channel.getTags());
         ImmutableMap<String, ImmutableSet<String>> expectedTagGroups = new ImmutableMap.Builder<String, ImmutableSet<String>>()
             .put("group1", new ImmutableSet.Builder<String>()
                 .addAll(Sets.newHashSet("tag1OfGroup1", "tag2OfGroup1")).build())
             .put("group2", new ImmutableSet.Builder<String>()
                 .addAll(Sets.newHashSet("tag1OfGroup2", "tag2OfGroup2")).build())
             .build();
-        assertEquals(expectedTagGroups, channel.getTagGroups());
+            Assert.assertEquals(expectedTagGroups, channel.getTagGroups());
     }
 
     @Test
@@ -170,21 +167,21 @@ public class ChannelViewDeserializeTest {
 
         ChannelView channel = mapper.readValue(json, ChannelView.class);
 
-        assertTrue(channel.isOptIn());
-        assertEquals(ChannelType.WEB.getIdentifier(), channel.getChannelType());
+        Assert.assertTrue(channel.isOptIn());
+        Assert.assertEquals(ChannelType.WEB.getIdentifier(), channel.getChannelType());
 
-        assertTrue(channel.getWebSettings().isPresent());
-        assertTrue(channel.getWebSettings().get().getSubscription().isPresent());
+        Assert.assertTrue(channel.getWebSettings().isPresent());
+        Assert.assertTrue(channel.getWebSettings().get().getSubscription().isPresent());
 
         Subscription subscription = channel.getWebSettings().get().getSubscription().get();
 
-        assertEquals("p256dhvalue", subscription.getP256dh().get());
-        assertEquals("authvalue", subscription.getAuth().get());
+        Assert.assertEquals("p256dhvalue", subscription.getP256dh().get());
+        Assert.assertEquals("authvalue", subscription.getAuth().get());
 
-        assertEquals("address", channel.getPushAddress().get());
+        Assert.assertEquals("address", channel.getPushAddress().get());
         ImmutableSet<String> expectedTags = new ImmutableSet.Builder<String>()
                 .addAll(Sets.newHashSet("tag1", "tag2")).build();
-        assertEquals(expectedTags, channel.getTags());
+                Assert.assertEquals(expectedTags, channel.getTags());
     }
 
     @Test
@@ -235,7 +232,7 @@ public class ChannelViewDeserializeTest {
             ChannelView channel = mapper.readValue(json, new TypeReference<ChannelView>() {
             });
             Assert.assertFalse(channel.isOptIn());
-            assertEquals(channelType.getIdentifier(), channel.getChannelType());
+            Assert.assertEquals(channelType.getIdentifier(), channel.getChannelType());
             Assert.assertFalse(channel.getAlias().isPresent());
             Assert.assertFalse(channel.getIosSettings().isPresent());
             Assert.assertFalse(channel.getPushAddress().isPresent());

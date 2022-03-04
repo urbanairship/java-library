@@ -35,7 +35,6 @@ public class StreamLocationReader implements JsonObjectReader<RequestErrorDetail
         try {
             return builder.build();
         } catch (Exception ex) {
-            // TODO log errors
             throw new APIParsingException(ex.getMessage());
         }
     }

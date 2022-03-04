@@ -22,7 +22,7 @@ public class UninstallEmailChannelTest {
                 .setEmailAddress("name@example.com")
                 .build();
 
-        UninstallEmailChannelRequest uninstallRequest = UninstallEmailChannelRequest.newRequest(uninstallEmailChannel);
+        UninstallEmailChannelRequest.newRequest(uninstallEmailChannel);
 
         String jsonFromString = "\n" +
                 "{\n" +
