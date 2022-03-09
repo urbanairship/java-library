@@ -12,6 +12,7 @@ import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.notification.richpush.RichPushIcon;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
+import com.urbanairship.api.push.model.notification.richpush.RichPushTemplate;
 
 import java.io.IOException;
 
@@ -48,6 +49,10 @@ public class RichPushMessageReader implements JsonObjectReader<RichPushMessage> 
 
     public void readIcons(JsonParser parser) throws IOException {
         builder.setIcons(parser.readValueAs(RichPushIcon.class));
+    }
+
+    public void readRichPushTemplate(JsonParser parser) throws IOException {
+        builder.setRichPushTemplate(parser.readValueAs(RichPushTemplate.class));
     }
 
     @Override
