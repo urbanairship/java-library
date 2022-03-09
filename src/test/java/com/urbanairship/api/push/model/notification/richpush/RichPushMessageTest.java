@@ -55,6 +55,7 @@ public class RichPushMessageTest {
                 .setExpiry(PushExpiry.newBuilder().setExpirySeconds(3600).build())
                 .addExtraEntry("this", "that")
                 .setIcons(RichPushIcon.newBuilder().setListIcon("L").build())
+                .setRichPushTemplate(RichPushTemplate.newBuilder().setTemplateId("876624ff-0120-4364-bf02-dba3d0cb5b85").build())
                 .build();
         assertEquals("T", m.getTitle());
         assertEquals("B", m.getBody());
@@ -66,6 +67,7 @@ public class RichPushMessageTest {
         assertEquals("that", m.getExtra().get().get("this"));
         assertTrue(m.getExpiry().get().getExpirySeconds().isPresent());
         assertEquals("L", m.getIcons().get().getListIcon());
+        assertEquals("876624ff-0120-4364-bf02-dba3d0cb5b85", m.getRichPushTemplate().get().getTemplateId().get());
 
     }
 
