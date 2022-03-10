@@ -1,4 +1,9 @@
 -------------------------
+7.2.0 09MAR22
+-------------------------
+- Added support for templates to the message center object
+
+-------------------------
 7.1.0 04MAR22
 -------------------------
 - Added support for attribute lists listing
