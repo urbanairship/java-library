@@ -23,7 +23,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -55,14 +57,35 @@ public class CreateAndSendEmailTest {
         DateTime newDateTime = DateTime.parse("2018-11-29T10:34:22", DateFormats.DATE_FORMATTER);
         DateTime benDateTime = DateTime.parse("2018-11-29T12:45:10", DateFormats.DATE_FORMATTER);
 
+        Map<String, String> test = new HashMap<>();
+        test.put("firstname", "Jenny");
+        test.put("last_name", "Smith");
+        test.put("location", "Vancouver");
+        
+        Map<String, Object> test2 = new HashMap<>();
+        test2.put("name", "Rubber Gloves");
+        test2.put("code", "abaccgdsagsde");
+        test2.put("qty", "1");
+
+        Map<String, Object> test3 = new HashMap<>();
+        test3.put("name", "Bleach Alternative");
+        test3.put("code", "cacadgdesgaga");
+        test3.put("qty", "1");
+
+        List< Map<String, Object>> myList = new ArrayList<>();
+        myList.add(test2);
+        myList.add(test3);
+
         newChannel = EmailChannel.newBuilder()
                 .setAddress("new@email.com")
                 .setCommertialOptedIn(newDateTime)
+                .addPersonalizationVariable("customer", test)
                 .build();
 
         benChannel = EmailChannel.newBuilder()
                 .setAddress("ben@icetown.com")
                 .setTransactionalOptedIn(benDateTime)
+                .addPersonalizationVariable("cart", myList)
                 .build();
 
         audience = new CreateAndSendAudience(EmailChannels.newBuilder()
@@ -183,7 +206,7 @@ public class CreateAndSendEmailTest {
     @Test
     public void testNewAudience() throws IOException {
 
-        String expectedAudienceString = "{\"create_and_send\":[{\"ua_address\":\"new@email.com\",\"ua_commercial_opted_in\":\"2018-11-29T10:34:22\"},{\"ua_address\":\"ben@icetown.com\",\"ua_transactional_opted_in\":\"2018-11-29T12:45:10\"}]}";
+        String expectedAudienceString = "{\"create_and_send\":[{\"ua_address\":\"new@email.com\",\"ua_commercial_opted_in\":\"2018-11-29T10:34:22\",\"customer\":{\"firstname\":\"Jenny\",\"last_name\":\"Smith\",\"location\":\"Vancouver\"}},{\"ua_address\":\"ben@icetown.com\",\"ua_transactional_opted_in\":\"2018-11-29T12:45:10\",\"cart\":[{\"code\":\"abaccgdsagsde\",\"qty\":\"1\",\"name\":\"Rubber Gloves\"},{\"code\":\"cacadgdesgaga\",\"qty\":\"1\",\"name\":\"Bleach Alternative\"}]}]}";
 
         String parsedJson = PUSH_OBJECT_MAPPER.writeValueAsString(audience);
         JsonNode actual = PUSH_OBJECT_MAPPER.readTree(parsedJson);
@@ -216,34 +239,7 @@ public class CreateAndSendEmailTest {
 
     @Test
     public void testCreateAndSendEmailPayload() throws IOException {
-        String expectedCreateAndSendEmailPayloadString = "{\n" +
-                "\t\"audience\": {\n" +
-                "\t\t\"create_and_send\": [{\n" +
-                "\t\t\t\t\"ua_address\": \"new@email.com\",\n" +
-                "\t\t\t\t\"ua_commercial_opted_in\": \"2018-11-29T10:34:22\"\n" +
-                "\t\t\t},\n" +
-                "\t\t\t{\n" +
-                "\t\t\t\t\"ua_address\": \"ben@icetown.com\",\n" +
-                "\t\t\t\t\"ua_transactional_opted_in\": \"2018-11-29T12:45:10\"\n" +
-                "\t\t\t}\n" +
-                "\t\t]\n" +
-                "\t},\n" +
-                "\t\"device_types\": [\"email\"],\n" +
-                "\t\"notification\": {\n" +
-                "\t\t\"email\": {\n" +
-                "\t\t\t\"subject\": \"Welcome to the Winter Sale! \",\n" +
-                "\t\t\t\"html_body\": \"<h1>Seasons Greetings</h1><p>Check out our winter deals!</p><p><a data-ua-unsubscribe=\\\"1\\\" title=\\\"unsubscribe\\\" href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\">Unsubscribe</a></p>\",\n" +
-                "\t\t\t\"plaintext_body\": \"Greetings! Check out our latest winter deals! [[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]\",\n" +
-                "\t\t\t\"message_type\": \"commercial\",\n" +
-                "\t\t\t\"sender_name\": \"Urban Airship\",\n" +
-                "\t\t\t\"sender_address\": \"team@urbanairship.com\",\n" +
-                "\t\t\t\"reply_to\": \"no-reply@urbanairship.com\"\n" +
-                "\t\t}\n" +
-                "\t},\n" +
-                "\t\"campaigns\": {\n" +
-                "\t\t\"categories\": [\"winter sale\", \"west coast\"]\n" +
-                "\t}\n" +
-                "}";
+        String expectedCreateAndSendEmailPayloadString = "{\"audience\":{\"create_and_send\":[{\"ua_address\":\"new@email.com\",\"ua_commercial_opted_in\":\"2018-11-29T10:34:22\",\"customer\":{\"firstname\":\"Jenny\",\"last_name\":\"Smith\",\"location\":\"Vancouver\"}},{\"ua_address\":\"ben@icetown.com\",\"ua_transactional_opted_in\":\"2018-11-29T12:45:10\",\"cart\":[{\"code\":\"abaccgdsagsde\",\"qty\":\"1\",\"name\":\"Rubber Gloves\"},{\"code\":\"cacadgdesgaga\",\"qty\":\"1\",\"name\":\"Bleach Alternative\"}]}]},\"device_types\":[\"email\"],\"notification\":{\"email\":{\"subject\":\"Welcome to the Winter Sale! \",\"html_body\":\"<h1>Seasons Greetings</h1><p>Check out our winter deals!</p><p><a data-ua-unsubscribe=\\\"1\\\" title=\\\"unsubscribe\\\" href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\">Unsubscribe</a></p>\",\"plaintext_body\":\"Greetings! Check out our latest winter deals! [[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]\",\"message_type\":\"commercial\",\"sender_name\":\"Urban Airship\",\"sender_address\":\"team@urbanairship.com\",\"reply_to\":\"no-reply@urbanairship.com\"}},\"campaigns\":{\"categories\":[\"winter sale\",\"west coast\"]}}";
 
         String parsedJson = PUSH_OBJECT_MAPPER.writeValueAsString(payload);
         JsonNode actual = PUSH_OBJECT_MAPPER.readTree(parsedJson);
