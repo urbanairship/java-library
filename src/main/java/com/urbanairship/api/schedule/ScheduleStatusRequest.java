@@ -1,5 +1,7 @@
 package com.urbanairship.api.schedule;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 /*
  * Copyright (c) 2013-2021.  Urban Airship and Contributors
  */
@@ -9,10 +11,11 @@ import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
+import com.urbanairship.api.common.model.GenericResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.entity.ContentType;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +24,7 @@ import java.util.Map;
  * The ScheduleStatusRequest class builds update scheduled push status requests to be executed in
  * the {@link com.urbanairship.api.client.UrbanAirshipClient}.
  */
-public class ScheduleStatusRequest implements Request<String> {
+public class ScheduleStatusRequest implements Request<GenericResponse> {
 
     private final String scheduleId;
     private final String status;
@@ -91,13 +94,8 @@ public class ScheduleStatusRequest implements Request<String> {
     }
 
     @Override
-    public ResponseParser<String> getResponseParser() {
-        return new ResponseParser<String>() {
-            @Override
-            public String parse(String response) throws IOException {
-                return response;
-            }
-        };
+    public ResponseParser<GenericResponse> getResponseParser() {
+        return RequestUtils.GENERIC_RESPONSE_PARSER;
     }
 
     @Override

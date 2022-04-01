@@ -4,15 +4,17 @@
 
 package com.urbanairship.api.channel;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.channel.parse.ChannelObjectMapper;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
+import com.urbanairship.api.common.model.GenericResponse;
+
 import org.apache.http.entity.ContentType;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -24,7 +26,7 @@ import java.util.Set;
  * The ChannelTagRequest class builds channels tag mutation requests to be executed in
  * the {@link com.urbanairship.api.client.UrbanAirshipClient}.
  */
-public class ChannelTagRequest implements Request<String> {
+public class ChannelTagRequest implements Request<GenericResponse> {
 
     private final static String API_CHANNELS_TAGS_PATH = "/api/channels/tags/";
     private static final String IOS_CHANNEL_KEY = "ios_channel";
@@ -263,13 +265,8 @@ public class ChannelTagRequest implements Request<String> {
     }
 
     @Override
-    public ResponseParser<String> getResponseParser() {
-        return new ResponseParser<String>() {
-            @Override
-            public String parse(String response) throws IOException {
-                return response;
-            }
-        };
+    public ResponseParser<GenericResponse> getResponseParser() {
+        return RequestUtils.GENERIC_RESPONSE_PARSER;
     }
 
     @Override

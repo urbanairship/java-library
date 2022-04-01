@@ -10,7 +10,11 @@ import org.junit.Test;
 
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
+import com.urbanairship.api.client.ResponseParser;
+import com.urbanairship.api.common.model.GenericResponse;
+import com.urbanairship.api.common.parse.CommonObjectMapper;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -67,8 +71,14 @@ public class NamedUserUninstallRequestTest {
     }
 
     @Test
-    public void testPushParser() throws Exception {
-        String response = "{\"ok\" : true}";
-        assertEquals(response, request.getResponseParser().parse(response));
+    public void testResponseParser() throws Exception {
+
+        GenericResponse genericResponse = new GenericResponse(true, null, null, null);
+
+        String responseJson = "{" +
+                "\"ok\": true" +
+                "}";
+
+        assertEquals(request.getResponseParser().parse(responseJson), genericResponse);
     }
 }

@@ -1,5 +1,6 @@
 package com.urbanairship.api.channel.model.email;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Preconditions;
@@ -8,9 +9,10 @@ import com.urbanairship.api.channel.parse.ChannelObjectMapper;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
+import com.urbanairship.api.common.model.GenericResponse;
+
 import org.apache.http.entity.ContentType;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -21,7 +23,7 @@ import java.util.Set;
  * The EmailTagRequest class builds email tag mutation requests to be executed in
  * the {@link com.urbanairship.api.client.UrbanAirshipClient}. Open Channel Tags Request will not function for Email.
  */
-public class EmailTagRequest implements Request<String> {
+public class EmailTagRequest implements Request<GenericResponse> {
 
     private final static String EMAIL_CHANNELS_TAGS_PATH = "/api/channels/email/tags";
     private static final String AUDIENCE_KEY = "audience";
@@ -150,13 +152,8 @@ public class EmailTagRequest implements Request<String> {
     }
 
     @Override
-    public ResponseParser<String> getResponseParser() {
-        return new ResponseParser<String>() {
-            @Override
-            public String parse(String response) throws IOException {
-                return response;
-            }
-        };
+    public ResponseParser<GenericResponse> getResponseParser() {
+        return RequestUtils.GENERIC_RESPONSE_PARSER;
     }
 
     @Override

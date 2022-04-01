@@ -4,16 +4,17 @@
 
 package com.urbanairship.api.staticlists;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
+import com.urbanairship.api.common.model.GenericResponse;
 import com.urbanairship.api.staticlists.parse.StaticListsObjectMapper;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.entity.ContentType;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +23,7 @@ import java.util.Map;
  * The StaticListRequest class builds a static list creation request to be executed in
  * the {@link com.urbanairship.api.client.UrbanAirshipClient}.
  */
-public class StaticListRequest implements Request<String> {
+public class StaticListRequest implements Request<GenericResponse> {
     private final static String API_LISTS_PATH = "/api/lists/";
     private final String path;
 
@@ -31,7 +32,6 @@ public class StaticListRequest implements Request<String> {
     private static final String EXTRAS_KEY = "extra";
     private final Map<String, String> extras = new HashMap<String,String>();
     private final Map<String, Object> payload = new HashMap<String, Object>();
-
 
     private StaticListRequest(String path, String name) {
         this.path = path;
@@ -134,13 +134,8 @@ public class StaticListRequest implements Request<String> {
     }
 
     @Override
-    public ResponseParser<String> getResponseParser() {
-        return new ResponseParser<String>() {
-            @Override
-            public String parse(String response) throws IOException {
-                return response;
-            }
-        };
+    public ResponseParser<GenericResponse> getResponseParser() {
+        return RequestUtils.GENERIC_RESPONSE_PARSER;
     }
 
     @Override

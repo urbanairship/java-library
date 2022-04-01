@@ -7,6 +7,7 @@ package com.urbanairship.api.common.parse;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+
 import org.joda.time.DateTime;
 
 public class CommonObjectMapper {

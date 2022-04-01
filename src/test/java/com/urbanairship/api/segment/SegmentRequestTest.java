@@ -3,6 +3,9 @@ package com.urbanairship.api.segment;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
+import com.urbanairship.api.common.model.ErrorDetails;
+import com.urbanairship.api.common.model.GenericResponse;
+import com.urbanairship.api.common.parse.CommonObjectMapper;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.audience.location.DateRange;
@@ -93,16 +96,21 @@ public class SegmentRequestTest {
 
     @Test
     public void testParser() throws Exception {
-        ResponseParser<String> responseParser = new ResponseParser<String>() {
-            @Override
-            public String parse(String response) throws IOException {
-                return response;
-            }
-        };
 
-        assertEquals(createRequest.getResponseParser().parse(null), responseParser.parse(null));
-        assertEquals(updateRequest.getResponseParser().parse(null), responseParser.parse(null));
-        assertEquals(createLocationRequest.getResponseParser().parse(null), responseParser.parse(null));
-        assertEquals(updateLocationRequest.getResponseParser().parse(null), responseParser.parse(null));
+        ErrorDetails errorDetails = new ErrorDetails("The key chanel is not allowed in this context", null);
+
+        GenericResponse genericResponse = new GenericResponse(true, "1769297b-1640-43a4-af84-3e0ece89efe", "error", errorDetails);
+
+        String responseJson = "{" +
+                "\"ok\": true," +
+                "\"operation_id\": \"1769297b-1640-43a4-af84-3e0ece89efe\"," +
+                "\"error\": \"error\"," +
+                "\"details\": {\"error\": \"The key chanel is not allowed in this context\"" +
+                "}" +
+                "}";
+
+        assertEquals(createRequest.getResponseParser().parse(responseJson), genericResponse);
+        assertEquals(updateRequest.getResponseParser().parse(responseJson), genericResponse);
+
     }
 }

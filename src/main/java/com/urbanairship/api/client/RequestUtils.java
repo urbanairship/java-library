@@ -4,10 +4,16 @@
 
 package com.urbanairship.api.client;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.urbanairship.api.common.model.GenericResponse;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 
 public class RequestUtils {
+
+    private final static ObjectMapper mapper = new ObjectMapper();
+    public final static ResponseParser<GenericResponse> GENERIC_RESPONSE_PARSER = response -> mapper.readValue(response, GenericResponse.class);
 
     /**
      * A method to resolve base URIs without excluding the original path.
@@ -31,4 +37,5 @@ public class RequestUtils {
 
         return uri.resolve(path);
     }
+
 }

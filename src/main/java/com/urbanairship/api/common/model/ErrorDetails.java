@@ -1,24 +1,16 @@
 package com.urbanairship.api.common.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 
 public final class ErrorDetails extends APIModelObject {
-    private final Optional<String> error;
-    private final Optional<String> path;
+    private final String error;
+    private final String path;
 
-    private ErrorDetails(String error, String path) {
-        this.error = Optional.fromNullable(error);
-        this.path = Optional.fromNullable(path);
-    }
-
-    /**
-     * ErrorDetails Builder
-     *
-     * @return Builder
-     */
-    public static Builder newBuilder() {
-        return new Builder();
+    public ErrorDetails(@JsonProperty("error") String error, @JsonProperty("path") String path) {
+        this.error = error;
+        this.path = path;
     }
 
     /**
@@ -27,7 +19,7 @@ public final class ErrorDetails extends APIModelObject {
      * @return String error
      */
     public Optional<String> getError() {
-        return error;
+        return Optional.fromNullable(error);
     }
 
     /**
@@ -36,7 +28,7 @@ public final class ErrorDetails extends APIModelObject {
      * @return String path
      */
     public Optional<String> getPath() {
-        return path;
+        return Optional.fromNullable(path);
     }
 
     @Override
@@ -63,36 +55,5 @@ public final class ErrorDetails extends APIModelObject {
             "error=" + error +
             ", path=" + path +
             '}';
-    }
-
-    public static class Builder {
-        String error = null;
-        String path = null;
-
-        /**
-         * Set the error details.
-         *
-         * @param error String
-         * @return Builder
-         */
-        public Builder setError(String error) {
-            this.error = error;
-            return this;
-        }
-
-        /**
-         * Set the path error details.
-         *
-         * @param path String
-         * @return Builder
-         */
-        public Builder setPath(String path) {
-            this.path = path;
-            return this;
-        }
-
-        public ErrorDetails build() {
-            return new ErrorDetails(error, path);
-        }
     }
 }
