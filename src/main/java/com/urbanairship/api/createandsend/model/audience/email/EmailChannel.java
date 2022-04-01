@@ -145,8 +145,8 @@ public class EmailChannel {
 
         /**
          * Add a variable.
-         * @param k String
-         * @param o Object
+         * @param key String
+         * @param object Object
          * @return Builder
          */
         public Builder addPersonalizationVariable(String key, Object object) {
