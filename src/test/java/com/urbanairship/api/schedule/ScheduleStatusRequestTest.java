@@ -3,6 +3,9 @@ package com.urbanairship.api.schedule;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
+import com.urbanairship.api.common.model.GenericResponse;
+import com.urbanairship.api.common.parse.CommonObjectMapper;
+
 import org.junit.Test;
 
 import java.io.IOException;
@@ -60,15 +63,14 @@ public class ScheduleStatusRequestTest {
 
     @Test
     public void testScheduleParser() throws Exception {
-        ResponseParser<String> responseParser = new ResponseParser<String>() {
-            @Override
-            public String parse(String response) throws IOException {
-                return response;
-            }
-        };
 
-        assertEquals(ScheduleStatusRequestPause.getResponseParser().parse(null), responseParser.parse(null));
-        assertEquals(ScheduleStatusRequestResume.getResponseParser().parse(null), responseParser.parse(null));
+        GenericResponse genericResponse = new GenericResponse(true, null, null, null);
+
+        String responseJson = "{" +
+                "\"ok\": true" +
+                "}";
+
+        assertEquals(ScheduleStatusRequestResume.getResponseParser().parse(responseJson), genericResponse);
 
     }
 }

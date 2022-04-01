@@ -33,10 +33,7 @@ import com.urbanairship.api.channel.parse.email.UpdateEmailChannelResponseDeseri
 import com.urbanairship.api.channel.parse.email.UpdateEmailChannelSerializer;
 import com.urbanairship.api.channel.parse.open.ChannelSerializer;
 import com.urbanairship.api.channel.parse.open.OpenChannelSerializer;
-import com.urbanairship.api.common.model.ErrorDetails;
-import com.urbanairship.api.channel.parse.sms.UpdateSmsChannelSerializer;
 import com.urbanairship.api.common.parse.CommonObjectMapper;
-import com.urbanairship.api.common.parse.ErrorDetailsDeserializer;
 import com.urbanairship.api.createandsend.model.notification.*;
 import com.urbanairship.api.createandsend.parse.notification.CreateAndSendPayloadSerializer;
 import com.urbanairship.api.createandsend.parse.notification.CreateAndSendSchedulePayloadSerializer;
@@ -427,8 +424,7 @@ public class PushObjectMapper {
                 .addSerializer(VariableDetail.class, new VariableDetailSerializer())
                 .addSerializer(CreateAndSendAudience.class, new CreateAndSendAudienceSerializer())
                 .addSerializer(CreateAndSendEmailPayload.class, new CreateAndSendEmailPayloadSerializer())
-                .addSerializer(CreateAndSendSchedulePayload.class, new CreateAndSendSchedulePayloadSerializer())
-                .addDeserializer(ErrorDetails.class, new ErrorDetailsDeserializer());
+                .addSerializer(CreateAndSendSchedulePayload.class, new CreateAndSendSchedulePayloadSerializer());
 
         MAPPER.registerModule(MODULE);
         MAPPER.registerModule(CommonObjectMapper.getModule());

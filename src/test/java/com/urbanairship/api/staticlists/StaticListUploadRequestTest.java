@@ -2,6 +2,9 @@ package com.urbanairship.api.staticlists;
 
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
+import com.urbanairship.api.common.model.GenericResponse;
+import com.urbanairship.api.staticlists.parse.StaticListsObjectMapper;
+
 import org.apache.http.entity.ContentType;
 import org.junit.Before;
 import org.junit.Test;
@@ -69,7 +72,13 @@ public class StaticListUploadRequestTest {
 
     @Test
     public void testParser() throws Exception {
-        String response = "{\"ok\": true}";
-        assertEquals(response, request.getResponseParser().parse(response));
+        GenericResponse genericResponse = new GenericResponse(true, null, null, null);
+
+        String responseJson = "{" +
+                "\"ok\": true" +
+                "}";
+
+        assertEquals(request.getResponseParser().parse(responseJson), genericResponse);
+
     }
 }

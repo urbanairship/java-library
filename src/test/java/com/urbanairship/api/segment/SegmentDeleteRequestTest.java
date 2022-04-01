@@ -3,6 +3,8 @@ package com.urbanairship.api.segment;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
+import com.urbanairship.api.common.model.GenericResponse;
+import com.urbanairship.api.common.parse.CommonObjectMapper;
 import com.urbanairship.api.segments.SegmentDeleteRequest;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,13 +55,13 @@ public class SegmentDeleteRequestTest {
 
     @Test
     public void testParser() throws Exception {
-        ResponseParser<String> responseParser = new ResponseParser<String>() {
-            @Override
-            public String parse(String response) throws IOException {
-                return response;
-            }
-        };
+        
+        GenericResponse genericResponse = new GenericResponse(true, null, null, null);
 
-        assertEquals(request.getResponseParser().parse("204 No Content"), responseParser.parse("204 No Content"));
+        String responseJson = "{" +
+                "\"ok\": true" +
+                "}";
+
+        assertEquals(request.getResponseParser().parse(responseJson), genericResponse);
     }
 }
