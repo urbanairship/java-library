@@ -22,6 +22,7 @@ public class StaticListViewTest {
                 .setLastUpdated(updated)
                 .setChannelCount(1234)
                 .setStatus("ready")
+                .setError("error")
                 .build();
 
         assertNotNull(response);
@@ -29,6 +30,7 @@ public class StaticListViewTest {
         assertEquals(created, response.getCreated());
         assertEquals(Integer.valueOf(1234), response.getChannelCount());
         assertEquals("ready", response.getStatus());
+        assertEquals("error", response.getError());
     }
 
     @Test
