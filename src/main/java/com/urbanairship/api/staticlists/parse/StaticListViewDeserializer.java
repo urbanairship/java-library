@@ -21,70 +21,25 @@ public class StaticListViewDeserializer extends JsonDeserializer<StaticListView>
     private static final FieldParserRegistry<StaticListView, StaticListViewReader> FIELD_PARSERS =
             new MapFieldParserRegistry<StaticListView, StaticListViewReader>(
                     ImmutableMap.<String, FieldParser<StaticListViewReader>>builder()
-                            .put("ok", new FieldParser<StaticListViewReader>() {
-                                @Override
-                                public void parse(StaticListViewReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readOk(jsonParser);
-                                }
-                            })
-                            .put("name", new FieldParser<StaticListViewReader>() {
-                                @Override
-                                public void parse(StaticListViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readName(jsonParser);
-                                }
-                            })
-                            .put("description", new FieldParser<StaticListViewReader>() {
-                                @Override
-                                public void parse(StaticListViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readDescription(jsonParser);
-                                }
-                            })
-                            .put("extra", new FieldParser<StaticListViewReader>() {
-                                @Override
-                                public void parse(StaticListViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readExtras(jsonParser);
-                                }
-                            })
-                            .put("created", new FieldParser<StaticListViewReader>() {
-                                @Override
-                                public void parse(StaticListViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readCreated(jsonParser);
-                                }
-                            })
-                            .put("last_updated", new FieldParser<StaticListViewReader>() {
-                                @Override
-                                public void parse(StaticListViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readLastUpdated(jsonParser);
-                                }
-                            })
-                            .put("channel_count", new FieldParser<StaticListViewReader>() {
-                                @Override
-                                public void parse(StaticListViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readChannelCount(jsonParser);
-                                }
-                            })
-                            .put("status", new FieldParser<StaticListViewReader>() {
-                                @Override
-                                public void parse(StaticListViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readStatus(jsonParser);
-                                }
-                            })
+                            .put("ok", (reader, jsonParser, deserializationContext) -> reader.readOk(jsonParser))
+                            .put("name", (reader, jsonParser, deserializationContext) -> reader.readName(jsonParser))
+                            .put("description", (reader, jsonParser, deserializationContext) -> reader.readDescription(jsonParser))
+                            .put("extra", (reader, jsonParser, deserializationContext) -> reader.readExtras(jsonParser))
+                            .put("created", (reader, jsonParser, deserializationContext) -> reader.readCreated(jsonParser))
+                            .put("last_updated", (reader, jsonParser, deserializationContext) -> reader.readLastUpdated(jsonParser))
+                            .put("channel_count", (reader, jsonParser, deserializationContext) -> reader.readChannelCount(jsonParser))
+                            .put("status", (reader, jsonParser, deserializationContext) -> reader.readStatus(jsonParser))
+                            .put("error", (reader, jsonParser, deserializationContext) -> reader.readError(jsonParser))
+                            .put("details", (reader, jsonParser, deserializationContext) -> reader.readErrorDetails(jsonParser))
                             .build()
             );
 
     private final StandardObjectDeserializer<StaticListView, ?> deserializer;
 
     public StaticListViewDeserializer() {
-        deserializer = new StandardObjectDeserializer<StaticListView, StaticListViewReader>(
+        deserializer = new StandardObjectDeserializer<>(
                 FIELD_PARSERS,
-                new Supplier<StaticListViewReader>() {
-                    @Override
-                    public StaticListViewReader get() {
-                        return new StaticListViewReader();
-                    }
-                }
+                () -> new StaticListViewReader()
         );
     }
 
