@@ -24,12 +24,12 @@ public class WebResponseReportRequestTest {
 
     WebResponseReportRequest webResponseReportRequest;
 
-    String WebResponseReportReportUri = "https://go.urbanairship.com/api/reports/web/interaction?app_key=appKey&start=2020-01-31T23%3A00%3A00&precision=MONTHLY&end=2020-02-29T23%3A00%3A00";
+    String WebResponseReportReportUri = "https://go.urbanairship.com/api/reports/web/interaction?app_key=appKey&start=2020-02-01T00%3A00%3A00&precision=MONTHLY&end=2020-03-01T00%3A00%3A00";
 
     @Before
     public void setupCreate() {
-        webResponseReportRequest = WebResponseReportRequest.newRequest("appKey", DateTime.parse("2020-02-01T00:00:00"))
-        .setPrecision(Precision.MONTHLY).setEndTime(DateTime.parse("2020-03-01T00:00:00"));
+        webResponseReportRequest = WebResponseReportRequest.newRequest("appKey", DateTime.parse("2020-02-01T00:00:00.000Z"))
+        .setPrecision(Precision.MONTHLY).setEndTime(DateTime.parse("2020-03-01T00:00:00.000Z"));
     }
 
     @Test
