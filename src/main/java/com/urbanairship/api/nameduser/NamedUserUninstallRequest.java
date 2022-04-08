@@ -32,6 +32,7 @@ public class NamedUserUninstallRequest implements Request<GenericResponse> {
     /**
      * Create new named users uninstall request.
      *
+     * @param namedUsersList ImmutableList of strings.
      * @return NamedUserUninstallRequest
      */
     public static NamedUserUninstallRequest newUninstallRequest(ImmutableList<String> namedUsersList) {

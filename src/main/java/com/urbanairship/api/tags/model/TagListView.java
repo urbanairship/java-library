@@ -378,7 +378,7 @@ public class TagListView {
         /**
          * Add all key-value pairs.
          *
-         * @param addTags
+         * @param addTags ImmutableMap of arbitrary key-value pairs.
          * @return Builder
          */
         public Builder addAddTags(ImmutableMap<String, ImmutableList<String>> addTags) {
@@ -391,7 +391,7 @@ public class TagListView {
         /**
          * Add all key-value pairs.
          *
-         * @param removeTags
+         * @param removeTags ImmutableMap of arbitrary key-value pairs.
          * @return Builder
          */
         public Builder addRemoveTags(ImmutableMap<String, ImmutableList<String>> removeTags) {
