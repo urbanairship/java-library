@@ -4,15 +4,16 @@
 
 package com.urbanairship.api.nameduser;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
+import com.urbanairship.api.common.model.GenericResponse;
 import com.urbanairship.api.nameduser.parse.NamedUserObjectMapper;
 import org.apache.http.entity.ContentType;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -24,7 +25,7 @@ import java.util.Set;
  * The NamedUserTagRequest class builds named user tag mutation requests to be executed in
  * the {@link com.urbanairship.api.client.UrbanAirshipClient}.
  */
-public class NamedUserTagRequest implements Request<String> {
+public class NamedUserTagRequest implements Request<GenericResponse> {
 
     private final static String API_NAMED_USERS_TAGS = "/api/named_users/tags/";
     private static final String NAMED_USER_AUDIENCE_KEY = "named_user_id";
@@ -169,13 +170,8 @@ public class NamedUserTagRequest implements Request<String> {
     }
 
     @Override
-    public ResponseParser<String> getResponseParser() {
-        return new ResponseParser<String>() {
-            @Override
-            public String parse(String response) throws IOException {
-                return response;
-            }
-        };
+    public ResponseParser<GenericResponse> getResponseParser() {
+        return RequestUtils.GENERIC_RESPONSE_PARSER;
     }
 
     @Override

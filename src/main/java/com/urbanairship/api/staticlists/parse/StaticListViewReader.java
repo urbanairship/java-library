@@ -7,6 +7,7 @@ package com.urbanairship.api.staticlists.parse;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableMap;
+import com.urbanairship.api.common.model.ErrorDetails;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.staticlists.model.StaticListView;
@@ -56,6 +57,13 @@ public class StaticListViewReader implements JsonObjectReader<StaticListView> {
         builder.setStatus(jsonParser.readValueAs(String.class));
     }
 
+    public void readError(JsonParser jsonParser) throws IOException {
+        builder.setError(jsonParser.readValueAs(String.class));
+    }
+
+    public void readErrorDetails(JsonParser jsonParser) throws IOException {
+        builder.setErrorDetails(jsonParser.readValueAs(ErrorDetails.class));
+    }
 
     @Override
     public StaticListView validateAndBuild() throws IOException {

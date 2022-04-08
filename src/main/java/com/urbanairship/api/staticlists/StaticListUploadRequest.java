@@ -4,18 +4,20 @@
 
 package com.urbanairship.api.staticlists;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
+import com.urbanairship.api.common.model.GenericResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.entity.ContentType;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +26,7 @@ import java.util.Map;
  * The StaticListUploadRequest class builds a static list upload request to be executed in
  * the {@link com.urbanairship.api.client.UrbanAirshipClient}.
  */
-public class StaticListUploadRequest implements Request<String> {
+public class StaticListUploadRequest implements Request<GenericResponse> {
     private final static String API_LISTS_PATH = "/api/lists/";
     private final static String CSV_PATH = "/csv";
     private final String path;
@@ -112,13 +114,8 @@ public class StaticListUploadRequest implements Request<String> {
     }
 
     @Override
-    public ResponseParser<String> getResponseParser() {
-        return new ResponseParser<String>() {
-            @Override
-            public String parse(String response) throws IOException {
-                return response;
-            }
-        };
+    public ResponseParser<GenericResponse> getResponseParser() {
+        return RequestUtils.GENERIC_RESPONSE_PARSER;
     }
 
     @Override

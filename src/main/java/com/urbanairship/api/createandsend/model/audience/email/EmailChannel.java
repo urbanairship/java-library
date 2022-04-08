@@ -15,6 +15,7 @@ public class EmailChannel {
     private final Optional<DateTime> transactionalOptedIn;
     private final String uaAddress;
     private final Optional<Map<String, String>> substitutions;
+    private final Optional<Map<String, Object>> variables;
 
     private EmailChannel(Builder builder) {
         uaAddress = builder.uaAddress;
@@ -25,6 +26,11 @@ public class EmailChannel {
             this.substitutions = Optional.fromNullable(builder.substitutions.build());
         } else {
             substitutions = Optional.absent();
+        }
+        if (!builder.variables.build().isEmpty()) {
+            this.variables = Optional.fromNullable(builder.variables.build());
+        } else {
+            variables = Optional.absent();
         }
     }
 
@@ -68,11 +74,20 @@ public class EmailChannel {
         return substitutions;
     }
 
+    /**
+     * Get the variables.
+     * @return An Optional immutable map of variables in the push payload.
+     */
+    public Optional<Map<String, Object>> getPersonalizationVariables() {
+        return variables;
+    }
     public static final class Builder {
         private String uaAddress;
         private DateTime commercialOptedIn;
         private DateTime transactionalOptedIn;
         private ImmutableMap.Builder<String, String> substitutions = ImmutableMap.builder();
+        private ImmutableMap.Builder<String, Object> variables = ImmutableMap.builder();
+
 
         /**
          * The address that you want to populate in the channel's address field.
@@ -125,6 +140,17 @@ public class EmailChannel {
          */
         public Builder addAllSubstitutions(Map<String, String> substitutions) {
             this.substitutions.putAll(substitutions);
+            return this;
+        }
+
+        /**
+         * Add a variable.
+         * @param key String
+         * @param object Object
+         * @return Builder
+         */
+        public Builder addPersonalizationVariable(String key, Object object) {
+            this.variables.put(key, object);
             return this;
         }
 

@@ -1,6 +1,7 @@
 package com.urbanairship.api.segments.parse;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.urbanairship.api.common.model.ErrorDetails;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.push.model.audience.Selector;
@@ -22,6 +23,15 @@ public class SegmentViewReader implements JsonObjectReader<SegmentView> {
     public void readDisplayName(JsonParser jsonParser) throws IOException {
         builder.setDisplayName(jsonParser.readValueAs(String.class));
     }
+
+    public void readError(JsonParser jsonParser) throws IOException {
+        builder.setError(jsonParser.readValueAs(String.class));
+    }
+
+    public void readErrorDetails(JsonParser jsonParser) throws IOException {
+        builder.setErrorDetails(jsonParser.readValueAs(ErrorDetails.class));
+    }
+
 
     @Override
     public SegmentView validateAndBuild() throws IOException {

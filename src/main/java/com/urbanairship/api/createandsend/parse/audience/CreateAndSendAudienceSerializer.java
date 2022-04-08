@@ -35,6 +35,11 @@ public class CreateAndSendAudienceSerializer extends JsonSerializer<CreateAndSen
                         jgen.writeStringField(key, channel.getSubstitutions().get().get(key));
                     }
                 }
+                if (channel.getPersonalizationVariables().isPresent()) {
+                    for (String key : channel.getPersonalizationVariables().get().keySet()) {
+                        jgen.writePOJOField(key, channel.getPersonalizationVariables().get().get(key));
+                    }
+                }
                 jgen.writeEndObject();
             }
         }
@@ -49,6 +54,11 @@ public class CreateAndSendAudienceSerializer extends JsonSerializer<CreateAndSen
                 if (smsChannel.getSubstitutions().isPresent()) {
                     for (String key : smsChannel.getSubstitutions().get().keySet()) {
                         jgen.writeStringField(key, smsChannel.getSubstitutions().get().get(key));
+                    }
+                }
+                if (smsChannel.getPersonalizationVariables().isPresent()) {
+                    for (String key : smsChannel.getPersonalizationVariables().get().keySet()) {
+                        jgen.writePOJOField(key, smsChannel.getPersonalizationVariables().get().get(key));
                     }
                 }
                 jgen.writeEndObject();

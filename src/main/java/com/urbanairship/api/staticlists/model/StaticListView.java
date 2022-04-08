@@ -4,11 +4,13 @@
 
 package com.urbanairship.api.staticlists.model;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
+import com.urbanairship.api.common.model.ErrorDetails;
 import org.joda.time.DateTime;
+
+import java.util.Objects;
 
 public class StaticListView {
     private final Optional<Boolean> ok;
@@ -19,16 +21,30 @@ public class StaticListView {
     private final DateTime lastUpdated;
     private final Integer channelCount;
     private final String status;
+    private final String error;
+    private final ErrorDetails errorDetails;
 
-    private StaticListView(Builder builder) {
-        this.ok = Optional.fromNullable(builder.ok);
-        this.name = builder.name;
-        this.description = Optional.fromNullable(builder.description);
-        this.extras = Optional.fromNullable(builder.extras.build());
-        this.created = builder.created;
-        this.lastUpdated = builder.lastUpdated;
-        this.channelCount = builder.channelCount;
-        this.status = builder.status;
+    private StaticListView(
+            Boolean ok,
+            String name,
+            String description,
+            ImmutableMap.Builder<String, String> extras,
+            DateTime created,
+            DateTime lastUpdated,
+            Integer channelCount,
+            String status,
+            String error,
+            ErrorDetails errorDetails) {
+        this.ok = Optional.fromNullable(ok);
+        this.name = name;
+        this.description = Optional.fromNullable(description);
+        this.extras = Optional.fromNullable(extras.build());
+        this.created = created;
+        this.lastUpdated = lastUpdated;
+        this.channelCount = channelCount;
+        this.status = status;
+        this.error = error;
+        this.errorDetails = errorDetails;
     }
 
     /**
@@ -112,44 +128,51 @@ public class StaticListView {
         return status;
     }
 
+    public String getError() {
+        return error;
+    }
+
+    public ErrorDetails getErrorDetails() {
+        return errorDetails;
+    }
+
     @Override
     public String toString() {
         return "StaticListView{" +
                 "ok=" + ok +
-                ", name=\'" + name + '\'' +
+                ", name='" + name + '\'' +
                 ", description=" + description +
                 ", extras=" + extras +
                 ", created=" + created +
                 ", lastUpdated=" + lastUpdated +
                 ", channelCount=" + channelCount +
-                ", status=" + status +
+                ", status='" + status + '\'' +
+                ", error=" + error +
+                ", errorDetails=" + errorDetails +
                 '}';
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hashCode(ok, name, description, extras, created, lastUpdated, channelCount, status);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StaticListView that = (StaticListView) o;
+        return Objects.equals(ok, that.ok) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(extras, that.extras) &&
+                Objects.equals(created, that.created) &&
+                Objects.equals(lastUpdated, that.lastUpdated) &&
+                Objects.equals(channelCount, that.channelCount) &&
+                Objects.equals(status, that.status) &&
+                Objects.equals(error, that.error) &&
+                Objects.equals(errorDetails, that.errorDetails);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        final StaticListView other = (StaticListView) obj;
-        return Objects.equal(this.ok, other.ok) &&
-                Objects.equal(this.name, other.name) &&
-                Objects.equal(this.description, other.description) &&
-                Objects.equal(this.extras, other.extras) &&
-                Objects.equal(this.created, other.created) &&
-                Objects.equal(this.lastUpdated, other.lastUpdated) &&
-                Objects.equal(this.channelCount, other.channelCount) &&
-                Objects.equal(this.status, other.status);
+    public int hashCode() {
+        return Objects.hash(ok, name, description, extras, created, lastUpdated, channelCount, status, error, errorDetails);
     }
-
 
     public final static class Builder {
         private Boolean ok = null;
@@ -160,6 +183,8 @@ public class StaticListView {
         private DateTime lastUpdated = null;
         private Integer channelCount = null;
         private String status = null;
+        private String error = null;
+        private ErrorDetails errorDetails = null;
 
         private Builder() {
         }
@@ -266,18 +291,22 @@ public class StaticListView {
             return this;
         }
 
+        public Builder setError(String error) {
+            this.error = error;
+            return this;
+        }
+
+        public Builder setErrorDetails(ErrorDetails errorDetails) {
+            this.errorDetails = errorDetails;
+            return this;
+        }
+
         /**
          * Build the StaticListView object
          * @return StaticListView
          */
         public StaticListView build() {
-            Preconditions.checkNotNull(name);
-            Preconditions.checkNotNull(created);
-            Preconditions.checkNotNull(lastUpdated);
-            Preconditions.checkNotNull(channelCount);
-            Preconditions.checkNotNull(status);
-
-            return new StaticListView(this);
+            return new StaticListView(ok, name, description, extras, created, lastUpdated, channelCount, status, error, errorDetails);
         }
     }
 }

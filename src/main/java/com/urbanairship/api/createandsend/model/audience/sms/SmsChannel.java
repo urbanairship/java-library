@@ -17,6 +17,8 @@ public final class SmsChannel {
     private final String sender;
 
     private final Optional<ImmutableMap<String, String>> substitutions;
+    private final Optional<Map<String, Object>> variables;
+
 
     private SmsChannel(Builder builder) {
         msisdn = builder.msisdn;
@@ -27,6 +29,11 @@ public final class SmsChannel {
             substitutions = Optional.empty();
         } else {
             substitutions = Optional.of(builder.substitutions.build());
+        }
+        if (builder.variables.build().isEmpty()) {
+            variables = Optional.empty();
+        } else {
+            variables = Optional.of(builder.variables.build());
         }
     }
 
@@ -72,6 +79,14 @@ public final class SmsChannel {
         return substitutions;
     }
 
+    /**
+     * Get the variables.
+     * @return An Optional immutable map of variables in the push payload.
+     */
+    public Optional<Map<String, Object>> getPersonalizationVariables() {
+        return variables;
+    }
+
     @Override
     public String toString() {
         return "SmsChannel{" +
@@ -104,6 +119,7 @@ public final class SmsChannel {
         private String sender;
 
         private ImmutableMap.Builder<String, String> substitutions = ImmutableMap.builder();
+        private ImmutableMap.Builder<String, Object> variables = ImmutableMap.builder();
 
         /**
          * Set the msisdn. The mobile phone number you want to register as an SMS channel (or send a request to opt-in).
@@ -156,6 +172,17 @@ public final class SmsChannel {
          */
         public Builder addAllSubstitutions(Map<String, String> substitutions) {
             this.substitutions.putAll(substitutions);
+            return this;
+        }
+
+        /**
+         * Add a variable.
+         * @param key String
+         * @param object Object
+         * @return Builder
+         */
+        public Builder addPersonalizationVariable(String key, Object object) {
+            this.variables.put(key, object);
             return this;
         }
 

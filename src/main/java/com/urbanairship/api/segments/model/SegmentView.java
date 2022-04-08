@@ -1,16 +1,22 @@
 package com.urbanairship.api.segments.model;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.urbanairship.api.common.model.ErrorDetails;
 import com.urbanairship.api.push.model.audience.Selector;
+
+import java.util.Objects;
 
 public class SegmentView {
     private final Selector criteria;
     private final String displayName;
+    private final String error;
+    private final ErrorDetails errorDetails;
 
-    private SegmentView(Selector criteria, String displayName) {
+    private SegmentView(Selector criteria, String displayName, String error, ErrorDetails errorDetails) {
         this.criteria = criteria;
         this.displayName = displayName;
+        this.error = error;
+        this.errorDetails = errorDetails;
     }
 
     /**
@@ -40,36 +46,45 @@ public class SegmentView {
         return displayName;
     }
 
+    public String getError() {
+        return error;
+    }
+
+    public ErrorDetails getErrorDetails() {
+        return errorDetails;
+    }
+
     @Override
     public String toString() {
         return "SegmentView{" +
                 "criteria=" + criteria +
-                "display_name=" + displayName +
-                "}";
+                ", displayName='" + displayName + '\'' +
+                ", error='" + error + '\'' +
+                ", errorDetails=" + errorDetails +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SegmentView that = (SegmentView) o;
+        return Objects.equals(criteria, that.criteria) &&
+                Objects.equals(displayName, that.displayName) &&
+                Objects.equals(error, that.error) &&
+                Objects.equals(errorDetails, that.errorDetails);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(criteria, displayName);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        final SegmentView other = (SegmentView) obj;
-
-        return Objects.equal(this.displayName, other.displayName) &&
-                Objects.equal(this.criteria, other.criteria);
+        return Objects.hash(criteria, displayName, error, errorDetails);
     }
 
     public final static class Builder {
         private String displayName = null;
         private Selector criteria = null;
+        private String error = null;
+        private ErrorDetails errorDetails = null;
 
         private Builder() {
         }
@@ -96,10 +111,18 @@ public class SegmentView {
             return this;
         }
 
+        public Builder setError(String error) {
+            this.error = error;
+            return this;
+        }
+
+        public Builder setErrorDetails(ErrorDetails errorDetails) {
+            this.errorDetails = errorDetails;
+            return this;
+        }
+
         public SegmentView build() {
-            Preconditions.checkNotNull(criteria);
-            Preconditions.checkNotNull(displayName);
-            return new SegmentView(criteria, displayName);
+            return new SegmentView(criteria, displayName, error, errorDetails);
         }
     }
 }
