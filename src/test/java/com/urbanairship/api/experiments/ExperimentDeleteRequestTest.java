@@ -1,6 +1,9 @@
 package com.urbanairship.api.experiments;
 
 import com.urbanairship.api.client.ResponseParser;
+import com.urbanairship.api.common.model.GenericResponse;
+import com.urbanairship.api.common.parse.CommonObjectMapper;
+
 import org.apache.http.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import org.junit.Test;
@@ -49,13 +52,13 @@ public class ExperimentDeleteRequestTest {
 
     @Test
     public void testExperimentParser() throws Exception {
-        ResponseParser<String> responseParser = new ResponseParser<String>() {
-            @Override
-            public String parse(String response) throws IOException {
-                return response;
-            }
-        };
 
-        assertEquals(experimentDeleteRequest.getResponseParser().parse(null), responseParser.parse(null));
+        GenericResponse genericResponse = new GenericResponse(true, null, null, null);
+
+        String responseJson = "{" +
+                "\"ok\": true" +
+                "}";
+
+        assertEquals(experimentDeleteRequest.getResponseParser().parse(responseJson), genericResponse);
     }
 }

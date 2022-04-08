@@ -17,22 +17,10 @@ public class SegmentViewDeserializer extends JsonDeserializer<SegmentView> {
     public static final FieldParserRegistry<SegmentView, SegmentViewReader> FIELD_PARSER =
             new MapFieldParserRegistry<SegmentView, SegmentViewReader>(
                     ImmutableMap.<String, FieldParser<SegmentViewReader>>builder()
-                            .put("criteria", new FieldParser<SegmentViewReader>() {
-                                @Override
-                                public void parse(SegmentViewReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readCriteria(jsonParser);
-                                }
-                            })
-                            .put("display_name", new FieldParser<SegmentViewReader>() {
-                                @Override
-                                public void parse(SegmentViewReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readDisplayName(jsonParser);
-                                }
-                            })
+                            .put("criteria", (reader, jsonParser, deserializationContext) -> reader.readCriteria(jsonParser))
+                            .put("display_name", (reader, jsonParser, deserializationContext) -> reader.readDisplayName(jsonParser))
+                            .put("error", (reader, jsonParser, deserializationContext) -> reader.readError(jsonParser))
+                            .put("details", (reader, jsonParser, deserializationContext) -> reader.readErrorDetails(jsonParser))
                             .build()
             );
 
@@ -40,14 +28,9 @@ public class SegmentViewDeserializer extends JsonDeserializer<SegmentView> {
     private final StandardObjectDeserializer<SegmentView, ?> deserializer;
 
     public SegmentViewDeserializer() {
-        this.deserializer = new StandardObjectDeserializer<SegmentView, SegmentViewReader>(
+        this.deserializer = new StandardObjectDeserializer<>(
                 FIELD_PARSER,
-                new Supplier<SegmentViewReader>() {
-                    @Override
-                    public SegmentViewReader get() {
-                        return new SegmentViewReader();
-                    }
-                }
+                () -> new SegmentViewReader()
         );
     }
 

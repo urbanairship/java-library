@@ -19,7 +19,6 @@ import com.urbanairship.api.reports.model.PushInfoResponse;
 import com.urbanairship.api.reports.model.PushListingResponse;
 import com.urbanairship.api.reports.model.ResponseReport;
 import com.urbanairship.api.reports.model.ResponseReportResponse;
-import com.urbanairship.api.reports.model.StatisticsResponse;
 
 
 public class ReportsObjectMapper {
@@ -37,7 +36,6 @@ public class ReportsObjectMapper {
         MODULE.addDeserializer(PushListingResponse.class, new PushListingResponseDeserializer());
         MODULE.addDeserializer(ResponseReport.class, new ResponseReportDeserializer());
         MODULE.addDeserializer(ResponseReportResponse.class, new ResponseReportResponseDeserializer());
-        MODULE.addDeserializer(StatisticsResponse.class, new StatisticsResponseDeserializer());
 
         MAPPER.registerModule(MODULE);
         MAPPER.registerModule(PushObjectMapper.getModule());

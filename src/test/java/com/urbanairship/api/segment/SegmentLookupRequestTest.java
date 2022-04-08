@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
+import com.urbanairship.api.common.model.ErrorDetails;
+import com.urbanairship.api.push.model.audience.Selector;
+import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.segments.SegmentLookupRequest;
 import com.urbanairship.api.segments.model.SegmentView;
 import com.urbanairship.api.segments.parse.SegmentObjectMapper;
@@ -62,77 +65,35 @@ public class SegmentLookupRequestTest {
 
     @Test
     public void testParser() throws Exception {
-        ResponseParser<SegmentView> responseParser = new ResponseParser<SegmentView>() {
-            @Override
-            public SegmentView parse(String response) throws IOException {
-                return mapper.readValue(response, SegmentView.class);
-            }
-        };
 
-        String responseInfo = "{  \n" +
-                "  \"display_name\":\"2014-11-07T14:26:56.749-08:00\",\n" +
-                "  \"criteria\":{  \n" +
-                "    \"and\":[  \n" +
-                "      {  \n" +
-                "        \"location\":{  \n" +
-                "          \"us_state\":\"OR\",\n" +
-                "          \"date\":{  \n" +
-                "            \"days\":{  \n" +
-                "              \"start\":\"2014-11-02\",\n" +
-                "              \"end\":\"2014-11-07\"\n" +
+        Selector compound = Selectors.and(Selectors.tag("ipad"), Selectors.not(Selectors.tag("foo")));
+
+        SegmentView segmentView = SegmentView.newBuilder()
+                .setCriteria(compound)
+                .setDisplayName("A segment")
+                .setError("error")
+                .setErrorDetails(new ErrorDetails("an error", "a path"))
+                .build();
+
+
+        String responseInfo = "{\n" +
+                "   \"criteria\": {\n" +
+                "      \"and\": [\n" +
+                "         {\n" +
+                "            \"tag\": \"ipad\"\n" +
+                "         },\n" +
+                "         {\n" +
+                "            \"not\": {\n" +
+                "               \"tag\": \"foo\"\n" +
                 "            }\n" +
-                "          }\n" +
-                "        }\n" +
-                "      },\n" +
-                "      {  \n" +
-                "        \"location\":{  \n" +
-                "          \"us_state\":\"CA\",\n" +
-                "          \"date\":{  \n" +
-                "            \"recent\":{  \n" +
-                "              \"months\":3\n" +
-                "            }\n" +
-                "          }\n" +
-                "        }\n" +
-                "      },\n" +
-                "      {  \n" +
-                "        \"or\":[  \n" +
-                "          {  \n" +
-                "            \"tag\":\"tag1\"\n" +
-                "          },\n" +
-                "          {  \n" +
-                "            \"tag\":\"tag2\"\n" +
-                "          }\n" +
-                "        ]\n" +
-                "      },\n" +
-                "      {  \n" +
-                "        \"not\":{  \n" +
-                "          \"tag\":\"not-tag\"\n" +
-                "        }\n" +
-                "      },\n" +
-                "      {  \n" +
-                "        \"not\":{  \n" +
-                "          \"and\":[  \n" +
-                "            {  \n" +
-                "              \"location\":{  \n" +
-                "                \"us_state\":\"WA\",\n" +
-                "                \"date\":{  \n" +
-                "                  \"months\":{  \n" +
-                "                    \"start\":\"2011-05\",\n" +
-                "                    \"end\":\"2012-02\"\n" +
-                "                  }\n" +
-                "                }\n" +
-                "              }\n" +
-                "            },\n" +
-                "            {  \n" +
-                "              \"tag\":\"woot\"\n" +
-                "            }\n" +
-                "          ]\n" +
-                "        }\n" +
-                "      }\n" +
-                "    ]\n" +
-                "  }\n" +
+                "         }\n" +
+                "      ]\n" +
+                "   },\n" +
+                "   \"display_name\": \"A segment\",\n" +
+                "   \"error\": \"error\",\n" +
+                "   \"details\": {\"error\": \"an error\", \"path\":\"a path\"}\n" +
                 "}";
 
-        assertEquals(request.getResponseParser().parse(responseInfo), responseParser.parse(responseInfo));
+        assertEquals(request.getResponseParser().parse(responseInfo), segmentView);
     }
 }

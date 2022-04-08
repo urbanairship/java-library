@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
+import com.urbanairship.api.common.model.ErrorDetails;
 import com.urbanairship.api.staticlists.model.StaticListView;
 import com.urbanairship.api.staticlists.parse.StaticListsObjectMapper;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -59,25 +61,32 @@ public class StaticListLookupRequestTest {
 
     @Test
     public void testParser() throws Exception {
-        ResponseParser<StaticListView> responseParser = new ResponseParser<StaticListView>() {
-            @Override
-            public StaticListView parse(String response) throws IOException {
-                return mapper.readValue(response, StaticListView.class);
-            }
-        };
+
+        StaticListView staticListView = StaticListView.newBuilder()
+                .setChannelCount(3145)
+                .setName("platinum_members")
+                .setCreated(DateTime.parse("2013-08-08T20:41:06.000Z"))
+                .addExtra("key", "value")
+                .setLastUpdated(DateTime.parse("2014-05-01T18:00:27.000Z"))
+                .setStatus("ready")
+                .setOk(true)
+                .setError("error")
+                .setErrorDetails(new ErrorDetails("an error", null))
+                .build();
 
         String responseString = "{\n" +
                     "\"ok\": true,\n" +
                     "\"name\": \"platinum_members\",\n" +
-                    "\"description\": \"loyalty program platinum members\",\n" +
                     "\"extra\": {\"key\": \"value\"},\n" +
                     "\"created\": \"2013-08-08T20:41:06\",\n" +
                     "\"last_updated\": \"2014-05-01T18:00:27\",\n" +
                     "\"channel_count\": 3145,\n" +
-                    "\"status\": \"ready\"\n" +
+                    "\"status\": \"ready\",\n" +
+                    "\"error\": \"error\",\n" +
+                    "\"details\": {\"error\": \"an error\"}\n" +
                 "}";
 
-        assertEquals(request.getResponseParser().parse(responseString), responseParser.parse(responseString));
+        assertEquals(request.getResponseParser().parse(responseString), staticListView);
     }
 
 }

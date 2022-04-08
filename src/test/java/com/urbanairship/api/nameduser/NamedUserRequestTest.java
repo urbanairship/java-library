@@ -5,12 +5,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.client.Request;
+import com.urbanairship.api.client.ResponseParser;
+import com.urbanairship.api.common.model.ErrorDetails;
+import com.urbanairship.api.common.model.GenericResponse;
+import com.urbanairship.api.common.parse.CommonObjectMapper;
 import com.urbanairship.api.nameduser.parse.NamedUserObjectMapper;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.http.entity.ContentType;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -172,9 +177,20 @@ public class NamedUserRequestTest {
     }
 
     @Test
-    public void testParser() throws Exception {
-        String response = "{\"ok\" : true}";
-        assertEquals(response, associationRequest.getResponseParser().parse(response));
-        assertEquals(response, disassociationRequest.getResponseParser().parse(response));
+    public void testResponseParser() throws Exception {
+
+        ErrorDetails errorDetails = new ErrorDetails("The key chanel is not allowed in this context", null);
+
+        GenericResponse genericResponse = new GenericResponse(true, "1769297b-1640-43a4-af84-3e0ece89efe", "error", errorDetails);
+
+        String responseJson = "{" +
+                "\"ok\": true," +
+                "\"operation_id\": \"1769297b-1640-43a4-af84-3e0ece89efe\"," +
+                "\"error\": \"error\"," +
+                "\"details\": {\"error\": \"The key chanel is not allowed in this context\"" +
+                "}" +
+                "}";
+        assertEquals(associationRequest.getResponseParser().parse(responseJson), genericResponse);
+        assertEquals(disassociationRequest.getResponseParser().parse(responseJson), genericResponse);
     }
 }

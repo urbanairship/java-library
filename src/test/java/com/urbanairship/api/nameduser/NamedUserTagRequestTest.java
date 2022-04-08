@@ -5,12 +5,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
+import com.urbanairship.api.client.ResponseParser;
+import com.urbanairship.api.common.model.GenericResponse;
+import com.urbanairship.api.common.parse.CommonObjectMapper;
 import com.urbanairship.api.nameduser.parse.NamedUserObjectMapper;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.http.entity.ContentType;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -203,7 +207,12 @@ public class NamedUserTagRequestTest {
 
     @Test
     public void testParser() throws Exception {
-        String response = "{\"ok\" : true}";
-        assertEquals(response, defaultRequest.getResponseParser().parse(response));
+        GenericResponse genericResponse = new GenericResponse(true, null, null, null);
+
+        String responseJson = "{" +
+                "\"ok\": true" +
+                "}";
+
+        assertEquals(defaultRequest.getResponseParser().parse(responseJson), genericResponse);
     }
 }

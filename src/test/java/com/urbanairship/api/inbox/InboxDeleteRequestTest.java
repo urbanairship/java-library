@@ -1,8 +1,13 @@
 package com.urbanairship.api.inbox;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
+import com.urbanairship.api.common.model.GenericResponse;
+import com.urbanairship.api.common.parse.CommonObjectMapper;
+import com.urbanairship.api.push.parse.PushObjectMapper;
+
 import org.junit.Test;
 
 import java.io.IOException;
@@ -14,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 
 public class InboxDeleteRequestTest {
 
+    private final static ObjectMapper mapper = CommonObjectMapper.getInstance();
     InboxDeleteRequest InboxDeleteRequest = com.urbanairship.api.inbox.InboxDeleteRequest.newRequest("id");
 
     @Test
@@ -48,15 +54,16 @@ public class InboxDeleteRequestTest {
     }
 
     @Test
-    public void testScheduleParser() throws Exception {
-        ResponseParser<String> responseParser = new ResponseParser<String>() {
+    public void testResponseParser() throws Exception {
+
+        String responseJson = "{\"ok\": true}";
+        final ResponseParser responseParser = new ResponseParser<GenericResponse>() {
             @Override
-            public String parse(String response) throws IOException {
-                return response;
+            public GenericResponse parse(String response) throws IOException {
+                return mapper.readValue(response, GenericResponse.class);
             }
         };
+        assertEquals(InboxDeleteRequest.getResponseParser().parse(responseJson), responseParser.parse(responseJson));
 
-        assertEquals(InboxDeleteRequest.getResponseParser().parse(null), responseParser.parse(null));
     }
-    
 }

@@ -7,8 +7,6 @@ import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.channel.model.ChannelResponse;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.channel.model.ChannelView;
-import com.urbanairship.api.location.model.LocationResponse;
-import com.urbanairship.api.location.model.LocationView;
 import com.urbanairship.api.nameduser.model.NamedUserListingResponse;
 import com.urbanairship.api.nameduser.model.NamedUserView;
 import com.urbanairship.api.push.model.DeviceType;
@@ -374,39 +372,6 @@ public class ResponseTest {
                 response.getHeaders().equals(headers));
         assertTrue("HTTP response status not set properly",
                 response.getStatus() == httpResponse.getStatusLine().getStatusCode());
-    }
-
-
-    @Test
-    public void testLocationResponse() {
-        HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(
-            new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
-        httpResponse.setHeader(CONTENT_TYPE_KEY, CONTENT_TYPE);
-
-        ObjectNode node = JsonNodeFactory.instance.objectNode();
-        node.put("hello", "kitty");
-
-        LocationView locationView = LocationView.newBuilder()
-            .setLocationId("ID")
-            .setLocationType("Type")
-            .setPropertiesNode(node)
-            .build();
-
-        LocationResponse locationResponse = LocationResponse.newBuilder()
-            .addAllFeatures(Arrays.asList(locationView))
-            .build();
-
-        Response<LocationResponse> response = new Response<LocationResponse>(
-            locationResponse,
-            headers,
-            httpResponse.getStatusLine().getStatusCode());
-
-        assertTrue("HTTP response not set properly",
-            response.getBody().get().equals(locationResponse));
-        assertTrue("HTTP response headers not set properly",
-            response.getHeaders().equals(headers));
-        assertTrue("HTTP response status not set properly",
-            response.getStatus() == httpResponse.getStatusLine().getStatusCode());
     }
 
     @Test

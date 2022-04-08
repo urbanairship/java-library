@@ -20,7 +20,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -42,11 +44,31 @@ public class CreateAndSendSmsTest {
         substitutions.put("key1", "value1");
         substitutions.put("key2", "value2");
 
+        Map<String, String> test = new HashMap<>();
+        test.put("firstname", "Jenny");
+        test.put("last_name", "Smith");
+        test.put("location", "Vancouver");
+        
+        Map<String, Object> test2 = new HashMap<>();
+        test2.put("name", "Rubber Gloves");
+        test2.put("code", "abaccgdsagsde");
+        test2.put("qty", "1");
+
+        Map<String, Object> test3 = new HashMap<>();
+        test3.put("name", "Bleach Alternative");
+        test3.put("code", "cacadgdesgaga");
+        test3.put("qty", "1");
+
+        List< Map<String, Object>> myList = new ArrayList<>();
+        myList.add(test2);
+        myList.add(test3);
+
         SmsChannel smsChannel = SmsChannel.newBuilder()
                 .setSender("sender")
                 .setMsisdn("msisdn")
                 .setOptedIn(dateTime)
                 .addAllSubstitutions(substitutions)
+                .addPersonalizationVariable("customer", test)
                 .build();
 
         SmsChannel smsChannel1 = SmsChannel.newBuilder()
@@ -55,6 +77,7 @@ public class CreateAndSendSmsTest {
                 .setOptedIn(dateTime)
                 .addSubstitution("key3", "value3")
                 .addSubstitution("key4", "value4")
+                .addPersonalizationVariable("cart", myList)
                 .build();
 
         SmsChannels smsChannels = SmsChannels.newBuilder()
@@ -149,24 +172,7 @@ public class CreateAndSendSmsTest {
 
     @Test
     public void testAudience() throws IOException {
-        String expectedJson  = "{\n" +
-                "    \"create_and_send\": [\n" +
-                "        {\n" +
-                "            \"ua_msisdn\": \"msisdn\",\n" +
-                "            \"ua_sender\": \"sender\",\n" +
-                "            \"ua_opted_in\": \"" + dateString + "\",\n" +
-                "            \"key1\": \"value1\",\n" +
-                "            \"key2\": \"value2\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"ua_msisdn\": \"msisdn2\",\n" +
-                "            \"ua_sender\": \"sender2\",\n" +
-                "            \"ua_opted_in\": \"" + dateString + "\",\n" +
-                "            \"key3\": \"value3\",\n" +
-                "            \"key4\": \"value4\"\n" +
-                "        }\n" +
-                "    ]\n" +
-                "}";
+        String expectedJson  = "{\"create_and_send\":[{\"ua_msisdn\":\"msisdn\",\"ua_sender\":\"sender\",\"ua_opted_in\":\"" + dateString + "\",\"key1\":\"value1\",\"key2\":\"value2\",\"customer\":{\"firstname\":\"Jenny\",\"last_name\":\"Smith\",\"location\":\"Vancouver\"}},{\"ua_msisdn\":\"msisdn2\",\"ua_sender\":\"sender2\",\"ua_opted_in\":\"" + dateString + "\",\"key3\":\"value3\",\"key4\":\"value4\",\"cart\":[{\"code\":\"abaccgdsagsde\",\"qty\":\"1\",\"name\":\"Rubber Gloves\"},{\"code\":\"cacadgdesgaga\",\"qty\":\"1\",\"name\":\"Bleach Alternative\"}]}]}";
 
         String actualJson = MAPPER.writeValueAsString(audience);
 
@@ -196,6 +202,7 @@ public class CreateAndSendSmsTest {
                 "                \"ua_msisdn\": \"msisdn\",\n" +
                 "                \"ua_sender\": \"sender\",\n" +
                 "                \"ua_opted_in\": \"" + dateString + "\",\n" +
+                "                \"customer\":{\"firstname\":\"Jenny\",\"last_name\":\"Smith\",\"location\":\"Vancouver\"},\n" +
                 "                \"key1\": \"value1\",\n" +
                 "                \"key2\": \"value2\"\n" +
                 "            },\n" +
@@ -203,6 +210,7 @@ public class CreateAndSendSmsTest {
                 "                \"ua_msisdn\": \"msisdn2\",\n" +
                 "                \"ua_sender\": \"sender2\",\n" +
                 "                \"ua_opted_in\": \"" + dateString + "\",\n" +
+                "                 \"cart\":[{\"code\":\"abaccgdsagsde\",\"qty\":\"1\",\"name\":\"Rubber Gloves\"},{\"code\":\"cacadgdesgaga\",\"qty\":\"1\",\"name\":\"Bleach Alternative\"}],\n" +
                 "                \"key3\": \"value3\",\n" +
                 "                \"key4\": \"value4\"\n" +
                 "            }\n" +
