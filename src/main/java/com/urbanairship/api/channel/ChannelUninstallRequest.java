@@ -35,6 +35,7 @@ public class ChannelUninstallRequest implements Request<ChannelUninstallResponse
     /**
      * Create new channels uninstall request.
      *
+     * @param payload ChannelUninstallPayload¨
      * @return ChannelUninstallRequest
      */
     public static ChannelUninstallRequest newRequest(ChannelUninstallPayload payload) {

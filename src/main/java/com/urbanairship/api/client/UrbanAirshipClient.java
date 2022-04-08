@@ -109,6 +109,7 @@ public class UrbanAirshipClient implements Closeable {
     /**
      * Retrieve the client user agent.
      *
+     * @param appKey String
      * @return The user agent.
      */
     @VisibleForTesting
