@@ -1,4 +1,17 @@
 -------------------------
+8.0.0 07APR22
+-------------------------
+- String Response has been replaced by a new class named “GenericResponse” that handles errors
+- Added support for personalization payloads to CreateAndSend
+- Added support for Subscription Lists listing
+- Added support for Web Response Report
+- Added support for Experiment Overview Report
+- Added support for Experiment Variant Report
+- Added support for Tag List Errors
+- Added Errors handling for SegmentView and StaticListView responses
+- Removed Historical Location / Statistics classes
+
+-------------------------
 7.2.0 09MAR22
 -------------------------
 - Added support for templates to the message center object
