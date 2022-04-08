@@ -39,6 +39,7 @@ public class KeywordInteractionRequest implements Request<String> {
     /**
      * Create new KeywordInteractionRequest request.
      *
+     * @param msisdn String
      * @return KeywordInteractionRequest
      */
     public static KeywordInteractionRequest newRequest(String msisdn) {
