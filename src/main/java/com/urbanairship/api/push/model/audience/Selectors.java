@@ -128,6 +128,20 @@ public class Selectors {
         return compound(SelectorType.OR, SelectorType.STATIC_LIST, staticLists);
     }
 
+    /* Subscription Lists */
+
+    public static final Selector subscriptionList(String subscriptionList) {
+        return value(SelectorType.SUBSCRIPTION_LIST, subscriptionList);
+    }
+
+    public static final Selector subscriptionLists(String... subscriptionLists) {
+        return compound(SelectorType.OR, SelectorType.SUBSCRIPTION_LIST, subscriptionLists);
+    }
+
+    public static final Selector subscriptionLists(Collection<String> subscriptionLists) {
+        return compound(SelectorType.OR, SelectorType.SUBSCRIPTION_LIST, subscriptionLists);
+    }
+
     /* Autogroups */
 
     public static final Selector autogroup(int value) {
