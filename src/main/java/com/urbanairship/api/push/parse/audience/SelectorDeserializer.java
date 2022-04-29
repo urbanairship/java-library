@@ -28,12 +28,7 @@ public class SelectorDeserializer extends JsonDeserializer<Selector> {
     private static final FieldParserRegistry<Selector, SelectorReader> FIELD_PARSERS = new MapFieldParserRegistry<Selector, SelectorReader>(
             getRegistryMap(),
             // Default parser
-            new FieldParser<SelectorReader>() {
-                @Override
-                public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                    reader.readExtraField(parser);
-                }
-            }
+            (reader, parser, context) -> reader.readExtraField(parser)
     );
 
     public static final SelectorDeserializer INSTANCE = new SelectorDeserializer();
@@ -41,14 +36,9 @@ public class SelectorDeserializer extends JsonDeserializer<Selector> {
     private final StandardObjectDeserializer<Selector, ?> deserializer;
 
     public SelectorDeserializer() {
-        deserializer = new StandardObjectDeserializer<Selector, SelectorReader>(
-            FIELD_PARSERS,
-            new Supplier<SelectorReader>() {
-                @Override
-                public SelectorReader get() {
-                    return new SelectorReader();
-                }
-            }
+        deserializer = new StandardObjectDeserializer<>(
+                FIELD_PARSERS,
+                () -> new SelectorReader()
         );
     }
 
@@ -85,112 +75,28 @@ public class SelectorDeserializer extends JsonDeserializer<Selector> {
     private static Map<String, FieldParser<SelectorReader>> getRegistryMap() {
         Map<String, FieldParser<SelectorReader>> registryMap = ImmutableMap.<String, FieldParser<SelectorReader>>builder()
                 // Value selectors
-                .put("tag", new FieldParser<SelectorReader>() {
-                    @Override
-                    public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                        reader.readValueSelector(SelectorType.TAG, parser, context);
-                    }
-                })
-                .put("alias", new FieldParser<SelectorReader>() {
-                    @Override
-                    public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                        reader.readValueSelector(SelectorType.ALIAS, parser, context);
-                    }
-                })
-                .put("named_user", new FieldParser<SelectorReader>() {
-                    @Override
-                    public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                        reader.readValueSelector(SelectorType.NAMED_USER, parser, context);
-                    }
-                })
-                .put("segment", new FieldParser<SelectorReader>() {
-                    @Override
-                    public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                        reader.readValueSelector(SelectorType.SEGMENT, parser, context);
-                    }
-                })
-                .put("static_list", new FieldParser<SelectorReader>() {
-                    @Override
-                    public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                        reader.readValueSelector(SelectorType.STATIC_LIST, parser, context);
-                    }
-                })
-                .put("attribute", new FieldParser<SelectorReader>() {
-                    @Override
-                    public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                        reader.readValueSelector(SelectorType.ATTRIBUTE, parser, context);
-                    }
-                })
+                .put("tag", (reader, parser, context) -> reader.readValueSelector(SelectorType.TAG, parser, context))
+                .put("alias", (reader, parser, context) -> reader.readValueSelector(SelectorType.ALIAS, parser, context))
+                .put("named_user", (reader, parser, context) -> reader.readValueSelector(SelectorType.NAMED_USER, parser, context))
+                .put("segment", (reader, parser, context) -> reader.readValueSelector(SelectorType.SEGMENT, parser, context))
+                .put("static_list", (reader, parser, context) -> reader.readValueSelector(SelectorType.STATIC_LIST, parser, context))
+                .put("attribute", (reader, parser, context) -> reader.readValueSelector(SelectorType.ATTRIBUTE, parser, context))
+                .put("subscription_list", (reader, parser, context) -> reader.readValueSelector(SelectorType.SUBSCRIPTION_LIST, parser, context))
 
                         // Device ID value selectors
-                .put("device_token", new FieldParser<SelectorReader>() {
-                    @Override
-                    public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                        reader.readValueSelector(SelectorType.DEVICE_TOKEN, parser, context);
-                    }
-                })
-                .put("apid", new FieldParser<SelectorReader>() {
-                    @Override
-                    public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                        reader.readValueSelector(SelectorType.APID, parser, context);
-                    }
-                })
-                .put("wns", new FieldParser<SelectorReader>() {
-                    @Override
-                    public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                        reader.readValueSelector(SelectorType.WNS, parser, context);
-                    }
-                })
-                .put("ios_channel", new FieldParser<SelectorReader>() {
-                    @Override
-                    public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                        reader.readValueSelector(SelectorType.IOS_CHANNEL, parser, context);
-                    }
-                })
-                .put("amazon_channel", new FieldParser<SelectorReader>() {
-                    @Override
-                    public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                        reader.readValueSelector(SelectorType.AMAZON_CHANNEL, parser, context);
-                    }
-                })
-                .put("android_channel", new FieldParser<SelectorReader>() {
-                    @Override
-                    public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                        reader.readValueSelector(SelectorType.ANDROID_CHANNEL, parser, context);
-                    }
-                })
-                .put("channel", new FieldParser<SelectorReader>() {
-                    @Override
-                    public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                        reader.readValueSelector(SelectorType.CHANNEL, parser, context);
-                    }
-                })
+                .put("device_token", (reader, parser, context) -> reader.readValueSelector(SelectorType.DEVICE_TOKEN, parser, context))
+                .put("apid", (reader, parser, context) -> reader.readValueSelector(SelectorType.APID, parser, context))
+                .put("wns", (reader, parser, context) -> reader.readValueSelector(SelectorType.WNS, parser, context))
+                .put("ios_channel", (reader, parser, context) -> reader.readValueSelector(SelectorType.IOS_CHANNEL, parser, context))
+                .put("amazon_channel", (reader, parser, context) -> reader.readValueSelector(SelectorType.AMAZON_CHANNEL, parser, context))
+                .put("android_channel", (reader, parser, context) -> reader.readValueSelector(SelectorType.ANDROID_CHANNEL, parser, context))
+                .put("channel", (reader, parser, context) -> reader.readValueSelector(SelectorType.CHANNEL, parser, context))
 
                         // Compound selectors
-                .put("and", new FieldParser<SelectorReader>() {
-                    @Override
-                    public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                        reader.readCompoundSelector(SelectorType.AND, parser, context);
-                    }
-                })
-                .put("or", new FieldParser<SelectorReader>() {
-                    @Override
-                    public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                        reader.readCompoundSelector(SelectorType.OR, parser, context);
-                    }
-                })
-                .put("not", new FieldParser<SelectorReader>() {
-                    @Override
-                    public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                        reader.readCompoundSelector(SelectorType.NOT, parser, context);
-                    }
-                })
-                .put("location", new FieldParser<SelectorReader>() {
-                    @Override
-                    public void parse(SelectorReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                        reader.readLocationSelector(parser);
-                    }
-                })
+                .put("and", (reader, parser, context) -> reader.readCompoundSelector(SelectorType.AND, parser, context))
+                .put("or", (reader, parser, context) -> reader.readCompoundSelector(SelectorType.OR, parser, context))
+                .put("not", (reader, parser, context) -> reader.readCompoundSelector(SelectorType.NOT, parser, context))
+                .put("location", (reader, parser, context) -> reader.readLocationSelector(parser))
                 .build();
 
         TreeMap<String, FieldParser<SelectorReader>> caseInsensitiveRegistryMap = new TreeMap<String, FieldParser<SelectorReader>>(String.CASE_INSENSITIVE_ORDER);

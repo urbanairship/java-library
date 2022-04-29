@@ -39,4 +39,26 @@ public class SelectorSerializerTest {
 
         assertEquals(expectedJson, actualJson);
     }
+
+    @Test
+    public void testSubscriptionListSelector() throws IOException {
+        String expected = "{\"subscription_list\":\"test1\"}";
+        String actual = MAPPER.writeValueAsString(Selectors.subscriptionList("test1"));
+
+        JsonNode expectedJson = MAPPER.readTree(expected);
+        JsonNode actualJson = MAPPER.readTree(actual);
+
+        assertEquals(expectedJson, actualJson);
+    }
+
+    @Test
+    public void testSubscriptionListsSelector() throws IOException {
+        String expected = "{\"or\":[{\"subscription_list\":\"test1\"},{\"subscription_list\":\"test2\"}]}";
+        String actual = MAPPER.writeValueAsString(Selectors.subscriptionLists("test1","test2"));
+
+        JsonNode expectedJson = MAPPER.readTree(expected);
+        JsonNode actualJson = MAPPER.readTree(actual);
+
+        assertEquals(expectedJson, actualJson);
+    }
 }
