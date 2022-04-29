@@ -1,4 +1,9 @@
 -------------------------
+8.1.0 29APR22
+-------------------------
+- Added support for subscription list selector
+
+-------------------------
 8.0.0 07APR22
 -------------------------
 - String Response has been replaced by a new class named “GenericResponse” that handles errors
