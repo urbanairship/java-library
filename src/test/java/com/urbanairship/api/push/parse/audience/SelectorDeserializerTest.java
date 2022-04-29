@@ -140,6 +140,15 @@ public class SelectorDeserializerTest {
     }
 
     @Test
+    public void testSubscriptionList() throws Exception {
+        String json = "{\"subscription_list\":\"list123\"}";
+        Selector value = mapper.readValue(json, Selector.class);
+        assertNotNull(value);
+        assertEquals(value.getType(), SelectorType.SUBSCRIPTION_LIST);
+        assertEquals(((ValueSelector)value).getValue(), "list123");
+    }
+
+    @Test
     public void testAtomicCaseInsensitivity() throws Exception {
         assertEquals(SelectorType.ALL, mapper.readValue("\"all\"", Selector.class).getType());
         assertEquals(SelectorType.ALL, mapper.readValue("\"ALL\"", Selector.class).getType());
@@ -155,7 +164,8 @@ public class SelectorDeserializerTest {
                 + "  \"and\" : [\n"
                 + "    { \"tag\" : \"herp\" }, \n"
                 + "    { \"tag\" : \"derp\" }, \n"
-                + "    { \"static_list\"  :  \"test123\"} \n"
+                + "    { \"static_list\"  :  \"test123\"}, \n"
+                + "    { \"subscription_list\"  :  \"test234\"} \n"
                 + "  ]\n"
                 + "}";
         Selector s = mapper.readValue(json, Selector.class);
@@ -163,7 +173,7 @@ public class SelectorDeserializerTest {
         assertEquals(SelectorType.AND, s.getType());
 
         CompoundSelector cs = (CompoundSelector) s;
-        assertEquals(3, Iterables.size(cs.getChildren()));
+        assertEquals(4, Iterables.size(cs.getChildren()));
 
         Iterator<Selector> i = cs.getChildren().iterator();
 
@@ -184,6 +194,12 @@ public class SelectorDeserializerTest {
         vs = (ValueSelector) c;
         assertEquals(SelectorType.STATIC_LIST, c.getType());
         assertEquals("test123", vs.getValue());
+
+        c = i.next();
+        assertTrue(c instanceof ValueSelector);
+        vs = (ValueSelector) c;
+        assertEquals(SelectorType.SUBSCRIPTION_LIST, c.getType());
+        assertEquals("test234", vs.getValue());
     }
 
     @Test

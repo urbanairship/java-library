@@ -39,6 +39,7 @@ public class Validation {
           case TAG:
           case ALIAS:
           case STATIC_LIST:
+          case SUBSCRIPTION_LIST:
           case SEGMENT:
               // TODO: are there any restrictions on tag, alias, and
               // segment names?
