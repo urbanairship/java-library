@@ -1,4 +1,9 @@
 -------------------------
+8.1.0 16MAY22
+-------------------------
+- Add Netty dependencies to fix a vulnerability (https://nvd.nist.gov/vuln/detail/CVE-2021-43797)
+
+-------------------------
 8.1.0 29APR22
 -------------------------
 - Added support for subscription list selector
