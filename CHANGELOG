@@ -1,5 +1,19 @@
 -------------------------
-8.1.0 16MAY22
+8.2.0 14JUN22
+-------------------------
+- Update Jackson to version 2.13.3
+- Update Guava to version 31.1-jre
+- Update Joda-time to version 2.10.14
+- Update Joda-convert to version 2.2.2
+- Update Fluent-hc to version 4.5.13
+- Update Netty dependencies to version 4.1.77.Final
+- Update OpenCSV to version 5.6
+- Update Junit (test) to version 4.13.2
+- Update Mockito (test) to version 4.5.1
+- Update Wiremock (test) to version 2.27.2
+
+-------------------------
+8.1.1 16MAY22
 -------------------------
 - Add Netty dependencies to fix a vulnerability (https://nvd.nist.gov/vuln/detail/CVE-2021-43797)
 
