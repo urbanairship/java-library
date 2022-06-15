@@ -102,7 +102,7 @@ public class StaticListDownloadRequest implements Request<String> {
             public String parse(String response) throws IOException {
                 if (fileOutputStream.isPresent()) {
                     try (OutputStreamWriter stream = new OutputStreamWriter(fileOutputStream.get());
-                         CSVWriter writer = new CSVWriter(stream, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.NO_ESCAPE_CHARACTER)) {
+                         CSVWriter writer = new CSVWriter(stream, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.NO_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END)) {
                         String[] rows = response.split("\n");
                         for (String row : rows) {
                             writer.writeNext(row.split(","));
