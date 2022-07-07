@@ -4,7 +4,6 @@
 
 package com.urbanairship.api.tags;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.net.HttpHeaders;
 import com.opencsv.CSVWriter;
@@ -20,6 +19,7 @@ import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /*
  * The TagListErrorsRequest class tag list errors request to be executed in
@@ -29,7 +29,7 @@ public class TagListErrorsRequest implements Request<String> {
     private final static String TAG_LIST_PATH = "/api/tag-lists/";
     private final String path;
 
-    private Optional<FileOutputStream> fileOutputStream = Optional.absent();
+    private Optional<FileOutputStream> fileOutputStream = Optional.empty();
 
     private TagListErrorsRequest(String name) {
         this.path = TAG_LIST_PATH + name + "/errors";

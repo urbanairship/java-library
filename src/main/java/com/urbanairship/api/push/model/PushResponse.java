@@ -6,9 +6,10 @@ package com.urbanairship.api.push.model;
 
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.common.model.ErrorDetails;
+
+import java.util.Optional;
 
 /**
  * Represents a response from the Urban Airship API for Push Notifications.
@@ -24,13 +25,13 @@ public final class PushResponse {
     private final Optional<ErrorDetails> errorDetails;
 
     public PushResponse(String operationId, ImmutableList<String> pushIds, boolean ok, ImmutableList<String> messageIds, ImmutableList<String> contentUrls, String error, ErrorDetails errorDetails) {
-        this.operationId = Optional.fromNullable(operationId);
-        this.pushIds = Optional.fromNullable(pushIds);
+        this.operationId = Optional.ofNullable(operationId);
+        this.pushIds = Optional.ofNullable(pushIds);
         this.ok = ok;
-        this.messageIds = Optional.fromNullable(messageIds);
-        this.contentUrls = Optional.fromNullable(contentUrls);
-        this.error = Optional.fromNullable(error);
-        this.errorDetails = Optional.fromNullable(errorDetails);
+        this.messageIds = Optional.ofNullable(messageIds);
+        this.contentUrls = Optional.ofNullable(contentUrls);
+        this.error = Optional.ofNullable(error);
+        this.errorDetails = Optional.ofNullable(errorDetails);
     
     }
 

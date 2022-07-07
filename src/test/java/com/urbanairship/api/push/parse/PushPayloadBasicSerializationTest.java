@@ -1,11 +1,32 @@
 package com.urbanairship.api.push.parse;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.lang.RandomStringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.junit.Test;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
-import com.urbanairship.api.push.model.*;
+import com.urbanairship.api.push.model.DeviceType;
+import com.urbanairship.api.push.model.DeviceTypeData;
+import com.urbanairship.api.push.model.InApp;
+import com.urbanairship.api.push.model.Position;
+import com.urbanairship.api.push.model.PushExpiry;
+import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.audience.sms.SmsSelector;
 import com.urbanairship.api.push.model.localization.Localization;
@@ -20,21 +41,6 @@ import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import com.urbanairship.api.push.model.notification.sms.SmsPayload;
 import com.urbanairship.api.push.model.notification.web.WebDevicePayload;
 import com.urbanairship.api.push.model.notification.wns.WNSDevicePayload;
-import org.apache.commons.lang.RandomStringUtils;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.junit.Test;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 public class PushPayloadBasicSerializationTest {
 

@@ -5,9 +5,9 @@
 package com.urbanairship.api.experiments.model;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
-
 import com.urbanairship.api.common.model.ErrorDetails;
+
+import java.util.Optional;
 
 /**
  * Represents a response from the Urban Airship API for Experiments.
@@ -29,11 +29,11 @@ public final class ExperimentResponse {
                               ErrorDetails errorDetails) {
 
         this.ok = ok;
-        this.operationId = Optional.fromNullable(operationId);
-        this.experimentId = Optional.fromNullable(experimentId);
-        this.pushId = Optional.fromNullable(pushId);
-        this.error = Optional.fromNullable(error);
-        this.errorDetails = Optional.fromNullable(errorDetails);
+        this.operationId = Optional.ofNullable(operationId);
+        this.experimentId = Optional.ofNullable(experimentId);
+        this.pushId = Optional.ofNullable(pushId);
+        this.error = Optional.ofNullable(error);
+        this.errorDetails = Optional.ofNullable(errorDetails);
     }
 
     /**

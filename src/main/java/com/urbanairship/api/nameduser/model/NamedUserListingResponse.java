@@ -5,10 +5,11 @@
 package com.urbanairship.api.nameduser.model;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.common.model.ErrorDetails;
+
+import java.util.Optional;
 
 /**
  * Named user listing response object.
@@ -26,8 +27,8 @@ public class NamedUserListingResponse {
         this.nextPage = nextPage;
         this.namedUserView = namedUserView;
         this.namedUserViews = namedUserViews;
-        this.error = Optional.fromNullable(error);
-        this.errorDetails = Optional.fromNullable(errorDetails);
+        this.error = Optional.ofNullable(error);
+        this.errorDetails = Optional.ofNullable(errorDetails);
     }
 
     /**
@@ -215,7 +216,7 @@ public class NamedUserListingResponse {
                 Preconditions.checkArgument(nextPage == null && namedUserViews.build().isEmpty());
             }
 
-            return new NamedUserListingResponse(ok, Optional.fromNullable(nextPage), Optional.fromNullable(namedUserView), Optional.fromNullable(namedUserViews.build()), error, errorDetails);
+            return new NamedUserListingResponse(ok, Optional.ofNullable(nextPage), Optional.ofNullable(namedUserView), Optional.ofNullable(namedUserViews.build()), error, errorDetails);
         }
     }
 }

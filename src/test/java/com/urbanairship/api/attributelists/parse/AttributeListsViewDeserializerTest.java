@@ -1,7 +1,7 @@
 package com.urbanairship.api.attributelists.parse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.urbanairship.api.attributelists.model.AttributeListsView;
 import com.urbanairship.api.common.parse.DateFormats;
 import org.joda.time.DateTime;

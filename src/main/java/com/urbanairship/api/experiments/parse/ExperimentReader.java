@@ -9,13 +9,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.experiments.model.Experiment;
+import com.urbanairship.api.experiments.model.Variant;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.audience.Selector;
-import com.urbanairship.api.experiments.model.Variant;
 
 import java.io.IOException;
-import java.util.List;
 import java.math.BigDecimal;
+import java.util.List;
 
 public class ExperimentReader implements JsonObjectReader<Experiment> {
 

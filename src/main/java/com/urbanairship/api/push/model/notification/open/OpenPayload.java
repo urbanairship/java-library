@@ -1,7 +1,6 @@
 package com.urbanairship.api.push.model.notification.open;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.DeviceType;
@@ -10,6 +9,7 @@ import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.urbanairship.api.push.model.notification.Interactive;
 
 import java.util.Map;
+import java.util.Optional;
 
 public final class OpenPayload extends PushModelObject implements DevicePayloadOverride {
 
@@ -22,16 +22,16 @@ public final class OpenPayload extends PushModelObject implements DevicePayloadO
     private final DeviceType deviceType;
 
     private OpenPayload(Builder builder) {
-        this.alert = Optional.fromNullable(builder.alert);
-        this.title = Optional.fromNullable(builder.title);
+        this.alert = Optional.ofNullable(builder.alert);
+        this.title = Optional.ofNullable(builder.title);
         if (builder.extras.build().isEmpty()) {
-            this.extras = Optional.absent();
+            this.extras = Optional.empty();
         } else {
             this.extras = Optional.of(builder.extras.build());
         }
-        this.summary = Optional.fromNullable(builder.summary);
-        this.mediaAttachment = Optional.fromNullable(builder.mediaAttachment);
-        this.interactive = Optional.fromNullable(builder.interactive);
+        this.summary = Optional.ofNullable(builder.summary);
+        this.mediaAttachment = Optional.ofNullable(builder.mediaAttachment);
+        this.interactive = Optional.ofNullable(builder.interactive);
         this.deviceType = builder.deviceType;
     }
 

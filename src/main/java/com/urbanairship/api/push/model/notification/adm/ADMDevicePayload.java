@@ -5,7 +5,6 @@
 package com.urbanairship.api.push.model.notification.adm;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushExpiry;
@@ -16,6 +15,7 @@ import com.urbanairship.api.push.model.notification.actions.Actions;
 import com.urbanairship.api.push.model.notification.android.Style;
 
 import java.util.Map;
+import java.util.Optional;
 
 public final class ADMDevicePayload extends PushModelObject implements DevicePayloadOverride {
     private final Optional<String> alert;
@@ -35,25 +35,25 @@ public final class ADMDevicePayload extends PushModelObject implements DevicePay
     private final Optional<ADMTemplate> template;
 
     private ADMDevicePayload(Builder builder) {
-        this.alert = Optional.fromNullable(builder.alert);
-        this.consolidationKey = Optional.fromNullable(builder.consolidationKey);
-        this.expiresAfter = Optional.fromNullable(builder.expiresAfter);
+        this.alert = Optional.ofNullable(builder.alert);
+        this.consolidationKey = Optional.ofNullable(builder.consolidationKey);
+        this.expiresAfter = Optional.ofNullable(builder.expiresAfter);
         if (builder.extra.build().isEmpty()) {
-            this.extra = Optional.absent();
+            this.extra = Optional.empty();
         } else {
             this.extra = Optional.of(builder.extra.build());
         }
-        this.interactive = Optional.fromNullable(builder.interactive);
-        this.actions = Optional.fromNullable(builder.actions);
-        this.icon = Optional.fromNullable(builder.icon);
-        this.iconColor = Optional.fromNullable(builder.iconColor);
-        this.notificationChannel = Optional.fromNullable(builder.notificationChannel);
-        this.notificationTag = Optional.fromNullable(builder.notificationTag);
-        this.sound = Optional.fromNullable(builder.sound);
-        this.summary = Optional.fromNullable(builder.summary);
-        this.title = Optional.fromNullable(builder.title);
-        this.style = Optional.fromNullable(builder.style);
-        this.template = Optional.fromNullable(builder.template);
+        this.interactive = Optional.ofNullable(builder.interactive);
+        this.actions = Optional.ofNullable(builder.actions);
+        this.icon = Optional.ofNullable(builder.icon);
+        this.iconColor = Optional.ofNullable(builder.iconColor);
+        this.notificationChannel = Optional.ofNullable(builder.notificationChannel);
+        this.notificationTag = Optional.ofNullable(builder.notificationTag);
+        this.sound = Optional.ofNullable(builder.sound);
+        this.summary = Optional.ofNullable(builder.summary);
+        this.title = Optional.ofNullable(builder.title);
+        this.style = Optional.ofNullable(builder.style);
+        this.template = Optional.ofNullable(builder.template);
     }
 
     public static Builder newBuilder() {

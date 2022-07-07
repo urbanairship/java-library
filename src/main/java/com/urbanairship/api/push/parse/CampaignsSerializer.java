@@ -1,9 +1,9 @@
 package com.urbanairship.api.push.parse;
 
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.urbanairship.api.push.model.Campaigns;
-import com.fasterxml.jackson.databind.JsonSerializer;
 
 import java.io.IOException;
 

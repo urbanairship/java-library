@@ -4,9 +4,10 @@
 
 package com.urbanairship.api.push.model.notification.ios;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.PushModelObject;
+
+import java.util.Optional;
 
 public final class IOSBadgeData extends PushModelObject {
 
@@ -107,7 +108,7 @@ public final class IOSBadgeData extends PushModelObject {
 
         public IOSBadgeData build() {
             Preconditions.checkNotNull(type);
-            return new IOSBadgeData(type, Optional.fromNullable(value));
+            return new IOSBadgeData(type, Optional.ofNullable(value));
         }
     }
 }

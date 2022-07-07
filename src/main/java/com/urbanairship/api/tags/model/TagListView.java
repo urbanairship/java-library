@@ -6,10 +6,11 @@ package com.urbanairship.api.tags.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import org.joda.time.DateTime;
+
+import java.util.Optional;
 
 public class TagListView {
     private final String name;
@@ -43,11 +44,11 @@ public class TagListView {
 
     ) {
         this.name = name;
-        this.description = Optional.fromNullable(description);
-        this.extras = Optional.fromNullable(extras);
-        this.addTags = Optional.fromNullable(addTags);
-        this.removeTags = Optional.fromNullable(removeTags);
-        this.setTags = Optional.fromNullable(setTags);
+        this.description = Optional.ofNullable(description);
+        this.extras = Optional.ofNullable(extras);
+        this.addTags = Optional.ofNullable(addTags);
+        this.removeTags = Optional.ofNullable(removeTags);
+        this.setTags = Optional.ofNullable(setTags);
         this.created = created;
         this.lastUpdated = lastUpdated;
         this.channelCount = channelCount;

@@ -5,8 +5,9 @@
 package com.urbanairship.api.push.model;
 
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+
+import java.util.Optional;
 
 /**
  * Represents a display object.
@@ -27,10 +28,10 @@ public class Display {
     }
 
     private Display(Builder builder) {
-        this.primaryColor = Optional.fromNullable(builder.primaryColor);
-        this.secondaryColor = Optional.fromNullable(builder.secondaryColor);
-        this.duration = Optional.fromNullable(builder.duration);
-        this.position = Optional.fromNullable(builder.position);
+        this.primaryColor = Optional.ofNullable(builder.primaryColor);
+        this.secondaryColor = Optional.ofNullable(builder.secondaryColor);
+        this.duration = Optional.ofNullable(builder.duration);
+        this.position = Optional.ofNullable(builder.position);
     }
 
     /**

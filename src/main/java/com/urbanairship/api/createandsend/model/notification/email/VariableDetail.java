@@ -1,6 +1,6 @@
 package com.urbanairship.api.createandsend.model.notification.email;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 /**
  * Represents the variable detail in the create and send notification.
@@ -10,8 +10,8 @@ public class VariableDetail {
     private final Optional<String> defaultValue;
 
     private VariableDetail(Builder builder) {
-        key = Optional.fromNullable(builder.key);
-        defaultValue = Optional.fromNullable(builder.defaultValue);
+        key = Optional.ofNullable(builder.key);
+        defaultValue = Optional.ofNullable(builder.defaultValue);
     }
 
     /**

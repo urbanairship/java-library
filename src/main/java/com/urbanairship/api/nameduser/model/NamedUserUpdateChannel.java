@@ -1,7 +1,8 @@
 package com.urbanairship.api.nameduser.model;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+
+import java.util.Optional;
 
 /**
  * Object that represents individual NamedUserUpdateChannel.
@@ -13,9 +14,9 @@ public class NamedUserUpdateChannel {
 
 
     private NamedUserUpdateChannel(Builder builder) {
-        this.deviceType = Optional.fromNullable(builder.deviceType);
-        this.channelId = Optional.fromNullable(builder.channelId);
-        this.emailAddress = Optional.fromNullable(builder.emailAddress);
+        this.deviceType = Optional.ofNullable(builder.deviceType);
+        this.channelId = Optional.ofNullable(builder.channelId);
+        this.emailAddress = Optional.ofNullable(builder.emailAddress);
 
     }
 

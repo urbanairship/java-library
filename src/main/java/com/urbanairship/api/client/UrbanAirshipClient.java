@@ -5,7 +5,6 @@
 package com.urbanairship.api.client;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.io.BaseEncoding;
 import org.slf4j.Logger;
@@ -16,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -39,8 +39,8 @@ public class UrbanAirshipClient implements Closeable {
     private UrbanAirshipClient(Builder builder) {
         this.client = builder.client;
         this.key = builder.key;
-        this.secret = Optional.fromNullable(builder.secret);
-        this.bearerToken = Optional.fromNullable(builder.bearerToken);
+        this.secret = Optional.ofNullable(builder.secret);
+        this.bearerToken = Optional.ofNullable(builder.bearerToken);
         userAgent = getUserAgent(builder.key);
     }
 

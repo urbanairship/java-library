@@ -5,9 +5,10 @@
 package com.urbanairship.api.push.model.notification.actions;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.PushModelObject;
+
+import java.util.Optional;
 
 public class OpenLandingPageWithContentAction extends PushModelObject implements Action.OpenAction<LandingPageContent> {
     private final LandingPageContent pageContent;
@@ -15,11 +16,11 @@ public class OpenLandingPageWithContentAction extends PushModelObject implements
     private final Optional<String> fallbackUrl;
 
     public OpenLandingPageWithContentAction(LandingPageContent pageContent) {
-        this(pageContent, Optional.<String>absent());
+        this(pageContent, Optional.<String>empty());
     }
 
     public OpenLandingPageWithContentAction(LandingPageContent pageContent, String fallbackUrl) {
-        this(pageContent, Optional.fromNullable(fallbackUrl));
+        this(pageContent, Optional.ofNullable(fallbackUrl));
     }
 
     private OpenLandingPageWithContentAction(LandingPageContent pageContent, Optional<String> fallbackUrl){

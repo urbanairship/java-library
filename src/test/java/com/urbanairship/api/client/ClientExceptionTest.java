@@ -1,11 +1,15 @@
 package com.urbanairship.api.client;
 
-import com.fasterxml.jackson.core.JsonLocation;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import io.netty.handler.codec.http.HttpHeaders;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
+
+import java.util.AbstractMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import org.asynchttpclient.HttpResponseBodyPart;
 import org.asynchttpclient.HttpResponseStatus;
 import org.asynchttpclient.filter.FilterContext;
@@ -17,11 +21,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import java.util.*;
+import com.fasterxml.jackson.core.JsonLocation;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
+import com.google.common.base.Predicate;
 
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.anyString;
+import io.netty.handler.codec.http.HttpHeaders;
 
 public class ClientExceptionTest {
 

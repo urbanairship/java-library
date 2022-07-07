@@ -5,7 +5,7 @@
 package com.urbanairship.api.client;
 
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 /**
  * Provides details on processing errors that are returned by the Urban Airship
@@ -109,7 +109,7 @@ public final class RequestErrorDetails {
 
         public RequestErrorDetails build() {
             return new RequestErrorDetails(path, error,
-                    Optional.fromNullable(location));
+                    Optional.ofNullable(location));
         }
     }
 

@@ -22,6 +22,7 @@ public class AttributeListsViewTest {
                 .setChannelCount(1234)
                 .setErrorPath("https://go.urbanairship.com/api/attribute-lists/ua_attributes_my_list/errors")
                 .setStatus("ready")
+                .addExtra("test","value")
                 .build();
 
         assertNotNull(response);

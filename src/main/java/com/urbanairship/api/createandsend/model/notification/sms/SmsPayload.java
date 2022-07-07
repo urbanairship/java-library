@@ -1,7 +1,7 @@
 package com.urbanairship.api.createandsend.model.notification.sms;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushExpiry;
@@ -18,9 +18,9 @@ public class SmsPayload extends PushModelObject implements DevicePayloadOverride
     private final DeviceType deviceType = DeviceType.SMS;
 
     private SmsPayload(Builder builder) {
-        this.alert = Optional.fromNullable(builder.alert);
-        this.pushExpiry = Optional.fromNullable(builder.pushExpiry);
-        this.smsTemplate = Optional.fromNullable(builder.smsTemplate);
+        this.alert = Optional.ofNullable(builder.alert);
+        this.pushExpiry = Optional.ofNullable(builder.pushExpiry);
+        this.smsTemplate = Optional.ofNullable(builder.smsTemplate);
     }
 
     /**

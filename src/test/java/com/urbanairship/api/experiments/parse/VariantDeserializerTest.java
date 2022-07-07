@@ -1,13 +1,14 @@
 package com.urbanairship.api.experiments.parse;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.urbanairship.api.common.parse.APIParsingException;
-import com.urbanairship.api.experiments.model.Variant;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.urbanairship.api.common.parse.APIParsingException;
+import com.urbanairship.api.experiments.model.Variant;
 
 public class VariantDeserializerTest {
 

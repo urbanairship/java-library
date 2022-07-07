@@ -5,7 +5,8 @@
 package com.urbanairship.api.push.model;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
+
+import java.util.Optional;
 
 /**
  * Optional features for a Push payload for the Urban Airship API.
@@ -19,9 +20,9 @@ public class PushOptions extends PushModelObject {
     private final Optional<Boolean> personalization;
 
     private PushOptions(Builder builder) {
-        expiry = Optional.fromNullable(builder.expiry);
-        noThrottle = Optional.fromNullable(builder.noThrottle);
-        personalization = Optional.fromNullable(builder.personalization);
+        expiry = Optional.ofNullable(builder.expiry);
+        noThrottle = Optional.ofNullable(builder.noThrottle);
+        personalization = Optional.ofNullable(builder.personalization);
     }
 
     /**

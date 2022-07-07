@@ -4,10 +4,10 @@
 
 package com.urbanairship.api.client;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Response encapsulates relevant data about responses from the
@@ -30,7 +30,7 @@ public class Response<T> {
      * @param status Response status.
      */
     Response(T body, Map<String, String> headers, int status) {
-        this.body = Optional.fromNullable(body);
+        this.body = Optional.ofNullable(body);
         this.headers = ImmutableMap.copyOf(headers);
         this.status = status;
     }

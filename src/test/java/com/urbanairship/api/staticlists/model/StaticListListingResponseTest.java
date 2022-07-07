@@ -1,7 +1,7 @@
 package com.urbanairship.api.staticlists.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.urbanairship.api.staticlists.parse.StaticListsObjectMapper;
 
 import org.joda.time.DateTime;

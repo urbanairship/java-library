@@ -1,6 +1,6 @@
 package com.urbanairship.api.staticlists.model;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.junit.Test;

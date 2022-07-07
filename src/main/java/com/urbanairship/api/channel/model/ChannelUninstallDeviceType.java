@@ -4,7 +4,7 @@
 
 package com.urbanairship.api.channel.model;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
     /**
      * Enum of authorized channel types for uninstall endpoint.
@@ -34,7 +34,7 @@ import com.google.common.base.Optional;
                 }
             }
     
-            return Optional.absent();
+            return Optional.empty();
         }
     
         public String getIdentifier() {

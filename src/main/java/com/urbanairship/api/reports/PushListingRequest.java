@@ -4,7 +4,6 @@
 
 package com.urbanairship.api.reports;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
@@ -22,6 +21,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 
 /**
@@ -34,8 +34,8 @@ public class PushListingRequest implements Request<PushListingResponse> {
     private final boolean nextPageRequest;
     private DateTime start;
     private DateTime end;
-    private Optional<Integer> limit = Optional.absent();
-    private Optional<String> pushIdStart = Optional.absent();
+    private Optional<Integer> limit = Optional.empty();
+    private Optional<String> pushIdStart = Optional.empty();
 
     private PushListingRequest(String path, boolean nextPageRequest) {
         this.path = path;

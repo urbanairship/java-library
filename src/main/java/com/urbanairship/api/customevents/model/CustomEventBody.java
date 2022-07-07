@@ -1,7 +1,7 @@
 package com.urbanairship.api.customevents.model;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 
@@ -19,18 +19,18 @@ public class CustomEventBody {
 
     private CustomEventBody(Builder builder) {
         this.name = builder.name;
-        this.value = Optional.fromNullable(builder.value);
-        this.transaction = Optional.fromNullable(builder.transaction);
-        this.interactionId = Optional.fromNullable(builder.interactionId);
-        this.interactionType = Optional.fromNullable(builder.interactionType);
+        this.value = Optional.ofNullable(builder.value);
+        this.transaction = Optional.ofNullable(builder.transaction);
+        this.interactionId = Optional.ofNullable(builder.interactionId);
+        this.interactionType = Optional.ofNullable(builder.interactionType);
 
         if (builder.properties.build().isEmpty()) {
-            this.properties = Optional.absent();
+            this.properties = Optional.empty();
         } else {
             this.properties = Optional.of(builder.properties.build());
         }
 
-        this.sessionId = Optional.fromNullable(builder.sessionId);
+        this.sessionId = Optional.ofNullable(builder.sessionId);
     }
 
     /**

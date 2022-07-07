@@ -2,7 +2,7 @@ package com.urbanairship.api.staticlists.parse;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.staticlists.model.StaticListListingResponse;
 import com.urbanairship.api.staticlists.model.StaticListView;
@@ -59,7 +59,7 @@ public class StaticListListingResponseDeserializerTest {
         StaticListView list2 = lists.getStaticListViews().get(1);
         assertNotNull(list2);
         assertEquals("gold_members", list2.getName());
-        assertEquals(Optional.absent(), list2.getDescription());
+        assertEquals(Optional.empty(), list2.getDescription());
         assertEquals(created, list2.getCreated());
         assertEquals(updated, list2.getLastUpdated());
         assertEquals(Integer.valueOf(678), list2.getChannelCount());

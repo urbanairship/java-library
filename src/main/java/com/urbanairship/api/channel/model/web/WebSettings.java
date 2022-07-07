@@ -1,7 +1,8 @@
 package com.urbanairship.api.channel.model.web;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
+
+import java.util.Optional;
 
 /**
  * Displayed only for Web channels. Describes the fields from the web subscription submitted in CRA.
@@ -77,7 +78,7 @@ public final class WebSettings {
         }
 
         public WebSettings build() {
-            return new WebSettings(Optional.fromNullable(subscription));
+            return new WebSettings(Optional.ofNullable(subscription));
         }
     }
 }

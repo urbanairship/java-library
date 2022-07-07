@@ -2,7 +2,8 @@ package com.urbanairship.api.common.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
+
+import java.util.Optional;
 
 public final class ErrorDetails extends APIModelObject {
     private final String error;
@@ -19,7 +20,7 @@ public final class ErrorDetails extends APIModelObject {
      * @return String error
      */
     public Optional<String> getError() {
-        return Optional.fromNullable(error);
+        return Optional.ofNullable(error);
     }
 
     /**
@@ -28,7 +29,7 @@ public final class ErrorDetails extends APIModelObject {
      * @return String path
      */
     public Optional<String> getPath() {
-        return Optional.fromNullable(path);
+        return Optional.ofNullable(path);
     }
 
     @Override

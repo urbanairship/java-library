@@ -1,7 +1,7 @@
 package com.urbanairship.api.customevents.model;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.common.base.Preconditions;
 
 public class CustomEventUser {
@@ -11,9 +11,9 @@ public class CustomEventUser {
     private final Optional<String> namedUserId;
 
     private CustomEventUser(Builder builder) {
-        this.channelType = Optional.fromNullable(builder.channelType);
-        this.channel = Optional.fromNullable(builder.channel);
-        this.namedUserId = Optional.fromNullable(builder.namedUserId);
+        this.channelType = Optional.ofNullable(builder.channelType);
+        this.channel = Optional.ofNullable(builder.channel);
+        this.namedUserId = Optional.ofNullable(builder.namedUserId);
     }
 
     /**

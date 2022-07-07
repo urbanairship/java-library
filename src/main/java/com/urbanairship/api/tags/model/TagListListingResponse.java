@@ -6,9 +6,10 @@ package com.urbanairship.api.tags.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.common.model.ErrorDetails;
+
+import java.util.Optional;
 
 public class TagListListingResponse {
     private final boolean ok;
@@ -24,8 +25,8 @@ public class TagListListingResponse {
     ) {
         this.ok = ok;
         this.TagListView = TagListView;
-        this.error = Optional.fromNullable(error);
-        this.errorDetails = Optional.fromNullable(errorDetails);
+        this.error = Optional.ofNullable(error);
+        this.errorDetails = Optional.ofNullable(errorDetails);
     }
 
     /**

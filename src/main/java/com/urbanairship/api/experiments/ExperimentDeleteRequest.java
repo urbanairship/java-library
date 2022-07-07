@@ -1,18 +1,11 @@
 package com.urbanairship.api.experiments;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-/*
- * Copyright (c) 2013-2017.  Urban Airship and Contributors
- */
-
 import com.google.common.base.Preconditions;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.common.model.GenericResponse;
-
 import org.apache.http.entity.ContentType;
 
 import java.net.URI;

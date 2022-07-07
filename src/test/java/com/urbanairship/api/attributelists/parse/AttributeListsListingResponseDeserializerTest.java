@@ -2,7 +2,7 @@ package com.urbanairship.api.attributelists.parse;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.urbanairship.api.attributelists.model.AttributeListsListingResponse;
 import com.urbanairship.api.attributelists.model.AttributeListsView;
 import com.urbanairship.api.common.parse.DateFormats;
@@ -62,7 +62,7 @@ public class AttributeListsListingResponseDeserializerTest {
         AttributeListsView list2 = lists.getAttributeListsViews().get(1);
         assertNotNull(list2);
         assertEquals("ua_attributes_gold_members", list2.getName());
-        assertEquals(Optional.absent(), list2.getDescription());
+        assertEquals(Optional.empty(), list2.getDescription());
         assertEquals(created, list2.getCreated());
         assertEquals(updated, list2.getLastUpdated());
         assertEquals(Integer.valueOf(678), list2.getChannelCount());

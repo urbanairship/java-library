@@ -4,9 +4,8 @@
 
 package com.urbanairship.api.common.parse;
 
-import com.google.common.base.Optional;
-
 import java.util.Map;
+import java.util.Optional;
 
 public class MapFieldParserRegistry<T, R extends JsonObjectReader<T>> implements FieldParserRegistry<T, R> {
 
@@ -19,7 +18,7 @@ public class MapFieldParserRegistry<T, R extends JsonObjectReader<T>> implements
 
     public MapFieldParserRegistry(Map<String, FieldParser<R>> registryMap, FieldParser<R> defaultParser) {
         this.registryMap = registryMap;
-        this.defaultParser = Optional.fromNullable(defaultParser);
+        this.defaultParser = Optional.ofNullable(defaultParser);
     }
 
     @Override
@@ -29,6 +28,6 @@ public class MapFieldParserRegistry<T, R extends JsonObjectReader<T>> implements
             return defaultParser;
         }
 
-        return Optional.fromNullable(registryMap.get(fieldName));
+        return Optional.ofNullable(registryMap.get(fieldName));
     }
 }

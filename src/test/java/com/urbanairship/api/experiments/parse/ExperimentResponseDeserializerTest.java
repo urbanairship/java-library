@@ -1,10 +1,12 @@
 package com.urbanairship.api.experiments.parse;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.urbanairship.api.experiments.model.ExperimentResponse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.urbanairship.api.experiments.model.ExperimentResponse;
 
 public class ExperimentResponseDeserializerTest {
 

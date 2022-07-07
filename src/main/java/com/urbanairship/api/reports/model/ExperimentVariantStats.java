@@ -5,6 +5,7 @@
 package com.urbanairship.api.reports.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public final class ExperimentVariantStats {

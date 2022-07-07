@@ -6,10 +6,11 @@ package com.urbanairship.api.schedule.model;
 
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.common.model.ErrorDetails;
+
+import java.util.Optional;
 
 /**
  * Represents a response from the Urban Airship API for Scheduled Notifications.
@@ -30,8 +31,8 @@ public final class ScheduleResponse {
         this.scheduleUrls = scheduleUrls;
         this.scheduleIds = scheduleIds;
         this.schedulePayloadResponses = schedulePayloadResponses;
-        this.error = Optional.fromNullable(error);
-        this.errorDetails = Optional.fromNullable(errorDetails);
+        this.error = Optional.ofNullable(error);
+        this.errorDetails = Optional.ofNullable(errorDetails);
     }
 
     /**

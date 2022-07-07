@@ -4,9 +4,10 @@
 
 package com.urbanairship.api.push.model.audience.location;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.PushModelObject;
+
+import java.util.Optional;
 
 /**
  * An identifier for a location definition, as seen in either an API
@@ -93,8 +94,8 @@ public final class LocationIdentifier extends PushModelObject {
 
         public LocationIdentifier build() {
             Preconditions.checkArgument(id != null || alias != null, "Must have only one of 'id' or an alias");
-            return new LocationIdentifier(Optional.fromNullable(id),
-                                          Optional.fromNullable(alias));
+            return new LocationIdentifier(Optional.ofNullable(id),
+                                          Optional.ofNullable(alias));
         }
     }
 }

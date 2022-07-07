@@ -5,15 +5,15 @@
 package com.urbanairship.api.experiments.model;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.urbanairship.api.push.model.DeviceTypeData;
-import com.urbanairship.api.push.model.audience.SelectorType;
 import com.google.common.collect.Lists;
+import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.audience.Selector;
+import com.urbanairship.api.push.model.audience.SelectorType;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Represents a set of varied pushes to send as part of an A/B experiment.
@@ -28,9 +28,9 @@ public final class Experiment extends ExperimentModelObject {
     private final List<Variant> variants;
 
     private Experiment(Builder builder) {
-        this.name = Optional.fromNullable(builder.name);
-        this.description = Optional.fromNullable(builder.description);
-        this.control = Optional.fromNullable(builder.control);
+        this.name = Optional.ofNullable(builder.name);
+        this.description = Optional.ofNullable(builder.description);
+        this.control = Optional.ofNullable(builder.control);
         this.audience = builder.audience;
         this.deviceTypes = builder.deviceTypes;
         this.variants = builder.variants;

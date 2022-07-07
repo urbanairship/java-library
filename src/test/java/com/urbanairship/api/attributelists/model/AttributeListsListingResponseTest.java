@@ -1,6 +1,6 @@
 package com.urbanairship.api.attributelists.model;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 import org.joda.time.DateTime;
 import org.joda.time.Period;
