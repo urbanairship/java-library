@@ -10,9 +10,9 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.urbanairship.api.experiments.model.Experiment;
 import com.urbanairship.api.experiments.model.ExperimentResponse;
-import com.urbanairship.api.experiments.model.VariantPushPayload;
 import com.urbanairship.api.experiments.model.Variant;
-import com.urbanairship.api.push.parse.*;
+import com.urbanairship.api.experiments.model.VariantPushPayload;
+import com.urbanairship.api.push.parse.PushObjectMapper;
 
 public class ExperimentObjectMapper {
 

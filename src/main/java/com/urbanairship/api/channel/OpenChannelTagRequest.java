@@ -10,9 +10,7 @@ import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
 import org.apache.http.entity.ContentType;
 
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;

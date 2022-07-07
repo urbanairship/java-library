@@ -1,7 +1,7 @@
 package com.urbanairship.api.push.parse.notification;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.notification.Interactive;

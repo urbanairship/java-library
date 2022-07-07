@@ -3,9 +3,8 @@ package com.urbanairship.api.reports.model;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.common.model.ErrorDetails;
 
-import java.util.Optional;
-
 import java.util.Objects;
+import java.util.Optional;
 
 public class ResponseReport {
     private final Optional<String> next_page;

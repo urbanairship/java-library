@@ -4,8 +4,9 @@
 package com.urbanairship.api.push.model.notification.android;
 
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+
+import java.util.Optional;
 
 /**
  * Represents an Android style with a type of "big_picture".
@@ -17,8 +18,8 @@ public class BigPictureStyle implements Style<String> {
 
     private BigPictureStyle(Builder builder) {
         this.content = builder.content;
-        this.title = Optional.fromNullable(builder.title);
-        this.summary = Optional.fromNullable(builder.summary);
+        this.title = Optional.ofNullable(builder.title);
+        this.summary = Optional.ofNullable(builder.summary);
     }
 
     /**

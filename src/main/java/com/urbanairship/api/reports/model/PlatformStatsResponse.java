@@ -1,9 +1,10 @@
 package com.urbanairship.api.reports.model;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.common.model.ErrorDetails;
+
+import java.util.Optional;
 
 public class PlatformStatsResponse {
     private final Optional<String> nextPage;
@@ -191,7 +192,7 @@ public class PlatformStatsResponse {
          * @return PlatformStatsResponse
          */
         public PlatformStatsResponse build() {
-            return new PlatformStatsResponse(Optional.fromNullable(nextPage), Optional.fromNullable(platformStatsObjects.build()), ok,Optional.fromNullable(error), Optional.fromNullable(errorDetails));
+            return new PlatformStatsResponse(Optional.ofNullable(nextPage), Optional.ofNullable(platformStatsObjects.build()), ok,Optional.ofNullable(error), Optional.ofNullable(errorDetails));
         }
     }
 

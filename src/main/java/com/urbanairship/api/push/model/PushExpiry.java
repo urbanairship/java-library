@@ -4,9 +4,10 @@
 
 package com.urbanairship.api.push.model;
 
-import com.google.common.base.Optional;
 import com.urbanairship.api.common.parse.APIParsingException;
 import org.joda.time.DateTime;
+
+import java.util.Optional;
 
 
 /**
@@ -145,9 +146,9 @@ public class PushExpiry extends PushModelObject {
             if (expiryPersonalization != null && !expiryPersonalization.startsWith("{{") && !expiryPersonalization.endsWith("}}")) {
                 throw new APIParsingException("Expiry string must be a personalized field");
             }
-            return new PushExpiry(Optional.fromNullable(expirySeconds),
-                                  Optional.fromNullable(expiryTimeStamp),
-                                  Optional.fromNullable(expiryPersonalization));
+            return new PushExpiry(Optional.ofNullable(expirySeconds),
+                                  Optional.ofNullable(expiryTimeStamp),
+                                  Optional.ofNullable(expiryPersonalization));
         }
     }
 

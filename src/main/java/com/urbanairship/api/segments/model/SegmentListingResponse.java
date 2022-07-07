@@ -1,9 +1,10 @@
 package com.urbanairship.api.segments.model;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.common.model.ErrorDetails;
+
+import java.util.Optional;
 
 public class SegmentListingResponse {
     private final Optional<String> nextPage;
@@ -13,11 +14,11 @@ public class SegmentListingResponse {
     private final Optional<ErrorDetails> errorDetails;
 
     private SegmentListingResponse(String nextPage, ImmutableList<SegmentListingView> segmentListingViews, Boolean ok, String error, ErrorDetails errorDetails) {
-        this.nextPage = Optional.fromNullable(nextPage);
+        this.nextPage = Optional.ofNullable(nextPage);
         this.segmentListingViews = segmentListingViews;
-        this.ok = Optional.fromNullable(ok);
-        this.error = Optional.fromNullable(error);
-        this.errorDetails = Optional.fromNullable(errorDetails);
+        this.ok = Optional.ofNullable(ok);
+        this.error = Optional.ofNullable(error);
+        this.errorDetails = Optional.ofNullable(errorDetails);
     }
 
     /**

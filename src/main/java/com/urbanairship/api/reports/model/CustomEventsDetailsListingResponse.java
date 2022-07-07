@@ -6,9 +6,9 @@ package com.urbanairship.api.reports.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableList;
-import java.util.Optional;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class CustomEventsDetailsListingResponse {
     private final boolean ok;

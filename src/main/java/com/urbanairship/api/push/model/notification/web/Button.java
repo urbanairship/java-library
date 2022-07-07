@@ -1,9 +1,10 @@
 package com.urbanairship.api.push.model.notification.web;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.notification.actions.Actions;
+
+import java.util.Optional;
 
 public class Button {
     private final Optional<Actions> actions;
@@ -11,7 +12,7 @@ public class Button {
     private final String label;
 
     private Button(Builder builder) {
-        actions = Optional.fromNullable(builder.actions);
+        actions = Optional.ofNullable(builder.actions);
         id = builder.id;
         label = builder.label;
     }

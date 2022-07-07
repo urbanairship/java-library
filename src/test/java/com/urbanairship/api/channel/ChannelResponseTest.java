@@ -262,7 +262,7 @@ public class ChannelResponseTest {
             assertEquals("00d174cd-0a31-427e-95c9-52d5785bcd50", three.getChannelId());
             assertEquals(1404929317000L, three.getCreated().getMillis());
             assertEquals(ChannelType.IOS.getIdentifier(), three.getChannelType());
-            assertEquals("IosSettings{badge=1, quiettime=Optional.of(QuietTime{start='17:00', end='9:00'}), timezone=Optional.of(America/Los_Angeles)}", three.getIosSettings().get().toString());
+            assertEquals("IosSettings{badge=1, quiettime=Optional[QuietTime{start='17:00', end='9:00'}], timezone=Optional[America/Los_Angeles]}", three.getIosSettings().get().toString());
             assertEquals(1412214102000L, three.getLastRegistration().get().getMillis());
             assertEquals("E4EA0D96092A9213BB186BEF66E83EE226401F82B3A77A1AC8217A8FE8ED4614", three.getPushAddress().get());
             assertEquals("[version_1.5.0]", three.getTags().toString());
@@ -277,7 +277,7 @@ public class ChannelResponseTest {
             assertEquals("00d8cb94-eac9-49fb-bad0-29298a06730e", four.getChannelId());
             assertEquals(1393109317000L, four.getCreated().getMillis());
             assertEquals(ChannelType.IOS.getIdentifier(), four.getChannelType());
-            assertEquals("IosSettings{badge=1, quiettime=Optional.of(QuietTime{start='null', end='null'}), timezone=Optional.absent()}", four.getIosSettings().get().toString());
+            assertEquals("IosSettings{badge=1, quiettime=Optional[QuietTime{start='null', end='null'}], timezone=Optional.empty}", four.getIosSettings().get().toString());
             assertFalse(four.getLastRegistration().isPresent());
             assertEquals("21F34C9ED37EAF8D7DC43561C07AA398CA5C6F503196C9E8230C50C0959B8653", four.getPushAddress().get());
             assertEquals("[kablam, version_1.3]", four.getTags().toString());

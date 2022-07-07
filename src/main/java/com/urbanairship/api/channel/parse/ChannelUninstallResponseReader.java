@@ -1,11 +1,10 @@
 package com.urbanairship.api.channel.parse;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.google.common.base.Optional;
+import com.urbanairship.api.channel.model.ChannelUninstallResponse;
 import com.urbanairship.api.common.model.ErrorDetails;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
-import com.urbanairship.api.channel.model.ChannelUninstallResponse;
 
 import java.io.IOException;
 

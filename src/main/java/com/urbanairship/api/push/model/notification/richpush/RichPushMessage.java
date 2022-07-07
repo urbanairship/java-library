@@ -4,12 +4,12 @@
 
 package com.urbanairship.api.push.model.notification.richpush;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.PushExpiry;
 
 import java.util.Map;
+import java.util.Optional;
 
 public final class RichPushMessage {
 
@@ -214,10 +214,10 @@ public final class RichPushMessage {
                     body,
                     contentType != null ? contentType : CONTENT_TYPE_DEFAULT,
                     contentEncoding != null ? contentEncoding : CONTENT_ENCODING_DEFAULT,
-                    extra != null ? Optional.fromNullable(extra.build()) : Optional.<ImmutableMap<String, String>>absent(),
-                    Optional.fromNullable(expiry),
-                    Optional.fromNullable(icons),
-                    Optional.fromNullable(richPushTemplate));
+                    extra != null ? Optional.ofNullable(extra.build()) : Optional.<ImmutableMap<String, String>>empty(),
+                    Optional.ofNullable(expiry),
+                    Optional.ofNullable(icons),
+                    Optional.ofNullable(richPushTemplate));
         }
     }
 }

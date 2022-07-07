@@ -4,7 +4,7 @@
 
 package com.urbanairship.api.staticlists;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
@@ -14,7 +14,6 @@ import com.urbanairship.api.staticlists.parse.StaticListsObjectMapper;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -32,7 +31,7 @@ public class StaticListListingRequest implements Request<StaticListListingRespon
     public enum ListType {all, lifecycle, user}
 
     private StaticListListingRequest() {
-        this.type = Optional.absent();
+        this.type = Optional.empty();
     }
 
     /**
@@ -62,7 +61,7 @@ public class StaticListListingRequest implements Request<StaticListListingRespon
 
     @Override
     public Map<String, String> getRequestHeaders() {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.ACCEPT, UA_VERSION_JSON);
         return headers;
     }
@@ -90,12 +89,7 @@ public class StaticListListingRequest implements Request<StaticListListingRespon
 
     @Override
     public ResponseParser<StaticListListingResponse> getResponseParser() {
-        return new ResponseParser<StaticListListingResponse>() {
-            @Override
-            public StaticListListingResponse parse(String response) throws IOException {
-                return StaticListsObjectMapper.getInstance().readValue(response, StaticListListingResponse.class);
-            }
-        };
+        return response -> StaticListsObjectMapper.getInstance().readValue(response, StaticListListingResponse.class);
     }
 
     @Override

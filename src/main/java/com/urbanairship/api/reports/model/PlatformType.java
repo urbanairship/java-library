@@ -4,7 +4,7 @@
 
 package com.urbanairship.api.reports.model;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 /**
  * @deprecated Marked to be removed in 2.0.0. Urban Airship stopped recommending use of these endpoints in October 2015,
@@ -33,7 +33,7 @@ public enum PlatformType {
             }
         }
 
-        return Optional.absent();
+        return Optional.empty();
     }
 
     public String getIdentifier() {

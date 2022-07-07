@@ -5,9 +5,9 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.notification.ios.IOSInterruptionLevel;
-import com.google.common.base.Optional;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public final class IOSInterruptionLevelDeserializer extends JsonDeserializer<IOSInterruptionLevel> {
 

@@ -4,8 +4,9 @@
 
 package com.urbanairship.api.push.model.notification.android;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+
+import java.util.Optional;
 
 /**
  * Represents an Android public_notification object.
@@ -16,9 +17,9 @@ public class PublicNotification {
     private final Optional<String> summary;
 
     private PublicNotification(Builder builder) {
-        this.title = Optional.fromNullable(builder.title);
-        this.alert = Optional.fromNullable(builder.alert);
-        this.summary = Optional.fromNullable(builder.summary);
+        this.title = Optional.ofNullable(builder.title);
+        this.alert = Optional.ofNullable(builder.alert);
+        this.summary = Optional.ofNullable(builder.summary);
     }
 
     /**

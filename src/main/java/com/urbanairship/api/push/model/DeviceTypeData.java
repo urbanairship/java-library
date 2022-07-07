@@ -5,8 +5,9 @@
 package com.urbanairship.api.push.model;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
+
+import java.util.Optional;
 
 public final class DeviceTypeData extends PushModelObject {
     private final Optional<ImmutableSet<DeviceType>> deviceTypes;
@@ -79,8 +80,8 @@ public final class DeviceTypeData extends PushModelObject {
 
         public DeviceTypeData build() {
             return new DeviceTypeData(deviceTypes == null
-                                    ? Optional.<ImmutableSet<DeviceType>>absent()
-                                    : Optional.fromNullable(deviceTypes.build()));
+                                    ? Optional.<ImmutableSet<DeviceType>>empty()
+                                    : Optional.of(deviceTypes.build()));
         }
     }
 }

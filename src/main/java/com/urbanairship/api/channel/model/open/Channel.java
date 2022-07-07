@@ -2,13 +2,13 @@ package com.urbanairship.api.channel.model.open;
 
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.push.model.PushModelObject;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Represents the payload to be used for registering or updating an open channel.
@@ -28,15 +28,15 @@ public class Channel extends PushModelObject {
     private Channel(Builder builder) {
         this.type = builder.type;
         this.open = builder.open;
-        this.address = Optional.fromNullable(builder.address);
-        this.optIn = Optional.fromNullable(builder.optIn);
-        this.setTags = Optional.fromNullable(builder.setTags);
-        this.timezone = Optional.fromNullable(builder.timezone);
-        this.localeCountry = Optional.fromNullable(builder.locale_country);
-        this.localeLanguage = Optional.fromNullable(builder.locale_language);
+        this.address = Optional.ofNullable(builder.address);
+        this.optIn = Optional.ofNullable(builder.optIn);
+        this.setTags = Optional.ofNullable(builder.setTags);
+        this.timezone = Optional.ofNullable(builder.timezone);
+        this.localeCountry = Optional.ofNullable(builder.locale_country);
+        this.localeLanguage = Optional.ofNullable(builder.locale_language);
 
         if (builder.tags.build().isEmpty()) {
-            this.tags = Optional.absent();
+            this.tags = Optional.empty();
         } else {
             this.tags = Optional.of(builder.tags.build());
         }

@@ -4,12 +4,12 @@
 
 package com.urbanairship.api.templates.model;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.common.model.ErrorDetails;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Template listing response object.
@@ -28,14 +28,14 @@ public class TemplateListingResponse {
 
     private TemplateListingResponse(Builder builder) {
         this.ok = builder.ok;
-        this.template = Optional.fromNullable(builder.template);
-        this.templates = Optional.fromNullable(builder.templates.build());
-        this.count = Optional.fromNullable(builder.count);
-        this.totalCount = Optional.fromNullable(builder.totalCount);
-        this.nextPage = Optional.fromNullable(builder.nextPage);
-        this.prevPage = Optional.fromNullable(builder.prevPage);
-        this.error = Optional.fromNullable(builder.error);
-        this.errorDetails = Optional.fromNullable(builder.errorDetails);
+        this.template = Optional.ofNullable(builder.template);
+        this.templates = Optional.ofNullable(builder.templates.build());
+        this.count = Optional.ofNullable(builder.count);
+        this.totalCount = Optional.ofNullable(builder.totalCount);
+        this.nextPage = Optional.ofNullable(builder.nextPage);
+        this.prevPage = Optional.ofNullable(builder.prevPage);
+        this.error = Optional.ofNullable(builder.error);
+        this.errorDetails = Optional.ofNullable(builder.errorDetails);
     }
 
     /**

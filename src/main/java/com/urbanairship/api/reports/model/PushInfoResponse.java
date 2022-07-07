@@ -5,14 +5,12 @@
 package com.urbanairship.api.reports.model;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
 import com.urbanairship.api.common.model.ErrorDetails;
-
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -48,10 +46,10 @@ public final class PushInfoResponse {
         this.sends = sends;
         this.pushType = pushType;
         this.pushTime = pushTime;
-        this.groupID = Optional.fromNullable(groupID);
+        this.groupID = Optional.ofNullable(groupID);
         this.ok = ok;
-        this.error = Optional.fromNullable(error);
-        this.errorDetails = Optional.fromNullable(errorDetails);
+        this.error = Optional.ofNullable(error);
+        this.errorDetails = Optional.ofNullable(errorDetails);
     }
 
     /**

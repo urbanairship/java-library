@@ -4,7 +4,7 @@
 
 package com.urbanairship.api.push.model.notification.wns;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 public class WNSBadgeData {
     public enum Glyph {
@@ -112,8 +112,8 @@ public class WNSBadgeData {
             if (glyph != null && value != null) {
                 throw new IllegalArgumentException("Must supply one of 'value' or 'glyph', but not both.");
             }
-            return new WNSBadgeData(Optional.fromNullable(value),
-                                    Optional.fromNullable(glyph));
+            return new WNSBadgeData(Optional.ofNullable(value),
+                                    Optional.ofNullable(glyph));
         }
     }
 }

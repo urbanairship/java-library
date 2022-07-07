@@ -1,11 +1,11 @@
 package com.urbanairship.api.channel.model.open;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Open Platform Options Object.
@@ -17,7 +17,7 @@ public class OpenChannel {
     private final Optional<ImmutableMap<String, String>> identifiers;
 
     private OpenChannel() {
-        this(null, Optional.<String>absent(), Optional.<ImmutableMap<String,String>>absent());
+        this(null, Optional.<String>empty(), Optional.<ImmutableMap<String,String>>empty());
     }
 
     @Override
@@ -56,10 +56,10 @@ public class OpenChannel {
 
     private OpenChannel(Builder builder) {
         this.openPlatformName = builder.openPlatformName;
-        this.oldAddress = Optional.fromNullable(builder.oldAddress);
+        this.oldAddress = Optional.ofNullable(builder.oldAddress);
 
         if (builder.identifiers.build().isEmpty()) {
-           this.identifiers = Optional.absent();
+           this.identifiers = Optional.empty();
         } else {
             this.identifiers = Optional.of(builder.identifiers.build());
         }

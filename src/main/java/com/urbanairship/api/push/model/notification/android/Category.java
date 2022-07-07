@@ -4,7 +4,7 @@
 
 package com.urbanairship.api.push.model.notification.android;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 /**
  * Enum of Android categories
@@ -42,6 +42,6 @@ public enum Category {
             }
         }
 
-        return Optional.absent();
+        return Optional.empty();
     }
 }

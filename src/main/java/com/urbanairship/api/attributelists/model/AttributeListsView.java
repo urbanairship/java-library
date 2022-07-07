@@ -5,7 +5,7 @@
 package com.urbanairship.api.attributelists.model;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import org.joda.time.DateTime;
@@ -22,10 +22,10 @@ public class AttributeListsView {
     private final String status;
 
     private AttributeListsView(Builder builder) {
-        this.ok = Optional.fromNullable(builder.ok);
+        this.ok = Optional.ofNullable(builder.ok);
         this.name = builder.name;
-        this.description = Optional.fromNullable(builder.description);
-        this.extras = Optional.fromNullable(builder.extras.build());
+        this.description = Optional.ofNullable(builder.description);
+        this.extras = Optional.of(builder.extras.build());
         this.created = builder.created;
         this.lastUpdated = builder.lastUpdated;
         this.channelCount = builder.channelCount;
@@ -128,7 +128,7 @@ public class AttributeListsView {
     public String toString() {
         return "AttributeListsView{" +
                 "ok=" + ok +
-                ", name=\'" + name + '\'' +
+                ", name='" + name + '\'' +
                 ", description=" + description +
                 ", extras=" + extras +
                 ", created=" + created +
@@ -169,7 +169,7 @@ public class AttributeListsView {
         private Boolean ok = null;
         private String name = null;
         private String description = null;
-        private ImmutableMap.Builder<String, String> extras = ImmutableMap.builder();
+        private final ImmutableMap.Builder<String, String> extras = ImmutableMap.builder();
         private DateTime created = null;
         private DateTime lastUpdated = null;
         private Integer channelCount = null;

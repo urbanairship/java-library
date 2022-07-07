@@ -1,11 +1,11 @@
 package com.urbanairship.api.channel.model.sms;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.channel.model.ChannelModelObject;
-
 import org.joda.time.DateTime;
+
+import java.util.Optional;
 
 /**
  * Represents the payload to be used for updating a sms channel.
@@ -22,10 +22,10 @@ public class UpdateSmsChannel extends ChannelModelObject {
     protected UpdateSmsChannel(Builder builder) {
         this.msisdn = builder.msisdn;
         this.sender = builder.sender;
-        this.optedIn = Optional.fromNullable(builder.optedIn);
-        this.timezone = Optional.fromNullable(builder.timezone);
-        this.localeCountry = Optional.fromNullable(builder.localeCountry);
-        this.localeLanguage = Optional.fromNullable(builder.localeLanguage);
+        this.optedIn = Optional.ofNullable(builder.optedIn);
+        this.timezone = Optional.ofNullable(builder.timezone);
+        this.localeCountry = Optional.ofNullable(builder.localeCountry);
+        this.localeLanguage = Optional.ofNullable(builder.localeLanguage);
     }
 
     /**

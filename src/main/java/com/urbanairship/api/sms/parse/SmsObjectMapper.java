@@ -7,8 +7,8 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.sms.model.CustomSmsResponseMmsPayload;
-import com.urbanairship.api.sms.model.CustomSmsResponseSmsPayload;
 import com.urbanairship.api.sms.model.CustomSmsResponseResponse;
+import com.urbanairship.api.sms.model.CustomSmsResponseSmsPayload;
 import com.urbanairship.api.sms.model.MmsSlides;
 
 public class SmsObjectMapper {

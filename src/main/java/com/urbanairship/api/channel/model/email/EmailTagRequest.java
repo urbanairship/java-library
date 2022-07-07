@@ -1,6 +1,5 @@
 package com.urbanairship.api.channel.model.email;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Preconditions;
@@ -10,7 +9,6 @@ import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.common.model.GenericResponse;
-
 import org.apache.http.entity.ContentType;
 
 import java.net.URI;

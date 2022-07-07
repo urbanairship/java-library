@@ -4,7 +4,7 @@
 
 package com.urbanairship.api.push.model.notification.wns;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -107,7 +107,7 @@ public class WNSAudioData {
         public WNSAudioData build() {
             checkArgument(sound != null, "toast.audio must supply a value for 'sound'");
             return new WNSAudioData(sound,
-                                    Optional.fromNullable(loop));
+                                    Optional.ofNullable(loop));
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.urbanairship.api.reports.model;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

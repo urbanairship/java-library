@@ -1,8 +1,9 @@
 package com.urbanairship.api.sms.model;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+
+import java.util.Optional;
 
 /**
  * Represents the payload to be used for creating slides object.
@@ -15,10 +16,10 @@ public class MmsSlides {
 
     //Protected to facilitate subclassing for create and send child object
     protected MmsSlides(Builder builder) {
-        this.text = Optional.fromNullable(builder.text);
+        this.text = Optional.ofNullable(builder.text);
         this.mediaUrl = builder.mediaUrl;
         this.mediaContentType = builder.mediaContentType;
-        this.mediaContentLength = Optional.fromNullable(builder.mediaContentLength);
+        this.mediaContentLength = Optional.ofNullable(builder.mediaContentLength);
 
     }
 

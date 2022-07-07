@@ -1,6 +1,5 @@
 package com.urbanairship.api.client;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import org.apache.http.entity.ContentType;
@@ -17,6 +16,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.Future;
 
 /**
@@ -37,14 +37,14 @@ public class AsyncRequestClient implements RequestClient {
 
         DefaultAsyncHttpClientConfig.Builder clientConfigBuilder = builder.clientConfigBuilder;
 
-        clientConfigBuilder.addResponseFilter(new RequestRetryFilter(builder.maxRetries, Optional.fromNullable(builder.retryPredicate)));
+        clientConfigBuilder.addResponseFilter(new RequestRetryFilter(builder.maxRetries, Optional.ofNullable(builder.retryPredicate)));
 
-        if (Optional.fromNullable(builder.proxyServer).isPresent()) {
-            proxyServer = Optional.fromNullable(builder.proxyServer);
+        if (Optional.ofNullable(builder.proxyServer).isPresent()) {
+            proxyServer = Optional.ofNullable(builder.proxyServer);
             clientConfigBuilder.setProxyServer(proxyServer.get());
             clientConfigBuilder.setRealm(proxyServer.get().getRealm());
         } else {
-            proxyServer = Optional.absent();
+            proxyServer = Optional.empty();
         }
 
         this.clientConfig = clientConfigBuilder.build();
@@ -138,7 +138,7 @@ public class AsyncRequestClient implements RequestClient {
         }
 
         log.debug(String.format("Executing Urban Airship request to %s with body %s.", uri, request.getRequestBody()));
-        ResponseAsyncHandler<T> handler = new ResponseAsyncHandler<>(Optional.fromNullable(callback), request.getResponseParser());
+        ResponseAsyncHandler<T> handler = new ResponseAsyncHandler<>(Optional.ofNullable(callback), request.getResponseParser());
         return requestBuilder.execute(handler);
     }
 

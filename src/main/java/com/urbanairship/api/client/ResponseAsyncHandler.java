@@ -5,7 +5,6 @@
 package com.urbanairship.api.client;
 
 import com.fasterxml.jackson.core.JsonParseException;
-import com.google.common.base.Optional;
 import io.netty.handler.codec.http.HttpHeaders;
 import org.apache.commons.lang.StringUtils;
 import org.asynchttpclient.AsyncHandler;
@@ -17,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**

@@ -3,9 +3,10 @@
  */
 package com.urbanairship.api.push.model.notification.android;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+
+import java.util.Optional;
 
 /**
  * Represents an Android style with a type of "inbox".

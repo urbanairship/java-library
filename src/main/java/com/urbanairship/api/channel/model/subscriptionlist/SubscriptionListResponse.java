@@ -1,9 +1,9 @@
 package com.urbanairship.api.channel.model.subscriptionlist;
 
-import java.util.Optional;
-
 import com.google.common.base.Objects;
 import com.urbanairship.api.common.model.ErrorDetails;
+
+import java.util.Optional;
 
 public class SubscriptionListResponse {
     private final boolean ok;

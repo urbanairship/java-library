@@ -3,9 +3,10 @@
  */
 package com.urbanairship.api.push.model.notification.ios;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.PushModelObject;
+
+import java.util.Optional;
 
 /**
  * MediaAttachment for iOS specific push messages.
@@ -137,8 +138,8 @@ public final class MediaAttachment extends PushModelObject {
             Preconditions.checkNotNull(url, "'url' must be set");
 
             return new MediaAttachment(url,
-                                       Optional.fromNullable(content),
-                                       Optional.fromNullable(options));
+                                       Optional.ofNullable(content),
+                                       Optional.ofNullable(options));
         }
     }
 }

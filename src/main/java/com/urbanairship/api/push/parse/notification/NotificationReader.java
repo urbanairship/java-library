@@ -7,7 +7,6 @@ package com.urbanairship.api.push.parse.notification;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
@@ -20,6 +19,7 @@ import com.urbanairship.api.push.model.notification.actions.Actions;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 
 public class NotificationReader implements JsonObjectReader<Notification> {
 
@@ -27,8 +27,8 @@ public class NotificationReader implements JsonObjectReader<Notification> {
     private final Map<DeviceType, DevicePayloadOverride> payloadOverrides = Maps.newHashMap();
 
     private String alert = null;
-    private Optional<Actions> optActions = Optional.absent();
-    private Optional<Interactive> interactive = Optional.absent();
+    private Optional<Actions> optActions = Optional.empty();
+    private Optional<Interactive> interactive = Optional.empty();
 
     public NotificationReader(Map<DeviceType, JsonDeserializer<? extends DevicePayloadOverride>> payloadOverridesDeserializerRegistry) {
         this.payloadOverridesDeserializerRegistry = payloadOverridesDeserializerRegistry;

@@ -1,10 +1,5 @@
 package com.urbanairship.api.channel;
 
-import java.io.IOException;
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.channel.model.subscriptionlist.SubscriptionListPayload;
@@ -13,8 +8,12 @@ import com.urbanairship.api.channel.parse.ChannelObjectMapper;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
-
 import org.apache.http.entity.ContentType;
+
+import java.io.IOException;
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SubscriptionListRequest implements Request<SubscriptionListResponse> {
     private final ObjectMapper MAPPER = ChannelObjectMapper.getInstance();

@@ -1,7 +1,7 @@
 package com.urbanairship.api.customevents.model;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.urbanairship.api.common.model.ErrorDetails;
 
 public class CustomEventResponse {
@@ -12,10 +12,10 @@ public class CustomEventResponse {
 
 
     public CustomEventResponse(String operationId, boolean ok, String error, ErrorDetails errorDetails) {
-        this.operationId = Optional.fromNullable(operationId);
+        this.operationId = Optional.ofNullable(operationId);
         this.ok = ok;
-        this.error = Optional.fromNullable(error);
-        this.errorDetails = Optional.fromNullable(errorDetails);
+        this.error = Optional.ofNullable(error);
+        this.errorDetails = Optional.ofNullable(errorDetails);
     }
 
     /**

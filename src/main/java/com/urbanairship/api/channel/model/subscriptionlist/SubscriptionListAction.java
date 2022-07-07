@@ -1,6 +1,6 @@
 package com.urbanairship.api.channel.model.subscriptionlist;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 public enum SubscriptionListAction {
     SUBSCRIBE("subscribe"),
@@ -19,7 +19,7 @@ public enum SubscriptionListAction {
             }
         }
 
-        return Optional.absent();
+        return Optional.empty();
     }
 
     public String getIdentifier() {

@@ -1,11 +1,11 @@
 package com.urbanairship.api.reports.parse;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.reports.model.DeviceStats;
 import com.urbanairship.api.reports.model.ResponseReportResponse;
-import com.fasterxml.jackson.core.JsonParser;
-import com.urbanairship.api.common.parse.APIParsingException;
 
 import java.io.IOException;
 

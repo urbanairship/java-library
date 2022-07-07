@@ -2,7 +2,8 @@ package com.urbanairship.api.common.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
+
+import java.util.Optional;
 
 public class GenericResponse {
     private final Boolean ok;
@@ -23,19 +24,19 @@ public class GenericResponse {
     }
 
     public Optional<Boolean> getOk() {
-        return Optional.fromNullable(ok);
+        return Optional.ofNullable(ok);
     }
 
     public Optional<String> getOperationId() {
-        return Optional.fromNullable(operationId);
+        return Optional.ofNullable(operationId);
     }
 
     public Optional<String> getError() {
-        return Optional.fromNullable(error);
+        return Optional.ofNullable(error);
     }
 
     public Optional<ErrorDetails> getErrorDetails() {
-        return Optional.fromNullable(errorDetails);
+        return Optional.ofNullable(errorDetails);
     }
 
     @Override

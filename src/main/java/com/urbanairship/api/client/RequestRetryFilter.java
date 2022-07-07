@@ -4,7 +4,6 @@
 
 package com.urbanairship.api.client;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import org.apache.commons.lang.math.RandomUtils;
 import org.asynchttpclient.filter.FilterContext;
@@ -12,6 +11,8 @@ import org.asynchttpclient.filter.FilterException;
 import org.asynchttpclient.filter.ResponseFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Optional;
 
 /**
  * ResponseFilter in charge of async request retries on server errors. The filter is applied before the response reaches the

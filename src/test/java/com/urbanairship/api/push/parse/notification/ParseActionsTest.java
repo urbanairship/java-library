@@ -2,7 +2,7 @@ package com.urbanairship.api.push.parse.notification;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -77,7 +77,7 @@ public class ParseActionsTest {
             }
         }
 
-        return Optional.absent();
+        return Optional.empty();
 
     }
 

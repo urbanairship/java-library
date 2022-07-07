@@ -3,7 +3,7 @@ package com.urbanairship.api.createandsend.model.notification.email;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Optional;
+import java.util.Optional;
 /**
  * Represends the email fields in the notification.
  */
@@ -20,7 +20,7 @@ public class EmailFields {
         ) {
         this.subject = subject;
         this.plainTextBody = plainTextBody;
-        this.htmlBody = Optional.fromNullable(htmlBody);
+        this.htmlBody = Optional.ofNullable(htmlBody);
     }
 
     /**

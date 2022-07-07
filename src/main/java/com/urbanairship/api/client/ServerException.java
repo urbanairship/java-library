@@ -5,7 +5,7 @@
 
 package com.urbanairship.api.client;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 /**
  * Exception thrown when the client fails to connect to the API on 5xxs.
@@ -124,7 +124,7 @@ public class ServerException extends RuntimeException {
         public ServerException build() {
             return new ServerException(statusText,
                     statusCode,
-                    Optional.fromNullable(requestError));
+                    Optional.ofNullable(requestError));
         }
     }
 }

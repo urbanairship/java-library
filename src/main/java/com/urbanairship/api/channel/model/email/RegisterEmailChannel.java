@@ -1,7 +1,6 @@
 package com.urbanairship.api.channel.model.email;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -11,6 +10,7 @@ import com.urbanairship.api.push.model.PushModelObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Represents the payload to be used for registering or updating an email channel.
@@ -30,24 +30,24 @@ public class RegisterEmailChannel extends PushModelObject {
     //Protected to facilitate subclassing for create and send child object
     protected RegisterEmailChannel(Builder builder) {
         this.type = ChannelType.EMAIL;
-        this.emailOptInLevel = Optional.fromNullable((builder.emailOptInLevel));
+        this.emailOptInLevel = Optional.ofNullable((builder.emailOptInLevel));
         this.address = builder.address;
-        this.setTags = Optional.fromNullable(builder.set_tags);
-        this.timezone = Optional.fromNullable(builder.timezone);
-        this.localeCountry = Optional.fromNullable(builder.localeCountry);
-        this.localeLanguage = Optional.fromNullable(builder.localeLanguage);
-        this.emailOptInMode = Optional.fromNullable((builder.emailOptInMode));
+        this.setTags = Optional.ofNullable(builder.set_tags);
+        this.timezone = Optional.ofNullable(builder.timezone);
+        this.localeCountry = Optional.ofNullable(builder.localeCountry);
+        this.localeLanguage = Optional.ofNullable(builder.localeLanguage);
+        this.emailOptInMode = Optional.ofNullable((builder.emailOptInMode));
 
         if (builder.tags.build().isEmpty()) {
-            this.tags = Optional.absent();
+            this.tags = Optional.empty();
         } else {
             this.tags = Optional.of(builder.tags.build());
         }
 
         if (!builder.properties.build().isEmpty()) {
-            this.properties = Optional.fromNullable(builder.properties.build());
+            this.properties = Optional.ofNullable(builder.properties.build());
         } else {
-            properties = Optional.absent();
+            properties = Optional.empty();
         }
     }
 

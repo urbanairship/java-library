@@ -8,7 +8,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.FieldParser;

@@ -2,7 +2,7 @@ package com.urbanairship.api.schedule;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.push.model.DeviceType;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.urbanairship.api.push.model.PushPayload;
 import com.urbanairship.api.schedule.model.ListAllSchedulesResponse;
 import com.urbanairship.api.schedule.model.Schedule;
@@ -40,7 +40,7 @@ public class ListSchedulesResponseTest {
             assertTrue(response.getOk());
             assertTrue(response.getCount() == 5);
             assertTrue(response.getTotal_Count() == 6);
-            assertEquals(response.getNext_Page(), Optional.absent());
+            assertEquals(response.getNext_Page(), Optional.empty());
 
             List<SchedulePayloadResponse> list = response.getSchedules();
 

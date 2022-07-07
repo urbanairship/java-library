@@ -2,7 +2,7 @@ package com.urbanairship.api.schedule;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.push.model.DeviceType;
@@ -215,7 +215,7 @@ public class SchedulePayloadResponseDeserializerTest {
         SchedulePayloadResponse payload = MAPPER.readValue(json, SchedulePayloadResponse.class);
 
         org.junit.Assert.assertNotNull(payload);
-        Assert.assertEquals(payload.getName(), Optional.<String>absent());
+        Assert.assertEquals(payload.getName(), Optional.<String>empty());
         Assert.assertEquals(payload.getSchedule().getScheduledTimestamp(), DateFormats.DATE_PARSER.parseDateTime("2013-05-05 00:00:01"));
     }
 
