@@ -2,7 +2,6 @@ package com.urbanairship.api.schedule;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Optional;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.push.model.DeviceType;
@@ -21,7 +20,9 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Assert;
 import org.junit.Test;
+
 import java.util.List;
+import java.util.Optional;
 
 public class SchedulePayloadResponseDeserializerTest {
 
@@ -220,7 +221,7 @@ public class SchedulePayloadResponseDeserializerTest {
     }
 
     @Test
-    public void testInvalidScheduleObject() throws Exception {
+    public void testInvalidScheduleObject() {
         Assert.assertThrows(APIParsingException.class, () -> {
                 String json =
                 "{" +
@@ -240,7 +241,7 @@ public class SchedulePayloadResponseDeserializerTest {
     }
 
     @Test
-    public void testInvalidName() throws Exception {
+    public void testInvalidName() {
         Assert.assertThrows(APIParsingException.class, () -> {
                 String json =
                 "{" +

@@ -9,12 +9,12 @@ import com.urbanairship.api.nameduser.parse.NamedUserObjectMapper;
 import org.apache.http.entity.ContentType;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class NamedUserListingRequestTest {
 
@@ -40,14 +40,14 @@ public class NamedUserListingRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(listAllRequest.getRequestBody(), null);
-        assertEquals(listRequest.getRequestBody(), null);
-        assertEquals(listNextPageRequest.getRequestBody(), null);
+        assertNull(listAllRequest.getRequestBody());
+        assertNull(listRequest.getRequestBody());
+        assertNull(listNextPageRequest.getRequestBody());
     }
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
@@ -72,12 +72,7 @@ public class NamedUserListingRequestTest {
 
     @Test
     public void testListingParser() throws Exception {
-        ResponseParser<NamedUserListingResponse> responseParser = new ResponseParser<NamedUserListingResponse>() {
-            @Override
-            public NamedUserListingResponse parse(String response) throws IOException {
-                return mapper.readValue(response, NamedUserListingResponse.class);
-            }
-        };
+        ResponseParser<NamedUserListingResponse> responseParser = response -> mapper.readValue(response, NamedUserListingResponse.class);
 
         String response = "{" +
             "\"ok\": true," +
@@ -124,12 +119,7 @@ public class NamedUserListingRequestTest {
 
     @Test
     public void testLookupParser() throws Exception {
-        ResponseParser<NamedUserListingResponse> responseParser = new ResponseParser<NamedUserListingResponse>() {
-            @Override
-            public NamedUserListingResponse parse(String response) throws IOException {
-                return mapper.readValue(response, NamedUserListingResponse.class);
-            }
-        };
+        ResponseParser<NamedUserListingResponse> responseParser = response -> mapper.readValue(response, NamedUserListingResponse.class);
 
         String response = "{" +
             "\"ok\": true," +

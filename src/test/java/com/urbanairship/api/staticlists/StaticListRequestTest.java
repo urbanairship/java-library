@@ -3,6 +3,7 @@ package com.urbanairship.api.staticlists;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
+import com.urbanairship.api.common.model.GenericResponse;
 import com.urbanairship.api.staticlists.parse.StaticListsObjectMapper;
 import org.apache.http.entity.ContentType;
 import org.junit.Before;
@@ -75,16 +76,16 @@ public class StaticListRequestTest {
                 "\"name\":\"bleep\"" +
                 "}";
 
-        Map<String, Object> createPayload = new HashMap<String, Object>();
-        Map<String, String> createExtras = new HashMap<String, String>();
+        Map<String, Object> createPayload = new HashMap<>();
+        Map<String, String> createExtras = new HashMap<>();
         createPayload.put(NAME_KEY, "abc123");
         createPayload.put(DESCRIPTION_KEY, "create description");
         createExtras.put("key1", "val1");
         createExtras.put("key2", "val2");
         createPayload.put(EXTRAS_KEY, createExtras);
 
-        Map<String, Object> updatePayload = new HashMap<String, Object>();
-        Map<String, String> updateExtras = new HashMap<String, String>();
+        Map<String, Object> updatePayload = new HashMap<>();
+        Map<String, String> updateExtras = new HashMap<>();
         updatePayload.put(NAME_KEY, "bleep");
         updatePayload.put(DESCRIPTION_KEY, "update description");
         updateExtras.put("key3", "val3");
@@ -102,7 +103,7 @@ public class StaticListRequestTest {
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
 
@@ -120,9 +121,15 @@ public class StaticListRequestTest {
         assertEquals(updateRequest.getUri(baseURI), expectedUpdateUri);
     }
 
+    @Test
     public void testParser() throws Exception {
-        String response = "{\"ok\": true}";
-        assertEquals(response, createRequest.getResponseParser().parse(response));
-        assertEquals(response, updateRequest.getResponseParser().parse(response));
+        GenericResponse genericResponse = new GenericResponse(true, null, null, null);
+
+        String responseJson = "{" +
+                "\"ok\": true" +
+                "}";
+
+        assertEquals(createRequest.getResponseParser().parse(responseJson), genericResponse);
+        assertEquals(updateRequest.getResponseParser().parse(responseJson), genericResponse);
     }
 }

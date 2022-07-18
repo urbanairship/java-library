@@ -1,12 +1,11 @@
 package com.urbanairship.api.createandsend.model.notification;
 
-import java.util.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.PushModelObject;
-
 import org.joda.time.DateTime;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class CreateAndSendSchedulePayload extends PushModelObject {
 

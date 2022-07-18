@@ -1,7 +1,5 @@
 package com.urbanairship.api.client;
 
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.channel.model.ChannelResponse;
@@ -41,7 +39,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 public class ResponseTest {
 
@@ -71,16 +69,10 @@ public class ResponseTest {
         Map<String, String> headers = new HashMap<>();
         headers.put(CONTENT_TYPE_KEY, CONTENT_TYPE);
 
-        //ListMultimap<String, String> headers = ArrayListMultimap.create();
-        //headers.put(httpResponse.getAllHeaders()[0].getName(), httpResponse.getAllHeaders()[0].getValue());
-
-        Response<PushResponse> response = new Response<PushResponse>(pushResponse, headers, httpResponse.getStatusLine().getStatusCode());
-        assertTrue("HTTP response body not set properly",
-                response.getBody().get().equals(pushResponse));
-        assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers));
-        assertTrue("HTTP response status not set properly",
-                response.getStatus() == httpResponse.getStatusLine().getStatusCode());
+        Response<PushResponse> response = new Response<>(pushResponse, headers, httpResponse.getStatusLine().getStatusCode());
+        assertEquals("HTTP response body not set properly", response.getBody().get(), pushResponse);
+        assertEquals("HTTP response headers not set properly", response.getHeaders(), headers);
+        assertEquals("HTTP response status not set properly", response.getStatus(), httpResponse.getStatusLine().getStatusCode());
     }
 
     @Test
@@ -98,13 +90,10 @@ public class ResponseTest {
         Map<String, String> headers = new HashMap<>();
         headers.put(CONTENT_TYPE_KEY, CONTENT_TYPE);
 
-        Response<ScheduleResponse> response = new Response<ScheduleResponse>(scheduleResponse, headers, httpResponse.getStatusLine().getStatusCode());
-        assertTrue("HTTP response body not set properly",
-                response.getBody().get().equals(scheduleResponse));
-        assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers));
-        assertTrue("HTTP response status not set properly",
-                response.getStatus() == httpResponse.getStatusLine().getStatusCode());
+        Response<ScheduleResponse> response = new Response<>(scheduleResponse, headers, httpResponse.getStatusLine().getStatusCode());
+        assertEquals("HTTP response body not set properly", response.getBody().get(), scheduleResponse);
+        assertEquals("HTTP response headers not set properly", response.getHeaders(), headers);
+        assertEquals("HTTP response status not set properly", response.getStatus(), httpResponse.getStatusLine().getStatusCode());
     }
 
     @Test
@@ -137,13 +126,10 @@ public class ResponseTest {
         Map<String, String> headers = new HashMap<>();
         headers.put(CONTENT_TYPE_KEY, CONTENT_TYPE);
 
-        Response<ListAllSchedulesResponse> response = new Response<ListAllSchedulesResponse>(listScheduleResponse, headers, httpResponse.getStatusLine().getStatusCode());
-        assertTrue("HTTP response body not set properly",
-                response.getBody().get().equals(listScheduleResponse));
-        assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers));
-        assertTrue("HTTP response status not set properly",
-                response.getStatus() == httpResponse.getStatusLine().getStatusCode());
+        Response<ListAllSchedulesResponse> response = new Response<>(listScheduleResponse, headers, httpResponse.getStatusLine().getStatusCode());
+        assertEquals("HTTP response body not set properly", response.getBody().get(), listScheduleResponse);
+        assertEquals("HTTP response headers not set properly", response.getHeaders(), headers);
+        assertEquals("HTTP response status not set properly", response.getStatus(), httpResponse.getStatusLine().getStatusCode());
     }
 
     @Test
@@ -168,13 +154,10 @@ public class ResponseTest {
                                 .build())
                         .build();
 
-        Response<ChannelResponse> response = new Response<ChannelResponse>(channelResponse, headers, httpResponse.getStatusLine().getStatusCode());
-        assertTrue("HTTP response body not set properly",
-                response.getBody().get().equals(channelResponse));
-        assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers));
-        assertTrue("HTTP response status not set properly",
-                response.getStatus() == httpResponse.getStatusLine().getStatusCode());
+        Response<ChannelResponse> response = new Response<>(channelResponse, headers, httpResponse.getStatusLine().getStatusCode());
+        assertEquals("HTTP response body not set properly", response.getBody().get(), channelResponse);
+        assertEquals("HTTP response headers not set properly", response.getHeaders(), headers);
+        assertEquals("HTTP response status not set properly", response.getStatus(), httpResponse.getStatusLine().getStatusCode());
     }
 
     @Test
@@ -199,13 +182,10 @@ public class ResponseTest {
                         .build())
                 .build();
 
-        Response<ChannelResponse> response = new Response<ChannelResponse>(channelResponse, headers, httpResponse.getStatusLine().getStatusCode());
-        assertTrue("HTTP response body not set properly",
-                response.getBody().get().equals(channelResponse));
-        assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers));
-        assertTrue("HTTP response status not set properly",
-                response.getStatus() == httpResponse.getStatusLine().getStatusCode());
+        Response<ChannelResponse> response = new Response<>(channelResponse, headers, httpResponse.getStatusLine().getStatusCode());
+        assertEquals("HTTP response body not set properly", response.getBody().get(), channelResponse);
+        assertEquals("HTTP response headers not set properly", response.getHeaders(), headers);
+        assertEquals("HTTP response status not set properly", response.getStatus(), httpResponse.getStatusLine().getStatusCode());
     }
 
     @Test
@@ -231,13 +211,10 @@ public class ResponseTest {
                         .build())
                 .build();
 
-        Response<NamedUserListingResponse> response = new Response<NamedUserListingResponse>(namedUserListingResponse, headers, httpResponse.getStatusLine().getStatusCode());
-        assertTrue("HTTP response body not set properly",
-                response.getBody().get().equals(namedUserListingResponse));
-        assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers));
-        assertTrue("HTTP response status not set properly",
-                response.getStatus() == httpResponse.getStatusLine().getStatusCode());
+        Response<NamedUserListingResponse> response = new Response<>(namedUserListingResponse, headers, httpResponse.getStatusLine().getStatusCode());
+        assertEquals("HTTP response body not set properly", response.getBody().get(), namedUserListingResponse);
+        assertEquals("HTTP response headers not set properly", response.getHeaders(), headers);
+        assertEquals("HTTP response status not set properly", response.getStatus(), httpResponse.getStatusLine().getStatusCode());
     }
 
     @Test
@@ -265,17 +242,14 @@ public class ResponseTest {
                 .addPushInfoObject(spir)
                 .build();
 
-        Response<PushListingResponse> response = new Response<PushListingResponse>(
+        Response<PushListingResponse> response = new Response<>(
                 pushListingResponse,
                 headers,
                 httpResponse.getStatusLine().getStatusCode());
 
-        assertTrue("HTTP response not set properly",
-                response.getBody().get().equals(pushListingResponse));
-        assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers));
-        assertTrue("HTTP response status not set properly",
-                response.getStatus() == httpResponse.getStatusLine().getStatusCode());
+        assertEquals("HTTP response not set properly", response.getBody().get(), pushListingResponse);
+        assertEquals("HTTP response headers not set properly", response.getHeaders(), headers);
+        assertEquals("HTTP response status not set properly", response.getStatus(), httpResponse.getStatusLine().getStatusCode());
     }
 
     @Test
@@ -296,17 +270,14 @@ public class ResponseTest {
                 .setGroupId(two)
                 .build();
 
-        Response<PushInfoResponse> response = new Response<PushInfoResponse>(
+        Response<PushInfoResponse> response = new Response<>(
                 pushInfoResponse,
                 headers,
                 httpResponse.getStatusLine().getStatusCode());
 
-        assertTrue("HTTP response not set properly",
-                response.getBody().get().equals(pushInfoResponse));
-        assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers));
-        assertTrue("HTTP response status not set properly",
-                response.getStatus() == httpResponse.getStatusLine().getStatusCode());
+        assertEquals("HTTP response not set properly", response.getBody().get(), pushInfoResponse);
+        assertEquals("HTTP response headers not set properly", response.getHeaders(), headers);
+        assertEquals("HTTP response status not set properly", response.getStatus(), httpResponse.getStatusLine().getStatusCode());
 
     }
 
@@ -324,17 +295,14 @@ public class ResponseTest {
                 .setCriteria(compound)
                 .build();
 
-        Response<SegmentView> response = new Response<SegmentView>(
+        Response<SegmentView> response = new Response<>(
                 segment,
                 headers,
                 httpResponse.getStatusLine().getStatusCode());
 
-        assertTrue("HTTP response not set properly",
-                response.getBody().get().equals(segment));
-        assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers));
-        assertTrue("HTTP response status not set properly",
-                response.getStatus() == httpResponse.getStatusLine().getStatusCode());
+        assertEquals("HTTP response not set properly", response.getBody().get(), segment);
+        assertEquals("HTTP response headers not set properly", response.getHeaders(), headers);
+        assertEquals("HTTP response status not set properly", response.getStatus(), httpResponse.getStatusLine().getStatusCode());
     }
 
     @Test
@@ -361,17 +329,14 @@ public class ResponseTest {
                 .addAllSegmentObjects(list)
                 .build();
 
-        Response<SegmentListingResponse> response = new Response<SegmentListingResponse>(
+        Response<SegmentListingResponse> response = new Response<>(
                 segments,
                 headers,
                 httpResponse.getStatusLine().getStatusCode());
 
-        assertTrue("HTTP response not set properly",
-                response.getBody().get().equals(segments));
-        assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers));
-        assertTrue("HTTP response status not set properly",
-                response.getStatus() == httpResponse.getStatusLine().getStatusCode());
+        assertEquals("HTTP response not set properly", response.getBody().get(), segments);
+        assertEquals("HTTP response headers not set properly", response.getHeaders(), headers);
+        assertEquals("HTTP response status not set properly", response.getStatus(), httpResponse.getStatusLine().getStatusCode());
     }
 
     @Test
@@ -393,17 +358,14 @@ public class ResponseTest {
                 .setStatus("processing")
                 .build();
 
-        Response<StaticListView> response = new Response<StaticListView>(
+        Response<StaticListView> response = new Response<>(
                 staticListView,
                 headers,
                 httpResponse.getStatusLine().getStatusCode());
 
-        assertTrue("HTTP response not set properly",
-                response.getBody().get().equals(staticListView));
-        assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers));
-        assertTrue("HTTP response status not set properly",
-                response.getStatus() == httpResponse.getStatusLine().getStatusCode());
+        assertEquals("HTTP response not set properly", response.getBody().get(), staticListView);
+        assertEquals("HTTP response headers not set properly", response.getHeaders(), headers);
+        assertEquals("HTTP response status not set properly", response.getStatus(), httpResponse.getStatusLine().getStatusCode());
     }
 
     @Test
@@ -438,17 +400,14 @@ public class ResponseTest {
                 .addStaticList(res2)
                 .build();
 
-        Response<StaticListListingResponse> response = new Response<StaticListListingResponse>(
+        Response<StaticListListingResponse> response = new Response<>(
                 staticListListingResponse,
                 headers,
                 httpResponse.getStatusLine().getStatusCode());
 
-        assertTrue("HTTP response not set properly",
-                response.getBody().get().equals(staticListListingResponse));
-        assertTrue("HTTP response headers not set properly",
-                response.getHeaders().equals(headers));
-        assertTrue("HTTP response status not set properly",
-                response.getStatus() == httpResponse.getStatusLine().getStatusCode());
+        assertEquals("HTTP response not set properly", response.getBody().get(), staticListListingResponse);
+        assertEquals("HTTP response headers not set properly", response.getHeaders(), headers);
+        assertEquals("HTTP response status not set properly", response.getStatus(), httpResponse.getStatusLine().getStatusCode());
 
     }
 

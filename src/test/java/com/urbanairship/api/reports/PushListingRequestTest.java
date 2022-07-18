@@ -13,12 +13,12 @@ import org.joda.time.Period;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 
 public class PushListingRequestTest {
@@ -54,13 +54,13 @@ public class PushListingRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(listingRequest.getRequestBody(), null);
-        assertEquals(listingNextPageRequest.getRequestBody(), null);
+        assertNull(listingRequest.getRequestBody());
+        assertNull(listingNextPageRequest.getRequestBody());
     }
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
@@ -81,12 +81,7 @@ public class PushListingRequestTest {
 
     @Test
     public void testPushParser() throws Exception {
-        ResponseParser<PushListingResponse> responseParser = new ResponseParser<PushListingResponse>() {
-            @Override
-            public PushListingResponse parse(String response) throws IOException {
-                return mapper.readValue(response, PushListingResponse.class);
-            }
-        };
+        ResponseParser<PushListingResponse> responseParser = response -> mapper.readValue(response, PushListingResponse.class);
 
         String response = "{  \n" +
                 "  \"next_page\":\"Value for Next Page\",\n" +

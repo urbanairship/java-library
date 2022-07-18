@@ -1,27 +1,23 @@
 package com.urbanairship.api.segment;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
-import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.common.model.ErrorDetails;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.segments.SegmentLookupRequest;
 import com.urbanairship.api.segments.model.SegmentView;
-import com.urbanairship.api.segments.parse.SegmentObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class SegmentLookupRequestTest {
-    private static final ObjectMapper mapper = SegmentObjectMapper.getInstance();
     private static final String TEST_QUERY_PATH = "/api/segments/";
     private static final String TEST_SEGMENT_ID = "abc123";
 
@@ -34,7 +30,7 @@ public class SegmentLookupRequestTest {
 
     @Test
     public void testContentType() throws Exception {
-        assertEquals(request.getContentType(), null);
+        assertNull(request.getContentType());
     }
 
     @Test
@@ -44,12 +40,12 @@ public class SegmentLookupRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(request.getRequestBody(), null);
+        assertNull(request.getRequestBody());
     }
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
         assertEquals(request.getRequestHeaders(), headers);

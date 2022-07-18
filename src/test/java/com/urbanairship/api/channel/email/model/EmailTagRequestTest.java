@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.channel.model.email.EmailTagRequest;
 import com.urbanairship.api.channel.parse.ChannelObjectMapper;
-
 import org.junit.Assert;
 import org.junit.Test;
+
 import java.io.IOException;
 import java.util.Set;
 import java.util.TreeSet;
@@ -109,14 +109,14 @@ public class EmailTagRequestTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testEmptyEmailTagRequest() throws IOException {
+    public void testEmptyEmailTagRequest() {
 
         EmailTagRequest emailTagRequest =  EmailTagRequest.newRequest();
         emailTagRequest.getRequestBody();
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testEmptyAudienceTagRequest() throws IOException {
+    public void testEmptyAudienceTagRequest() {
 
         EmailTagRequest emailTagRequest =  EmailTagRequest.newRequest();
         emailTagRequest.addEmailChannel("name@example.com");
@@ -124,7 +124,7 @@ public class EmailTagRequestTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void tesSetTagAndAddRequest() throws IOException {
+    public void tesSetTagAndAddRequest() {
 
         EmailTagRequest emailTagRequest =  EmailTagRequest.newRequest();
         emailTagRequest.addEmailChannel("name@example.com")

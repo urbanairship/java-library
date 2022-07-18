@@ -11,7 +11,6 @@ import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.apache.http.entity.ContentType;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,7 +43,7 @@ public class UpdateEmailChannelRequestTest {
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
@@ -61,12 +60,7 @@ public class UpdateEmailChannelRequestTest {
 
     @Test
     public void testRegisterEmailChannelParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<EmailChannelResponse>() {
-            @Override
-            public EmailChannelResponse parse(String response) throws IOException {
-                return PushObjectMapper.getInstance().readValue(response, EmailChannelResponse.class);
-            }
-        };
+        ResponseParser<EmailChannelResponse> responseParser = response -> PushObjectMapper.getInstance().readValue(response, EmailChannelResponse.class);
 
         String response = "{\"ok\" : true,\"channel_id\" : \"6c8f1d3a-64d8-4ef9-b7a1-9b128013327e\"}";
         assertEquals(request.getResponseParser().parse(response), responseParser.parse(response));

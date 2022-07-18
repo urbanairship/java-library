@@ -9,12 +9,12 @@ import com.urbanairship.api.staticlists.parse.StaticListsObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class StaticListListingRequestTest {
     private final static ObjectMapper mapper = StaticListsObjectMapper.getInstance();
@@ -29,7 +29,7 @@ public class StaticListListingRequestTest {
 
     @Test
     public void testContentType() throws Exception {
-        assertEquals(request.getContentType(), null);
+        assertNull(request.getContentType());
     }
 
     @Test
@@ -39,12 +39,12 @@ public class StaticListListingRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(request.getRequestBody(), null);
+        assertNull(request.getRequestBody());
     }
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
         assertEquals(request.getRequestHeaders(), headers);
@@ -60,12 +60,7 @@ public class StaticListListingRequestTest {
 
     @Test
     public void testParser() throws Exception {
-        ResponseParser<StaticListListingResponse> responseParser = new ResponseParser<StaticListListingResponse>() {
-            @Override
-            public StaticListListingResponse parse(String response) throws IOException {
-                return mapper.readValue(response, StaticListListingResponse.class);
-            }
-        };
+        ResponseParser<StaticListListingResponse> responseParser = response -> mapper.readValue(response, StaticListListingResponse.class);
 
         String responseString = "{" +
                 "\"ok\": true,\n" +

@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class SubscriptionListsListingRequestTest {
 
@@ -40,7 +41,7 @@ public class SubscriptionListsListingRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(subscriptionListsListingRequestTest.getRequestBody(), null);
+        assertNull(subscriptionListsListingRequestTest.getRequestBody());
     }
 
     @Test

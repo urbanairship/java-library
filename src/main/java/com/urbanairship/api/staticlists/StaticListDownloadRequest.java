@@ -4,7 +4,6 @@
 
 package com.urbanairship.api.staticlists;
 
-import java.util.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.net.HttpHeaders;
 import com.opencsv.CSVWriter;
@@ -20,6 +19,7 @@ import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /*
  * The StaticListDownloadRequest class static list download request to be executed in

@@ -1,12 +1,13 @@
 package com.urbanairship.api.createandsend.model.notification.sms;
 
 import com.google.common.base.Objects;
-import java.util.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
+
+import java.util.Optional;
 
 /**
  * Represents a Sms Payload for create and send requests.

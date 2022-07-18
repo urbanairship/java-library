@@ -1,17 +1,18 @@
 package com.urbanairship.api.staticlists.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Optional;
 import com.urbanairship.api.staticlists.parse.StaticListsObjectMapper;
-
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.io.IOException;
+import java.util.Optional;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class StaticListListingResponseTest {
 
@@ -44,7 +45,7 @@ public class StaticListListingResponseTest {
                 .build();
 
         assertNotNull(response);
-        assertEquals(true, response.getOk());
+        assertTrue(response.getOk());
         assertEquals("static_list_name", response.getStaticListViews().get(0).getName());
         assertEquals(created, response.getStaticListViews().get(0).getCreated());
         assertEquals(Integer.valueOf(1234), response.getStaticListViews().get(0).getChannelCount());
@@ -71,6 +72,6 @@ public class StaticListListingResponseTest {
         StaticListListingResponse response = mapper.readValue(jsonResponse, StaticListListingResponse.class);
         assertEquals("error", response.getError().get());
         assertEquals("error", response.getErrorDetails().get().getError().get());
-        assertEquals(false, response.getOk());
+        assertFalse(response.getOk());
     }
 }

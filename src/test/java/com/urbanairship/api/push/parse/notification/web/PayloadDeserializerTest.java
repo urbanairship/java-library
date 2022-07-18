@@ -36,7 +36,6 @@ public class PayloadDeserializerTest {
         assertNotNull(payload.getAlert());
         assertFalse(payload.getExtra().isPresent());
         assertTrue(payload.getAlert().isPresent());
-        assertTrue(payload.getAlert().isPresent());
         assertEquals("web override", payload.getAlert().get());
         assertEquals(expected, payload);
     }
@@ -82,7 +81,7 @@ public class PayloadDeserializerTest {
 
         WebDevicePayload payload = MAPPER.readValue(json, WebDevicePayload.class);
 
-        assertTrue(payload.getTitle().get().equals("title"));
+        assertEquals("title", payload.getTitle().get());
         assertEquals(expected, payload);
     }
 

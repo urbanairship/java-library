@@ -1,14 +1,19 @@
 package com.urbanairship.api.reports.model;
 
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.io.IOException;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.reports.parse.ReportsObjectMapper;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.util.Objects;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
 public class DevicesReportResponseTest {
 
@@ -29,10 +34,10 @@ public class DevicesReportResponseTest {
 
         assertNotNull(devicesReportResponse);
         assertEquals(2, devicesReportResponse.getDeviceTypeStatsMap().get().size());
-        assertEquals(1, devicesReportResponse.getDeviceTypeStatsMap().get().get("ios").getUniqueDevices().get().intValue());
-        assertEquals(2, devicesReportResponse.getDeviceTypeStatsMap().get().get("ios").getUninstalled().get().intValue());
-        assertEquals(3, devicesReportResponse.getDeviceTypeStatsMap().get().get("sms").getOptedOut().get().intValue());
-        assertEquals(4, devicesReportResponse.getDeviceTypeStatsMap().get().get("sms").getOptedIn().get().intValue());
+        assertEquals(1, Objects.requireNonNull(devicesReportResponse.getDeviceTypeStatsMap().get().get("ios")).getUniqueDevices().get().intValue());
+        assertEquals(2, Objects.requireNonNull(devicesReportResponse.getDeviceTypeStatsMap().get().get("ios")).getUninstalled().get().intValue());
+        assertEquals(3, Objects.requireNonNull(devicesReportResponse.getDeviceTypeStatsMap().get().get("sms")).getOptedOut().get().intValue());
+        assertEquals(4, Objects.requireNonNull(devicesReportResponse.getDeviceTypeStatsMap().get().get("sms")).getOptedIn().get().intValue());
     }
 
     @Test
@@ -49,7 +54,7 @@ public class DevicesReportResponseTest {
         DevicesReport response = mapper.readValue(jsonResponse, DevicesReport.class);
         assertEquals("error", response.getError().get());
         assertEquals("error", response.getErrorDetails().get().getError().get());
-        assertEquals(false, response.getOk());
+        assertFalse(response.getOk());
     }
 
 }

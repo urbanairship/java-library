@@ -3,18 +3,17 @@ package com.urbanairship.api.customevents;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
-import com.urbanairship.api.customevents.model.CustomEventUser;
-import com.urbanairship.api.customevents.model.CustomEventChannelType;
 import com.urbanairship.api.customevents.model.CustomEventBody;
+import com.urbanairship.api.customevents.model.CustomEventChannelType;
 import com.urbanairship.api.customevents.model.CustomEventPayload;
 import com.urbanairship.api.customevents.model.CustomEventResponse;
+import com.urbanairship.api.customevents.model.CustomEventUser;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.apache.http.entity.ContentType;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +44,7 @@ public class CustomEventRequestTest {
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
@@ -71,18 +70,13 @@ public class CustomEventRequestTest {
     public void testURI() throws Exception {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
-        URI expextedURI = URI.create("https://go.urbanairship.com/api/custom-events/");
-        assertEquals(customEventRequest.getUri(baseURI), expextedURI);
+        URI expectedURI = URI.create("https://go.urbanairship.com/api/custom-events/");
+        assertEquals(customEventRequest.getUri(baseURI), expectedURI);
     }
 
     @Test
     public void testCustomEventParser() throws Exception {
-        ResponseParser<CustomEventResponse> responseParser = new ResponseParser<CustomEventResponse>() {
-            @Override
-            public CustomEventResponse parse(String response) throws IOException {
-                return PushObjectMapper.getInstance().readValue(response, CustomEventResponse.class);
-            }
-        };
+        ResponseParser<CustomEventResponse> responseParser = response -> PushObjectMapper.getInstance().readValue(response, CustomEventResponse.class);
 
         String response = "{\"ok\" : true,\"operation_id\" : \"df6a6b50\"}";
         assertEquals(customEventRequest.getResponseParser().parse(response), responseParser.parse(response));

@@ -5,17 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.client.Request;
-import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.common.model.ErrorDetails;
 import com.urbanairship.api.common.model.GenericResponse;
-import com.urbanairship.api.common.parse.CommonObjectMapper;
 import com.urbanairship.api.nameduser.parse.NamedUserObjectMapper;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.http.entity.ContentType;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,12 +51,12 @@ public class NamedUserRequestTest {
         String DEVICE_TYPE_KEY = "device_type";
         String NAMED_USER_ID_KEY = "named_user_id";
 
-        Map<String, String> associationPayload = new HashMap<String, String>();
+        Map<String, String> associationPayload = new HashMap<>();
         associationPayload.put(CHANNEL_KEY, channelId);
         associationPayload.put(DEVICE_TYPE_KEY, ChannelType.IOS.getIdentifier());
         associationPayload.put(NAMED_USER_ID_KEY,namedUserId);
 
-        Map<String, String> disassociationPayload = new HashMap<String, String>();
+        Map<String, String> disassociationPayload = new HashMap<>();
         disassociationPayload.put(CHANNEL_KEY, channelId);
         disassociationPayload.put(DEVICE_TYPE_KEY, ChannelType.IOS.getIdentifier());
         disassociationPayload.put(NAMED_USER_ID_KEY,namedUserId);
@@ -157,7 +154,7 @@ public class NamedUserRequestTest {
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 

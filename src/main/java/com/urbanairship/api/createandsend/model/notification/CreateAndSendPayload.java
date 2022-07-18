@@ -1,13 +1,13 @@
 package com.urbanairship.api.createandsend.model.notification;
 
-import java.util.Optional;
 import com.google.common.base.Preconditions;
+import com.urbanairship.api.createandsend.model.audience.CreateAndSendAudience;
 import com.urbanairship.api.push.model.Campaigns;
 import com.urbanairship.api.push.model.PushModelObject;
-import com.urbanairship.api.createandsend.model.audience.CreateAndSendAudience;
 import com.urbanairship.api.push.model.notification.Notification;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class CreateAndSendPayload extends PushModelObject {
 

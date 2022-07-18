@@ -4,7 +4,6 @@
 
 package com.urbanairship.api.staticlists;
 
-import java.util.Optional;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
@@ -18,6 +17,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * The StaticListListingRequest class builds static list listing requests to be executed in

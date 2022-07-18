@@ -5,16 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
-import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.common.model.GenericResponse;
-import com.urbanairship.api.common.parse.CommonObjectMapper;
 import com.urbanairship.api.nameduser.parse.NamedUserObjectMapper;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.http.entity.ContentType;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -154,7 +151,7 @@ public class NamedUserTagRequestTest {
     }
 
     @Test (expected = IllegalArgumentException.class)
-    public void testAddAndSetTags() throws Exception {
+    public void testAddAndSetTags() {
         NamedUserTagRequest request = NamedUserTagRequest.newRequest()
             .addNamedUsers(namedUserId1)
             .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
@@ -163,7 +160,7 @@ public class NamedUserTagRequestTest {
     }
 
     @Test (expected = IllegalArgumentException.class)
-    public void testRemoveAndSetTags() throws Exception {
+    public void testRemoveAndSetTags() {
         NamedUserTagRequest request = NamedUserTagRequest.newRequest()
             .addNamedUsers(namedUserId1)
             .removeTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
@@ -172,7 +169,7 @@ public class NamedUserTagRequestTest {
     }
 
     @Test (expected = IllegalArgumentException.class)
-    public void testNoTagMutations() throws Exception {
+    public void testNoTagMutations() {
         NamedUserTagRequest request = NamedUserTagRequest.newRequest()
             .addNamedUsers(namedUserId1);
         request.getRequestBody();
@@ -190,7 +187,7 @@ public class NamedUserTagRequestTest {
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
@@ -201,8 +198,8 @@ public class NamedUserTagRequestTest {
     public void testURI() throws Exception {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
-        URI expextedURI = URI.create("https://go.urbanairship.com/api/named_users/tags/");
-        assertEquals(defaultRequest.getUri(baseURI), expextedURI);
+        URI expectedURI = URI.create("https://go.urbanairship.com/api/named_users/tags/");
+        assertEquals(defaultRequest.getUri(baseURI), expectedURI);
     }
 
     @Test

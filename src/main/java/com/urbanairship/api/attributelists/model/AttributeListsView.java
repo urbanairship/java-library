@@ -5,10 +5,11 @@
 package com.urbanairship.api.attributelists.model;
 
 import com.google.common.base.Objects;
-import java.util.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import org.joda.time.DateTime;
+
+import java.util.Optional;
 
 public class AttributeListsView {
     private final Optional<Boolean> ok;

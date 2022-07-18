@@ -9,12 +9,12 @@ import com.urbanairship.api.client.ResponseParser;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class AttributeListsListingRequestTest {
     private final static ObjectMapper mapper = AttributeListsObjectMapper.getInstance();
@@ -29,7 +29,7 @@ public class AttributeListsListingRequestTest {
 
     @Test
     public void testContentType() throws Exception {
-        assertEquals(request.getContentType(), null);
+        assertNull(request.getContentType());
     }
 
     @Test
@@ -39,12 +39,12 @@ public class AttributeListsListingRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(request.getRequestBody(), null);
+        assertNull(request.getRequestBody());
     }
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
         assertEquals(request.getRequestHeaders(), headers);
@@ -60,12 +60,7 @@ public class AttributeListsListingRequestTest {
 
     @Test
     public void testParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<AttributeListsListingResponse>() {
-            @Override
-            public AttributeListsListingResponse parse(String response) throws IOException {
-                return mapper.readValue(response, AttributeListsListingResponse.class);
-            }
-        };
+        ResponseParser<AttributeListsListingResponse> responseParser = response -> mapper.readValue(response, AttributeListsListingResponse.class);
 
         String responseString = "{" +
                 "\"ok\": true,\n" +

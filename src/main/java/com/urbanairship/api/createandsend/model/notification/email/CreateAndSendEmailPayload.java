@@ -1,7 +1,6 @@
 package com.urbanairship.api.createandsend.model.notification.email;
 
 import com.google.common.base.Objects;
-import java.util.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.push.model.DeviceType;
@@ -10,6 +9,8 @@ import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.urbanairship.api.push.model.notification.email.Attachment;
 import com.urbanairship.api.push.model.notification.email.MessageType;
 import org.apache.commons.lang.StringUtils;
+
+import java.util.Optional;
 
 
 /**

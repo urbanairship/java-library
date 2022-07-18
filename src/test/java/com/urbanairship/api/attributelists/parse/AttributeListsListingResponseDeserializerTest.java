@@ -2,16 +2,17 @@ package com.urbanairship.api.attributelists.parse;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Optional;
 import com.urbanairship.api.attributelists.model.AttributeListsListingResponse;
 import com.urbanairship.api.attributelists.model.AttributeListsView;
 import com.urbanairship.api.common.parse.DateFormats;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+import java.util.Optional;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
+import static org.junit.Assert.assertTrue;
 public class AttributeListsListingResponseDeserializerTest {
     private static final ObjectMapper mapper = AttributeListsObjectMapper.getInstance();
 
@@ -47,12 +48,12 @@ public class AttributeListsListingResponseDeserializerTest {
 
         AttributeListsListingResponse lists = mapper.readValue(json, AttributeListsListingResponse.class);
         assertNotNull(lists);
-        assertEquals(true, lists.getOk());
+        assertTrue(lists.getOk());
 
         AttributeListsView list1 = lists.getAttributeListsViews().get(0);
         assertNotNull(list1);
         assertEquals("ua_attributes_platinum_members", list1.getName());
-        assertEquals(Optional.of("loyalty program platinum members"), list1.getDescription());
+        assertEquals("loyalty program platinum members", list1.getDescription().get());
         assertEquals(created, list1.getCreated());
         assertEquals(updated, list1.getLastUpdated());
         assertEquals(Integer.valueOf(3145), list1.getChannelCount());

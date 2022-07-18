@@ -6,7 +6,6 @@ import com.urbanairship.api.channel.model.email.OptInLevel;
 import com.urbanairship.api.channel.model.email.OptInMode;
 import com.urbanairship.api.channel.model.email.RegisterEmailChannel;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-
 import org.junit.Test;
 
 import java.io.IOException;
@@ -15,7 +14,7 @@ public class EmailRegisterChannelPayloadSerializerTest {
     private static final ObjectMapper MAPPER = PushObjectMapper.getInstance();
 
     @Test
-    public void testRegisterEmailChannellOptInPayload() throws IOException {
+    public void testRegisterEmailChannelOptInPayload() throws IOException {
 
         for (OptInLevel level : OptInLevel.values()
         ) {

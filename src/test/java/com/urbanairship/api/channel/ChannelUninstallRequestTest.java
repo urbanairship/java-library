@@ -3,23 +3,20 @@ package com.urbanairship.api.channel;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableSet;
-import com.urbanairship.api.channel.model.ChannelUninstallPayload;
+import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.channel.model.ChannelUninstallDevice;
 import com.urbanairship.api.channel.model.ChannelUninstallDeviceType;
+import com.urbanairship.api.channel.model.ChannelUninstallPayload;
 import com.urbanairship.api.channel.parse.ChannelObjectMapper;
-
+import com.urbanairship.api.client.Request;
 import org.apache.http.entity.ContentType;
 import org.junit.Test;
-
-import java.util.Set;
-import java.util.UUID;
-
-import com.google.common.net.HttpHeaders;
-import com.urbanairship.api.client.Request;
 
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
@@ -89,7 +86,7 @@ public class ChannelUninstallRequestTest {
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
@@ -100,7 +97,7 @@ public class ChannelUninstallRequestTest {
     public void testURI() throws Exception {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
-        URI expextedURI = URI.create("https://go.urbanairship.com/api/channels/uninstall/");
-        assertEquals(request.getUri(baseURI), expextedURI);
+        URI expectedURI = URI.create("https://go.urbanairship.com/api/channels/uninstall/");
+        assertEquals(request.getUri(baseURI), expectedURI);
     }
 }

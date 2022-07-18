@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class AttributeListsErrorsRequestTest {
@@ -33,7 +33,7 @@ public class AttributeListsErrorsRequestTest {
 
     @Before
     public void setup() throws IOException {
-        FileOutputStream fileOutputStream = new FileOutputStream(new File(OUTPUT_FILE_PATH));
+        FileOutputStream fileOutputStream = new FileOutputStream(OUTPUT_FILE_PATH);
         request = AttributeListsErrorsRequest.newRequest(TEST_LIST_NAME);
         requestWithFile = AttributeListsErrorsRequest.newRequest(TEST_LIST_NAME)
             .setOutputStream(fileOutputStream);
@@ -41,8 +41,8 @@ public class AttributeListsErrorsRequestTest {
 
     @Test
     public void testContentType() throws Exception {
-        assertEquals(request.getContentType(), null);
-        assertEquals(requestWithFile.getContentType(), null);
+        assertNull(request.getContentType());
+        assertNull(requestWithFile.getContentType());
     }
 
     @Test
@@ -62,7 +62,7 @@ public class AttributeListsErrorsRequestTest {
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_CSV);
         assertEquals(request.getRequestHeaders(), headers);
         assertEquals(requestWithFile.getRequestHeaders(), headers);
@@ -70,8 +70,8 @@ public class AttributeListsErrorsRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(request.getRequestBody(), null);
-        assertEquals(requestWithFile.getRequestBody(), null);
+        assertNull(request.getRequestBody());
+        assertNull(requestWithFile.getRequestBody());
     }
 
     @Test
@@ -86,9 +86,9 @@ public class AttributeListsErrorsRequestTest {
         File outFile = new File(OUTPUT_FILE_PATH);
         assertTrue(outFile.exists());
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(outFile)));
+        BufferedReader br = new BufferedReader(new InputStreamReader(Files.newInputStream(outFile.toPath())));
         StringBuilder fileString = new StringBuilder();
-        String line = null;
+        String line;
         while ((line = br.readLine()) != null) {
             fileString.append(line).append("\n");
         }
@@ -96,12 +96,8 @@ public class AttributeListsErrorsRequestTest {
     }
 
     @After
-    public void tearDown() {
-        try {
-            Files.deleteIfExists(Paths.get(OUTPUT_FILE_PATH));
-        } catch (IOException e) {
-            return;
-        }
+    public void tearDown() throws IOException {
+        Files.deleteIfExists(Paths.get(OUTPUT_FILE_PATH));
     }
 
 }

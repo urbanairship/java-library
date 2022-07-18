@@ -111,7 +111,7 @@ public class IOSDevicePayloadTest {
         Boolean hidden = true;
         assertEquals(hidden, m.getMediaAttachment().get().getOptions().get().getHidden().get());
         assertEquals("unique ID", m.getThreadId().get());
-        assertEquals(0.5, m.getRelevanceScore().get().doubleValue(), 0.0f);
+        assertEquals(0.5, m.getRelevanceScore().get(), 0.0f);
     }
 
     @Test(expected = IllegalArgumentException.class)

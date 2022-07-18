@@ -1,14 +1,13 @@
 package com.urbanairship.api.experiments.parse;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Assert;
-import org.junit.Test;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.experiments.model.Variant;
+import org.junit.Assert;
+import org.junit.Test;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class VariantDeserializerTest {
 
@@ -37,7 +36,7 @@ public class VariantDeserializerTest {
     }
 
     @Test
-    public void testEmptyVariant() throws Exception {
+    public void testEmptyVariant() {
         Exception exception = Assert.assertThrows(APIParsingException.class, () -> {
             String emptyPayloadString = "{}";
             MAPPER.readValue(emptyPayloadString, Variant.class);

@@ -1,19 +1,17 @@
 package com.urbanairship.api.experiments;
 
-import com.urbanairship.api.client.ResponseParser;
+import com.urbanairship.api.client.Request;
 import com.urbanairship.api.common.model.GenericResponse;
-import com.urbanairship.api.common.parse.CommonObjectMapper;
 
 import org.apache.http.HttpHeaders;
-import com.urbanairship.api.client.Request;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class ExperimentDeleteRequestTest {
 
@@ -21,7 +19,7 @@ public class ExperimentDeleteRequestTest {
 
     @Test
     public void testContentType() throws Exception {
-        assertEquals(experimentDeleteRequest.getContentType(), null);
+        assertNull(experimentDeleteRequest.getContentType());
     }
 
     @Test
@@ -31,12 +29,12 @@ public class ExperimentDeleteRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(experimentDeleteRequest.getRequestBody(), null);
+        assertNull(experimentDeleteRequest.getRequestBody());
     }
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         assertEquals(experimentDeleteRequest.getRequestHeaders(), headers);

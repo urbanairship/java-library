@@ -5,7 +5,6 @@ import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.templates.model.PartialPushPayload;
 import com.urbanairship.api.templates.model.TemplateVariable;
 import com.urbanairship.api.templates.model.TemplateView;
-
 import org.junit.Assert;
 import org.junit.Test;
 

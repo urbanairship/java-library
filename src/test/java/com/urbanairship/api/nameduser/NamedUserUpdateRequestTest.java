@@ -11,11 +11,8 @@ import com.urbanairship.api.nameduser.model.NamedUserUpdateChannelAction;
 import com.urbanairship.api.nameduser.model.NamedUserUpdateDeviceType;
 import com.urbanairship.api.nameduser.model.NamedUserUpdatePayload;
 import com.urbanairship.api.nameduser.parse.NamedUserObjectMapper;
-
 import org.apache.http.entity.ContentType;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -24,10 +21,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.junit.Assert.assertEquals;
+
 
 public class NamedUserUpdateRequestTest {
 
-    private String channelId = UUID.randomUUID().toString();
+    private final String channelId = UUID.randomUUID().toString();
     private static final ObjectMapper MAPPER = NamedUserObjectMapper.getInstance();
 
     @Test
@@ -94,7 +93,7 @@ public class NamedUserUpdateRequestTest {
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
@@ -105,7 +104,7 @@ public class NamedUserUpdateRequestTest {
     public void testURI() throws Exception {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
-        URI expextedURI = URI.create("https://go.urbanairship.com/api/named_users/named_user_id");
-        assertEquals(request.getUri(baseURI), expextedURI);
+        URI expectedURI = URI.create("https://go.urbanairship.com/api/named_users/named_user_id");
+        assertEquals(request.getUri(baseURI), expectedURI);
     }
 }

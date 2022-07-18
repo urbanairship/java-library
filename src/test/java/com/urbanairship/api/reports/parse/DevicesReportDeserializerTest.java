@@ -5,6 +5,7 @@ import com.urbanairship.api.reports.model.DevicesReport;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -54,21 +55,21 @@ public class DevicesReportDeserializerTest {
         assertEquals(13186, devicesReport.getTotalUniqueDevices().get().intValue());
         assertEquals("2018-08-28 00:00:00", devicesReport.getDateClosed().get());
         assertEquals("2018-08-29 13:30:45", devicesReport.getDateComputed().get());
-        assertEquals(142, devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("ios").getOptedIn().get().intValue());
-        assertEquals(89, devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("ios").getOptedOut().get().intValue());
-        assertEquals(231, devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("ios").getUniqueDevices().get().intValue());
-        assertEquals(2096, devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("ios").getUninstalled().get().intValue());
-        assertEquals(226, devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("android").getOptedIn().get().intValue());
-        assertEquals(11569, devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("android").getOptedOut().get().intValue());
-        assertEquals(11795, devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("android").getUniqueDevices().get().intValue());
-        assertEquals(1069, devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("android").getUninstalled().get().intValue());
-        assertEquals(22, devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("amazon").getOptedIn().get().intValue());
-        assertEquals(7, devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("amazon").getOptedOut().get().intValue());
-        assertEquals(29, devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("amazon").getUniqueDevices().get().intValue());
-        assertEquals(9, devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("amazon").getUninstalled().get().intValue());
-        assertEquals(23, devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("sms").getOptedIn().get().intValue());
-        assertEquals(3, devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("sms").getOptedOut().get().intValue());
-        assertEquals(26, devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("sms").getUniqueDevices().get().intValue());
-        assertEquals(17, devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("sms").getUninstalled().get().intValue());
+        assertEquals(142, Objects.requireNonNull(devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("ios")).getOptedIn().get().intValue());
+        assertEquals(89, Objects.requireNonNull(devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("ios")).getOptedOut().get().intValue());
+        assertEquals(231, Objects.requireNonNull(devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("ios")).getUniqueDevices().get().intValue());
+        assertEquals(2096, Objects.requireNonNull(devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("ios")).getUninstalled().get().intValue());
+        assertEquals(226, Objects.requireNonNull(devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("android")).getOptedIn().get().intValue());
+        assertEquals(11569, Objects.requireNonNull(devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("android")).getOptedOut().get().intValue());
+        assertEquals(11795, Objects.requireNonNull(devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("android")).getUniqueDevices().get().intValue());
+        assertEquals(1069, Objects.requireNonNull(devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("android")).getUninstalled().get().intValue());
+        assertEquals(22, Objects.requireNonNull(devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("amazon")).getOptedIn().get().intValue());
+        assertEquals(7, Objects.requireNonNull(devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("amazon")).getOptedOut().get().intValue());
+        assertEquals(29, Objects.requireNonNull(devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("amazon")).getUniqueDevices().get().intValue());
+        assertEquals(9, Objects.requireNonNull(devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("amazon")).getUninstalled().get().intValue());
+        assertEquals(23, Objects.requireNonNull(devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("sms")).getOptedIn().get().intValue());
+        assertEquals(3, Objects.requireNonNull(devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("sms")).getOptedOut().get().intValue());
+        assertEquals(26, Objects.requireNonNull(devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("sms")).getUniqueDevices().get().intValue());
+        assertEquals(17, Objects.requireNonNull(devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("sms")).getUninstalled().get().intValue());
     }
 }

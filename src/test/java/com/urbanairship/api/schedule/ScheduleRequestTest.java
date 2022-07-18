@@ -17,7 +17,6 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,7 +64,7 @@ public class ScheduleRequestTest {
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
@@ -77,21 +76,16 @@ public class ScheduleRequestTest {
     public void testURI() throws Exception {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
-        URI expextedURI = URI.create("https://go.urbanairship.com/api/schedules/");
-        assertEquals(scheduleRequest.getUri(baseURI), expextedURI);
+        URI expectedURI = URI.create("https://go.urbanairship.com/api/schedules/");
+        assertEquals(scheduleRequest.getUri(baseURI), expectedURI);
 
-        expextedURI = URI.create("https://go.urbanairship.com/api/schedules/id");
-        assertEquals(updateScheduleRequest.getUri(baseURI), expextedURI);
+        expectedURI = URI.create("https://go.urbanairship.com/api/schedules/id");
+        assertEquals(updateScheduleRequest.getUri(baseURI), expectedURI);
     }
 
     @Test
     public void testScheduleParser() throws Exception {
-        ResponseParser<ScheduleResponse> responseParser = new ResponseParser<ScheduleResponse>() {
-            @Override
-            public ScheduleResponse parse(String response) throws IOException {
-                return ScheduleObjectMapper.getInstance().readValue(response, ScheduleResponse.class);
-            }
-        };
+        ResponseParser<ScheduleResponse> responseParser = response -> ScheduleObjectMapper.getInstance().readValue(response, ScheduleResponse.class);
 
         String response = "{\"ok\" : true, \"operation_id\" : \"OpID\", " +
             "\"schedule_urls\" : [\"ScheduleURL\"], " +

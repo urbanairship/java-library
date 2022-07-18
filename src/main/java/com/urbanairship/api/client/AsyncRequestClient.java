@@ -1,7 +1,6 @@
 package com.urbanairship.api.client;
 
 import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
 import org.apache.http.entity.ContentType;
 import org.asynchttpclient.AsyncHttpClient;
 import org.asynchttpclient.BoundRequestBuilder;
@@ -18,6 +17,7 @@ import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.Future;
+import java.util.function.Predicate;
 
 /**
  * The AsyncRequestClient is the default request client used by the UrbanAirshipClient.
