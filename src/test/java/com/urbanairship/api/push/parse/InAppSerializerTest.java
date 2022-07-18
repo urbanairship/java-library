@@ -6,7 +6,6 @@ import com.urbanairship.api.push.model.Display;
 import com.urbanairship.api.push.model.InApp;
 import com.urbanairship.api.push.model.Position;
 import com.urbanairship.api.push.model.PushExpiry;
-
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Test;

@@ -40,7 +40,7 @@ public class NamedUserViewTest {
         NamedUserView namedUserView = mapper.readValue(json, NamedUserView.class);
         Assert.assertEquals(namedUserView.getNamedUserId(), "user-id-1234");
         Assert.assertTrue(namedUserView.getNamedUserTags().containsKey("crm"));
-        Set<String> tags = new HashSet<String>();
+        Set<String> tags = new HashSet<>();
         tags.add("tag1");
         tags.add("tag2");
         Assert.assertEquals(namedUserView.getNamedUserTags().get("crm"), tags);
@@ -116,7 +116,7 @@ public class NamedUserViewTest {
         NamedUserView namedUserView =  mapper.readValue(json, NamedUserView.class);
         Assert.assertEquals(namedUserView.getNamedUserId(), "user-id-1234");
         Assert.assertTrue(namedUserView.getNamedUserTags().containsKey("crm"));
-        Set<String> tags = new HashSet<String>();
+        Set<String> tags = new HashSet<>();
         tags.add("tag1");
         tags.add("tag2");
         Assert.assertEquals(namedUserView.getNamedUserTags().get("crm"), tags);

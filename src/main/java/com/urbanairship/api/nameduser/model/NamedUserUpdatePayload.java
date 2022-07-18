@@ -1,12 +1,12 @@
 package com.urbanairship.api.nameduser.model;
 
-import java.util.List;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.channel.model.attributes.Attribute;
+
+import java.util.List;
 
 public class NamedUserUpdatePayload extends NamedUserModelObject {
     private final ImmutableList<Attribute> attributes;

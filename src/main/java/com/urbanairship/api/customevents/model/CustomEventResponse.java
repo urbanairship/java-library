@@ -1,8 +1,9 @@
 package com.urbanairship.api.customevents.model;
 
 import com.google.common.base.Objects;
-import java.util.Optional;
 import com.urbanairship.api.common.model.ErrorDetails;
+
+import java.util.Optional;
 
 public class CustomEventResponse {
     private final Optional<String> operationId;

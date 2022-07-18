@@ -6,8 +6,8 @@ import org.joda.time.Period;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 public class TemplateViewTest {
 
@@ -47,7 +47,7 @@ public class TemplateViewTest {
         assertEquals(obj.getLastUsed(), lastUsed);
         assertEquals(obj.getName(), "template-name");
         assertEquals(obj.getDescription().get(), "blah");
-        assertTrue(!obj.getVariables().isEmpty());
+        assertFalse(obj.getVariables().isEmpty());
         assertEquals(obj.getVariables().get(0), variable);
         assertEquals(obj.getPartialPushPayload().get(), payload);
     }

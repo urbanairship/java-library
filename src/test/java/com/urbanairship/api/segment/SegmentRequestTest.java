@@ -2,10 +2,8 @@ package com.urbanairship.api.segment;
 
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
-import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.common.model.ErrorDetails;
 import com.urbanairship.api.common.model.GenericResponse;
-import com.urbanairship.api.common.parse.CommonObjectMapper;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.audience.location.DateRange;
@@ -14,7 +12,6 @@ import org.apache.http.entity.ContentType;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -72,7 +69,7 @@ public class SegmentRequestTest {
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
         assertEquals(createRequest.getRequestHeaders(), headers);

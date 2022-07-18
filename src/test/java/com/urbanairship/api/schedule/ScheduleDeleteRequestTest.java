@@ -2,18 +2,16 @@ package com.urbanairship.api.schedule;
 
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
-import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.common.model.GenericResponse;
-import com.urbanairship.api.common.parse.CommonObjectMapper;
 
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class ScheduleDeleteRequestTest {
 
@@ -21,7 +19,7 @@ public class ScheduleDeleteRequestTest {
 
     @Test
     public void testContentType() throws Exception {
-        assertEquals(scheduleDeleteRequest.getContentType(), null);
+        assertNull(scheduleDeleteRequest.getContentType());
     }
 
     @Test
@@ -31,12 +29,12 @@ public class ScheduleDeleteRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(scheduleDeleteRequest.getRequestBody(), null);
+        assertNull(scheduleDeleteRequest.getRequestBody());
     }
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
         assertEquals(scheduleDeleteRequest.getRequestHeaders(), headers);
@@ -46,8 +44,8 @@ public class ScheduleDeleteRequestTest {
     public void testURI() throws Exception {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
-        URI expextedURI = URI.create("https://go.urbanairship.com/api/schedules/id");
-        assertEquals(scheduleDeleteRequest.getUri(baseURI), expextedURI);
+        URI expectedURI = URI.create("https://go.urbanairship.com/api/schedules/id");
+        assertEquals(scheduleDeleteRequest.getUri(baseURI), expectedURI);
     }
 
     @Test

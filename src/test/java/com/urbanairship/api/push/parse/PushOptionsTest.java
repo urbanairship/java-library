@@ -16,11 +16,11 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
-
 public class PushOptionsTest {
 
-    private ObjectMapper mapper = PushObjectMapper.getInstance();
+    private final ObjectMapper mapper = PushObjectMapper.getInstance();
 
     @Test
     public void testOptionsNotPresent() throws Exception {
@@ -85,32 +85,32 @@ public class PushOptionsTest {
 
     /* Equality */
     @Test
-    public void testTimeStampEquality() throws Exception {
+    public void testTimeStampEquality() {
         PushExpiry e1 = PushExpiry.newBuilder().setExpiryTimeStamp(new DateTime("2014-07-08T12:00:00", DateTimeZone.UTC)).build();
         PushExpiry e2 = PushExpiry.newBuilder().setExpiryTimeStamp(new DateTime("2014-07-08T12:00:00", DateTimeZone.UTC)).build();
         PushExpiry e3 = PushExpiry.newBuilder().setExpiryTimeStamp(new DateTime("2014-07-08T14:00:00", DateTimeZone.UTC)).build();
         assertEquals(e1, e1);
         assertEquals(e1, e2);
         assertEquals(e2, e1);
-        assertTrue(e1.equals(e2));
-        assertTrue(e2.equals(e1));
-        assertFalse(e1.equals(e3));
-        assertFalse(e3.equals(e1));
+        assertEquals(e1, e2);
+        assertEquals(e2, e1);
+        assertNotEquals(e1, e3);
+        assertNotEquals(e3, e1);
     }
 
 
     @Test
-    public void testSecondsEquality() throws Exception {
+    public void testSecondsEquality() {
         PushExpiry e1 = PushExpiry.newBuilder().setExpirySeconds(100).build();
         PushExpiry e2 = PushExpiry.newBuilder().setExpirySeconds(100).build();
         PushExpiry e3 = PushExpiry.newBuilder().setExpirySeconds(10).build();
         assertEquals(e1, e1);
         assertEquals(e1, e2);
         assertEquals(e2, e1);
-        assertTrue(e1.equals(e2));
-        assertTrue(e2.equals(e1));
-        assertFalse(e1.equals(e3));
-        assertFalse(e3.equals(e1));
+        assertEquals(e1, e2);
+        assertEquals(e2, e1);
+        assertNotEquals(e1, e3);
+        assertNotEquals(e3, e1);
     }
 
 
@@ -173,13 +173,13 @@ public class PushOptionsTest {
     }
 
     @Test(expected=APIParsingException.class)
-    public void testEmptyValidation() throws Exception {
+    public void testEmptyValidation() {
         PushExpiry.newBuilder()
                 .build();
     }
 
     @Test(expected=APIParsingException.class)
-    public void testDoubleValidation() throws Exception {
+    public void testDoubleValidation() {
         PushExpiry.newBuilder()
                 .setExpirySeconds(100)
                 .setExpiryTimeStamp(new DateTime())
@@ -187,7 +187,7 @@ public class PushOptionsTest {
     }
 
     @Test(expected=APIParsingException.class)
-    public void testNegativeValidation() throws Exception {
+    public void testNegativeValidation() {
         PushExpiry.newBuilder()
                 .setExpirySeconds(-100)
                 .build();

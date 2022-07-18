@@ -9,12 +9,12 @@ import com.urbanairship.api.client.ResponseParser;
 import org.apache.http.entity.ContentType;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class ChannelRequestTest {
 
@@ -41,14 +41,14 @@ public class ChannelRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(listAllRequest.getRequestBody(), null);
-        assertEquals(listRequest.getRequestBody(), null);
-        assertEquals(listNextPageChannelRequest.getRequestBody(), null);
+        assertNull(listAllRequest.getRequestBody(), null);
+        assertNull(listRequest.getRequestBody());
+        assertNull(listNextPageChannelRequest.getRequestBody(), null);
     }
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
@@ -73,12 +73,7 @@ public class ChannelRequestTest {
 
     @Test
     public void testChannelListingParser() throws Exception {
-        ResponseParser<ChannelResponse> responseParser = new ResponseParser<ChannelResponse>() {
-            @Override
-            public ChannelResponse parse(String response) throws IOException {
-                return mapper.readValue(response, ChannelResponse.class);
-            }
-        };
+        ResponseParser<ChannelResponse> responseParser = response -> mapper.readValue(response, ChannelResponse.class);
 
         String response = "{\n" +
             "  \"ok\": true,\n" +
@@ -206,12 +201,7 @@ public class ChannelRequestTest {
 
     @Test
     public void testChannelLookupParser() throws Exception {
-        ResponseParser<ChannelResponse> responseParser = new ResponseParser<ChannelResponse>() {
-            @Override
-            public ChannelResponse parse(String response) throws IOException {
-                return mapper.readValue(response, ChannelResponse.class);
-            }
-        };
+        ResponseParser<ChannelResponse> responseParser = response -> mapper.readValue(response, ChannelResponse.class);
 
 
         String response = "{  \n" +

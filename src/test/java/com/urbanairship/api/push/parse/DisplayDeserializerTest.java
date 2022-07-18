@@ -6,8 +6,8 @@ import com.urbanairship.api.push.model.Display;
 import com.urbanairship.api.push.model.Position;
 import org.junit.Test;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 public class DisplayDeserializerTest {

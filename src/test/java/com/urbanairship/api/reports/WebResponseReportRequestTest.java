@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class WebResponseReportRequestTest {
 
@@ -44,7 +45,7 @@ public class WebResponseReportRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(webResponseReportRequest.getRequestBody(), null);
+        assertNull(webResponseReportRequest.getRequestBody());
     }
 
     @Test
@@ -73,7 +74,7 @@ public class WebResponseReportRequestTest {
         WebCounts webCounts1 = new WebCounts(webCountsStats1, "2020-02-01 00:00:00");
         WebCounts webCounts2 = new WebCounts(webCountsStats2, "2020-03-01 00:00:00");
 
-        List counts = new ArrayList();
+        List<WebCounts> counts = new ArrayList();
         counts.add(webCounts1);
         counts.add(webCounts2);
 

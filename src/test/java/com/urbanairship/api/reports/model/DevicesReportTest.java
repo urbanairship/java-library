@@ -3,6 +3,8 @@ package com.urbanairship.api.reports.model;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+import java.util.Objects;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -10,7 +12,7 @@ public class DevicesReportTest {
 
     @Test
     public void testDevicesReportResponse() {
-        DateTime date = new DateTime(2019, 03, 1, 12, 0, 0, 0);
+        DateTime date = new DateTime(2019, 3, 1, 12, 0, 0, 0);
 
         DeviceTypeStats deviceTypeStats = DeviceTypeStats.newBuilder()
                 .setUniqueDevices(1)
@@ -37,9 +39,9 @@ public class DevicesReportTest {
         assertEquals(date.toString(), devicesReport.getDateClosed().get());
         assertEquals(date.toString(), devicesReport.getDateComputed().get());
         assertEquals(3, devicesReport.getTotalUniqueDevices().get().intValue());
-        assertEquals(1, devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("ios").getUniqueDevices().get().intValue());
-        assertEquals(2, devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("ios").getUninstalled().get().intValue());
-        assertEquals(3, devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("sms").getOptedOut().get().intValue());
-        assertEquals(4, devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("sms").getOptedIn().get().intValue());
+        assertEquals(1, Objects.requireNonNull(devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("ios")).getUniqueDevices().get().intValue());
+        assertEquals(2, Objects.requireNonNull(devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("ios")).getUninstalled().get().intValue());
+        assertEquals(3, Objects.requireNonNull(devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("sms")).getOptedOut().get().intValue());
+        assertEquals(4, Objects.requireNonNull(devicesReport.getCounts().get().get(0).getDeviceTypeStatsMap().get().get("sms")).getOptedIn().get().intValue());
     }
 }

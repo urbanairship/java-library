@@ -12,14 +12,14 @@ import static org.junit.Assert.assertNotNull;
 public class StyleTest {
 
     @Test(expected = Exception.class)
-    public void testNoContent() throws Exception {
+    public void testNoContent() {
         BigPictureStyle.newBuilder()
                 .setTitle("Hi")
                 .build();
     }
 
     @Test
-    public void testBigPictureStyle() throws Exception {
+    public void testBigPictureStyle() {
         BigPictureStyle style = BigPictureStyle.newBuilder()
                 .setTitle("Title")
                 .setSummary("Some summary text")
@@ -34,7 +34,7 @@ public class StyleTest {
     }
 
     @Test
-    public void testBigPictureStyleOptional() throws Exception {
+    public void testBigPictureStyleOptional() {
         BigPictureStyle style = BigPictureStyle.newBuilder()
                 .setContent("hello.png")
                 .build();
@@ -48,7 +48,7 @@ public class StyleTest {
 
 
     @Test
-    public void testBigTextStyle() throws Exception {
+    public void testBigTextStyle() {
         BigTextStyle style = BigTextStyle.newBuilder()
                 .setTitle("Title")
                 .setSummary("Some summary text")
@@ -63,7 +63,7 @@ public class StyleTest {
     }
 
     @Test
-    public void testInboxStyle() throws Exception {
+    public void testInboxStyle() {
         List<String> lines = Arrays.asList("line1", "line2", "line3");
 
         InboxStyle style = InboxStyle.newBuilder()

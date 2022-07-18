@@ -14,7 +14,6 @@ import com.urbanairship.api.push.model.notification.ios.IOSInterruptionLevel;
 import com.urbanairship.api.push.model.notification.ios.IOSSoundData;
 import com.urbanairship.api.push.model.notification.ios.IOSTemplate;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -24,9 +23,9 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-
 public class PayloadDeserializerTest {
     private static final ObjectMapper mapper = PushObjectMapper.getInstance();
 
@@ -96,8 +95,7 @@ public class PayloadDeserializerTest {
                 .build();
 
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
-        assertTrue(String.format("Expected: '%s', Actual: '%s'", expected.toString(), payload.toString()),
-                expected.equals(payload));
+        assertEquals(String.format("Expected: '%s', Actual: '%s'", expected.toString(), payload.toString()), expected, payload);
         assertEquals(expected.hashCode(), payload.hashCode());
         assertTrue(payload.getAlertData().isPresent());
         assertTrue(payload.getAlert().isPresent());
@@ -130,8 +128,8 @@ public class PayloadDeserializerTest {
                 .build();
         assertEquals(d1, d1);
         assertEquals(d2, d2);
-        assertFalse(d1.equals(d2));
-        assertFalse(d2.equals(d1));
+        assertNotEquals(d1, d2);
+        assertNotEquals(d2, d1);
     }
 
     @Test
@@ -164,7 +162,7 @@ public class PayloadDeserializerTest {
     }
 
     @Test
-    public void testSoundObjectWithNoName() throws Exception {
+    public void testSoundObjectWithNoName() {
         Exception exception = Assert.assertThrows(APIParsingException.class, () -> {
                 String json =
                 "{"
@@ -203,7 +201,7 @@ public class PayloadDeserializerTest {
     }
 
     @Test
-    public void testBadgeAutobadge() throws Exception {
+    public void testBadgeAutoBadge() throws Exception {
         IOSDevicePayload payload = mapper.readValue("{ \"badge\": \"auto\" }", IOSDevicePayload.class);
         assertTrue(payload.getBadge().isPresent());
         assertEquals(IOSBadgeData.Type.AUTO, payload.getBadge().get().getType());
@@ -316,7 +314,7 @@ public class PayloadDeserializerTest {
             + "  \"priority\": 5"
             + "}";
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
-        assertTrue(payload.getPriority().get().equals(5));
+        assertEquals(5, (int) payload.getPriority().get());
     }
 
     @Test
@@ -326,7 +324,7 @@ public class PayloadDeserializerTest {
             + "  \"title\": \"title\""
             + "}";
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
-        assertTrue(payload.getTitle().get().equals("title"));
+        assertEquals("title", payload.getTitle().get());
     }
 
     @Test
@@ -336,7 +334,7 @@ public class PayloadDeserializerTest {
                 + "  \"thread_id\": \"woof\""
                 + "}";
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
-        assertTrue(payload.getThreadId().get().equals("woof"));
+        assertEquals("woof", payload.getThreadId().get());
     }
 
     @Test
@@ -373,44 +371,44 @@ public class PayloadDeserializerTest {
         String objectJson = mapper.writeValueAsString(payload);
         IOSDevicePayload payload2 = mapper.readValue(json, IOSDevicePayload.class);
 
-        assertTrue(payload.equals(payload2));
+        assertEquals(payload, payload2);
 
         payload = mapper.readValue(objectJson, IOSDevicePayload.class);
 
-        assertTrue(payload.getAlert().get().equals("alert"));
+        assertEquals("alert", payload.getAlert().get());
 
         //Collapse ID
-        assertTrue(payload.getCollapseId().get().equals("collapseId"));
+        assertEquals("collapseId", payload.getCollapseId().get());
 
         //Thread ID
-        assertTrue(payload.getThreadId().get().equals("threadId"));
+        assertEquals("threadId", payload.getThreadId().get());
 
         //Mutable Content
-        assertTrue(payload.getMutableContent().get().equals(true));
+        assertTrue(payload.getMutableContent().get());
 
         //Subtitle
-        assertTrue(payload.getSubtitle().get().equals("subtitle"));
+        assertEquals("subtitle", payload.getSubtitle().get());
 
         //Media Attachment
-        assertTrue(payload.getMediaAttachment().get().getUrl().equals("https://media.giphy.com/media/JYsWwF82EGnpC/giphy.gif"));
+        assertEquals("https://media.giphy.com/media/JYsWwF82EGnpC/giphy.gif", payload.getMediaAttachment().get().getUrl());
 
 
         //Sound
-        assertTrue(payload.getSoundData().get().getName().get().equals("beep boop"));
+        assertEquals("beep boop", payload.getSoundData().get().getName().get());
 
 
         //options
-        assertTrue(payload.getMediaAttachment().get().getOptions().get().getTime().get().equals(10));
-        assertTrue(payload.getMediaAttachment().get().getOptions().get().getCrop().get().getX().get().equals(new BigDecimal("0.1")));
-        assertTrue(payload.getMediaAttachment().get().getOptions().get().getCrop().get().getY().get().equals(new BigDecimal("0.2")));
-        assertTrue(payload.getMediaAttachment().get().getOptions().get().getCrop().get().getWidth().get().equals(new BigDecimal("0.3")));
-        assertTrue(payload.getMediaAttachment().get().getOptions().get().getCrop().get().getHeight().get().equals(new BigDecimal("0.4")));
-        assertTrue(payload.getMediaAttachment().get().getOptions().get().getHidden().get().equals(true));
+        assertEquals(10, (int) payload.getMediaAttachment().get().getOptions().get().getTime().get());
+        assertEquals(payload.getMediaAttachment().get().getOptions().get().getCrop().get().getX().get(), new BigDecimal("0.1"));
+        assertEquals(payload.getMediaAttachment().get().getOptions().get().getCrop().get().getY().get(), new BigDecimal("0.2"));
+        assertEquals(payload.getMediaAttachment().get().getOptions().get().getCrop().get().getWidth().get(), new BigDecimal("0.3"));
+        assertEquals(payload.getMediaAttachment().get().getOptions().get().getCrop().get().getHeight().get(), new BigDecimal("0.4"));
+        assertTrue(payload.getMediaAttachment().get().getOptions().get().getHidden().get());
 
         //content
-        assertTrue(payload.getMediaAttachment().get().getContent().get().getBody().get().equals("content body"));
-        assertTrue(payload.getMediaAttachment().get().getContent().get().getSubtitle().get().equals("content subtitle"));
-        assertTrue(payload.getMediaAttachment().get().getContent().get().getTitle().get().equals("content title"));
+        assertEquals("content body", payload.getMediaAttachment().get().getContent().get().getBody().get());
+        assertEquals("content subtitle", payload.getMediaAttachment().get().getContent().get().getSubtitle().get());
+        assertEquals("content title", payload.getMediaAttachment().get().getContent().get().getTitle().get());
     }
 
     @Test
@@ -563,12 +561,13 @@ public class PayloadDeserializerTest {
         assertEquals(payload, roundTripPayload);
     }
 
+    @Test
     public void testRelevanceScore() throws Exception {
         String json
             = "{"
             + "  \"relevance_score\": 0.5"
             + "}";
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
-        assertTrue(payload.getRelevanceScore().get().equals(0.5));
+        assertEquals(0.5, payload.getRelevanceScore().get(), 0.0);
     }      
 }

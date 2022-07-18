@@ -1,8 +1,8 @@
 package com.urbanairship.api.createandsend.model.notification.email;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Objects;
 import java.util.Optional;
 /**
  * Represends the email fields in the notification.

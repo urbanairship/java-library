@@ -2,20 +2,18 @@ package com.urbanairship.api.staticlists;
 
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
-import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.common.model.ErrorDetails;
 import com.urbanairship.api.common.model.GenericResponse;
-import com.urbanairship.api.common.parse.CommonObjectMapper;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class StaticListDeleteRequestTest {
     private final static String STATIC_LIST_DELETE_PATH = "/api/lists/abc123";
@@ -29,7 +27,7 @@ public class StaticListDeleteRequestTest {
 
     @Test
     public void testContentType() throws Exception {
-        assertEquals(request.getContentType(), null);
+        assertNull(request.getContentType());
     }
 
     @Test
@@ -39,12 +37,12 @@ public class StaticListDeleteRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(request.getRequestBody(), null);
+        assertNull(request.getRequestBody());
     }
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
         assertEquals(request.getRequestHeaders(), headers);

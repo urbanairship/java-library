@@ -23,7 +23,7 @@ public class PayloadDeserializerTest {
     private static final ObjectMapper mapper = PushObjectMapper.getInstance();
 
     @Test
-    public void testAlertRoundtrip() throws IOException {
+    public void testAlertRoundTrip() throws IOException {
         ADMDevicePayload override = ADMDevicePayload.newBuilder()
             .setAlert("Some Title")
             .build();
@@ -33,7 +33,7 @@ public class PayloadDeserializerTest {
     }
 
     @Test
-    public void testInteractiveRoundtrip() throws IOException {
+    public void testInteractiveRoundTrip() throws IOException {
         Interactive interactive = Interactive.newBuilder()
             .setType("ua_yes_no_foreground")
             .setButtonActions(

@@ -1,11 +1,11 @@
 package com.urbanairship.api.createandsend.model.audience.email;
 
-import java.util.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import org.joda.time.DateTime;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Represents a single audience email channel for create and send.

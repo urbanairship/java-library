@@ -1,17 +1,16 @@
 package com.urbanairship.api.reports.model;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.urbanairship.api.reports.parse.ReportsObjectMapper;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.io.IOException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.urbanairship.api.reports.parse.ReportsObjectMapper;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 public class PlatformStatsResponseTest {
 
     @Test
@@ -52,7 +51,7 @@ public class PlatformStatsResponseTest {
         PlatformStatsResponse response = mapper.readValue(jsonResponse, PlatformStatsResponse.class);
         assertEquals("error", response.getError().get());
         assertEquals("error", response.getErrorDetails().get().getError().get());
-        assertEquals(false, response.getOk());
+        assertFalse(response.getOk());
     }
 
 }

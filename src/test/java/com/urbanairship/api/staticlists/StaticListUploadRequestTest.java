@@ -3,7 +3,6 @@ package com.urbanairship.api.staticlists;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.common.model.GenericResponse;
-import com.urbanairship.api.staticlists.parse.StaticListsObjectMapper;
 
 import org.apache.http.entity.ContentType;
 import org.junit.Before;
@@ -49,7 +48,7 @@ public class StaticListUploadRequestTest {
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_TEXT_CSV);
         assertEquals(request.getRequestHeaders(), headers);

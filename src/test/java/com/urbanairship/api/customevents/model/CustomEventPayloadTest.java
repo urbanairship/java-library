@@ -13,8 +13,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class CustomEventPayloadTest {
@@ -28,7 +30,7 @@ public class CustomEventPayloadTest {
                 .setChannel("e393d28e-23b2-4a22-9ace-dc539a5b07a8")
                 .build();
 
-        Map<String, CustomEventPropertyValue> properties = new HashMap<String, CustomEventPropertyValue>();
+        Map<String, CustomEventPropertyValue> properties = new HashMap<>();
         properties.put("category", CustomEventPropertyValue.of("mens shoes"));
         properties.put("id", CustomEventPropertyValue.of("pid-11046546"));
         properties.put("description", CustomEventPropertyValue.of("sky high"));
@@ -36,7 +38,7 @@ public class CustomEventPayloadTest {
 
         CustomEventBody customEventBody = CustomEventBody.newBuilder()
                 .setName("purchased")
-                .setValue(new BigDecimal(120.49))
+                .setValue(new BigDecimal("120.49"))
                 .setTransaction("886f53d4-3e0f-46d7-930e-c2792dac6e0a")
                 .setInteractionId("your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234")
                 .setInteractionType("url")
@@ -55,10 +57,10 @@ public class CustomEventPayloadTest {
         assertTrue(customEventPayload.getCustomEventBody().getProperties().isPresent());
         assertEquals(4, customEventPayload.getCustomEventBody().getProperties().get().size());
         assertTrue(customEventPayload.getCustomEventBody().getProperties().get().containsKey("description"));
-        assertEquals("victory", customEventPayload.getCustomEventBody().getProperties().get().get("brand").getAsString());
+        assertEquals("victory", Objects.requireNonNull(customEventPayload.getCustomEventBody().getProperties().get().get("brand")).getAsString());
 
         assertEquals("purchased", customEventPayload.getCustomEventBody().getName());
-        assertEquals(new BigDecimal(120.49), customEventPayload.getCustomEventBody().getValue().get());
+        assertEquals(new BigDecimal("120.49"), customEventPayload.getCustomEventBody().getValue().get());
         assertEquals("886f53d4-3e0f-46d7-930e-c2792dac6e0a", customEventPayload.getCustomEventBody().getTransaction().get());
         assertEquals("your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234", customEventPayload.getCustomEventBody().getInteractionId().get());
         assertEquals("url", customEventPayload.getCustomEventBody().getInteractionType().get());
@@ -98,12 +100,12 @@ public class CustomEventPayloadTest {
                 .build();
 
         assertEquals(customEventPayload.getCustomEventBody().getProperties().get().size(), 3);
-        assertTrue(customEventPayload.getCustomEventBody().getProperties().get().get("amount").isNumber());
-        assertEquals(51, customEventPayload.getCustomEventBody().getProperties().get().get("amount").getAsNumber());
-        assertEquals(true, customEventPayload.getCustomEventBody().getProperties().get().get("isThisTrue").getAsBoolean());
-        assertEquals("Sally", customEventPayload.getCustomEventBody().getProperties().get().get("name").getAsString());
-        assertTrue(customEventPayload.getCustomEventBody().getProperties().get().get("isThisTrue").isBoolean());
-        assertTrue(customEventPayload.getCustomEventBody().getProperties().get().get("name").isString());
+        assertTrue(Objects.requireNonNull(customEventPayload.getCustomEventBody().getProperties().get().get("amount")).isNumber());
+        assertEquals(51, Objects.requireNonNull(customEventPayload.getCustomEventBody().getProperties().get().get("amount")).getAsNumber());
+        assertTrue(Objects.requireNonNull(customEventPayload.getCustomEventBody().getProperties().get().get("isThisTrue")).getAsBoolean());
+        assertEquals("Sally", Objects.requireNonNull(customEventPayload.getCustomEventBody().getProperties().get().get("name")).getAsString());
+        assertTrue(Objects.requireNonNull(customEventPayload.getCustomEventBody().getProperties().get().get("isThisTrue")).isBoolean());
+        assertTrue(Objects.requireNonNull(customEventPayload.getCustomEventBody().getProperties().get().get("name")).isString());
 
         String json = MAPPER.writeValueAsString(customEventPayload);
         String expected = "{\"body\":{\"name\":\"purchased\",\"session_id\":\"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\",\"properties\":{\"amount\":51,\"isThisTrue\":true,\"name\":\"Sally\"}},\"occurred\":\"2015-05-02T02:31:22\",\"user\":{\"android_channel\":\"e393d28e-23b2-4a22-9ace-dc539a5b07a8\"}}";
@@ -176,33 +178,33 @@ public class CustomEventPayloadTest {
                 (property, propertyValue) -> assertTrue(propertyValue.isArray())
         );
 
-        customEventPayload.getCustomEventBody().getProperties().get().get("items").getAsList().forEach(
+        Objects.requireNonNull(customEventPayload.getCustomEventBody().getProperties().get().get("items")).getAsList().forEach(
                  propertyValue-> assertTrue(propertyValue.isString())
         );
-        customEventPayload.getCustomEventBody().getProperties().get().get("numbers").getAsList().forEach(
+        Objects.requireNonNull(customEventPayload.getCustomEventBody().getProperties().get().get("numbers")).getAsList().forEach(
                 propertyValue -> assertTrue(propertyValue.isNumber())
         );
-        customEventPayload.getCustomEventBody().getProperties().get().get("shoes").getAsList().forEach(
+        Objects.requireNonNull(customEventPayload.getCustomEventBody().getProperties().get().get("shoes")).getAsList().forEach(
                 propertyValue -> assertTrue(propertyValue.isObject())
         );
 
-        customEventPayload.getCustomEventBody().getProperties().get().get("items").getAsList().forEach(
+        Objects.requireNonNull(customEventPayload.getCustomEventBody().getProperties().get().get("items")).getAsList().forEach(
                 propertyValue -> assertTrue(propertyValue.getAsString().equals("la croix") ||
                         propertyValue.getAsString().equals("more la croix")));
 
-        customEventPayload.getCustomEventBody().getProperties().get().get("numbers").getAsList().forEach(
+        Objects.requireNonNull(customEventPayload.getCustomEventBody().getProperties().get().get("numbers")).getAsList().forEach(
                 propertyValue -> assertTrue(propertyValue.getAsNumber().equals(1) ||
                         propertyValue.getAsNumber().equals(22.23) ||
                         propertyValue.getAsNumber().equals(0)));
 
-        customEventPayload.getCustomEventBody().getProperties().get().get("shoes").getAsList().forEach(
+        Objects.requireNonNull(customEventPayload.getCustomEventBody().getProperties().get().get("shoes")).getAsList().forEach(
                 propertyValue ->
                         assertTrue(propertyValue.getAsMap().get("color").getAsString().equals("black") ||
                                 propertyValue.getAsMap().get("price").getAsNumber().equals(40) ||
-                                (propertyValue.getAsMap().get("clearance").getAsBoolean() == false) ||
+                                (!propertyValue.getAsMap().get("clearance").getAsBoolean()) ||
                                 propertyValue.getAsMap().get("color").getAsString().equals("red") ||
                                 propertyValue.getAsMap().get("price").getAsNumber().equals(10) ||
-                                (propertyValue.getAsMap().get("clearance").getAsBoolean() == true)
+                                (propertyValue.getAsMap().get("clearance").getAsBoolean())
                         )
         );
 
@@ -262,29 +264,26 @@ public class CustomEventPayloadTest {
         customEventPayload.getCustomEventBody().getProperties().get().forEach(
                 (property, propertyValue) -> assertTrue(propertyValue.isObject())
         );
-        customEventPayload.getCustomEventBody().getProperties().get().get("something").getAsMap().values().forEach(
+        Objects.requireNonNull(customEventPayload.getCustomEventBody().getProperties().get().get("something")).getAsMap().values().forEach(
                 propertyValue -> assertTrue(propertyValue.isString())
         );
-        assertEquals("thing", customEventPayload.getCustomEventBody().getProperties().get().get("something").getAsMap().get("aThing").getAsString()
+        assertEquals("thing", Objects.requireNonNull(customEventPayload.getCustomEventBody().getProperties().get().get("something")).getAsMap().get("aThing").getAsString()
         );
-        assertEquals("this thing", customEventPayload.getCustomEventBody().getProperties().get().get("something").getAsMap().get("somethingElse").getAsString()
+        assertEquals("this thing", Objects.requireNonNull(customEventPayload.getCustomEventBody().getProperties().get().get("something")).getAsMap().get("somethingElse").getAsString()
         );
-        customEventPayload.getCustomEventBody().getProperties().get().get("numbers").getAsMap().values().forEach(
+        Objects.requireNonNull(customEventPayload.getCustomEventBody().getProperties().get().get("numbers")).getAsMap().values().forEach(
                 propertyValue -> assertTrue(propertyValue.isNumber())
         );
-        assertEquals(3, customEventPayload.getCustomEventBody().getProperties().get().get("numbers").getAsMap().get("high").getAsNumber()
+        assertEquals(3, Objects.requireNonNull(customEventPayload.getCustomEventBody().getProperties().get().get("numbers")).getAsMap().get("high").getAsNumber()
         );
-        assertEquals(0 , customEventPayload.getCustomEventBody().getProperties().get().get("numbers").getAsMap().get("low").getAsNumber()
+        assertEquals(0 , Objects.requireNonNull(customEventPayload.getCustomEventBody().getProperties().get().get("numbers")).getAsMap().get("low").getAsNumber()
         );
-        assertEquals(false, customEventPayload.getCustomEventBody().getProperties().get().get("booleans").getAsMap().get("passing").getAsBoolean()
-        );
-        customEventPayload.getCustomEventBody().getProperties().get().get("booleans").getAsMap().values().forEach(
+        assertFalse(Objects.requireNonNull(customEventPayload.getCustomEventBody().getProperties().get().get("booleans")).getAsMap().get("passing").getAsBoolean());
+        Objects.requireNonNull(customEventPayload.getCustomEventBody().getProperties().get().get("booleans")).getAsMap().values().forEach(
                 propertyValue -> assertTrue(propertyValue.isBoolean())
         );
-        assertEquals(true , customEventPayload.getCustomEventBody().getProperties().get().get("booleans").getAsMap().get("testing").getAsBoolean()
-        );
-        assertEquals(false, customEventPayload.getCustomEventBody().getProperties().get().get("booleans").getAsMap().get("passing").getAsBoolean()
-        );
+        assertTrue(Objects.requireNonNull(customEventPayload.getCustomEventBody().getProperties().get().get("booleans")).getAsMap().get("testing").getAsBoolean());
+        assertFalse(Objects.requireNonNull(customEventPayload.getCustomEventBody().getProperties().get().get("booleans")).getAsMap().get("passing").getAsBoolean());
 
         String json = MAPPER.writeValueAsString(customEventPayload);
         String expected = "{\"body\":{\"name\":\"purchased\",\"session_id\":\"22404b07-3f8f-4e42-a4ff-a996c18fa9f1\",\"properties\":{\"numbers\":{\"high\":3,\"low\":0},\"booleans\":{\"testing\":true,\"passing\":false},\"something\":{\"aThing\":\"thing\",\"somethingElse\":\"this thing\"}}},\"occurred\":\"2015-05-02T02:31:22\",\"user\":{\"android_channel\":\"e393d28e-23b2-4a22-9ace-dc539a5b07a8\"}}";
@@ -302,7 +301,7 @@ public class CustomEventPayloadTest {
                 .setChannel("e393d28e-23b2-4a22-9ace-dc539a5b07a8")
                 .build();
 
-        Map<String, CustomEventPropertyValue> properties = new HashMap<String, CustomEventPropertyValue>();
+        Map<String, CustomEventPropertyValue> properties = new HashMap<>();
         properties.put("category", CustomEventPropertyValue.of("mens shoes"));
         properties.put("id", CustomEventPropertyValue.of("pid-11046546"));
         properties.put("description", CustomEventPropertyValue.of("sky high"));
@@ -310,7 +309,7 @@ public class CustomEventPayloadTest {
 
         CustomEventBody customEventBody = CustomEventBody.newBuilder()
                 .setName("purchased")
-                .setValue(new BigDecimal(120.49))
+                .setValue(new BigDecimal("120.49"))
                 .setTransaction("886f53d4-3e0f-46d7-930e-c2792dac6e0a")
                 .setInteractionId("your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234")
                 .setInteractionType("url")
@@ -328,10 +327,10 @@ public class CustomEventPayloadTest {
         assertTrue(customEventPayload.getCustomEventBody().getProperties().isPresent());
         assertEquals(4, customEventPayload.getCustomEventBody().getProperties().get().size());
         assertTrue(customEventPayload.getCustomEventBody().getProperties().get().containsKey("description"));
-        assertEquals("victory", customEventPayload.getCustomEventBody().getProperties().get().get("brand").getAsString());
+        assertEquals("victory", Objects.requireNonNull(customEventPayload.getCustomEventBody().getProperties().get().get("brand")).getAsString());
 
         assertEquals("purchased", customEventPayload.getCustomEventBody().getName());
-        assertEquals(new BigDecimal(120.49), customEventPayload.getCustomEventBody().getValue().get());
+        assertEquals(new BigDecimal("120.49"), customEventPayload.getCustomEventBody().getValue().get());
         assertEquals("886f53d4-3e0f-46d7-930e-c2792dac6e0a", customEventPayload.getCustomEventBody().getTransaction().get());
         assertEquals("your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234", customEventPayload.getCustomEventBody().getInteractionId().get());
         assertEquals("url", customEventPayload.getCustomEventBody().getInteractionType().get());

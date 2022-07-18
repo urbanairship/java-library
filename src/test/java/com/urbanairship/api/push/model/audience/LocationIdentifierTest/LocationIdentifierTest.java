@@ -5,9 +5,8 @@ import com.urbanairship.api.push.model.audience.location.LocationAlias;
 import com.urbanairship.api.push.model.audience.location.LocationIdentifier;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 public class LocationIdentifierTest {
 
     @Test
@@ -19,12 +18,12 @@ public class LocationIdentifierTest {
         LocationIdentifier l2 = LocationIdentifier.newBuilder()
                 .setId("ID")
                 .build();
-        assertTrue("Equals should return true", l1.equals(l2));
+        assertEquals("Equals should return true", l1, l2);
         LocationIdentifier l3 = LocationIdentifier.newBuilder()
                 .setId("foo")
                 .build();
 
-        assertFalse("Equals should return false", l1.equals(l3));
+        assertNotEquals("Equals should return false", l1, l3);
 
         LocationAlias TX = LocationAlias.newBuilder()
                 .setType("us_state")
@@ -42,7 +41,7 @@ public class LocationIdentifierTest {
                 .setAlias(OR)
                 .build();
 
-        assertFalse("Equals should be false", l4.equals(l5));
+        assertNotEquals("Equals should be false", l4, l5);
 
         LocationAlias OR1 = LocationAlias.newBuilder()
                 .setType("us_state")
@@ -53,6 +52,6 @@ public class LocationIdentifierTest {
                 .setAlias(OR1)
                 .build();
 
-        assertTrue("Equals should be true", l5.equals(l6));
+        assertEquals("Equals should be true", l5, l6);
     }
 }

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.push.model.InApp;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.templates.model.PartialPushPayload;
-
 import org.junit.Assert;
 import org.junit.Test;
 public class PartialPushPayloadSerializerTest {

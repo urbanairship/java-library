@@ -1,5 +1,7 @@
 package com.urbanairship.api.reports.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.urbanairship.api.reports.parse.ReportsObjectMapper;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -7,9 +9,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.UUID;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.urbanairship.api.reports.parse.ReportsObjectMapper;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

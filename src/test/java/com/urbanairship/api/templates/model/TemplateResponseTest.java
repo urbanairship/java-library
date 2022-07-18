@@ -1,15 +1,15 @@
 package com.urbanairship.api.templates.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.urbanairship.api.templates.parse.TemplatesObjectMapper;
 import org.junit.Test;
+
+import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-
-import java.io.IOException;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.urbanairship.api.templates.parse.TemplatesObjectMapper;
+import static org.junit.Assert.assertTrue;
 
 public class TemplateResponseTest {
 
@@ -24,7 +24,7 @@ public class TemplateResponseTest {
                 .build();
 
         assertNotNull(response);
-        assertEquals(response.getOk(), true);
+        assertTrue(response.getOk());
         assertEquals(response.getOperationId().get(), "op123");
         assertEquals(response.getPushIds().get().get(0), "id1");
         assertEquals(response.getPushIds().get().get(1), "id2");
@@ -46,7 +46,7 @@ public class TemplateResponseTest {
         TemplateResponse response = mapper.readValue(jsonResponse, TemplateResponse.class);
         assertEquals("error", response.getError().get());
         assertEquals("error", response.getErrorDetails().get().getError().get());
-        assertEquals(false, response.getOk());
+        assertFalse(response.getOk());
     }
 
 }

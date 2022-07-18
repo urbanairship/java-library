@@ -10,11 +10,11 @@ import com.urbanairship.api.nameduser.parse.NamedUserObjectMapper;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+import java.io.IOException;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
 
 public class NamedUserListingResponseTest {
     private final ObjectMapper mapper = NamedUserObjectMapper.getInstance();
@@ -167,6 +167,6 @@ public class NamedUserListingResponseTest {
         NamedUserListingResponse response = mapper.readValue(jsonResponse, NamedUserListingResponse.class);
         assertEquals("error", response.getError().get());
         assertEquals("error", response.getErrorDetails().get().getError().get());
-        assertEquals(false, response.getOk());
+        assertFalse(response.getOk());
     }
 }

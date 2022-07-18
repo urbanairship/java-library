@@ -45,7 +45,7 @@ public class ChannelTypeDataTest {
     }
 
     @Test
-    public void testApplicableDeviceTypes_BasicSelectors() throws Exception {
+    public void testApplicableDeviceTypes_BasicSelectors() {
         assertEquals(DeviceTypeData.of(DeviceType.IOS), deviceToken("69C5B7D878810A96F2485712AC050D3A2DDBD69864BC18FDC6E821EA5A5196C6").getApplicableDeviceTypes());
         assertEquals(DeviceTypeData.of(DeviceType.IOS), iosChannel("8516d389-88fb-1fa8-474b-bcf2464cc997").getApplicableDeviceTypes());
         assertEquals(DeviceTypeData.of(DeviceType.ANDROID), apid("8516d389-88fb-1fa8-474b-bcf2464cc997").getApplicableDeviceTypes());

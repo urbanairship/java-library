@@ -1,15 +1,15 @@
 package com.urbanairship.api.reports.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.urbanairship.api.reports.parse.ReportsObjectMapper;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.util.Objects;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
-import java.io.IOException;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.urbanairship.api.reports.parse.ReportsObjectMapper;
 
 public class ResponseReportTest {
 
@@ -37,8 +37,8 @@ public class ResponseReportTest {
 
         assertNotNull(responseReport);
         assertEquals(2, responseReport.getResponses().get().size());
-        assertEquals(1111, responseReport.getResponses().get().get(0).getDeviceStatsMap().get().get("ios").getDirect().get().intValue());
-        assertEquals(2222, responseReport.getResponses().get().get(1).getDeviceStatsMap().get().get("android").getInfluenced().get().intValue());
+        assertEquals(1111, Objects.requireNonNull(responseReport.getResponses().get().get(0).getDeviceStatsMap().get().get("ios")).getDirect().get().intValue());
+        assertEquals(2222, Objects.requireNonNull(responseReport.getResponses().get().get(1).getDeviceStatsMap().get().get("android")).getInfluenced().get().intValue());
     }
 
     @Test

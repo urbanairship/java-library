@@ -4,7 +4,7 @@ import com.urbanairship.api.push.model.notification.Notification;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 
 public class ActionTest {
     @Test
@@ -28,16 +28,13 @@ public class ActionTest {
         assertEquals(l2, l1);
         assertEquals(l1.hashCode(), l1.hashCode());
         assertEquals(l1.hashCode(), l2.hashCode());
-        assertFalse(l1.hashCode() == l3.hashCode());
-        assertFalse(l1.equals(l3));
-        assertFalse(l3.equals(l1));
-        assertFalse(l3.equals(l2));
-        assertFalse(LandingPageContent.newBuilder().setContentType("text/plain").setBody("A").setEncoding(LandingPageContent.Encoding.UTF8).build()
-                .equals(LandingPageContent.newBuilder().setContentType("text/blah").setBody("A").setEncoding(LandingPageContent.Encoding.UTF8).build()));
-        assertFalse(LandingPageContent.newBuilder().setContentType("text/plain").setBody("A").setEncoding(LandingPageContent.Encoding.UTF8).build()
-                .equals(LandingPageContent.newBuilder().setContentType("text/plain").setBody("B").setEncoding(LandingPageContent.Encoding.UTF8).build()));
-        assertFalse(LandingPageContent.newBuilder().setContentType("text/plain").setBody("A").setEncoding(LandingPageContent.Encoding.UTF8).build()
-                .equals(LandingPageContent.newBuilder().setContentType("text/plain").setBody("A").setEncoding(LandingPageContent.Encoding.Base64).build()));
+        assertNotEquals(l1.hashCode(), l3.hashCode());
+        assertNotEquals(l1, l3);
+        assertNotEquals(l3, l1);
+        assertNotEquals(l3, l2);
+        assertNotEquals(LandingPageContent.newBuilder().setContentType("text/plain").setBody("A").setEncoding(LandingPageContent.Encoding.UTF8).build(), LandingPageContent.newBuilder().setContentType("text/blah").setBody("A").setEncoding(LandingPageContent.Encoding.UTF8).build());
+        assertNotEquals(LandingPageContent.newBuilder().setContentType("text/plain").setBody("A").setEncoding(LandingPageContent.Encoding.UTF8).build(), LandingPageContent.newBuilder().setContentType("text/plain").setBody("B").setEncoding(LandingPageContent.Encoding.UTF8).build());
+        assertNotEquals(LandingPageContent.newBuilder().setContentType("text/plain").setBody("A").setEncoding(LandingPageContent.Encoding.UTF8).build(), LandingPageContent.newBuilder().setContentType("text/plain").setBody("A").setEncoding(LandingPageContent.Encoding.Base64).build());
     }
 
     @Test
@@ -59,9 +56,9 @@ public class ActionTest {
         assertEquals(a2, a1);
         assertEquals(a1.hashCode(), a1.hashCode());
         assertEquals(a1.hashCode(), a2.hashCode());
-        assertFalse(a1.hashCode() == a3.hashCode());
-        assertFalse(a1.equals(a3));
-        assertFalse(a3.equals(a1));
+        assertNotEquals(a1.hashCode(), a3.hashCode());
+        assertNotEquals(a1, a3);
+        assertNotEquals(a3, a1);
     }
 
     @Test
@@ -89,9 +86,9 @@ public class ActionTest {
         assertEquals(a2, a1);
         assertEquals(a1.hashCode(), a1.hashCode());
         assertEquals(a1.hashCode(), a2.hashCode());
-        assertFalse(a1.hashCode() == a3.hashCode());
-        assertFalse(a1.equals(a3));
-        assertFalse(a3.equals(a1));
+        assertNotEquals(a1.hashCode(), a3.hashCode());
+        assertNotEquals(a1, a3);
+        assertNotEquals(a3, a1);
     }
 
     @Test
@@ -129,8 +126,8 @@ public class ActionTest {
         assertEquals(n2, n1);
         assertEquals(n1.hashCode(), n1.hashCode());
         assertEquals(n1.hashCode(), n2.hashCode());
-        assertFalse(n1.hashCode() == n3.hashCode());
-        assertFalse(n1.equals(n3));
-        assertFalse(n3.equals(n1));
+        assertNotEquals(n1.hashCode(), n3.hashCode());
+        assertNotEquals(n1, n3);
+        assertNotEquals(n3, n1);
     }
 }

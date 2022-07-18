@@ -1,17 +1,16 @@
 package com.urbanairship.api.schedule;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.schedule.model.ScheduleResponse;
 import com.urbanairship.api.schedule.parse.ScheduleObjectMapper;
 import org.junit.Test;
 
+import java.io.IOException;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
-import java.io.IOException;
 
 public class ScheduleResponseTest {
 
@@ -23,11 +22,11 @@ public class ScheduleResponseTest {
         try {
             ScheduleResponse response = mapper.readValue(scheduleJSON, ScheduleResponse.class);
             assertTrue(response.getOk());
-            assertTrue(response.getOperationId().equals("47ecebe0-27c4-11e4-ad5c-001b21c78f20"));
-            assertTrue(response.getScheduleUrls().get(0).equals("https://go.urbanairship.com/api/schedules/4f636bb9-e278-4af8-8fe4-873809acbd87"));
-            assertTrue(response.getScheduleIds().get(0).equals("4f636bb9-e278-4af8-8fe4-873809acbd87"));
-            assertTrue(response.getSchedulePayloadResponses().get(0).getUrl().get().equals("https://go.urbanairship.com/api/schedules/4f636bb9-e278-4af8-8fe4-873809acbd87"));
-            assertTrue(response.getSchedulePayloadResponses().get(0).getPushPayload().getNotification().get().getAlert().get().equals("Scheduled API v3"));
+            assertEquals("47ecebe0-27c4-11e4-ad5c-001b21c78f20", response.getOperationId());
+            assertEquals("https://go.urbanairship.com/api/schedules/4f636bb9-e278-4af8-8fe4-873809acbd87", response.getScheduleUrls().get(0));
+            assertEquals("4f636bb9-e278-4af8-8fe4-873809acbd87", response.getScheduleIds().get(0));
+            assertEquals("https://go.urbanairship.com/api/schedules/4f636bb9-e278-4af8-8fe4-873809acbd87", response.getSchedulePayloadResponses().get(0).getUrl().get());
+            assertEquals("Scheduled API v3", response.getSchedulePayloadResponses().get(0).getPushPayload().getNotification().get().getAlert().get());
         } catch (Exception ex) {
             fail("Exception " + ex.getMessage());
         }
@@ -40,7 +39,7 @@ public class ScheduleResponseTest {
         ObjectMapper mapper = ScheduleObjectMapper.getInstance();
         try {
             ScheduleResponse response = mapper.readValue(scheduleJSON, ScheduleResponse.class);
-            assertTrue(response.getOperationId().equals("47ecebe0-27c4-11e4-ad5c-001b21c78f20"));
+            assertEquals("47ecebe0-27c4-11e4-ad5c-001b21c78f20", response.getOperationId());
         } catch (Exception ex) {
             fail("Exception " + ex.getMessage());
         }
@@ -61,6 +60,6 @@ public class ScheduleResponseTest {
         ScheduleResponse response = mapper.readValue(jsonResponse, ScheduleResponse.class);
         assertEquals("error", response.getError().get());
         assertEquals("error", response.getErrorDetails().get().getError().get());
-        assertEquals(false, response.getOk());
+        assertFalse(response.getOk());
     }
 }

@@ -14,12 +14,12 @@ import org.joda.time.Period;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class PlatformStatsRequestTest {
     ObjectMapper mapper = ReportsObjectMapper.getInstance();
@@ -93,17 +93,17 @@ public class PlatformStatsRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(timeInAppRequest.getRequestBody(), null);
-        assertEquals(appOpensRequest.getRequestBody(), null);
-        assertEquals(optInsRequest.getRequestBody(), null);
-        assertEquals(optOutsRequest.getRequestBody(), null);
-        assertEquals(pushSendsRequest.getRequestBody(), null);
-        assertEquals(nextPageRequest.getRequestBody(), null);
+        assertNull(timeInAppRequest.getRequestBody());
+        assertNull(appOpensRequest.getRequestBody());
+        assertNull(optInsRequest.getRequestBody());
+        assertNull(optOutsRequest.getRequestBody());
+        assertNull(pushSendsRequest.getRequestBody());
+        assertNull(nextPageRequest.getRequestBody());
     }
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
@@ -134,12 +134,7 @@ public class PlatformStatsRequestTest {
 
     @Test
     public void testPlatformStatsParser() throws Exception {
-        ResponseParser<PlatformStatsResponse> responseParser = new ResponseParser<PlatformStatsResponse>() {
-            @Override
-            public PlatformStatsResponse parse(String response) throws IOException {
-                return mapper.readValue(response, PlatformStatsResponse.class);
-            }
-        };
+        ResponseParser<PlatformStatsResponse> responseParser = response -> mapper.readValue(response, PlatformStatsResponse.class);
 
         String response = "{  \n" +
                 "  \"next_page\":\"Value for Next Page\",\n" +

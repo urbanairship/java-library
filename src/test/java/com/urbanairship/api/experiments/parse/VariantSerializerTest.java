@@ -1,8 +1,8 @@
 package com.urbanairship.api.experiments.parse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.urbanairship.api.experiments.model.VariantPushPayload;
 import com.urbanairship.api.experiments.model.Variant;
+import com.urbanairship.api.experiments.model.VariantPushPayload;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.schedule.model.Schedule;
 import org.joda.time.DateTime;

@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 public class InAppTest {
 
@@ -25,6 +24,5 @@ public class InAppTest {
         assertNotNull(inApp);
         assertEquals("test alert", inApp.getAlert());
         assertEquals(expiry, inApp.getExpiry().get());
-        assertTrue(inApp.getExpiry().get() instanceof PushExpiry);
     }
 }

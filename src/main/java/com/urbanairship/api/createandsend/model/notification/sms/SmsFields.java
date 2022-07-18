@@ -1,6 +1,7 @@
 package com.urbanairship.api.createandsend.model.notification.sms;
 
 import com.google.common.base.Objects;
+
 import java.util.Optional;
 
 /**

@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 public class SelectorVisitorTest {
 
     @Test
-    public void testVisitor() throws Exception {
+    public void testVisitor() {
         Selector s = newTree();
         CountingVisitor v = new CountingVisitor();
         s.accept(v);

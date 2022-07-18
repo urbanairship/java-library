@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.channel.model.email.OptInLevel;
 import com.urbanairship.api.channel.model.email.UpdateEmailChannel;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-
 import org.junit.Test;
 
 import java.io.IOException;
@@ -14,7 +13,7 @@ public class EmailUpdateChannelPayloadSerializerTest {
     private static final ObjectMapper MAPPER = PushObjectMapper.getInstance();
 
     @Test
-    public void testUpdateEmailChannellOptInPayload() throws IOException {
+    public void testUpdateEmailChannelOptInPayload() throws IOException {
 
         for (OptInLevel level : OptInLevel.values()
         ) {

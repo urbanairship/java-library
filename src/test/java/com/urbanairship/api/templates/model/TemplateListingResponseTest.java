@@ -3,7 +3,6 @@ package com.urbanairship.api.templates.model;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.templates.parse.TemplatesObjectMapper;
-
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.junit.Test;
@@ -13,7 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class TemplateListingResponseTest {
 
@@ -52,7 +53,7 @@ public class TemplateListingResponseTest {
                 .build();
 
         assertNotNull(response);
-        assertEquals(response.getOk(), true);
+        assertTrue(response.getOk());
         assertEquals(response.getTemplate().get(), obj);
     }
 
@@ -110,7 +111,7 @@ public class TemplateListingResponseTest {
                 .build();
 
         assertNotNull(response);
-        assertEquals(response.getOk(), true);
+        assertTrue(response.getOk());
         assertEquals(response.getTemplates().get().get(0), template1);
         assertEquals(response.getTemplates().get().get(1), template2);
         assertEquals(response.getCount().get(), Integer.valueOf(2));
@@ -184,7 +185,7 @@ public class TemplateListingResponseTest {
         TemplateListingResponse response = mapper.readValue(jsonResponse, TemplateListingResponse.class);
         assertEquals("error", response.getError().get());
         assertEquals("error", response.getErrorDetails().get().getError().get());
-        assertEquals(false, response.getOk());
+        assertFalse(response.getOk());
     }
 
 }

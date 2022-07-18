@@ -4,15 +4,13 @@ import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.sms.model.CustomSmsResponseMmsPayload;
-import com.urbanairship.api.sms.model.CustomSmsResponseSmsPayload;
 import com.urbanairship.api.sms.model.CustomSmsResponseResponse;
+import com.urbanairship.api.sms.model.CustomSmsResponseSmsPayload;
 import com.urbanairship.api.sms.model.MmsSlides;
 import com.urbanairship.api.sms.parse.SmsObjectMapper;
-
 import org.apache.http.entity.ContentType;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,7 +63,7 @@ public class CustomSmsResponseRequestTest {
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
@@ -84,12 +82,7 @@ public class CustomSmsResponseRequestTest {
 
     @Test
     public void testCustomSmsResponseParser() throws Exception {
-        ResponseParser responseParser = new ResponseParser<CustomSmsResponseResponse>() {
-            @Override
-            public CustomSmsResponseResponse parse(String response) throws IOException {
-                return SmsObjectMapper.getInstance().readValue(response, CustomSmsResponseResponse.class);
-            }
-        };
+        ResponseParser<CustomSmsResponseResponse> responseParser = response -> SmsObjectMapper.getInstance().readValue(response, CustomSmsResponseResponse.class);
 
         String response = "{\"ok\" : true,\"push_id\" : \"df6a6b50\",\"operation_id\" : \"df6a6b50\"}";
         assertEquals(request.getResponseParser().parse(response), responseParser.parse(response));

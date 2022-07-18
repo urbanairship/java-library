@@ -12,7 +12,7 @@ public class PushListingResponseDeserializerTest {
 
     ObjectMapper mapper = ReportsObjectMapper.getInstance();
 
-    String sixresponse = "{  \n" +
+    String sixResponse = "{  \n" +
             "  \"next_page\":\"Value for Next Page\",\n" +
             "  \"pushes\":[  \n" +
             "    {  \n" +
@@ -79,7 +79,7 @@ public class PushListingResponseDeserializerTest {
 
     @Test
     public void testPushInfoList() throws Exception {
-        PushListingResponse response = mapper.readValue(sixresponse, PushListingResponse.class);
+        PushListingResponse response = mapper.readValue(sixResponse, PushListingResponse.class);
         assertNotNull(response);
         assertEquals(6, response.getPushInfoList().get().size());
         assertEquals("Value for Next Page", response.getNextPage().get());

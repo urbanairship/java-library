@@ -1,8 +1,9 @@
 package com.urbanairship.api.customevents.model;
 
 import com.google.common.base.Objects;
-import java.util.Optional;
 import com.google.common.base.Preconditions;
+
+import java.util.Optional;
 
 public class CustomEventUser {
 

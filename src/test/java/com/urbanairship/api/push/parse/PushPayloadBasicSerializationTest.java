@@ -48,7 +48,7 @@ public class PushPayloadBasicSerializationTest {
 
     @Test
     public void testSmsChannel() throws Exception {
-        DateTime dateTime = new DateTime(2018, 02, 17, 11, 48, DateTimeZone.UTC);
+        DateTime dateTime = new DateTime(2018, 2, 17, 11, 48, DateTimeZone.UTC);
 
         SmsPayload smsPayload = SmsPayload.newBuilder()
                 .setAlert("sms alert")
@@ -501,13 +501,13 @@ public class PushPayloadBasicSerializationTest {
 
         JsonNode expectedJson = mapper.readTree(json);
 
-        ArrayList<Object> list = new ArrayList<Object>();
+        ArrayList<Object> list = new ArrayList<>();
 
-        HashMap<String, String> mMap = new HashMap<String, String>();
+        HashMap<String, String> mMap = new HashMap<>();
         mMap.put("text","hello");
         mMap.put("text2","allo");
         list.add(mMap);
-        mMap = new HashMap<String, String>();
+        mMap = new HashMap<>();
         mMap.put("text","bonjour");
         mMap.put("text2","bye");
         list.add(mMap);

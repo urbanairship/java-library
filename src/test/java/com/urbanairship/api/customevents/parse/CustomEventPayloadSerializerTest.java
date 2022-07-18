@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.customevents.model.CustomEventBody;
 import com.urbanairship.api.customevents.model.CustomEventChannelType;
-import com.urbanairship.api.customevents.model.CustomEventPropertyValue;
 import com.urbanairship.api.customevents.model.CustomEventPayload;
+import com.urbanairship.api.customevents.model.CustomEventPropertyValue;
 import com.urbanairship.api.customevents.model.CustomEventUser;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.joda.time.DateTime;
@@ -40,7 +40,7 @@ public class CustomEventPayloadSerializerTest {
 
         CustomEventBody customEventBody = CustomEventBody.newBuilder()
                 .setName("purchased")
-                .setValue(new BigDecimal(120.49))
+                .setValue(new BigDecimal("120.49"))
                 .setTransaction("886f53d4-3e0f-46d7-930e-c2792dac6e0a")
                 .setInteractionId("your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234")
                 .setInteractionType("url")
@@ -96,7 +96,7 @@ public class CustomEventPayloadSerializerTest {
 
         CustomEventBody customEventBody = CustomEventBody.newBuilder()
                 .setName("purchased")
-                .setValue(new BigDecimal(120.49))
+                .setValue(new BigDecimal("120.49"))
                 .setTransaction("886f53d4-3e0f-46d7-930e-c2792dac6e0a")
                 .setInteractionId("your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234")
                 .setInteractionType("url")
@@ -121,13 +121,11 @@ public class CustomEventPayloadSerializerTest {
     }
 
     @Test
-    public void testNoChannelType() throws IOException {
+    public void testNoChannelType() {
 
-        Exception exception = Assert.assertThrows(IllegalArgumentException.class, () -> {
-                CustomEventUser.newBuilder()
-                .setChannel("e393d28e-23b2-4a22-9ace-dc539a5b07a8")
-                .build();
-            });
+        Exception exception = Assert.assertThrows(IllegalArgumentException.class, () -> CustomEventUser.newBuilder()
+        .setChannel("e393d28e-23b2-4a22-9ace-dc539a5b07a8")
+        .build());
         
         String expectedMessage = "Must provide channel and channelType, or namedUserId";
         String actualMessage = exception.getMessage();
@@ -137,13 +135,11 @@ public class CustomEventPayloadSerializerTest {
     }
 
     @Test
-    public void testChannelTypeNoChannel() throws IOException, IllegalArgumentException {
+    public void testChannelTypeNoChannel() throws IllegalArgumentException {
 
-        Exception exception = Assert.assertThrows(IllegalArgumentException.class, () -> {
-                CustomEventUser.newBuilder()
-                .setCustomEventChannelType(CustomEventChannelType.ANDROID_CHANNEL)
-                .build();
-            });
+        Exception exception = Assert.assertThrows(IllegalArgumentException.class, () -> CustomEventUser.newBuilder()
+        .setCustomEventChannelType(CustomEventChannelType.ANDROID_CHANNEL)
+        .build());
         
         String expectedMessage = "Must provide channel and channelType, or namedUserId";
         String actualMessage = exception.getMessage();
@@ -153,15 +149,13 @@ public class CustomEventPayloadSerializerTest {
     }
 
     @Test
-    public void testNamedUserAndChannel() throws IOException {
+    public void testNamedUserAndChannel() {
 
-        Exception exception = Assert.assertThrows(IllegalArgumentException.class, () -> {
-                CustomEventUser.newBuilder()
-                .setNamedUserId("hugh.manbeing")
-                .setChannel("e393d28e-23b2-4a22-9ace-dc539a5b07a8")
-                .setCustomEventChannelType(CustomEventChannelType.ANDROID_CHANNEL)
-                .build();
-            });
+        Exception exception = Assert.assertThrows(IllegalArgumentException.class, () -> CustomEventUser.newBuilder()
+        .setNamedUserId("hugh.manbeing")
+        .setChannel("e393d28e-23b2-4a22-9ace-dc539a5b07a8")
+        .setCustomEventChannelType(CustomEventChannelType.ANDROID_CHANNEL)
+        .build());
         
         String expectedMessage = "Must provide either channel and channelType or namedUserId, not both";
         String actualMessage = exception.getMessage();
@@ -185,7 +179,7 @@ public class CustomEventPayloadSerializerTest {
 
         CustomEventBody customEventBody = CustomEventBody.newBuilder()
                 .setName("purchased")
-                .setValue(new BigDecimal(120.49))
+                .setValue(new BigDecimal("120.49"))
                 .setTransaction("886f53d4-3e0f-46d7-930e-c2792dac6e0a")
                 .setInteractionId("your.store/us/en_us/pd/shoe/pid-11046546/pgid-10978234")
                 .setInteractionType("url")

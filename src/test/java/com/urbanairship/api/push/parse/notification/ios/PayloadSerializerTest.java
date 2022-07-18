@@ -257,6 +257,6 @@ public class PayloadSerializerTest {
                 "}";
 
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
-        assertEquals(payload.getRelevanceScore().get().doubleValue(), 1.0, 0.0f);
+        assertEquals(payload.getRelevanceScore().get(), 1.0, 0.0f);
     }
 }

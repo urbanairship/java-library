@@ -8,13 +8,13 @@ import com.urbanairship.api.schedule.model.SchedulePayloadResponse;
 import com.urbanairship.api.schedule.parse.ScheduleObjectMapper;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class ScheduleListingRequestTest {
 
@@ -25,10 +25,10 @@ public class ScheduleListingRequestTest {
 
     @Test
     public void testContentType() throws Exception {
-        assertEquals(listAllSchedulesRequest.getContentType(), null);
-        assertEquals(listSchedulesWithParamsRequest.getContentType(), null);
-        assertEquals(listSingleScheduleRequest.getContentType(), null);
-        assertEquals(listNextPageSchedulesRequest.getContentType(), null);
+        assertNull(listAllSchedulesRequest.getContentType());
+        assertNull(listSchedulesWithParamsRequest.getContentType());
+        assertNull(listSingleScheduleRequest.getContentType());
+        assertNull(listNextPageSchedulesRequest.getContentType());
 
     }
 
@@ -42,15 +42,15 @@ public class ScheduleListingRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(listAllSchedulesRequest.getRequestBody(), null);
-        assertEquals(listSchedulesWithParamsRequest.getRequestBody(), null);
-        assertEquals(listSingleScheduleRequest.getRequestBody(), null);
-        assertEquals(listNextPageSchedulesRequest.getRequestBody(), null);
+        assertNull(listAllSchedulesRequest.getRequestBody());
+        assertNull(listSchedulesWithParamsRequest.getRequestBody());
+        assertNull(listSingleScheduleRequest.getRequestBody());
+        assertNull(listNextPageSchedulesRequest.getRequestBody());
     }
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
@@ -64,25 +64,20 @@ public class ScheduleListingRequestTest {
     public void testURI() throws Exception {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
-        URI expextedURI = URI.create("https://go.urbanairship.com/api/schedules/");
-        assertEquals(listAllSchedulesRequest.getUri(baseURI), expextedURI);
+        URI expectedURI = URI.create("https://go.urbanairship.com/api/schedules/");
+        assertEquals(listAllSchedulesRequest.getUri(baseURI), expectedURI);
 
-        expextedURI = URI.create("https://go.urbanairship.com/api/schedules/id");
-        assertEquals(listSingleScheduleRequest.getUri(baseURI), expextedURI);
+        expectedURI = URI.create("https://go.urbanairship.com/api/schedules/id");
+        assertEquals(listSingleScheduleRequest.getUri(baseURI), expectedURI);
 
-        expextedURI = URI.create("https://go.urbanairship.com/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc");
-        assertEquals(listSchedulesWithParamsRequest.getUri(baseURI), expextedURI);
-        assertEquals(listNextPageSchedulesRequest.getUri(baseURI), expextedURI);
+        expectedURI = URI.create("https://go.urbanairship.com/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc");
+        assertEquals(listSchedulesWithParamsRequest.getUri(baseURI), expectedURI);
+        assertEquals(listNextPageSchedulesRequest.getUri(baseURI), expectedURI);
     }
 
     @Test
     public void testListSchedulesParser() throws Exception {
-        ResponseParser<ListAllSchedulesResponse> responseParser = new ResponseParser<ListAllSchedulesResponse>() {
-            @Override
-            public ListAllSchedulesResponse parse(String response) throws IOException {
-                return ScheduleObjectMapper.getInstance().readValue(response, ListAllSchedulesResponse.class);
-            }
-        };
+        ResponseParser<ListAllSchedulesResponse> responseParser = response -> ScheduleObjectMapper.getInstance().readValue(response, ListAllSchedulesResponse.class);
 
         String response = "{\"ok\":true,\"count\":5,\"total_count\":6,\"schedules\":" +
             "[{\"url\":\"https://go.urbanairship.com/api/schedules/5a60e0a6-9aa7-449f-a038-6806e572baf3\",\"" +
@@ -100,17 +95,12 @@ public class ScheduleListingRequestTest {
 
     @Test
     public void testListSingleScheduleParser() throws Exception {
-        ResponseParser<ListAllSchedulesResponse> responseParser = new ResponseParser<ListAllSchedulesResponse>() {
-            @Override
-            public ListAllSchedulesResponse parse(String response) throws IOException {
-                return ListAllSchedulesResponse.newBuilder()
-                    .setCount(1)
-                    .setTotalCount(1)
-                    .setOk(true)
-                    .addSchedule(ScheduleObjectMapper.getInstance().readValue(response, SchedulePayloadResponse.class))
-                    .build();
-            }
-        };
+        ResponseParser<ListAllSchedulesResponse> responseParser = response -> ListAllSchedulesResponse.newBuilder()
+            .setCount(1)
+            .setTotalCount(1)
+            .setOk(true)
+            .addSchedule(ScheduleObjectMapper.getInstance().readValue(response, SchedulePayloadResponse.class))
+            .build();
 
         String response = "{\"schedule\":{\"scheduled_time\":\"2015-08-07T22:10:44\"},\"name\":\"Special Scheduled" +
             "Push 20\",\"push\":{\"audience\":\"ALL\",\"device_types\":\"all\",\"notification\":{\"alert\":\"Scheduled" +

@@ -310,7 +310,7 @@ public class PayloadDeserializerTest {
     }
 
     @Test
-    public <T> void testStyle() throws Exception {
+    public void testStyle() throws Exception {
         String bigTextJson =
                 "{" +
                         "\"style\":{" +

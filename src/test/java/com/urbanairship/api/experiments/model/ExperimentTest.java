@@ -43,21 +43,21 @@ public class ExperimentTest {
         Experiment experiment = Experiment.newBuilder()
                 .setName("name")
                 .setDescription("description")
-                .setControl(new BigDecimal(0.1))
+                .setControl(new BigDecimal("0.1"))
                 .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
                 .setAudience(Selectors.namedUser("birdperson"))
                 .addVariant(variantOne)
                 .addVariant(variantTwo)
                 .build();
 
-        List<Variant> variants = new ArrayList<Variant>();
+        List<Variant> variants = new ArrayList<>();
         variants.add(variantOne);
         variants.add(variantTwo);
 
         assertNotNull(experiment);
         assertEquals(experiment.getName().get(), "name");
         assertEquals(experiment.getDescription().get(), "description");
-        assertEquals(experiment.getControl().get(), new BigDecimal(0.1));
+        assertEquals(experiment.getControl().get(), new BigDecimal("0.1"));
         assertEquals(experiment.getAudience(), Selectors.namedUser("birdperson"));
         assertEquals(experiment.getDeviceTypes(), DeviceTypeData.of(DeviceType.IOS));
         assertEquals(experiment.getVariants(), variants);

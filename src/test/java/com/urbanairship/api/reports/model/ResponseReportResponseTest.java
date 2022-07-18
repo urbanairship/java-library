@@ -3,6 +3,8 @@ package com.urbanairship.api.reports.model;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+import java.util.Objects;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -24,9 +26,9 @@ public class ResponseReportResponseTest {
                 .build();
 
         assertNotNull(responseReportResponse);
-        assertEquals(1111, responseReportResponse.getDeviceStatsMap().get().get("ios").getInfluenced().get().intValue());
-        assertEquals(2222, responseReportResponse.getDeviceStatsMap().get().get("ios").getDirect().get().intValue());
-        assertEquals(1111, responseReportResponse.getDeviceStatsMap().get().get("android").getInfluenced().get().intValue());
-        assertEquals(2222, responseReportResponse.getDeviceStatsMap().get().get("android").getDirect().get().intValue());
+        assertEquals(1111, Objects.requireNonNull(responseReportResponse.getDeviceStatsMap().get().get("ios")).getInfluenced().get().intValue());
+        assertEquals(2222, Objects.requireNonNull(responseReportResponse.getDeviceStatsMap().get().get("ios")).getDirect().get().intValue());
+        assertEquals(1111, Objects.requireNonNull(responseReportResponse.getDeviceStatsMap().get().get("android")).getInfluenced().get().intValue());
+        assertEquals(2222, Objects.requireNonNull(responseReportResponse.getDeviceStatsMap().get().get("android")).getDirect().get().intValue());
     }
 }

@@ -2,15 +2,17 @@ package com.urbanairship.api.staticlists.parse;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Optional;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.staticlists.model.StaticListListingResponse;
 import com.urbanairship.api.staticlists.model.StaticListView;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+import java.util.Optional;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class StaticListListingResponseDeserializerTest {
     private static final ObjectMapper mapper = StaticListsObjectMapper.getInstance();
@@ -45,7 +47,7 @@ public class StaticListListingResponseDeserializerTest {
 
         StaticListListingResponse lists = mapper.readValue(json, StaticListListingResponse.class);
         assertNotNull(lists);
-        assertEquals(true, lists.getOk());
+        assertTrue(lists.getOk());
 
         StaticListView list1 = lists.getStaticListViews().get(0);
         assertNotNull(list1);

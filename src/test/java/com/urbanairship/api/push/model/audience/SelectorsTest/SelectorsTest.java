@@ -17,11 +17,11 @@ public class SelectorsTest {
     @Test
     public void testCompoundStaticMethods() {
         SelectorType type = SelectorType.ALL;
-        ArrayList<Selector> sl = new ArrayList<Selector>();
+        ArrayList<Selector> sl = new ArrayList<>();
         sl.add(Selectors.tag("tag1"));
         sl.add(Selectors.tag("tag2"));
         Selector compound = Selectors.compound(type, sl);
-        assertTrue("Should be BasicCompoundSelector", BasicCompoundSelector.class.isInstance(compound));
+        assertTrue("Should be BasicCompoundSelector", compound instanceof BasicCompoundSelector);
         BasicCompoundSelector cpdSelector = (BasicCompoundSelector) compound;
         Selector[] selectors = Iterables.toArray(cpdSelector.getChildren(), Selector.class);
         assertEquals("There should be two selectors", selectors.length, 2);

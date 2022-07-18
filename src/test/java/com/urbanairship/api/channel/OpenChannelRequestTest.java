@@ -12,7 +12,6 @@ import com.urbanairship.api.client.ResponseParser;
 import org.apache.http.entity.ContentType;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +42,7 @@ public class OpenChannelRequestTest {
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
@@ -69,18 +68,13 @@ public class OpenChannelRequestTest {
     public void testURI() throws Exception {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
-        URI expextedURI = URI.create("https://go.urbanairship.com/api/channels/open/");
-        assertEquals(openChannelRequest.getUri(baseURI), expextedURI);
+        URI expectedURI = URI.create("https://go.urbanairship.com/api/channels/open/");
+        assertEquals(openChannelRequest.getUri(baseURI), expectedURI);
     }
 
     @Test
     public void testCustomEventParser() throws Exception {
-        ResponseParser<OpenChannelResponse> responseParser = new ResponseParser<OpenChannelResponse>() {
-            @Override
-            public OpenChannelResponse parse(String response) throws IOException {
-                return ChannelObjectMapper.getInstance().readValue(response, OpenChannelResponse.class);
-            }
-        };
+        ResponseParser<OpenChannelResponse> responseParser = response -> ChannelObjectMapper.getInstance().readValue(response, OpenChannelResponse.class);
 
         String response = "{\"ok\" : true,\"channel_id\" : \"df6a6b50-9843-0304-d5a5-743f246a8567\"}";
         assertEquals(openChannelRequest.getResponseParser().parse(response), responseParser.parse(response));

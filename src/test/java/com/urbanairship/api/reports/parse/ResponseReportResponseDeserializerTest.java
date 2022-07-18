@@ -3,11 +3,11 @@ package com.urbanairship.api.reports.parse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.reports.model.ResponseReportResponse;
-
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class ResponseReportResponseDeserializerTest {
     private static final ObjectMapper mapper = ReportsObjectMapper.getInstance();
@@ -33,10 +33,10 @@ public class ResponseReportResponseDeserializerTest {
 
         System.out.println(responseReportResponse);
 
-        Assert.assertEquals(1337, responseReportResponse.getDeviceStatsMap().get().get("ios").getDirect().get().intValue());
-        Assert.assertEquals(9999, responseReportResponse.getDeviceStatsMap().get().get("ios").getInfluenced().get().intValue());
-        Assert.assertEquals(7331, responseReportResponse.getDeviceStatsMap().get().get("android").getDirect().get().intValue());
-        Assert.assertEquals(8888, responseReportResponse.getDeviceStatsMap().get().get("android").getInfluenced().get().intValue());
+        Assert.assertEquals(1337, Objects.requireNonNull(responseReportResponse.getDeviceStatsMap().get().get("ios")).getDirect().get().intValue());
+        Assert.assertEquals(9999, Objects.requireNonNull(responseReportResponse.getDeviceStatsMap().get().get("ios")).getInfluenced().get().intValue());
+        Assert.assertEquals(7331, Objects.requireNonNull(responseReportResponse.getDeviceStatsMap().get().get("android")).getDirect().get().intValue());
+        Assert.assertEquals(8888, Objects.requireNonNull(responseReportResponse.getDeviceStatsMap().get().get("android")).getInfluenced().get().intValue());
         Assert.assertEquals(DateFormats.DATE_PARSER.parseDateTime("2013-07-01 00:00:00"), responseReportResponse.getDate().get());
     }
 }

@@ -19,7 +19,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -82,7 +81,7 @@ public class ExperimentRequestTest {
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
 
@@ -110,12 +109,7 @@ public class ExperimentRequestTest {
 
     @Test
     public void testResponseParser() throws Exception {
-        final ResponseParser<ExperimentResponse> responseParser = new ResponseParser<ExperimentResponse>() {
-            @Override
-            public ExperimentResponse parse(String response) throws IOException {
-                return mapper.readValue(response, ExperimentResponse.class);
-            }
-        };
+        final ResponseParser<ExperimentResponse> responseParser = response -> mapper.readValue(response, ExperimentResponse.class);
 
         String createJson =
                 "{" +
