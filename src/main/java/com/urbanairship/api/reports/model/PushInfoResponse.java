@@ -181,7 +181,8 @@ public final class PushInfoResponse {
         BROADCAST_PUSH,
         TAG_PUSH,
         SCHEDULED_PUSH,
-        SEGMENTS_PUSH
+        SEGMENTS_PUSH,
+        CREATE_AND_SEND_PUSH,
     }
 
     public final static class Builder {

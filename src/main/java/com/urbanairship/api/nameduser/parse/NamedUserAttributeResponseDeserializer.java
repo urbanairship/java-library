@@ -16,38 +16,19 @@ import java.io.IOException;
 public class NamedUserAttributeResponseDeserializer extends JsonDeserializer<NamedUserAttributeResponse> {
     private static final FieldParserRegistry<NamedUserAttributeResponse, NamedUserAttributeResponseReader> FIELD_PARSERS = new MapFieldParserRegistry<NamedUserAttributeResponse, NamedUserAttributeResponseReader>(
             ImmutableMap.<String, FieldParser<NamedUserAttributeResponseReader>>builder()
-                    .put("ok", new FieldParser<NamedUserAttributeResponseReader>() {
-                        @Override
-                        public void parse(NamedUserAttributeResponseReader reader, JsonParser jsonParser, DeserializationContext context) throws IOException {
-                            reader.readOk(jsonParser);
-                        }
-                    })
-                    .put("error", new FieldParser<NamedUserAttributeResponseReader>() {
-                        @Override
-                        public void parse(NamedUserAttributeResponseReader reader, JsonParser jsonParser, DeserializationContext context) throws IOException {
-                            reader.readError(jsonParser);
-                        }
-                    })
-                    .put("details", new FieldParser<NamedUserAttributeResponseReader>() {
-                        @Override
-                        public void parse(NamedUserAttributeResponseReader reader, JsonParser jsonParser, DeserializationContext context) throws IOException {
-                            reader.readErrorDetails(jsonParser);
-                        }
-                    })
+                    .put("ok", (reader, jsonParser, context) -> reader.readOk(jsonParser))
+                    .put("error", (reader, jsonParser, context) -> reader.readError(jsonParser))
+                    .put("details", (reader, jsonParser, context) -> reader.readErrorDetails(jsonParser))
+                    .put("warning", (reader, jsonParser, context) -> reader.readWarning(jsonParser))
                     .build()
     );
 
     private final StandardObjectDeserializer<NamedUserAttributeResponse, ?> deserializer;
 
     public NamedUserAttributeResponseDeserializer() {
-        deserializer = new StandardObjectDeserializer<NamedUserAttributeResponse, NamedUserAttributeResponseReader>(
+        deserializer = new StandardObjectDeserializer<>(
                 FIELD_PARSERS,
-                new Supplier<NamedUserAttributeResponseReader>() {
-                    @Override
-                    public NamedUserAttributeResponseReader get() {
-                        return new NamedUserAttributeResponseReader();
-                    }
-                }
+                () -> new NamedUserAttributeResponseReader()
         );
     }
 

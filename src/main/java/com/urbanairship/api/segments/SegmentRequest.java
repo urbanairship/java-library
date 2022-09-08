@@ -4,6 +4,7 @@
 
 package com.urbanairship.api.segments;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
@@ -11,6 +12,7 @@ import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.common.model.GenericResponse;
 import com.urbanairship.api.push.model.audience.Selector;
+import com.urbanairship.api.segments.model.SegmentRequestResponse;
 import com.urbanairship.api.segments.model.SegmentView;
 import com.urbanairship.api.segments.parse.SegmentObjectMapper;
 import org.apache.commons.lang.StringUtils;
@@ -24,7 +26,8 @@ import java.util.Map;
  * The SegmentRequest class builds segment requests to be executed in
  * the {@link com.urbanairship.api.client.UrbanAirshipClient}.
  */
-public class SegmentRequest implements Request<GenericResponse> {
+public class SegmentRequest implements Request<SegmentRequestResponse> {
+    private final static ObjectMapper MAPPER = new ObjectMapper();
     private final static String API_SEGMENTS_PATH = "/api/segments/";
     private final SegmentView.Builder builder = SegmentView.newBuilder();
     private final String path;
@@ -115,8 +118,8 @@ public class SegmentRequest implements Request<GenericResponse> {
     }
 
     @Override
-    public ResponseParser<GenericResponse> getResponseParser() {
-        return RequestUtils.GENERIC_RESPONSE_PARSER;
+    public ResponseParser<SegmentRequestResponse> getResponseParser() {
+        return response -> MAPPER.readValue(response, SegmentRequestResponse.class);
     }
 
     @Override

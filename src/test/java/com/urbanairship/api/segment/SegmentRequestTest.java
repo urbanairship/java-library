@@ -8,6 +8,7 @@ import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.audience.location.DateRange;
 import com.urbanairship.api.segments.SegmentRequest;
+import com.urbanairship.api.segments.model.SegmentRequestResponse;
 import org.apache.http.entity.ContentType;
 import org.junit.Before;
 import org.junit.Test;
@@ -96,18 +97,20 @@ public class SegmentRequestTest {
 
         ErrorDetails errorDetails = new ErrorDetails("The key chanel is not allowed in this context", null);
 
-        GenericResponse genericResponse = new GenericResponse(true, "1769297b-1640-43a4-af84-3e0ece89efe", "error", errorDetails);
+        SegmentRequestResponse segmentRequestResponse = new SegmentRequestResponse(true, "1769297b-1640-43a4-af84-3e0ece89efe", "error", errorDetails, 12345,null, "1769297b-1640-43a4-af84-3e0ece89efe");
 
         String responseJson = "{" +
                 "\"ok\": true," +
+                "\"segment_id\": \"1769297b-1640-43a4-af84-3e0ece89efe\"," +
                 "\"operation_id\": \"1769297b-1640-43a4-af84-3e0ece89efe\"," +
                 "\"error\": \"error\"," +
+                "\"error_code\": 12345," +
                 "\"details\": {\"error\": \"The key chanel is not allowed in this context\"" +
                 "}" +
                 "}";
 
-        assertEquals(createRequest.getResponseParser().parse(responseJson), genericResponse);
-        assertEquals(updateRequest.getResponseParser().parse(responseJson), genericResponse);
+        assertEquals(createRequest.getResponseParser().parse(responseJson), segmentRequestResponse);
+        assertEquals(updateRequest.getResponseParser().parse(responseJson), segmentRequestResponse);
 
     }
 }

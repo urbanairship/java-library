@@ -51,7 +51,7 @@ public class ExperimentDeleteRequestTest {
     @Test
     public void testExperimentParser() throws Exception {
 
-        GenericResponse genericResponse = new GenericResponse(true, null, null, null);
+        GenericResponse genericResponse = new GenericResponse(true, null, null, null, null, null);
 
         String responseJson = "{" +
                 "\"ok\": true" +

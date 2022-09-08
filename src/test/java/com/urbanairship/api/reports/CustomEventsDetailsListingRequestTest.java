@@ -77,6 +77,7 @@ public class CustomEventsDetailsListingRequestTest {
             new CustomEventsDetailsListingResponse(
                 true,
                 "https://go.urbanairship.com/api/reports/events?start=2020-08-01T10:00:00.000Z&end=2020-08-15T20:00:00.000Z&precision=MONTHLY&page_size=20&page=2", 
+                null,
                 2f,
                 709, 
                 ImmutableList.of(customEventsDetailResponse1, customEventsDetailResponse2)

@@ -123,7 +123,7 @@ public class StaticListRequestTest {
 
     @Test
     public void testParser() throws Exception {
-        GenericResponse genericResponse = new GenericResponse(true, null, null, null);
+        GenericResponse genericResponse = new GenericResponse(true, null, null, null, null, null);
 
         String responseJson = "{" +
                 "\"ok\": true" +
