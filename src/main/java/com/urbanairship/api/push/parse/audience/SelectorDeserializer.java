@@ -90,6 +90,7 @@ public class SelectorDeserializer extends JsonDeserializer<Selector> {
                 .put("amazon_channel", (reader, parser, context) -> reader.readValueSelector(SelectorType.AMAZON_CHANNEL, parser, context))
                 .put("android_channel", (reader, parser, context) -> reader.readValueSelector(SelectorType.ANDROID_CHANNEL, parser, context))
                 .put("channel", (reader, parser, context) -> reader.readValueSelector(SelectorType.CHANNEL, parser, context))
+                .put("open_channel", (reader, parser, context) -> reader.readValueSelector(SelectorType.OPEN_CHANNEL, parser, context))
 
                         // Compound selectors
                 .put("and", (reader, parser, context) -> reader.readCompoundSelector(SelectorType.AND, parser, context))

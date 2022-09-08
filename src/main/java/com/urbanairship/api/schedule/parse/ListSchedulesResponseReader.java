@@ -41,7 +41,7 @@ public final class ListSchedulesResponseReader implements JsonObjectReader<ListA
     }
 
     public void readListScheduleResponse(JsonParser jsonParser) throws IOException {
-        builder.addAllSchedule((List<SchedulePayloadResponse>) jsonParser.readValueAs(new TypeReference<List<SchedulePayloadResponse>>() {
+        builder.addAllSchedule(jsonParser.readValueAs(new TypeReference<List<SchedulePayloadResponse>>() {
         }));
     }
 
