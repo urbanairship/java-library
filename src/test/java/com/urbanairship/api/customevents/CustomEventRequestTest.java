@@ -1,5 +1,6 @@
 package com.urbanairship.api.customevents;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.ResponseParser;
@@ -15,18 +16,21 @@ import org.joda.time.DateTimeZone;
 import org.junit.Test;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class CustomEventRequestTest {
-    CustomEventUser customEventUser = CustomEventUser.newBuilder()
+    CustomEventUser customEventUser1 = CustomEventUser.newBuilder()
             .setCustomEventChannelType(CustomEventChannelType.ANDROID_CHANNEL)
             .setChannel("channel")
             .build();
 
-    CustomEventBody customEventBody = CustomEventBody.newBuilder()
+    CustomEventBody customEventBody1 = CustomEventBody.newBuilder()
             .setName("purchased")
             .setSessionId("sessionId")
             .build();
@@ -34,13 +38,32 @@ public class CustomEventRequestTest {
     // The date and time when the event occurred.
     DateTime occurred = new DateTime(2015, 5, 2, 2, 31, 22, DateTimeZone.UTC);
 
-    CustomEventPayload customEventPayload = CustomEventPayload.newBuilder()
-            .setCustomEventBody(customEventBody)
-            .setCustomEventUser(customEventUser)
+    CustomEventPayload customEventPayload1 = CustomEventPayload.newBuilder()
+            .setCustomEventBody(customEventBody1)
+            .setCustomEventUser(customEventUser1)
             .setOccurred(occurred)
             .build();
 
-    CustomEventRequest customEventRequest = CustomEventRequest.newRequest(customEventPayload);
+    CustomEventUser customEventUser2 = CustomEventUser.newBuilder()
+            .setCustomEventChannelType(CustomEventChannelType.IOS_CHANNEL)
+            .setChannel("channel")
+            .build();
+
+    CustomEventBody customEventBody2 = CustomEventBody.newBuilder()
+            .setName("rented")
+            .setSessionId("sessionId")
+            .build();
+    CustomEventPayload customEventPayload2 = CustomEventPayload.newBuilder()
+            .setCustomEventBody(customEventBody2)
+            .setCustomEventUser(customEventUser2)
+            .setOccurred(occurred)
+            .build();
+
+    CustomEventRequest customEventRequestUnique = CustomEventRequest.newRequest(customEventPayload1);
+
+    List<CustomEventPayload> customEventPayloads = Arrays.asList(customEventPayload1,customEventPayload2);
+
+    CustomEventRequest customEventRequestMultiple = CustomEventRequest.newRequest(customEventPayloads);
 
     @Test
     public void testHeaders() throws Exception {
@@ -48,30 +71,35 @@ public class CustomEventRequestTest {
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
-        assertEquals(customEventRequest.getRequestHeaders(), headers);
+        assertEquals(customEventRequestUnique.getRequestHeaders(), headers);
+        assertEquals(customEventRequestMultiple.getRequestHeaders(), headers);
+
     }
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(customEventRequest.getRequestBody(), customEventPayload.toJSON());
+        assertEquals(customEventRequestUnique.getRequestBody(), "[" + customEventPayload1.toJSON() + "]");
     }
 
     @Test
     public void testMethod() throws Exception {
-        assertEquals(customEventRequest.getHttpMethod(), Request.HttpMethod.POST);
+        assertEquals(customEventRequestUnique.getHttpMethod(), Request.HttpMethod.POST);
+        assertEquals(customEventRequestMultiple.getHttpMethod(), Request.HttpMethod.POST);
     }
 
     @Test
     public void testContentType() throws Exception {
-        assertEquals(customEventRequest.getContentType(), ContentType.APPLICATION_JSON);
+        assertEquals(customEventRequestUnique.getContentType(), ContentType.APPLICATION_JSON);
+        assertEquals(customEventRequestMultiple.getContentType(), ContentType.APPLICATION_JSON);
     }
 
     @Test
     public void testURI() throws Exception {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
-        URI expectedURI = URI.create("https://go.urbanairship.com/api/custom-events/");
-        assertEquals(customEventRequest.getUri(baseURI), expectedURI);
+        URI expextedURI = URI.create("https://go.urbanairship.com/api/custom-events/");
+        assertEquals(customEventRequestUnique.getUri(baseURI), expextedURI);
+        assertEquals(customEventRequestMultiple.getUri(baseURI), expextedURI);
     }
 
     @Test
@@ -79,6 +107,7 @@ public class CustomEventRequestTest {
         ResponseParser<CustomEventResponse> responseParser = response -> PushObjectMapper.getInstance().readValue(response, CustomEventResponse.class);
 
         String response = "{\"ok\" : true,\"operation_id\" : \"df6a6b50\"}";
-        assertEquals(customEventRequest.getResponseParser().parse(response), responseParser.parse(response));
+        assertEquals(customEventRequestUnique.getResponseParser().parse(response), responseParser.parse(response));
+        assertEquals(customEventRequestMultiple.getResponseParser().parse(response), responseParser.parse(response));
     }
 }
