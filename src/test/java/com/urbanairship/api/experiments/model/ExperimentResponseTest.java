@@ -1,16 +1,15 @@
 package com.urbanairship.api.experiments.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.urbanairship.api.experiments.parse.ExperimentObjectMapper;
 import org.junit.Test;
+
+import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-
-import java.io.IOException;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.urbanairship.api.experiments.parse.ExperimentObjectMapper;
-
+import static org.junit.Assert.assertTrue;
 public class ExperimentResponseTest {
 
     @Test
@@ -22,7 +21,7 @@ public class ExperimentResponseTest {
                 .build();
 
         assertNotNull(response);
-        assertEquals(response.getOk(), true);
+        assertTrue(response.getOk());
         assertEquals(response.getOperationId().get(), "op123");
         assertEquals(response.getPushId().get(), "id1");
         assertFalse(response.getExperimentId().isPresent());
@@ -42,6 +41,6 @@ public class ExperimentResponseTest {
         ExperimentResponse response = mapper.readValue(jsonResponse, ExperimentResponse.class);
         assertEquals("error", response.getError().get());
         assertEquals("error", response.getErrorDetails().get().getError().get());
-        assertEquals(false, response.getOk());
+        assertFalse(response.getOk());
     }
 }

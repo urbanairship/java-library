@@ -1,7 +1,7 @@
 package com.urbanairship.api.createandsend.model.audience.email;
 
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 public enum EmailOptInType {
     COMMERCIAL_OPTED_IN("ua_commercial_opted_in"),
@@ -23,6 +23,6 @@ public enum EmailOptInType {
                 return Optional.of(optInType);
             }
         }
-        return Optional.absent();
+        return Optional.empty();
     }
 }

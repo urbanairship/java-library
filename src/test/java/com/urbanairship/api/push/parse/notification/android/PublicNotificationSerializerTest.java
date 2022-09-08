@@ -3,7 +3,6 @@ package com.urbanairship.api.push.parse.notification.android;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.push.model.notification.android.PublicNotification;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-
 import org.junit.Assert;
 import org.junit.Test;
 public class PublicNotificationSerializerTest {

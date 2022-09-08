@@ -7,7 +7,6 @@ import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.sms.parse.SmsObjectMapper;
-
 import org.apache.http.entity.ContentType;
 
 import java.io.IOException;

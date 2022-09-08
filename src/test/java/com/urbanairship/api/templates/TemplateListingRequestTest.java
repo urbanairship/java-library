@@ -10,7 +10,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,8 +32,8 @@ public class TemplateListingRequestTest {
 
     @Test
     public void testContentType() throws Exception {
-        Assert.assertEquals(lookupRequest.getContentType(), null);
-        Assert.assertEquals(listingRequest.getContentType(), null);
+        Assert.assertNull(lookupRequest.getContentType());
+        Assert.assertNull(listingRequest.getContentType());
     }
 
     @Test
@@ -45,13 +44,13 @@ public class TemplateListingRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        Assert.assertEquals(lookupRequest.getRequestBody(), null);
-        Assert.assertEquals(listingRequest.getRequestBody(), null);
+        Assert.assertNull(lookupRequest.getRequestBody());
+        Assert.assertNull(listingRequest.getRequestBody());
     }
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
         Assert.assertEquals(lookupRequest.getRequestHeaders(), headers);
@@ -155,12 +154,7 @@ public class TemplateListingRequestTest {
 
 
 
-        final ResponseParser<TemplateListingResponse> responseParser = new ResponseParser<TemplateListingResponse>() {
-            @Override
-            public TemplateListingResponse parse(String response) throws IOException {
-                return mapper.readValue(response, TemplateListingResponse.class);
-            }
-        };
+        final ResponseParser<TemplateListingResponse> responseParser = response -> mapper.readValue(response, TemplateListingResponse.class);
 
         Assert.assertEquals(lookupRequest.getResponseParser().parse(lookupJson), responseParser.parse(lookupJson));
         Assert.assertEquals(listingRequest.getResponseParser().parse(listingJson), responseParser.parse(listingJson));

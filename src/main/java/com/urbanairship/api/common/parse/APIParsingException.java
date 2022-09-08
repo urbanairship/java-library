@@ -7,9 +7,10 @@ package com.urbanairship.api.common.parse;
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonStreamContext;
-import com.google.common.base.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Optional;
 
 public class APIParsingException extends RuntimeException {
 
@@ -20,26 +21,26 @@ public class APIParsingException extends RuntimeException {
 
     public APIParsingException(String message, String path, JsonLocation location) {
         super(message);
-        this.path = Optional.fromNullable(path);
-        this.location = Optional.fromNullable(location);
+        this.path = Optional.ofNullable(path);
+        this.location = Optional.ofNullable(location);
     }
 
     public APIParsingException(String message) {
         super(message);
-        this.path = Optional.absent();
-        this.location = Optional.absent();
+        this.path = Optional.empty();
+        this.location = Optional.empty();
     }
 
     public APIParsingException(String message, Throwable cause) {
         super(message, cause);
-        this.path = Optional.absent();
-        this.location = Optional.absent();
+        this.path = Optional.empty();
+        this.location = Optional.empty();
     }
 
     public APIParsingException(Throwable cause) {
         super(cause);
-        this.path = Optional.absent();
-        this.location = Optional.absent();
+        this.path = Optional.empty();
+        this.location = Optional.empty();
     }
 
     public Optional<String> getPath() {

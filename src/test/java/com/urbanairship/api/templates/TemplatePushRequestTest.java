@@ -16,7 +16,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,7 +69,7 @@ public class TemplatePushRequestTest {
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
@@ -103,12 +102,7 @@ public class TemplatePushRequestTest {
                  "}";
 
 
-        final ResponseParser<TemplateResponse> responseParser = new ResponseParser<TemplateResponse>() {
-            @Override
-            public TemplateResponse parse(String response) throws IOException {
-                return mapper.readValue(response, TemplateResponse.class);
-            }
-        };
+        final ResponseParser<TemplateResponse> responseParser = response -> mapper.readValue(response, TemplateResponse.class);
 
         Assert.assertEquals(request.getResponseParser().parse(responseJson), responseParser.parse(responseJson));
         Assert.assertEquals(requestValidateOnly.getResponseParser().parse(responseJson), responseParser.parse(responseJson));

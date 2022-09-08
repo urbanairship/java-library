@@ -1,10 +1,10 @@
 package com.urbanairship.api.reports.parse;
 
-import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
-import com.google.common.collect.ImmutableMap;
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.google.common.base.Supplier;
+import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.FieldParser;
 import com.urbanairship.api.common.parse.FieldParserRegistry;
 import com.urbanairship.api.common.parse.MapFieldParserRegistry;

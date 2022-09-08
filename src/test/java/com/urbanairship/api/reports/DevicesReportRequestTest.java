@@ -12,17 +12,17 @@ import org.joda.time.DateTimeZone;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class DevicesReportRequestTest {
     ObjectMapper mapper = ReportsObjectMapper.getInstance();
 
-    DateTime date = new DateTime(2019, 03, 1, 12, 0, 0, 0, DateTimeZone.UTC);
+    DateTime date = new DateTime(2019, 3, 1, 12, 0, 0, 0, DateTimeZone.UTC);
 
     DevicesReportRequest devicesReportRequest;
     DevicesReportRequest devicesReportRequestWithDate;
@@ -51,13 +51,13 @@ public class DevicesReportRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(devicesReportRequest.getRequestBody(), null);
-        assertEquals(devicesReportRequestWithDate.getRequestBody(), null);
+        assertNull(devicesReportRequest.getRequestBody());
+        assertNull(devicesReportRequestWithDate.getRequestBody());
     }
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
@@ -76,12 +76,7 @@ public class DevicesReportRequestTest {
 
     @Test
     public void testReportParser() throws Exception {
-        ResponseParser<DevicesReport> responseParser = new ResponseParser<DevicesReport>() {
-            @Override
-            public DevicesReport parse(String response) throws IOException {
-                return mapper.readValue(response, DevicesReport.class);
-            }
-        };
+        ResponseParser<DevicesReport> responseParser = response -> mapper.readValue(response, DevicesReport.class);
 
         String response =
                 "{\n" +

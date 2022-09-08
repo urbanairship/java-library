@@ -4,7 +4,6 @@
 
 package com.urbanairship.api.push.model.notification.android;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.DeviceType;
@@ -15,6 +14,7 @@ import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.notification.actions.Actions;
 
 import java.util.Map;
+import java.util.Optional;
 
 public final class AndroidDevicePayload extends PushModelObject implements DevicePayloadOverride {
 
@@ -44,33 +44,33 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
     private final Optional<AndroidTemplate> template;
 
     private AndroidDevicePayload(Builder builder) {
-        this.alert = Optional.fromNullable(builder.alert);
-        this.collapseKey = Optional.fromNullable(builder.collapseKey);
-        this.notificationChannel = Optional.fromNullable(builder.notificationChannel);
-        this.notificationTag = Optional.fromNullable(builder.notificationTag);
-        this.timeToLive = Optional.fromNullable(builder.timeToLive);
-        this.deliveryPriority = Optional.fromNullable(builder.deliveryPriority);
-        this.delayWhileIdle = Optional.fromNullable(builder.delayWhileIdle);
+        this.alert = Optional.ofNullable(builder.alert);
+        this.collapseKey = Optional.ofNullable(builder.collapseKey);
+        this.notificationChannel = Optional.ofNullable(builder.notificationChannel);
+        this.notificationTag = Optional.ofNullable(builder.notificationTag);
+        this.timeToLive = Optional.ofNullable(builder.timeToLive);
+        this.deliveryPriority = Optional.ofNullable(builder.deliveryPriority);
+        this.delayWhileIdle = Optional.ofNullable(builder.delayWhileIdle);
         if (builder.extra.build().isEmpty()) {
-            this.extra = Optional.absent();
+            this.extra = Optional.empty();
         } else {
             this.extra = Optional.of(builder.extra.build());
         }
-        this.interactive = Optional.fromNullable(builder.interactive);
-        this.title = Optional.fromNullable(builder.title);
-        this.localOnly = Optional.fromNullable(builder.localOnly);
-        this.wearable = Optional.fromNullable(builder.wearable);
-        this.summary = Optional.fromNullable(builder.summary);
-        this.style = Optional.fromNullable(builder.style);
-        this.sound = Optional.fromNullable(builder.sound);
-        this.icon = Optional.fromNullable(builder.icon);
-        this.iconColor = Optional.fromNullable(builder.iconColor);
-        this.priority = Optional.fromNullable(builder.priority);
-        this.category = Optional.fromNullable(builder.category);
-        this.visibility = Optional.fromNullable(builder.visibility);
-        this.publicNotification = Optional.fromNullable(builder.publicNotification);
-        this.actions = Optional.fromNullable(builder.actions);
-        this.template = Optional.fromNullable(builder.template);
+        this.interactive = Optional.ofNullable(builder.interactive);
+        this.title = Optional.ofNullable(builder.title);
+        this.localOnly = Optional.ofNullable(builder.localOnly);
+        this.wearable = Optional.ofNullable(builder.wearable);
+        this.summary = Optional.ofNullable(builder.summary);
+        this.style = Optional.ofNullable(builder.style);
+        this.sound = Optional.ofNullable(builder.sound);
+        this.icon = Optional.ofNullable(builder.icon);
+        this.iconColor = Optional.ofNullable(builder.iconColor);
+        this.priority = Optional.ofNullable(builder.priority);
+        this.category = Optional.ofNullable(builder.category);
+        this.visibility = Optional.ofNullable(builder.visibility);
+        this.publicNotification = Optional.ofNullable(builder.publicNotification);
+        this.actions = Optional.ofNullable(builder.actions);
+        this.template = Optional.ofNullable(builder.template);
     }
 
     /**

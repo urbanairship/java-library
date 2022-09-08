@@ -4,13 +4,12 @@
 
 package com.urbanairship.api.staticlists.model;
 
-import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.model.ErrorDetails;
 import org.joda.time.DateTime;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class StaticListView {
     private final Optional<Boolean> ok;
@@ -35,10 +34,10 @@ public class StaticListView {
             String status,
             String error,
             ErrorDetails errorDetails) {
-        this.ok = Optional.fromNullable(ok);
+        this.ok = Optional.ofNullable(ok);
         this.name = name;
-        this.description = Optional.fromNullable(description);
-        this.extras = Optional.fromNullable(extras.build());
+        this.description = Optional.ofNullable(description);
+        this.extras = Optional.ofNullable(extras.build());
         this.created = created;
         this.lastUpdated = lastUpdated;
         this.channelCount = channelCount;

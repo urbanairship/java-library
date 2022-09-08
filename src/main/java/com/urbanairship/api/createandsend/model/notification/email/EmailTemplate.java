@@ -1,12 +1,12 @@
 package com.urbanairship.api.createandsend.model.notification.email;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 
 /**
@@ -22,15 +22,15 @@ public class EmailTemplate {
     @JsonProperty("variable_details") List<VariableDetail> variableDetails,
     @JsonProperty("fields") EmailFields emailFields
     ) {
-        this.templateId = Optional.fromNullable(templateId);
-        this.emailFields = Optional.fromNullable(emailFields);
+        this.templateId = Optional.ofNullable(templateId);
+        this.emailFields = Optional.ofNullable(emailFields);
         if (variableDetails == null){
-            this.variableDetails = Optional.absent();
+            this.variableDetails = Optional.empty();
         }
         else if (!variableDetails.isEmpty()) {
-            this.variableDetails = Optional.fromNullable(variableDetails);
+            this.variableDetails = Optional.ofNullable(variableDetails);
         } else {
-            this.variableDetails = Optional.absent();
+            this.variableDetails = Optional.empty();
         }
     }
 

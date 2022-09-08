@@ -1,9 +1,9 @@
 package com.urbanairship.api.channel.model;
 
-import java.util.Optional;
-
 import com.google.common.base.Objects;
 import com.urbanairship.api.common.model.ErrorDetails;
+
+import java.util.Optional;
 
 public class ChannelAttributesResponse {
     private final boolean ok;

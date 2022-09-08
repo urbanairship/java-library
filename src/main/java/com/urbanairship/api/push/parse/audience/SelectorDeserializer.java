@@ -8,7 +8,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.FieldParser;
@@ -91,6 +90,7 @@ public class SelectorDeserializer extends JsonDeserializer<Selector> {
                 .put("amazon_channel", (reader, parser, context) -> reader.readValueSelector(SelectorType.AMAZON_CHANNEL, parser, context))
                 .put("android_channel", (reader, parser, context) -> reader.readValueSelector(SelectorType.ANDROID_CHANNEL, parser, context))
                 .put("channel", (reader, parser, context) -> reader.readValueSelector(SelectorType.CHANNEL, parser, context))
+                .put("open_channel", (reader, parser, context) -> reader.readValueSelector(SelectorType.OPEN_CHANNEL, parser, context))
 
                         // Compound selectors
                 .put("and", (reader, parser, context) -> reader.readCompoundSelector(SelectorType.AND, parser, context))

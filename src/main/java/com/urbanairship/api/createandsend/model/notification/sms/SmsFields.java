@@ -1,7 +1,8 @@
 package com.urbanairship.api.createandsend.model.notification.sms;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
+
+import java.util.Optional;
 
 /**
  * Represents the sms fields in the create and send sms notification.
@@ -10,7 +11,7 @@ public class SmsFields {
     private final Optional<String> alert;
 
     private SmsFields(Builder builder) {
-        this.alert = Optional.fromNullable(builder.alert);
+        this.alert = Optional.ofNullable(builder.alert);
     }
 
     public static Builder newBuilder() {

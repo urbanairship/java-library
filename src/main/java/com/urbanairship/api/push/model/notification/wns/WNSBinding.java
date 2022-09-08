@@ -4,8 +4,9 @@
 
 package com.urbanairship.api.push.model.notification.wns;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+
+import java.util.Optional;
 
 public class WNSBinding {
     private final String template;
@@ -219,13 +220,13 @@ public class WNSBinding {
                 throw new IllegalArgumentException("Must supply a value for 'template'.");
             }
             return new WNSBinding(template,
-                                  Optional.fromNullable(version),
-                                  Optional.fromNullable(fallback),
-                                  Optional.fromNullable(lang),
-                                  Optional.fromNullable(baseUri),
-                                  Optional.fromNullable(addImageQuery),
-                                  Optional.fromNullable(images != null ? images.build() : null),
-                                  Optional.fromNullable(text != null ? text.build() : null));
+                                  Optional.ofNullable(version),
+                                  Optional.ofNullable(fallback),
+                                  Optional.ofNullable(lang),
+                                  Optional.ofNullable(baseUri),
+                                  Optional.ofNullable(addImageQuery),
+                                  Optional.ofNullable(images != null ? images.build() : null),
+                                  Optional.ofNullable(text != null ? text.build() : null));
         }
     }
 }

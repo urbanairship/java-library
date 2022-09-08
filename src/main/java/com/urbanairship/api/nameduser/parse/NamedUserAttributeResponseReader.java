@@ -27,6 +27,10 @@ public class NamedUserAttributeResponseReader implements JsonObjectReader<NamedU
         builder.setErrorDetails(parser.readValueAs(ErrorDetails.class));
     }
 
+    public void readWarning(JsonParser parser) throws IOException {
+        builder.setWarning(parser.readValueAs(String.class));
+    }
+
     @Override
     public NamedUserAttributeResponse validateAndBuild() throws IOException {
         try {

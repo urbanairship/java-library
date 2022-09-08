@@ -4,11 +4,11 @@
 
 package com.urbanairship.api.templates.model;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import org.joda.time.DateTime;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Represents a single template object.
@@ -30,9 +30,9 @@ public class TemplateView {
         this.modifiedAt = builder.modifiedAt;
         this.lastUsed = builder.lastUsed;
         this.name = builder.name;
-        this.description = Optional.fromNullable(builder.description);
+        this.description = Optional.ofNullable(builder.description);
         this.variables = builder.variables.build();
-        this.partialPushPayload = Optional.fromNullable(builder.partialPushPayload);
+        this.partialPushPayload = Optional.ofNullable(builder.partialPushPayload);
     }
 
     /**

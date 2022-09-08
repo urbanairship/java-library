@@ -72,7 +72,7 @@ public class AttributeListsListingResponse {
 
     public static class Builder {
         private boolean ok;
-        private ImmutableList.Builder<AttributeListsView> AttributeListsObjects = ImmutableList.builder();
+        private final ImmutableList.Builder<AttributeListsView> AttributeListsObjects = ImmutableList.builder();
 
         /**
          * Set the ok status.
@@ -116,8 +116,5 @@ public class AttributeListsListingResponse {
             return new AttributeListsListingResponse(this);
         }
 
-        public Object addAttributeList(AttributeListsView res1) {
-            return null;
-        }
     }
 }

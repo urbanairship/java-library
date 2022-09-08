@@ -2,18 +2,16 @@ package com.urbanairship.api.schedule;
 
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
-import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.common.model.GenericResponse;
-import com.urbanairship.api.common.parse.CommonObjectMapper;
 
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class ScheduleStatusRequestTest {
 
@@ -22,8 +20,8 @@ public class ScheduleStatusRequestTest {
 
     @Test
     public void testContentType() throws Exception {
-        assertEquals(ScheduleStatusRequestPause.getContentType(), null);
-        assertEquals(ScheduleStatusRequestResume.getContentType(), null);
+        assertNull(ScheduleStatusRequestPause.getContentType());
+        assertNull(ScheduleStatusRequestResume.getContentType());
     }
 
     @Test
@@ -35,13 +33,13 @@ public class ScheduleStatusRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(ScheduleStatusRequestPause.getRequestBody(), null);
-        assertEquals(ScheduleStatusRequestResume.getRequestBody(), null);
+        assertNull(ScheduleStatusRequestPause.getRequestBody());
+        assertNull(ScheduleStatusRequestResume.getRequestBody());
     }
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
         assertEquals(ScheduleStatusRequestPause.getRequestHeaders(), headers);
@@ -53,18 +51,18 @@ public class ScheduleStatusRequestTest {
     public void testURI() throws Exception {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
-        URI expextedPauseURI = URI.create("https://go.urbanairship.com/api/schedules/id/pause");
-        assertEquals(ScheduleStatusRequestPause.getUri(baseURI), expextedPauseURI);
+        URI expectedPauseURI = URI.create("https://go.urbanairship.com/api/schedules/id/pause");
+        assertEquals(ScheduleStatusRequestPause.getUri(baseURI), expectedPauseURI);
 
-        URI expextedResumeURI = URI.create("https://go.urbanairship.com/api/schedules/id/resume");
-        assertEquals(ScheduleStatusRequestResume.getUri(baseURI), expextedResumeURI);
+        URI expectedResumeURI = URI.create("https://go.urbanairship.com/api/schedules/id/resume");
+        assertEquals(ScheduleStatusRequestResume.getUri(baseURI), expectedResumeURI);
 
     }
 
     @Test
     public void testScheduleParser() throws Exception {
 
-        GenericResponse genericResponse = new GenericResponse(true, null, null, null);
+        GenericResponse genericResponse = new GenericResponse(true, null, null, null, null, null);
 
         String responseJson = "{" +
                 "\"ok\": true" +

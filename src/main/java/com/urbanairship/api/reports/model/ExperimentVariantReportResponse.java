@@ -7,6 +7,7 @@ package com.urbanairship.api.reports.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableMap;
 import org.joda.time.DateTime;
+
 import java.util.Objects;
 
 import static com.urbanairship.api.common.parse.DateFormats.DATE_PARSER;

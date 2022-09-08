@@ -13,37 +13,37 @@ public class ScheduleValidatorTest {
     ScheduleValidator validator = new ScheduleValidator();
 
     @Test
-    public void testFutureDateTime() throws Exception {
+    public void testFutureDateTime() {
         validator.validate(Schedule.newBuilder().setScheduledTimestamp(DateTime.now().plusDays(1)).build());
     }
 
     @Test(expected = APIParsingException.class)
-    public void testPastDateTime() throws Exception {
+    public void testPastDateTime() {
         validator.validate(Schedule.newBuilder().setScheduledTimestamp(DateTime.now().minusDays(1)).build());
     }
 
     @Test
-    public void testFutureLocalDateTime() throws Exception {
+    public void testFutureLocalDateTime() {
         validator.validate(Schedule.newBuilder().setLocalScheduledTimestamp(DateTime.now().plusDays(1)).build());
     }
 
     @Test(expected = APIParsingException.class)
-    public void testPastLocalDateTime() throws Exception {
+    public void testPastLocalDateTime() {
         validator.validate(Schedule.newBuilder().setLocalScheduledTimestamp(DateTime.now().minusDays(1)).build());
     }
 
     @Test
-    public void testPartiallyPastLocalDateTime() throws Exception {
+    public void testPartiallyPastLocalDateTime() {
         validator.validate(Schedule.newBuilder().setLocalScheduledTimestamp(DateTime.now(DateTimeZone.forID("America/Chicago"))).build());
     }
 
     @Test
-    public void testCurrentLocalDateTime() throws Exception {
+    public void testCurrentLocalDateTime() {
         validator.validate(Schedule.newBuilder().setLocalScheduledTimestamp(DateTime.now()).build());
     }
 
     @Test
-    public void testCurrentDateTime() throws Exception {
+    public void testCurrentDateTime() {
         validator.validate(Schedule.newBuilder().setScheduledTimestamp(DateTime.now()).build());
     }
 }

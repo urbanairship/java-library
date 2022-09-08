@@ -4,10 +4,10 @@
 
 package com.urbanairship.api.templates.model;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * The TemplateVariable object is used to specify which pieces of a template to override when
@@ -21,8 +21,8 @@ public class TemplateVariable {
 
     private TemplateVariable(Builder builder) {
         this.key = builder.key;
-        this.name = Optional.fromNullable(builder.name);
-        this.description = Optional.fromNullable(builder.description);
+        this.name = Optional.ofNullable(builder.name);
+        this.description = Optional.ofNullable(builder.description);
         this.defaultValue = builder.defaultValue;
     }
 

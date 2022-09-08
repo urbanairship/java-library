@@ -1,13 +1,13 @@
 package com.urbanairship.api.createandsend.model.notification;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.urbanairship.api.createandsend.model.audience.CreateAndSendAudience;
 import com.urbanairship.api.push.model.Campaigns;
 import com.urbanairship.api.push.model.PushModelObject;
-import com.urbanairship.api.createandsend.model.audience.CreateAndSendAudience;
 import com.urbanairship.api.push.model.notification.Notification;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class CreateAndSendPayload extends PushModelObject {
 
@@ -18,7 +18,7 @@ public class CreateAndSendPayload extends PushModelObject {
     private CreateAndSendPayload(CreateAndSendPayload.Builder builder) {
         this.audience = builder.audience;
         this.notification = builder.notification;
-        this.campaigns = Optional.fromNullable(builder.campaigns);
+        this.campaigns = Optional.ofNullable(builder.campaigns);
     }
 
     public static CreateAndSendPayload.Builder newBuilder() {

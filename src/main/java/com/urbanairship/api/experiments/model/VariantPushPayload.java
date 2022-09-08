@@ -6,11 +6,12 @@ package com.urbanairship.api.experiments.model;
 
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.InApp;
 import com.urbanairship.api.push.model.PushOptions;
 import com.urbanairship.api.push.model.notification.Notification;
+
+import java.util.Optional;
 
 /**
  * A VariantPushPayload object, used when creating an A/B test. A partial push notification object
@@ -25,9 +26,9 @@ public class VariantPushPayload {
     private final Optional<InApp> inApp;
 
     private VariantPushPayload(Builder builder) {
-        this.notification = Optional.fromNullable(builder.notification);
-        this.pushOptions = Optional.fromNullable(builder.pushOptions);
-        this.inApp = Optional.fromNullable(builder.inApp);
+        this.notification = Optional.ofNullable(builder.notification);
+        this.pushOptions = Optional.ofNullable(builder.pushOptions);
+        this.inApp = Optional.ofNullable(builder.inApp);
     }
 
     /**

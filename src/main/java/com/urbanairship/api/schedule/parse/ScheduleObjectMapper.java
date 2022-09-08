@@ -14,7 +14,6 @@ import com.urbanairship.api.schedule.model.SchedulePayload;
 import com.urbanairship.api.schedule.model.SchedulePayloadResponse;
 import com.urbanairship.api.schedule.model.ScheduleResponse;
 
-
 public class ScheduleObjectMapper {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();

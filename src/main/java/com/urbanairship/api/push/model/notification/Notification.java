@@ -6,7 +6,6 @@ package com.urbanairship.api.push.model.notification;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -22,6 +21,7 @@ import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Optional;
 
 public final class Notification extends PushModelObject {
 
@@ -54,7 +54,7 @@ public final class Notification extends PushModelObject {
 
     public Optional<ImmutableSet<DeviceType>> getOverrideDeviceTypes() {
         if (deviceTypePayloadOverrides == null || deviceTypePayloadOverrides.size() == 0 ) {
-            return Optional.absent();
+            return Optional.empty();
         } else {
             ImmutableSet.Builder<DeviceType> builder = ImmutableSet.builder();
             for (NotificationPayloadOverrideKey key : deviceTypePayloadOverrides.keySet()) {
@@ -67,7 +67,7 @@ public final class Notification extends PushModelObject {
     @SuppressWarnings("unchecked")
     public <O extends DevicePayloadOverride> Optional<O> getDeviceTypeOverride(DeviceType deviceType, Class<O> overrideType) {
         // Safe because the builder enforces the tie between the Class key and the value in the map
-        return Optional.fromNullable((O) deviceTypePayloadOverrides.get(new NotificationPayloadOverrideKey(deviceType, overrideType)));
+        return Optional.ofNullable((O) deviceTypePayloadOverrides.get(new NotificationPayloadOverrideKey(deviceType, overrideType)));
     }
 
     public Map<DeviceType, DevicePayloadOverride> getDeviceTypePayloadOverrides() {
@@ -199,10 +199,10 @@ public final class Notification extends PushModelObject {
             }
 
             return new Notification(
-                    Optional.fromNullable(alert),
+                    Optional.ofNullable(alert),
                     overrides,
-                    Optional.fromNullable(actions),
-                    Optional.fromNullable(interactive)
+                    Optional.ofNullable(actions),
+                    Optional.ofNullable(interactive)
             );
         }
     }

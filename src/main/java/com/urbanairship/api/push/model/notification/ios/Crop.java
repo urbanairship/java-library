@@ -3,10 +3,10 @@
  */
 package com.urbanairship.api.push.model.notification.ios;
 
-import com.google.common.base.Optional;
 import com.urbanairship.api.push.model.PushModelObject;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 /**
  * Crop for iOS specific media push messages.
@@ -163,10 +163,10 @@ public final class Crop extends PushModelObject{
          * @return Crop
          */
         public Crop build() {
-            return new Crop(Optional.fromNullable(x),
-                            Optional.fromNullable(y),
-                            Optional.fromNullable(height),
-                            Optional.fromNullable(width));
+            return new Crop(Optional.ofNullable(x),
+                            Optional.ofNullable(y),
+                            Optional.ofNullable(height),
+                            Optional.ofNullable(width));
         }
     }
 }

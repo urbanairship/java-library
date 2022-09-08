@@ -4,7 +4,7 @@
 
 package com.urbanairship.api.push.model;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 /**
  * Enum for specifying the notification position.
@@ -26,7 +26,7 @@ public enum Position {
             }
         }
 
-        return Optional.absent();
+        return Optional.empty();
     }
 
     public String getType() {

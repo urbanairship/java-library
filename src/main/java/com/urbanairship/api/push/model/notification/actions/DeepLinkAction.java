@@ -5,8 +5,9 @@
 package com.urbanairship.api.push.model.notification.actions;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+
+import java.util.Optional;
 
 public class DeepLinkAction implements Action.OpenAction<String> {
 
@@ -14,11 +15,11 @@ public class DeepLinkAction implements Action.OpenAction<String> {
     private final Optional<String> fallbackUrl;
 
     public DeepLinkAction(String link) {
-        this(link, Optional.<String>absent());
+        this(link, Optional.<String>empty());
     }
 
     public DeepLinkAction(String link, String fallbackUrl) {
-        this(link, Optional.fromNullable(fallbackUrl));
+        this(link, Optional.ofNullable(fallbackUrl));
     }
 
     private DeepLinkAction(String link, Optional<String> fallbackUrl) {

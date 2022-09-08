@@ -13,7 +13,7 @@ public class PublicNotificationTest {
     }
 
     @Test
-    public void testPublicNotification() throws Exception {
+    public void testPublicNotification() {
         PublicNotification publicNotificationMinimal = PublicNotification.newBuilder()
                 .setAlert("Hi!")
                 .build();

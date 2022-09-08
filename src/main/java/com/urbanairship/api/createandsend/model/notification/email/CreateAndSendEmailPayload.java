@@ -1,7 +1,6 @@
 package com.urbanairship.api.createandsend.model.notification.email;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.push.model.DeviceType;
@@ -10,6 +9,8 @@ import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.urbanairship.api.push.model.notification.email.Attachment;
 import com.urbanairship.api.push.model.notification.email.MessageType;
 import org.apache.commons.lang.StringUtils;
+
+import java.util.Optional;
 
 
 /**
@@ -30,21 +31,21 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
     private final Optional<ImmutableList<Attachment>> attachments;
 
     private CreateAndSendEmailPayload(Builder builder) {
-        this.alert = Optional.fromNullable(builder.alert);
-        this.subject = Optional.fromNullable(builder.subject);
-        this.htmlBody = Optional.fromNullable(builder.htmlBody);
-        this.plaintextBody = Optional.fromNullable(builder.plaintextBody);
-        this.messageType = Optional.fromNullable(builder.messageType);
-        this.senderName = Optional.fromNullable(builder.senderName);
-        this.senderAddress = Optional.fromNullable((builder.senderAddress));
-        this.replyTo = Optional.fromNullable((builder.replyTo));
-        this.bypassOptInLevel = Optional.fromNullable(builder.byPassOptInLevel);
-        this.emailTemplate = Optional.fromNullable(builder.emailTemplate);
+        this.alert = Optional.ofNullable(builder.alert);
+        this.subject = Optional.ofNullable(builder.subject);
+        this.htmlBody = Optional.ofNullable(builder.htmlBody);
+        this.plaintextBody = Optional.ofNullable(builder.plaintextBody);
+        this.messageType = Optional.ofNullable(builder.messageType);
+        this.senderName = Optional.ofNullable(builder.senderName);
+        this.senderAddress = Optional.ofNullable((builder.senderAddress));
+        this.replyTo = Optional.ofNullable((builder.replyTo));
+        this.bypassOptInLevel = Optional.ofNullable(builder.byPassOptInLevel);
+        this.emailTemplate = Optional.ofNullable(builder.emailTemplate);
 
         if (builder.attachments.build().isEmpty()) {
-            this.attachments = Optional.absent();
+            this.attachments = Optional.empty();
         } else {
-            this.attachments = Optional.fromNullable(builder.attachments.build());
+            this.attachments = Optional.ofNullable(builder.attachments.build());
         }
     }
 

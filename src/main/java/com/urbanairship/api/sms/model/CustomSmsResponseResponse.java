@@ -1,7 +1,8 @@
 package com.urbanairship.api.sms.model;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
+
+import java.util.Optional;
 
 public final class CustomSmsResponseResponse {
 
@@ -11,8 +12,8 @@ public final class CustomSmsResponseResponse {
 
     private CustomSmsResponseResponse(boolean ok, String pushId, String operationId) {
         this.ok = ok;
-        this.pushId = Optional.fromNullable(pushId);
-        this.operationId = Optional.fromNullable(operationId);
+        this.pushId = Optional.ofNullable(pushId);
+        this.operationId = Optional.ofNullable(operationId);
     }
 
     /**

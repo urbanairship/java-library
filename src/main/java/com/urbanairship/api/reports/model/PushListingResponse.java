@@ -5,9 +5,10 @@
 package com.urbanairship.api.reports.model;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.common.model.ErrorDetails;
+
+import java.util.Optional;
 
 /**
  * Push listing response object
@@ -30,11 +31,11 @@ public class PushListingResponse {
             Boolean ok,
             String error,
             ErrorDetails errorDetails) {
-        this.nextPage = Optional.fromNullable(nextPage);
+        this.nextPage = Optional.ofNullable(nextPage);
         this.pushInfoObjects = pushInfoObjects;
-        this.ok = Optional.fromNullable(ok);
-        this.error = Optional.fromNullable(error);
-        this.errorDetails = Optional.fromNullable(errorDetails);
+        this.ok = Optional.ofNullable(ok);
+        this.error = Optional.ofNullable(error);
+        this.errorDetails = Optional.ofNullable(errorDetails);
     }
 
     public static Builder newBuilder() {
@@ -201,7 +202,7 @@ public class PushListingResponse {
          * @return PushListingResponse
          */
         public PushListingResponse build() {
-            return new PushListingResponse(nextPage, Optional.fromNullable(pushInfoObjects.build()), ok, error, errorDetails);
+            return new PushListingResponse(nextPage, Optional.ofNullable(pushInfoObjects.build()), ok, error, errorDetails);
         }
     }
 }

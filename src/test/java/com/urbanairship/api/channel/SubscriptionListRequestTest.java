@@ -10,7 +10,6 @@ import com.urbanairship.api.channel.model.subscriptionlist.SubscriptionListActio
 import com.urbanairship.api.channel.model.subscriptionlist.SubscriptionListPayload;
 import com.urbanairship.api.channel.parse.ChannelObjectMapper;
 import com.urbanairship.api.client.Request;
-
 import org.apache.http.entity.ContentType;
 import org.junit.Test;
 
@@ -105,7 +104,7 @@ public class SubscriptionListRequestTest {
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
@@ -116,8 +115,8 @@ public class SubscriptionListRequestTest {
     public void testURI() throws Exception {
         URI baseURI = URI.create("https://go.urbanairship.com");
 
-        URI expextedURI = URI.create("https://go.urbanairship.com/api/channels/subscription_lists/");
-        assertEquals(request.getUri(baseURI), expextedURI);
+        URI expectedURI = URI.create("https://go.urbanairship.com/api/channels/subscription_lists/");
+        assertEquals(request.getUri(baseURI), expectedURI);
     }
 
 }

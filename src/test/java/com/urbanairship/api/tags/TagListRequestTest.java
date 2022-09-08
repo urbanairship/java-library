@@ -68,7 +68,7 @@ public class TagListRequestTest {
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
 
@@ -83,6 +83,7 @@ public class TagListRequestTest {
         assertEquals(createRequest.getUri(baseURI), expectedCreateUri);
     }
 
+    @Test
     public void testParser() throws Exception {
         String response = "{\"ok\": true}";
         assertEquals(response, createRequest.getResponseParser().parse(response));

@@ -3,7 +3,6 @@ package com.urbanairship.api.channel;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.channel.model.ChannelUninstallResponse;
 import com.urbanairship.api.client.Request;
-
 import org.apache.http.entity.ContentType;
 import org.junit.Test;
 

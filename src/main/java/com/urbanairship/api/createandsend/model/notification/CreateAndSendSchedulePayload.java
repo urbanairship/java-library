@@ -1,12 +1,11 @@
 package com.urbanairship.api.createandsend.model.notification;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.PushModelObject;
-
 import org.joda.time.DateTime;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class CreateAndSendSchedulePayload extends PushModelObject {
 
@@ -17,7 +16,7 @@ public class CreateAndSendSchedulePayload extends PushModelObject {
     private CreateAndSendSchedulePayload(CreateAndSendSchedulePayload.Builder builder) {
         this.scheduleTime = builder.scheduleTime;
         this.payload = builder.payload;
-        this.name = Optional.fromNullable(builder.name);
+        this.name = Optional.ofNullable(builder.name);
     }
 
     public static CreateAndSendSchedulePayload.Builder newBuilder() {

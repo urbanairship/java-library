@@ -5,7 +5,6 @@
 package com.urbanairship.api.push.model.notification.actions;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.ImmutableClassToInstanceMap;
@@ -15,6 +14,7 @@ import com.google.common.collect.Sets;
 import com.urbanairship.api.push.model.PushModelObject;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -39,19 +39,19 @@ public class Actions extends PushModelObject {
     }
 
     public Optional<AppDefinedAction> getAppDefined() {
-        return Optional.fromNullable(actions.getInstance(AppDefinedAction.class));
+        return Optional.ofNullable(actions.getInstance(AppDefinedAction.class));
     }
 
     public Optional<AddTagAction> getAddTags() {
-        return Optional.fromNullable(actions.getInstance(AddTagAction.class));
+        return Optional.ofNullable(actions.getInstance(AddTagAction.class));
     }
 
     public Optional<RemoveTagAction> getRemoveTags() {
-        return Optional.fromNullable(actions.getInstance(RemoveTagAction.class));
+        return Optional.ofNullable(actions.getInstance(RemoveTagAction.class));
     }
 
     public Optional<Action.OpenAction> getOpenAction() {
-        return Optional.fromNullable(actions.getInstance(Action.OpenAction.class));
+        return Optional.ofNullable(actions.getInstance(Action.OpenAction.class));
     }
 
     public Iterable<? extends Action> allActions() {

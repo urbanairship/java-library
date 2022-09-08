@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.experiments.model.ExperimentResponse;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class ExperimentResponseDeserializerTest {
 
@@ -21,7 +23,7 @@ public class ExperimentResponseDeserializerTest {
 
         ExperimentResponse experimentCreateResponse = MAPPER.readValue(experimentCreateResponseString, ExperimentResponse.class);
         assertNotNull(experimentCreateResponse);
-        assertEquals(experimentCreateResponse.getOk(), true);
+        assertTrue(experimentCreateResponse.getOk());
         assertEquals(experimentCreateResponse.getExperimentId().get(), "experiment-id-123");
         assertEquals(experimentCreateResponse.getOperationId().get(), "op-id-123");
     }

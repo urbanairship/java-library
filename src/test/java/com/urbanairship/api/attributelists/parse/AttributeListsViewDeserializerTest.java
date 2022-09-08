@@ -1,13 +1,13 @@
 package com.urbanairship.api.attributelists.parse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Optional;
 import com.urbanairship.api.attributelists.model.AttributeListsView;
 import com.urbanairship.api.common.parse.DateFormats;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class AttributeListsViewDeserializerTest {
 
@@ -31,9 +31,9 @@ public class AttributeListsViewDeserializerTest {
                 "}";
 
         AttributeListsView list = mapper.readValue(json, AttributeListsView.class);
-        assertEquals(Optional.of(true), list.getOk());
+        assertTrue(list.getOk().get());
         assertEquals("ua_attributes_platinum_members", list.getName());
-        assertEquals(Optional.of("loyalty program platinum members"), list.getDescription());
+        assertEquals("loyalty program platinum members", list.getDescription().get());
         assertEquals(created, list.getCreated());
         assertEquals(updated, list.getLastUpdated());
         assertEquals("https://go.urbanairship.com/api/attribute-lists/ua_attributes_my_list/errors", list.getErrorPath());

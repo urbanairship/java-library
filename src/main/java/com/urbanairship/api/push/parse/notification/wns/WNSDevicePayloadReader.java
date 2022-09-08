@@ -6,7 +6,6 @@ package com.urbanairship.api.push.parse.notification.wns;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
-import com.google.common.base.Optional;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
 import com.urbanairship.api.common.parse.StringFieldDeserializer;
@@ -14,6 +13,7 @@ import com.urbanairship.api.push.model.notification.wns.WNSDevicePayload;
 import com.urbanairship.api.push.model.notification.wns.WNSPush;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class WNSDevicePayloadReader implements JsonObjectReader<WNSDevicePayload> {
 
@@ -22,7 +22,7 @@ public class WNSDevicePayloadReader implements JsonObjectReader<WNSDevicePayload
     private final WNSBadgeDeserializer badgeDS;
 
     private WNSPush.Builder builder;
-    private Optional<String> alert = Optional.absent();
+    private Optional<String> alert = Optional.empty();
 
     public WNSDevicePayloadReader(WNSToastDeserializer toastDS, WNSTileDeserializer tileDS, WNSBadgeDeserializer badgeDS) {
         this.toastDS = toastDS;
@@ -31,7 +31,7 @@ public class WNSDevicePayloadReader implements JsonObjectReader<WNSDevicePayload
     }
 
     public void readAlert(JsonParser parser, DeserializationContext context) throws IOException {
-        alert = Optional.fromNullable(StringFieldDeserializer.INSTANCE.deserialize(parser, "alert"));
+        alert = Optional.ofNullable(StringFieldDeserializer.INSTANCE.deserialize(parser, "alert"));
     }
 
     public void readToast(JsonParser parser, DeserializationContext context) throws IOException {

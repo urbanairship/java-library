@@ -1,10 +1,9 @@
 package com.urbanairship.api.reports.model;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
-
-import org.junit.Assert;
 
 public class DeviceStatsTest {
 

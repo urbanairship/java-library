@@ -4,9 +4,8 @@
 
 package com.urbanairship.api.push.model.audience;
 
-import com.google.common.base.Optional;
-
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * A selector which has a single value associated with it. Most atomic

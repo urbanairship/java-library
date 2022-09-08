@@ -5,13 +5,13 @@
 package com.urbanairship.api.schedule.model;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import com.urbanairship.api.push.model.PushPayload;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Set;
 
 public final class SchedulePayloadResponse {
@@ -24,8 +24,8 @@ public final class SchedulePayloadResponse {
 
     private SchedulePayloadResponse(Schedule schedule, String url, String name, PushPayload pushPayload, Set<String> pushIds) {
         this.schedule = schedule;
-        this.url = Optional.fromNullable(url);
-        this.name = Optional.fromNullable(name);
+        this.url = Optional.ofNullable(url);
+        this.name = Optional.ofNullable(name);
         this.pushPayload = pushPayload;
         this.pushIds = pushIds;
     }

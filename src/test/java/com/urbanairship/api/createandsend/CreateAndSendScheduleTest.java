@@ -15,22 +15,19 @@ import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-
 import org.apache.http.entity.ContentType;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
-
-import static junit.framework.Assert.assertEquals;
 
 import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
+
 public class CreateAndSendScheduleTest {
-    private SmsPayload smsPayload;
-    private CreateAndSendAudience audience;
     private String dateString;
     private CreateAndSendSchedulePayload schedulePayload;
     private CreateAndSendScheduleRequest request;
@@ -66,13 +63,13 @@ public class CreateAndSendScheduleTest {
                 .addSmsChannel(smsChannel1)
                 .build();
 
-        audience = new CreateAndSendAudience(smsChannels);
+        CreateAndSendAudience audience = new CreateAndSendAudience(smsChannels);
 
         PushExpiry expiry = PushExpiry.newBuilder()
                 .setExpirySeconds(1000)
                 .build();
 
-        smsPayload = SmsPayload.newBuilder()
+        SmsPayload smsPayload = SmsPayload.newBuilder()
                 .setAlert("smsAlert")
                 .setPushExpiry(expiry)
                 .build();
@@ -118,7 +115,7 @@ public class CreateAndSendScheduleTest {
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 

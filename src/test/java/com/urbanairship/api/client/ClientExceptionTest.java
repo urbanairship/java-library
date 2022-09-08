@@ -2,24 +2,23 @@ package com.urbanairship.api.client;
 
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParseException;
-import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
+import com.fasterxml.jackson.core.JsonParser;
 import io.netty.handler.codec.http.HttpHeaders;
 import org.asynchttpclient.HttpResponseBodyPart;
 import org.asynchttpclient.HttpResponseStatus;
-import org.asynchttpclient.filter.FilterContext;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.ClassRule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 
@@ -38,15 +37,11 @@ public class ClientExceptionTest {
     @Mock
     HttpHeaders httpHeaders;
     @Mock
-    Predicate<FilterContext> retryPredicate;
-
-    @ClassRule
-    public static WireMockClassRule wireMockRule = new WireMockClassRule(wireMockConfig().dynamicPort().dynamicHttpsPort());
-
+    JsonParser jsonParser;
 
     @Before
-    public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
         Mockito.when(httpResponseStatus.getStatusCode()).thenReturn(401);
         Mockito.when(httpResponseStatus.getStatusText()).thenReturn("401 Unauthorized");
 
@@ -64,7 +59,7 @@ public class ClientExceptionTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         Mockito.verifyNoMoreInteractions(httpResponseStatus, responseCallback, parser, httpHeaders);
     }
     @Test
@@ -125,7 +120,7 @@ public class ClientExceptionTest {
 
         String apiResponse = "Non json Api Response";
 
-        JsonParseException jsonParseException = new JsonParseException("Json Parsing exception", JsonLocation.NA);
+        JsonParseException jsonParseException = new JsonParseException(jsonParser, "Json Parsing exception", JsonLocation.NA);
         Mockito.when(parser.parse(apiResponse)).thenThrow(jsonParseException);
 
         ResponseAsyncHandler asyncHandler = new ResponseAsyncHandler(Optional.of(responseCallback), parser);

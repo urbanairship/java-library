@@ -21,7 +21,7 @@ public class ChannelViewDeserializeTest {
     public void testMinimal() throws Exception {
         String json =
             "{" +
-                "\"channel_id\" : \"abcdef\"," +
+                "\"channel_id\" : \"251d3318-b3cb-4e9f-876a-ea3bfa6e47bd\"," +
                 "\"device_type\" : \"ios\"," +
                 "\"installed\" : true," +
                 "\"opt_in\" : false," +
@@ -43,7 +43,7 @@ public class ChannelViewDeserializeTest {
     public void testMaximal() throws Exception {
         String json =
             "{" +
-                "\"channel_id\" : \"abcdef\"," +
+                "\"channel_id\" : \"251d3318-b3cb-4e9f-876a-ea3bfa6e47bd\"," +
                 "\"device_type\" : \"ios\"," +
                 "\"installed\" : true," +
                 "\"opt_in\" : true," +
@@ -188,7 +188,7 @@ public class ChannelViewDeserializeTest {
     public void testEmptyTags() throws Exception {
         String json =
             "{" +
-                "\"channel_id\" : \"abcdef\"," +
+                "\"channel_id\" : \"251d3318-b3cb-4e9f-876a-ea3bfa6e47bd\"," +
                 "\"device_type\" : \"ios\"," +
                 "\"installed\" : true," +
                 "\"opt_in\" : false," +
@@ -204,7 +204,7 @@ public class ChannelViewDeserializeTest {
     @Test
     public void testEmptyTagGroups() throws Exception {
         String json = "{" +
-            "\"channel_id\" : \"abcdef\"," +
+            "\"channel_id\" : \"251d3318-b3cb-4e9f-876a-ea3bfa6e47bd\"," +
             "\"device_type\" : \"ios\"," +
             "\"installed\" : true," +
             "\"opt_in\" : false," +
@@ -222,7 +222,7 @@ public class ChannelViewDeserializeTest {
         for (ChannelType channelType : ChannelType.values()) {
             String json =
                 "{" +
-                    "\"channel_id\" : \"abcdef\"," +
+                    "\"channel_id\" : \"251d3318-b3cb-4e9f-876a-ea3bfa6e47bd\"," +
                     "\"device_type\" : \"" + channelType.getIdentifier() + "\"," +
                     "\"installed\" : true," +
                     "\"created\" : \"2013-08-08T20:41:06.000Z\"," +

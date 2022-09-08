@@ -1,11 +1,12 @@
 package com.urbanairship.api.staticlists.parse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Optional;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.staticlists.model.StaticListView;
 import org.joda.time.DateTime;
 import org.junit.Test;
+
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 

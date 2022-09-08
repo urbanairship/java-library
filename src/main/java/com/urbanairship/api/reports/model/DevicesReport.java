@@ -3,8 +3,8 @@ package com.urbanairship.api.reports.model;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.common.model.ErrorDetails;
 
-import java.util.Optional;
 import java.util.Objects;
+import java.util.Optional;
 
 public class DevicesReport {
     private final Optional<String> dateClosed;

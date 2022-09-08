@@ -3,8 +3,9 @@
  */
 package com.urbanairship.api.push.model.notification.ios;
 
-import com.google.common.base.Optional;
 import com.urbanairship.api.push.model.PushModelObject;
+
+import java.util.Optional;
 
 /**
  * Content for iOS specific media push messages.
@@ -133,9 +134,9 @@ public final class IOSMediaContent extends PushModelObject{
          * @return IOSMediaContent
          */
         public IOSMediaContent build() {
-            return new IOSMediaContent(Optional.fromNullable(title),
-                               Optional.fromNullable(body),
-                               Optional.fromNullable(subtitle));
+            return new IOSMediaContent(Optional.ofNullable(title),
+                               Optional.ofNullable(body),
+                               Optional.ofNullable(subtitle));
         }
     }
 }

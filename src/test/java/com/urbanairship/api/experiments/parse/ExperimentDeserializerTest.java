@@ -6,12 +6,13 @@ import com.urbanairship.api.experiments.model.Experiment;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.audience.Selectors;
-
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class ExperimentDeserializerTest {
 
@@ -41,7 +42,7 @@ public class ExperimentDeserializerTest {
     }
 
     @Test
-    public void testEmptyAudience() throws Exception {
+    public void testEmptyAudience() {
         Exception exception = Assert.assertThrows(APIParsingException.class, () -> {
             String experimentString =
             "{" +
@@ -63,7 +64,7 @@ public class ExperimentDeserializerTest {
     }
 
     @Test
-    public void testEmptyDeviceTypes() throws Exception {
+    public void testEmptyDeviceTypes() {
         Exception exception = Assert.assertThrows(APIParsingException.class, () -> {
             String experimentString =
             "{" +
@@ -85,7 +86,7 @@ public class ExperimentDeserializerTest {
     }
 
     @Test
-    public void testEmptyVariants() throws Exception {
+    public void testEmptyVariants() {
         Exception exception = Assert.assertThrows(APIParsingException.class, () -> {
             String experimentString =
             "{" +

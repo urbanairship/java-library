@@ -10,6 +10,7 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -24,7 +25,7 @@ public class ChannelResponseTest {
     @Test
     public void testAPIListAllChannelsResponse() {
 
-        String sevenresponse = "{\n" +
+        String sevenResponse = "{\n" +
             "  \"ok\": true,\n" +
             "  \"channels\": [\n" +
             "    {\n" +
@@ -217,7 +218,7 @@ public class ChannelResponseTest {
             "  \"next_page\": \"https:\\/\\/go.urbanairship.com\\/api\\/channels?limit=5&start=0143e4d6-724c-4fc8-bbc6-ca647b8993bf\"\n" +
             "}";
         try {
-            ChannelResponse response = MAPPER.readValue(sevenresponse, ChannelResponse.class);
+            ChannelResponse response = MAPPER.readValue(sevenResponse, ChannelResponse.class);
 
             assertTrue(response.getOk());
             assertEquals("https://go.urbanairship.com/api/channels?limit=5&start=0143e4d6-724c-4fc8-bbc6-ca647b8993bf", response.getNextPage().get());
@@ -235,7 +236,7 @@ public class ChannelResponseTest {
             assertFalse(one.getPushAddress().isPresent());
             assertEquals("[test01]", one.getTags().toString());
             assertTrue(one.getTagGroups().containsKey("testGroup01"));
-            assertEquals("[testGroup01Tag01]", one.getTagGroups().get("testGroup01").toString());
+            assertEquals("[testGroup01Tag01]", Objects.requireNonNull(one.getTagGroups().get("testGroup01")).toString());
             assertFalse(one.isInstalled());
             assertFalse(one.isOptIn());
 
@@ -251,7 +252,7 @@ public class ChannelResponseTest {
             assertEquals("APA91bFPOUF6KNHXjoG0vaQSP4VLXirGDpy0_CRcb6Jhvnrya2bdRmlUoMiJ12JJevjONZzUwFETYa8uzyiE_9WaL3mzZrdjqOv2YuzYlQ_TrXVgo61JmIyw-M_pshIjVvkvtOuZ4MnRJJ_MiQDYwpB4ZhOTMlyqRw", two.getPushAddress().get());
             assertEquals("[aaron-tag, rhtgeg, tnrvrg]", two.getTags().toString());
             assertTrue(two.getTagGroups().containsKey("testGroup02"));
-            assertEquals("[testGroup02Tag02, testGroup02Tag01]", two.getTagGroups().get("testGroup02").toString());
+            assertEquals("[testGroup02Tag02, testGroup02Tag01]", Objects.requireNonNull(two.getTagGroups().get("testGroup02")).toString());
             assertTrue(two.isInstalled());
             assertTrue(two.isOptIn());
 
@@ -262,7 +263,7 @@ public class ChannelResponseTest {
             assertEquals("00d174cd-0a31-427e-95c9-52d5785bcd50", three.getChannelId());
             assertEquals(1404929317000L, three.getCreated().getMillis());
             assertEquals(ChannelType.IOS.getIdentifier(), three.getChannelType());
-            assertEquals("IosSettings{badge=1, quiettime=Optional.of(QuietTime{start='17:00', end='9:00'}), timezone=Optional.of(America/Los_Angeles)}", three.getIosSettings().get().toString());
+            assertEquals("IosSettings{badge=1, quiettime=Optional[QuietTime{start='17:00', end='9:00'}], timezone=Optional[America/Los_Angeles]}", three.getIosSettings().get().toString());
             assertEquals(1412214102000L, three.getLastRegistration().get().getMillis());
             assertEquals("E4EA0D96092A9213BB186BEF66E83EE226401F82B3A77A1AC8217A8FE8ED4614", three.getPushAddress().get());
             assertEquals("[version_1.5.0]", three.getTags().toString());
@@ -277,7 +278,7 @@ public class ChannelResponseTest {
             assertEquals("00d8cb94-eac9-49fb-bad0-29298a06730e", four.getChannelId());
             assertEquals(1393109317000L, four.getCreated().getMillis());
             assertEquals(ChannelType.IOS.getIdentifier(), four.getChannelType());
-            assertEquals("IosSettings{badge=1, quiettime=Optional.of(QuietTime{start='null', end='null'}), timezone=Optional.absent()}", four.getIosSettings().get().toString());
+            assertEquals("IosSettings{badge=1, quiettime=Optional[QuietTime{start='null', end='null'}], timezone=Optional.empty}", four.getIosSettings().get().toString());
             assertFalse(four.getLastRegistration().isPresent());
             assertEquals("21F34C9ED37EAF8D7DC43561C07AA398CA5C6F503196C9E8230C50C0959B8653", four.getPushAddress().get());
             assertEquals("[kablam, version_1.3]", four.getTags().toString());
@@ -286,7 +287,7 @@ public class ChannelResponseTest {
             ImmutableSet<String> expectedTags = ImmutableSet.of("testGroup03Tag01", "testGroup03Tag03", "testGroup03Tag02");
             assertEquals(expectedTags, four.getTagGroups().get("testGroup03"));
             assertTrue(four.getTagGroups().containsKey("testGroup04"));
-            assertEquals("[testGroup04Tag01]", four.getTagGroups().get("testGroup04").toString());
+            assertEquals("[testGroup04Tag01]", Objects.requireNonNull(four.getTagGroups().get("testGroup04")).toString());
             assertFalse(four.isInstalled());
             assertFalse(four.isOptIn());
 
@@ -367,8 +368,8 @@ public class ChannelResponseTest {
         ChannelView smsChannel = response.getChannelView().get();
         assertNotNull(smsChannel);
         assertEquals("sms", smsChannel.getChannelType());
-        assertTrue(smsChannel.getTagGroups().get("ua_channel_type").contains("sms"));
-        assertTrue(smsChannel.getTagGroups().get("ua_sender_id").contains("12345678912"));
+        assertTrue(Objects.requireNonNull(smsChannel.getTagGroups().get("ua_channel_type")).contains("sms"));
+        assertTrue(Objects.requireNonNull(smsChannel.getTagGroups().get("ua_sender_id")).contains("12345678912"));
         assertEquals("f0840bf7-1bf2-4546-9b13-1e48e1f20298", smsChannel.getChannelId());
     }
 
@@ -386,7 +387,7 @@ public class ChannelResponseTest {
 
         assertEquals("error", response.getError().get());
         assertEquals("error", response.getErrorDetails().get().getError().get());
-        assertEquals(false, response.getOk());
+        assertFalse(response.getOk());
     }
   
     @Test

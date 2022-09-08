@@ -36,8 +36,8 @@ public class ChannelAttributesPayloadSerializerTest {
                 .addAttribute(attribute)
                 .setAudience(AttributeAudience.newBuilder()
                         .addSmsSelector(smsSelector)
-                        .addDeviceId(AttributeAudienceType.CHANNEL, "chann_id")
-                        .addDeviceId(AttributeAudienceType.CHANNEL, "chann_id2")
+                        .addDeviceId(AttributeAudienceType.CHANNEL, "channel_id")
+                        .addDeviceId(AttributeAudienceType.CHANNEL, "channel_id2")
                         .addDeviceId(AttributeAudienceType.EMAIL_ADDRESS, "test@test.com")
                         .build())
                 .build();
@@ -46,8 +46,8 @@ public class ChannelAttributesPayloadSerializerTest {
         String expectedStr = "{\n" +
                 "  \"audience\": {\n" +
                 "    \"channel\": [\n" +
-                "      \"chann_id2\",\n" +
-                "      \"chann_id\"\n" +
+                "      \"channel_id2\",\n" +
+                "      \"channel_id\"\n" +
                 "    ],\n" +
                 "    \"email_address\": [\n" +
                 "      \"test@test.com\"\n" +
@@ -122,16 +122,14 @@ public class ChannelAttributesPayloadSerializerTest {
     }
 
     @Test
-    public void testAbsentValue() throws Exception {
+    public void testAbsentValue() {
         DateTime now = DateTime.now();
 
-        Exception exception = Assert.assertThrows(NullPointerException.class, () -> {
-                Attribute.newBuilder()
-                .setAction(AttributeAction.SET)
-                .setKey("birthday")
-                .setTimeStamp(now)
-                .build();
-            });
+        Exception exception = Assert.assertThrows(NullPointerException.class, () -> Attribute.newBuilder()
+        .setAction(AttributeAction.SET)
+        .setKey("birthday")
+        .setTimeStamp(now)
+        .build());
         
         String expectedMessage = "Value must not be null when setting attributes";
         String actualMessage = exception.getMessage();
@@ -140,11 +138,9 @@ public class ChannelAttributesPayloadSerializerTest {
     }
 
     @Test
-    public void testEmptyAudience() throws Exception {
+    public void testEmptyAudience() {
 
-        Exception exception = Assert.assertThrows(IllegalArgumentException.class, () -> {
-                AttributeAudience.newBuilder().build();
-        });
+        Exception exception = Assert.assertThrows(IllegalArgumentException.class, () -> AttributeAudience.newBuilder().build());
 
         String expectedMessage = "Device types or SmsSelectors must be added.";
         String actualMessage = exception.getMessage();

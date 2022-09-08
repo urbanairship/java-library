@@ -10,7 +10,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.BaseEncoding;
 import com.urbanairship.api.common.parse.APIParsingException;
@@ -35,6 +34,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
+import java.util.Optional;
 
 public final class ActionsReader implements JsonObjectReader<Actions> {
 
@@ -133,7 +133,7 @@ public final class ActionsReader implements JsonObjectReader<Actions> {
         }
 
         Optional<LandingPageContent.Encoding> optEncoding = contentEncoding.isMissingNode() ?
-                Optional.<LandingPageContent.Encoding>absent() :
+                Optional.<LandingPageContent.Encoding>empty() :
                 Optional.of(contentEncoding.textValue().equals("base64") ?
                         LandingPageContent.Encoding.Base64 :
                         LandingPageContent.Encoding.UTF8);

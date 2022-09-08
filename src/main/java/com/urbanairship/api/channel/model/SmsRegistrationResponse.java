@@ -1,8 +1,9 @@
 package com.urbanairship.api.channel.model;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.urbanairship.api.common.model.ErrorDetails;
+
+import java.util.Optional;
 
 /**
  * Sms Registration response object.
@@ -16,10 +17,10 @@ public class SmsRegistrationResponse {
     
     private SmsRegistrationResponse(Builder builder) {
         this.ok = builder.ok;
-        this.channelId = Optional.fromNullable(builder.channelId);
-        this.status = Optional.fromNullable(builder.status);
-        this.error = Optional.fromNullable(builder.error);
-        this.errorDetails = Optional.fromNullable(builder.errorDetails);
+        this.channelId = Optional.ofNullable(builder.channelId);
+        this.status = Optional.ofNullable(builder.status);
+        this.error = Optional.ofNullable(builder.error);
+        this.errorDetails = Optional.ofNullable(builder.errorDetails);
 
     }
 

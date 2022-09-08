@@ -1,6 +1,6 @@
 package com.urbanairship.api.customevents.model;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 public enum CustomEventChannelType {
     IOS_CHANNEL("ios_channel"),
@@ -24,7 +24,7 @@ public enum CustomEventChannelType {
             }
         }
 
-        return Optional.absent();
+        return Optional.empty();
     }
 
     public String getIdentifier() {

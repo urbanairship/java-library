@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.sms.model.CustomSmsResponseMmsPayload;
 import com.urbanairship.api.sms.model.CustomSmsResponseSmsPayload;
 import com.urbanairship.api.sms.model.MmsSlides;
-
 import org.junit.Test;
 
 import java.io.IOException;
@@ -23,7 +22,7 @@ public class CustomSmsResponseChannelSerializerTest {
                     .build();
 
             String parsedJson = MAPPER.writeValueAsString(CustomSmsResponseSmsPayload);
-            String jsonString = String.format("{\"mobile_originated_id\":\"28883743-4868-4083-ab5d-77ac4542531a\",\"sms\":{\"alert\":\"Your balance is $1234.56\",\"shorten_links\":true}}");
+            String jsonString = "{\"mobile_originated_id\":\"28883743-4868-4083-ab5d-77ac4542531a\",\"sms\":{\"alert\":\"Your balance is $1234.56\",\"shorten_links\":true}}";
 
             JsonNode actual = MAPPER.readTree(parsedJson);
 
@@ -48,7 +47,7 @@ public class CustomSmsResponseChannelSerializerTest {
                 .build();
 
             String parsedJson = MAPPER.writeValueAsString(CustomSmsResponseMmsPayload);
-            String jsonString = String.format("{\"mobile_originated_id\":\"28883743-4868-4083-ab5d-77ac4542531a\",\"mms\":{\"fallback_text\":\"Your balance is $1234.56\",\"slides\":[{\"text\":\"test\",\"media\":{\"url\":\"https://example.com/cat/pics/12345678.gif\",\"content_type\":\"image/gif\",\"content_length\":12345}}]}}");
+            String jsonString = "{\"mobile_originated_id\":\"28883743-4868-4083-ab5d-77ac4542531a\",\"mms\":{\"fallback_text\":\"Your balance is $1234.56\",\"slides\":[{\"text\":\"test\",\"media\":{\"url\":\"https://example.com/cat/pics/12345678.gif\",\"content_type\":\"image/gif\",\"content_length\":12345}}]}}";
 
             JsonNode actual = MAPPER.readTree(parsedJson);
             JsonNode expected = MAPPER.readTree(jsonString);

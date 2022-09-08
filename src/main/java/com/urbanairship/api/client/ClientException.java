@@ -4,7 +4,7 @@
 
 package com.urbanairship.api.client;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 /**
  * Exception class for client side API interactions
@@ -127,7 +127,7 @@ public class ClientException extends RuntimeException {
         public ClientException build() {
             return new ClientException(statusText,
                     statusCode,
-                    Optional.fromNullable(requestError));
+                    Optional.ofNullable(requestError));
         }
     }
 }

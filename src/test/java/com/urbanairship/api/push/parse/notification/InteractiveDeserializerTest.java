@@ -1,7 +1,6 @@
 package com.urbanairship.api.push.parse.notification;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.notification.Interactive;
@@ -13,6 +12,7 @@ import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

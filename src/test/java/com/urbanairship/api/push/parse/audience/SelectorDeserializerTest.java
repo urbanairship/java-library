@@ -16,8 +16,8 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-
 public class SelectorDeserializerTest {
     private static final ObjectMapper mapper = PushObjectMapper.getInstance();
 
@@ -38,7 +38,7 @@ public class SelectorDeserializerTest {
         String iosChannel = UUID.randomUUID().toString();
         String json = "{\"ios_channel\": \"" + iosChannel + "\"}";
         BasicValueSelector value = (BasicValueSelector) mapper.readValue(json, Selector.class);
-        assertTrue(value.getType() == SelectorType.IOS_CHANNEL);
+        assertSame(value.getType(), SelectorType.IOS_CHANNEL);
         assertEquals(value.getValue(), iosChannel);
     }
 
@@ -47,7 +47,7 @@ public class SelectorDeserializerTest {
         String androidChannel = UUID.randomUUID().toString();
         String json = "{\"android_channel\": \"" + androidChannel + "\"}";
         BasicValueSelector value = (BasicValueSelector) mapper.readValue(json, Selector.class);
-        assertTrue(value.getType() == SelectorType.ANDROID_CHANNEL);
+        assertSame(value.getType(), SelectorType.ANDROID_CHANNEL);
         assertEquals(value.getValue(), androidChannel);
     }
 
@@ -56,7 +56,7 @@ public class SelectorDeserializerTest {
         String amazonChannel = UUID.randomUUID().toString();
         String json = "{\"amazon_channel\": \"" + amazonChannel + "\"}";
         BasicValueSelector value = (BasicValueSelector) mapper.readValue(json, Selector.class);
-        assertTrue(value.getType() == SelectorType.AMAZON_CHANNEL);
+        assertSame(value.getType(), SelectorType.AMAZON_CHANNEL);
         assertEquals(value.getValue(), amazonChannel);
     }
 
@@ -65,7 +65,7 @@ public class SelectorDeserializerTest {
         String channel = UUID.randomUUID().toString();
         String json = "{\"channel\": \"" + channel + "\"}";
         BasicValueSelector value = (BasicValueSelector) mapper.readValue(json, Selector.class);
-        assertTrue(value.getType() == SelectorType.CHANNEL);
+        assertSame(value.getType(), SelectorType.CHANNEL);
         assertEquals(value.getValue(), channel);
     }
 
@@ -75,14 +75,14 @@ public class SelectorDeserializerTest {
         String namedUser = "FakeNamedUser";
         String json = "{\"named_user\": \"" + namedUser + "\"}";
         BasicValueSelector value = (BasicValueSelector) mapper.readValue(json, Selector.class);
-        assertTrue(value.getType() == SelectorType.NAMED_USER);
+        assertSame(value.getType(), SelectorType.NAMED_USER);
         assertEquals(value.getValue(), namedUser);
     }
 
     @Test
     public void testDeserializeTag() throws Exception {
         Selector value = mapper.readValue("{ \"tag\" : \"derp\" }", Selector.class);
-        assertTrue(value.getType() == SelectorType.TAG);
+        assertSame(value.getType(), SelectorType.TAG);
         assertTrue(value instanceof ValueSelector);
     }
 
@@ -95,7 +95,7 @@ public class SelectorDeserializerTest {
                 + "  \"match_precision\" : \"month_day\"\n"
                 + "}";
         Selector value = mapper.readValue(json, Selector.class);
-        assertTrue(value.getType() == SelectorType.ATTRIBUTE);
+        assertSame(value.getType(), SelectorType.ATTRIBUTE);
         assertTrue(value instanceof ValueSelector);
     }
 
@@ -106,7 +106,7 @@ public class SelectorDeserializerTest {
                 + "  \"tag_class\" : \"autogroup\"\n"
                 + "}";
         Selector value = mapper.readValue(json, Selector.class);
-        assertTrue(value.getType() == SelectorType.TAG);
+        assertSame(value.getType(), SelectorType.TAG);
         assertTrue(value instanceof ValueSelector);
         ValueSelector vs = (ValueSelector) value;
         assertTrue(vs.getAttributes().isPresent());
@@ -122,7 +122,7 @@ public class SelectorDeserializerTest {
             "}";
 
         Selector value = mapper.readValue(json, Selector.class);
-        assertTrue(value.getType() == SelectorType.TAG);
+        assertSame(value.getType(), SelectorType.TAG);
         assertTrue(value instanceof ValueSelector);
         ValueSelector vs = (ValueSelector) value;
         assertTrue(vs.getAttributes().isPresent());

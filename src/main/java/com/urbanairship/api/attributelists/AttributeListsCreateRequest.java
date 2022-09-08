@@ -6,14 +6,13 @@ package com.urbanairship.api.attributelists;
 
 import com.google.common.base.Preconditions;
 import com.google.common.net.HttpHeaders;
+import com.urbanairship.api.attributelists.parse.AttributeListsObjectMapper;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
-import com.urbanairship.api.attributelists.parse.AttributeListsObjectMapper;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.entity.ContentType;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;

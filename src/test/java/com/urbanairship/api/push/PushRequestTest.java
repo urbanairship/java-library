@@ -13,7 +13,6 @@ import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.apache.http.entity.ContentType;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -63,7 +62,7 @@ public class PushRequestTest {
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
@@ -84,12 +83,7 @@ public class PushRequestTest {
 
     @Test
     public void testPushParser() throws Exception {
-        ResponseParser<PushResponse> responseParser = new ResponseParser<PushResponse>() {
-            @Override
-            public PushResponse parse(String response) throws IOException {
-                return PushObjectMapper.getInstance().readValue(response, PushResponse.class);
-            }
-        };
+        ResponseParser<PushResponse> responseParser = response -> PushObjectMapper.getInstance().readValue(response, PushResponse.class);
 
         String response = "{\"ok\" : true,\"operation_id\" : \"df6a6b50\", \"push_ids\":[\"PushID\"]}";
         assertEquals(pushRequest.getResponseParser().parse(response), responseParser.parse(response));
@@ -97,12 +91,7 @@ public class PushRequestTest {
 
     @Test
     public void testPushValidationParser() throws Exception {
-        ResponseParser<PushResponse> responseParser = new ResponseParser<PushResponse>() {
-            @Override
-            public PushResponse parse(String response) throws IOException {
-                return PushObjectMapper.getInstance().readValue(response, PushResponse.class);
-            }
-        };
+        ResponseParser<PushResponse> responseParser = response -> PushObjectMapper.getInstance().readValue(response, PushResponse.class);
 
         String response = "{\"ok\" : true}";
         assertEquals(validateRequest.getResponseParser().parse(response), responseParser.parse(response));

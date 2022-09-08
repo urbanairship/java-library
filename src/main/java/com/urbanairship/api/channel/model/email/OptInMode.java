@@ -1,6 +1,6 @@
 package com.urbanairship.api.channel.model.email;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 /**
  * Enum of opt in modes
@@ -27,7 +27,7 @@ public enum OptInMode {
             }
         }
 
-        return Optional.absent();
+        return Optional.empty();
     }
 
     public String getIdentifier() {

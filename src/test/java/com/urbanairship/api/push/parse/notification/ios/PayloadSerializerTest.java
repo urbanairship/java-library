@@ -1,16 +1,25 @@
 package com.urbanairship.api.push.parse.notification.ios;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableList;
-import com.urbanairship.api.push.model.notification.Interactive;
-import com.urbanairship.api.push.model.notification.ios.*;
-import com.urbanairship.api.push.parse.PushObjectMapper;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableList;
+import com.urbanairship.api.push.model.notification.Interactive;
+import com.urbanairship.api.push.model.notification.ios.Crop;
+import com.urbanairship.api.push.model.notification.ios.IOSAlertData;
+import com.urbanairship.api.push.model.notification.ios.IOSBadgeData;
+import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
+import com.urbanairship.api.push.model.notification.ios.IOSInterruptionLevel;
+import com.urbanairship.api.push.model.notification.ios.IOSMediaContent;
+import com.urbanairship.api.push.model.notification.ios.IOSMediaOptions;
+import com.urbanairship.api.push.model.notification.ios.IOSSoundData;
+import com.urbanairship.api.push.model.notification.ios.MediaAttachment;
+import com.urbanairship.api.push.parse.PushObjectMapper;
 
 public class PayloadSerializerTest {
 
@@ -248,6 +257,6 @@ public class PayloadSerializerTest {
                 "}";
 
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
-        assertEquals(payload.getRelevanceScore().get().doubleValue(), 1.0, 0.0f);
+        assertEquals(payload.getRelevanceScore().get(), 1.0, 0.0f);
     }
 }

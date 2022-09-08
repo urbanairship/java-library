@@ -5,10 +5,11 @@
 package com.urbanairship.api.channel.model;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.common.model.ErrorDetails;
+
+import java.util.Optional;
 
 /**
  * Channel listing response object
@@ -27,11 +28,11 @@ public class ChannelResponse {
 
     private ChannelResponse(boolean ok, String nextPage, Optional<ChannelView> channelObject, Optional<ImmutableList<ChannelView>> channelObjects, String error, ErrorDetails errorDetails) {
         this.ok = ok;
-        this.nextPage = Optional.fromNullable(nextPage);
+        this.nextPage = Optional.ofNullable(nextPage);
         this.channelObject = channelObject;
         this.channelObjects = channelObjects;
-        this.error = Optional.fromNullable(error);
-        this.errorDetails = Optional.fromNullable(errorDetails);
+        this.error = Optional.ofNullable(error);
+        this.errorDetails = Optional.ofNullable(errorDetails);
     }
 
     /**
@@ -230,7 +231,7 @@ public class ChannelResponse {
                 Preconditions.checkArgument(nextPage == null && channelObjects.build().isEmpty());
             }
 
-            return new ChannelResponse(ok, nextPage,Optional.fromNullable(channelObject), Optional.fromNullable(channelObjects.build()), error, errorDetails);
+            return new ChannelResponse(ok, nextPage,Optional.ofNullable(channelObject), Optional.ofNullable(channelObjects.build()), error, errorDetails);
         }
     }
 }

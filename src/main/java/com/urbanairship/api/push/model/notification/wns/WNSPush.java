@@ -4,7 +4,7 @@
 
 package com.urbanairship.api.push.model.notification.wns;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -179,10 +179,10 @@ public class WNSPush
                 checkArgument(badge != null, "Must supply a value for 'badge'");
             }
             return new WNSPush(type,
-                               Optional.fromNullable(toast),
-                               Optional.fromNullable(tile),
-                               Optional.fromNullable(badge),
-                               Optional.fromNullable(cachePolicy));
+                               Optional.ofNullable(toast),
+                               Optional.ofNullable(tile),
+                               Optional.ofNullable(badge),
+                               Optional.ofNullable(cachePolicy));
         }
     }
 }

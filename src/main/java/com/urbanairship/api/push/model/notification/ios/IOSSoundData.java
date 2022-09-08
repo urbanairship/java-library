@@ -3,9 +3,8 @@ package com.urbanairship.api.push.model.notification.ios;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.PushModelObject;
 
-import com.google.common.base.Optional;
-
 import java.util.Objects;
+import java.util.Optional;
 
 public final class IOSSoundData extends PushModelObject {
     private final Optional<Boolean> critical;
@@ -89,7 +88,7 @@ public final class IOSSoundData extends PushModelObject {
 
         public IOSSoundData build() {
             Preconditions.checkNotNull(name, "The sound file name cannot be null");
-            return new IOSSoundData(Optional.fromNullable(critical), Optional.fromNullable(volume), Optional.fromNullable(name));
+            return new IOSSoundData(Optional.ofNullable(critical), Optional.ofNullable(volume), Optional.ofNullable(name));
         }
     }
 }

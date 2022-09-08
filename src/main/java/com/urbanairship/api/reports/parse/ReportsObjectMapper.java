@@ -7,19 +7,16 @@ package com.urbanairship.api.reports.parse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-import com.urbanairship.api.reports.model.CustomEventsDetailResponse;
-import com.urbanairship.api.reports.model.CustomEventsDetailsListingResponse;
 import com.urbanairship.api.reports.model.DeviceStats;
+import com.urbanairship.api.reports.model.DeviceTypeStats;
 import com.urbanairship.api.reports.model.DevicesReport;
 import com.urbanairship.api.reports.model.DevicesReportResponse;
-import com.urbanairship.api.reports.model.DeviceTypeStats;
 import com.urbanairship.api.reports.model.PlatformStats;
 import com.urbanairship.api.reports.model.PlatformStatsResponse;
 import com.urbanairship.api.reports.model.PushInfoResponse;
 import com.urbanairship.api.reports.model.PushListingResponse;
 import com.urbanairship.api.reports.model.ResponseReport;
 import com.urbanairship.api.reports.model.ResponseReportResponse;
-
 
 public class ReportsObjectMapper {
     private static final ObjectMapper MAPPER = new ObjectMapper();

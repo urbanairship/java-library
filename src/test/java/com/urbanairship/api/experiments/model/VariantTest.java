@@ -22,7 +22,7 @@ public class VariantTest {
                 .setName("name")
                 .setDescription("description")
                 .setPushPayload(payload)
-                .setWeight(new Integer(1))
+                .setWeight(1)
                 .build();
 
         assertNotNull(variant);

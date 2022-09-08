@@ -1,12 +1,11 @@
 package com.urbanairship.api.reports.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.urbanairship.api.reports.parse.ReportsObjectMapper;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.UUID;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.urbanairship.api.reports.parse.ReportsObjectMapper;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

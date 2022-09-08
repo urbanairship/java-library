@@ -9,12 +9,12 @@ import com.urbanairship.api.reports.parse.ReportsObjectMapper;
 import org.apache.http.entity.ContentType;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class PushInfoRequestTest {
     ObjectMapper mapper = ReportsObjectMapper.getInstance();
@@ -33,12 +33,12 @@ public class PushInfoRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(pushInfoRequest.getRequestBody(), null);
+        assertNull(pushInfoRequest.getRequestBody());
     }
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
@@ -55,12 +55,7 @@ public class PushInfoRequestTest {
 
     @Test
     public void testPushParser() throws Exception {
-        ResponseParser<PushInfoResponse> responseParser = new ResponseParser<PushInfoResponse>() {
-            @Override
-            public PushInfoResponse parse(String response) throws IOException {
-                return mapper.readValue(response, PushInfoResponse.class);
-            }
-        };
+        ResponseParser<PushInfoResponse> responseParser = response -> mapper.readValue(response, PushInfoResponse.class);
 
         String response = "{  \n" +
                 "  \"push_uuid\":\"5e42ddfc-fa2d-11e2-9ca2-90e2ba025cd0\",\n" +

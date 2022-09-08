@@ -4,7 +4,7 @@
 
 package com.urbanairship.api.common.parse;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 public interface FieldParserRegistry<T, R extends JsonObjectReader<T>> {
 

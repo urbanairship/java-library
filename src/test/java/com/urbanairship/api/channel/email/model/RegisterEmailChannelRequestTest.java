@@ -12,7 +12,6 @@ import org.apache.http.entity.ContentType;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +41,7 @@ public class RegisterEmailChannelRequestTest {
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
@@ -59,12 +58,7 @@ public class RegisterEmailChannelRequestTest {
 
     @Test
     public void testRegisterEmailChannelParser() throws Exception {
-        ResponseParser<EmailChannelResponse> responseParser = new ResponseParser<EmailChannelResponse>() {
-            @Override
-            public EmailChannelResponse parse(String response) throws IOException {
-                return PushObjectMapper.getInstance().readValue(response, EmailChannelResponse.class);
-            }
-        };
+        ResponseParser<EmailChannelResponse> responseParser = response -> PushObjectMapper.getInstance().readValue(response, EmailChannelResponse.class);
 
         String response = "{\"ok\" : true,\"channel_id\" : \"df6a6b50\"}";
         Assert.assertEquals(request.getResponseParser().parse(response), responseParser.parse(response));

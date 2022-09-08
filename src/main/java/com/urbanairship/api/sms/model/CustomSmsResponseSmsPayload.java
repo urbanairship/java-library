@@ -1,8 +1,9 @@
 package com.urbanairship.api.sms.model;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+
+import java.util.Optional;
 
 /**
  * Represents the payload to be used for using custom response sms payload.
@@ -16,7 +17,7 @@ public class CustomSmsResponseSmsPayload  extends SmsModelObject {
     protected CustomSmsResponseSmsPayload(Builder builder) {
         this.mobileOriginatedId = builder.mobileOriginatedId;
         this.alert = builder.alert;
-        this.shortenLinks = Optional.fromNullable(builder.shortenLinks);
+        this.shortenLinks = Optional.of(builder.shortenLinks);
 
     }
 

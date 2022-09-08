@@ -5,13 +5,11 @@ import com.urbanairship.api.push.model.notification.actions.AddTagAction;
 import com.urbanairship.api.push.model.notification.actions.TagActionData;
 import org.junit.Test;
 
-import java.io.IOException;
-
 import static org.junit.Assert.assertEquals;
 
 public class NotificationTest {
     @Test
-    public void testNotificationToBuilder() throws IOException {
+    public void testNotificationToBuilder() {
         Notification notification = Notification.newBuilder()
                 .setAlert("foo")
                 .setActions(Actions.newBuilder()

@@ -6,9 +6,10 @@ package com.urbanairship.api.experiments.model;
 
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.schedule.model.Schedule;
+
+import java.util.Optional;
 
 /**
  * Defines a push that will be sent to a subset of an experiment's audience.
@@ -22,11 +23,11 @@ public class Variant {
     private Optional<Integer> weight;
 
     private Variant(Builder builder) {
-        this.name = Optional.fromNullable(builder.name);
-        this.description = Optional.fromNullable(builder.description);
-        this.schedule = Optional.fromNullable(builder.schedule);
+        this.name = Optional.ofNullable(builder.name);
+        this.description = Optional.ofNullable(builder.description);
+        this.schedule = Optional.ofNullable(builder.schedule);
         this.variantPushPayload = builder.variantPushPayload;
-        this.weight = Optional.fromNullable(builder.weight);
+        this.weight = Optional.ofNullable(builder.weight);
     }
 
     /**

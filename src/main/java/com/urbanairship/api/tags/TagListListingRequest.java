@@ -12,7 +12,6 @@ import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.tags.model.TagListListingResponse;
-
 import org.apache.http.entity.ContentType;
 
 import java.net.URI;

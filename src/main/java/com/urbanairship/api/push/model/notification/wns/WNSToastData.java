@@ -4,7 +4,7 @@
 
 package com.urbanairship.api.push.model.notification.wns;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -105,8 +105,8 @@ public class WNSToastData {
         public WNSToastData build() {
             checkArgument(binding != null, "toast must have a value for 'binding'");
             return new WNSToastData(binding,
-                                    Optional.fromNullable(duration),
-                                    Optional.fromNullable(audio));
+                                    Optional.ofNullable(duration),
+                                    Optional.ofNullable(audio));
         }
     }
 }

@@ -1,13 +1,13 @@
 package com.urbanairship.api.channel.model.email;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.push.model.PushModelObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Represents the payload to be used for updating an email channel.
@@ -23,11 +23,11 @@ public class UpdateEmailChannel extends PushModelObject {
     //Protected to facilitate subclassing for create and send child object
     protected UpdateEmailChannel(Builder builder) {
         this.type = ChannelType.EMAIL;
-        this.emailOptInLevel = Optional.fromNullable((builder.emailOptInLevel));
+        this.emailOptInLevel = Optional.ofNullable((builder.emailOptInLevel));
         this.address = builder.address;
-        this.timezone = Optional.fromNullable(builder.timezone);
-        this.localeCountry = Optional.fromNullable(builder.localeCountry);
-        this.localeLanguage = Optional.fromNullable(builder.localeLanguage);
+        this.timezone = Optional.ofNullable(builder.timezone);
+        this.localeCountry = Optional.ofNullable(builder.localeCountry);
+        this.localeLanguage = Optional.ofNullable(builder.localeLanguage);
     }
 
     /**

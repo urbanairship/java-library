@@ -1,8 +1,9 @@
 package com.urbanairship.api.channel.model;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.urbanairship.api.common.model.ErrorDetails;
+
+import java.util.Optional;
 
 public class OpenChannelResponse {
     private final boolean ok;
@@ -13,8 +14,8 @@ public class OpenChannelResponse {
     private OpenChannelResponse(Builder builder) {
         this.ok = builder.ok;
         this.channelId = builder.channel_id;
-        this.error = Optional.fromNullable(builder.error);
-        this.errorDetails = Optional.fromNullable(builder.errorDetails);
+        this.error = Optional.ofNullable(builder.error);
+        this.errorDetails = Optional.ofNullable(builder.errorDetails);
     
     }
 

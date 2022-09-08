@@ -5,8 +5,9 @@
 package com.urbanairship.api.channel.model.ios;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+
+import java.util.Optional;
 
 public final class IosSettings {
 
@@ -21,7 +22,7 @@ public final class IosSettings {
     }
 
     private IosSettings() {
-        this(0, Optional.<QuietTime>absent(), Optional.<String>absent());
+        this(0, Optional.<QuietTime>empty(), Optional.<String>empty());
     }
 
     public static Builder newBuilder() {
@@ -97,8 +98,8 @@ public final class IosSettings {
 
             return new IosSettings(
                     badge,
-                    Optional.fromNullable(quiettime),
-                    Optional.fromNullable(timezone)
+                    Optional.ofNullable(quiettime),
+                    Optional.ofNullable(timezone)
             );
         }
     }

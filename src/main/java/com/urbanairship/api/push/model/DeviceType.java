@@ -4,10 +4,10 @@
 
 package com.urbanairship.api.push.model;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public final class DeviceType {
 
@@ -66,7 +66,7 @@ public final class DeviceType {
         if (identifier.contains(OPEN_PLATFORM_NAMESPACE)) {
             return Optional.of(new DeviceType(PlatformType.OPEN, identifier));
         } else {
-            return Optional.absent();
+            return Optional.empty();
         }
     }
 

@@ -4,7 +4,7 @@
 
 package com.urbanairship.api.channel.model;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 /**
  * Enum of channel types
@@ -36,7 +36,7 @@ public enum ChannelType {
             }
         }
 
-        return Optional.absent();
+        return Optional.empty();
     }
 
     public String getIdentifier() {

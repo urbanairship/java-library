@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.urbanairship.api.channel.ChannelRequest;
@@ -20,9 +19,9 @@ import com.urbanairship.api.customevents.model.CustomEventUser;
 import com.urbanairship.api.experiments.ExperimentRequest;
 import com.urbanairship.api.experiments.model.Experiment;
 import com.urbanairship.api.experiments.model.ExperimentResponse;
+import com.urbanairship.api.experiments.model.Variant;
 import com.urbanairship.api.experiments.model.VariantPushPayload;
 import com.urbanairship.api.inbox.InboxDeleteRequest;
-import com.urbanairship.api.experiments.model.Variant;
 import com.urbanairship.api.nameduser.NamedUserListingRequest;
 import com.urbanairship.api.nameduser.NamedUserRequest;
 import com.urbanairship.api.nameduser.NamedUserTagRequest;
@@ -84,7 +83,6 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Period;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -108,6 +106,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
@@ -126,7 +125,9 @@ import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
@@ -147,16 +148,11 @@ public class UrbanAirshipClientTest {
     // Set up the client
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         asyncRequestClient = AsyncRequestClient.newBuilder()
                 .setBaseUri("http://localhost:" + wireMockRule.port())
                 .setMaxRetries(5)
-                .setRetryPredicate(new Predicate<FilterContext>() {
-                    @Override
-                    public boolean apply(FilterContext input) {
-                        return input.getResponseStatus().getStatusCode() >= 500;
-                    }
-                })
+                .setRetryPredicate(input -> input.getResponseStatus().getStatusCode() >= 500)
                 .build();
 
         client = UrbanAirshipClient.newBuilder()
@@ -271,9 +267,9 @@ public class UrbanAirshipClientTest {
     public void testGetUserAgent() {
         String userAgent = client.getUserAgent("key");
         assertNotNull(userAgent);
-        assertFalse(userAgent.equals("UNKNOWN"));
-        assertFalse(userAgent.equals("UAJavaLib/UNKNOWN"));
-        assertFalse(userAgent.equals("UAJavaLib/"));
+        assertNotEquals("UNKNOWN", userAgent);
+        assertNotEquals("UAJavaLib/UNKNOWN", userAgent);
+        assertNotEquals("UAJavaLib/", userAgent);
         assertFalse(userAgent.endsWith("/"));
         assertTrue(userAgent.startsWith("UAJavaLib/"));
     }
@@ -281,11 +277,11 @@ public class UrbanAirshipClientTest {
     @Test
     public void testAPIClientBuilderWithParams() throws IOException {
 
-        DefaultAsyncHttpClientConfig.Builder defualtClientBuilder = new DefaultAsyncHttpClientConfig.Builder()
+        DefaultAsyncHttpClientConfig.Builder defaultClientBuilder = new DefaultAsyncHttpClientConfig.Builder()
                 .setConnectTimeout(20);
 
         AsyncRequestClient client = AsyncRequestClient.newBuilder()
-                .setClientConfigBuilder(defualtClientBuilder)
+                .setClientConfigBuilder(defaultClientBuilder)
                 .build();
 
         assertEquals(20, client.getClientConfig().getConnectTimeout());
@@ -395,17 +391,17 @@ public class UrbanAirshipClientTest {
                     });
             // Audience
             String audience = (String) result.get("audience");
-            assertTrue(audience.equals("ALL"));
+            assertEquals("ALL", audience);
 
             // DeviceType
             List<String> deviceTypeData = (List<String>) result.get("device_types");
-            assertTrue(deviceTypeData.get(0).equals("ios"));
+            assertEquals("ios", deviceTypeData.get(0));
             assertEquals(DeviceType.find(deviceTypeData.get(0)).get(), DeviceType.IOS);
 
             // Notification
             Map<String, String> notification =
                 (Map<String, String>) result.get("notification");
-            assertTrue(notification.get("alert").equals("Foo"));
+            assertEquals("Foo", notification.get("alert"));
 
             // The response is tested elsewhere, just check that it exists
             assertNotNull(response);
@@ -460,17 +456,17 @@ public class UrbanAirshipClientTest {
                 });
         // Audience
         String audience = (String) result.get("audience");
-        assertTrue(audience.equals("ALL"));
+        assertEquals("ALL", audience);
 
         // DeviceType
         List<String> deviceTypeData = (List<String>) result.get("device_types");
-        assertTrue(deviceTypeData.get(0).equals("ios"));
+        assertEquals("ios", deviceTypeData.get(0));
         assertEquals(DeviceType.find(deviceTypeData.get(0)).get(), DeviceType.IOS);
 
         // Notification
         Map<String, String> notification =
             (Map<String, String>) result.get("notification");
-        assertTrue(notification.get("alert").equals("Foo"));
+        assertEquals("Foo", notification.get("alert"));
 
         // The response is tested elsewhere, just check that it exists
         assertNotNull(response);
@@ -478,7 +474,7 @@ public class UrbanAirshipClientTest {
 
     @Test
     public void testRetryResponse() throws Exception {
-        Mockito.when(retryPredicate.apply(any(FilterContext.class))).thenReturn(true);
+        Mockito.when(retryPredicate.test(any(FilterContext.class))).thenReturn(true);
 
         AsyncRequestClient asyncClient = AsyncRequestClient.newBuilder()
                 .setBaseUri("http://localhost:" + wireMockRule.port())
@@ -558,17 +554,14 @@ public class UrbanAirshipClientTest {
         // The response is tested elsewhere, just check that it exists
         assertNotNull(response);
 
-        scheduledExecutorService.schedule(new Runnable() {
-            @Override
-            public void run() {
-                future.cancel(true);
-                scheduledExecutorService.shutdown();
-            }
+        scheduledExecutorService.schedule(() -> {
+            future.cancel(true);
+            scheduledExecutorService.shutdown();
         }, 5, TimeUnit.MILLISECONDS);
     }
 
     @Test
-    public void testClose() throws Exception {
+    public void testClose() {
         asyncRequestClient = AsyncRequestClient.newBuilder()
             .setBaseUri("http://localhost:" + wireMockRule.port())
             .setMaxRetries(1000)
@@ -585,19 +578,16 @@ public class UrbanAirshipClientTest {
 
         final Future future = client.executeAsync(NamedUserListingRequest.newRequest());
 
-        scheduledExecutorService.schedule(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    client.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                // Test that closing the client cancels retrying requests.
-                assertTrue(future.isCancelled());
-                scheduledExecutorService.shutdown();
+        scheduledExecutorService.schedule(() -> {
+            try {
+                client.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+
+            // Test that closing the client cancels retrying requests.
+            assertTrue(future.isCancelled());
+            scheduledExecutorService.shutdown();
         }, 5, TimeUnit.MILLISECONDS);
     }
 
@@ -632,17 +622,14 @@ public class UrbanAirshipClientTest {
                 ClientException clientException = (ClientException) throwable;
                 RequestError error = clientException.getError().get();
 
-                assertTrue("Operation ID is incorrect",
-                    error.getOperationId().get().equals("operation id"));
-                assertTrue("Error code is incorrect",
-                    error.getErrorCode().get().equals(40001));
+                assertEquals("Operation ID is incorrect", "operation id", error.getOperationId().get());
+                assertEquals("Error code is incorrect", 40001, error.getErrorCode().get());
                 RequestErrorDetails details = error.getDetails().get();
                 RequestErrorDetails.Location errorLocation = details.getLocation().get();
-                assertTrue("Location not setup properly",
-                    errorLocation.getLine().equals(47));
+                assertEquals("Location not setup properly", 47, errorLocation.getLine());
                 latch.countDown();
             }
-        }, new HashMap<String, String>());
+        }, new HashMap<>());
 
         latch.await();
     }
@@ -674,7 +661,7 @@ public class UrbanAirshipClientTest {
             @Override
             public void error(Throwable throwable) {
             }
-        }, new HashMap<String, String>());
+        }, new HashMap<>());
 
         latch.await();
     }
@@ -828,24 +815,24 @@ public class UrbanAirshipClientTest {
                 new TypeReference<Map<String,Object>>(){});
         // Audience
         String audience = (String)result.get("audience");
-        assertTrue(audience.equals("ALL"));
+        assertEquals("ALL", audience);
 
         // DeviceType
         List<String> deviceTypeData = (List<String>)result.get("device_types");
-        assertTrue(deviceTypeData.get(0).equals("ios"));
+        assertEquals("ios", deviceTypeData.get(0));
         assertEquals(DeviceType.find(deviceTypeData.get(0)).get(), DeviceType.IOS);
 
         // Notification
         Map<String, String> notification =
             (Map<String,String>)result.get("notification");
-        assertTrue(notification.get("alert").equals("Foo"));
+        assertEquals("Foo", notification.get("alert"));
 
         // The response is tested elsewhere, just check that it exists
         assertNotNull(response);
     }
 
       /*
-      Validate is the exact workflow as push, with the exception of the URL,
+      Validate is the exact workflow as push, except the URL,
       so focus test on that.
       */
 
@@ -882,7 +869,7 @@ public class UrbanAirshipClientTest {
     public void testListAllSchedules() {
 
         // Setup a stubbed response for the server
-        String listscheduleresponse = "{\"ok\":true,\"count\":5,\"total_count\":6,\"schedules\":" +
+        String listScheduleResponse = "{\"ok\":true,\"count\":5,\"total_count\":6,\"schedules\":" +
             "[{\"url\":\"https://go.urbanairship.com/api/schedules/5a60e0a6-9aa7-449f-a038-6806e572baf3\",\"" +
             "schedule\":{\"scheduled_time\":\"2015-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device" +
             "_types\":[\"android\",\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2015!\",\"android\"" +
@@ -895,7 +882,7 @@ public class UrbanAirshipClientTest {
         stubFor(get(urlEqualTo("/api/schedules/"))
             .willReturn(aResponse()
                 .withHeader(CONTENT_TYPE_KEY, "application/json")
-                .withBody(listscheduleresponse)
+                .withBody(listScheduleResponse)
                 .withStatus(201)));
 
         try {
@@ -913,9 +900,9 @@ public class UrbanAirshipClientTest {
             assertNotNull(response);
             assertTrue(response.getBody().isPresent());
             assertNotNull(response.getHeaders());
-            assertNotNull(response.getStatus());
-            assertNotNull(response.getBody().get().getCount());
-            assertNotNull(response.getBody().get().getTotal_Count());
+            assertEquals(201, response.getStatus());
+            assertEquals(5, response.getBody().get().getCount());
+            assertEquals(6, response.getBody().get().getTotal_Count());
             assertNotNull(response.getBody().get().getSchedules());
         } catch (Exception ex) {
             fail("Exception thrown " + ex);
@@ -926,12 +913,12 @@ public class UrbanAirshipClientTest {
     public void testListSpecificSchedule() {
 
         // Setup a stubbed response for the server
-        String listscheduleresponse = "{\"schedule\":{\"scheduled_time\":\"2015-08-07T22:10:44\"},\"name\":\"Special Scheduled Push 20\",\"push\":{\"audience\":\"ALL\",\"device_types\":\"all\",\"notification\":{\"alert\":\"Scheduled Push 20\"}},\"push_ids\":[\"274f9aa4-2d00-4911-a043-70129f29adf2\"]}";
+        String listScheduleResponse = "{\"schedule\":{\"scheduled_time\":\"2015-08-07T22:10:44\"},\"name\":\"Special Scheduled Push 20\",\"push\":{\"audience\":\"ALL\",\"device_types\":\"all\",\"notification\":{\"alert\":\"Scheduled Push 20\"}},\"push_ids\":[\"274f9aa4-2d00-4911-a043-70129f29adf2\"]}";
 
         stubFor(get(urlEqualTo("/api/schedules/ee0dd92c-de3b-46dc-9937-c9dcaef0170f"))
             .willReturn(aResponse()
                 .withHeader(CONTENT_TYPE_KEY, "application/json")
-                .withBody(listscheduleresponse)
+                .withBody(listScheduleResponse)
                 .withStatus(201)));
 
         try {
@@ -947,7 +934,7 @@ public class UrbanAirshipClientTest {
 
             // The response is tested elsewhere, just check that it exists
             assertNotNull(response);
-            assertNotNull(response.getStatus());
+            assertEquals(201, response.getStatus());
             assertNotNull(response.getHeaders());
             assertTrue(response.getBody().isPresent());
         } catch (Exception ex) {
@@ -958,7 +945,7 @@ public class UrbanAirshipClientTest {
     @Test
     public void testListAllSchedulesWithParameters() {
         // Setup a stubbed response for the server
-        String listscheduleresponse = "{\"ok\":true,\"count\":5,\"total_count\":6,\"schedules\":" +
+        String listScheduleResponse = "{\"ok\":true,\"count\":5,\"total_count\":6,\"schedules\":" +
             "[{\"url\":\"https://go.urbanairship.com/api/schedules/5a60e0a6-9aa7-449f-a038-6806e572baf3\",\"" +
             "schedule\":{\"scheduled_time\":\"2015-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device" +
             "_types\":[\"android\",\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2015!\",\"android\"" +
@@ -971,7 +958,7 @@ public class UrbanAirshipClientTest {
         stubFor(get(urlEqualTo("/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"))
             .willReturn(aResponse()
                 .withHeader(CONTENT_TYPE_KEY, "application/json")
-                .withBody(listscheduleresponse)
+                .withBody(listScheduleResponse)
                 .withStatus(201)));
 
         try {
@@ -988,11 +975,11 @@ public class UrbanAirshipClientTest {
             // The response is tested elsewhere, just check that it exists
             assertNotNull(response);
             assertTrue(response.getBody().isPresent());
-            assertNotNull(response.getStatus());
+            assertEquals(201, response.getStatus());
             assertNotNull(response.getHeaders());
-            assertNotNull(response.getBody().get().getOk());
-            assertNotNull(response.getBody().get().getCount());
-            assertNotNull(response.getBody().get().getTotal_Count());
+            assertTrue(response.getBody().get().getOk());
+            assertEquals(5, response.getBody().get().getCount());
+            assertEquals(6, response.getBody().get().getTotal_Count());
             assertNotNull(response.getBody().get().getSchedules());
         } catch (Exception ex) {
             fail("Exception thrown " + ex);
@@ -1002,7 +989,7 @@ public class UrbanAirshipClientTest {
     @Test
     public void testListAllSchedulesNextPage() {
         // Setup a stubbed response for the server
-        String listscheduleresponse = "{\"ok\":true,\"count\":5,\"total_count\":6,\"schedules\":" +
+        String listScheduleResponse = "{\"ok\":true,\"count\":5,\"total_count\":6,\"schedules\":" +
             "[{\"url\":\"https://go.urbanairship.com/api/schedules/5a60e0a6-9aa7-449f-a038-6806e572baf3\",\"" +
             "schedule\":{\"scheduled_time\":\"2015-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device" +
             "_types\":[\"android\",\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2015!\",\"android\"" +
@@ -1015,7 +1002,7 @@ public class UrbanAirshipClientTest {
         stubFor(get(urlEqualTo("/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"))
             .willReturn(aResponse()
                 .withHeader(CONTENT_TYPE_KEY, "application/json")
-                .withBody(listscheduleresponse)
+                .withBody(listScheduleResponse)
                 .withStatus(201)));
 
         try {
@@ -1033,10 +1020,10 @@ public class UrbanAirshipClientTest {
             assertNotNull(response);
             assertTrue(response.getBody().isPresent());
             assertNotNull(response.getHeaders());
-            assertNotNull(response.getStatus());
-            assertNotNull(response.getBody().get().getOk());
-            assertNotNull(response.getBody().get().getCount());
-            assertNotNull(response.getBody().get().getTotal_Count());
+            assertEquals(201, response.getStatus());
+            assertTrue(response.getBody().get().getOk());
+            assertEquals(5, response.getBody().get().getCount());
+            assertEquals(6, response.getBody().get().getTotal_Count());
             assertNotNull(response.getBody().get().getSchedules());
         } catch (Exception ex) {
             fail("Exception thrown " + ex);
@@ -1087,7 +1074,7 @@ public class UrbanAirshipClientTest {
                     new TypeReference<Map<String, Object>>() {
                     });
             String name = (String) result.get("name");
-            assertTrue(name.equals("Test"));
+            assertEquals("Test", name);
             Map<String, String> scheduleMap =
                 (Map<String, String>) result.get("schedule");
             //When testing local schedule test instead use
@@ -1145,7 +1132,7 @@ public class UrbanAirshipClientTest {
 
             assertNotNull(response);
             assertNotNull(response.getHeaders());
-            assertNotNull(response.getStatus());
+            assertEquals(201, response.getStatus());
             assertTrue(response.getBody().isPresent());
 
         } catch (Exception ex) {
@@ -1209,7 +1196,7 @@ public class UrbanAirshipClientTest {
     @Test
     public void testListChannels() {
 
-        String fiveresponse = "{\n" +
+        String fiveResponse = "{\n" +
             "  \"ok\": true,\n" +
             "  \"channels\": [\n" +
             "    {\n" +
@@ -1328,7 +1315,7 @@ public class UrbanAirshipClientTest {
         stubFor(get(urlEqualTo("/api/channels/"))
             .willReturn(aResponse()
                 .withHeader(CONTENT_TYPE_KEY, "application/json")
-                .withBody(fiveresponse)
+                .withBody(fiveResponse)
                 .withStatus(200)));
 
         ChannelRequest request = ChannelRequest.newRequest();
@@ -1348,7 +1335,7 @@ public class UrbanAirshipClientTest {
     }
 
     @Test
-    public void testNamedUserAssociation() throws IOException {
+    public void testNamedUserAssociation() {
 
         stubFor(post(urlEqualTo("/api/named_users/associate/"))
             .willReturn(aResponse()
@@ -1378,7 +1365,7 @@ public class UrbanAirshipClientTest {
     }
 
     @Test
-    public void testNamedUserDisassociation() throws IOException {
+    public void testNamedUserDisassociation() {
 
         stubFor(post(urlEqualTo("/api/named_users/disassociate/"))
             .willReturn(aResponse()
@@ -1824,7 +1811,7 @@ public class UrbanAirshipClientTest {
 
 
     @Test
-    public void testOptInsReport() throws Exception {
+    public void testOptInsReport() {
 
         String queryPathString = "/api/reports/optins/?start=2014-10-01T12%3A00%3A00&end=2014-10-03T12%3A00%3A00&precision=MONTHLY";
 
@@ -2326,7 +2313,7 @@ public class UrbanAirshipClientTest {
 
     @Test
     public void testDownloadStaticList() throws Exception {
-        FileOutputStream fileOutputStream = new FileOutputStream(new File("src/test/data/out.csv"));
+        FileOutputStream fileOutputStream = new FileOutputStream("src/test/data/out.csv");
         String listName = "testlist";
         String queryPathString = "/api/lists/" + listName + "/csv";
 
@@ -2397,7 +2384,7 @@ public class UrbanAirshipClientTest {
         assertEquals(requests.size(), 1);
         assertNotNull(response);
         assertEquals(201, response.getStatus());
-        assertNotNull(response.getBody().get().getOk());
+        assertTrue(response.getBody().get().getOk());
         assertNotNull(response.getBody().get().getOperationId().get());
         assertNotNull(response.getBody().get().getTemplateId().get());
     }
@@ -2430,7 +2417,7 @@ public class UrbanAirshipClientTest {
         assertEquals(requests.size(), 1);
         assertNotNull(response);
         assertEquals(200, response.getStatus());
-        assertNotNull(response.getBody().get().getOk());
+        assertTrue(response.getBody().get().getOk());
         assertNotNull(response.getBody().get().getOperationId().get());
     }
 
@@ -2477,7 +2464,7 @@ public class UrbanAirshipClientTest {
         assertEquals(202, response.getStatus());
         assertNotNull(response.getBody().get().getOperationId().get());
         assertNotNull(response.getBody().get().getPushIds().get());
-        assertNotNull(response.getBody().get().getOk());
+        assertTrue(response.getBody().get().getOk());
     }
 
     @Test
@@ -2556,7 +2543,7 @@ public class UrbanAirshipClientTest {
         assertEquals(1, requests.size());
         assertNotNull(response);
         assertEquals(200, response.getStatus());
-        assertNotNull(response.getBody().get().getOk());
+        assertTrue(response.getBody().get().getOk());
         assertNotNull(response.getBody().get().getTemplate().get());
     }
 
@@ -2621,7 +2608,7 @@ public class UrbanAirshipClientTest {
         assertEquals(1, requests.size());
         assertNotNull(response);
         assertEquals(200, response.getStatus());
-        assertNotNull(response.getBody().get().getOk());
+        assertTrue(response.getBody().get().getOk());
         assertNotNull(response.getBody().get().getCount().get());
         assertNotNull(response.getBody().get().getTotalCount().get());
         assertNotNull(response.getBody().get().getTemplates().get());
@@ -2630,7 +2617,7 @@ public class UrbanAirshipClientTest {
     }
 
     @Test
-    public void testCreateExperiment() throws Exception {
+    public void testCreateExperiment() {
         String queryPathString = "/api/experiments/";
         String responseJson =
                 "{" +
@@ -2669,7 +2656,7 @@ public class UrbanAirshipClientTest {
         Experiment experiment = Experiment.newBuilder()
                 .setName("name")
                 .setDescription("description")
-                .setControl(new BigDecimal(0.1))
+                .setControl(new BigDecimal("0.1"))
                 .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
                 .setAudience(Selectors.all())
                 .addVariant(variantOne)
@@ -2733,7 +2720,7 @@ public class UrbanAirshipClientTest {
         Experiment experiment = Experiment.newBuilder()
                 .setName("name")
                 .setDescription("description")
-                .setControl(new BigDecimal(0.1))
+                .setControl(new BigDecimal("0.1"))
                 .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
                 .setAudience(Selectors.namedUser("birdperson"))
                 .addVariant(variantOne)
@@ -2761,8 +2748,8 @@ public class UrbanAirshipClientTest {
     }
 
     @Test
-    public void testInvalidBearerAuth() throws IOException {
-        Assert.assertThrows(IllegalArgumentException.class, () -> {
+    public void testInvalidBearerAuth() {
+        assertThrows(IllegalArgumentException.class, () -> {
             CustomEventPayload customEventPayload = CustomEventPayload.newBuilder()
             .setCustomEventBody(CustomEventBody.newBuilder()
                     .setName("name")
@@ -2781,8 +2768,8 @@ public class UrbanAirshipClientTest {
     }
     
     @Test
-    public void testRequestNotSupportedWithBearerAuth() throws IOException {
-        Assert.assertThrows(IllegalArgumentException.class, () -> {
+    public void testRequestNotSupportedWithBearerAuth() {
+        assertThrows(IllegalArgumentException.class, () -> {
             TemplateDeleteRequest templateDeleteRequest = TemplateDeleteRequest.newRequest("templateId");
             bearerTokenClient.execute(templateDeleteRequest);
 
@@ -2813,6 +2800,7 @@ public class UrbanAirshipClientTest {
         }
     }
 
+    @Test
     public void testDeleteSpecificInbox() {
         stubFor(delete(urlEqualTo("/api/user/messages/id"))
             .willReturn(aResponse()
@@ -2830,7 +2818,7 @@ public class UrbanAirshipClientTest {
 
             // The response is tested elsewhere, just check that it exists
             assertNotNull(response);
-            assertEquals(204, response.getStatus());
+            assertEquals(202, response.getStatus());
         } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }

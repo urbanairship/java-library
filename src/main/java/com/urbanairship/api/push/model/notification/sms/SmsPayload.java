@@ -1,11 +1,12 @@
 package com.urbanairship.api.push.model.notification.sms;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
+
+import java.util.Optional;
 
 /**
  * Represents the payload to be used for sending to sms.
@@ -15,8 +16,8 @@ public class SmsPayload extends PushModelObject implements DevicePayloadOverride
     private Optional<PushExpiry> expiry;
 
     private SmsPayload(Builder builder) {
-        alert = Optional.fromNullable(builder.alert);
-        expiry = Optional.fromNullable(builder.expiry);
+        alert = Optional.ofNullable(builder.alert);
+        expiry = Optional.ofNullable(builder.expiry);
     }
 
     /**

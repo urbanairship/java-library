@@ -20,26 +20,22 @@ public class ScheduleTest {
      * Neither setScheduledTimestamp nor setBestTime called
      */
     @Test
-    public void testScheduledTimeAndBestTimeBothAbsent() throws Exception {
-        Assert.assertThrows(IllegalArgumentException.class, () -> {
-            Schedule.newBuilder()
-            .build();
-        });
+    public void testScheduledTimeAndBestTimeBothAbsent() {
+        Assert.assertThrows(IllegalArgumentException.class, () -> Schedule.newBuilder()
+        .build());
     }
 
     /**
      * Both setScheduledTimestamp and setBestTime called
      */
     @Test
-    public void testScheduledTimeAndBestTimeBothPresent() throws Exception {
-        Assert.assertThrows(IllegalArgumentException.class, () -> {
-            Schedule.newBuilder()
-            .setScheduledTimestamp(dateTime)
-            .setBestTime(BestTime.newBuilder()
-                    .setSendDate(dateTime)
-                    .build())
-            .build();
-        });
+    public void testScheduledTimeAndBestTimeBothPresent() {
+        Assert.assertThrows(IllegalArgumentException.class, () -> Schedule.newBuilder()
+        .setScheduledTimestamp(dateTime)
+        .setBestTime(BestTime.newBuilder()
+                .setSendDate(dateTime)
+                .build())
+        .build());
     }
 
     /**

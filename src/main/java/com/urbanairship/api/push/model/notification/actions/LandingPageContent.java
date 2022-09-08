@@ -5,10 +5,11 @@
 package com.urbanairship.api.push.model.notification.actions;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.push.model.PushModelObject;
+
+import java.util.Optional;
 
 public final class LandingPageContent extends PushModelObject {
     private final Optional<Encoding> encoding;
@@ -130,9 +131,9 @@ public final class LandingPageContent extends PushModelObject {
     }
 
     public static final class Builder {
-        private Optional<Encoding> encoding = Optional.absent();
-        private Optional<String> body = Optional.absent();
-        private Optional<String> contentType = Optional.absent();
+        private Optional<Encoding> encoding = Optional.empty();
+        private Optional<String> body = Optional.empty();
+        private Optional<String> contentType = Optional.empty();
 
         private Builder() { }
 
