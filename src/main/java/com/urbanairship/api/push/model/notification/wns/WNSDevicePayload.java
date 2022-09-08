@@ -4,10 +4,11 @@
 
 package com.urbanairship.api.push.model.notification.wns;
 
-import com.google.common.base.Optional;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
+
+import java.util.Optional;
 
 public final class WNSDevicePayload extends PushModelObject implements DevicePayloadOverride {
 
@@ -87,8 +88,8 @@ public final class WNSDevicePayload extends PushModelObject implements DevicePay
         }
 
         public WNSDevicePayload build() {
-            return new WNSDevicePayload(Optional.fromNullable(body),
-                                        Optional.fromNullable(alert));
+            return new WNSDevicePayload(Optional.ofNullable(body),
+                                        Optional.ofNullable(alert));
         }
     }
 }

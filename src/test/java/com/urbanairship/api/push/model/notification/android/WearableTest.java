@@ -6,11 +6,12 @@ import com.urbanairship.api.push.model.notification.actions.Actions;
 import com.urbanairship.api.push.model.notification.actions.AddTagAction;
 import com.urbanairship.api.push.model.notification.actions.RemoveTagAction;
 import com.urbanairship.api.push.model.notification.actions.TagActionData;
-
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Objects;
+
 public class WearableTest {
     @Test(expected = Exception.class)
     public void testEmptyWearable() {
@@ -18,7 +19,7 @@ public class WearableTest {
     }
 
     @Test
-    public void testWearable() throws Exception {
+    public void testWearable() {
         AddTagAction butterTag = new AddTagAction(TagActionData.single("butter"));
         RemoveTagAction coolTag = new RemoveTagAction(TagActionData.single("cool"));
 
@@ -52,7 +53,7 @@ public class WearableTest {
         Interactive interactivePayload = wearable.getInteractive().get();
         Assert.assertNotNull(interactivePayload);
         Assert.assertEquals(interactivePayload.getType(), "ua_yes_no_foreground");
-        Assert.assertEquals(interactivePayload.getButtonActions().get("yes").getAddTags().get().getValue().getSingleTag(), "butter");
-        Assert.assertEquals(interactivePayload.getButtonActions().get("no").getRemoveTags().get().getValue().getSingleTag(), "cool");
+        Assert.assertEquals(Objects.requireNonNull(interactivePayload.getButtonActions().get("yes")).getAddTags().get().getValue().getSingleTag(), "butter");
+        Assert.assertEquals(Objects.requireNonNull(interactivePayload.getButtonActions().get("no")).getRemoveTags().get().getValue().getSingleTag(), "cool");
     }
 }

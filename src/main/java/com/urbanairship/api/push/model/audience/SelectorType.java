@@ -4,8 +4,9 @@
 
 package com.urbanairship.api.push.model.audience;
 
-import com.google.common.base.Optional;
 import com.urbanairship.api.push.model.DeviceType;
+
+import java.util.Optional;
 
 public enum SelectorType {
 
@@ -49,7 +50,7 @@ public enum SelectorType {
         this.category = category;
         this.isDeviceId = false;
         this.isChannel = false;
-        this.deviceType = Optional.absent();
+        this.deviceType = Optional.empty();
     }
 
     SelectorType(String identifier, SelectorCategory category, boolean isDeviceId, DeviceType deviceType) {

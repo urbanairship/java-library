@@ -1,10 +1,10 @@
 package com.urbanairship.api.channel.model;
 
-import java.util.Set;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
+
+import java.util.Set;
 
 /**
  * Represents a Channel Uninstall payload for the Airship API.

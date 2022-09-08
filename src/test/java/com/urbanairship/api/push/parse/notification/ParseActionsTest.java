@@ -2,7 +2,6 @@ package com.urbanairship.api.push.parse.notification;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -28,6 +27,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -35,7 +35,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
 public class ParseActionsTest {
 
     private ObjectMapper mapper;
@@ -77,7 +76,7 @@ public class ParseActionsTest {
             }
         }
 
-        return Optional.absent();
+        return Optional.empty();
 
     }
 
@@ -182,7 +181,7 @@ public class ParseActionsTest {
     }
 
     @Test
-    public void testBadOpenExternalAbsolutePathNoScheme() throws java.io.IOException {
+    public void testBadOpenExternalAbsolutePathNoScheme() throws IOException {
         URI u = URI.create("/foo.com");
         try {
             OpenExternalURLAction external = new OpenExternalURLAction(u);
@@ -196,7 +195,7 @@ public class ParseActionsTest {
     }
 
     @Test
-    public void testBadOpenExternalNoScheme() throws java.io.IOException {
+    public void testBadOpenExternalNoScheme() throws IOException {
         URI u = URI.create("foo.com");
         try {
             OpenExternalURLAction external = new OpenExternalURLAction(u);

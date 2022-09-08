@@ -4,7 +4,6 @@
 
 package com.urbanairship.api.push.model.notification;
 
-import com.google.common.base.Optional;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.notification.adm.ADMDevicePayload;
@@ -14,6 +13,8 @@ import com.urbanairship.api.push.model.notification.open.OpenPayload;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 import com.urbanairship.api.push.model.notification.web.WebDevicePayload;
 import com.urbanairship.api.push.model.notification.wns.WNSDevicePayload;
+
+import java.util.Optional;
 
 public class Notifications {
 

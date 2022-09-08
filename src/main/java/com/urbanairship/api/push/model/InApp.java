@@ -5,7 +5,6 @@
 package com.urbanairship.api.push.model;
 
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.notification.Interactive;
@@ -13,6 +12,7 @@ import com.urbanairship.api.push.model.notification.actions.Actions;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Represents a single InApp message object.
@@ -38,14 +38,14 @@ public class InApp {
     private InApp(Builder builder) {
         this.alert = builder.alert;
         this.displayType = builder.displayType;
-        this.expiry = Optional.fromNullable(builder.expiry);
-        this.display = Optional.fromNullable(builder.display);
-        this.actions = Optional.fromNullable(builder.actions);
-        this.interactive = Optional.fromNullable(builder.interactive);
+        this.expiry = Optional.ofNullable(builder.expiry);
+        this.display = Optional.ofNullable(builder.display);
+        this.actions = Optional.ofNullable(builder.actions);
+        this.interactive = Optional.ofNullable(builder.interactive);
         if (builder.extra.build().isEmpty()) {
-            this.extra = Optional.absent();
+            this.extra = Optional.empty();
         } else {
-            this.extra = Optional.fromNullable(builder.extra.build());
+            this.extra = Optional.ofNullable(builder.extra.build());
         }
     }
 

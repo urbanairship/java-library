@@ -1,13 +1,11 @@
 package com.urbanairship.api.tags;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.tags.model.TagListListingResponse;
 import com.urbanairship.api.tags.model.TagListView;
-
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class TagListListingRequestTest {
     private final static String TAG_LIST_LISTING_PATH = "/api/tag-lists";
@@ -30,7 +29,7 @@ public class TagListListingRequestTest {
 
     @Test
     public void testContentType() throws Exception {
-        assertEquals(request.getContentType(), null);
+        assertNull(request.getContentType());
     }
 
     @Test
@@ -40,12 +39,12 @@ public class TagListListingRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(request.getRequestBody(), null);
+        assertNull(request.getRequestBody());
     }
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
         assertEquals(request.getRequestHeaders(), headers);
@@ -72,6 +71,7 @@ public class TagListListingRequestTest {
             .setCreated(DateTime.parse("2013-01-24T23:55:05.000Z"))
             .setLastUpdated(DateTime.parse("2013-01-24T23:55:05.000Z"))
             .setChannelCount(3145)
+            .setNamedUserCount(1234)
             .setMutationSuccessCount(1)
             .setMutationErrorCount(0)
             .setErrorPath("")
@@ -88,6 +88,7 @@ public class TagListListingRequestTest {
             .setCreated(DateTime.parse("2013-01-24T23:55:05.000Z"))
             .setLastUpdated(DateTime.parse("2013-01-24T23:55:05.000Z"))
             .setChannelCount(19999)
+            .setNamedUserCount(1234)
             .setMutationSuccessCount(1)
             .setMutationErrorCount(0)
             .setErrorPath("")
@@ -119,6 +120,7 @@ public class TagListListingRequestTest {
                         "\"created\": \"2013-01-24T23:55:05\",\n" +
                         "\"last_updated\": \"2013-01-24T23:55:05\",\n" +
                         "\"channel_count\": 3145,\n" +
+                        "\"named_user_count\": 1234,\n" +
                         "\"mutation_success_count\": 1,\n" +
                         "\"mutation_error_count\": 0,\n" +
                         "\"error_path\": \"\",\n" +
@@ -140,6 +142,7 @@ public class TagListListingRequestTest {
                         "\"created\": \"2013-01-24T23:55:05\",\n" +
                         "\"last_updated\": \"2013-01-24T23:55:05\",\n" +
                         "\"channel_count\": 19999,\n" +
+                        "\"named_user_count\": 1234,\n" +
                         "\"mutation_success_count\": 1,\n" +
                         "\"mutation_error_count\": 0,\n" +
                         "\"error_path\": \"\",\n" +

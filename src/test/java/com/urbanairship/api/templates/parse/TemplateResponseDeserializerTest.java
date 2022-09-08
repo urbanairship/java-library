@@ -7,6 +7,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class TemplateResponseDeserializerTest {
 
@@ -23,7 +24,7 @@ public class TemplateResponseDeserializerTest {
 
         TemplateResponse templateCreateResponse = MAPPER.readValue(templateCreateResponseString, TemplateResponse.class);
         assertNotNull(templateCreateResponse);
-        assertEquals(templateCreateResponse.getOk(), true);
+        assertTrue(templateCreateResponse.getOk());
         assertEquals(templateCreateResponse.getTemplateId().get(), "template-id-123");
         assertEquals(templateCreateResponse.getOperationId().get(), "op-id-123");
         assertFalse(templateCreateResponse.getPushIds().isPresent());

@@ -5,7 +5,6 @@
 package com.urbanairship.api.channel.model;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -16,6 +15,7 @@ import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Represents a single channel object.
@@ -51,24 +51,24 @@ public final class ChannelView {
         this.channelType = builder.channelType;
         this.installed = builder.installed;
         this.optIn = builder.optIn;
-        this.background = Optional.fromNullable(builder.background);
-        this.pushAddress = Optional.fromNullable(builder.pushAddress);
+        this.background = Optional.ofNullable(builder.background);
+        this.pushAddress = Optional.ofNullable(builder.pushAddress);
         this.created = builder.created;
-        this.lastRegistration = Optional.fromNullable(builder.lastRegistration);
-        this.alias = Optional.fromNullable(builder.alias);
+        this.lastRegistration = Optional.ofNullable(builder.lastRegistration);
+        this.alias = Optional.ofNullable(builder.alias);
         this.tags = builder.tags.build();
         this.tagGroups = builder.tagGroups.build();
-        this.iosSettings = Optional.fromNullable(builder.iosSettings);
-        this.web = Optional.fromNullable(builder.webSettings);
-        this.open = Optional.fromNullable(builder.openChannel);
-        this.address = Optional.fromNullable(builder.address);
-        this.namedUser = Optional.fromNullable(builder.namedUser);
+        this.iosSettings = Optional.ofNullable(builder.iosSettings);
+        this.web = Optional.ofNullable(builder.webSettings);
+        this.open = Optional.ofNullable(builder.openChannel);
+        this.address = Optional.ofNullable(builder.address);
+        this.namedUser = Optional.ofNullable(builder.namedUser);
         this.attributes = builder.attributes.build();
         this.deviceAttributes = builder.deviceAttributes.build();
-        this.commercialOptedIn = Optional.fromNullable(builder.commercialOptedIn);
-        this.commercialOptedOut = Optional.fromNullable(builder.commercialOptedOut);
-        this.transactionalOptedIn = Optional.fromNullable(builder.transactionalOptedIn);
-        this.transactionalOptedOut = Optional.fromNullable(builder.transactionalOptedOut);
+        this.commercialOptedIn = Optional.ofNullable(builder.commercialOptedIn);
+        this.commercialOptedOut = Optional.ofNullable(builder.commercialOptedOut);
+        this.transactionalOptedIn = Optional.ofNullable(builder.transactionalOptedIn);
+        this.transactionalOptedOut = Optional.ofNullable(builder.transactionalOptedOut);
 
     }
 

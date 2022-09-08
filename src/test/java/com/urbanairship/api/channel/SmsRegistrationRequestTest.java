@@ -22,7 +22,7 @@ public class SmsRegistrationRequestTest {
     DateTime dateTime = DateTime.now();
     ObjectMapper mapper = ChannelObjectMapper.getInstance();
 
-    SmsRegistrationRequest registrationRequestWithDate = SmsRegistrationRequest.newRegistrationRequest("sender", "msisdn", dateTime);;
+    SmsRegistrationRequest registrationRequestWithDate = SmsRegistrationRequest.newRegistrationRequest("sender", "msisdn", dateTime);
     SmsRegistrationRequest registrationRequest = SmsRegistrationRequest.newRegistrationRequest("sender", "msisdn");
     SmsRegistrationRequest uninstallRequest = SmsRegistrationRequest.newUninstallRequest("sender", "msisdn");
     SmsRegistrationRequest optOutRequest = SmsRegistrationRequest.newOptOutRequest("sender", "msisdn");
@@ -78,12 +78,7 @@ public class SmsRegistrationRequestTest {
 
     @Test
     public void testSmsRequestParser() throws IOException {
-        ResponseParser<SmsRegistrationResponse> parser = new ResponseParser<SmsRegistrationResponse>() {
-            @Override
-            public SmsRegistrationResponse parse(String response) throws IOException {
-                return mapper.readValue(response, SmsRegistrationResponse.class);
-            }
-        };
+        ResponseParser<SmsRegistrationResponse> parser = response -> mapper.readValue(response, SmsRegistrationResponse.class);
 
         String channelResponse = "{\n" +
                 "\"ok\": true,\n" +

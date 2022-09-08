@@ -4,7 +4,6 @@
 
 package com.urbanairship.api.push.model.notification.ios;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.DeviceType;
@@ -16,6 +15,7 @@ import com.urbanairship.api.push.model.notification.actions.Actions;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * IOSDevicePayload for iOS specific push messages.
@@ -108,7 +108,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
      */
     @Override
     public Optional<String> getAlert() {
-        return alert.isPresent() ? alert.get().getBody() : Optional.<String>absent();
+        return alert.isPresent() ? alert.get().getBody() : Optional.<String>empty();
     }
 
     /**
@@ -224,7 +224,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
     @Deprecated
     public Optional<String> getSound() {
         if (!sound.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         return sound.get().getName();
     }
@@ -640,26 +640,26 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
          */
         public IOSDevicePayload build() {
             // Yes, empty payloads are valid (for Passes)
-            return new IOSDevicePayload(Optional.fromNullable(alert),
-                    Optional.fromNullable(badge),
-                    Optional.fromNullable(contentAvailable),
-                    Optional.fromNullable(expiry),
-                    Optional.fromNullable(priority),
-                    extra == null ? Optional.<ImmutableMap<String,String>>absent() : Optional.fromNullable(extra.build()),
-                    Optional.fromNullable(category),
-                    Optional.fromNullable(interactive),
-                    Optional.fromNullable(title),
-                    Optional.fromNullable(subtitle),
-                    Optional.fromNullable(mediaAttachment),
-                    Optional.fromNullable(sound),
-                    Optional.fromNullable(mutableContent),
-                    Optional.fromNullable(collapseId),
-                    Optional.fromNullable(threadId),
-                    Optional.fromNullable(actions),
-                    Optional.fromNullable(targetContentId),
-                    Optional.fromNullable(iosTemplate),
-                    Optional.fromNullable(iosInterruptionLevel),
-                    Optional.fromNullable(relevanceScore));
+            return new IOSDevicePayload(Optional.ofNullable(alert),
+                    Optional.ofNullable(badge),
+                    Optional.ofNullable(contentAvailable),
+                    Optional.ofNullable(expiry),
+                    Optional.ofNullable(priority),
+                    extra == null ? Optional.<ImmutableMap<String,String>>empty() : Optional.ofNullable(extra.build()),
+                    Optional.ofNullable(category),
+                    Optional.ofNullable(interactive),
+                    Optional.ofNullable(title),
+                    Optional.ofNullable(subtitle),
+                    Optional.ofNullable(mediaAttachment),
+                    Optional.ofNullable(sound),
+                    Optional.ofNullable(mutableContent),
+                    Optional.ofNullable(collapseId),
+                    Optional.ofNullable(threadId),
+                    Optional.ofNullable(actions),
+                    Optional.ofNullable(targetContentId),
+                    Optional.ofNullable(iosTemplate),
+                    Optional.ofNullable(iosInterruptionLevel),
+                    Optional.ofNullable(relevanceScore));
         }
     }
 }

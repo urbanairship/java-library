@@ -1,4 +1,18 @@
 -------------------------
+8.3.0 08SEP22
+-------------------------
+- Added support for custom events request with array
+- Replaced Optional Guava by Optional Java
+- Added warning field to GenericResponse and NamedUserAttributeResponse classes
+- Added error code field to GenericResponse
+- Added SegmentResponse class
+- Added prev_page field to CustomDetailsListingResponse
+- Added missing fields to StaticListView
+- Added missing fields to SubscriptionListView
+- Added CREATE_AND_SEND_PUSH to messageType enum
+- Fixed ListAllSchedulesResponse to handle open_channel selector
+
+-------------------------
 8.2.0 14JUN22
 -------------------------
 - Update Jackson to version 2.13.3

@@ -2,19 +2,17 @@ package com.urbanairship.api.segment;
 
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
-import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.common.model.GenericResponse;
-import com.urbanairship.api.common.parse.CommonObjectMapper;
 import com.urbanairship.api.segments.SegmentDeleteRequest;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class SegmentDeleteRequestTest {
     private static final String TEST_QUERY_PATH = "/api/segments/";
@@ -29,7 +27,7 @@ public class SegmentDeleteRequestTest {
 
     @Test
     public void testContentType() throws Exception {
-        assertEquals(request.getContentType(), null);
+        assertNull(request.getContentType());
     }
 
     @Test
@@ -39,7 +37,7 @@ public class SegmentDeleteRequestTest {
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
         assertEquals(request.getRequestHeaders(), headers);
@@ -56,7 +54,7 @@ public class SegmentDeleteRequestTest {
     @Test
     public void testParser() throws Exception {
         
-        GenericResponse genericResponse = new GenericResponse(true, null, null, null);
+        GenericResponse genericResponse = new GenericResponse(true, null, null, null, null, null);
 
         String responseJson = "{" +
                 "\"ok\": true" +

@@ -4,7 +4,6 @@
 
 package com.urbanairship.api.push.model;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -13,6 +12,8 @@ import com.urbanairship.api.push.model.audience.SelectorType;
 import com.urbanairship.api.push.model.localization.Localization;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
+
+import java.util.Optional;
 
 /**
  * Represents a Push payload for the Urban Airship API
@@ -55,7 +56,7 @@ public final class PushPayload extends PushModelObject {
         this.globalAttributes = globalAttributes;
 
         if (localizations.isEmpty()) {
-            this.localizations = Optional.absent();
+            this.localizations = Optional.empty();
         } else {
             this.localizations = Optional.of(localizations);
         }
@@ -332,12 +333,12 @@ public final class PushPayload extends PushModelObject {
 
             return new PushPayload(
                     audience,
-                    Optional.fromNullable(notification),
-                    Optional.fromNullable(message),
+                    Optional.ofNullable(notification),
+                    Optional.ofNullable(message),
                     deviceTypes,
-                    Optional.fromNullable(pushOptions),
-                    Optional.fromNullable(inApp),
-                    Optional.fromNullable(campaigns),
+                    Optional.ofNullable(pushOptions),
+                    Optional.ofNullable(inApp),
+                    Optional.ofNullable(campaigns),
                     localizations,
                     globalAttributes
             );

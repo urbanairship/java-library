@@ -6,12 +6,12 @@ package com.urbanairship.api.schedule.model;
 
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.common.model.ErrorDetails;
 
 import java.util.List;
+import java.util.Optional;
 
 public final class ListAllSchedulesResponse {
 
@@ -29,8 +29,8 @@ public final class ListAllSchedulesResponse {
         this.totalCount = totalCount;
         this.nextPage = nextPage;
         this.scheduleObjects = response;
-        this.error = Optional.fromNullable(error);
-        this.errorDetails = Optional.fromNullable(errorDetails);
+        this.error = Optional.ofNullable(error);
+        this.errorDetails = Optional.ofNullable(errorDetails);
     }
 
     public static Builder newBuilder() {
@@ -156,7 +156,7 @@ public final class ListAllSchedulesResponse {
             Preconditions.checkNotNull(count, "count must be set to build APIListScheduleResponse");
             Preconditions.checkNotNull(total_count, "total count must be set to build APIListScheduleResponse");
             Preconditions.checkNotNull(scheduleresponse, "sch must be set to build APIListScheduleResponse");
-            return new ListAllSchedulesResponse(ok, count, total_count, Optional.fromNullable(next_page), scheduleresponse.build(), error, errorDetails);
+            return new ListAllSchedulesResponse(ok, count, total_count, Optional.ofNullable(next_page), scheduleresponse.build(), error, errorDetails);
         }
     }
 }

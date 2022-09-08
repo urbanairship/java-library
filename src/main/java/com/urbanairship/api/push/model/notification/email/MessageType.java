@@ -1,6 +1,6 @@
 package com.urbanairship.api.push.model.notification.email;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 /**
  * Enum of Message Types categories
@@ -32,6 +32,6 @@ public enum MessageType {
             }
         }
 
-        return Optional.absent();
+        return Optional.empty();
     }
 }

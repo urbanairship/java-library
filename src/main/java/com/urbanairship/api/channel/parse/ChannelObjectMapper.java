@@ -11,16 +11,16 @@ import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.urbanairship.api.channel.model.ChannelAttributesResponse;
 import com.urbanairship.api.channel.model.ChannelAudience;
 import com.urbanairship.api.channel.model.ChannelResponse;
+import com.urbanairship.api.channel.model.ChannelUninstallDevice;
+import com.urbanairship.api.channel.model.ChannelUninstallResponse;
 import com.urbanairship.api.channel.model.ChannelView;
 import com.urbanairship.api.channel.model.OpenChannelResponse;
+import com.urbanairship.api.channel.model.SmsRegistrationResponse;
 import com.urbanairship.api.channel.model.attributes.Attribute;
 import com.urbanairship.api.channel.model.attributes.ChannelAttributesPayload;
 import com.urbanairship.api.channel.model.attributes.audience.AttributeAudience;
-import com.urbanairship.api.channel.model.email.RegisterEmailChannel;
 import com.urbanairship.api.channel.model.email.EmailChannelResponse;
-import com.urbanairship.api.channel.model.SmsRegistrationResponse;
-import com.urbanairship.api.channel.model.ChannelUninstallDevice;
-import com.urbanairship.api.channel.model.ChannelUninstallResponse;
+import com.urbanairship.api.channel.model.email.RegisterEmailChannel;
 import com.urbanairship.api.channel.model.ios.IosSettings;
 import com.urbanairship.api.channel.model.ios.QuietTime;
 import com.urbanairship.api.channel.model.open.OpenChannel;
@@ -33,7 +33,6 @@ import com.urbanairship.api.channel.parse.attributes.AttributeSerializer;
 import com.urbanairship.api.channel.parse.attributes.ChannelAttributesPayloadSerializer;
 import com.urbanairship.api.channel.parse.attributes.ChannelAttributesResponseDeserializer;
 import com.urbanairship.api.channel.parse.attributes.audience.AttributeAudienceSerializer;
-import com.urbanairship.api.createandsend.parse.CreateAndSendEmailChannelSerializer;
 import com.urbanairship.api.channel.parse.email.RegisterEmailChannelResponseDeserializer;
 import com.urbanairship.api.channel.parse.email.RegisterEmailChannelSerializer;
 import com.urbanairship.api.channel.parse.ios.IosSettingsDeserializer;
@@ -45,6 +44,7 @@ import com.urbanairship.api.channel.parse.subscriptionlist.SubscriptionListRespo
 import com.urbanairship.api.channel.parse.web.SubscriptionDeserializer;
 import com.urbanairship.api.channel.parse.web.WebSettingsDeserializer;
 import com.urbanairship.api.createandsend.model.audience.email.EmailChannel;
+import com.urbanairship.api.createandsend.parse.CreateAndSendEmailChannelSerializer;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 
 public class ChannelObjectMapper {

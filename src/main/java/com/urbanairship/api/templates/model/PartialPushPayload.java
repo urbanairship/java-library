@@ -4,12 +4,13 @@
 
 package com.urbanairship.api.templates.model;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.InApp;
 import com.urbanairship.api.push.model.PushOptions;
 import com.urbanairship.api.push.model.notification.Notification;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
+
+import java.util.Optional;
 
 /**
  * A PartialPushPayload object, used when creating a template push.
@@ -22,10 +23,10 @@ public class PartialPushPayload {
     private final Optional<InApp> inApp;
 
     private PartialPushPayload(Builder builder) {
-        this.notification = Optional.fromNullable(builder.notification);
-        this.pushOptions = Optional.fromNullable(builder.pushOptions);
-        this.richPushMessage = Optional.fromNullable(builder.richPushMessage);
-        this.inApp = Optional.fromNullable(builder.inApp);
+        this.notification = Optional.ofNullable(builder.notification);
+        this.pushOptions = Optional.ofNullable(builder.pushOptions);
+        this.richPushMessage = Optional.ofNullable(builder.richPushMessage);
+        this.inApp = Optional.ofNullable(builder.inApp);
     }
 
     /**

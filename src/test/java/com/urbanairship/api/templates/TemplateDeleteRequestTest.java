@@ -10,7 +10,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +28,7 @@ public class TemplateDeleteRequestTest {
 
     @Test
     public void testContentType() throws Exception {
-        Assert.assertEquals(request.getContentType(), null);
+        Assert.assertNull(request.getContentType());
     }
 
     @Test
@@ -39,12 +38,12 @@ public class TemplateDeleteRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        Assert.assertEquals(request.getRequestBody(), null);
+        Assert.assertNull(request.getRequestBody());
     }
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
         Assert.assertEquals(request.getRequestHeaders(), headers);
@@ -66,12 +65,7 @@ public class TemplateDeleteRequestTest {
                 "\"operation_id\": \"a6394ff8-8a65-4494-ad06-677eb8b7ad6a\"" +
                 "}";
 
-        final ResponseParser<TemplateResponse> responseParser = new ResponseParser<TemplateResponse>() {
-            @Override
-            public TemplateResponse parse(String response) throws IOException {
-                return mapper.readValue(response, TemplateResponse.class);
-            }
-        };
+        final ResponseParser<TemplateResponse> responseParser = response -> mapper.readValue(response, TemplateResponse.class);
 
         Assert.assertEquals(request.getResponseParser().parse(responseJson), responseParser.parse(responseJson));
     }

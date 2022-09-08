@@ -7,6 +7,7 @@ package com.urbanairship.api.experiments.parse;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.FieldParser;
 import com.urbanairship.api.common.parse.FieldParserRegistry;
@@ -15,7 +16,6 @@ import com.urbanairship.api.common.parse.StandardObjectDeserializer;
 import com.urbanairship.api.experiments.model.ExperimentResponse;
 
 import java.io.IOException;
-import com.google.common.base.Supplier;
 
 public class ExperimentResponseDeserializer extends JsonDeserializer<ExperimentResponse> {
 

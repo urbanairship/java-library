@@ -4,17 +4,17 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.channel.parse.ChannelObjectMapper;
 import com.urbanairship.api.common.parse.DateFormats;
+import com.urbanairship.api.createandsend.model.audience.CreateAndSendAudience;
 import com.urbanairship.api.createandsend.model.audience.email.EmailChannel;
 import com.urbanairship.api.createandsend.model.audience.email.EmailChannels;
-import com.urbanairship.api.push.model.notification.email.Attachment;
+import com.urbanairship.api.createandsend.model.notification.CreateAndSendPayload;
 import com.urbanairship.api.createandsend.model.notification.email.CreateAndSendEmailPayload;
 import com.urbanairship.api.createandsend.model.notification.email.EmailFields;
 import com.urbanairship.api.createandsend.model.notification.email.EmailTemplate;
 import com.urbanairship.api.push.model.Campaigns;
 import com.urbanairship.api.push.model.DeviceType;
-import com.urbanairship.api.createandsend.model.audience.CreateAndSendAudience;
 import com.urbanairship.api.push.model.notification.Notification;
-import com.urbanairship.api.createandsend.model.notification.CreateAndSendPayload;
+import com.urbanairship.api.push.model.notification.email.Attachment;
 import com.urbanairship.api.push.model.notification.email.MessageType;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.joda.time.DateTime;
@@ -217,11 +217,11 @@ public class CreateAndSendEmailTest {
 
     @Test
     public void testEmailPayload() throws IOException {
-        String expectedEmailpayloadString = "{\"subject\":\"Welcome to the Winter Sale! \",\"html_body\":\"<h1>Seasons Greetings</h1><p>Check out our winter deals!</p><p><a data-ua-unsubscribe=\\\"1\\\" title=\\\"unsubscribe\\\" href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\">Unsubscribe</a></p>\",\"plaintext_body\":\"Greetings! Check out our latest winter deals! [[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]\",\"message_type\":\"commercial\",\"sender_name\":\"Urban Airship\",\"sender_address\":\"team@urbanairship.com\",\"reply_to\":\"no-reply@urbanairship.com\"}";
+        String expectedEmailPayloadString = "{\"subject\":\"Welcome to the Winter Sale! \",\"html_body\":\"<h1>Seasons Greetings</h1><p>Check out our winter deals!</p><p><a data-ua-unsubscribe=\\\"1\\\" title=\\\"unsubscribe\\\" href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\">Unsubscribe</a></p>\",\"plaintext_body\":\"Greetings! Check out our latest winter deals! [[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]\",\"message_type\":\"commercial\",\"sender_name\":\"Urban Airship\",\"sender_address\":\"team@urbanairship.com\",\"reply_to\":\"no-reply@urbanairship.com\"}";
 
         String parsedJson = PUSH_OBJECT_MAPPER.writeValueAsString(createAndSendEmailPayload);
         JsonNode actual = PUSH_OBJECT_MAPPER.readTree(parsedJson);
-        JsonNode expected = PUSH_OBJECT_MAPPER.readTree(expectedEmailpayloadString);
+        JsonNode expected = PUSH_OBJECT_MAPPER.readTree(expectedEmailPayloadString);
 
         Assert.assertEquals(expected, actual);
     }
@@ -292,8 +292,8 @@ public class CreateAndSendEmailTest {
                 "  }\n" +
                 "}";
 
-        JsonNode actual = null;
-        JsonNode expected = null;
+        JsonNode actual;
+        JsonNode expected;
 
         String parsedJson = PUSH_OBJECT_MAPPER.writeValueAsString(templatePayload);
         actual = PUSH_OBJECT_MAPPER.readTree(parsedJson);

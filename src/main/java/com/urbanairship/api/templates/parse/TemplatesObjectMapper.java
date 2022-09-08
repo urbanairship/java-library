@@ -12,7 +12,14 @@ import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import com.urbanairship.api.schedule.model.Schedule;
 import com.urbanairship.api.schedule.parse.ScheduleSerializer;
-import com.urbanairship.api.templates.model.*;
+import com.urbanairship.api.templates.model.PartialPushPayload;
+import com.urbanairship.api.templates.model.TemplateListingResponse;
+import com.urbanairship.api.templates.model.TemplatePushPayload;
+import com.urbanairship.api.templates.model.TemplateResponse;
+import com.urbanairship.api.templates.model.TemplateScheduledPushPayload;
+import com.urbanairship.api.templates.model.TemplateSelector;
+import com.urbanairship.api.templates.model.TemplateVariable;
+import com.urbanairship.api.templates.model.TemplateView;
 
 public class TemplatesObjectMapper {
     private static final ObjectMapper MAPPER = new ObjectMapper();

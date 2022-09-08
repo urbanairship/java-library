@@ -1,12 +1,13 @@
 package com.urbanairship.api.templates.model;
 
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.Campaigns;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.schedule.model.Schedule;
+
+import java.util.Optional;
 
 public class TemplateScheduledPushPayload {
     private final Selector audience;
@@ -21,8 +22,8 @@ public class TemplateScheduledPushPayload {
         this.deviceTypes = builder.deviceTypes;
         this.mergeData = builder.mergeData;
         this.schedule = builder.schedule;
-        this.name = Optional.fromNullable(builder.name);
-        this.campaigns = Optional.fromNullable(builder.campaigns);
+        this.name = Optional.ofNullable(builder.name);
+        this.campaigns = Optional.ofNullable(builder.campaigns);
     }
 
     /**

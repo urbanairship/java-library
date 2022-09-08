@@ -1,6 +1,6 @@
 package com.urbanairship.api.nameduser.model;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 public enum NamedUserUpdateChannelAction {
     ASSOCIATE("associate"),
@@ -19,7 +19,7 @@ public enum NamedUserUpdateChannelAction {
             }
         }
 
-        return Optional.absent();
+        return Optional.empty();
     }
 
     public String getIdentifier() {

@@ -1,6 +1,5 @@
 package com.urbanairship.api.segments.model;
 
-import com.google.common.base.Preconditions;
 import com.urbanairship.api.common.model.ErrorDetails;
 import com.urbanairship.api.push.model.audience.Selector;
 

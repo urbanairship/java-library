@@ -10,7 +10,7 @@ public class AndroidDevicePayloadTest {
 
     @Test(expected = Exception.class)
     public void testNullExtraValues1() {
-        Map<String, String> values = new HashMap<String, String>();
+        Map<String, String> values = new HashMap<>();
         values.put("this", null);
         AndroidDevicePayload.newBuilder()
                 .addAllExtraEntries(values)

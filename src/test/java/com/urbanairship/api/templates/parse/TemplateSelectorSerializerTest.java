@@ -3,7 +3,6 @@ package com.urbanairship.api.templates.parse;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.templates.model.TemplateSelector;
-
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -7,9 +7,9 @@ package com.urbanairship.api.attributelists.parse;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableMap;
+import com.urbanairship.api.attributelists.model.AttributeListsView;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
-import com.urbanairship.api.attributelists.model.AttributeListsView;
 import org.joda.time.DateTime;
 
 import java.io.IOException;

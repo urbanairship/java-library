@@ -4,12 +4,12 @@
 
 package com.urbanairship.api.push.model.audience;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.DeviceTypeData;
 
 import java.util.Map;
+import java.util.Optional;
 
 public class BasicValueSelector implements ValueSelector {
 
@@ -136,7 +136,7 @@ public class BasicValueSelector implements ValueSelector {
             "The 'triggered' selector cannot have a value.");
             Map<String, String> attributes = attributesBuilder != null
                 ? attributesBuilder.build() : null;
-            return new BasicValueSelector(type, value, Optional.fromNullable(attributes));
+            return new BasicValueSelector(type, value, Optional.ofNullable(attributes));
         }
     }
 }

@@ -1,12 +1,10 @@
 package com.urbanairship.api.reports;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.reports.model.CustomEventsDetailResponse;
 import com.urbanairship.api.reports.model.CustomEventsDetailsListingResponse;
-import com.urbanairship.api.reports.parse.ReportsObjectMapper;
 import org.apache.http.entity.ContentType;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -18,12 +16,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class CustomEventsDetailsListingRequestTest {
-    ObjectMapper mapper = ReportsObjectMapper.getInstance();
 
-    DateTime start = new DateTime(2019, 03, 1, 12, 0, 0, 0, DateTimeZone.UTC);
-    DateTime end = new DateTime(2022, 03, 1, 12, 0, 0, 0, DateTimeZone.UTC);
+    DateTime start = new DateTime(2019, 3, 1, 12, 0, 0, 0, DateTimeZone.UTC);
+    DateTime end = new DateTime(2022, 3, 1, 12, 0, 0, 0, DateTimeZone.UTC);
 
     CustomEventsDetailsListingRequest customEventsDetailsListingRequest;
 
@@ -46,12 +44,12 @@ public class CustomEventsDetailsListingRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(customEventsDetailsListingRequest.getRequestBody(), null);
+        assertNull(customEventsDetailsListingRequest.getRequestBody());
     }
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
@@ -79,6 +77,7 @@ public class CustomEventsDetailsListingRequestTest {
             new CustomEventsDetailsListingResponse(
                 true,
                 "https://go.urbanairship.com/api/reports/events?start=2020-08-01T10:00:00.000Z&end=2020-08-15T20:00:00.000Z&precision=MONTHLY&page_size=20&page=2", 
+                null,
                 2f,
                 709, 
                 ImmutableList.of(customEventsDetailResponse1, customEventsDetailResponse2)

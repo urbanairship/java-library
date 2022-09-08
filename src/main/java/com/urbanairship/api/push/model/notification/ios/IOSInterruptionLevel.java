@@ -1,6 +1,6 @@
 package com.urbanairship.api.push.model.notification.ios;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 /**
  * Enum of iOS Interruption levels
@@ -29,6 +29,6 @@ public enum IOSInterruptionLevel {
             }
         }
 
-        return Optional.absent();
+        return Optional.empty();
     }
 }

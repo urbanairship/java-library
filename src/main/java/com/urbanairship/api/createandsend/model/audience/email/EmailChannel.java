@@ -1,11 +1,11 @@
 package com.urbanairship.api.createandsend.model.audience.email;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import org.joda.time.DateTime;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Represents a single audience email channel for create and send.
@@ -19,18 +19,18 @@ public class EmailChannel {
 
     private EmailChannel(Builder builder) {
         uaAddress = builder.uaAddress;
-        commercialOptedIn = Optional.fromNullable(builder.commercialOptedIn);
-        transactionalOptedIn = Optional.fromNullable(builder.transactionalOptedIn);
+        commercialOptedIn = Optional.ofNullable(builder.commercialOptedIn);
+        transactionalOptedIn = Optional.ofNullable(builder.transactionalOptedIn);
 
         if (!builder.substitutions.build().isEmpty()) {
-            this.substitutions = Optional.fromNullable(builder.substitutions.build());
+            this.substitutions = Optional.ofNullable(builder.substitutions.build());
         } else {
-            substitutions = Optional.absent();
+            substitutions = Optional.empty();
         }
         if (!builder.variables.build().isEmpty()) {
-            this.variables = Optional.fromNullable(builder.variables.build());
+            this.variables = Optional.ofNullable(builder.variables.build());
         } else {
-            variables = Optional.absent();
+            variables = Optional.empty();
         }
     }
 

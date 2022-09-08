@@ -1,7 +1,6 @@
 package com.urbanairship.api.push.model.notification.web;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.DeviceType;
@@ -11,6 +10,7 @@ import com.urbanairship.api.push.model.notification.DevicePayloadOverride;
 import com.urbanairship.api.push.model.notification.actions.Actions;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Represents the payload to be used for sending to web devices.
@@ -29,23 +29,23 @@ public final class WebDevicePayload extends PushModelObject implements DevicePay
     private final Optional<WebTemplate> template;
 
     private WebDevicePayload(Builder builder) {
-        this.alert = Optional.fromNullable(builder.alert);
-        this.title = Optional.fromNullable(builder.title);
-        this.webIcon = Optional.fromNullable(builder.webIcon);
-        this.requireInteraction = Optional.fromNullable(builder.requireInteraction);
-        this.actions = Optional.fromNullable(builder.actions);
-        this.webImage = Optional.fromNullable(builder.webImage);
-        this.expiry = Optional.fromNullable(builder.expiry);
-        this.template = Optional.fromNullable(builder.webTemplate);
+        this.alert = Optional.ofNullable(builder.alert);
+        this.title = Optional.ofNullable(builder.title);
+        this.webIcon = Optional.ofNullable(builder.webIcon);
+        this.requireInteraction = Optional.ofNullable(builder.requireInteraction);
+        this.actions = Optional.ofNullable(builder.actions);
+        this.webImage = Optional.ofNullable(builder.webImage);
+        this.expiry = Optional.ofNullable(builder.expiry);
+        this.template = Optional.ofNullable(builder.webTemplate);
 
         if (builder.buttons.build().isEmpty()) {
-            this.buttons = Optional.absent();
+            this.buttons = Optional.empty();
         } else {
             this.buttons = Optional.of(builder.buttons.build());
         }
 
         if (builder.extra.build().isEmpty()) {
-            this.extra = Optional.absent();
+            this.extra = Optional.empty();
         } else {
             this.extra = Optional.of(builder.extra.build());
         }

@@ -1,6 +1,7 @@
 package com.urbanairship.api.reports.model;
 
 import com.google.common.collect.ImmutableMap;
+
 import java.util.Objects;
 import java.util.Optional;
 

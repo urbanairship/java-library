@@ -4,7 +4,6 @@
 
 package com.urbanairship.api.channel;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.channel.parse.ChannelObjectMapper;
@@ -12,7 +11,6 @@ import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.common.model.GenericResponse;
-
 import org.apache.http.entity.ContentType;
 
 import java.net.URI;

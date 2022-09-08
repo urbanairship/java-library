@@ -4,11 +4,11 @@
 
 package com.urbanairship.api.templates.model;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.common.model.ErrorDetails;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Response returned by the template creation, update, delete, and push endpoints.
@@ -24,14 +24,14 @@ public class TemplateResponse {
 
     private TemplateResponse(Builder builder) {
         this.ok = builder.ok;
-        this.operationId = Optional.fromNullable(builder.operationId);
-        this.templateId = Optional.fromNullable(builder.templateId);
-        this.error = Optional.fromNullable(builder.error);
-        this.errorDetails = Optional.fromNullable(builder.errorDetails);
+        this.operationId = Optional.ofNullable(builder.operationId);
+        this.templateId = Optional.ofNullable(builder.templateId);
+        this.error = Optional.ofNullable(builder.error);
+        this.errorDetails = Optional.ofNullable(builder.errorDetails);
         if (builder.pushIds.build().isEmpty()) {
-            this.pushIds = Optional.absent();
+            this.pushIds = Optional.empty();
         } else {
-            this.pushIds = Optional.fromNullable(builder.pushIds.build());
+            this.pushIds = Optional.ofNullable(builder.pushIds.build());
         }
     }
 

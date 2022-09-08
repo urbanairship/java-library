@@ -1,7 +1,8 @@
 package com.urbanairship.api.channel.model.web;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
+
+import java.util.Optional;
 
 /**
  * Required for signing the push package, includes the keys "p256dh" and "auth".
@@ -104,8 +105,8 @@ public final class Subscription {
 
         public Subscription build() {
             return new Subscription(
-                    Optional.fromNullable(p256dh),
-                    Optional.fromNullable(auth)
+                    Optional.ofNullable(p256dh),
+                    Optional.ofNullable(auth)
             );
         }
     }

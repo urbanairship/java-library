@@ -1,17 +1,11 @@
 package com.urbanairship.api.reports;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
-import com.urbanairship.api.reports.ExperimentVariantReportRequest;
 import com.urbanairship.api.reports.model.ExperimentVariantReportResponse;
 import com.urbanairship.api.reports.model.ExperimentVariantStats;
-import com.urbanairship.api.reports.parse.ReportsObjectMapper;
 import org.apache.http.entity.ContentType;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,9 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class ExperimentVariantReportRequestTest {
-    ObjectMapper mapper = ReportsObjectMapper.getInstance();
 
     ExperimentVariantReportRequest experimentVariantReportRequest;
 
@@ -45,12 +39,12 @@ public class ExperimentVariantReportRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(experimentVariantReportRequest.getRequestBody(), null);
+        assertNull(experimentVariantReportRequest.getRequestBody());
     }
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Request.CONTENT_TYPE_JSON);
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
@@ -84,10 +78,10 @@ public class ExperimentVariantReportRequestTest {
         Integer test = 0;
         Integer variant = 1;
 
-        ExperimentVariantReportResponse experimentVariantReportResponse = new ExperimentVariantReportResponse(false, "appKey", "0f56423d-d410-4199-8ce6-9ade89447206", "0f56423d-d410-4199-8ce6-9ade89447206", "2021-06-07 14:06:23", variant, "Tesr variant B", test, test, test, immutableMap, null, null);
+        ExperimentVariantReportResponse experimentVariantReportResponse = new ExperimentVariantReportResponse(false, "appKey", "0f56423d-d410-4199-8ce6-9ade89447206", "0f56423d-d410-4199-8ce6-9ade89447206", "2021-06-07 14:06:23", variant, "Test variant B", test, test, test, immutableMap, null, null);
 
         String response =
-        "{\"app_key\":\"appKey\",\"experiment_id\":\"0f56423d-d410-4199-8ce6-9ade89447206\",\"push_id\":\"0f56423d-d410-4199-8ce6-9ade89447206\",\"created\":\"2021-06-07 14:06:23\",\"variant\":1,\"variant_name\":\"Tesr variant B\",\"sends\":0,\"direct_responses\":0,\"influenced_responses\":0,\"platforms\":{\"amazon\":{\"type\":\"devicePlatformBreakdown\",\"direct_responses\":0,\"influenced_responses\":0,\"sends\":0},\"web\":{\"type\":\"devicePlatformBreakdown\",\"direct_responses\":0,\"influenced_responses\":0,\"sends\":0},\"android\":{\"type\":\"devicePlatformBreakdown\",\"direct_responses\":0,\"indirect_responses\":0,\"sends\":0},\"ios\":{\"type\":\"devicePlatformBreakdown\",\"direct_responses\":0,\"influenced_responses\":0,\"sends\":0}}}";
+        "{\"app_key\":\"appKey\",\"experiment_id\":\"0f56423d-d410-4199-8ce6-9ade89447206\",\"push_id\":\"0f56423d-d410-4199-8ce6-9ade89447206\",\"created\":\"2021-06-07 14:06:23\",\"variant\":1,\"variant_name\":\"Test variant B\",\"sends\":0,\"direct_responses\":0,\"influenced_responses\":0,\"platforms\":{\"amazon\":{\"type\":\"devicePlatformBreakdown\",\"direct_responses\":0,\"influenced_responses\":0,\"sends\":0},\"web\":{\"type\":\"devicePlatformBreakdown\",\"direct_responses\":0,\"influenced_responses\":0,\"sends\":0},\"android\":{\"type\":\"devicePlatformBreakdown\",\"direct_responses\":0,\"indirect_responses\":0,\"sends\":0},\"ios\":{\"type\":\"devicePlatformBreakdown\",\"direct_responses\":0,\"influenced_responses\":0,\"sends\":0}}}";
 
         assertEquals(experimentVariantReportRequest.getResponseParser().parse(response), experimentVariantReportResponse);
     }

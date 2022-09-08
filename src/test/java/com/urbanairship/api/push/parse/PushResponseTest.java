@@ -7,9 +7,9 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
 
 public class PushResponseTest {
 
@@ -29,12 +29,9 @@ public class PushResponseTest {
         ObjectMapper mapper = PushObjectMapper.getInstance();
         try {
             PushResponse response = mapper.readValue(pushJSON, PushResponse.class);
-            assertTrue("Error in response operationId",
-                    response.getOperationId().get().equals("df6a6b50"));
-            assertTrue("Error in response pushIds",
-                    response.getPushIds().get().get(0).equals("id1"));
-            assertTrue("Error in response pushIds",
-                    response.getPushIds().get().get(1).equals("id2"));
+            assertEquals("Error in response operationId", "df6a6b50", response.getOperationId().get());
+            assertEquals("Error in response pushIds", "id1", response.getPushIds().get().get(0));
+            assertEquals("Error in response pushIds", "id2", response.getPushIds().get().get(1));
             assertTrue("Error in response status",
                     response.getOk());
             assertTrue("Error in response messageIds",
@@ -61,6 +58,6 @@ public class PushResponseTest {
 
         assertEquals("error", response.getError().get());
         assertEquals("error", response.getErrorDetails().get().getError().get());
-        assertEquals(false, response.getOk());
+        assertFalse(response.getOk());
     }
 }

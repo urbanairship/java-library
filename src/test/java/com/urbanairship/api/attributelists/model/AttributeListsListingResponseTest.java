@@ -1,13 +1,12 @@
 package com.urbanairship.api.attributelists.model;
 
-import com.google.common.base.Optional;
-
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class AttributeListsListingResponseTest {
 
@@ -42,13 +41,13 @@ public class AttributeListsListingResponseTest {
                 .build();
 
         assertNotNull(response);
-        assertEquals(true, response.getOk());
+        assertTrue(response.getOk());
         assertEquals("ua_attributes_list_name", response.getAttributeListsViews().get(0).getName());
         assertEquals(created, response.getAttributeListsViews().get(0).getCreated());
         assertEquals(Integer.valueOf(1234), response.getAttributeListsViews().get(0).getChannelCount());
         assertEquals("ready", response.getAttributeListsViews().get(0).getStatus());
         assertEquals("ua_attributes_list_name", response.getAttributeListsViews().get(1).getName());
-        assertEquals(Optional.of("a great list"), response.getAttributeListsViews().get(1).getDescription());
+        assertEquals("a great list", response.getAttributeListsViews().get(1).getDescription().get());
         assertEquals(created, response.getAttributeListsViews().get(1).getCreated());
         assertEquals(updated, response.getAttributeListsViews().get(1).getLastUpdated());
         assertEquals(Integer.valueOf(1234), response.getAttributeListsViews().get(1).getChannelCount());

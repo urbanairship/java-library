@@ -112,14 +112,14 @@ public class OpenChannelTagRequestTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testEmptyEmailTagRequest() throws IOException {
+    public void testEmptyEmailTagRequest() {
 
         OpenChannelTagRequest openChannelTagRequest =  OpenChannelTagRequest.newRequest();
         openChannelTagRequest.getRequestBody();
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testEmptyAudienceTagRequest() throws IOException {
+    public void testEmptyAudienceTagRequest() {
 
         OpenChannelTagRequest openChannelTagRequest =  OpenChannelTagRequest.newRequest();
             openChannelTagRequest.addOpenChannel("Number Four","cylon");
@@ -127,7 +127,7 @@ public class OpenChannelTagRequestTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void tesSetTagAndAddRequest() throws IOException {
+    public void tesSetTagAndAddRequest() {
 
         OpenChannelTagRequest openChannelTagRequest =  OpenChannelTagRequest.newRequest();
             openChannelTagRequest.addOpenChannel("Number Four","cylon")

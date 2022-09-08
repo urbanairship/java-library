@@ -2,15 +2,17 @@ package com.urbanairship.api.staticlists.parse;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Optional;
 import com.urbanairship.api.common.parse.DateFormats;
 import com.urbanairship.api.staticlists.model.StaticListListingResponse;
 import com.urbanairship.api.staticlists.model.StaticListView;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+import java.util.Optional;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class StaticListListingResponseDeserializerTest {
     private static final ObjectMapper mapper = StaticListsObjectMapper.getInstance();
@@ -45,7 +47,7 @@ public class StaticListListingResponseDeserializerTest {
 
         StaticListListingResponse lists = mapper.readValue(json, StaticListListingResponse.class);
         assertNotNull(lists);
-        assertEquals(true, lists.getOk());
+        assertTrue(lists.getOk());
 
         StaticListView list1 = lists.getStaticListViews().get(0);
         assertNotNull(list1);
@@ -59,7 +61,7 @@ public class StaticListListingResponseDeserializerTest {
         StaticListView list2 = lists.getStaticListViews().get(1);
         assertNotNull(list2);
         assertEquals("gold_members", list2.getName());
-        assertEquals(Optional.absent(), list2.getDescription());
+        assertEquals(Optional.empty(), list2.getDescription());
         assertEquals(created, list2.getCreated());
         assertEquals(updated, list2.getLastUpdated());
         assertEquals(Integer.valueOf(678), list2.getChannelCount());

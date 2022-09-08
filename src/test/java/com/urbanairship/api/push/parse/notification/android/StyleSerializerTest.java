@@ -7,7 +7,6 @@ import com.urbanairship.api.push.model.notification.android.BigPictureStyle;
 import com.urbanairship.api.push.model.notification.android.BigTextStyle;
 import com.urbanairship.api.push.model.notification.android.InboxStyle;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-
 import org.junit.Assert;
 import org.junit.Test;
 public class StyleSerializerTest {

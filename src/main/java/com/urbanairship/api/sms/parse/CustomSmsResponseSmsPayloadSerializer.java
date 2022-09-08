@@ -3,7 +3,6 @@ package com.urbanairship.api.sms.parse;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-
 import com.urbanairship.api.sms.model.CustomSmsResponseSmsPayload;
 
 import java.io.IOException;

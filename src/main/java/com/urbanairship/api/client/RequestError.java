@@ -6,11 +6,11 @@ package com.urbanairship.api.client;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Optional;
 import com.urbanairship.api.client.parse.RequestErrorObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
 
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Error object for API requests.
@@ -337,10 +337,10 @@ public final class RequestError {
          */
         public RequestError build() {
             return new RequestError(ok,
-                    Optional.fromNullable(operationId),
+                    Optional.ofNullable(operationId),
                     error,
-                    Optional.fromNullable(errorCode),
-                    Optional.fromNullable(details));
+                    Optional.ofNullable(errorCode),
+                    Optional.ofNullable(details));
         }
     }
 }

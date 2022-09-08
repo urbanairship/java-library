@@ -5,13 +5,13 @@
 package com.urbanairship.api.push.model.notification.android;
 
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.notification.Interactive;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Represents an Android wearable object.
@@ -31,12 +31,12 @@ public class Wearable {
     }
 
     private Wearable(Builder builder) {
-        this.backgroundImage = Optional.fromNullable(builder.backgroundImage);
-        this.interactive = Optional.fromNullable(builder.interactive);
+        this.backgroundImage = Optional.ofNullable(builder.backgroundImage);
+        this.interactive = Optional.ofNullable(builder.interactive);
         if (!builder.extraPages.build().isEmpty()) {
             this.extraPages = Optional.of(builder.extraPages.build());
         } else {
-            this.extraPages = Optional.absent();
+            this.extraPages = Optional.empty();
         }
     }
 

@@ -10,12 +10,12 @@ import com.urbanairship.api.segments.parse.SegmentObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class SegmentListingRequestTest {
     private static final String TEST_QUERY_PATH = "/api/segments/";
@@ -30,7 +30,7 @@ public class SegmentListingRequestTest {
 
     @Test
     public void testContentType() throws Exception {
-        assertEquals(request.getContentType(), null);
+        assertNull(request.getContentType());
     }
 
     @Test
@@ -40,12 +40,12 @@ public class SegmentListingRequestTest {
 
     @Test
     public void testBody() throws Exception {
-        assertEquals(request.getRequestBody(), null);
+        assertNull(request.getRequestBody());
     }
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
         assertEquals(request.getRequestHeaders(), headers);
@@ -61,12 +61,7 @@ public class SegmentListingRequestTest {
 
     @Test
     public void testListParser() throws Exception {
-        ResponseParser<SegmentListingResponse> responseParser = new ResponseParser<SegmentListingResponse>() {
-            @Override
-            public SegmentListingResponse parse(String response) throws IOException {
-                return mapper.readValue(response, SegmentListingResponse.class);
-            }
-        };
+        ResponseParser<SegmentListingResponse> responseParser = response -> mapper.readValue(response, SegmentListingResponse.class);
 
         String responseList = "{\n" +
                 "   \"next_page\": \"https://go.urbanairship.com/api/segments?limit=1&sort=id&order=asc&start=3832cf72-cb44-4132-a11f-eafb41b82f64\",\n" +

@@ -2,19 +2,17 @@ package com.urbanairship.api.segment;
 
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
-import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.common.model.ErrorDetails;
 import com.urbanairship.api.common.model.GenericResponse;
-import com.urbanairship.api.common.parse.CommonObjectMapper;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.audience.location.DateRange;
 import com.urbanairship.api.segments.SegmentRequest;
+import com.urbanairship.api.segments.model.SegmentRequestResponse;
 import org.apache.http.entity.ContentType;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -72,7 +70,7 @@ public class SegmentRequestTest {
 
     @Test
     public void testHeaders() throws Exception {
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.ACCEPT, Request.UA_VERSION_JSON);
 
         assertEquals(createRequest.getRequestHeaders(), headers);
@@ -99,18 +97,20 @@ public class SegmentRequestTest {
 
         ErrorDetails errorDetails = new ErrorDetails("The key chanel is not allowed in this context", null);
 
-        GenericResponse genericResponse = new GenericResponse(true, "1769297b-1640-43a4-af84-3e0ece89efe", "error", errorDetails);
+        SegmentRequestResponse segmentRequestResponse = new SegmentRequestResponse(true, "1769297b-1640-43a4-af84-3e0ece89efe", "error", errorDetails, 12345,null, "1769297b-1640-43a4-af84-3e0ece89efe");
 
         String responseJson = "{" +
                 "\"ok\": true," +
+                "\"segment_id\": \"1769297b-1640-43a4-af84-3e0ece89efe\"," +
                 "\"operation_id\": \"1769297b-1640-43a4-af84-3e0ece89efe\"," +
                 "\"error\": \"error\"," +
+                "\"error_code\": 12345," +
                 "\"details\": {\"error\": \"The key chanel is not allowed in this context\"" +
                 "}" +
                 "}";
 
-        assertEquals(createRequest.getResponseParser().parse(responseJson), genericResponse);
-        assertEquals(updateRequest.getResponseParser().parse(responseJson), genericResponse);
+        assertEquals(createRequest.getResponseParser().parse(responseJson), segmentRequestResponse);
+        assertEquals(updateRequest.getResponseParser().parse(responseJson), segmentRequestResponse);
 
     }
 }

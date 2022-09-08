@@ -1,6 +1,6 @@
 package com.urbanairship.api.channel.model.attributes;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 public enum AttributeAction {
     SET("set"),
@@ -19,7 +19,7 @@ public enum AttributeAction {
             }
         }
 
-        return Optional.absent();
+        return Optional.empty();
     }
 
     public String getIdentifier() {

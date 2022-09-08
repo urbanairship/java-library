@@ -4,11 +4,11 @@
 
 package com.urbanairship.api.templates.model;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * The TemplateSelector object describes the template ID and the variable substitutions
@@ -21,7 +21,7 @@ public class TemplateSelector {
     private TemplateSelector(Builder builder) {
         this.templateId = builder.templateId;
         if (builder.substitutions.isEmpty()) {
-            this.substitutions = Optional.absent();
+            this.substitutions = Optional.empty();
         } else {
             this.substitutions = Optional.of(builder.substitutions);
         }

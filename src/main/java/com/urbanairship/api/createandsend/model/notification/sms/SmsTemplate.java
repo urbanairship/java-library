@@ -1,7 +1,8 @@
 package com.urbanairship.api.createandsend.model.notification.sms;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
+
+import java.util.Optional;
 
 /**
  * Represends the sms template in the create and send sms notification.
@@ -11,8 +12,8 @@ public class SmsTemplate {
     private final Optional<String> templateId;
 
     private SmsTemplate(Builder builder) {
-        this.smsFields = Optional.fromNullable(builder.smsFields);
-        this.templateId = Optional.fromNullable(builder.templateId);
+        this.smsFields = Optional.ofNullable(builder.smsFields);
+        this.templateId = Optional.ofNullable(builder.templateId);
     }
 
     public static Builder newBuilder() {

@@ -6,9 +6,10 @@ import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.notification.android.Wearable;
 import com.urbanairship.api.push.parse.PushObjectMapper;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Objects;
 
 public class WearableDeserializerTest {
     private final ObjectMapper mapper = PushObjectMapper.getInstance();
@@ -56,8 +57,8 @@ public class WearableDeserializerTest {
         Interactive interactive = wearable.getInteractive().get();
         Assert.assertNotNull(interactive);
         Assert.assertEquals(interactive.getType(), "ua_yes_no_foreground");
-        Assert.assertEquals(interactive.getButtonActions().get("yes").getAddTags().get().getValue().getSingleTag(), "butter");
-        Assert.assertEquals(interactive.getButtonActions().get("yes").getRemoveTags().get().getValue().getSingleTag(), "cake");
-        Assert.assertEquals(interactive.getButtonActions().get("no").getRemoveTags().get().getValue().getSingleTag(), "cool");
+        Assert.assertEquals(Objects.requireNonNull(interactive.getButtonActions().get("yes")).getAddTags().get().getValue().getSingleTag(), "butter");
+        Assert.assertEquals(Objects.requireNonNull(interactive.getButtonActions().get("yes")).getRemoveTags().get().getValue().getSingleTag(), "cake");
+        Assert.assertEquals(Objects.requireNonNull(interactive.getButtonActions().get("no")).getRemoveTags().get().getValue().getSingleTag(), "cool");
     }
 }

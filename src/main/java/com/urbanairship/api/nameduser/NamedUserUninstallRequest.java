@@ -1,6 +1,5 @@
 package com.urbanairship.api.nameduser;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.channel.Constants;
@@ -9,7 +8,6 @@ import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
 import com.urbanairship.api.common.model.GenericResponse;
-
 import org.apache.http.entity.ContentType;
 
 import java.net.URI;

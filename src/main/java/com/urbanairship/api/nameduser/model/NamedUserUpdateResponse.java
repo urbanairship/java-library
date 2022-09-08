@@ -1,9 +1,10 @@
 package com.urbanairship.api.nameduser.model;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.common.model.ErrorDetails;
+
+import java.util.Optional;
 
 public class NamedUserUpdateResponse {
     private final boolean ok;

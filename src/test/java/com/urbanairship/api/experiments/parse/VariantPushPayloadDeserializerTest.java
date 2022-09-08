@@ -3,7 +3,6 @@ package com.urbanairship.api.experiments.parse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.experiments.model.VariantPushPayload;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -33,7 +32,7 @@ public class VariantPushPayloadDeserializerTest {
     }
 
     @Test
-    public void testEmptyPartialPushPayload() throws Exception {
+    public void testEmptyPartialPushPayload() {
         Exception exception = Assert.assertThrows(APIParsingException.class, () -> {
             String emptyPayloadString = "{}";
             MAPPER.readValue(emptyPayloadString, VariantPushPayload.class);

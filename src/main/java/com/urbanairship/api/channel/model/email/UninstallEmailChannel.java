@@ -2,6 +2,7 @@ package com.urbanairship.api.channel.model.email;
 
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.PushModelObject;
+
 import java.util.Objects;
 
 /**

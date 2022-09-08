@@ -4,7 +4,6 @@
 
 package com.urbanairship.api.staticlists;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.net.HttpHeaders;
 import com.opencsv.CSVWriter;
@@ -20,6 +19,7 @@ import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /*
  * The StaticListDownloadRequest class static list download request to be executed in
@@ -29,7 +29,7 @@ public class StaticListDownloadRequest implements Request<String> {
     private final static String API_LISTS_PATH = "/api/lists/";
     private final String path;
 
-    private Optional<FileOutputStream> fileOutputStream = Optional.absent();
+    private Optional<FileOutputStream> fileOutputStream = Optional.empty();
 
     private StaticListDownloadRequest(String name) {
         this.path = API_LISTS_PATH + name + "/csv";

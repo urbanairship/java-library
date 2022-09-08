@@ -4,11 +4,11 @@
 
 package com.urbanairship.api.push.model.notification.ios;
 
-import com.google.common.base.Optional;
 import com.urbanairship.api.push.model.PushModelObject;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public final class IOSAlertData extends PushModelObject {
 
@@ -228,18 +228,18 @@ public final class IOSAlertData extends PushModelObject {
         }
 
         public IOSAlertData build() {
-            return new IOSAlertData(Optional.fromNullable(body),
-                                    Optional.fromNullable(actionLocKey),
-                                    Optional.fromNullable(locKey),
-                                    Optional.fromNullable(locArgs),
-                                    Optional.fromNullable(launchImage),
-                                    Optional.fromNullable(summaryArg),
-                                    Optional.fromNullable(summaryArgCount),
-                                    Optional.fromNullable(title),
-                                    Optional.fromNullable(titleLocArgs),
-                                    Optional.fromNullable(titleLocKey),
-                                    Optional.fromNullable(subtitleLocArgs),
-                                    Optional.fromNullable(subtitleLocKey));
+            return new IOSAlertData(Optional.ofNullable(body),
+                                    Optional.ofNullable(actionLocKey),
+                                    Optional.ofNullable(locKey),
+                                    Optional.ofNullable(locArgs),
+                                    Optional.ofNullable(launchImage),
+                                    Optional.ofNullable(summaryArg),
+                                    Optional.ofNullable(summaryArgCount),
+                                    Optional.ofNullable(title),
+                                    Optional.ofNullable(titleLocArgs),
+                                    Optional.ofNullable(titleLocKey),
+                                    Optional.ofNullable(subtitleLocArgs),
+                                    Optional.ofNullable(subtitleLocKey));
         }
     }
 }

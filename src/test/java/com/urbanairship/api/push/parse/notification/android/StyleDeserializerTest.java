@@ -62,7 +62,7 @@ public class StyleDeserializerTest {
                 "}";
 
         InboxStyle inboxStyle = mapper.readValue(styleLinesJson, InboxStyle.class);
-        ImmutableList<String> lines = (ImmutableList<String>) inboxStyle.getContent();
+        ImmutableList<String> lines = inboxStyle.getContent();
         assertNotNull(inboxStyle);
         assertEquals(inboxStyle.getTitle().get(), "lines title");
         assertEquals(inboxStyle.getSummary().get(), "lines summary");
