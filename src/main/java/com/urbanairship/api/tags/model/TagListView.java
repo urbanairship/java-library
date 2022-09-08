@@ -22,6 +22,7 @@ public class TagListView {
     private final DateTime created;
     private final DateTime lastUpdated;
     private final Integer channelCount;
+    private final Integer namedUserCount;
     private final Integer mutationSuccessCount;
     private final Integer mutationErrorCount;
     private final String errorPath;
@@ -37,6 +38,7 @@ public class TagListView {
         @JsonProperty("created") DateTime created,
         @JsonProperty("last_updated") DateTime lastUpdated,
         @JsonProperty("channel_count") Integer channelCount,
+        @JsonProperty("named_user_count") Integer namedUserCount,
         @JsonProperty("mutation_success_count") Integer mutationSuccessCount,
         @JsonProperty("mutation_error_count") Integer mutationErrorCount,
         @JsonProperty("error_path") String errorPath,
@@ -52,6 +54,7 @@ public class TagListView {
         this.created = created;
         this.lastUpdated = lastUpdated;
         this.channelCount = channelCount;
+        this.namedUserCount = namedUserCount;
         this.mutationSuccessCount = mutationSuccessCount;
         this.mutationErrorCount = mutationErrorCount;
         this.errorPath = errorPath;
@@ -150,6 +153,15 @@ public class TagListView {
     }
 
     /**
+     * Get the number of named users associated with the tag list.
+     *
+     * @return int channel count
+     */
+    public Integer getNamedUserCount() {
+        return namedUserCount;
+    }
+
+    /**
      * Get the mutationSuccessCount of the tag list.
      *
      * @return int mutationSuccessCount
@@ -197,6 +209,7 @@ public class TagListView {
                 ", created=" + created +
                 ", lastUpdated=" + lastUpdated +
                 ", channelCount=" + channelCount +
+                ", namedUserCount=" + namedUserCount +
                 ", mutationSuccessCount=" + mutationSuccessCount +
                 ", mutationErrorCount=" + mutationErrorCount +
                 ", errorPath=" + errorPath +
@@ -206,7 +219,7 @@ public class TagListView {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(name, description, extras, addTags, removeTags, setTags, created, lastUpdated, channelCount, mutationSuccessCount, mutationErrorCount, status);
+        return Objects.hashCode(name, description, extras, addTags, removeTags, setTags, created, lastUpdated, channelCount, namedUserCount, mutationSuccessCount, mutationErrorCount, status);
     }
 
     @Override
@@ -227,6 +240,7 @@ public class TagListView {
                 Objects.equal(this.created, other.created) &&
                 Objects.equal(this.lastUpdated, other.lastUpdated) &&
                 Objects.equal(this.channelCount, other.channelCount) &&
+                Objects.equal(this.namedUserCount, other.namedUserCount) &&
                 Objects.equal(this.mutationSuccessCount, other.mutationSuccessCount) &&
                 Objects.equal(this.mutationErrorCount, other.mutationErrorCount) &&
                 Objects.equal(this.errorPath, other.errorPath) &&
@@ -244,6 +258,7 @@ public class TagListView {
         private DateTime created = null;
         private DateTime lastUpdated = null;
         private Integer channelCount = null;
+        private Integer namedUserCount = null;
         private Integer mutationSuccessCount = null;
         private Integer mutationErrorCount = null;
         private String errorPath = null;
@@ -304,6 +319,17 @@ public class TagListView {
          */
         public Builder setChannelCount(int channelCount) {
             this.channelCount = channelCount;
+            return this;
+        }
+
+        /**
+         * Set the named user count.
+         *
+         * @param namedUserCount int
+         * @return Builder
+         */
+        public Builder setNamedUserCount(int namedUserCount) {
+            this.namedUserCount = namedUserCount;
             return this;
         }
 
@@ -430,6 +456,7 @@ public class TagListView {
                 created,
                 lastUpdated,
                 channelCount,
+                namedUserCount,
                 mutationSuccessCount,
                 mutationErrorCount,
                 errorPath,

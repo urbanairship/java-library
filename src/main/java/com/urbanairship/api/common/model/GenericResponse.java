@@ -10,17 +10,22 @@ public class GenericResponse {
     private final String operationId;
     private final String error;
     private final ErrorDetails errorDetails;
+    private final Integer errorCode;
+    private final String warning;
 
     public GenericResponse(
-        @JsonProperty("ok") Boolean ok, 
-        @JsonProperty("operation_id") String operationId, 
-        @JsonProperty("error") String error,
-        @JsonProperty("details") ErrorDetails errorDetails) {
+            @JsonProperty("ok") Boolean ok,
+            @JsonProperty("operation_id") String operationId,
+            @JsonProperty("error") String error,
+            @JsonProperty("details") ErrorDetails errorDetails,
+            @JsonProperty("error_code") Integer errorCode,
+            @JsonProperty("warning") String warning) {
         this.ok = ok;
         this.operationId = operationId;
         this.error = error;
         this.errorDetails = errorDetails;
-    
+        this.errorCode = errorCode;
+        this.warning = warning;
     }
 
     public Optional<Boolean> getOk() {
@@ -39,6 +44,12 @@ public class GenericResponse {
         return Optional.ofNullable(errorDetails);
     }
 
+    public Optional<Integer> getErrorCode() {
+        return Optional.ofNullable(errorCode);
+    }
+
+    public Optional<String> getWarning() {return Optional.ofNullable(warning);}
+
     @Override
     public String toString() {
         return "GenericResponse{" +
@@ -46,6 +57,8 @@ public class GenericResponse {
                 ", operationId=" + operationId +
                 ", error=" + error +
                 ", errorDetails=" + errorDetails +
+                ", errorCode=" + errorCode +
+                ", warning=" + warning +
                 '}';
     }
 
@@ -57,11 +70,13 @@ public class GenericResponse {
         return  Objects.equal(this.ok, that.ok) &&
                 Objects.equal(this.operationId, that.operationId) &&
                 Objects.equal(this.error, that.error) &&
-                Objects.equal(this.errorDetails, that.errorDetails);
+                Objects.equal(this.errorDetails, that.errorDetails) &&
+                Objects.equal(this.errorCode, that.errorCode) &&
+                Objects.equal(this.warning, that.warning);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(ok, operationId, error, errorDetails);
+        return Objects.hashCode(ok, operationId, error, errorDetails, errorCode, warning);
     }
 }

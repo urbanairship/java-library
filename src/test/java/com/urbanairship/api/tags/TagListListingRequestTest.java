@@ -71,6 +71,7 @@ public class TagListListingRequestTest {
             .setCreated(DateTime.parse("2013-01-24T23:55:05.000Z"))
             .setLastUpdated(DateTime.parse("2013-01-24T23:55:05.000Z"))
             .setChannelCount(3145)
+            .setNamedUserCount(1234)
             .setMutationSuccessCount(1)
             .setMutationErrorCount(0)
             .setErrorPath("")
@@ -87,6 +88,7 @@ public class TagListListingRequestTest {
             .setCreated(DateTime.parse("2013-01-24T23:55:05.000Z"))
             .setLastUpdated(DateTime.parse("2013-01-24T23:55:05.000Z"))
             .setChannelCount(19999)
+            .setNamedUserCount(1234)
             .setMutationSuccessCount(1)
             .setMutationErrorCount(0)
             .setErrorPath("")
@@ -118,6 +120,7 @@ public class TagListListingRequestTest {
                         "\"created\": \"2013-01-24T23:55:05\",\n" +
                         "\"last_updated\": \"2013-01-24T23:55:05\",\n" +
                         "\"channel_count\": 3145,\n" +
+                        "\"named_user_count\": 1234,\n" +
                         "\"mutation_success_count\": 1,\n" +
                         "\"mutation_error_count\": 0,\n" +
                         "\"error_path\": \"\",\n" +
@@ -139,6 +142,7 @@ public class TagListListingRequestTest {
                         "\"created\": \"2013-01-24T23:55:05\",\n" +
                         "\"last_updated\": \"2013-01-24T23:55:05\",\n" +
                         "\"channel_count\": 19999,\n" +
+                        "\"named_user_count\": 1234,\n" +
                         "\"mutation_success_count\": 1,\n" +
                         "\"mutation_error_count\": 0,\n" +
                         "\"error_path\": \"\",\n" +

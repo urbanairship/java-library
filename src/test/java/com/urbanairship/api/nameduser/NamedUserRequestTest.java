@@ -178,12 +178,13 @@ public class NamedUserRequestTest {
 
         ErrorDetails errorDetails = new ErrorDetails("The key chanel is not allowed in this context", null);
 
-        GenericResponse genericResponse = new GenericResponse(true, "1769297b-1640-43a4-af84-3e0ece89efe", "error", errorDetails);
+        GenericResponse genericResponse = new GenericResponse(true, "1769297b-1640-43a4-af84-3e0ece89efe", "error", errorDetails, 50000, null);
 
         String responseJson = "{" +
                 "\"ok\": true," +
                 "\"operation_id\": \"1769297b-1640-43a4-af84-3e0ece89efe\"," +
                 "\"error\": \"error\"," +
+                "\"error_code\": 50000," +
                 "\"details\": {\"error\": \"The key chanel is not allowed in this context\"" +
                 "}" +
                 "}";
