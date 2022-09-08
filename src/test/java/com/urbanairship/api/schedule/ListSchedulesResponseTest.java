@@ -142,4 +142,45 @@ public class ListSchedulesResponseTest {
         assertFalse(response.getOk());
     }
 
+    @Test
+    public void testScheduleWithOpenChannel() throws IOException {
+        String jsonResponse = "{\n" +
+                "    \"ok\": true,\n" +
+                "    \"operation_id\": \"369e93f9-9263-4528-bfa1-d990e7fe1f33\",\n" +
+                "    \"schedule_urls\": [\n" +
+                "        \"https://go.urbanairship.com/api/schedules/4b51bc54-a7f0-44ca-9800-38e34ce37254\"\n" +
+                "    ],\n" +
+                "    \"schedule_ids\": [\n" +
+                "        \"4b51bc54-a7f0-44ca-9800-38e34ce37254\"\n" +
+                "    ],\n" +
+                "    \"schedules\": [\n" +
+                "        {\n" +
+                "            \"url\": \"https://go.urbanairship.com/api/schedules/4b51bc54-a7f0-44ca-9800-38e34ce37254\",\n" +
+                "            \"schedule\": {\n" +
+                "                \"scheduled_time\": \"2023-06-03T09:15:00\"\n" +
+                "            },\n" +
+                "            \"name\": \"Morning People\",\n" +
+                "            \"push\": {\n" +
+                "                \"device_types\": [\n" +
+                "                    \"open::yakitori\"\n" +
+                "                ],\n" +
+                "                \"notification\": {\n" +
+                "                    \"alert\": \"Here's a push!\"\n" +
+                "                },\n" +
+                "                \"audience\": {\n" +
+                "                    \"open_channel\": \"9fb84ded-a39d-4a89-b00d-9b0102d4f2fe\"\n" +
+                "                }\n" +
+                "            },\n" +
+                "            \"push_ids\": [\n" +
+                "                \"c3118a70-2f71-11ed-a4be-02425d8780e4\"\n" +
+                "            ]\n" +
+                "        }\n" +
+                "    ]\n" +
+                "}";
+
+        ObjectMapper mapper = ScheduleObjectMapper.getInstance();
+        ListAllSchedulesResponse response = mapper.readValue(jsonResponse, ListAllSchedulesResponse.class);
+        assertTrue(response.getOk());
+    }
+
 }
