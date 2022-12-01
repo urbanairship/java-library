@@ -1,4 +1,9 @@
 -------------------------
+8.4.0 01DEC22
+-------------------------
+- Added support for URL in landing page action
+
+-------------------------
 8.3.0 08SEP22
 -------------------------
 - Added support for custom events request with array
