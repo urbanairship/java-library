@@ -23,12 +23,16 @@ public final class LandingPageWithContentSerializer extends JsonSerializer<OpenL
             jgen.writeFieldName("content");
             jgen.writeStartObject();
             try {
-                jgen.writeStringField("body", content.getBody());
-                jgen.writeStringField("content_type", content.getContentType());
-                if(content.getEncoding().isPresent()) {
-                    jgen.writeStringField("content_encoding", content.getEncoding().get() == LandingPageContent.Encoding.UTF8 ?
-                            "utf-8" :
-                            "base64");
+                if(content.getBody().isPresent() && content.getContentType().isPresent()) {
+                    jgen.writeStringField("body", content.getBody().get());
+                    jgen.writeStringField("content_type", content.getContentType().get());
+                    if (content.getEncoding().isPresent()) {
+                        jgen.writeStringField("content_encoding", content.getEncoding().get() == LandingPageContent.Encoding.UTF8 ?
+                                "utf-8" :
+                                "base64");
+                    }
+                } else if (content.getUrl().isPresent()) {
+                    jgen.writeStringField("url", content.getUrl().get().toString());
                 }
             }
             finally {
