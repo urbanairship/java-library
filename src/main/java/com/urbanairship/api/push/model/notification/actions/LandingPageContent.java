@@ -9,12 +9,14 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.urbanairship.api.push.model.PushModelObject;
 
+import java.net.URI;
 import java.util.Optional;
 
 public final class LandingPageContent extends PushModelObject {
     private final Optional<Encoding> encoding;
-    private final String body;
-    private final String contentType;
+    private final Optional<String> body;
+    private final Optional<String> contentType;
+    private final Optional<URI> url;
 
     private static int byteLengthBase64Encoded(int bytes) {
         return (int)Math.ceil(bytes / 3.0) * 4;
@@ -66,15 +68,11 @@ public final class LandingPageContent extends PushModelObject {
             "application/x-iwork-numbers-sffnumbers"
     );
 
-    private LandingPageContent(String contentType, Optional<Encoding> encoding, String body) {
+    private LandingPageContent( Optional<String> contentType, Optional<Encoding> encoding,  Optional<String> body, Optional<URI> url) {
         this.contentType = contentType;
         this.encoding = encoding;
         this.body = body;
-    }
-
-    public boolean requiresImageHostingEntitlement() {
-        final int large_size = (encoding.isPresent() && encoding.get() == Encoding.Base64) ? LARGE_BODY_SIZE_BASE64 : LARGE_BODY_SIZE_BYTES;
-        return body.length() > large_size;
+        this.url = url;
     }
 
     public static Builder newBuilder() {
@@ -85,7 +83,7 @@ public final class LandingPageContent extends PushModelObject {
         return newBuilder().mergeFrom(this);
     }
 
-    public String getContentType() {
+    public Optional<String> getContentType() {
         return contentType;
     }
 
@@ -93,13 +91,17 @@ public final class LandingPageContent extends PushModelObject {
         return encoding;
     }
 
-    public String getBody() {
+    public Optional<String> getBody() {
         return body;
+    }
+
+    public Optional<URI> getUrl() {
+        return url;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(encoding, body, contentType);
+        return Objects.hashCode(encoding, body, contentType, url);
     }
 
     @Override
@@ -113,7 +115,8 @@ public final class LandingPageContent extends PushModelObject {
         final LandingPageContent other = (LandingPageContent) obj;
         return Objects.equal(this.encoding, other.encoding)
                 && Objects.equal(this.body, other.body)
-                && Objects.equal(this.contentType, other.contentType);
+                && Objects.equal(this.contentType, other.contentType)
+                && Objects.equal(this.url, other.url);
     }
 
     @Override
@@ -122,6 +125,7 @@ public final class LandingPageContent extends PushModelObject {
                 "encoding=" + encoding +
                 ", body='" + body + '\'' +
                 ", contentType='" + contentType + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 
@@ -134,13 +138,15 @@ public final class LandingPageContent extends PushModelObject {
         private Optional<Encoding> encoding = Optional.empty();
         private Optional<String> body = Optional.empty();
         private Optional<String> contentType = Optional.empty();
+        private Optional<URI> url = Optional.empty();
+
 
         private Builder() { }
 
         public Builder mergeFrom(LandingPageContent other) {
             encoding = other.getEncoding();
-            return setBody(other.getBody())
-                    .setContentType(other.getContentType());
+            return setBody(other.getBody().get())
+                    .setContentType(other.getContentType().get());
         }
 
         public Builder setEncoding(Encoding encoding) {
@@ -163,18 +169,31 @@ public final class LandingPageContent extends PushModelObject {
             return this;
         }
 
+        public Builder setUrl(URI url) {
+            this.url = Optional.of(url);
+            return this;
+        }
+
         public LandingPageContent build() {
 
-            if (!body.isPresent()) {
+            if (!url.isPresent() && !(body.isPresent() || contentType.isPresent())) {
+                throw new RuntimeException("Content needs a body/contentType or an url.");
+            }
+
+            if (!url.isPresent() && body.isPresent() && !contentType.isPresent()) {
+                throw new RuntimeException("Content needs a contentType.");
+            }
+
+            if (!url.isPresent() && !body.isPresent() && contentType.isPresent()) {
                 throw new RuntimeException("Content needs a body.");
             }
 
-            if (!contentType.isPresent()) {
-                throw new RuntimeException("Content needs contentType.");
+            if (url.isPresent() && (body.isPresent() || contentType.isPresent() ||encoding.isPresent())) {
+                throw new RuntimeException("Content must only contain a body/contentType or an url.");
             }
 
             Preconditions.checkNotNull(encoding, "encoding should not be null.");
-            return new LandingPageContent(contentType.get(), encoding, body.get());
+            return new LandingPageContent(contentType, encoding, body, url);
         }
     }
 }
