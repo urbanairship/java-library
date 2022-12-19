@@ -101,6 +101,8 @@ public class CreateAndSendEmailTest {
                 .setSenderName("Urban Airship")
                 .setSenderAddress("team@urbanairship.com")
                 .setReplyTo("no-reply@urbanairship.com")
+                .setClickTracking(false)
+                .setOpenTracking(false)
                 .build();
 
         notification = Notification.newBuilder()
@@ -116,6 +118,7 @@ public class CreateAndSendEmailTest {
                 .setAudience(audience)
                 .setNotification(notification)
                 .setCampaigns(campaign)
+                .addGlobalAttributes("key","value")
                 .build();
 
         request = CreateAndSendRequest.newRequest(payload);
@@ -217,7 +220,7 @@ public class CreateAndSendEmailTest {
 
     @Test
     public void testEmailPayload() throws IOException {
-        String expectedEmailPayloadString = "{\"subject\":\"Welcome to the Winter Sale! \",\"html_body\":\"<h1>Seasons Greetings</h1><p>Check out our winter deals!</p><p><a data-ua-unsubscribe=\\\"1\\\" title=\\\"unsubscribe\\\" href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\">Unsubscribe</a></p>\",\"plaintext_body\":\"Greetings! Check out our latest winter deals! [[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]\",\"message_type\":\"commercial\",\"sender_name\":\"Urban Airship\",\"sender_address\":\"team@urbanairship.com\",\"reply_to\":\"no-reply@urbanairship.com\"}";
+        String expectedEmailPayloadString = "{\"subject\":\"Welcome to the Winter Sale! \",\"html_body\":\"<h1>Seasons Greetings</h1><p>Check out our winter deals!</p><p><a data-ua-unsubscribe=\\\"1\\\" title=\\\"unsubscribe\\\" href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\">Unsubscribe</a></p>\",\"plaintext_body\":\"Greetings! Check out our latest winter deals! [[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]\",\"message_type\":\"commercial\",\"sender_name\":\"Urban Airship\",\"sender_address\":\"team@urbanairship.com\",\"reply_to\":\"no-reply@urbanairship.com\",\"click_tracking\":false,\"open_tracking\":false}}";
 
         String parsedJson = PUSH_OBJECT_MAPPER.writeValueAsString(createAndSendEmailPayload);
         JsonNode actual = PUSH_OBJECT_MAPPER.readTree(parsedJson);
@@ -228,7 +231,7 @@ public class CreateAndSendEmailTest {
 
     @Test
     public void testNotification() throws IOException {
-        String expectedNewNotificationString = "{\"email\":{\"subject\":\"Welcome to the Winter Sale! \",\"html_body\":\"<h1>Seasons Greetings</h1><p>Check out our winter deals!</p><p><a data-ua-unsubscribe=\\\"1\\\" title=\\\"unsubscribe\\\" href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\">Unsubscribe</a></p>\",\"plaintext_body\":\"Greetings! Check out our latest winter deals! [[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]\",\"message_type\":\"commercial\",\"sender_name\":\"Urban Airship\",\"sender_address\":\"team@urbanairship.com\",\"reply_to\":\"no-reply@urbanairship.com\"}}";
+        String expectedNewNotificationString = "{\"email\":{\"subject\":\"Welcome to the Winter Sale! \",\"html_body\":\"<h1>Seasons Greetings</h1><p>Check out our winter deals!</p><p><a data-ua-unsubscribe=\\\"1\\\" title=\\\"unsubscribe\\\" href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\">Unsubscribe</a></p>\",\"plaintext_body\":\"Greetings! Check out our latest winter deals! [[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]\",\"message_type\":\"commercial\",\"sender_name\":\"Urban Airship\",\"sender_address\":\"team@urbanairship.com\",\"reply_to\":\"no-reply@urbanairship.com\",\"click_tracking\":false,\"open_tracking\":false}}}";
 
         String parsedJson = PUSH_OBJECT_MAPPER.writeValueAsString(notification);
         JsonNode actual = PUSH_OBJECT_MAPPER.readTree(parsedJson);
@@ -239,7 +242,7 @@ public class CreateAndSendEmailTest {
 
     @Test
     public void testCreateAndSendEmailPayload() throws IOException {
-        String expectedCreateAndSendEmailPayloadString = "{\"audience\":{\"create_and_send\":[{\"ua_address\":\"new@email.com\",\"ua_commercial_opted_in\":\"2018-11-29T10:34:22\",\"customer\":{\"firstname\":\"Jenny\",\"last_name\":\"Smith\",\"location\":\"Vancouver\"}},{\"ua_address\":\"ben@icetown.com\",\"ua_transactional_opted_in\":\"2018-11-29T12:45:10\",\"cart\":[{\"code\":\"abaccgdsagsde\",\"qty\":\"1\",\"name\":\"Rubber Gloves\"},{\"code\":\"cacadgdesgaga\",\"qty\":\"1\",\"name\":\"Bleach Alternative\"}]}]},\"device_types\":[\"email\"],\"notification\":{\"email\":{\"subject\":\"Welcome to the Winter Sale! \",\"html_body\":\"<h1>Seasons Greetings</h1><p>Check out our winter deals!</p><p><a data-ua-unsubscribe=\\\"1\\\" title=\\\"unsubscribe\\\" href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\">Unsubscribe</a></p>\",\"plaintext_body\":\"Greetings! Check out our latest winter deals! [[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]\",\"message_type\":\"commercial\",\"sender_name\":\"Urban Airship\",\"sender_address\":\"team@urbanairship.com\",\"reply_to\":\"no-reply@urbanairship.com\"}},\"campaigns\":{\"categories\":[\"winter sale\",\"west coast\"]}}";
+        String expectedCreateAndSendEmailPayloadString = "{\"audience\":{\"create_and_send\":[{\"ua_address\":\"new@email.com\",\"ua_commercial_opted_in\":\"2018-11-29T10:34:22\",\"customer\":{\"firstname\":\"Jenny\",\"last_name\":\"Smith\",\"location\":\"Vancouver\"}},{\"ua_address\":\"ben@icetown.com\",\"ua_transactional_opted_in\":\"2018-11-29T12:45:10\",\"cart\":[{\"code\":\"abaccgdsagsde\",\"qty\":\"1\",\"name\":\"Rubber Gloves\"},{\"code\":\"cacadgdesgaga\",\"qty\":\"1\",\"name\":\"Bleach Alternative\"}]}]},\"device_types\":[\"email\"],\"notification\":{\"email\":{\"subject\":\"Welcome to the Winter Sale! \",\"html_body\":\"<h1>Seasons Greetings</h1><p>Check out our winter deals!</p><p><a data-ua-unsubscribe=\\\"1\\\" title=\\\"unsubscribe\\\" href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\">Unsubscribe</a></p>\",\"plaintext_body\":\"Greetings! Check out our latest winter deals! [[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]\",\"message_type\":\"commercial\",\"sender_name\":\"Urban Airship\",\"sender_address\":\"team@urbanairship.com\",\"reply_to\":\"no-reply@urbanairship.com\",\"click_tracking\":false,\"open_tracking\":false}},\"campaigns\":{\"categories\":[\"winter sale\",\"west coast\"]},\"global_attributes\":{\"key\":\"value\"}}";
 
         String parsedJson = PUSH_OBJECT_MAPPER.writeValueAsString(payload);
         JsonNode actual = PUSH_OBJECT_MAPPER.readTree(parsedJson);

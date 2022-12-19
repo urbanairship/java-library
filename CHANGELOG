@@ -1,4 +1,11 @@
 -------------------------
+8.5.0 19DEC22
+-------------------------
+- Added support for GlobalAttributes in CreateAndSendPayload
+- Added support for OpenTracking and ClickTracking in CreateAndSendEmailPayload
+- Added support for OpenTracking and ClickTracking in EmailPayload
+
+-------------------------
 8.4.0 01DEC22
 -------------------------
 - Added support for URL in landing page action

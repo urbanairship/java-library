@@ -55,6 +55,14 @@ public class EmailPayloadSerializer extends JsonSerializer<EmailPayload> {
             jgen.writeEndArray();
         }
 
+        if (payload.getClickTracking().isPresent()) {
+            jgen.writeBooleanField("click_tracking", payload.getClickTracking().get());
+        }
+
+        if (payload.getOpenTracking().isPresent()) {
+            jgen.writeBooleanField("open_tracking", payload.getOpenTracking().get());
+        }
+
         jgen.writeEndObject();
     }
 }
