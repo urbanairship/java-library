@@ -2,6 +2,7 @@ package com.urbanairship.api.push.model.notification.email;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.urbanairship.api.createandsend.model.notification.email.CreateAndSendEmailPayload;
 import com.urbanairship.api.createandsend.model.notification.email.EmailTemplate;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushModelObject;
@@ -28,6 +29,8 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
     private final Optional<String> replyTo;
     private final Optional<ImmutableList<Attachment>> attachments;
     private final Optional<EmailTemplate> emailTemplate;
+    private final Optional<Boolean> clickTracking;
+    private final Optional<Boolean> openTracking;
 
     private EmailPayload(Builder builder) {
         this.alert = Optional.ofNullable(builder.alert);
@@ -40,6 +43,8 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
         this.uaAddress = Optional.ofNullable((builder.uaAddress));
         this.replyTo = Optional.ofNullable((builder.replyTo));
         this.emailTemplate = Optional.ofNullable(builder.emailTemplate);
+        this.clickTracking = Optional.ofNullable(builder.clickTracking);
+        this.openTracking = Optional.ofNullable(builder.openTracking);
         if (builder.attachments.build().isEmpty()) {
             this.attachments = Optional.empty();
         } else {
@@ -156,6 +161,23 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
         return emailTemplate;
     }
 
+    /**
+     * Optional, Get the clickTracking value.
+     *
+     * @return Optional Boolean clickTracking
+     */
+    public Optional<Boolean> getClickTracking() {
+        return clickTracking;
+    }
+
+    /**
+     * Optional, Get the openTracking value.
+     *
+     * @return Optional Boolean openTracking
+     */
+    public Optional<Boolean> getOpenTracking() {
+        return openTracking;
+    }
 
     @Override
     public String toString() {
@@ -170,6 +192,8 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
                 ", replyTo=" + replyTo +
                 ", attachments=" + attachments +
                 ", emailTemplate=" + emailTemplate +
+                ", clickTracking=" + clickTracking +
+                ", openTracking=" + openTracking +
                 '}';
     }
 
@@ -187,13 +211,15 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
                 Objects.equals(getUaAddress(), that.getUaAddress()) &&
                 Objects.equals(getReplyTo(), that.getReplyTo()) &&
                 Objects.equals(getAttachments(), that.getAttachments()) &&
-                Objects.equals(getTemplate(), that.getTemplate());
+                Objects.equals(getTemplate(), that.getTemplate()) &&
+                Objects.equals(getClickTracking(), that.getClickTracking()) &&
+                Objects.equals(getOpenTracking(), that.getOpenTracking()) ;
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getSubject(), getHtmlBody(), getPlaintextBody(), getMessageType(), getSenderName(),
-                getSenderAddress(), getUaAddress(), getReplyTo(), getAttachments(), getTemplate());
+                getSenderAddress(), getUaAddress(), getReplyTo(), getAttachments(), getTemplate(), getClickTracking(), getOpenTracking());
     }
 
     /**
@@ -212,6 +238,8 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
         private DeviceType deviceType = null;
         private ImmutableList.Builder<Attachment> attachments = ImmutableList.builder();
         private EmailTemplate emailTemplate = null;
+        private Boolean clickTracking = null;
+        private Boolean openTracking = null;
         private Builder() {
         }
 
@@ -328,8 +356,34 @@ public class EmailPayload extends PushModelObject implements DevicePayloadOverri
             return this;
         }
 
+        /**
+         * Add an emailTemplate objects.
+         *
+         * @param emailTemplate EmailTemplate
+         * @return EmailPayload Builder
+         */
         public Builder setTemplate(EmailTemplate emailTemplate) {
             this.emailTemplate = emailTemplate;
+            return this;
+        }
+
+        /**
+         * Optional, True by default. Set to false to prevent click tracking for GDPR compliance.
+         * @param clickTracking Boolean
+         * @return CreateAndSendEmailPayload Builder
+         */
+        public Builder setClickTracking(Boolean clickTracking) {
+            this.clickTracking = clickTracking;
+            return this;
+        }
+
+        /**
+         * Optional, True by default. Set to false to prevent “open” tracking for GDPR compliance.
+         * @param openTracking Boolean
+         * @return CreateAndSendEmailPayload Builder
+         */
+        public Builder setOpenTracking(Boolean openTracking) {
+            this.openTracking = openTracking;
             return this;
         }
 

@@ -35,21 +35,23 @@ public class EmailPayloadTest {
     @Test
     public void testSerializer() throws JsonProcessingException {
         String expectedPayloadString = "{\n" +
-                "  \"subject\": \"Welcome to the Winter Sale! \",\n" +
-                "  \"html_body\": \"<h1>Seasons Greetings</h1><p>Check out our winter deals!</p><p><a data-ua-unsubscribe=\\\"1\\\" title=\\\"unsubscribe\\\" href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\">Unsubscribe</a></p>\",\n" +
-                "  \"plaintext_body\": \"Greetings! Check out our latest winter deals! [[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]\",\n" +
-                "  \"message_type\": \"commercial\",\n" +
-                "  \"sender_name\": \"Urban Airship\",\n" +
-                "  \"sender_address\": \"team@urbanairship.com\",\n" +
-                "  \"reply_to\": \"no-reply@urbanairship.com\",\n" +
-                "  \"attachments\": [\n" +
-                "    {\n" +
-                "      \"id\": \"firstAttachmentId\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"id\": \"secondAttachmentId\"\n" +
-                "    }\n" +
-                "  ]\n" +
+                "    \"subject\": \"Welcome to the Winter Sale! \",\n" +
+                "    \"html_body\": \"<h1>Seasons Greetings</h1><p>Check out our winter deals!</p><p><a data-ua-unsubscribe=\\\"1\\\" title=\\\"unsubscribe\\\" href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\">Unsubscribe</a></p>\",\n" +
+                "    \"plaintext_body\": \"Greetings! Check out our latest winter deals! [[ua-unsubscribe href=\\\"http://unsubscribe.urbanairship.com/email/success.html\\\"]]\",\n" +
+                "    \"message_type\": \"commercial\",\n" +
+                "    \"sender_name\": \"Urban Airship\",\n" +
+                "    \"sender_address\": \"team@urbanairship.com\",\n" +
+                "    \"reply_to\": \"no-reply@urbanairship.com\",\n" +
+                "    \"attachments\": [\n" +
+                "        {\n" +
+                "            \"id\": \"firstAttachmentId\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"id\": \"secondAttachmentId\"\n" +
+                "        }\n" +
+                "    ],\n" +
+                "    \"click_tracking\": false,\n" +
+                "    \"open_tracking\": false\n" +
                 "}";
 
         Attachment attachment = Attachment.newBuilder()
@@ -70,6 +72,8 @@ public class EmailPayloadTest {
                 .setReplyTo("no-reply@urbanairship.com")
                 .addAttachment(attachment)
                 .addAttachment(secondAttachment)
+                .setClickTracking(false)
+                .setOpenTracking(false)
                 .build();
 
         String actualPayloadString = MAPPER.writeValueAsString(emailPayload);
