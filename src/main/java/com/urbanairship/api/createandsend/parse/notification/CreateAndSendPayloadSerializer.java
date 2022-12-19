@@ -20,6 +20,10 @@ public class CreateAndSendPayloadSerializer extends JsonSerializer<CreateAndSend
             jgen.writeObjectField("campaigns", payload.getCampaigns().get());
         }
 
+        if (!payload.getGlobalAttributes().get().isEmpty()) {
+            jgen.writeObjectField("global_attributes", payload.getGlobalAttributes().get());
+        }
+
         jgen.writeEndObject();
     }
 }

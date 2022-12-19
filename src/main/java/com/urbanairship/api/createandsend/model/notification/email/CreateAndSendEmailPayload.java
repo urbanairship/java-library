@@ -29,6 +29,9 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
     private final Optional<String> replyTo;
     private final Optional<EmailTemplate> emailTemplate;
     private final Optional<ImmutableList<Attachment>> attachments;
+    private final Optional<Boolean> clickTracking;
+    private final Optional<Boolean> openTracking;
+
 
     private CreateAndSendEmailPayload(Builder builder) {
         this.alert = Optional.ofNullable(builder.alert);
@@ -41,6 +44,8 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
         this.replyTo = Optional.ofNullable((builder.replyTo));
         this.bypassOptInLevel = Optional.ofNullable(builder.byPassOptInLevel);
         this.emailTemplate = Optional.ofNullable(builder.emailTemplate);
+        this.clickTracking = Optional.ofNullable(builder.clickTracking);
+        this.openTracking = Optional.ofNullable(builder.openTracking);
 
         if (builder.attachments.build().isEmpty()) {
             this.attachments = Optional.empty();
@@ -164,6 +169,24 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
         return attachments;
     }
 
+    /**
+     * Optional, Get the clickTracking value.
+     *
+     * @return Optional Boolean clickTracking
+     */
+    public Optional<Boolean> getClickTracking() {
+        return clickTracking;
+    }
+
+    /**
+     * Optional, Get the openTracking value.
+     *
+     * @return Optional Boolean openTracking
+     */
+    public Optional<Boolean> getOpenTracking() {
+        return openTracking;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -179,12 +202,14 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
                 Objects.equal(senderAddress, that.senderAddress) &&
                 Objects.equal(replyTo, that.replyTo) &&
                 Objects.equal(emailTemplate, that.emailTemplate) &&
-                Objects.equal(attachments, that.attachments);
+                Objects.equal(attachments, that.attachments) &&
+                Objects.equal(clickTracking, that.clickTracking) &&
+                Objects.equal(openTracking, that.openTracking);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(bypassOptInLevel, alert, subject, htmlBody, plaintextBody, messageType, senderName, senderAddress, replyTo, emailTemplate, attachments);
+        return Objects.hashCode(bypassOptInLevel, alert, subject, htmlBody, plaintextBody, messageType, senderName, senderAddress, replyTo, emailTemplate, attachments, clickTracking, openTracking);
     }
 
     @Override
@@ -201,6 +226,8 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
                 ", replyTo=" + replyTo +
                 ", emailTemplate=" + emailTemplate +
                 ", attachments=" + attachments +
+                ", clickTracking=" + clickTracking +
+                ", openTracking=" + openTracking +
                 '}';
     }
 
@@ -220,6 +247,8 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
         private Boolean byPassOptInLevel = null;
         private EmailTemplate emailTemplate = null;
         private ImmutableList.Builder<Attachment> attachments = ImmutableList.builder();
+        private Boolean clickTracking = null;
+        private Boolean openTracking = null;
 
         private Builder() {
         }
@@ -333,6 +362,26 @@ public class CreateAndSendEmailPayload extends PushModelObject implements Device
          */
         public Builder addAttachment(Attachment attachment) {
             this.attachments.add(attachment);
+            return this;
+        }
+
+        /**
+         * Optional, True by default. Set to false to prevent click tracking for GDPR compliance.
+         * @param clickTracking Boolean
+         * @return CreateAndSendEmailPayload Builder
+         */
+        public Builder setClickTracking(Boolean clickTracking) {
+            this.clickTracking = clickTracking;
+            return this;
+        }
+
+        /**
+         * Optional, True by default. Set to false to prevent “open” tracking for GDPR compliance.
+         * @param openTracking Boolean
+         * @return CreateAndSendEmailPayload Builder
+         */
+        public Builder setOpenTracking(Boolean openTracking) {
+            this.openTracking = openTracking;
             return this;
         }
 

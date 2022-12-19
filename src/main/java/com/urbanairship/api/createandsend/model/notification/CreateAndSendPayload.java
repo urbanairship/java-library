@@ -1,6 +1,7 @@
 package com.urbanairship.api.createandsend.model.notification;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.createandsend.model.audience.CreateAndSendAudience;
 import com.urbanairship.api.push.model.Campaigns;
 import com.urbanairship.api.push.model.PushModelObject;
@@ -14,11 +15,13 @@ public class CreateAndSendPayload extends PushModelObject {
     private final CreateAndSendAudience audience;
     private final Notification notification;
     private final Optional<Campaigns> campaigns;
+    private final Optional<ImmutableMap<String, Object>> globalAttributes;
 
-    private CreateAndSendPayload(CreateAndSendPayload.Builder builder) {
-        this.audience = builder.audience;
-        this.notification = builder.notification;
-        this.campaigns = Optional.ofNullable(builder.campaigns);
+    private CreateAndSendPayload(CreateAndSendAudience audience, Notification notification, Optional<Campaigns> campaigns, Optional<ImmutableMap<String, Object>> globalAttributes) {
+        this.audience = audience;
+        this.notification = notification;
+        this.campaigns = campaigns;
+        this.globalAttributes = globalAttributes;
     }
 
     public static CreateAndSendPayload.Builder newBuilder() {
@@ -52,6 +55,14 @@ public class CreateAndSendPayload extends PushModelObject {
         return campaigns;
     }
 
+    /**
+     * Optional, an ImmutableMap representing the globalAttributes.
+     *
+     * @return Optional ImmutableMap globalAttributes.
+     */
+    public Optional<ImmutableMap<String, Object>> getGlobalAttributes() {
+        return globalAttributes;
+    }
 
     @Override
     public String toString() {
@@ -59,6 +70,7 @@ public class CreateAndSendPayload extends PushModelObject {
                 "audience=" + audience +
                 ", notification=" + notification +
                 ", campaigns=" + campaigns +
+                ", globalAttributes=" + globalAttributes +
                 '}';
     }
 
@@ -69,12 +81,13 @@ public class CreateAndSendPayload extends PushModelObject {
         CreateAndSendPayload that = (CreateAndSendPayload) o;
         return Objects.equals(getAudience(), that.getAudience()) &&
                 Objects.equals(getNotification(), that.getNotification())
-                && Objects.equals(getCampaigns(), that.getCampaigns());
+                && Objects.equals(getCampaigns(), that.getCampaigns())
+                && Objects.equals(getGlobalAttributes(), that.getGlobalAttributes());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getAudience(), getNotification(), getCampaigns());
+        return Objects.hash(getAudience(), getNotification(), getCampaigns(), getGlobalAttributes());
     }
 
     /**
@@ -84,6 +97,7 @@ public class CreateAndSendPayload extends PushModelObject {
         private CreateAndSendAudience audience;
         private Notification notification;
         private Campaigns campaigns;
+        private ImmutableMap.Builder<String, Object> globalAttributesBuilder = ImmutableMap.builder();
 
         private Builder() {
         }
@@ -94,7 +108,7 @@ public class CreateAndSendPayload extends PushModelObject {
          * @param audience Optional CreateAndSendAudience
          * @return CreateAndSendPayload Builder
          */
-        public CreateAndSendPayload.Builder setAudience(CreateAndSendAudience audience) {
+        public Builder setAudience(CreateAndSendAudience audience) {
             this.audience = audience;
             return this;
         }
@@ -105,7 +119,7 @@ public class CreateAndSendPayload extends PushModelObject {
          * @param notification Optional Notification
          * @return CreateAndSendPayload Builder
          */
-        public CreateAndSendPayload.Builder setNotification(Notification notification) {
+        public Builder setNotification(Notification notification) {
             this.notification = notification;
             return this;
         }
@@ -116,18 +130,31 @@ public class CreateAndSendPayload extends PushModelObject {
          * @param campaigns Optional campaigns
          * @return CreateAndSendPayload Builder
          */
-        public CreateAndSendPayload.Builder setCampaigns(Campaigns campaigns) {
+        public Builder setCampaigns(Campaigns campaigns) {
             this.campaigns = campaigns;
             return this;
         }
+        
+        /**
+         * Optional globalAttributesBuilder ImmutableMap
+         *
+         * @param k,o String, Object
+         * @return CreateAndSendPayload Builder
+         */
+        public Builder addGlobalAttributes(String k, Object o) {
+            this.globalAttributesBuilder.put(k, o);
+            return this;
+        }
+
 
         public CreateAndSendPayload build() {
+            ImmutableMap<String, Object> globalAttributes = globalAttributesBuilder.build();
 
             Preconditions.checkNotNull(notification, "Notification must be set.");
 
             Preconditions.checkNotNull(audience, "Audience must be set.");
 
-            return new CreateAndSendPayload(this);
+            return new CreateAndSendPayload(audience, notification, Optional.ofNullable(campaigns), Optional.ofNullable(globalAttributes));
         }
     }
 }
