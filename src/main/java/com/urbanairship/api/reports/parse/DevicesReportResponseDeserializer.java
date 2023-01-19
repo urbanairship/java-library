@@ -17,36 +17,11 @@ public class DevicesReportResponseDeserializer extends JsonDeserializer<DevicesR
     private static final FieldParserRegistry<DevicesReportResponse, DevicesReportResponseReader> FIELD_PARSERS =
             new MapFieldParserRegistry<DevicesReportResponse, DevicesReportResponseReader>(
                     ImmutableMap.<String, FieldParser<DevicesReportResponseReader>>builder()
-                            .put("android", new FieldParser<DevicesReportResponseReader>() {
-                                @Override
-                                public void parse(DevicesReportResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readDeviceStats(jsonParser, "android");
-                                }
-                            })
-                            .put("amazon", new FieldParser<DevicesReportResponseReader>() {
-                                @Override
-                                public void parse(DevicesReportResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readDeviceStats(jsonParser, "amazon");
-                                }
-                            })
-                            .put("ios", new FieldParser<DevicesReportResponseReader>() {
-                                @Override
-                                public void parse(DevicesReportResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readDeviceStats(jsonParser, "ios");
-                                }
-                            })
-                            .put("sms", new FieldParser<DevicesReportResponseReader>() {
-                                @Override
-                                public void parse(DevicesReportResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readDeviceStats(jsonParser, "sms");
-                                }
-                            })
-                            .put("email", new FieldParser<DevicesReportResponseReader>() {
-                                @Override
-                                public void parse(DevicesReportResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readDeviceStats(jsonParser, "email");
-                                }
-                            })
+                            .put("android", (reader, jsonParser, deserializationContext) -> reader.readDeviceStats(jsonParser, "android"))
+                            .put("amazon", (reader, jsonParser, deserializationContext) -> reader.readDeviceStats(jsonParser, "amazon"))
+                            .put("ios", (reader, jsonParser, deserializationContext) -> reader.readDeviceStats(jsonParser, "ios"))
+                            .put("sms", (reader, jsonParser, deserializationContext) -> reader.readDeviceStats(jsonParser, "sms"))
+                            .put("email", (reader, jsonParser, deserializationContext) -> reader.readDeviceStats(jsonParser, "email"))
                             .build()
             );
 
@@ -55,12 +30,7 @@ public class DevicesReportResponseDeserializer extends JsonDeserializer<DevicesR
     public DevicesReportResponseDeserializer() {
         deserializer = new StandardObjectDeserializer<DevicesReportResponse, DevicesReportResponseReader>(
                 FIELD_PARSERS,
-                new Supplier<DevicesReportResponseReader>() {
-                    @Override
-                    public DevicesReportResponseReader get() {
-                        return new DevicesReportResponseReader();
-                    }
-                }
+                () -> new DevicesReportResponseReader()
         );
     }
 

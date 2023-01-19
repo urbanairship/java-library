@@ -16,24 +16,9 @@ import java.io.IOException;
 public class ChannelUninstallResponseDeserializer extends JsonDeserializer<ChannelUninstallResponse> {
     private static final FieldParserRegistry<ChannelUninstallResponse, ChannelUninstallResponseReader> FIELD_PARSERS = new MapFieldParserRegistry<ChannelUninstallResponse, ChannelUninstallResponseReader>(
             ImmutableMap.<String, FieldParser<ChannelUninstallResponseReader>>builder()
-                    .put("ok", new FieldParser<ChannelUninstallResponseReader>() {
-                        @Override
-                        public void parse(ChannelUninstallResponseReader reader, JsonParser jsonParser, DeserializationContext context) throws IOException {
-                            reader.readOk(jsonParser);
-                        }
-                    })
-                    .put("error", new FieldParser<ChannelUninstallResponseReader>() {
-                        @Override
-                        public void parse(ChannelUninstallResponseReader reader, JsonParser jsonParser, DeserializationContext context) throws IOException {
-                            reader.readError(jsonParser);
-                        }
-                    })
-                    .put("details", new FieldParser<ChannelUninstallResponseReader>() {
-                        @Override
-                        public void parse(ChannelUninstallResponseReader reader, JsonParser jsonParser, DeserializationContext context) throws IOException {
-                            reader.readErrorDetails(jsonParser);
-                        }
-                    })
+                    .put("ok", (reader, jsonParser, context) -> reader.readOk(jsonParser))
+                    .put("error", (reader, jsonParser, context) -> reader.readError(jsonParser))
+                    .put("details", (reader, jsonParser, context) -> reader.readErrorDetails(jsonParser))
                     .build()
     );
 
@@ -42,12 +27,7 @@ public class ChannelUninstallResponseDeserializer extends JsonDeserializer<Chann
     public ChannelUninstallResponseDeserializer() {
         deserializer = new StandardObjectDeserializer<ChannelUninstallResponse, ChannelUninstallResponseReader>(
                 FIELD_PARSERS,
-                new Supplier<ChannelUninstallResponseReader>() {
-                    @Override
-                    public ChannelUninstallResponseReader get() {
-                        return new ChannelUninstallResponseReader();
-                    }
-                }
+                () -> new ChannelUninstallResponseReader()
         );
     }
 

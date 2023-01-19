@@ -17,61 +17,16 @@ public class WebDevicePayloadDeserializer extends JsonDeserializer<WebDevicePayl
 
     private static final FieldParserRegistry<WebDevicePayload, WebDevicePayloadReader> FIELD_PARSER = new MapFieldParserRegistry<WebDevicePayload, WebDevicePayloadReader>(
             ImmutableMap.<String, FieldParser<WebDevicePayloadReader>>builder()
-                    .put("alert", new FieldParser<WebDevicePayloadReader>() {
-                        public void parse(WebDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readAlert(json);
-                        }
-                    })
-                    .put("title", new FieldParser<WebDevicePayloadReader>() {
-                        public void parse(WebDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readTitle(json);
-                        }
-                    })
-                    .put("extra", new FieldParser<WebDevicePayloadReader>() {
-                        public void parse(WebDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readExtra(json);
-                        }
-                    })
-                    .put("icon", new FieldParser<WebDevicePayloadReader>() {
-                        public void parse(WebDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readWebIcon(json);
-                        }
-                    })
-                    .put("require_interaction", new FieldParser<WebDevicePayloadReader>() {
-                        public void parse(WebDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readRequireInteraction(json);
-                        }
-                    })
-                    .put("actions", new FieldParser<WebDevicePayloadReader>() {
-                        @Override
-                        public void parse(WebDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readActions(json);
-                        }
-                    })
-                    .put("image", new FieldParser<WebDevicePayloadReader>() {
-                        @Override
-                        public void parse(WebDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readWebImage(json);
-                        }
-                    })
-                    .put("time_to_live", new FieldParser<WebDevicePayloadReader>() {
-                        @Override
-                        public void parse(WebDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readExpiry(json);
-                        }
-                    })
-                    .put("buttons", new FieldParser<WebDevicePayloadReader>() {
-                        @Override
-                        public void parse(WebDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readButtons(json);
-                        }
-                    })
-                    .put("template", new FieldParser<WebDevicePayloadReader>() {
-                        @Override
-                        public void parse(WebDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readTemplate(json);
-                        }
-                    })
+                    .put("alert", (reader, json, context) -> reader.readAlert(json))
+                    .put("title", (reader, json, context) -> reader.readTitle(json))
+                    .put("extra", (reader, json, context) -> reader.readExtra(json))
+                    .put("icon", (reader, json, context) -> reader.readWebIcon(json))
+                    .put("require_interaction", (reader, json, context) -> reader.readRequireInteraction(json))
+                    .put("actions", (reader, json, context) -> reader.readActions(json))
+                    .put("image", (reader, json, context) -> reader.readWebImage(json))
+                    .put("time_to_live", (reader, json, context) -> reader.readExpiry(json))
+                    .put("buttons", (reader, json, context) -> reader.readButtons(json))
+                    .put("template", (reader, json, context) -> reader.readTemplate(json))
                     .build()
     );
 
@@ -80,12 +35,7 @@ public class WebDevicePayloadDeserializer extends JsonDeserializer<WebDevicePayl
     public WebDevicePayloadDeserializer() {
         deserializer = new StandardObjectDeserializer<WebDevicePayload, WebDevicePayloadReader>(
                 FIELD_PARSER,
-                new Supplier<WebDevicePayloadReader>() {
-                    @Override
-                    public WebDevicePayloadReader get() {
-                        return new WebDevicePayloadReader();
-                    }
-                }
+                () -> new WebDevicePayloadReader()
         );
     }
 

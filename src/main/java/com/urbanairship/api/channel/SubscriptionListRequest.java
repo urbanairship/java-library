@@ -66,12 +66,7 @@ public class SubscriptionListRequest implements Request<SubscriptionListResponse
 
     @Override
     public ResponseParser<SubscriptionListResponse> getResponseParser() {
-        return new ResponseParser<SubscriptionListResponse>() {
-            @Override
-            public SubscriptionListResponse parse(String response) throws IOException {
-                return MAPPER.readValue(response, SubscriptionListResponse.class);
-            }
-        };
+        return response -> MAPPER.readValue(response, SubscriptionListResponse.class);
     }
     @Override
     public boolean bearerTokenAuthRequired() {

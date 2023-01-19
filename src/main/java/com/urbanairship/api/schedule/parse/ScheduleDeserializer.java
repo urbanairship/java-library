@@ -21,24 +21,9 @@ public final class ScheduleDeserializer extends JsonDeserializer<Schedule> {
 
     private static final FieldParserRegistry<Schedule, ScheduleReader> FIELD_PARSERS = new MapFieldParserRegistry<Schedule, ScheduleReader>(
         ImmutableMap.<String, FieldParser<ScheduleReader>>builder()
-            .put("scheduled_time", new FieldParser<ScheduleReader>() {
-                @Override
-                public void parse(ScheduleReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readScheduledTime(jsonParser);
-                }
-            })
-            .put("local_scheduled_time", new FieldParser<ScheduleReader>() {
-                @Override
-                public void parse(ScheduleReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readScheduledTime(jsonParser);
-                }
-            })
-            .put("best_time", new FieldParser<ScheduleReader>() {
-                @Override
-                public void parse(ScheduleReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readBestTime(jsonParser);
-                }
-            })
+            .put("scheduled_time", (reader, jsonParser, deserializationContext) -> reader.readScheduledTime(jsonParser))
+            .put("local_scheduled_time", (reader, jsonParser, deserializationContext) -> reader.readScheduledTime(jsonParser))
+            .put("best_time", (reader, jsonParser, deserializationContext) -> reader.readBestTime(jsonParser))
             .build()
     );
 
@@ -49,12 +34,7 @@ public final class ScheduleDeserializer extends JsonDeserializer<Schedule> {
     public ScheduleDeserializer() {
         deserializer = new StandardObjectDeserializer<Schedule, ScheduleReader>(
             FIELD_PARSERS,
-            new Supplier<ScheduleReader>() {
-                @Override
-                public ScheduleReader get() {
-                    return new ScheduleReader();
-                }
-            }
+                () -> new ScheduleReader()
         );
     }
 

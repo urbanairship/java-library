@@ -74,12 +74,7 @@ public class NamedUserAttributeRequest implements Request<NamedUserAttributeResp
 
     @Override
     public ResponseParser<NamedUserAttributeResponse> getResponseParser() {
-        return new ResponseParser<NamedUserAttributeResponse>() {
-            @Override
-            public NamedUserAttributeResponse parse(String response) throws IOException {
-                return MAPPER.readValue(response, NamedUserAttributeResponse.class);
-            }
-        };
+        return response -> MAPPER.readValue(response, NamedUserAttributeResponse.class);
     }
 
     @Override

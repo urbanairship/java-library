@@ -67,12 +67,7 @@ public class AttributeListsListingRequest implements Request<AttributeListsListi
 
     @Override
     public ResponseParser<AttributeListsListingResponse> getResponseParser() {
-        return new ResponseParser<AttributeListsListingResponse>() {
-            @Override
-            public AttributeListsListingResponse parse(String response) throws IOException {
-                return AttributeListsObjectMapper.getInstance().readValue(response, AttributeListsListingResponse.class);
-            }
-        };
+        return response -> AttributeListsObjectMapper.getInstance().readValue(response, AttributeListsListingResponse.class);
     }
 
     @Override

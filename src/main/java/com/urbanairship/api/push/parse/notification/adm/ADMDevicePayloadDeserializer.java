@@ -21,91 +21,21 @@ public class ADMDevicePayloadDeserializer extends JsonDeserializer<ADMDevicePayl
 
     private static final FieldParserRegistry<ADMDevicePayload, ADMDevicePayloadReader> FIELD_PARSERS = new MapFieldParserRegistry<ADMDevicePayload, ADMDevicePayloadReader>(
             ImmutableMap.<String, FieldParser<ADMDevicePayloadReader>>builder()
-            .put("alert", new FieldParser<ADMDevicePayloadReader>() {
-                    public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readAlert(json);
-                    }
-                })
-            .put("consolidation_key", new FieldParser<ADMDevicePayloadReader>() {
-                    public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readConsolidationKey(json);
-                    }
-                })
-            .put("expires_after", new FieldParser<ADMDevicePayloadReader>() {
-                    public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readExpiresAfter(json);
-                    }
-                })
-            .put("extra", new FieldParser<ADMDevicePayloadReader>() {
-                    public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readExtra(json);
-                    }
-                })
-            .put("interactive", new FieldParser<ADMDevicePayloadReader>() {
-                    public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readInteractive(json);
-                    }
-                })
-            .put("actions", new FieldParser<ADMDevicePayloadReader>() {
-                @Override
-                public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                    reader.readActions(json);
-                }
-            })
-            .put("icon", new FieldParser<ADMDevicePayloadReader>() {
-                @Override
-                public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                    reader.readIcon(json);
-                }
-            })
-            .put("icon_color", new FieldParser<ADMDevicePayloadReader>() {
-                @Override
-                public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                    reader.readIconColor(json);
-                }
-            })
-            .put("notification_channel", new FieldParser<ADMDevicePayloadReader>() {
-                @Override
-                public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                    reader.readNotificationChannel(json);
-                }
-            })
-            .put("notification_tag", new FieldParser<ADMDevicePayloadReader>() {
-                @Override
-                public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                    reader.readNotificationTag(json);
-                }
-            })
-            .put("sound", new FieldParser<ADMDevicePayloadReader>() {
-                @Override
-                public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                    reader.readSound(json);
-                }
-            })
-            .put("summary", new FieldParser<ADMDevicePayloadReader>() {
-                @Override
-                public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                    reader.readSummary(json);
-                }
-            })
-            .put("title", new FieldParser<ADMDevicePayloadReader>() {
-                @Override
-                public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                    reader.readTitle(json);
-                }
-            })
-            .put("style", new FieldParser<ADMDevicePayloadReader>() {
-                @Override
-                public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                    reader.readStyle(json);
-                }
-            })
-            .put("template", new FieldParser<ADMDevicePayloadReader>() {
-                @Override
-                public void parse(ADMDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                    reader.readTemplate(json);
-                }
-            })
+            .put("alert", (reader, json, context) -> reader.readAlert(json))
+            .put("consolidation_key", (reader, json, context) -> reader.readConsolidationKey(json))
+            .put("expires_after", (reader, json, context) -> reader.readExpiresAfter(json))
+            .put("extra", (reader, json, context) -> reader.readExtra(json))
+            .put("interactive", (reader, json, context) -> reader.readInteractive(json))
+            .put("actions", (reader, json, context) -> reader.readActions(json))
+            .put("icon", (reader, json, context) -> reader.readIcon(json))
+            .put("icon_color", (reader, json, context) -> reader.readIconColor(json))
+            .put("notification_channel", (reader, json, context) -> reader.readNotificationChannel(json))
+            .put("notification_tag", (reader, json, context) -> reader.readNotificationTag(json))
+            .put("sound", (reader, json, context) -> reader.readSound(json))
+            .put("summary", (reader, json, context) -> reader.readSummary(json))
+            .put("title", (reader, json, context) -> reader.readTitle(json))
+            .put("style", (reader, json, context) -> reader.readStyle(json))
+            .put("template", (reader, json, context) -> reader.readTemplate(json))
             .build()
             );
 
@@ -114,12 +44,7 @@ public class ADMDevicePayloadDeserializer extends JsonDeserializer<ADMDevicePayl
     public ADMDevicePayloadDeserializer() {
         deserializer = new StandardObjectDeserializer<ADMDevicePayload, ADMDevicePayloadReader>(
             FIELD_PARSERS,
-            new Supplier<ADMDevicePayloadReader>() {
-                @Override
-                public ADMDevicePayloadReader get() {
-                    return new ADMDevicePayloadReader();
-                }
-            }
+                () -> new ADMDevicePayloadReader()
         );
     }
 

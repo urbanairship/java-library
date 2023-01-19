@@ -140,12 +140,7 @@ public class PlatformStatsRequest implements Request<PlatformStatsResponse> {
 
     @Override
     public ResponseParser<PlatformStatsResponse> getResponseParser() {
-        return new ResponseParser<PlatformStatsResponse>() {
-            @Override
-            public PlatformStatsResponse parse(String response) throws IOException {
-                return ReportsObjectMapper.getInstance().readValue(response, PlatformStatsResponse.class);
-            }
-        };
+        return response -> ReportsObjectMapper.getInstance().readValue(response, PlatformStatsResponse.class);
     }
 
     @Override

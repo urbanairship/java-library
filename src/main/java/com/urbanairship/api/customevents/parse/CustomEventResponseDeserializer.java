@@ -16,30 +16,10 @@ import java.io.IOException;
 public class CustomEventResponseDeserializer extends JsonDeserializer<CustomEventResponse> {
     private static final FieldParserRegistry<CustomEventResponse, CustomEventResponseReader> FIELD_PARSERS = new MapFieldParserRegistry<CustomEventResponse, CustomEventResponseReader>(
             ImmutableMap.<String, FieldParser<CustomEventResponseReader>>builder()
-            .put("ok", new FieldParser<CustomEventResponseReader>() {
-                @Override
-                public void parse(CustomEventResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readOk(jsonParser);
-                }
-            })
-            .put("operationId", new FieldParser<CustomEventResponseReader>() {
-                @Override
-                public void parse(CustomEventResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readOperationId(jsonParser);
-                }
-            })
-            .put("error", new FieldParser<CustomEventResponseReader>() {
-                @Override
-                public void parse(CustomEventResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readError(jsonParser);
-                }
-            })
-            .put("details", new FieldParser<CustomEventResponseReader>() {
-                @Override
-                public void parse(CustomEventResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readErrorDetails(jsonParser);
-                }
-            })
+            .put("ok", (reader, jsonParser, deserializationContext) -> reader.readOk(jsonParser))
+            .put("operationId", (reader, jsonParser, deserializationContext) -> reader.readOperationId(jsonParser))
+            .put("error", (reader, jsonParser, deserializationContext) -> reader.readError(jsonParser))
+            .put("details", (reader, jsonParser, deserializationContext) -> reader.readErrorDetails(jsonParser))
             .build()
     );
 
@@ -48,12 +28,7 @@ public class CustomEventResponseDeserializer extends JsonDeserializer<CustomEven
     public CustomEventResponseDeserializer() {
         deserializer = new StandardObjectDeserializer<CustomEventResponse, CustomEventResponseReader>(
                 FIELD_PARSERS,
-                new Supplier<CustomEventResponseReader>(){
-                    @Override
-                    public CustomEventResponseReader get() {
-                        return new CustomEventResponseReader();
-                    }
-                }
+                () -> new CustomEventResponseReader()
         );
     }
 

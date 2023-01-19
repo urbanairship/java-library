@@ -20,30 +20,10 @@ public class CropDeserializer extends JsonDeserializer<Crop> {
 
     private static final FieldParserRegistry<Crop, CropPayloadReader> FIELD_PARSERS = new MapFieldParserRegistry<Crop, CropPayloadReader>(
             ImmutableMap.<String, FieldParser<CropPayloadReader>>builder()
-                    .put("x", new FieldParser<CropPayloadReader>() {
-                        @Override
-                        public void parse(CropPayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readX(json);
-                        }
-                    })
-                    .put("y", new FieldParser<CropPayloadReader>() {
-                        @Override
-                        public void parse(CropPayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readY(json);
-                        }
-                    })
-                    .put("width", new FieldParser<CropPayloadReader>() {
-                        @Override
-                        public void parse(CropPayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readWidth(json);
-                        }
-                    })
-                    .put("height", new FieldParser<CropPayloadReader>() {
-                        @Override
-                        public void parse(CropPayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readHeight(json);
-                        }
-                    })
+                    .put("x", (reader, json, context) -> reader.readX(json))
+                    .put("y", (reader, json, context) -> reader.readY(json))
+                    .put("width", (reader, json, context) -> reader.readWidth(json))
+                    .put("height", (reader, json, context) -> reader.readHeight(json))
                     .build()
     );
 
@@ -52,12 +32,7 @@ public class CropDeserializer extends JsonDeserializer<Crop> {
     public CropDeserializer() {
         deserializer = new StandardObjectDeserializer<Crop, CropPayloadReader>(
                 FIELD_PARSERS,
-                new Supplier<CropPayloadReader>() {
-                    @Override
-                    public CropPayloadReader get() {
-                        return new CropPayloadReader();
-                    }
-                }
+                () -> new CropPayloadReader()
         );
     }
 

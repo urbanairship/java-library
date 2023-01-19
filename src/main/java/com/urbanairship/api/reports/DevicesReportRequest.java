@@ -95,12 +95,7 @@ public class DevicesReportRequest implements Request<DevicesReport> {
 
     @Override
     public ResponseParser<DevicesReport> getResponseParser() {
-        return new ResponseParser<DevicesReport>() {
-            @Override
-            public DevicesReport parse(String response) throws IOException {
-                return ReportsObjectMapper.getInstance().readValue(response, DevicesReport.class);
-            }
-        };
+        return response -> ReportsObjectMapper.getInstance().readValue(response, DevicesReport.class);
     }
 
     @Override

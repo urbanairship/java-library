@@ -20,21 +20,9 @@ import java.io.IOException;
 public class BigPictureStyleDeserializer extends JsonDeserializer<BigPictureStyle> {
     private static final FieldParserRegistry<BigPictureStyle, BigPictureStyleReader> FIELD_PARSERS = new MapFieldParserRegistry<BigPictureStyle, BigPictureStyleReader>(
             ImmutableMap.<String, FieldParser<BigPictureStyleReader>>builder()
-                    .put("title", new FieldParser<BigPictureStyleReader>() {
-                        public void parse(BigPictureStyleReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readTitle(json);
-                        }
-                    })
-                    .put("summary", new FieldParser<BigPictureStyleReader>() {
-                        public void parse(BigPictureStyleReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readSummary(json);
-                        }
-                    })
-                    .put("big_picture", new FieldParser<BigPictureStyleReader>() {
-                        public void parse(BigPictureStyleReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readContent(json);
-                        }
-                    })
+                    .put("title", (reader, json, context) -> reader.readTitle(json))
+                    .put("summary", (reader, json, context) -> reader.readSummary(json))
+                    .put("big_picture", (reader, json, context) -> reader.readContent(json))
                     .build()
     );
 
@@ -43,12 +31,7 @@ public class BigPictureStyleDeserializer extends JsonDeserializer<BigPictureStyl
     public BigPictureStyleDeserializer() {
         deserializer = new StandardObjectDeserializer<BigPictureStyle, BigPictureStyleReader>(
                 FIELD_PARSERS,
-                new Supplier<BigPictureStyleReader>() {
-                    @Override
-                    public BigPictureStyleReader get() {
-                        return new BigPictureStyleReader();
-                    }
-                }
+                () -> new BigPictureStyleReader()
         );
     }
 

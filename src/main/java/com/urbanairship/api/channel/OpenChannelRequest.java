@@ -61,12 +61,7 @@ public class OpenChannelRequest implements Request<OpenChannelResponse> {
 
     @Override
     public ResponseParser<OpenChannelResponse> getResponseParser() {
-        return new ResponseParser<OpenChannelResponse>() {
-            @Override
-            public OpenChannelResponse parse(String response) throws IOException {
-                return ChannelObjectMapper.getInstance().readValue(response, OpenChannelResponse.class);
-            }
-        };
+        return response -> ChannelObjectMapper.getInstance().readValue(response, OpenChannelResponse.class);
     }
 
     @Override

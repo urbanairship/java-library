@@ -22,56 +22,13 @@ public final class ListSchedulesResponseDeserializer extends JsonDeserializer<Li
     private static final FieldParserRegistry<ListAllSchedulesResponse, ListSchedulesResponseReader> FIELD_PARSER =
             new MapFieldParserRegistry<ListAllSchedulesResponse, ListSchedulesResponseReader>(
                     ImmutableMap.<String, FieldParser<ListSchedulesResponseReader>>builder()
-                            .put("ok", new FieldParser<ListSchedulesResponseReader>() {
-                                @Override
-                                public void parse(ListSchedulesResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readOk(jsonParser);
-                                }
-                            })
-                            .put("count", new FieldParser<ListSchedulesResponseReader>() {
-                                @Override
-                                public void parse(ListSchedulesResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readCount(jsonParser);
-                                }
-                            })
-                            .put("total_count", new FieldParser<ListSchedulesResponseReader>() {
-                                @Override
-                                public void parse(ListSchedulesResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readTotalCount(jsonParser);
-                                }
-                            })
-                            .put("next_page", new FieldParser<ListSchedulesResponseReader>() {
-                                @Override
-                                public void parse(ListSchedulesResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readNextPage(jsonParser);
-                                }
-                            })
-                            .put("schedules", new FieldParser<ListSchedulesResponseReader>() {
-                                @Override
-                                public void parse(ListSchedulesResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readListScheduleResponse(jsonParser);
-                                }
-                            })
-                            .put("error", new FieldParser<ListSchedulesResponseReader>() {
-                                @Override
-                                public void parse(ListSchedulesResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readError(jsonParser);
-                                }
-                            })
-                            .put("details", new FieldParser<ListSchedulesResponseReader>() {
-                                @Override
-                                public void parse(ListSchedulesResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readErrorDetails(jsonParser);
-                                }
-                            })
+                            .put("ok", (reader, jsonParser, deserializationContext) -> reader.readOk(jsonParser))
+                            .put("count", (reader, jsonParser, deserializationContext) -> reader.readCount(jsonParser))
+                            .put("total_count", (reader, jsonParser, deserializationContext) -> reader.readTotalCount(jsonParser))
+                            .put("next_page", (reader, jsonParser, deserializationContext) -> reader.readNextPage(jsonParser))
+                            .put("schedules", (reader, jsonParser, deserializationContext) -> reader.readListScheduleResponse(jsonParser))
+                            .put("error", (reader, jsonParser, deserializationContext) -> reader.readError(jsonParser))
+                            .put("details", (reader, jsonParser, deserializationContext) -> reader.readErrorDetails(jsonParser))
                             .build()
             );
 
@@ -80,12 +37,7 @@ public final class ListSchedulesResponseDeserializer extends JsonDeserializer<Li
     public ListSchedulesResponseDeserializer() {
         this.deserializer = new StandardObjectDeserializer<ListAllSchedulesResponse, ListSchedulesResponseReader>(
                 FIELD_PARSER,
-                new Supplier<ListSchedulesResponseReader>() {
-                    @Override
-                    public ListSchedulesResponseReader get() {
-                        return new ListSchedulesResponseReader();
-                    }
-                }
+                () -> new ListSchedulesResponseReader()
         );
     }
 

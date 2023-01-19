@@ -22,42 +22,12 @@ public final class ChannelsResponseDeserializer extends JsonDeserializer<Channel
     private static final FieldParserRegistry<ChannelResponse, ChannelsResponseReader> FIELD_PARSER =
             new MapFieldParserRegistry<ChannelResponse, ChannelsResponseReader>(
                     ImmutableMap.<String, FieldParser<ChannelsResponseReader>>builder()
-                            .put("ok", new FieldParser<ChannelsResponseReader>() {
-                                @Override
-                                public void parse(ChannelsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readOk(jsonParser);
-                                }
-                            })
-                            .put("next_page", new FieldParser<ChannelsResponseReader>() {
-                                @Override
-                                public void parse(ChannelsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readNextPage(jsonParser);
-                                }
-                            })
-                            .put("channel", new FieldParser<ChannelsResponseReader>() {
-                                @Override
-                                public void parse(ChannelsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readChannelObject(jsonParser);
-                                }
-                            })
-                            .put("channels", new FieldParser<ChannelsResponseReader>() {
-                                @Override
-                                public void parse(ChannelsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readChannelObjects(jsonParser);
-                                }
-                            })
-                            .put("error", new FieldParser<ChannelsResponseReader>() {
-                                @Override
-                                public void parse(ChannelsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readError(jsonParser);
-                                }
-                            })
-                            .put("details", new FieldParser<ChannelsResponseReader>() {
-                                @Override
-                                public void parse(ChannelsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readErrorDetails(jsonParser);
-                                }
-                            })
+                            .put("ok", (reader, jsonParser, deserializationContext) -> reader.readOk(jsonParser))
+                            .put("next_page", (reader, jsonParser, deserializationContext) -> reader.readNextPage(jsonParser))
+                            .put("channel", (reader, jsonParser, deserializationContext) -> reader.readChannelObject(jsonParser))
+                            .put("channels", (reader, jsonParser, deserializationContext) -> reader.readChannelObjects(jsonParser))
+                            .put("error", (reader, jsonParser, deserializationContext) -> reader.readError(jsonParser))
+                            .put("details", (reader, jsonParser, deserializationContext) -> reader.readErrorDetails(jsonParser))
                             .build()
             );
 
@@ -66,12 +36,7 @@ public final class ChannelsResponseDeserializer extends JsonDeserializer<Channel
     public ChannelsResponseDeserializer() {
         this.deserializer = new StandardObjectDeserializer<ChannelResponse, ChannelsResponseReader>(
                 FIELD_PARSER,
-                new Supplier<ChannelsResponseReader>() {
-                    @Override
-                    public ChannelsResponseReader get() {
-                        return new ChannelsResponseReader();
-                    }
-                }
+                () -> new ChannelsResponseReader()
         );
     }
 

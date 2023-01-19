@@ -18,36 +18,11 @@ public class SmsRegistrationResponseDeserializer extends JsonDeserializer<SmsReg
     private static final FieldParserRegistry<SmsRegistrationResponse, SmsRegistrationResponseReader> FIELD_PARSERS =
             new MapFieldParserRegistry<SmsRegistrationResponse, SmsRegistrationResponseReader>(
                     ImmutableMap.<String, FieldParser<SmsRegistrationResponseReader>>builder()
-                    .put("ok", new FieldParser<SmsRegistrationResponseReader>() {
-                        @Override
-                        public void parse(SmsRegistrationResponseReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                            reader.readOk(parser);
-                        }
-                    })
-                    .put("channel_id", new FieldParser<SmsRegistrationResponseReader>() {
-                        @Override
-                        public void parse(SmsRegistrationResponseReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                            reader.readChannelId(parser);
-                        }
-                    })
-                    .put("status", new FieldParser<SmsRegistrationResponseReader>() {
-                        @Override
-                        public void parse(SmsRegistrationResponseReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                            reader.readStatus(parser);
-                        }
-                    })
-                    .put("error", new FieldParser<SmsRegistrationResponseReader>() {
-                        @Override
-                        public void parse(SmsRegistrationResponseReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                            reader.readError(parser);
-                        }
-                    })
-                    .put("details", new FieldParser<SmsRegistrationResponseReader>() {
-                        @Override
-                        public void parse(SmsRegistrationResponseReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                            reader.readErrorDetails(parser);
-                        }
-                    })
+                    .put("ok", (reader, parser, context) -> reader.readOk(parser))
+                    .put("channel_id", (reader, parser, context) -> reader.readChannelId(parser))
+                    .put("status", (reader, parser, context) -> reader.readStatus(parser))
+                    .put("error", (reader, parser, context) -> reader.readError(parser))
+                    .put("details", (reader, parser, context) -> reader.readErrorDetails(parser))
                     .build()
             );
 
@@ -56,12 +31,7 @@ public class SmsRegistrationResponseDeserializer extends JsonDeserializer<SmsReg
     public SmsRegistrationResponseDeserializer() {
         deserializer = new StandardObjectDeserializer<SmsRegistrationResponse, SmsRegistrationResponseReader>(
                 FIELD_PARSERS,
-                new Supplier<SmsRegistrationResponseReader>() {
-                    @Override
-                    public SmsRegistrationResponseReader get() {
-                        return new SmsRegistrationResponseReader();
-                    }
-                }
+                () -> new SmsRegistrationResponseReader()
         );
     }
 

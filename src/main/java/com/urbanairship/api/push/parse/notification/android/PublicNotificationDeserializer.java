@@ -21,21 +21,9 @@ import java.io.IOException;
 public class PublicNotificationDeserializer extends JsonDeserializer<PublicNotification> {
     private static final FieldParserRegistry<PublicNotification, PublicNotificationReader> FIELD_PARSERS = new MapFieldParserRegistry<PublicNotification, PublicNotificationReader>(
             ImmutableMap.<String, FieldParser<PublicNotificationReader>>builder()
-                    .put("title", new FieldParser<PublicNotificationReader>() {
-                        public void parse(PublicNotificationReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readTitle(json);
-                        }
-                    })
-                    .put("summary", new FieldParser<PublicNotificationReader>() {
-                        public void parse(PublicNotificationReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readSummary(json);
-                        }
-                    })
-                    .put("alert", new FieldParser<PublicNotificationReader>() {
-                        public void parse(PublicNotificationReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readAlert(json);
-                        }
-                    })
+                    .put("title", (reader, json, context) -> reader.readTitle(json))
+                    .put("summary", (reader, json, context) -> reader.readSummary(json))
+                    .put("alert", (reader, json, context) -> reader.readAlert(json))
                     .build()
     );
 
@@ -44,12 +32,7 @@ public class PublicNotificationDeserializer extends JsonDeserializer<PublicNotif
     public PublicNotificationDeserializer() {
         deserializer = new StandardObjectDeserializer<PublicNotification, PublicNotificationReader>(
                 FIELD_PARSERS,
-                new Supplier<PublicNotificationReader>() {
-                    @Override
-                    public PublicNotificationReader get() {
-                        return new PublicNotificationReader();
-                    }
-                }
+                () -> new PublicNotificationReader()
         );
     }
 

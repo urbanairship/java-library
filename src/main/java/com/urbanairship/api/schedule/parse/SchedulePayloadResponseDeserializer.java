@@ -22,36 +22,11 @@ public final class SchedulePayloadResponseDeserializer extends JsonDeserializer<
 
     private static final FieldParserRegistry<SchedulePayloadResponse, SchedulePayloadResponseReader> FIELD_PARSERS = new MapFieldParserRegistry<SchedulePayloadResponse, SchedulePayloadResponseReader>(
             ImmutableMap.<String, FieldParser<SchedulePayloadResponseReader>>builder()
-                    .put("schedule", new FieldParser<SchedulePayloadResponseReader>() {
-                        @Override
-                        public void parse(SchedulePayloadResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readSchedule(jsonParser);
-                        }
-                    })
-                    .put("url", new FieldParser<SchedulePayloadResponseReader>() {
-                        @Override
-                        public void parse(SchedulePayloadResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readUrl(jsonParser);
-                        }
-                    })
-                    .put("name", new FieldParser<SchedulePayloadResponseReader>() {
-                        @Override
-                        public void parse(SchedulePayloadResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readName(jsonParser);
-                        }
-                    })
-                    .put("push", new FieldParser<SchedulePayloadResponseReader>() {
-                        @Override
-                        public void parse(SchedulePayloadResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readPushPayload(jsonParser);
-                        }
-                    })
-                    .put("push_ids", new FieldParser<SchedulePayloadResponseReader>() {
-                        @Override
-                        public void parse(SchedulePayloadResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readPushIds(jsonParser);
-                        }
-                    })
+                    .put("schedule", (reader, jsonParser, deserializationContext) -> reader.readSchedule(jsonParser))
+                    .put("url", (reader, jsonParser, deserializationContext) -> reader.readUrl(jsonParser))
+                    .put("name", (reader, jsonParser, deserializationContext) -> reader.readName(jsonParser))
+                    .put("push", (reader, jsonParser, deserializationContext) -> reader.readPushPayload(jsonParser))
+                    .put("push_ids", (reader, jsonParser, deserializationContext) -> reader.readPushIds(jsonParser))
                     .build()
     );
 
@@ -62,12 +37,7 @@ public final class SchedulePayloadResponseDeserializer extends JsonDeserializer<
     public SchedulePayloadResponseDeserializer() {
         deserializer = new StandardObjectDeserializer<SchedulePayloadResponse, SchedulePayloadResponseReader>(
                 FIELD_PARSERS,
-                new Supplier<SchedulePayloadResponseReader>() {
-                    @Override
-                    public SchedulePayloadResponseReader get() {
-                        return new SchedulePayloadResponseReader();
-                    }
-                }
+                () -> new SchedulePayloadResponseReader()
         );
     }
 

@@ -21,18 +21,8 @@ public class AbsoluteDateRangeDeserializer extends JsonDeserializer<AbsoluteDate
 
     private static final FieldParserRegistry<AbsoluteDateRange.Builder, AbsoluteDateRangeReader> FIELD_PARSERS = new MapFieldParserRegistry<AbsoluteDateRange.Builder, AbsoluteDateRangeReader>(
         ImmutableMap.<String, FieldParser<AbsoluteDateRangeReader>>builder()
-            .put("start", new FieldParser<AbsoluteDateRangeReader>() {
-                @Override
-                public void parse(AbsoluteDateRangeReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readStart(jsonParser);
-                }
-            })
-            .put("end", new FieldParser<AbsoluteDateRangeReader>() {
-                @Override
-                public void parse(AbsoluteDateRangeReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readEnd(jsonParser);
-                }
-                })
+            .put("start", (reader, jsonParser, deserializationContext) -> reader.readStart(jsonParser))
+            .put("end", (reader, jsonParser, deserializationContext) -> reader.readEnd(jsonParser))
             .build()
     );
 
@@ -41,12 +31,7 @@ public class AbsoluteDateRangeDeserializer extends JsonDeserializer<AbsoluteDate
     public AbsoluteDateRangeDeserializer() {
         deserializer = new StandardObjectDeserializer<AbsoluteDateRange.Builder, AbsoluteDateRangeReader>(
             FIELD_PARSERS,
-            new Supplier<AbsoluteDateRangeReader>() {
-                @Override
-                public AbsoluteDateRangeReader get() {
-                    return new AbsoluteDateRangeReader();
-                }
-            }
+                AbsoluteDateRangeReader::new
         );
     }
 

@@ -21,46 +21,14 @@ public class WNSBindingDeserializer extends JsonDeserializer<WNSBinding> {
 
     private static final FieldParserRegistry<WNSBinding, WNSBindingReader> FIELD_PARSERS = new MapFieldParserRegistry<WNSBinding, WNSBindingReader>(
             ImmutableMap.<String, FieldParser<WNSBindingReader>>builder()
-            .put("template", new FieldParser<WNSBindingReader>() {
-                    public void parse(WNSBindingReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readTemplate(json);
-                    }
-                })
-            .put("version", new FieldParser<WNSBindingReader>() {
-                    public void parse(WNSBindingReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readVersion(json);
-                    }
-                })
-            .put("fallback", new FieldParser<WNSBindingReader>() {
-                    public void parse(WNSBindingReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readFallback(json);
-                    }
-                })
-            .put("lang", new FieldParser<WNSBindingReader>() {
-                    public void parse(WNSBindingReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readLang(json);
-                    }
-                })
-            .put("base_uri", new FieldParser<WNSBindingReader>() {
-                    public void parse(WNSBindingReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readBaseUri(json);
-                    }
-                })
-            .put("add_image_query", new FieldParser<WNSBindingReader>() {
-                    public void parse(WNSBindingReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readAddImageQuery(json);
-                    }
-                })
-            .put("image", new FieldParser<WNSBindingReader>() {
-                    public void parse(WNSBindingReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readImage(json);
-                    }
-                })
-            .put("text", new FieldParser<WNSBindingReader>() {
-                    public void parse(WNSBindingReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readText(json);
-                    }
-                })
+            .put("template", (reader, json, context) -> reader.readTemplate(json))
+            .put("version", (reader, json, context) -> reader.readVersion(json))
+            .put("fallback", (reader, json, context) -> reader.readFallback(json))
+            .put("lang", (reader, json, context) -> reader.readLang(json))
+            .put("base_uri", (reader, json, context) -> reader.readBaseUri(json))
+            .put("add_image_query", (reader, json, context) -> reader.readAddImageQuery(json))
+            .put("image", (reader, json, context) -> reader.readImage(json))
+            .put("text", (reader, json, context) -> reader.readText(json))
             .build()
             );
 
@@ -69,12 +37,7 @@ public class WNSBindingDeserializer extends JsonDeserializer<WNSBinding> {
     public WNSBindingDeserializer() {
         deserializer = new StandardObjectDeserializer<WNSBinding, WNSBindingReader>(
             FIELD_PARSERS,
-            new Supplier<WNSBindingReader>() {
-                @Override
-                public WNSBindingReader get() {
-                    return new WNSBindingReader();
-                }
-            }
+                () -> new WNSBindingReader()
         );
     }
 

@@ -29,48 +29,13 @@ public final class PushResponseDeserializer extends JsonDeserializer<PushRespons
     private static final FieldParserRegistry<PushResponse, PushResponseReader> FIELD_PARSERS =
             new MapFieldParserRegistry<PushResponse, PushResponseReader>(
                     ImmutableMap.<String, FieldParser<PushResponseReader>>builder()
-                            .put("operation_id", new FieldParser<PushResponseReader>() {
-                                @Override
-                                public void parse(PushResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readOperationId(jsonParser);
-                                }
-                            })
-                            .put("push_ids", new FieldParser<PushResponseReader>() {
-                                @Override
-                                public void parse(PushResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readPushIds(jsonParser);
-                                }
-                            })
-                            .put("ok", new FieldParser<PushResponseReader>() {
-                                @Override
-                                public void parse(PushResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readOk(jsonParser);
-                                }
-                            })
-                            .put("message_ids", new FieldParser<PushResponseReader>() {
-                                @Override
-                                public void parse(PushResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readMessageIds(jsonParser);
-                                }
-                            })
-                            .put("content_urls", new FieldParser<PushResponseReader>() {
-                                @Override
-                                public void parse(PushResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readContentUrls(jsonParser);
-                                }
-                            })
-                            .put("error", new FieldParser<PushResponseReader>() {
-                                @Override
-                                public void parse(PushResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readError(jsonParser);
-                                }
-                            })
-                            .put("details", new FieldParser<PushResponseReader>() {
-                                @Override
-                                public void parse(PushResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readErrorDetails(jsonParser);
-                                }
-                            })
+                            .put("operation_id", (reader, jsonParser, deserializationContext) -> reader.readOperationId(jsonParser))
+                            .put("push_ids", (reader, jsonParser, deserializationContext) -> reader.readPushIds(jsonParser))
+                            .put("ok", (reader, jsonParser, deserializationContext) -> reader.readOk(jsonParser))
+                            .put("message_ids", (reader, jsonParser, deserializationContext) -> reader.readMessageIds(jsonParser))
+                            .put("content_urls", (reader, jsonParser, deserializationContext) -> reader.readContentUrls(jsonParser))
+                            .put("error", (reader, jsonParser, deserializationContext) -> reader.readError(jsonParser))
+                            .put("details", (reader, jsonParser, deserializationContext) -> reader.readErrorDetails(jsonParser))
                             .build()
             );
 
@@ -80,12 +45,7 @@ public final class PushResponseDeserializer extends JsonDeserializer<PushRespons
     public PushResponseDeserializer() {
         deserializer = new StandardObjectDeserializer<PushResponse, PushResponseReader>(
                 FIELD_PARSERS,
-                new Supplier<PushResponseReader>() {
-                    @Override
-                    public PushResponseReader get() {
-                        return new PushResponseReader();
-                    }
-                }
+                () -> new PushResponseReader()
         );
     }
 

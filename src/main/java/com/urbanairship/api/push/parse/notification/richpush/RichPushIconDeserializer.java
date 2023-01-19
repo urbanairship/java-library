@@ -21,11 +21,7 @@ public class RichPushIconDeserializer extends JsonDeserializer<RichPushIcon> {
 
     private static final FieldParserRegistry<RichPushIcon, RichPushIconReader> FIELD_PARSERS = new MapFieldParserRegistry<RichPushIcon, RichPushIconReader>(
             ImmutableMap.<String, FieldParser<RichPushIconReader>>builder()
-            .put("list_icon", new FieldParser<RichPushIconReader>() {
-                    public void parse(RichPushIconReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readListIcon(json);
-                    }
-                })
+            .put("list_icon", (reader, json, context) -> reader.readListIcon(json))
             .build()
             );
 
@@ -34,12 +30,7 @@ public class RichPushIconDeserializer extends JsonDeserializer<RichPushIcon> {
     public RichPushIconDeserializer() {
         deserializer = new StandardObjectDeserializer<RichPushIcon, RichPushIconReader>(
             FIELD_PARSERS,
-            new Supplier<RichPushIconReader>() {
-                @Override
-                public RichPushIconReader get() {
-                    return new RichPushIconReader();
-                }
-            }
+                () -> new RichPushIconReader()
         );
     }
 

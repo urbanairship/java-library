@@ -119,12 +119,7 @@ public class TemplateListingRequest implements Request<TemplateListingResponse> 
 
     @Override
     public ResponseParser<TemplateListingResponse> getResponseParser() {
-        return new ResponseParser<TemplateListingResponse>() {
-            @Override
-            public TemplateListingResponse parse(String response) throws IOException {
-                return TemplatesObjectMapper.getInstance().readValue(response, TemplateListingResponse.class);
-            }
-        };
+        return response -> TemplatesObjectMapper.getInstance().readValue(response, TemplateListingResponse.class);
     }
 
     @Override

@@ -21,123 +21,29 @@ public class AndroidDevicePayloadDeserializer extends JsonDeserializer<AndroidDe
 
     private static final FieldParserRegistry<AndroidDevicePayload, AndroidDevicePayloadReader> FIELD_PARSERS = new MapFieldParserRegistry<AndroidDevicePayload, AndroidDevicePayloadReader>(
             ImmutableMap.<String, FieldParser<AndroidDevicePayloadReader>>builder()
-                    .put("alert", new FieldParser<AndroidDevicePayloadReader>() {
-                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readAlert(json);
-                        }
-                    })
-                    .put("collapse_key", new FieldParser<AndroidDevicePayloadReader>() {
-                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readCollapseKey(json);
-                        }
-                    })
-                    .put("notification_channel", new FieldParser<AndroidDevicePayloadReader>() {
-                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readNotificationChannel(json);
-                        }
-                    })
-                    .put("notification_tag", new FieldParser<AndroidDevicePayloadReader>() {
-                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readNotificationTag(json);
-                        }
-                    })
-                    .put("time_to_live", new FieldParser<AndroidDevicePayloadReader>() {
-                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readTimeToLive(json);
-                        }
-                    })
-                    .put("delivery_priority", new FieldParser<AndroidDevicePayloadReader>() {
-                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readDeliveryPriority(json);
-                        }
-                    })
-                    .put("delay_while_idle", new FieldParser<AndroidDevicePayloadReader>() {
-                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readDelayWhileIdle(json);
-                        }
-                    })
-                    .put("extra", new FieldParser<AndroidDevicePayloadReader>() {
-                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readExtra(json);
-                        }
-                    })
-                    .put("interactive", new FieldParser<AndroidDevicePayloadReader>() {
-                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readInteractive(json);
-                        }
-                    })
-                    .put("title", new FieldParser<AndroidDevicePayloadReader>() {
-                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readTitle(json);
-                        }
-                    })
-                    .put("local_only", new FieldParser<AndroidDevicePayloadReader>() {
-                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readLocalOnly(json);
-                        }
-                    })
-                    .put("wearable", new FieldParser<AndroidDevicePayloadReader>() {
-                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readWearable(json);
-                        }
-                    })
-                    .put("summary", new FieldParser<AndroidDevicePayloadReader>() {
-                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readSummary(json);
-                        }
-                    })
-                    .put("style", new FieldParser<AndroidDevicePayloadReader>() {
-                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readStyle(json);
-                        }
-                    })
-                    .put("sound", new FieldParser<AndroidDevicePayloadReader>() {
-                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readSound(json);
-                        }
-                    })
-                    .put("icon", new FieldParser<AndroidDevicePayloadReader>() {
-                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readIcon(json);
-                        }
-                    })
-                    .put("icon_color", new FieldParser<AndroidDevicePayloadReader>() {
-                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readIconColor(json);
-                        }
-                    })
-                    .put("priority", new FieldParser<AndroidDevicePayloadReader>() {
-                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readPriority(json);
-                        }
-                    })
-                    .put("category", new FieldParser<AndroidDevicePayloadReader>() {
-                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readCategory(json);
-                        }
-                    })
-                    .put("visibility", new FieldParser<AndroidDevicePayloadReader>() {
-                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readVisibility(json);
-                        }
-                    })
-                    .put("public_notification", new FieldParser<AndroidDevicePayloadReader>() {
-                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readPublicNotification(json);
-                        }
-                    })
-                    .put("actions", new FieldParser<AndroidDevicePayloadReader>() {
-                        @Override
-                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readActions(json);
-                        }
-                    })
-                    .put("template", new FieldParser<AndroidDevicePayloadReader>() {
-                        @Override
-                        public void parse(AndroidDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readTemplate(json);
-                        }
-                    })
+                    .put("alert", (reader, json, context) -> reader.readAlert(json))
+                    .put("collapse_key", (reader, json, context) -> reader.readCollapseKey(json))
+                    .put("notification_channel", (reader, json, context) -> reader.readNotificationChannel(json))
+                    .put("notification_tag", (reader, json, context) -> reader.readNotificationTag(json))
+                    .put("time_to_live", (reader, json, context) -> reader.readTimeToLive(json))
+                    .put("delivery_priority", (reader, json, context) -> reader.readDeliveryPriority(json))
+                    .put("delay_while_idle", (reader, json, context) -> reader.readDelayWhileIdle(json))
+                    .put("extra", (reader, json, context) -> reader.readExtra(json))
+                    .put("interactive", (reader, json, context) -> reader.readInteractive(json))
+                    .put("title", (reader, json, context) -> reader.readTitle(json))
+                    .put("local_only", (reader, json, context) -> reader.readLocalOnly(json))
+                    .put("wearable", (reader, json, context) -> reader.readWearable(json))
+                    .put("summary", (reader, json, context) -> reader.readSummary(json))
+                    .put("style", (reader, json, context) -> reader.readStyle(json))
+                    .put("sound", (reader, json, context) -> reader.readSound(json))
+                    .put("icon", (reader, json, context) -> reader.readIcon(json))
+                    .put("icon_color", (reader, json, context) -> reader.readIconColor(json))
+                    .put("priority", (reader, json, context) -> reader.readPriority(json))
+                    .put("category", (reader, json, context) -> reader.readCategory(json))
+                    .put("visibility", (reader, json, context) -> reader.readVisibility(json))
+                    .put("public_notification", (reader, json, context) -> reader.readPublicNotification(json))
+                    .put("actions", (reader, json, context) -> reader.readActions(json))
+                    .put("template", (reader, json, context) -> reader.readTemplate(json))
                     .build()
     );
 
@@ -146,12 +52,7 @@ public class AndroidDevicePayloadDeserializer extends JsonDeserializer<AndroidDe
     public AndroidDevicePayloadDeserializer() {
         deserializer = new StandardObjectDeserializer<AndroidDevicePayload, AndroidDevicePayloadReader>(
             FIELD_PARSERS,
-            new Supplier<AndroidDevicePayloadReader>() {
-                @Override
-                public AndroidDevicePayloadReader get() {
-                    return new AndroidDevicePayloadReader();
-                }
-            }
+                () -> new AndroidDevicePayloadReader()
         );
     }
 

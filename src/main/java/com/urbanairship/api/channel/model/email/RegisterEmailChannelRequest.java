@@ -8,7 +8,6 @@ import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
 import org.apache.http.entity.ContentType;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -61,12 +60,7 @@ public class RegisterEmailChannelRequest implements Request<EmailChannelResponse
 
     @Override
     public ResponseParser<EmailChannelResponse> getResponseParser() {
-        return new ResponseParser<EmailChannelResponse>() {
-            @Override
-            public EmailChannelResponse parse(String response) throws IOException {
-                return ChannelObjectMapper.getInstance().readValue(response, EmailChannelResponse.class);
-            }
-        };
+        return response -> ChannelObjectMapper.getInstance().readValue(response, EmailChannelResponse.class);
     }
 
     @Override

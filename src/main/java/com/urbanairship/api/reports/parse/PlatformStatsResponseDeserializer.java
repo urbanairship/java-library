@@ -17,62 +17,15 @@ public class PlatformStatsResponseDeserializer extends JsonDeserializer<Platform
     private static final FieldParserRegistry<PlatformStatsResponse, PlatformStatsResponseReader> FIELD_PARSERS =
             new MapFieldParserRegistry<PlatformStatsResponse, PlatformStatsResponseReader>(
                     ImmutableMap.<String, FieldParser<PlatformStatsResponseReader>>builder()
-                            .put("next_page", new FieldParser<PlatformStatsResponseReader>() {
-                                @Override
-                                public void parse(PlatformStatsResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readNextPage(jsonParser);
-                                }
-                            })
-                            .put("opens", new FieldParser<PlatformStatsResponseReader>() {
-                                @Override
-                                public void parse(PlatformStatsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readPlatformStats(jsonParser);
-                                }
-                            })
-                            .put("timeinapp", new FieldParser<PlatformStatsResponseReader>() {
-                                @Override
-                                public void parse(PlatformStatsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readPlatformStats(jsonParser);
-                                }
-                            })
-                            .put("optins", new FieldParser<PlatformStatsResponseReader>() {
-                                @Override
-                                public void parse(PlatformStatsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readPlatformStats(jsonParser);
-                                }
-                            })
-                            .put("optouts", new FieldParser<PlatformStatsResponseReader>() {
-                                @Override
-                                public void parse(PlatformStatsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readPlatformStats(jsonParser);
-                                }
-                            })
-                            .put("sends", new FieldParser<PlatformStatsResponseReader>() {
-                                @Override
-                                public void parse(PlatformStatsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readPlatformStats(jsonParser);
-                                }
-                            })
-                            .put("ok", new FieldParser<PlatformStatsResponseReader>() {
-                                @Override
-                                public void parse(PlatformStatsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readOk(jsonParser);
-                                }
-                            })
-                            .put("error", new FieldParser<PlatformStatsResponseReader>() {
-                                @Override
-                                public void parse(PlatformStatsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readError(jsonParser);
-                                }
-                            })
-                            .put("details", new FieldParser<PlatformStatsResponseReader>() {
-                                @Override
-                                public void parse(PlatformStatsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readErrorDetails(jsonParser);
-                                }
-                            })
+                            .put("next_page", (reader, jsonParser, deserializationContext) -> reader.readNextPage(jsonParser))
+                            .put("opens", (reader, jsonParser, deserializationContext) -> reader.readPlatformStats(jsonParser))
+                            .put("timeinapp", (reader, jsonParser, deserializationContext) -> reader.readPlatformStats(jsonParser))
+                            .put("optins", (reader, jsonParser, deserializationContext) -> reader.readPlatformStats(jsonParser))
+                            .put("optouts", (reader, jsonParser, deserializationContext) -> reader.readPlatformStats(jsonParser))
+                            .put("sends", (reader, jsonParser, deserializationContext) -> reader.readPlatformStats(jsonParser))
+                            .put("ok", (reader, jsonParser, deserializationContext) -> reader.readOk(jsonParser))
+                            .put("error", (reader, jsonParser, deserializationContext) -> reader.readError(jsonParser))
+                            .put("details", (reader, jsonParser, deserializationContext) -> reader.readErrorDetails(jsonParser))
                             .build()
             );
 
@@ -81,12 +34,7 @@ public class PlatformStatsResponseDeserializer extends JsonDeserializer<Platform
     public PlatformStatsResponseDeserializer() {
         deserializer = new StandardObjectDeserializer<PlatformStatsResponse, PlatformStatsResponseReader>(
                 FIELD_PARSERS,
-                new Supplier<PlatformStatsResponseReader>() {
-                    @Override
-                    public PlatformStatsResponseReader get() {
-                        return new PlatformStatsResponseReader();
-                    }
-                }
+                () -> new PlatformStatsResponseReader()
         );
     }
 

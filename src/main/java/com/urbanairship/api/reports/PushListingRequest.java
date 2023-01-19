@@ -188,12 +188,7 @@ public class PushListingRequest implements Request<PushListingResponse> {
 
     @Override
     public ResponseParser<PushListingResponse> getResponseParser() {
-        return new ResponseParser<PushListingResponse>() {
-            @Override
-            public PushListingResponse parse(String response) throws IOException {
-                return ReportsObjectMapper.getInstance().readValue(response, PushListingResponse.class);
-            }
-        };
+        return response -> ReportsObjectMapper.getInstance().readValue(response, PushListingResponse.class);
     }
 
     @Override

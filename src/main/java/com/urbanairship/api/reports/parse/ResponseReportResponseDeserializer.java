@@ -17,26 +17,9 @@ public class ResponseReportResponseDeserializer extends JsonDeserializer<Respons
     private static final FieldParserRegistry<ResponseReportResponse, ResponseReportResponseReader> FIELD_PARSERS =
             new MapFieldParserRegistry<ResponseReportResponse, ResponseReportResponseReader>(
                     ImmutableMap.<String, FieldParser<ResponseReportResponseReader>>builder()
-                            .put("android", new FieldParser<ResponseReportResponseReader>() {
-                                @Override
-                                public void parse(ResponseReportResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readDeviceStats(jsonParser, "android");
-                                }
-                            })
-                            .put("date", new FieldParser<ResponseReportResponseReader>() {
-                                @Override
-                                public void parse(ResponseReportResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readDate(jsonParser);
-                                }
-                            })
-                            .put("ios", new FieldParser<ResponseReportResponseReader>() {
-                                @Override
-                                public void parse(ResponseReportResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readDeviceStats(jsonParser, "ios");
-                                }
-                            })
+                            .put("android", (reader, jsonParser, deserializationContext) -> reader.readDeviceStats(jsonParser, "android"))
+                            .put("date", (reader, jsonParser, deserializationContext) -> reader.readDate(jsonParser))
+                            .put("ios", (reader, jsonParser, deserializationContext) -> reader.readDeviceStats(jsonParser, "ios"))
                             .build()
             );
 
@@ -45,12 +28,7 @@ public class ResponseReportResponseDeserializer extends JsonDeserializer<Respons
     public ResponseReportResponseDeserializer() {
         deserializer = new StandardObjectDeserializer<ResponseReportResponse, ResponseReportResponseReader>(
                 FIELD_PARSERS,
-                new Supplier<ResponseReportResponseReader>() {
-                    @Override
-                    public ResponseReportResponseReader get() {
-                        return new ResponseReportResponseReader();
-                    }
-                }
+                () -> new ResponseReportResponseReader()
         );
     }
 

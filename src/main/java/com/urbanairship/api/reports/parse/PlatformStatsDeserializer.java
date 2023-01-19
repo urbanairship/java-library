@@ -21,24 +21,9 @@ public final class PlatformStatsDeserializer extends JsonDeserializer<PlatformSt
 
     private static final FieldParserRegistry<PlatformStats, PlatformStatsReader> FIELD_PARSERS =
             new MapFieldParserRegistry<PlatformStats, PlatformStatsReader>(ImmutableMap.<String, FieldParser<PlatformStatsReader>>builder()
-                    .put("android", new FieldParser<PlatformStatsReader>() {
-                        @Override
-                        public void parse(PlatformStatsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readAndroid(jsonParser);
-                        }
-                    })
-                    .put("date", new FieldParser<PlatformStatsReader>() {
-                        @Override
-                        public void parse(PlatformStatsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readDate(jsonParser);
-                        }
-                    })
-                    .put("ios", new FieldParser<PlatformStatsReader>() {
-                        @Override
-                        public void parse(PlatformStatsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readIOS(jsonParser);
-                        }
-                    })
+                    .put("android", (reader, jsonParser, deserializationContext) -> reader.readAndroid(jsonParser))
+                    .put("date", (reader, jsonParser, deserializationContext) -> reader.readDate(jsonParser))
+                    .put("ios", (reader, jsonParser, deserializationContext) -> reader.readIOS(jsonParser))
                     .build()
             );
 
@@ -47,12 +32,7 @@ public final class PlatformStatsDeserializer extends JsonDeserializer<PlatformSt
     public PlatformStatsDeserializer() {
         deserializer = new StandardObjectDeserializer<PlatformStats, PlatformStatsReader>(
                 FIELD_PARSERS,
-                new Supplier<PlatformStatsReader>() {
-                    @Override
-                    public PlatformStatsReader get() {
-                        return new PlatformStatsReader();
-                    }
-                }
+                () -> new PlatformStatsReader()
         );
     }
 

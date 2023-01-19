@@ -2,7 +2,6 @@ package com.urbanairship.api.nameduser.model;
 
 import com.google.common.base.Objects;
 import com.urbanairship.api.common.model.ErrorDetails;
-import com.urbanairship.api.common.model.GenericResponse;
 
 import java.util.Optional;
 

@@ -17,24 +17,9 @@ public class ButtonDeserializer extends JsonDeserializer<Button> {
 
     private static final FieldParserRegistry<Button, ButtonReader> FIELD_PARSERS = new MapFieldParserRegistry<Button, ButtonReader>(
             ImmutableMap.<String, FieldParser<ButtonReader>>builder()
-            .put("id", new FieldParser<ButtonReader>() {
-                @Override
-                public void parse(ButtonReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                    reader.readId(parser);
-                }
-            })
-            .put("label", new FieldParser<ButtonReader>() {
-                @Override
-                public void parse(ButtonReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                    reader.readLabel(parser);
-                }
-            })
-            .put("actions", new FieldParser<ButtonReader>() {
-                @Override
-                public void parse(ButtonReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                    reader.readActions(parser);
-                }
-            })
+            .put("id", (reader, parser, context) -> reader.readId(parser))
+            .put("label", (reader, parser, context) -> reader.readLabel(parser))
+            .put("actions", (reader, parser, context) -> reader.readActions(parser))
             .build()
     );
 
@@ -43,12 +28,7 @@ public class ButtonDeserializer extends JsonDeserializer<Button> {
     public ButtonDeserializer() {
         deserializer = new StandardObjectDeserializer<>(
                 FIELD_PARSERS,
-                new Supplier<ButtonReader>() {
-                    @Override
-                    public ButtonReader get() {
-                        return new ButtonReader();
-                    }
-                }
+                () -> new ButtonReader()
         );
     }
 

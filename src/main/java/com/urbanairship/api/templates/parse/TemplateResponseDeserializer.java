@@ -21,54 +21,12 @@ public class TemplateResponseDeserializer extends JsonDeserializer<TemplateRespo
     private static final FieldParserRegistry<TemplateResponse, TemplateResponseReader> FIELD_PARSER =
             new MapFieldParserRegistry<TemplateResponse, TemplateResponseReader>(
                     ImmutableMap.<String, FieldParser<TemplateResponseReader>>builder()
-                            .put("ok", new FieldParser<TemplateResponseReader>() {
-                                @Override
-                                public void parse(TemplateResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readOk(jsonParser);
-                                }
-                            })
-                            .put("operation_id", new FieldParser<TemplateResponseReader>() {
-                                @Override
-                                public void parse(TemplateResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readOperationId(jsonParser);
-                                }
-                            })
-                            .put("template_id", new FieldParser<TemplateResponseReader>() {
-                                @Override
-                                public void parse(TemplateResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readTemplateId(jsonParser);
-                                }
-                            })
-                            .put("push_ids", new FieldParser<TemplateResponseReader>() {
-                                @Override
-                                public void parse(TemplateResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.addAllPushIds(jsonParser);
-                                }
-                            })
-                            .put("error", new FieldParser<TemplateResponseReader>() {
-                                @Override
-                                public void parse(TemplateResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readError(jsonParser);
-                                }
-                            })
-                            .put("details", new FieldParser<TemplateResponseReader>() {
-                                @Override
-                                public void parse(TemplateResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readErrorDetails(jsonParser);
-                                }
-                            })
+                            .put("ok", (reader, jsonParser, deserializationContext) -> reader.readOk(jsonParser))
+                            .put("operation_id", (reader, jsonParser, deserializationContext) -> reader.readOperationId(jsonParser))
+                            .put("template_id", (reader, jsonParser, deserializationContext) -> reader.readTemplateId(jsonParser))
+                            .put("push_ids", (reader, jsonParser, deserializationContext) -> reader.addAllPushIds(jsonParser))
+                            .put("error", (reader, jsonParser, deserializationContext) -> reader.readError(jsonParser))
+                            .put("details", (reader, jsonParser, deserializationContext) -> reader.readErrorDetails(jsonParser))
                             .build()
             );
 
@@ -77,12 +35,7 @@ public class TemplateResponseDeserializer extends JsonDeserializer<TemplateRespo
     public TemplateResponseDeserializer() {
         this.deserializer = new StandardObjectDeserializer<TemplateResponse, TemplateResponseReader>(
                 FIELD_PARSER,
-                new Supplier<TemplateResponseReader>() {
-                    @Override
-                    public TemplateResponseReader get() {
-                        return new TemplateResponseReader();
-                    }
-                }
+                () -> new TemplateResponseReader()
         );
     }
 

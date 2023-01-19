@@ -71,12 +71,7 @@ public class SegmentLookupRequest implements Request<SegmentView> {
 
     @Override
     public ResponseParser<SegmentView> getResponseParser() {
-        return new ResponseParser<SegmentView>() {
-            @Override
-            public SegmentView parse(String response) throws IOException {
-                return SegmentObjectMapper.getInstance().readValue(response, SegmentView.class);
-            }
-        };
+        return response -> SegmentObjectMapper.getInstance().readValue(response, SegmentView.class);
     }
 
     @Override

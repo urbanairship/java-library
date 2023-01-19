@@ -3,7 +3,6 @@ package com.urbanairship.api.nameduser.parse;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.FieldParser;
 import com.urbanairship.api.common.parse.FieldParserRegistry;
@@ -28,7 +27,7 @@ public class NamedUserAttributeResponseDeserializer extends JsonDeserializer<Nam
     public NamedUserAttributeResponseDeserializer() {
         deserializer = new StandardObjectDeserializer<>(
                 FIELD_PARSERS,
-                () -> new NamedUserAttributeResponseReader()
+                NamedUserAttributeResponseReader::new
         );
     }
 

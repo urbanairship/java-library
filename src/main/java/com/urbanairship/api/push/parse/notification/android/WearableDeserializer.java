@@ -20,21 +20,9 @@ import java.io.IOException;
 public class WearableDeserializer extends JsonDeserializer<Wearable> {
     private static final FieldParserRegistry<Wearable, WearableReader> FIELD_PARSERS = new MapFieldParserRegistry<Wearable, WearableReader>(
             ImmutableMap.<String, FieldParser<WearableReader>>builder()
-                    .put("background_image", new FieldParser<WearableReader>() {
-                        public void parse(WearableReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readBackgroundImage(json);
-                        }
-                    })
-                    .put("interactive", new FieldParser<WearableReader>() {
-                        public void parse(WearableReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readInteractive(json);
-                        }
-                    })
-                    .put("extra_pages", new FieldParser<WearableReader>() {
-                        public void parse(WearableReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readExtraPages(json);
-                        }
-                    })
+                    .put("background_image", (reader, json, context) -> reader.readBackgroundImage(json))
+                    .put("interactive", (reader, json, context) -> reader.readInteractive(json))
+                    .put("extra_pages", (reader, json, context) -> reader.readExtraPages(json))
                     .build()
     );
 
@@ -43,12 +31,7 @@ public class WearableDeserializer extends JsonDeserializer<Wearable> {
     public WearableDeserializer() {
         deserializer = new StandardObjectDeserializer<Wearable, WearableReader>(
                 FIELD_PARSERS,
-                new Supplier<WearableReader>() {
-                    @Override
-                    public WearableReader get() {
-                        return new WearableReader();
-                    }
-                }
+                () -> new WearableReader()
         );
     }
 

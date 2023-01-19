@@ -29,36 +29,11 @@ public final class RequestErrorDeserializer extends JsonDeserializer<RequestErro
     private static final FieldParserRegistry<RequestError, RequestErrorReader> FIELD_PARSERS =
             new MapFieldParserRegistry<RequestError, RequestErrorReader>(
                     ImmutableMap.<String, FieldParser<RequestErrorReader>>builder()
-                            .put("ok", new FieldParser<RequestErrorReader>() {
-                                @Override
-                                public void parse(RequestErrorReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readOk(jsonParser);
-                                }
-                            })
-                            .put("operation_id", new FieldParser<RequestErrorReader>() {
-                                @Override
-                                public void parse(RequestErrorReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readOperationId(jsonParser);
-                                }
-                            })
-                            .put("error", new FieldParser<RequestErrorReader>() {
-                                @Override
-                                public void parse(RequestErrorReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readError(jsonParser);
-                                }
-                            })
-                            .put("error_code", new FieldParser<RequestErrorReader>() {
-                                @Override
-                                public void parse(RequestErrorReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readErrorCode(jsonParser);
-                                }
-                            })
-                            .put("details", new FieldParser<RequestErrorReader>() {
-                                @Override
-                                public void parse(RequestErrorReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readDetails(jsonParser);
-                                }
-                            })
+                            .put("ok", (reader, jsonParser, deserializationContext) -> reader.readOk(jsonParser))
+                            .put("operation_id", (reader, jsonParser, deserializationContext) -> reader.readOperationId(jsonParser))
+                            .put("error", (reader, jsonParser, deserializationContext) -> reader.readError(jsonParser))
+                            .put("error_code", (reader, jsonParser, deserializationContext) -> reader.readErrorCode(jsonParser))
+                            .put("details", (reader, jsonParser, deserializationContext) -> reader.readDetails(jsonParser))
                             .build()
             );
 
@@ -68,12 +43,7 @@ public final class RequestErrorDeserializer extends JsonDeserializer<RequestErro
     public RequestErrorDeserializer() {
         deserializer = new StandardObjectDeserializer<RequestError, RequestErrorReader>(
                 FIELD_PARSERS,
-                new Supplier<RequestErrorReader>() {
-                    @Override
-                    public RequestErrorReader get() {
-                        return new RequestErrorReader();
-                    }
-                }
+                () -> new RequestErrorReader()
         );
     }
 

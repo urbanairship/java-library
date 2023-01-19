@@ -29,7 +29,7 @@ public class SegmentViewDeserializer extends JsonDeserializer<SegmentView> {
     public SegmentViewDeserializer() {
         this.deserializer = new StandardObjectDeserializer<>(
                 FIELD_PARSER,
-                () -> new SegmentViewReader()
+                SegmentViewReader::new
         );
     }
 

@@ -20,24 +20,9 @@ import java.io.IOException;
 public class PushOptionsDeserializer extends JsonDeserializer<PushOptions> {
 
     private static final FieldParserRegistry<PushOptions, PushOptionsReader> FIELD_PARSERS = new MapFieldParserRegistry<PushOptions, PushOptionsReader>(ImmutableMap.<String, FieldParser<PushOptionsReader>>builder()
-        .put("expiry", new FieldParser<PushOptionsReader>() {
-            @Override
-            public void parse(PushOptionsReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                reader.readExpiry(parser);
-            }
-        })
-        .put("no_throttle", new FieldParser<PushOptionsReader>() {
-            @Override
-            public void parse(PushOptionsReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                reader.readNoThrottle(parser);
-            }
-        })
-        .put("personalization", new FieldParser<PushOptionsReader>() {
-            @Override
-            public void parse(PushOptionsReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                reader.readPersonalization(parser);
-            }
-        })
+        .put("expiry", (reader, parser, context) -> reader.readExpiry(parser))
+        .put("no_throttle", (reader, parser, context) -> reader.readNoThrottle(parser))
+        .put("personalization", (reader, parser, context) -> reader.readPersonalization(parser))
         .build()
     );
 
@@ -46,12 +31,7 @@ public class PushOptionsDeserializer extends JsonDeserializer<PushOptions> {
     public PushOptionsDeserializer() {
         deserializer = new StandardObjectDeserializer<PushOptions, PushOptionsReader>(
                 FIELD_PARSERS,
-                new Supplier<PushOptionsReader>() {
-                    @Override
-                    public PushOptionsReader get() {
-                        return new PushOptionsReader();
-                    }
-                }
+                () -> new PushOptionsReader()
         );
     }
 
