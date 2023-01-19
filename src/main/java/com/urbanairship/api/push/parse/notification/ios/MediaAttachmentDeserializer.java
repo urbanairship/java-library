@@ -22,24 +22,9 @@ public class MediaAttachmentDeserializer extends JsonDeserializer<MediaAttachmen
 
     private static final FieldParserRegistry<MediaAttachment, MediaAttachmentReader> FIELD_PARSER = new MapFieldParserRegistry<MediaAttachment, MediaAttachmentReader>(
             ImmutableMap.<String, FieldParser<MediaAttachmentReader>>builder()
-            .put("options", new FieldParser<MediaAttachmentReader>() {
-                @Override
-                public void parse(MediaAttachmentReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                    reader.readOptions(json, context);
-                }
-            })
-            .put("url", new FieldParser<MediaAttachmentReader>() {
-                @Override
-                public void parse(MediaAttachmentReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                    reader.readUrl(json);
-                }
-            })
-            .put("content", new FieldParser<MediaAttachmentReader>() {
-                @Override
-                public void parse(MediaAttachmentReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                    reader.readContent(json, context);
-                }
-            })
+            .put("options", (reader, json, context) -> reader.readOptions(json, context))
+            .put("url", (reader, json, context) -> reader.readUrl(json))
+            .put("content", (reader, json, context) -> reader.readContent(json, context))
             .build()
     );
 
@@ -48,12 +33,7 @@ public class MediaAttachmentDeserializer extends JsonDeserializer<MediaAttachmen
     public MediaAttachmentDeserializer() {
         deserializer = new StandardObjectDeserializer<MediaAttachment, MediaAttachmentReader>(
                 FIELD_PARSER,
-                new Supplier<MediaAttachmentReader>() {
-                    @Override
-                    public MediaAttachmentReader get() {
-                        return new MediaAttachmentReader();
-                    }
-                }
+                () -> new MediaAttachmentReader()
         );
     }
 

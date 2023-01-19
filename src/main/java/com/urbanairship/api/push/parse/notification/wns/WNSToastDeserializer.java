@@ -21,21 +21,9 @@ public class WNSToastDeserializer extends JsonDeserializer<WNSToastData> {
 
     private static final FieldParserRegistry<WNSToastData, WNSToastReader> FIELD_PARSERS = new MapFieldParserRegistry<WNSToastData, WNSToastReader>(
             ImmutableMap.<String, FieldParser<WNSToastReader>>builder()
-            .put("binding", new FieldParser<WNSToastReader>() {
-                    public void parse(WNSToastReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readBinding(json, context);
-                    }
-                })
-            .put("duration", new FieldParser<WNSToastReader>() {
-                    public void parse(WNSToastReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readDuration(json, context);
-                    }
-                })
-            .put("audio", new FieldParser<WNSToastReader>() {
-                    public void parse(WNSToastReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readAudio(json, context);
-                    }
-                })
+            .put("binding", (reader, json, context) -> reader.readBinding(json, context))
+            .put("duration", (reader, json, context) -> reader.readDuration(json, context))
+            .put("audio", (reader, json, context) -> reader.readAudio(json, context))
             .build()
             );
 
@@ -44,12 +32,7 @@ public class WNSToastDeserializer extends JsonDeserializer<WNSToastData> {
     public WNSToastDeserializer(final WNSBindingDeserializer bindingDS, final WNSAudioDeserializer audioDS) {
         deserializer = new StandardObjectDeserializer<WNSToastData, WNSToastReader>(
             FIELD_PARSERS,
-            new Supplier<WNSToastReader>() {
-                @Override
-                public WNSToastReader get() {
-                    return new WNSToastReader(bindingDS, audioDS);
-                }
-            }
+                () -> new WNSToastReader(bindingDS, audioDS)
         );
     }
 

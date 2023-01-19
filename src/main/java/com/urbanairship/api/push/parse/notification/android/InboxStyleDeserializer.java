@@ -20,21 +20,9 @@ import java.io.IOException;
 public class InboxStyleDeserializer extends JsonDeserializer<InboxStyle> {
     private static final FieldParserRegistry<InboxStyle, InboxStyleReader> FIELD_PARSERS = new MapFieldParserRegistry<InboxStyle, InboxStyleReader>(
             ImmutableMap.<String, FieldParser<InboxStyleReader>>builder()
-                    .put("title", new FieldParser<InboxStyleReader>() {
-                        public void parse(InboxStyleReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readTitle(json);
-                        }
-                    })
-                    .put("summary", new FieldParser<InboxStyleReader>() {
-                        public void parse(InboxStyleReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readSummary(json);
-                        }
-                    })
-                    .put("lines", new FieldParser<InboxStyleReader>() {
-                        public void parse(InboxStyleReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readContent(json);
-                        }
-                    })
+                    .put("title", (reader, json, context) -> reader.readTitle(json))
+                    .put("summary", (reader, json, context) -> reader.readSummary(json))
+                    .put("lines", (reader, json, context) -> reader.readContent(json))
                     .build()
     );
 
@@ -43,12 +31,7 @@ public class InboxStyleDeserializer extends JsonDeserializer<InboxStyle> {
     public InboxStyleDeserializer() {
         deserializer = new StandardObjectDeserializer<InboxStyle, InboxStyleReader>(
                 FIELD_PARSERS,
-                new Supplier<InboxStyleReader>() {
-                    @Override
-                    public InboxStyleReader get() {
-                        return new InboxStyleReader();
-                    }
-                }
+                () -> new InboxStyleReader()
         );
     }
 

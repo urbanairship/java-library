@@ -88,12 +88,7 @@ public class ExperimentRequest implements Request<ExperimentResponse> {
 
     @Override
     public ResponseParser<ExperimentResponse> getResponseParser() {
-        return new ResponseParser<ExperimentResponse>() {
-            @Override
-            public ExperimentResponse parse(String response) throws IOException {
-                return ExperimentObjectMapper.getInstance().readValue(response, ExperimentResponse.class);
-            }
-        };
+        return response -> ExperimentObjectMapper.getInstance().readValue(response, ExperimentResponse.class);
     }
 
     @Override

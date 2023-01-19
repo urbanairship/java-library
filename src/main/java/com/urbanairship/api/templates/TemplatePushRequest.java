@@ -114,12 +114,7 @@ public class TemplatePushRequest implements Request<TemplateResponse> {
 
     @Override
     public ResponseParser<TemplateResponse> getResponseParser() {
-        return new ResponseParser<TemplateResponse>() {
-            @Override
-            public TemplateResponse parse(String response) throws IOException {
-                return TemplatesObjectMapper.getInstance().readValue(response, TemplateResponse.class);
-            }
-        };
+        return response -> TemplatesObjectMapper.getInstance().readValue(response, TemplateResponse.class);
     }
 
     @Override

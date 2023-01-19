@@ -80,12 +80,7 @@ public class SegmentListingRequest implements Request<SegmentListingResponse> {
 
     @Override
     public ResponseParser<SegmentListingResponse> getResponseParser() {
-        return new ResponseParser<SegmentListingResponse>() {
-            @Override
-            public SegmentListingResponse parse(String response) throws IOException {
-                return SegmentObjectMapper.getInstance().readValue(response, SegmentListingResponse.class);
-            }
-        };
+        return response -> SegmentObjectMapper.getInstance().readValue(response, SegmentListingResponse.class);
     }
 
     @Override

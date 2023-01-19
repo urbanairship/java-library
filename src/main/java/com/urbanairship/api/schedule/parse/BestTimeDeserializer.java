@@ -17,12 +17,7 @@ public class BestTimeDeserializer extends JsonDeserializer<BestTime> {
 
     private static final FieldParserRegistry<BestTime, BestTimeReader> FIELD_PARSERS = new MapFieldParserRegistry<BestTime, BestTimeReader>(
             ImmutableMap.<String, FieldParser<BestTimeReader>>builder()
-                    .put("send_date", new FieldParser<BestTimeReader>() {
-                        @Override
-                        public void parse(BestTimeReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readSendDate(jsonParser);
-                        }
-                    })
+                    .put("send_date", (reader, jsonParser, deserializationContext) -> reader.readSendDate(jsonParser))
                     .build()
     );
 
@@ -33,12 +28,7 @@ public class BestTimeDeserializer extends JsonDeserializer<BestTime> {
     public BestTimeDeserializer() {
         deserializer = new StandardObjectDeserializer<BestTime, BestTimeReader>(
                 FIELD_PARSERS,
-                new Supplier<BestTimeReader>() {
-                    @Override
-                    public BestTimeReader get() {
-                        return new BestTimeReader();
-                    }
-                }
+                () -> new BestTimeReader()
         );
     }
 

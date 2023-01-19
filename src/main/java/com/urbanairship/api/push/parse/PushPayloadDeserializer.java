@@ -22,42 +22,12 @@ public class PushPayloadDeserializer extends JsonDeserializer<PushPayload> {
     private static final FieldParserRegistry<PushPayload, PushPayloadReader> FIELD_PARSERS = new MapFieldParserRegistry<PushPayload, PushPayloadReader>(
 
             ImmutableMap.<String, FieldParser<PushPayloadReader>>builder()
-                    .put("audience", new FieldParser<PushPayloadReader>() {
-                        @Override
-                        public void parse(PushPayloadReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readAudience(jsonParser);
-                        }
-                    })
-                    .put("notification", new FieldParser<PushPayloadReader>() {
-                        @Override
-                        public void parse(PushPayloadReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readNotification(jsonParser);
-                        }
-                    })
-                    .put("message", new FieldParser<PushPayloadReader>() {
-                        @Override
-                        public void parse(PushPayloadReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readMessage(jsonParser);
-                        }
-                    })
-                    .put("options", new FieldParser<PushPayloadReader>() {
-                        @Override
-                        public void parse(PushPayloadReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readOptions(jsonParser);
-                        }
-                    })
-                    .put("device_types", new FieldParser<PushPayloadReader>() {
-                        @Override
-                        public void parse(PushPayloadReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readDeviceTypes(jsonParser);
-                        }
-                    })
-                    .put("in_app", new FieldParser<PushPayloadReader>() {
-                        @Override
-                        public void parse(PushPayloadReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readInApp(jsonParser);
-                        }
-                    })
+                    .put("audience", (reader, jsonParser, deserializationContext) -> reader.readAudience(jsonParser))
+                    .put("notification", (reader, jsonParser, deserializationContext) -> reader.readNotification(jsonParser))
+                    .put("message", (reader, jsonParser, deserializationContext) -> reader.readMessage(jsonParser))
+                    .put("options", (reader, jsonParser, deserializationContext) -> reader.readOptions(jsonParser))
+                    .put("device_types", (reader, jsonParser, deserializationContext) -> reader.readDeviceTypes(jsonParser))
+                    .put("in_app", (reader, jsonParser, deserializationContext) -> reader.readInApp(jsonParser))
                     .build()
     );
 
@@ -66,12 +36,7 @@ public class PushPayloadDeserializer extends JsonDeserializer<PushPayload> {
     public PushPayloadDeserializer() {
         deserializer = new StandardObjectDeserializer<PushPayload, PushPayloadReader>(
                 FIELD_PARSERS,
-                new Supplier<PushPayloadReader>() {
-                    @Override
-                    public PushPayloadReader get() {
-                        return new PushPayloadReader();
-                    }
-                }
+                () -> new PushPayloadReader()
         );
     }
 

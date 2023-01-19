@@ -17,46 +17,11 @@ public class SegmentListingResponseDeserializer extends JsonDeserializer<Segment
     public static final FieldParserRegistry<SegmentListingResponse, SegmentListingResponseReader> FIELD_PARSER =
             new MapFieldParserRegistry<SegmentListingResponse, SegmentListingResponseReader>(
                     ImmutableMap.<String, FieldParser<SegmentListingResponseReader>>builder()
-                            .put("next_page", new FieldParser<SegmentListingResponseReader>() {
-                                @Override
-                                public void parse(SegmentListingResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readNextPage(jsonParser);
-                                }
-                            })
-                            .put("segments", new FieldParser<SegmentListingResponseReader>() {
-                                @Override
-                                public void parse(SegmentListingResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readSegments(jsonParser);
-                                }
-                            })
-                            .put("ok", new FieldParser<SegmentListingResponseReader>() {
-                                @Override
-                                public void parse(SegmentListingResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readOk(jsonParser);
-                                }
-                            })
-                            .put("error", new FieldParser<SegmentListingResponseReader>() {
-                                @Override
-                                public void parse(SegmentListingResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readError(jsonParser);
-                                }
-                            })
-                            .put("details", new FieldParser<SegmentListingResponseReader>() {
-                                @Override
-                                public void parse(SegmentListingResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readErrorDetails(jsonParser);
-                                }
-                            })
+                            .put("next_page", (reader, jsonParser, deserializationContext) -> reader.readNextPage(jsonParser))
+                            .put("segments", (reader, jsonParser, deserializationContext) -> reader.readSegments(jsonParser))
+                            .put("ok", (reader, jsonParser, deserializationContext) -> reader.readOk(jsonParser))
+                            .put("error", (reader, jsonParser, deserializationContext) -> reader.readError(jsonParser))
+                            .put("details", (reader, jsonParser, deserializationContext) -> reader.readErrorDetails(jsonParser))
                             .build()
     );
 
@@ -65,12 +30,7 @@ public class SegmentListingResponseDeserializer extends JsonDeserializer<Segment
     public SegmentListingResponseDeserializer() {
         this.deserializer = new StandardObjectDeserializer<SegmentListingResponse, SegmentListingResponseReader>(
                 FIELD_PARSER,
-                new Supplier<SegmentListingResponseReader>() {
-                    @Override
-                    public SegmentListingResponseReader get() {
-                        return new SegmentListingResponseReader();
-                    }
-                }
+                () -> new SegmentListingResponseReader()
         );
     }
 

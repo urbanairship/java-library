@@ -21,42 +21,12 @@ public class ExperimentDeserializer extends JsonDeserializer<Experiment> {
 
     private static final FieldParserRegistry<Experiment, ExperimentReader> FIELD_PARSERS = new MapFieldParserRegistry<Experiment, ExperimentReader>(
             ImmutableMap.<String, FieldParser<ExperimentReader>>builder()
-                    .put("name", new FieldParser<ExperimentReader>() {
-                        @Override
-                        public void parse(ExperimentReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readName(jsonParser);
-                        }
-                    })
-                    .put("description", new FieldParser<ExperimentReader>() {
-                        @Override
-                        public void parse(ExperimentReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readDescription(jsonParser);
-                        }
-                    })
-                    .put("control", new FieldParser<ExperimentReader>() {
-                        @Override
-                        public void parse(ExperimentReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readControl(jsonParser);
-                        }
-                    })
-                    .put("audience", new FieldParser<ExperimentReader>() {
-                        @Override
-                        public void parse(ExperimentReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readAudience(jsonParser);
-                        }
-                    })
-                    .put("device_types", new FieldParser<ExperimentReader>() {
-                        @Override
-                        public void parse(ExperimentReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readDeviceTypes(jsonParser);
-                        }
-                    })
-                    .put("variants", new FieldParser<ExperimentReader>() {
-                        @Override
-                        public void parse(ExperimentReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readVariants(jsonParser);
-                        }
-                    })
+                    .put("name", (reader, jsonParser, deserializationContext) -> reader.readName(jsonParser))
+                    .put("description", (reader, jsonParser, deserializationContext) -> reader.readDescription(jsonParser))
+                    .put("control", (reader, jsonParser, deserializationContext) -> reader.readControl(jsonParser))
+                    .put("audience", (reader, jsonParser, deserializationContext) -> reader.readAudience(jsonParser))
+                    .put("device_types", (reader, jsonParser, deserializationContext) -> reader.readDeviceTypes(jsonParser))
+                    .put("variants", (reader, jsonParser, deserializationContext) -> reader.readVariants(jsonParser))
                     .build()
     );
 
@@ -65,12 +35,7 @@ public class ExperimentDeserializer extends JsonDeserializer<Experiment> {
     public ExperimentDeserializer() {
         deserializer = new StandardObjectDeserializer<Experiment, ExperimentReader>(
                 FIELD_PARSERS,
-                new Supplier<ExperimentReader>() {
-                    @Override
-                    public ExperimentReader get() {
-                        return new ExperimentReader();
-                    }
-                }
+                () -> new ExperimentReader()
         );
     }
 

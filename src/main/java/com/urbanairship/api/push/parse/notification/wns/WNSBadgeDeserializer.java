@@ -21,21 +21,9 @@ public class WNSBadgeDeserializer extends JsonDeserializer<WNSBadgeData> {
 
     private static final FieldParserRegistry<WNSBadgeData, WNSBadgeReader> FIELD_PARSERS = new MapFieldParserRegistry<WNSBadgeData, WNSBadgeReader>(
             ImmutableMap.<String, FieldParser<WNSBadgeReader>>builder()
-            .put("value", new FieldParser<WNSBadgeReader>() {
-                    public void parse(WNSBadgeReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readValue(json);
-                    }
-                })
-            .put("glyph", new FieldParser<WNSBadgeReader>() {
-                    public void parse(WNSBadgeReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readGlyph(json, context);
-                    }
-                })
-            .put("duration", new FieldParser<WNSBadgeReader>() {
-                    public void parse(WNSBadgeReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readGlyph(json, context);
-                    }
-                })
+            .put("value", (reader, json, context) -> reader.readValue(json))
+            .put("glyph", (reader, json, context) -> reader.readGlyph(json, context))
+            .put("duration", (reader, json, context) -> reader.readGlyph(json, context))
             .build()
             );
 
@@ -44,12 +32,7 @@ public class WNSBadgeDeserializer extends JsonDeserializer<WNSBadgeData> {
     public WNSBadgeDeserializer() {
         deserializer = new StandardObjectDeserializer<WNSBadgeData, WNSBadgeReader>(
             FIELD_PARSERS,
-            new Supplier<WNSBadgeReader>() {
-                @Override
-                public WNSBadgeReader get() {
-                    return new WNSBadgeReader();
-                }
-            }
+                () -> new WNSBadgeReader()
         );
     }
 

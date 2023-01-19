@@ -20,21 +20,9 @@ import java.io.IOException;
 public class BigTextStyleDeserializer extends JsonDeserializer<BigTextStyle> {
     private static final FieldParserRegistry<BigTextStyle, BigTextStyleReader> FIELD_PARSERS = new MapFieldParserRegistry<BigTextStyle, BigTextStyleReader>(
             ImmutableMap.<String, FieldParser<BigTextStyleReader>>builder()
-                    .put("title", new FieldParser<BigTextStyleReader>() {
-                        public void parse(BigTextStyleReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readTitle(json);
-                        }
-                    })
-                    .put("summary", new FieldParser<BigTextStyleReader>() {
-                        public void parse(BigTextStyleReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readSummary(json);
-                        }
-                    })
-                    .put("big_text", new FieldParser<BigTextStyleReader>() {
-                        public void parse(BigTextStyleReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readContent(json);
-                        }
-                    })
+                    .put("title", (reader, json, context) -> reader.readTitle(json))
+                    .put("summary", (reader, json, context) -> reader.readSummary(json))
+                    .put("big_text", (reader, json, context) -> reader.readContent(json))
                     .build()
     );
 
@@ -43,12 +31,7 @@ public class BigTextStyleDeserializer extends JsonDeserializer<BigTextStyle> {
     public BigTextStyleDeserializer() {
         deserializer = new StandardObjectDeserializer<BigTextStyle, BigTextStyleReader>(
                 FIELD_PARSERS,
-                new Supplier<BigTextStyleReader>() {
-                    @Override
-                    public BigTextStyleReader get() {
-                        return new BigTextStyleReader();
-                    }
-                }
+                () -> new BigTextStyleReader()
         );
     }
 

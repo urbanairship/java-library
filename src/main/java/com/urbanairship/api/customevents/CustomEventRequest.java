@@ -78,12 +78,7 @@ public class CustomEventRequest implements Request<CustomEventResponse> {
 
     @Override
     public ResponseParser<CustomEventResponse> getResponseParser() {
-        return new ResponseParser<CustomEventResponse>() {
-            @Override
-            public CustomEventResponse parse(String response) throws IOException {
-                return PushObjectMapper.getInstance().readValue(response, CustomEventResponse.class);
-            }
-        };
+        return response -> PushObjectMapper.getInstance().readValue(response, CustomEventResponse.class);
     }
 
     @Override

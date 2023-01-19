@@ -67,12 +67,7 @@ public class ChannelAttributesRequest implements Request<ChannelAttributesRespon
 
     @Override
     public ResponseParser<ChannelAttributesResponse> getResponseParser() {
-        return new ResponseParser<ChannelAttributesResponse>() {
-            @Override
-            public ChannelAttributesResponse parse(String response) throws IOException {
-                return MAPPER.readValue(response, ChannelAttributesResponse.class);
-            }
-        };
+        return response -> MAPPER.readValue(response, ChannelAttributesResponse.class);
     }
 
     @Override

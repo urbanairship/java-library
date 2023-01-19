@@ -21,11 +21,7 @@ public class WNSTileDeserializer extends JsonDeserializer<WNSTileData> {
 
     private static final FieldParserRegistry<WNSTileData, WNSTileReader> FIELD_PARSERS = new MapFieldParserRegistry<WNSTileData, WNSTileReader>(
             ImmutableMap.<String, FieldParser<WNSTileReader>>builder()
-            .put("binding", new FieldParser<WNSTileReader>() {
-                    public void parse(WNSTileReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readBinding(json, context);
-                    }
-                })
+            .put("binding", (reader, json, context) -> reader.readBinding(json, context))
             .build()
             );
 
@@ -34,12 +30,7 @@ public class WNSTileDeserializer extends JsonDeserializer<WNSTileData> {
     public WNSTileDeserializer(final WNSBindingDeserializer bindingDS) {
         deserializer = new StandardObjectDeserializer<WNSTileData, WNSTileReader>(
             FIELD_PARSERS,
-            new Supplier<WNSTileReader>() {
-                @Override
-                public WNSTileReader get() {
-                    return new WNSTileReader(bindingDS);
-                }
-            }
+                () -> new WNSTileReader(bindingDS)
         );
     }
 

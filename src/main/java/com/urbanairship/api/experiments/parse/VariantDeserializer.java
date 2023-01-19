@@ -22,35 +22,11 @@ public class VariantDeserializer extends JsonDeserializer<Variant> {
     private static final FieldParserRegistry<Variant, VariantReader> FIELD_PARSERS = new MapFieldParserRegistry<Variant, VariantReader>(
 
             ImmutableMap.<String, FieldParser<VariantReader>>builder()
-                    .put("name", new FieldParser<VariantReader>() {
-                            @Override
-                            public void parse(VariantReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                reader.readName(jsonParser);}
-                    })
-                    .put("description", new FieldParser<VariantReader>() {
-                            @Override
-                            public void parse(VariantReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                reader.readDescription(jsonParser);
-                            }
-                    })
-                    .put("schedule", new FieldParser<VariantReader>() {
-                        @Override
-                        public void parse(VariantReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readSchedule(jsonParser);
-                        }
-                    })
-                    .put("weight", new FieldParser<VariantReader>() {
-                            @Override
-                            public void parse(VariantReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                reader.readWeight(jsonParser);
-                            }
-                    })
-                    .put("push", new FieldParser<VariantReader>() {
-                            @Override
-                            public void parse(VariantReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                reader.readVariantPushPayload(jsonParser);
-                            }
-                    })
+                    .put("name", (reader, jsonParser, deserializationContext) -> reader.readName(jsonParser))
+                    .put("description", (reader, jsonParser, deserializationContext) -> reader.readDescription(jsonParser))
+                    .put("schedule", (reader, jsonParser, deserializationContext) -> reader.readSchedule(jsonParser))
+                    .put("weight", (reader, jsonParser, deserializationContext) -> reader.readWeight(jsonParser))
+                    .put("push", (reader, jsonParser, deserializationContext) -> reader.readVariantPushPayload(jsonParser))
                     .build()
             );
 
@@ -59,12 +35,7 @@ public class VariantDeserializer extends JsonDeserializer<Variant> {
     public VariantDeserializer() {
         deserializer = new StandardObjectDeserializer<Variant, VariantReader>(
                 FIELD_PARSERS,
-                new Supplier<VariantReader>() {
-                    @Override
-                    public VariantReader get() {
-                        return new VariantReader();
-                    }
-                }
+                () -> new VariantReader()
         );
     }
 

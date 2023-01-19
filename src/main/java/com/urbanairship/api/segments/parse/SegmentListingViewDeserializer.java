@@ -17,38 +17,10 @@ public class SegmentListingViewDeserializer extends JsonDeserializer<SegmentList
     public static final FieldParserRegistry<SegmentListingView, SegmentListingViewReader> FIELD_PARSER =
             new MapFieldParserRegistry<SegmentListingView, SegmentListingViewReader>(
                     ImmutableMap.<String, FieldParser<SegmentListingViewReader>>builder()
-                            .put("creation_date", new FieldParser<SegmentListingViewReader>() {
-                                @Override
-                                public void parse(SegmentListingViewReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readCreationDate(jsonParser);
-                                }
-                            })
-                            .put("display_name", new FieldParser<SegmentListingViewReader>() {
-                                @Override
-                                public void parse(SegmentListingViewReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readDisplayName(jsonParser);
-                                }
-                            })
-                            .put("id", new FieldParser<SegmentListingViewReader>() {
-                                @Override
-                                public void parse(SegmentListingViewReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readId(jsonParser);
-                                }
-                            })
-                            .put("modification_date", new FieldParser<SegmentListingViewReader>() {
-                                @Override
-                                public void parse(SegmentListingViewReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readModificationDate(jsonParser);
-                                }
-                            })
+                            .put("creation_date", (reader, jsonParser, deserializationContext) -> reader.readCreationDate(jsonParser))
+                            .put("display_name", (reader, jsonParser, deserializationContext) -> reader.readDisplayName(jsonParser))
+                            .put("id", (reader, jsonParser, deserializationContext) -> reader.readId(jsonParser))
+                            .put("modification_date", (reader, jsonParser, deserializationContext) -> reader.readModificationDate(jsonParser))
                             .build()
             );
 
@@ -57,12 +29,7 @@ public class SegmentListingViewDeserializer extends JsonDeserializer<SegmentList
     public SegmentListingViewDeserializer() {
         this.deserializer = new StandardObjectDeserializer<SegmentListingView, SegmentListingViewReader>(
                 FIELD_PARSER,
-                new Supplier<SegmentListingViewReader>() {
-                    @Override
-                    public SegmentListingViewReader get() {
-                        return new SegmentListingViewReader();
-                    }
-                }
+                () -> new SegmentListingViewReader()
         );
     }
 

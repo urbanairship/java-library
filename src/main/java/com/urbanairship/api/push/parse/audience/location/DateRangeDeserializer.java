@@ -22,44 +22,26 @@ public class DateRangeDeserializer extends JsonDeserializer<DateRange> {
 
     private static final FieldParserRegistry<DateRange, DateRangeReader> FIELD_PARSERS = new MapFieldParserRegistry<DateRange, DateRangeReader>(
         ImmutableMap.<String, FieldParser<DateRangeReader>>builder()
-        .put("recent", new FieldParser<DateRangeReader>() {
-                @Override
-                public void parse(DateRangeReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                    reader.readRecent(parser);
-                }
-            })
-        .put("last_seen", new FieldParser<DateRangeReader>() {
-                @Override
-                public void parse(DateRangeReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                    reader.readTimeframe(parser);
-                }
-            })
+        .put("recent", (reader, parser, context) -> reader.readRecent(parser))
+        .put("last_seen", (reader, parser, context) -> reader.readTimeframe(parser))
         .build(),
         /* Default field parser */
-        new FieldParser<DateRangeReader>() {
-            @Override
-            public void parse(DateRangeReader reader, JsonParser parser, DeserializationContext context) throws IOException {
+            (reader, parser, context) -> {
                 String field = parser.getCurrentName();
                 DateRangeUnit resolution = DateRangeUnit.getUnitForIdentifier(field);
                 if (resolution != null) {
                     reader.readAbsolute(parser);
                     reader.setResolution(resolution);
                 }
-            }
-        });
+            });
 
     private final StandardObjectDeserializer<DateRange, ?> deserializer;
 
     public DateRangeDeserializer() {
         deserializer = new StandardObjectDeserializer<DateRange, DateRangeReader>(
             FIELD_PARSERS,
-            new Supplier<DateRangeReader>() {
-                @Override
-                public DateRangeReader get() {
-                    return new DateRangeReader();
-                }
-            }
-            );
+                () -> new DateRangeReader()
+        );
     }
 
     @Override

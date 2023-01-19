@@ -2,7 +2,6 @@ package com.urbanairship.api.push.model.notification.email;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.urbanairship.api.createandsend.model.notification.email.CreateAndSendEmailPayload;
 import com.urbanairship.api.createandsend.model.notification.email.EmailTemplate;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.PushModelObject;

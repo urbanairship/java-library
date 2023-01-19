@@ -18,42 +18,12 @@ public class InAppDeserializer extends JsonDeserializer<InApp> {
     private static final FieldParserRegistry<InApp, InAppReader> FIELD_PARSERS =
             new MapFieldParserRegistry<InApp, InAppReader>(
                     ImmutableMap.<String, FieldParser<InAppReader>>builder()
-                            .put("alert", new FieldParser<InAppReader>() {
-                                @Override
-                                public void parse(InAppReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readAlert(jsonParser);
-                                }
-                            })
-                            .put("expiry", new FieldParser<InAppReader>() {
-                                @Override
-                                public void parse(InAppReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readExpiry(jsonParser);
-                                }
-                            })
-                            .put("display", new FieldParser<InAppReader>() {
-                                @Override
-                                public void parse(InAppReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readDisplay(jsonParser);
-                                }
-                            })
-                            .put("actions", new FieldParser<InAppReader>() {
-                                @Override
-                                public void parse(InAppReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readActions(jsonParser);
-                                }
-                            })
-                            .put("interactive", new FieldParser<InAppReader>() {
-                                @Override
-                                public void parse(InAppReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readInteractive(jsonParser);
-                                }
-                            })
-                            .put("extra", new FieldParser<InAppReader>() {
-                                @Override
-                                public void parse(InAppReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readAllExtras(jsonParser);
-                                }
-                            })
+                            .put("alert", (reader, jsonParser, deserializationContext) -> reader.readAlert(jsonParser))
+                            .put("expiry", (reader, jsonParser, deserializationContext) -> reader.readExpiry(jsonParser))
+                            .put("display", (reader, jsonParser, deserializationContext) -> reader.readDisplay(jsonParser))
+                            .put("actions", (reader, jsonParser, deserializationContext) -> reader.readActions(jsonParser))
+                            .put("interactive", (reader, jsonParser, deserializationContext) -> reader.readInteractive(jsonParser))
+                            .put("extra", (reader, jsonParser, deserializationContext) -> reader.readAllExtras(jsonParser))
                             .build());
 
     private final StandardObjectDeserializer<InApp, ?> deserializer;
@@ -61,12 +31,7 @@ public class InAppDeserializer extends JsonDeserializer<InApp> {
     public InAppDeserializer() {
         deserializer = new StandardObjectDeserializer<InApp, InAppReader>(
                 FIELD_PARSERS,
-                new Supplier<InAppReader>() {
-                    @Override
-                    public InAppReader get() {
-                        return new InAppReader();
-                    }
-                }
+                () -> new InAppReader()
         );
     }
 

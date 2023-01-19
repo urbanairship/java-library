@@ -93,12 +93,7 @@ public class NamedUserListingRequest implements Request<NamedUserListingResponse
 
     @Override
     public ResponseParser<NamedUserListingResponse> getResponseParser() {
-        return new ResponseParser<NamedUserListingResponse>() {
-            @Override
-            public NamedUserListingResponse parse(String response) throws IOException {
-                return NamedUserObjectMapper.getInstance().readValue(response, NamedUserListingResponse.class);
-            }
-        };
+        return response -> NamedUserObjectMapper.getInstance().readValue(response, NamedUserListingResponse.class);
     }
 
     @Override

@@ -21,23 +21,8 @@ public class IOSMediaOptionsDeserializer extends JsonDeserializer<IOSMediaOption
 
     private static final FieldParserRegistry<IOSMediaOptions, IOSMediaOptionsPayloadReader> FIELD_PARSER = new MapFieldParserRegistry<IOSMediaOptions, IOSMediaOptionsPayloadReader>(
             ImmutableMap.<String, FieldParser<IOSMediaOptionsPayloadReader>>builder()
-            .put("time", new FieldParser<IOSMediaOptionsPayloadReader>() {
-                @Override
-                public void parse(IOSMediaOptionsPayloadReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                    reader.readTime(parser);
-                }
-            }).put("crop", new FieldParser<IOSMediaOptionsPayloadReader>() {
-                @Override
-                public void parse(IOSMediaOptionsPayloadReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                    reader.readCrop(parser);
-                }
-            })
-            .put("hidden", new FieldParser<IOSMediaOptionsPayloadReader>() {
-                @Override
-                public void parse(IOSMediaOptionsPayloadReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                    reader.readHidden(parser);
-                }
-            })
+            .put("time", (reader, parser, context) -> reader.readTime(parser)).put("crop", (reader, parser, context) -> reader.readCrop(parser))
+            .put("hidden", (reader, parser, context) -> reader.readHidden(parser))
             .build()
     );
 
@@ -46,12 +31,7 @@ public class IOSMediaOptionsDeserializer extends JsonDeserializer<IOSMediaOption
     public IOSMediaOptionsDeserializer() {
         deserializer = new StandardObjectDeserializer<IOSMediaOptions, IOSMediaOptionsPayloadReader>(
                 FIELD_PARSER,
-                new Supplier<IOSMediaOptionsPayloadReader>() {
-                    @Override
-                    public IOSMediaOptionsPayloadReader get() {
-                        return new IOSMediaOptionsPayloadReader();
-                    }
-                }
+                () -> new IOSMediaOptionsPayloadReader()
         );
     }
 

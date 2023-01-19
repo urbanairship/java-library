@@ -21,70 +21,14 @@ public final class TemplateViewDeserializer extends JsonDeserializer<TemplateVie
     private static final FieldParserRegistry<TemplateView, TemplateViewReader> FIELD_PARSER =
             new MapFieldParserRegistry<TemplateView, TemplateViewReader>(
                     ImmutableMap.<String, FieldParser<TemplateViewReader>>builder()
-                    .put("id", new FieldParser<TemplateViewReader>() {
-                        @Override
-                        public void parse(TemplateViewReader reader,
-                                          JsonParser jsonParser,
-                                          DeserializationContext deserializationContext) throws IOException {
-                            reader.readId(jsonParser);
-                        }
-                    })
-                    .put("created_at", new FieldParser<TemplateViewReader>() {
-                        @Override
-                        public void parse(TemplateViewReader reader,
-                                          JsonParser jsonParser,
-                                          DeserializationContext deserializationContext) throws IOException {
-                            reader.readCreatedAt(jsonParser);
-                        }
-                    })
-                    .put("modified_at", new FieldParser<TemplateViewReader>() {
-                        @Override
-                        public void parse(TemplateViewReader reader,
-                                          JsonParser jsonParser,
-                                          DeserializationContext deserializationContext) throws IOException {
-                            reader.readModifiedAt(jsonParser);
-                        }
-                    })
-                    .put("last_used", new FieldParser<TemplateViewReader>() {
-                        @Override
-                        public void parse(TemplateViewReader reader,
-                                          JsonParser jsonParser,
-                                          DeserializationContext deserializationContext) throws IOException {
-                            reader.readLastUsed(jsonParser);
-                        }
-                    })
-                    .put("name", new FieldParser<TemplateViewReader>() {
-                        @Override
-                        public void parse(TemplateViewReader reader,
-                                          JsonParser jsonParser,
-                                          DeserializationContext deserializationContext) throws IOException {
-                            reader.readName(jsonParser);
-                        }
-                    })
-                    .put("description", new FieldParser<TemplateViewReader>() {
-                        @Override
-                        public void parse(TemplateViewReader reader,
-                                          JsonParser jsonParser,
-                                          DeserializationContext deserializationContext) throws IOException {
-                            reader.readDescription(jsonParser);
-                        }
-                    })
-                    .put("variables", new FieldParser<TemplateViewReader>() {
-                        @Override
-                        public void parse(TemplateViewReader reader,
-                                          JsonParser jsonParser,
-                                          DeserializationContext deserializationContext) throws IOException {
-                            reader.readVariables(jsonParser);
-                        }
-                    })
-                    .put("push", new FieldParser<TemplateViewReader>() {
-                        @Override
-                        public void parse(TemplateViewReader reader,
-                                          JsonParser jsonParser,
-                                          DeserializationContext deserializationContext) throws IOException {
-                            reader.readPartialPush(jsonParser);
-                        }
-                    })
+                    .put("id", (reader, jsonParser, deserializationContext) -> reader.readId(jsonParser))
+                    .put("created_at", (reader, jsonParser, deserializationContext) -> reader.readCreatedAt(jsonParser))
+                    .put("modified_at", (reader, jsonParser, deserializationContext) -> reader.readModifiedAt(jsonParser))
+                    .put("last_used", (reader, jsonParser, deserializationContext) -> reader.readLastUsed(jsonParser))
+                    .put("name", (reader, jsonParser, deserializationContext) -> reader.readName(jsonParser))
+                    .put("description", (reader, jsonParser, deserializationContext) -> reader.readDescription(jsonParser))
+                    .put("variables", (reader, jsonParser, deserializationContext) -> reader.readVariables(jsonParser))
+                    .put("push", (reader, jsonParser, deserializationContext) -> reader.readPartialPush(jsonParser))
                     .build()
             );
 
@@ -93,12 +37,7 @@ public final class TemplateViewDeserializer extends JsonDeserializer<TemplateVie
     public TemplateViewDeserializer() {
         this.deserializer = new StandardObjectDeserializer<TemplateView, TemplateViewReader>(
                 FIELD_PARSER,
-                new Supplier<TemplateViewReader>() {
-                    @Override
-                    public TemplateViewReader get() {
-                        return new TemplateViewReader();
-                    }
-                }
+                () -> new TemplateViewReader()
         );
     }
 

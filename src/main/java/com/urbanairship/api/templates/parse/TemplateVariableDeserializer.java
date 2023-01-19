@@ -21,38 +21,10 @@ public class TemplateVariableDeserializer extends JsonDeserializer<TemplateVaria
     private static final FieldParserRegistry<TemplateVariable, TemplateVariableReader> FIELD_PARSER =
             new MapFieldParserRegistry<TemplateVariable, TemplateVariableReader>(
                     ImmutableMap.<String, FieldParser<TemplateVariableReader>>builder()
-                            .put("key", new FieldParser<TemplateVariableReader>() {
-                                @Override
-                                public void parse(TemplateVariableReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readKey(jsonParser);
-                                }
-                            })
-                            .put("name", new FieldParser<TemplateVariableReader>() {
-                                @Override
-                                public void parse(TemplateVariableReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readName(jsonParser);
-                                }
-                            })
-                            .put("description", new FieldParser<TemplateVariableReader>() {
-                                @Override
-                                public void parse(TemplateVariableReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readDescription(jsonParser);
-                                }
-                            })
-                            .put("default_value", new FieldParser<TemplateVariableReader>() {
-                                @Override
-                                public void parse(TemplateVariableReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readDefaultValue(jsonParser);
-                                }
-                            })
+                            .put("key", (reader, jsonParser, deserializationContext) -> reader.readKey(jsonParser))
+                            .put("name", (reader, jsonParser, deserializationContext) -> reader.readName(jsonParser))
+                            .put("description", (reader, jsonParser, deserializationContext) -> reader.readDescription(jsonParser))
+                            .put("default_value", (reader, jsonParser, deserializationContext) -> reader.readDefaultValue(jsonParser))
                             .build()
             );
 
@@ -61,12 +33,7 @@ public class TemplateVariableDeserializer extends JsonDeserializer<TemplateVaria
     public TemplateVariableDeserializer() {
         this.deserializer = new StandardObjectDeserializer<TemplateVariable, TemplateVariableReader>(
                 FIELD_PARSER,
-                new Supplier<TemplateVariableReader>() {
-                    @Override
-                    public TemplateVariableReader get() {
-                        return new TemplateVariableReader();
-                    }
-                }
+                () -> new TemplateVariableReader()
         );
     }
 

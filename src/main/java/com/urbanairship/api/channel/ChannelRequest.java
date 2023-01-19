@@ -121,12 +121,7 @@ public class ChannelRequest implements Request<ChannelResponse> {
 
     @Override
     public ResponseParser<ChannelResponse> getResponseParser() {
-        return new ResponseParser<ChannelResponse>() {
-            @Override
-            public ChannelResponse parse(String response) throws IOException {
-                return ChannelObjectMapper.getInstance().readValue(response, ChannelResponse.class);
-            }
-        };
+        return response -> ChannelObjectMapper.getInstance().readValue(response, ChannelResponse.class);
     }
 
     @Override

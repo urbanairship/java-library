@@ -10,7 +10,6 @@ import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
-import com.urbanairship.api.common.model.GenericResponse;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.segments.model.SegmentRequestResponse;
 import com.urbanairship.api.segments.model.SegmentView;

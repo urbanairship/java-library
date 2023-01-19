@@ -115,12 +115,7 @@ public class ResponseReportRequest implements Request<ResponseReport> {
 
     @Override
     public ResponseParser<ResponseReport> getResponseParser() {
-        return new ResponseParser<ResponseReport>() {
-            @Override
-            public ResponseReport parse(String response) throws IOException {
-                return ReportsObjectMapper.getInstance().readValue(response, ResponseReport.class);
-            }
-        };
+        return response -> ReportsObjectMapper.getInstance().readValue(response, ResponseReport.class);
     }
 
     @Override

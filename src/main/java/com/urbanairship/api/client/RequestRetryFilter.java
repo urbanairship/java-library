@@ -29,12 +29,7 @@ public class RequestRetryFilter implements ResponseFilter {
 
     private static final Logger log = LoggerFactory.getLogger(RequestRetryFilter.class);
     private static final int BASE_RETRY_TIME_MS = 5;
-    private static final Predicate<FilterContext> DEFAULT_PREDICATE = new Predicate<FilterContext>() {
-        @Override
-        public boolean test(FilterContext input) {
-            return !input.getRequest().getMethod().equals("POST") && input.getResponseStatus().getStatusCode() >= 500;
-        }
-    };
+    private static final Predicate<FilterContext> DEFAULT_PREDICATE = input -> !input.getRequest().getMethod().equals("POST") && input.getResponseStatus().getStatusCode() >= 500;
 
     private final int maxRetries;
     private final Predicate<FilterContext> retryPredicate;

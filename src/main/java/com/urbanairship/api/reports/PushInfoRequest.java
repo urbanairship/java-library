@@ -71,12 +71,7 @@ public class PushInfoRequest implements Request<PushInfoResponse> {
 
     @Override
     public ResponseParser<PushInfoResponse> getResponseParser() {
-        return new ResponseParser<PushInfoResponse>() {
-            @Override
-            public PushInfoResponse parse(String response) throws IOException {
-                return ReportsObjectMapper.getInstance().readValue(response, PushInfoResponse.class);
-            }
-        };
+        return response -> ReportsObjectMapper.getInstance().readValue(response, PushInfoResponse.class);
     }
 
     @Override

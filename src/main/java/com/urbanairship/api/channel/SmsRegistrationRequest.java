@@ -131,12 +131,7 @@ public class SmsRegistrationRequest implements Request<SmsRegistrationResponse> 
 
     @Override
     public ResponseParser<SmsRegistrationResponse> getResponseParser() {
-        return new ResponseParser<SmsRegistrationResponse>() {
-            @Override
-            public SmsRegistrationResponse parse(String response) throws IOException {
-                return ChannelObjectMapper.getInstance().readValue(response, SmsRegistrationResponse.class);
-            }
-        };
+        return response -> ChannelObjectMapper.getInstance().readValue(response, SmsRegistrationResponse.class);
     }
 
     @Override
