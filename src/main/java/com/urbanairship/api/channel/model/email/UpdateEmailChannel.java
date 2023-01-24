@@ -2,7 +2,9 @@ package com.urbanairship.api.channel.model.email;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.channel.model.ChannelType;
+import com.urbanairship.api.channel.model.subscriptionlist.SubscriptionList;
 import com.urbanairship.api.push.model.PushModelObject;
 
 import java.util.HashMap;
@@ -201,6 +203,7 @@ public class UpdateEmailChannel extends PushModelObject {
             this.localeLanguage = locale_language;
             return this;
         }
+
 
         public UpdateEmailChannel build() {
             Preconditions.checkNotNull(address, "address cannot be null.");
