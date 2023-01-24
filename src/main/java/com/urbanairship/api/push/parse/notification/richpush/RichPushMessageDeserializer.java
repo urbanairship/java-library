@@ -21,50 +21,14 @@ public class RichPushMessageDeserializer extends JsonDeserializer<RichPushMessag
 
     private static final FieldParserRegistry<RichPushMessage, RichPushMessageReader> FIELD_PARSERS = new MapFieldParserRegistry<RichPushMessage, RichPushMessageReader>(
             ImmutableMap.<String, FieldParser<RichPushMessageReader>>builder()
-            .put("title", new FieldParser<RichPushMessageReader>() {
-                    public void parse(RichPushMessageReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readTitle(json);
-                    }
-                })
-            .put("body", new FieldParser<RichPushMessageReader>() {
-                    public void parse(RichPushMessageReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readBody(json);
-                    }
-                })
-            .put("content-type", new FieldParser<RichPushMessageReader>() {
-                    public void parse(RichPushMessageReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readContentType(json);
-                    }
-                })
-            .put("content_type", new FieldParser<RichPushMessageReader>() {
-                    public void parse(RichPushMessageReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readContentType(json);
-                    }
-                })
-            .put("content-encoding", new FieldParser<RichPushMessageReader>() {
-                    public void parse(RichPushMessageReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readContentEncoding(json);
-                    }
-                })
-            .put("content_encoding", new FieldParser<RichPushMessageReader>() {
-                    public void parse(RichPushMessageReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readContentEncoding(json);
-                    }
-                })
-            .put("extra", new FieldParser<RichPushMessageReader>() {
-                    public void parse(RichPushMessageReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readExtra(json);
-                    }
-                })
-            .put("expiry", new FieldParser<RichPushMessageReader>() {
-                    public void parse(RichPushMessageReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readExpiry(json);
-                    }
-            }).put("icons", new FieldParser<RichPushMessageReader>() {
-                public void parse(RichPushMessageReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                    reader.readIcons(json);
-                }
-            })
+            .put("title", (reader, json, context) -> reader.readTitle(json))
+            .put("body", (reader, json, context) -> reader.readBody(json))
+            .put("content-type", (reader, json, context) -> reader.readContentType(json))
+            .put("content_type", (reader, json, context) -> reader.readContentType(json))
+            .put("content-encoding", (reader, json, context) -> reader.readContentEncoding(json))
+            .put("content_encoding", (reader, json, context) -> reader.readContentEncoding(json))
+            .put("extra", (reader, json, context) -> reader.readExtra(json))
+            .put("expiry", (reader, json, context) -> reader.readExpiry(json)).put("icons", (reader, json, context) -> reader.readIcons(json))
             .build()
             );
 
@@ -73,12 +37,7 @@ public class RichPushMessageDeserializer extends JsonDeserializer<RichPushMessag
     public RichPushMessageDeserializer() {
         deserializer = new StandardObjectDeserializer<RichPushMessage, RichPushMessageReader>(
             FIELD_PARSERS,
-            new Supplier<RichPushMessageReader>() {
-                @Override
-                public RichPushMessageReader get() {
-                    return new RichPushMessageReader();
-                }
-            }
+                () -> new RichPushMessageReader()
         );
     }
 

@@ -16,30 +16,10 @@ import java.io.IOException;
 public class ChannelAttributesResponseDeserializer extends JsonDeserializer<ChannelAttributesResponse> {
     private static final FieldParserRegistry<ChannelAttributesResponse, ChannelAttributesResponseReader> FIELD_PARSERS = new MapFieldParserRegistry<ChannelAttributesResponse, ChannelAttributesResponseReader>(
             ImmutableMap.<String, FieldParser<ChannelAttributesResponseReader>>builder()
-            .put("ok", new FieldParser<ChannelAttributesResponseReader>() {
-                @Override
-                public void parse(ChannelAttributesResponseReader reader, JsonParser jsonParser, DeserializationContext context) throws IOException {
-                    reader.readOk(jsonParser);
-                }
-            })
-            .put("warning", new FieldParser<ChannelAttributesResponseReader>() {
-                @Override
-                public void parse(ChannelAttributesResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readWarning(jsonParser);
-                }
-            })
-            .put("error", new FieldParser<ChannelAttributesResponseReader>() {
-                @Override
-                public void parse(ChannelAttributesResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readError(jsonParser);
-                }
-            })
-            .put("details", new FieldParser<ChannelAttributesResponseReader>() {
-                @Override
-                public void parse(ChannelAttributesResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readErrorDetails(jsonParser);
-                }
-            })
+            .put("ok", (reader, jsonParser, context) -> reader.readOk(jsonParser))
+            .put("warning", (reader, jsonParser, deserializationContext) -> reader.readWarning(jsonParser))
+            .put("error", (reader, jsonParser, deserializationContext) -> reader.readError(jsonParser))
+            .put("details", (reader, jsonParser, deserializationContext) -> reader.readErrorDetails(jsonParser))
             .build()
     );
 
@@ -48,12 +28,7 @@ public class ChannelAttributesResponseDeserializer extends JsonDeserializer<Chan
     public ChannelAttributesResponseDeserializer() {
         deserializer = new StandardObjectDeserializer<ChannelAttributesResponse, ChannelAttributesResponseReader>(
                 FIELD_PARSERS,
-                new Supplier<ChannelAttributesResponseReader>() {
-                    @Override
-                    public ChannelAttributesResponseReader get() {
-                        return new ChannelAttributesResponseReader();
-                    }
-                }
+                () -> new ChannelAttributesResponseReader()
         );
     }
 

@@ -17,12 +17,7 @@ import java.io.IOException;
 public class WebSettingsDeserializer extends JsonDeserializer<WebSettings> {
     private static final FieldParserRegistry<WebSettings, WebSettingsReader> FIELD_PARSERS = new MapFieldParserRegistry<WebSettings, WebSettingsReader>(
             ImmutableMap.<String, FieldParser<WebSettingsReader>>builder()
-                    .put(Constants.SUBSCRIPTION, new FieldParser<WebSettingsReader>() {
-                        @Override
-                        public void parse(WebSettingsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readSubscription(jsonParser);
-                        }
-                    })
+                    .put(Constants.SUBSCRIPTION, (reader, jsonParser, deserializationContext) -> reader.readSubscription(jsonParser))
                     .build()
     );
 
@@ -31,12 +26,7 @@ public class WebSettingsDeserializer extends JsonDeserializer<WebSettings> {
     public WebSettingsDeserializer() {
         deserializer = new StandardObjectDeserializer<WebSettings, WebSettingsReader>(
                 FIELD_PARSERS,
-                new Supplier<WebSettingsReader>() {
-                    @Override
-                    public WebSettingsReader get() {
-                        return new WebSettingsReader();
-                    }
-                }
+                () -> new WebSettingsReader()
         );
     }
 

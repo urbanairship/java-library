@@ -19,30 +19,10 @@ public class RegisterEmailChannelResponseDeserializer extends JsonDeserializer<E
     private static final FieldParserRegistry<EmailChannelResponse, RegisterEmailChannelResponseReader> FIELD_PARSERS =
             new MapFieldParserRegistry<>(
             ImmutableMap.<String, FieldParser<RegisterEmailChannelResponseReader>>builder()
-                    .put("ok", new FieldParser<RegisterEmailChannelResponseReader>() {
-                        @Override
-                        public void parse(RegisterEmailChannelResponseReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                            reader.readOk(parser);
-                        }
-                    })
-                    .put("channel_id", new FieldParser<RegisterEmailChannelResponseReader>() {
-                        @Override
-                        public void parse(RegisterEmailChannelResponseReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                            reader.readChannelId(parser);
-                        }
-                    })
-                    .put("error", new FieldParser<RegisterEmailChannelResponseReader>() {
-                        @Override
-                        public void parse(RegisterEmailChannelResponseReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                            reader.readError(parser);
-                        }
-                    })
-                    .put("details", new FieldParser<RegisterEmailChannelResponseReader>() {
-                        @Override
-                        public void parse(RegisterEmailChannelResponseReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                            reader.readErrorDetails(parser);
-                        }
-                    })
+                    .put("ok", (reader, parser, context) -> reader.readOk(parser))
+                    .put("channel_id", (reader, parser, context) -> reader.readChannelId(parser))
+                    .put("error", (reader, parser, context) -> reader.readError(parser))
+                    .put("details", (reader, parser, context) -> reader.readErrorDetails(parser))
                     .build()
     );
 
@@ -51,12 +31,7 @@ public class RegisterEmailChannelResponseDeserializer extends JsonDeserializer<E
     public RegisterEmailChannelResponseDeserializer() {
         this.deserializer = new StandardObjectDeserializer<EmailChannelResponse, RegisterEmailChannelResponseReader>(
                 FIELD_PARSERS,
-                new Supplier<RegisterEmailChannelResponseReader>() {
-                    @Override
-                    public RegisterEmailChannelResponseReader get() {
-                        return new RegisterEmailChannelResponseReader();
-                    }
-                }
+                () -> new RegisterEmailChannelResponseReader()
         );
     }
 

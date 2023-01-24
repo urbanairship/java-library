@@ -38,7 +38,7 @@ public class StaticListViewDeserializer extends JsonDeserializer<StaticListView>
     public StaticListViewDeserializer() {
         deserializer = new StandardObjectDeserializer<>(
                 FIELD_PARSERS,
-                () -> new StaticListViewReader()
+                StaticListViewReader::new
         );
     }
 

@@ -21,38 +21,10 @@ public class PartialPushPayloadDeserializer extends JsonDeserializer<PartialPush
     private static final FieldParserRegistry<PartialPushPayload, PartialPushPayloadReader> FIELD_PARSER =
             new MapFieldParserRegistry<PartialPushPayload, PartialPushPayloadReader>(
                     ImmutableMap.<String, FieldParser<PartialPushPayloadReader>>builder()
-                            .put("notification", new FieldParser<PartialPushPayloadReader>() {
-                                @Override
-                                public void parse(PartialPushPayloadReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readNotification(jsonParser);
-                                }
-                            })
-                            .put("options", new FieldParser<PartialPushPayloadReader>() {
-                                @Override
-                                public void parse(PartialPushPayloadReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readPushOptions(jsonParser);
-                                }
-                            })
-                            .put("message", new FieldParser<PartialPushPayloadReader>() {
-                                @Override
-                                public void parse(PartialPushPayloadReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readRichPushMessage(jsonParser);
-                                }
-                            })
-                            .put("in_app", new FieldParser<PartialPushPayloadReader>() {
-                                @Override
-                                public void parse(PartialPushPayloadReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readInApp(jsonParser);
-                                }
-                            })
+                            .put("notification", (reader, jsonParser, deserializationContext) -> reader.readNotification(jsonParser))
+                            .put("options", (reader, jsonParser, deserializationContext) -> reader.readPushOptions(jsonParser))
+                            .put("message", (reader, jsonParser, deserializationContext) -> reader.readRichPushMessage(jsonParser))
+                            .put("in_app", (reader, jsonParser, deserializationContext) -> reader.readInApp(jsonParser))
                             .build()
             );
 
@@ -61,12 +33,7 @@ public class PartialPushPayloadDeserializer extends JsonDeserializer<PartialPush
     public PartialPushPayloadDeserializer() {
         this.deserializer = new StandardObjectDeserializer<PartialPushPayload, PartialPushPayloadReader>(
                 FIELD_PARSER,
-                new Supplier<PartialPushPayloadReader>() {
-                    @Override
-                    public PartialPushPayloadReader get() {
-                        return new PartialPushPayloadReader();
-                    }
-                }
+                () -> new PartialPushPayloadReader()
         );
     }
 

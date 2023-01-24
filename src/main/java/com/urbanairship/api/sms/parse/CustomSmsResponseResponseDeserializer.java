@@ -18,24 +18,9 @@ public class CustomSmsResponseResponseDeserializer extends JsonDeserializer<Cust
     private static final FieldParserRegistry<CustomSmsResponseResponse, CustomSmsResponseResponseReader> FIELD_PARSERS =
             new MapFieldParserRegistry<>(
             ImmutableMap.<String, FieldParser<CustomSmsResponseResponseReader>>builder()
-                    .put("ok", new FieldParser<CustomSmsResponseResponseReader>() {
-                        @Override
-                        public void parse(CustomSmsResponseResponseReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                            reader.readOk(parser);
-                        }
-                    })
-                    .put("push_id", new FieldParser<CustomSmsResponseResponseReader>() {
-                        @Override
-                        public void parse(CustomSmsResponseResponseReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                            reader.readPushId(parser);
-                        }
-                    })
-                    .put("operation_id", new FieldParser<CustomSmsResponseResponseReader>() {
-                        @Override
-                        public void parse(CustomSmsResponseResponseReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                            reader.readOperationId(parser);
-                        }
-                    })
+                    .put("ok", (reader, parser, context) -> reader.readOk(parser))
+                    .put("push_id", (reader, parser, context) -> reader.readPushId(parser))
+                    .put("operation_id", (reader, parser, context) -> reader.readOperationId(parser))
                     .build()
     );
 
@@ -44,12 +29,7 @@ public class CustomSmsResponseResponseDeserializer extends JsonDeserializer<Cust
     public CustomSmsResponseResponseDeserializer() {
         this.deserializer = new StandardObjectDeserializer<CustomSmsResponseResponse, CustomSmsResponseResponseReader>(
                 FIELD_PARSERS,
-                new Supplier<CustomSmsResponseResponseReader>() {
-                    @Override
-                    public CustomSmsResponseResponseReader get() {
-                        return new CustomSmsResponseResponseReader();
-                    }
-                }
+                () -> new CustomSmsResponseResponseReader()
         );
     }
 

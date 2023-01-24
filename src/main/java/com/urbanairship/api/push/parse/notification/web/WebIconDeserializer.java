@@ -17,12 +17,7 @@ public class WebIconDeserializer extends JsonDeserializer<WebIcon> {
 
     private static final FieldParserRegistry<WebIcon, WebIconReader> FIELD_PARSERS = new MapFieldParserRegistry<WebIcon, WebIconReader>(
             ImmutableMap.<String, FieldParser<WebIconReader>>builder()
-                .put("url", new FieldParser<WebIconReader>() {
-                    @Override
-                    public void parse(WebIconReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readUrl(json);
-                    }
-                })
+                .put("url", (reader, json, context) -> reader.readUrl(json))
                 .build()
     );
 
@@ -31,12 +26,7 @@ public class WebIconDeserializer extends JsonDeserializer<WebIcon> {
     public WebIconDeserializer() {
         deserializer = new StandardObjectDeserializer<WebIcon, WebIconReader>(
                 FIELD_PARSERS,
-                new Supplier<WebIconReader>() {
-                    @Override
-                    public WebIconReader get() {
-                        return new WebIconReader();
-                    }
-                }
+                () -> new WebIconReader()
         );
     }
 

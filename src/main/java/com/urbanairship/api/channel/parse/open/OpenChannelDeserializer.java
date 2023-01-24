@@ -18,24 +18,9 @@ public class OpenChannelDeserializer extends JsonDeserializer<OpenChannel> {
 
     private static final FieldParserRegistry<OpenChannel, OpenChannelReader> FIELD_PARSERS = new MapFieldParserRegistry<OpenChannel, OpenChannelReader>(
             ImmutableMap.<String, FieldParser<OpenChannelReader>>builder()
-                    .put(Constants.OPEN_PLATFORM_NAME, new FieldParser<OpenChannelReader>() {
-                        @Override
-                        public void parse(OpenChannelReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                            reader.readPlatformName(parser);
-                        }
-                    })
-                    .put(Constants.OLD_ADDRESS, new FieldParser<OpenChannelReader>() {
-                        @Override
-                        public void parse(OpenChannelReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                            reader.readOldAddress(parser);
-                        }
-                    })
-                    .put(Constants.IDENTIFIERS, new FieldParser<OpenChannelReader>() {
-                        @Override
-                        public void parse(OpenChannelReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                            reader.readIdentifiers(parser);
-                        }
-                    })
+                    .put(Constants.OPEN_PLATFORM_NAME, (reader, parser, context) -> reader.readPlatformName(parser))
+                    .put(Constants.OLD_ADDRESS, (reader, parser, context) -> reader.readOldAddress(parser))
+                    .put(Constants.IDENTIFIERS, (reader, parser, context) -> reader.readIdentifiers(parser))
                     .build()
     );
 
@@ -44,12 +29,7 @@ public class OpenChannelDeserializer extends JsonDeserializer<OpenChannel> {
     public OpenChannelDeserializer() {
         deserializer = new StandardObjectDeserializer<OpenChannel, OpenChannelReader>(
                 FIELD_PARSERS,
-                new Supplier<OpenChannelReader>() {
-                    @Override
-                    public OpenChannelReader get() {
-                        return new OpenChannelReader();
-                    }
-                }
+                () -> new OpenChannelReader()
         );
     }
 

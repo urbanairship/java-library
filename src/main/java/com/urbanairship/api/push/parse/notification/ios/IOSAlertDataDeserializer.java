@@ -23,66 +23,18 @@ public class IOSAlertDataDeserializer extends JsonDeserializer<IOSAlertData> {
 
     private static final FieldParserRegistry<IOSAlertData, IOSAlertDataReader> FIELD_PARSERS = new MapFieldParserRegistry<IOSAlertData, IOSAlertDataReader>(
             ImmutableMap.<String, FieldParser<IOSAlertDataReader>>builder()
-            .put("body", new FieldParser<IOSAlertDataReader>() {
-                    public void parse(IOSAlertDataReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readBody(json);
-                    }
-                })
-            .put("action-loc-key", new FieldParser<IOSAlertDataReader>() {
-                    public void parse(IOSAlertDataReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readActionLocKey(json);
-                    }
-                })
-            .put("loc-key", new FieldParser<IOSAlertDataReader>() {
-                    public void parse(IOSAlertDataReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readLocKey(json);
-                    }
-                })
-            .put("loc-args", new FieldParser<IOSAlertDataReader>() {
-                    public void parse(IOSAlertDataReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readLocArgs(json);
-                    }
-                })
-            .put("launch-image", new FieldParser<IOSAlertDataReader>() {
-                    public void parse(IOSAlertDataReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readLaunchImage(json);
-                    }
-                })
-            .put("summary-arg", new FieldParser<IOSAlertDataReader>() {
-                    public void parse(IOSAlertDataReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readSummaryArg(json);
-                    }
-                })
-            .put("summary-arg-count", new FieldParser<IOSAlertDataReader>() {
-                    public void parse(IOSAlertDataReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readSummaryArgCount(json);
-                    }
-            })
-            .put("title", new FieldParser<IOSAlertDataReader>() {
-                    public void parse(IOSAlertDataReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readTitle(json);
-                    }
-            })
-            .put("title-loc-args", new FieldParser<IOSAlertDataReader>() {
-                    public void parse(IOSAlertDataReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readTitleLocArgs(json);
-                    }
-            })
-            .put("title-loc-key", new FieldParser<IOSAlertDataReader>() {
-                    public void parse(IOSAlertDataReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readTitleLocKey(json);
-                    }
-            })
-            .put("subtitle-loc-args", new FieldParser<IOSAlertDataReader>() {
-                public void parse(IOSAlertDataReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                    reader.readSubtitleLocArgs(json);
-                }
-            })
-            .put("subtitle-loc-key", new FieldParser<IOSAlertDataReader>() {
-                public void parse(IOSAlertDataReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                    reader.readSubtitleLocKey(json);
-                }
-            })
+            .put("body", (reader, json, context) -> reader.readBody(json))
+            .put("action-loc-key", (reader, json, context) -> reader.readActionLocKey(json))
+            .put("loc-key", (reader, json, context) -> reader.readLocKey(json))
+            .put("loc-args", (reader, json, context) -> reader.readLocArgs(json))
+            .put("launch-image", (reader, json, context) -> reader.readLaunchImage(json))
+            .put("summary-arg", (reader, json, context) -> reader.readSummaryArg(json))
+            .put("summary-arg-count", (reader, json, context) -> reader.readSummaryArgCount(json))
+            .put("title", (reader, json, context) -> reader.readTitle(json))
+            .put("title-loc-args", (reader, json, context) -> reader.readTitleLocArgs(json))
+            .put("title-loc-key", (reader, json, context) -> reader.readTitleLocKey(json))
+            .put("subtitle-loc-args", (reader, json, context) -> reader.readSubtitleLocArgs(json))
+            .put("subtitle-loc-key", (reader, json, context) -> reader.readSubtitleLocKey(json))
             .build()
             );
 
@@ -91,12 +43,7 @@ public class IOSAlertDataDeserializer extends JsonDeserializer<IOSAlertData> {
     public IOSAlertDataDeserializer() {
         deserializer = new StandardObjectDeserializer<IOSAlertData, IOSAlertDataReader>(
             FIELD_PARSERS,
-            new Supplier<IOSAlertDataReader>() {
-                @Override
-                public IOSAlertDataReader get() {
-                    return new IOSAlertDataReader();
-                }
-            }
+                () -> new IOSAlertDataReader()
         );
     }
 

@@ -22,18 +22,8 @@ public class InteractiveDeserializer extends JsonDeserializer<Interactive> {
     private static final FieldParserRegistry<Interactive, InteractiveReader> FIELD_PARSERS =
         new MapFieldParserRegistry<Interactive, InteractiveReader>(
             ImmutableMap.<String, FieldParser<InteractiveReader>>builder()
-                .put("type", new FieldParser<InteractiveReader>() {
-                    @Override
-                    public void parse(InteractiveReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                        reader.readType(jsonParser);
-                    }
-                })
-                .put("button_actions", new FieldParser<InteractiveReader>() {
-                    @Override
-                    public void parse(InteractiveReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                        reader.readButtonActions(jsonParser);
-                    }
-                })
+                .put("type", (reader, jsonParser, deserializationContext) -> reader.readType(jsonParser))
+                .put("button_actions", (reader, jsonParser, deserializationContext) -> reader.readButtonActions(jsonParser))
                 .build());
 
     private final StandardObjectDeserializer<Interactive, ?> deserializer;
@@ -41,12 +31,7 @@ public class InteractiveDeserializer extends JsonDeserializer<Interactive> {
     public InteractiveDeserializer() {
         deserializer = new StandardObjectDeserializer<Interactive, InteractiveReader>(
             FIELD_PARSERS,
-            new Supplier<InteractiveReader>() {
-                @Override
-                public InteractiveReader get() {
-                    return new InteractiveReader();
-                }
-            }
+                () -> new InteractiveReader()
         );
     }
 

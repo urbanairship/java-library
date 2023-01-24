@@ -29,18 +29,8 @@ class StreamLocationDeserializer extends JsonDeserializer<RequestErrorDetails.Lo
     private static final FieldParserRegistry<RequestErrorDetails.Location, StreamLocationReader> FIELD_PARSERS =
             new MapFieldParserRegistry<RequestErrorDetails.Location, StreamLocationReader>(
                     ImmutableMap.<String, FieldParser<StreamLocationReader>>builder()
-                            .put("line", new FieldParser<StreamLocationReader>() {
-                                @Override
-                                public void parse(StreamLocationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readLine(jsonParser);
-                                }
-                            })
-                            .put("column", new FieldParser<StreamLocationReader>() {
-                                @Override
-                                public void parse(StreamLocationReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readColumn(jsonParser);
-                                }
-                            })
+                            .put("line", (reader, jsonParser, deserializationContext) -> reader.readLine(jsonParser))
+                            .put("column", (reader, jsonParser, deserializationContext) -> reader.readColumn(jsonParser))
                             .build()
             );
 
@@ -50,12 +40,7 @@ class StreamLocationDeserializer extends JsonDeserializer<RequestErrorDetails.Lo
     public StreamLocationDeserializer() {
         deserializer = new StandardObjectDeserializer<RequestErrorDetails.Location, StreamLocationReader>(
                 FIELD_PARSERS,
-                new Supplier<StreamLocationReader>() {
-                    @Override
-                    public StreamLocationReader get() {
-                        return new StreamLocationReader();
-                    }
-                }
+                () -> new StreamLocationReader()
         );
     }
 

@@ -2,7 +2,6 @@ package com.urbanairship.api.subscriptionlists.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableList;
-import com.urbanairship.api.push.model.notification.email.MessageType;
 
 import java.util.Objects;
 import java.util.Optional;

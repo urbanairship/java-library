@@ -16,24 +16,9 @@ import java.io.IOException;
 public class SubscriptionListResponseDeserializer extends JsonDeserializer<SubscriptionListResponse> {
     private static final FieldParserRegistry<SubscriptionListResponse, SubscriptionListResponseReader> FIELD_PARSERS = new MapFieldParserRegistry<SubscriptionListResponse, SubscriptionListResponseReader>(
             ImmutableMap.<String, FieldParser<SubscriptionListResponseReader>>builder()
-            .put("ok", new FieldParser<SubscriptionListResponseReader>() {
-                @Override
-                public void parse(SubscriptionListResponseReader reader, JsonParser jsonParser, DeserializationContext context) throws IOException {
-                    reader.readOk(jsonParser);
-                }
-            })
-            .put("error", new FieldParser<SubscriptionListResponseReader>() {
-                @Override
-                public void parse(SubscriptionListResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readError(jsonParser);
-                }
-            })
-            .put("details", new FieldParser<SubscriptionListResponseReader>() {
-                @Override
-                public void parse(SubscriptionListResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readErrorDetails(jsonParser);
-                }
-            })
+            .put("ok", (reader, jsonParser, context) -> reader.readOk(jsonParser))
+            .put("error", (reader, jsonParser, deserializationContext) -> reader.readError(jsonParser))
+            .put("details", (reader, jsonParser, deserializationContext) -> reader.readErrorDetails(jsonParser))
             .build()
     );
 
@@ -42,12 +27,7 @@ public class SubscriptionListResponseDeserializer extends JsonDeserializer<Subsc
     public SubscriptionListResponseDeserializer() {
         deserializer = new StandardObjectDeserializer<SubscriptionListResponse, SubscriptionListResponseReader>(
                 FIELD_PARSERS,
-                new Supplier<SubscriptionListResponseReader>() {
-                    @Override
-                    public SubscriptionListResponseReader get() {
-                        return new SubscriptionListResponseReader();
-                    }
-                }
+                () -> new SubscriptionListResponseReader()
         );
     }
 

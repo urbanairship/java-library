@@ -29,62 +29,13 @@ public final class ScheduleResponseDeserializer extends JsonDeserializer<Schedul
     private static final FieldParserRegistry<ScheduleResponse, ScheduleResponseReader> FIELD_PARSER =
             new MapFieldParserRegistry<ScheduleResponse, ScheduleResponseReader>(
                     ImmutableMap.<String, FieldParser<ScheduleResponseReader>>builder()
-                            .put("ok", new FieldParser<ScheduleResponseReader>() {
-                                @Override
-                                public void parse(ScheduleResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readOk(jsonParser);
-                                }
-                            })
-                            .put("operation_id", new FieldParser<ScheduleResponseReader>() {
-                                @Override
-                                public void parse(ScheduleResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readOperationId(jsonParser);
-                                }
-                            })
-                            .put("schedule_urls", new FieldParser<ScheduleResponseReader>() {
-                                @Override
-                                public void parse(ScheduleResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readScheduleUrls(jsonParser);
-                                }
-                            })
-                            .put("schedule_ids", new FieldParser<ScheduleResponseReader>() {
-                                @Override
-                                public void parse(ScheduleResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readScheduleIds(jsonParser);
-                                }
-                            })
-                            .put("schedules", new FieldParser<ScheduleResponseReader>() {
-                                @Override
-                                public void parse(ScheduleResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readSchedulePayloads(jsonParser);
-                                }
-                            })
-                            .put("error", new FieldParser<ScheduleResponseReader>() {
-                                @Override
-                                public void parse(ScheduleResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readError(jsonParser);
-                                }
-                            })
-                            .put("details", new FieldParser<ScheduleResponseReader>() {
-                                @Override
-                                public void parse(ScheduleResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readErrorDetails(jsonParser);
-                                }
-                            })
+                            .put("ok", (reader, jsonParser, deserializationContext) -> reader.readOk(jsonParser))
+                            .put("operation_id", (reader, jsonParser, deserializationContext) -> reader.readOperationId(jsonParser))
+                            .put("schedule_urls", (reader, jsonParser, deserializationContext) -> reader.readScheduleUrls(jsonParser))
+                            .put("schedule_ids", (reader, jsonParser, deserializationContext) -> reader.readScheduleIds(jsonParser))
+                            .put("schedules", (reader, jsonParser, deserializationContext) -> reader.readSchedulePayloads(jsonParser))
+                            .put("error", (reader, jsonParser, deserializationContext) -> reader.readError(jsonParser))
+                            .put("details", (reader, jsonParser, deserializationContext) -> reader.readErrorDetails(jsonParser))
                             .build()
             );
 
@@ -93,12 +44,7 @@ public final class ScheduleResponseDeserializer extends JsonDeserializer<Schedul
     public ScheduleResponseDeserializer() {
         this.deserializer = new StandardObjectDeserializer<ScheduleResponse, ScheduleResponseReader>(
                 FIELD_PARSER,
-                new Supplier<ScheduleResponseReader>() {
-                    @Override
-                    public ScheduleResponseReader get() {
-                        return new ScheduleResponseReader();
-                    }
-                }
+                () -> new ScheduleResponseReader()
         );
     }
 

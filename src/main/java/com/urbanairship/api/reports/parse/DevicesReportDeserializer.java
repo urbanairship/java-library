@@ -17,48 +17,13 @@ public class DevicesReportDeserializer extends JsonDeserializer<DevicesReport> {
     private static final FieldParserRegistry<DevicesReport, DevicesReportReader> FIELD_PARSERS =
             new MapFieldParserRegistry<DevicesReport, DevicesReportReader>(
                     ImmutableMap.<String, FieldParser<DevicesReportReader>>builder()
-                            .put("date_closed", new FieldParser<DevicesReportReader>() {
-                                @Override
-                                public void parse(DevicesReportReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readDateClosed(jsonParser);
-                                }
-                            })
-                            .put("date_computed", new FieldParser<DevicesReportReader>() {
-                                @Override
-                                public void parse(DevicesReportReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readDateComputed(jsonParser);
-                                }
-                            })
-                            .put("total_unique_devices", new FieldParser<DevicesReportReader>() {
-                                @Override
-                                public void parse(DevicesReportReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readTotalUniqueDevices(jsonParser);
-                                }
-                            })
-                            .put("counts", new FieldParser<DevicesReportReader>() {
-                                @Override
-                                public void parse(DevicesReportReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readResponseObjects(jsonParser);
-                                }
-                            })
-                            .put("ok", new FieldParser<DevicesReportReader>() {
-                                @Override
-                                public void parse(DevicesReportReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readOk(jsonParser);
-                                }
-                            })
-                            .put("error", new FieldParser<DevicesReportReader>() {
-                                @Override
-                                public void parse(DevicesReportReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readError(jsonParser);
-                                }
-                            })
-                            .put("details", new FieldParser<DevicesReportReader>() {
-                                @Override
-                                public void parse(DevicesReportReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readErrorDetails(jsonParser);
-                                }
-                            })
+                            .put("date_closed", (reader, jsonParser, deserializationContext) -> reader.readDateClosed(jsonParser))
+                            .put("date_computed", (reader, jsonParser, deserializationContext) -> reader.readDateComputed(jsonParser))
+                            .put("total_unique_devices", (reader, jsonParser, deserializationContext) -> reader.readTotalUniqueDevices(jsonParser))
+                            .put("counts", (reader, jsonParser, deserializationContext) -> reader.readResponseObjects(jsonParser))
+                            .put("ok", (reader, jsonParser, deserializationContext) -> reader.readOk(jsonParser))
+                            .put("error", (reader, jsonParser, deserializationContext) -> reader.readError(jsonParser))
+                            .put("details", (reader, jsonParser, deserializationContext) -> reader.readErrorDetails(jsonParser))
                             .build()
             );
 
@@ -67,12 +32,7 @@ public class DevicesReportDeserializer extends JsonDeserializer<DevicesReport> {
     public DevicesReportDeserializer() {
         deserializer = new StandardObjectDeserializer<DevicesReport, DevicesReportReader>(
                 FIELD_PARSERS,
-                new Supplier<DevicesReportReader>() {
-                    @Override
-                    public DevicesReportReader get() {
-                        return new DevicesReportReader();
-                    }
-                }
+                () -> new DevicesReportReader()
         );
     }
 

@@ -23,24 +23,14 @@ import java.util.UUID;
  */
 public class ScheduleListingRequest implements Request<ListAllSchedulesResponse> {
 
-    private static final ResponseParser<ListAllSchedulesResponse> LIST_PARSER = new ResponseParser<ListAllSchedulesResponse>() {
-        @Override
-        public ListAllSchedulesResponse parse(String response) throws IOException {
-            return ScheduleObjectMapper.getInstance().readValue(response, ListAllSchedulesResponse.class);
-        }
-    };
+    private static final ResponseParser<ListAllSchedulesResponse> LIST_PARSER = response -> ScheduleObjectMapper.getInstance().readValue(response, ListAllSchedulesResponse.class);
 
-    private static final ResponseParser<ListAllSchedulesResponse> SINGLE_LOOKUP_PARSER = new ResponseParser<ListAllSchedulesResponse>() {
-        @Override
-        public ListAllSchedulesResponse parse(String response) throws IOException {
-            return ListAllSchedulesResponse.newBuilder()
-                .setCount(1)
-                .setTotalCount(1)
-                .setOk(true)
-                .addSchedule(ScheduleObjectMapper.getInstance().readValue(response, SchedulePayloadResponse.class))
-                .build();
-        }
-    };
+    private static final ResponseParser<ListAllSchedulesResponse> SINGLE_LOOKUP_PARSER = response -> ListAllSchedulesResponse.newBuilder()
+        .setCount(1)
+        .setTotalCount(1)
+        .setOk(true)
+        .addSchedule(ScheduleObjectMapper.getInstance().readValue(response, SchedulePayloadResponse.class))
+        .build();
 
     private final String path;
     private final ResponseParser<ListAllSchedulesResponse> parser;

@@ -16,36 +16,11 @@ import java.io.IOException;
 public class NamedUserUpdateResponseDeserializer extends JsonDeserializer<NamedUserUpdateResponse> {
     private static final FieldParserRegistry<NamedUserUpdateResponse, NamedUserUpdateResponseReader> FIELD_PARSERS = new MapFieldParserRegistry<NamedUserUpdateResponse, NamedUserUpdateResponseReader>(
             ImmutableMap.<String, FieldParser<NamedUserUpdateResponseReader>>builder()
-                    .put("ok", new FieldParser<NamedUserUpdateResponseReader>() {
-                        @Override
-                        public void parse(NamedUserUpdateResponseReader reader, JsonParser jsonParser, DeserializationContext context) throws IOException {
-                            reader.readOk(jsonParser);
-                        }
-                    })
-                    .put("error", new FieldParser<NamedUserUpdateResponseReader>() {
-                        @Override
-                        public void parse(NamedUserUpdateResponseReader reader, JsonParser jsonParser, DeserializationContext context) throws IOException {
-                            reader.readError(jsonParser);
-                        }
-                    })
-                    .put("attribute_warnings", new FieldParser<NamedUserUpdateResponseReader>() {
-                        @Override
-                        public void parse(NamedUserUpdateResponseReader reader, JsonParser jsonParser, DeserializationContext context) throws IOException {
-                            reader.readAttributeWarnings(jsonParser);
-                        }
-                    })
-                    .put("tag_warnings", new FieldParser<NamedUserUpdateResponseReader>() {
-                        @Override
-                        public void parse(NamedUserUpdateResponseReader reader, JsonParser jsonParser, DeserializationContext context) throws IOException {
-                            reader.readTagWarnings(jsonParser);
-                        }
-                    })
-                    .put("details", new FieldParser<NamedUserUpdateResponseReader>() {
-                        @Override
-                        public void parse(NamedUserUpdateResponseReader reader, JsonParser jsonParser, DeserializationContext context) throws IOException {
-                            reader.readErrorDetails(jsonParser);
-                        }
-                    })
+                    .put("ok", (reader, jsonParser, context) -> reader.readOk(jsonParser))
+                    .put("error", (reader, jsonParser, context) -> reader.readError(jsonParser))
+                    .put("attribute_warnings", (reader, jsonParser, context) -> reader.readAttributeWarnings(jsonParser))
+                    .put("tag_warnings", (reader, jsonParser, context) -> reader.readTagWarnings(jsonParser))
+                    .put("details", (reader, jsonParser, context) -> reader.readErrorDetails(jsonParser))
                     .build()
     );
 
@@ -54,12 +29,7 @@ public class NamedUserUpdateResponseDeserializer extends JsonDeserializer<NamedU
     public NamedUserUpdateResponseDeserializer() {
         deserializer = new StandardObjectDeserializer<NamedUserUpdateResponse, NamedUserUpdateResponseReader>(
                 FIELD_PARSERS,
-                new Supplier<NamedUserUpdateResponseReader>() {
-                    @Override
-                    public NamedUserUpdateResponseReader get() {
-                        return new NamedUserUpdateResponseReader();
-                    }
-                }
+                () -> new NamedUserUpdateResponseReader()
         );
     }
 

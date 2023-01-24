@@ -22,42 +22,12 @@ public class NamedUserlListingResponseDeserializer extends JsonDeserializer<Name
     private static final FieldParserRegistry<NamedUserListingResponse, NamedUserListingResponseReader> FIELD_PARSER =
         new MapFieldParserRegistry<NamedUserListingResponse, NamedUserListingResponseReader>(
             ImmutableMap.<String, FieldParser<NamedUserListingResponseReader>>builder()
-                .put("ok", new FieldParser<NamedUserListingResponseReader>() {
-                    @Override
-                    public void parse(NamedUserListingResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                        reader.readOk(jsonParser);
-                    }
-                })
-                .put("next_page", new FieldParser<NamedUserListingResponseReader>() {
-                    @Override
-                    public void parse(NamedUserListingResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                        reader.readNextPage(jsonParser);
-                    }
-                })
-                .put("named_user", new FieldParser<NamedUserListingResponseReader>() {
-                    @Override
-                    public void parse(NamedUserListingResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                        reader.readNamedUser(jsonParser);
-                    }
-                })
-                .put("named_users", new FieldParser<NamedUserListingResponseReader>() {
-                    @Override
-                    public void parse(NamedUserListingResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                        reader.readNamedUsers(jsonParser);
-                    }
-                })
-                .put("error", new FieldParser<NamedUserListingResponseReader>() {
-                    @Override
-                    public void parse(NamedUserListingResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                        reader.readError(jsonParser);
-                    }
-                })
-                .put("details", new FieldParser<NamedUserListingResponseReader>() {
-                    @Override
-                    public void parse(NamedUserListingResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                        reader.readErrorDetails(jsonParser);
-                    }
-                })
+                .put("ok", (reader, jsonParser, deserializationContext) -> reader.readOk(jsonParser))
+                .put("next_page", (reader, jsonParser, deserializationContext) -> reader.readNextPage(jsonParser))
+                .put("named_user", (reader, jsonParser, deserializationContext) -> reader.readNamedUser(jsonParser))
+                .put("named_users", (reader, jsonParser, deserializationContext) -> reader.readNamedUsers(jsonParser))
+                .put("error", (reader, jsonParser, deserializationContext) -> reader.readError(jsonParser))
+                .put("details", (reader, jsonParser, deserializationContext) -> reader.readErrorDetails(jsonParser))
                 .build()
         );
 
@@ -66,12 +36,7 @@ public class NamedUserlListingResponseDeserializer extends JsonDeserializer<Name
     public NamedUserlListingResponseDeserializer() {
         this.deserializer = new StandardObjectDeserializer<NamedUserListingResponse, NamedUserListingResponseReader>(
             FIELD_PARSER,
-            new Supplier<NamedUserListingResponseReader>() {
-                @Override
-                public NamedUserListingResponseReader get() {
-                    return new NamedUserListingResponseReader();
-                }
-            }
+                () -> new NamedUserListingResponseReader()
         );
     }
 

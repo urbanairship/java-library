@@ -14,23 +14,13 @@ import com.urbanairship.api.common.parse.StandardObjectDeserializer;
 
 import java.io.IOException;
 
-public class UpdateEmailChannelResponseDeserializer extends JsonDeserializer<EmailChannelResponse> {
+public class  UpdateEmailChannelResponseDeserializer extends JsonDeserializer<EmailChannelResponse> {
 
     private static final FieldParserRegistry<EmailChannelResponse, UpdateEmailChannelResponseReader> FIELD_PARSERS =
             new MapFieldParserRegistry<>(
             ImmutableMap.<String, FieldParser<UpdateEmailChannelResponseReader>>builder()
-                    .put("ok", new FieldParser<UpdateEmailChannelResponseReader>() {
-                        @Override
-                        public void parse(UpdateEmailChannelResponseReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                            reader.readOk(parser);
-                        }
-                    })
-                    .put("channel_id", new FieldParser<UpdateEmailChannelResponseReader>() {
-                        @Override
-                        public void parse(UpdateEmailChannelResponseReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                            reader.readChannelId(parser);
-                        }
-                    })
+                    .put("ok", (reader, parser, context) -> reader.readOk(parser))
+                    .put("channel_id", (reader, parser, context) -> reader.readChannelId(parser))
                     .build()
     );
 
@@ -39,12 +29,7 @@ public class UpdateEmailChannelResponseDeserializer extends JsonDeserializer<Ema
     public UpdateEmailChannelResponseDeserializer() {
         this.deserializer = new StandardObjectDeserializer<EmailChannelResponse, UpdateEmailChannelResponseReader>(
                 FIELD_PARSERS,
-                new Supplier<UpdateEmailChannelResponseReader>() {
-                    @Override
-                    public UpdateEmailChannelResponseReader get() {
-                        return new UpdateEmailChannelResponseReader();
-                    }
-                }
+                () -> new UpdateEmailChannelResponseReader()
         );
     }
 

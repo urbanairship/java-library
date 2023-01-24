@@ -71,12 +71,7 @@ public class StaticListLookupRequest implements Request<StaticListView> {
 
     @Override
     public ResponseParser<StaticListView> getResponseParser() {
-        return new ResponseParser<StaticListView>() {
-            @Override
-            public StaticListView parse(String response) throws IOException {
-                return StaticListsObjectMapper.getInstance().readValue(response, StaticListView.class);
-            }
-        };
+        return response -> StaticListsObjectMapper.getInstance().readValue(response, StaticListView.class);
     }
 
     @Override

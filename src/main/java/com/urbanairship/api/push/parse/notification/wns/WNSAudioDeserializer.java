@@ -21,16 +21,8 @@ public class WNSAudioDeserializer extends JsonDeserializer<WNSAudioData> {
 
     private static final FieldParserRegistry<WNSAudioData, WNSAudioReader> FIELD_PARSERS = new MapFieldParserRegistry<WNSAudioData, WNSAudioReader>(
             ImmutableMap.<String, FieldParser<WNSAudioReader>>builder()
-            .put("sound", new FieldParser<WNSAudioReader>() {
-                    public void parse(WNSAudioReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readSound(json, context);
-                    }
-                })
-            .put("loop", new FieldParser<WNSAudioReader>() {
-                    public void parse(WNSAudioReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readLoop(json);
-                    }
-                })
+            .put("sound", (reader, json, context) -> reader.readSound(json, context))
+            .put("loop", (reader, json, context) -> reader.readLoop(json))
             .build()
             );
 
@@ -39,12 +31,7 @@ public class WNSAudioDeserializer extends JsonDeserializer<WNSAudioData> {
     public WNSAudioDeserializer() {
         deserializer = new StandardObjectDeserializer<WNSAudioData, WNSAudioReader>(
             FIELD_PARSERS,
-            new Supplier<WNSAudioReader>() {
-                @Override
-                public WNSAudioReader get() {
-                    return new WNSAudioReader();
-                }
-            }
+                () -> new WNSAudioReader()
         );
     }
 

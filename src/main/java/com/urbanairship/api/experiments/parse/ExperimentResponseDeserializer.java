@@ -22,42 +22,12 @@ public class ExperimentResponseDeserializer extends JsonDeserializer<ExperimentR
     private static final FieldParserRegistry<ExperimentResponse, ExperimentResponseReader> FIELD_PARSERS =
             new MapFieldParserRegistry<ExperimentResponse, ExperimentResponseReader>(
                     ImmutableMap.<String, FieldParser<ExperimentResponseReader>>builder()
-                            .put("operation_id", new FieldParser<ExperimentResponseReader>() {
-                                @Override
-                                public void parse(ExperimentResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readOperationId(jsonParser);
-                                }
-                            })
-                            .put("push_id", new FieldParser<ExperimentResponseReader>() {
-                                @Override
-                                public void parse(ExperimentResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readPushId(jsonParser);
-                                }
-                            })
-                            .put("ok", new FieldParser<ExperimentResponseReader>() {
-                                @Override
-                                public void parse(ExperimentResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readOk(jsonParser);
-                                }
-                            })
-                            .put("experiment_id", new FieldParser<ExperimentResponseReader>() {
-                                @Override
-                                public void parse(ExperimentResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readExperimentId(jsonParser);
-                                }
-                            })
-                            .put("error", new FieldParser<ExperimentResponseReader>() {
-                                @Override
-                                public void parse(ExperimentResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readError(jsonParser);
-                                }
-                            })
-                            .put("details", new FieldParser<ExperimentResponseReader>() {
-                                @Override
-                                public void parse(ExperimentResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readErrorDetails(jsonParser);
-                                }
-                            })
+                            .put("operation_id", (reader, jsonParser, deserializationContext) -> reader.readOperationId(jsonParser))
+                            .put("push_id", (reader, jsonParser, deserializationContext) -> reader.readPushId(jsonParser))
+                            .put("ok", (reader, jsonParser, deserializationContext) -> reader.readOk(jsonParser))
+                            .put("experiment_id", (reader, jsonParser, deserializationContext) -> reader.readExperimentId(jsonParser))
+                            .put("error", (reader, jsonParser, deserializationContext) -> reader.readError(jsonParser))
+                            .put("details", (reader, jsonParser, deserializationContext) -> reader.readErrorDetails(jsonParser))
                             .build()
             );
 
@@ -67,12 +37,7 @@ public class ExperimentResponseDeserializer extends JsonDeserializer<ExperimentR
     public ExperimentResponseDeserializer() {
         deserializer = new StandardObjectDeserializer<ExperimentResponse, ExperimentResponseReader>(
                 FIELD_PARSERS,
-                new Supplier<ExperimentResponseReader>() {
-                    @Override
-                    public ExperimentResponseReader get() {
-                        return new ExperimentResponseReader();
-                    }
-                }
+                () -> new ExperimentResponseReader()
 
         );
     }

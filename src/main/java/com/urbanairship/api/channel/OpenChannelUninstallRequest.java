@@ -8,9 +8,9 @@ import com.urbanairship.api.channel.parse.ChannelObjectMapper;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
 import com.urbanairship.api.client.ResponseParser;
+import com.urbanairship.api.common.parse.APIParsingException;
 import org.apache.http.entity.ContentType;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -68,12 +68,7 @@ public class OpenChannelUninstallRequest implements Request<ChannelUninstallResp
 
     @Override
     public ResponseParser<ChannelUninstallResponse> getResponseParser() {
-        return new ResponseParser<ChannelUninstallResponse>() {
-            @Override
-            public ChannelUninstallResponse parse(String response) throws IOException {
-                return MAPPER.readValue(response, ChannelUninstallResponse.class);
-            }
-        };
+        return response -> MAPPER.readValue(response, ChannelUninstallResponse.class);
     }
 
     @Override

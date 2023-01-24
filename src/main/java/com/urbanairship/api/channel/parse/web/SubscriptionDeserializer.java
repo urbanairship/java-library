@@ -18,18 +18,8 @@ public class SubscriptionDeserializer extends JsonDeserializer<Subscription> {
 
     private static final FieldParserRegistry<Subscription, SubscriptionReader> FIELD_PARSERS = new MapFieldParserRegistry<Subscription, SubscriptionReader>(
             ImmutableMap.<String, FieldParser<SubscriptionReader>>builder()
-                    .put(Constants.AUTH, new FieldParser<SubscriptionReader>() {
-                        @Override
-                        public void parse(SubscriptionReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readAuth(jsonParser);
-                        }
-                    })
-                    .put(Constants.P256DH, new FieldParser<SubscriptionReader>() {
-                        @Override
-                        public void parse(SubscriptionReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readP256dh(jsonParser);
-                        }
-                    })
+                    .put(Constants.AUTH, (reader, jsonParser, deserializationContext) -> reader.readAuth(jsonParser))
+                    .put(Constants.P256DH, (reader, jsonParser, deserializationContext) -> reader.readP256dh(jsonParser))
                     .build()
     );
 
@@ -38,12 +28,7 @@ public class SubscriptionDeserializer extends JsonDeserializer<Subscription> {
     public SubscriptionDeserializer() {
         deserializer = new StandardObjectDeserializer<Subscription, SubscriptionReader>(
                 FIELD_PARSERS,
-                new Supplier<SubscriptionReader>() {
-                    @Override
-                    public SubscriptionReader get() {
-                        return new SubscriptionReader();
-                    }
-                }
+                () -> new SubscriptionReader()
         );
     }
 
