@@ -2,11 +2,11 @@ package com.urbanairship.api.channel.model.email;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.push.model.PushModelObject;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +19,6 @@ public class RegisterEmailChannel extends PushModelObject {
     private final ChannelType type;
     private final Optional<Map<OptInLevel, String>> emailOptInLevel;
     private final String address;
-    private final Optional<Boolean> setTags;
-    private final Optional<ImmutableList<String>> tags;
     private final Optional<String> timezone;
     private final Optional<String> localeCountry;
     private final Optional<String> localeLanguage;
@@ -32,23 +30,11 @@ public class RegisterEmailChannel extends PushModelObject {
         this.type = ChannelType.EMAIL;
         this.emailOptInLevel = Optional.ofNullable((builder.emailOptInLevel));
         this.address = builder.address;
-        this.setTags = Optional.ofNullable(builder.set_tags);
         this.timezone = Optional.ofNullable(builder.timezone);
         this.localeCountry = Optional.ofNullable(builder.localeCountry);
         this.localeLanguage = Optional.ofNullable(builder.localeLanguage);
         this.emailOptInMode = Optional.ofNullable((builder.emailOptInMode));
-
-        if (builder.tags.build().isEmpty()) {
-            this.tags = Optional.empty();
-        } else {
-            this.tags = Optional.of(builder.tags.build());
-        }
-
-        if (!builder.properties.build().isEmpty()) {
-            this.properties = Optional.ofNullable(builder.properties.build());
-        } else {
-            properties = Optional.empty();
-        }
+        this.properties = Optional.of(Collections.unmodifiableMap(builder.properties)).filter(map -> !map.isEmpty());
     }
 
     /**
@@ -139,8 +125,6 @@ public class RegisterEmailChannel extends PushModelObject {
         RegisterEmailChannel that = (RegisterEmailChannel) o;
         return type == that.type &&
                 Objects.equal(address, that.address) &&
-                Objects.equal(setTags, that.setTags) &&
-                Objects.equal(tags, that.tags) &&
                 Objects.equal(timezone, that.timezone) &&
                 Objects.equal(localeCountry, that.localeCountry) &&
                 Objects.equal(localeLanguage, that.localeLanguage) &&
@@ -155,8 +139,6 @@ public class RegisterEmailChannel extends PushModelObject {
                 "type=" + type +
                 ", emailOptInLevel=" + emailOptInLevel +
                 ", address=" + address +
-                ", setTags=" + setTags +
-                ", tags=" + tags +
                 ", timezone=" + timezone +
                 ", localeCountry=" + localeCountry +
                 ", localeLanguage=" + localeLanguage +
@@ -167,7 +149,7 @@ public class RegisterEmailChannel extends PushModelObject {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(type, emailOptInLevel, address, setTags, tags, timezone, localeCountry, localeLanguage, emailOptInMode, properties);
+        return Objects.hashCode(type, emailOptInLevel, address, timezone, localeCountry, localeLanguage, emailOptInMode, properties);
     }
 
     /**
@@ -176,13 +158,11 @@ public class RegisterEmailChannel extends PushModelObject {
     public final static class Builder {
         private String address;
         private String timezone;
-        private ImmutableList.Builder<String> tags = ImmutableList.builder();
-        private boolean set_tags;
         private String localeCountry;
         private String localeLanguage;
         private Map<OptInLevel, String> emailOptInLevel = new HashMap<>();
         private OptInMode emailOptInMode;
-        private ImmutableMap.Builder<String, String> properties = ImmutableMap.builder();
+        private Map<String, String> properties = new HashMap<>();
 
         protected Builder() {
         }
@@ -211,40 +191,6 @@ public class RegisterEmailChannel extends PushModelObject {
             return this;
         }
 
-        /**
-         * Optional, though required if tags is present.
-         * If true on update, value of tags overwrites any existing tags.
-         * If false, tags are unioned with existing tags.
-         *
-         * @param setTags boolean
-         * @return Channel Builder
-         */
-        public Builder setTags(boolean setTags) {
-            this.set_tags = setTags;
-            return this;
-        }
-
-        /**
-         * Add a List of String representations of tags.
-         *
-         * @param tags A List of Strings
-         * @return Channel Builder
-         */
-        public Builder addAllTags(List<String> tags) {
-            this.tags.addAll(tags);
-            return this;
-        }
-
-        /**
-         * Set a String representation of a tag.
-         *
-         * @param tag String
-         * @return Channel Builder
-         */
-        public Builder addTag(String tag) {
-            tags.add(tag);
-            return this;
-        }
 
         /**
          * Set timezone string. An IANA tzdata identifier for the timezone

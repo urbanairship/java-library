@@ -41,5 +41,6 @@ public class UpdateEmailChannelSerializer extends JsonSerializer<UpdateEmailChan
         }
 
         jgen.writeEndObject();
+
     }
 }
