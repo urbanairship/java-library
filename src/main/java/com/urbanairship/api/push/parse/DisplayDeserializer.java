@@ -17,30 +17,10 @@ public class DisplayDeserializer extends JsonDeserializer<Display> {
     private static final FieldParserRegistry<Display, DisplayReader> FIELD_PARSERS =
             new MapFieldParserRegistry<Display, DisplayReader>(
                     ImmutableMap.<String, FieldParser<DisplayReader>>builder()
-                            .put("primary_color", new FieldParser<DisplayReader>() {
-                                @Override
-                                public void parse(DisplayReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readPrimaryColor(jsonParser);
-                                }
-                            })
-                            .put("secondary_color", new FieldParser<DisplayReader>() {
-                                @Override
-                                public void parse(DisplayReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readSecondaryColor(jsonParser);
-                                }
-                            })
-                            .put("duration", new FieldParser<DisplayReader>() {
-                                @Override
-                                public void parse(DisplayReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readDuration(jsonParser);
-                                }
-                            })
-                            .put("position", new FieldParser<DisplayReader>() {
-                                @Override
-                                public void parse(DisplayReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readPosition(jsonParser);
-                                }
-                            })
+                            .put("primary_color", (reader, jsonParser, deserializationContext) -> reader.readPrimaryColor(jsonParser))
+                            .put("secondary_color", (reader, jsonParser, deserializationContext) -> reader.readSecondaryColor(jsonParser))
+                            .put("duration", (reader, jsonParser, deserializationContext) -> reader.readDuration(jsonParser))
+                            .put("position", (reader, jsonParser, deserializationContext) -> reader.readPosition(jsonParser))
                             .build());
 
     private final StandardObjectDeserializer<Display, ?> deserializer;
@@ -48,12 +28,7 @@ public class DisplayDeserializer extends JsonDeserializer<Display> {
     public DisplayDeserializer() {
         deserializer = new StandardObjectDeserializer<Display, DisplayReader>(
                 FIELD_PARSERS,
-                new Supplier<DisplayReader>() {
-                    @Override
-                    public DisplayReader get() {
-                        return new DisplayReader();
-                    }
-                }
+                () -> new DisplayReader()
         );
     }
 

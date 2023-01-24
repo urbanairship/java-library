@@ -1,7 +1,5 @@
 package com.urbanairship.api.push.model.notification.actions;
 
-import com.urbanairship.api.channel.model.attributes.Attribute;
-import com.urbanairship.api.channel.model.attributes.AttributeAction;
 import com.urbanairship.api.push.model.notification.Notification;
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,7 +9,6 @@ import java.net.URISyntaxException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertThrows;
 
 public class ActionTest {
     @Test

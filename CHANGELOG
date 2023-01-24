@@ -1,4 +1,12 @@
 -------------------------
+8.6.0 24JAN23
+-------------------------
+- Added support for Replace Email Channel Request
+- Added support for Suppress Email Channel Request
+- Added support for Named User Scoped Batch Operations Request
+- Code optimizations
+
+-------------------------
 8.5.0 19DEC22
 -------------------------
 - Added support for GlobalAttributes in CreateAndSendPayload

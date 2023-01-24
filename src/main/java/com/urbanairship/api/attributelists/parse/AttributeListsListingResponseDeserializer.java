@@ -21,20 +21,8 @@ public class AttributeListsListingResponseDeserializer extends JsonDeserializer<
     private static final FieldParserRegistry<AttributeListsListingResponse, AttributeListsResponseReader> FIELD_PARSERS =
             new MapFieldParserRegistry<AttributeListsListingResponse, AttributeListsResponseReader>(
                     ImmutableMap.<String, FieldParser<AttributeListsResponseReader>>builder()
-                            .put("ok", new FieldParser<AttributeListsResponseReader>() {
-                                @Override
-                                public void parse(AttributeListsResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readOk(jsonParser);
-                                }
-                            })
-                            .put("lists", new FieldParser<AttributeListsResponseReader>() {
-                                @Override
-                                public void parse(AttributeListsResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readStaticListObjects(jsonParser);
-                                }
-                            })
+                            .put("ok", (reader, jsonParser, deserializationContext) -> reader.readOk(jsonParser))
+                            .put("lists", (reader, jsonParser, deserializationContext) -> reader.readStaticListObjects(jsonParser))
                             .build()
             );
 
@@ -43,12 +31,7 @@ public class AttributeListsListingResponseDeserializer extends JsonDeserializer<
     public AttributeListsListingResponseDeserializer() {
         deserializer = new StandardObjectDeserializer<AttributeListsListingResponse, AttributeListsResponseReader>(
                 FIELD_PARSERS,
-                new Supplier<AttributeListsResponseReader>() {
-                    @Override
-                    public AttributeListsResponseReader get() {
-                        return new AttributeListsResponseReader();
-                    }
-                }
+                () -> new AttributeListsResponseReader()
         );
     }
 

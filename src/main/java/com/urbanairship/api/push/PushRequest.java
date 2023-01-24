@@ -155,12 +155,7 @@ public class PushRequest implements Request<PushResponse> {
 
     @Override
     public ResponseParser<PushResponse> getResponseParser() {
-        return new ResponseParser<PushResponse>() {
-            @Override
-            public PushResponse parse(String response) throws IOException {
-                return PushObjectMapper.getInstance().readValue(response, PushResponse.class);
-            }
-        };
+        return response -> PushObjectMapper.getInstance().readValue(response, PushResponse.class);
     }
 
     @Override

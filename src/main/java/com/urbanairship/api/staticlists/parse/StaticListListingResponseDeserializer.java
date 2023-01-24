@@ -21,32 +21,10 @@ public class StaticListListingResponseDeserializer extends JsonDeserializer<Stat
     private static final FieldParserRegistry<StaticListListingResponse, StaticListListingResponseReader> FIELD_PARSERS =
             new MapFieldParserRegistry<StaticListListingResponse, StaticListListingResponseReader>(
                     ImmutableMap.<String, FieldParser<StaticListListingResponseReader>>builder()
-                            .put("ok", new FieldParser<StaticListListingResponseReader>() {
-                                @Override
-                                public void parse(StaticListListingResponseReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readOk(jsonParser);
-                                }
-                            })
-                            .put("lists", new FieldParser<StaticListListingResponseReader>() {
-                                @Override
-                                public void parse(StaticListListingResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readStaticListObjects(jsonParser);
-                                }
-                            })
-                            .put("error", new FieldParser<StaticListListingResponseReader>() {
-                                @Override
-                                public void parse(StaticListListingResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readError(jsonParser);
-                                }
-                            })
-                            .put("details", new FieldParser<StaticListListingResponseReader>() {
-                                @Override
-                                public void parse(StaticListListingResponseReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readErrorDetails(jsonParser);
-                                }
-                            })
+                            .put("ok", (reader, jsonParser, deserializationContext) -> reader.readOk(jsonParser))
+                            .put("lists", (reader, jsonParser, deserializationContext) -> reader.readStaticListObjects(jsonParser))
+                            .put("error", (reader, jsonParser, deserializationContext) -> reader.readError(jsonParser))
+                            .put("details", (reader, jsonParser, deserializationContext) -> reader.readErrorDetails(jsonParser))
                             .build()
             );
 
@@ -55,12 +33,7 @@ public class StaticListListingResponseDeserializer extends JsonDeserializer<Stat
     public StaticListListingResponseDeserializer() {
         deserializer = new StandardObjectDeserializer<StaticListListingResponse, StaticListListingResponseReader>(
                 FIELD_PARSERS,
-                new Supplier<StaticListListingResponseReader>() {
-                    @Override
-                    public StaticListListingResponseReader get() {
-                        return new StaticListListingResponseReader();
-                    }
-                }
+                () -> new StaticListListingResponseReader()
         );
     }
 

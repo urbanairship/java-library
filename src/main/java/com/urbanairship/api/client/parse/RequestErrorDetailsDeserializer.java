@@ -30,27 +30,9 @@ public final class RequestErrorDetailsDeserializer extends JsonDeserializer<Requ
     private static final FieldParserRegistry<RequestErrorDetails, RequestErrorDetailsReader> FIELD_PARSERS =
             new MapFieldParserRegistry<RequestErrorDetails, RequestErrorDetailsReader>(
                     ImmutableMap.<String, FieldParser<RequestErrorDetailsReader>>builder()
-                            .put("path", new FieldParser<RequestErrorDetailsReader>() {
-                                @Override
-                                public void parse(RequestErrorDetailsReader reader, JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readPath(jsonParser);
-                                }
-                            })
-                            .put("error", new FieldParser<RequestErrorDetailsReader>() {
-                                @Override
-                                public void parse(RequestErrorDetailsReader reader, JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readError(jsonParser);
-                                }
-                            })
-                            .put("location", new FieldParser<RequestErrorDetailsReader>() {
-                                @Override
-                                public void parse(RequestErrorDetailsReader reader, JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readLocation(jsonParser);
-                                }
-                            })
+                            .put("path", (reader, jsonParser, deserializationContext) -> reader.readPath(jsonParser))
+                            .put("error", (reader, jsonParser, deserializationContext) -> reader.readError(jsonParser))
+                            .put("location", (reader, jsonParser, deserializationContext) -> reader.readLocation(jsonParser))
                             .build()
             );
 
@@ -60,12 +42,7 @@ public final class RequestErrorDetailsDeserializer extends JsonDeserializer<Requ
     public RequestErrorDetailsDeserializer() {
         deserializer = new StandardObjectDeserializer<RequestErrorDetails, RequestErrorDetailsReader>(
                 FIELD_PARSERS,
-                new Supplier<RequestErrorDetailsReader>() {
-                    @Override
-                    public RequestErrorDetailsReader get() {
-                        return new RequestErrorDetailsReader();
-                    }
-                }
+                () -> new RequestErrorDetailsReader()
         );
     }
 

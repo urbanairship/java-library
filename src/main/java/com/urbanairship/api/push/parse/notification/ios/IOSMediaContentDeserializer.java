@@ -21,24 +21,9 @@ public class IOSMediaContentDeserializer extends JsonDeserializer<IOSMediaConten
 
     private static final FieldParserRegistry<IOSMediaContent, IOSMediaContentReader> FIELD_PARSER = new MapFieldParserRegistry<IOSMediaContent, IOSMediaContentReader>(
             ImmutableMap.<String, FieldParser<IOSMediaContentReader>>builder()
-            .put("body", new FieldParser<IOSMediaContentReader>() {
-                @Override
-                public void parse(IOSMediaContentReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                    reader.readBody(json, context);
-                }
-            })
-            .put("title", new FieldParser<IOSMediaContentReader>() {
-                @Override
-                public void parse(IOSMediaContentReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                    reader.readTitle(json, context);
-                }
-            })
-            .put("subtitle", new FieldParser<IOSMediaContentReader>() {
-                @Override
-                public void parse(IOSMediaContentReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                    reader.readSubtitle(json, context);
-                }
-            })
+            .put("body", (reader, json, context) -> reader.readBody(json, context))
+            .put("title", (reader, json, context) -> reader.readTitle(json, context))
+            .put("subtitle", (reader, json, context) -> reader.readSubtitle(json, context))
             .build()
     );
 
@@ -47,12 +32,7 @@ public class IOSMediaContentDeserializer extends JsonDeserializer<IOSMediaConten
     public IOSMediaContentDeserializer() {
         deserializer = new StandardObjectDeserializer<IOSMediaContent, IOSMediaContentReader>(
                 FIELD_PARSER,
-                new Supplier<IOSMediaContentReader>() {
-                    @Override
-                    public IOSMediaContentReader get() {
-                        return new IOSMediaContentReader();
-                    }
-                }
+                () -> new IOSMediaContentReader()
         );
     }
 

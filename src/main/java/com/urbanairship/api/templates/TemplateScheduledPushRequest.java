@@ -107,12 +107,7 @@ public class TemplateScheduledPushRequest implements Request<ScheduleResponse> {
 
     @Override
     public ResponseParser<ScheduleResponse> getResponseParser() {
-        return new ResponseParser<ScheduleResponse>() {
-            @Override
-            public ScheduleResponse parse(String response) throws IOException {
-                return ScheduleObjectMapper.getInstance().readValue(response, ScheduleResponse.class);
-            }
-        };
+        return response -> ScheduleObjectMapper.getInstance().readValue(response, ScheduleResponse.class);
     }
 
     @Override

@@ -17,12 +17,7 @@ public class WebImageDeserializer extends JsonDeserializer<WebImage> {
 
     private static final FieldParserRegistry<WebImage, WebImageReader> FIELD_PARSERS = new MapFieldParserRegistry<WebImage, WebImageReader>(
             ImmutableMap.<String, FieldParser<WebImageReader>>builder()
-            .put("url", new FieldParser<WebImageReader>() {
-                @Override
-                public void parse(WebImageReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                    reader.readUrl(json);
-                }
-            })
+            .put("url", (reader, json, context) -> reader.readUrl(json))
             .build()
     );
 
@@ -31,12 +26,7 @@ public class WebImageDeserializer extends JsonDeserializer<WebImage> {
     public WebImageDeserializer() {
         deserializer = new StandardObjectDeserializer<WebImage, WebImageReader>(
                 FIELD_PARSERS,
-                new Supplier<WebImageReader>() {
-                    @Override
-                    public WebImageReader get() {
-                        return new WebImageReader();
-                    }
-                }
+                () -> new WebImageReader()
         );
     }
 

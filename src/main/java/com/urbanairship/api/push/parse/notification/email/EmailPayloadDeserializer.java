@@ -17,46 +17,14 @@ public class EmailPayloadDeserializer extends JsonDeserializer<EmailPayload> {
 
     private static final FieldParserRegistry<EmailPayload, EmailPayloadReader> FIELD_PARSERS = new MapFieldParserRegistry<EmailPayload, EmailPayloadReader>(
             ImmutableMap.<String, FieldParser<EmailPayloadReader>>builder()
-                    .put("subject", new FieldParser<EmailPayloadReader>() {
-                        public void parse(EmailPayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readSubject(json);
-                        }
-                    })
-                    .put("html_body", new FieldParser<EmailPayloadReader>() {
-                        public void parse(EmailPayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readhtmlBody(json);
-                        }
-                    })
-                    .put("plaintext_body", new FieldParser<EmailPayloadReader>() {
-                        public void parse(EmailPayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readPlainTextBody(json);
-                        }
-                    })
-                    .put("message_type", new FieldParser<EmailPayloadReader>() {
-                        public void parse(EmailPayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readMessageType(json);
-                        }
-                    })
-                    .put("sender_name", new FieldParser<EmailPayloadReader>() {
-                        public void parse(EmailPayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readSenderName(json);
-                        }
-                    })
-                    .put("sender_address", new FieldParser<EmailPayloadReader>() {
-                        public void parse(EmailPayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readSenderAddress(json);
-                        }
-                    })
-                    .put("reply_to", new FieldParser<EmailPayloadReader>() {
-                        public void parse(EmailPayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readReplyTo(json);
-                        }
-                    })
-                    .put("template", new FieldParser<EmailPayloadReader>() {
-                        public void parse(EmailPayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                            reader.readTemplate(json);
-                        }
-                    })
+                    .put("subject", (reader, json, context) -> reader.readSubject(json))
+                    .put("html_body", (reader, json, context) -> reader.readhtmlBody(json))
+                    .put("plaintext_body", (reader, json, context) -> reader.readPlainTextBody(json))
+                    .put("message_type", (reader, json, context) -> reader.readMessageType(json))
+                    .put("sender_name", (reader, json, context) -> reader.readSenderName(json))
+                    .put("sender_address", (reader, json, context) -> reader.readSenderAddress(json))
+                    .put("reply_to", (reader, json, context) -> reader.readReplyTo(json))
+                    .put("template", (reader, json, context) -> reader.readTemplate(json))
                     .build()
     );
 
@@ -65,12 +33,7 @@ public class EmailPayloadDeserializer extends JsonDeserializer<EmailPayload> {
     public EmailPayloadDeserializer() {
         deserializer = new StandardObjectDeserializer<>(
                 FIELD_PARSERS,
-                new Supplier<EmailPayloadReader>() {
-                    @Override
-                    public EmailPayloadReader get() {
-                        return new EmailPayloadReader();
-                    }
-                }
+                () -> new EmailPayloadReader()
         );
     }
 

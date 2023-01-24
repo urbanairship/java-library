@@ -17,36 +17,11 @@ public class ResponseReportDeserializer extends JsonDeserializer<ResponseReport>
     private static final FieldParserRegistry<ResponseReport, ResponseReportReader> FIELD_PARSERS =
             new MapFieldParserRegistry<ResponseReport, ResponseReportReader>(
                     ImmutableMap.<String, FieldParser<ResponseReportReader>>builder()
-                    .put("next_page", new FieldParser<ResponseReportReader>() {
-                        @Override
-                        public void parse(ResponseReportReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readNextPage(jsonParser);
-                        }
-                    })
-                    .put("responses", new FieldParser<ResponseReportReader>() {
-                        @Override
-                        public void parse(ResponseReportReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                           reader.readResponseObjects(jsonParser);
-                        }
-                    })
-                    .put("ok", new FieldParser<ResponseReportReader>() {
-                        @Override
-                        public void parse(ResponseReportReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                           reader.readOk(jsonParser);
-                        }
-                    })
-                    .put("error", new FieldParser<ResponseReportReader>() {
-                        @Override
-                        public void parse(ResponseReportReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                           reader.readError(jsonParser);
-                        }
-                    })
-                    .put("details", new FieldParser<ResponseReportReader>() {
-                        @Override
-                        public void parse(ResponseReportReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                           reader.readErrorDetails(jsonParser);
-                        }
-                    })
+                    .put("next_page", (reader, jsonParser, deserializationContext) -> reader.readNextPage(jsonParser))
+                    .put("responses", (reader, jsonParser, deserializationContext) -> reader.readResponseObjects(jsonParser))
+                    .put("ok", (reader, jsonParser, deserializationContext) -> reader.readOk(jsonParser))
+                    .put("error", (reader, jsonParser, deserializationContext) -> reader.readError(jsonParser))
+                    .put("details", (reader, jsonParser, deserializationContext) -> reader.readErrorDetails(jsonParser))
                     .build()
             );
 
@@ -55,12 +30,7 @@ public class ResponseReportDeserializer extends JsonDeserializer<ResponseReport>
     public ResponseReportDeserializer() {
         deserializer = new StandardObjectDeserializer<ResponseReport, ResponseReportReader>(
                 FIELD_PARSERS,
-                new Supplier<ResponseReportReader>() {
-                    @Override
-                    public ResponseReportReader get() {
-                        return new ResponseReportReader();
-                    }
-                }
+                () -> new ResponseReportReader()
         );
     }
 

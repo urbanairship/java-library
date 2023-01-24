@@ -11,7 +11,6 @@ import com.urbanairship.api.sms.model.CustomSmsResponseSmsPayload;
 import com.urbanairship.api.sms.parse.SmsObjectMapper;
 import org.apache.http.entity.ContentType;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -80,12 +79,7 @@ public class CustomSmsResponseRequest implements Request<CustomSmsResponseRespon
 
     @Override
     public ResponseParser<CustomSmsResponseResponse> getResponseParser() {
-        return new ResponseParser<CustomSmsResponseResponse>() {
-            @Override
-            public CustomSmsResponseResponse parse(String response) throws IOException {
-                return SmsObjectMapper.getInstance().readValue(response, CustomSmsResponseResponse.class);
-            }
-        };
+        return response -> SmsObjectMapper.getInstance().readValue(response, CustomSmsResponseResponse.class);
     }
 
     @Override

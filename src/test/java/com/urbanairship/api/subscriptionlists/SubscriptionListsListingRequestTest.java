@@ -3,7 +3,6 @@ package com.urbanairship.api.subscriptionlists;
 import com.google.common.collect.ImmutableList;
 import com.google.common.net.HttpHeaders;
 import com.urbanairship.api.client.Request;
-import com.urbanairship.api.push.model.notification.email.MessageType;
 import com.urbanairship.api.subscriptionlists.model.SubscriptionListListingResponse;
 import com.urbanairship.api.subscriptionlists.model.SubscriptionListView;
 import org.apache.http.entity.ContentType;

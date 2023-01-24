@@ -19,24 +19,9 @@ public class IOSSoundDataDeserializer extends JsonDeserializer<IOSSoundData> {
 
     private static final FieldParserRegistry<IOSSoundData, IOSSoundDataReader> FIELD_PARSER = new MapFieldParserRegistry<IOSSoundData, IOSSoundDataReader>(
             ImmutableMap.<String, FieldParser<IOSSoundDataReader>>builder()
-            .put("critical", new FieldParser<IOSSoundDataReader>() {
-                @Override
-                public void parse(IOSSoundDataReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readCritical(jsonParser);
-                }
-            })
-            .put("volume", new FieldParser<IOSSoundDataReader>() {
-                @Override
-                public void parse(IOSSoundDataReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readVolume(jsonParser);
-                }
-            })
-            .put("name", new FieldParser<IOSSoundDataReader>() {
-                @Override
-                public void parse(IOSSoundDataReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readName(jsonParser);
-                }
-            })
+            .put("critical", (reader, jsonParser, deserializationContext) -> reader.readCritical(jsonParser))
+            .put("volume", (reader, jsonParser, deserializationContext) -> reader.readVolume(jsonParser))
+            .put("name", (reader, jsonParser, deserializationContext) -> reader.readName(jsonParser))
             .build()
     );
 
@@ -45,12 +30,7 @@ public class IOSSoundDataDeserializer extends JsonDeserializer<IOSSoundData> {
     public IOSSoundDataDeserializer() {
         deserializer = new StandardObjectDeserializer<IOSSoundData, IOSSoundDataReader>(
             FIELD_PARSER,
-            new Supplier<IOSSoundDataReader>() {
-                @Override
-                public IOSSoundDataReader get() {
-                    return new IOSSoundDataReader();
-                }
-            }
+                () -> new IOSSoundDataReader()
         );
     }
 

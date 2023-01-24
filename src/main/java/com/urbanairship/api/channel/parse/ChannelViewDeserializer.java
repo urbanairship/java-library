@@ -22,138 +22,28 @@ public final class ChannelViewDeserializer extends JsonDeserializer<ChannelView>
 
     private static final FieldParserRegistry<ChannelView, ChannelViewReader> FIELD_PARSERS = new MapFieldParserRegistry<ChannelView, ChannelViewReader>(
             ImmutableMap.<String, FieldParser<ChannelViewReader>>builder()
-                    .put(Constants.CHANNEL_ID, new FieldParser<ChannelViewReader>() {
-                        @Override
-                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readChannelId(jsonParser);
-                        }
-                    })
-                    .put(Constants.DEVICE_TYPE, new FieldParser<ChannelViewReader>() {
-                        @Override
-                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readDeviceType(jsonParser);
-                        }
-                    })
-                    .put(Constants.INSTALLED, new FieldParser<ChannelViewReader>() {
-                        @Override
-                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readInstalled(jsonParser);
-                        }
-                    })
-                    .put(Constants.OPT_IN, new FieldParser<ChannelViewReader>() {
-                        @Override
-                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readOptIn(jsonParser);
-                        }
-                    })
-                    .put(Constants.BACKGROUND, new FieldParser<ChannelViewReader>() {
-                        @Override
-                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readBackground(jsonParser);
-                        }
-                    })
-                    .put(Constants.PUSH_ADDRESS, new FieldParser<ChannelViewReader>() {
-                        @Override
-                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readPushAddress(jsonParser);
-                        }
-                    })
-                    .put(Constants.CREATED, new FieldParser<ChannelViewReader>() {
-                        @Override
-                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readCreated(jsonParser);
-                        }
-                    })
-                    .put(Constants.LAST_REGISTRATION, new FieldParser<ChannelViewReader>() {
-                        @Override
-                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readLastRegistration(jsonParser);
-                        }
-                    })
-                    .put(Constants.ALIAS, new FieldParser<ChannelViewReader>() {
-                        @Override
-                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readAlias(jsonParser);
-                        }
-                    })
-                    .put(Constants.TAGS, new FieldParser<ChannelViewReader>() {
-                        @Override
-                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readTags(jsonParser);
-                        }
-                    })
-                    .put(Constants.TAG_GROUPS, new FieldParser<ChannelViewReader>() {
-                        @Override
-                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readTagGroups(jsonParser);
-                        }
-                    })
-                    .put(Constants.IOS, new FieldParser<ChannelViewReader>() {
-                        @Override
-                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readIosSettings(jsonParser);
-                        }
-                    })
-                    .put(Constants.WEB, new FieldParser<ChannelViewReader>() {
-                        @Override
-                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readWeb(jsonParser);
-                        }
-                    })
-                    .put(Constants.OPEN_CHANNEL, new FieldParser<ChannelViewReader>() {
-                        @Override
-                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readOpenChannel(jsonParser);
-                        }
-                    })
-                    .put(Constants.ADDRESS, new FieldParser<ChannelViewReader>() {
-                        @Override
-                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readAddress(jsonParser);
-                        }
-                    })
-                    .put(Constants.NAMED_USER, new FieldParser<ChannelViewReader>() {
-                        @Override
-                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readNamedUser(jsonParser);
-                        }
-                    })
-                    .put("attributes", new FieldParser<ChannelViewReader>() {
-                        @Override
-                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readAttributes(jsonParser);
-                        }
-                    })
-                    .put("device_attributes", new FieldParser<ChannelViewReader>() {
-                        @Override
-                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readDeviceAttributes(jsonParser);
-                        }
-                    })
-                    .put("commercial_opted_in", new FieldParser<ChannelViewReader>() {
-                        @Override
-                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readCommercialOptedIn(jsonParser);
-                        }
-                    })
-                    .put("commercial_opted_out", new FieldParser<ChannelViewReader>() {
-                        @Override
-                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readCommercialOptedOut(jsonParser);
-                        }
-                    })
-                    .put("transactional_opted_in", new FieldParser<ChannelViewReader>() {
-                        @Override
-                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readTransactionalOptedIn(jsonParser);
-                        }
-                    })
-                    .put("transactional_opted_out", new FieldParser<ChannelViewReader>() {
-                        @Override
-                        public void parse(ChannelViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readTransactionalOptedOut(jsonParser);
-                        }
-                    })
+                    .put(Constants.CHANNEL_ID, (reader, jsonParser, deserializationContext) -> reader.readChannelId(jsonParser))
+                    .put(Constants.DEVICE_TYPE, (reader, jsonParser, deserializationContext) -> reader.readDeviceType(jsonParser))
+                    .put(Constants.INSTALLED, (reader, jsonParser, deserializationContext) -> reader.readInstalled(jsonParser))
+                    .put(Constants.OPT_IN, (reader, jsonParser, deserializationContext) -> reader.readOptIn(jsonParser))
+                    .put(Constants.BACKGROUND, (reader, jsonParser, deserializationContext) -> reader.readBackground(jsonParser))
+                    .put(Constants.PUSH_ADDRESS, (reader, jsonParser, deserializationContext) -> reader.readPushAddress(jsonParser))
+                    .put(Constants.CREATED, (reader, jsonParser, deserializationContext) -> reader.readCreated(jsonParser))
+                    .put(Constants.LAST_REGISTRATION, (reader, jsonParser, deserializationContext) -> reader.readLastRegistration(jsonParser))
+                    .put(Constants.ALIAS, (reader, jsonParser, deserializationContext) -> reader.readAlias(jsonParser))
+                    .put(Constants.TAGS, (reader, jsonParser, deserializationContext) -> reader.readTags(jsonParser))
+                    .put(Constants.TAG_GROUPS, (reader, jsonParser, deserializationContext) -> reader.readTagGroups(jsonParser))
+                    .put(Constants.IOS, (reader, jsonParser, deserializationContext) -> reader.readIosSettings(jsonParser))
+                    .put(Constants.WEB, (reader, jsonParser, deserializationContext) -> reader.readWeb(jsonParser))
+                    .put(Constants.OPEN_CHANNEL, (reader, jsonParser, deserializationContext) -> reader.readOpenChannel(jsonParser))
+                    .put(Constants.ADDRESS, (reader, jsonParser, deserializationContext) -> reader.readAddress(jsonParser))
+                    .put(Constants.NAMED_USER, (reader, jsonParser, deserializationContext) -> reader.readNamedUser(jsonParser))
+                    .put("attributes", (reader, jsonParser, deserializationContext) -> reader.readAttributes(jsonParser))
+                    .put("device_attributes", (reader, jsonParser, deserializationContext) -> reader.readDeviceAttributes(jsonParser))
+                    .put("commercial_opted_in", (reader, jsonParser, deserializationContext) -> reader.readCommercialOptedIn(jsonParser))
+                    .put("commercial_opted_out", (reader, jsonParser, deserializationContext) -> reader.readCommercialOptedOut(jsonParser))
+                    .put("transactional_opted_in", (reader, jsonParser, deserializationContext) -> reader.readTransactionalOptedIn(jsonParser))
+                    .put("transactional_opted_out", (reader, jsonParser, deserializationContext) -> reader.readTransactionalOptedOut(jsonParser))
                     .build());
 
     private final StandardObjectDeserializer<ChannelView, ?> deserializer;
@@ -161,12 +51,7 @@ public final class ChannelViewDeserializer extends JsonDeserializer<ChannelView>
     public ChannelViewDeserializer() {
         deserializer = new StandardObjectDeserializer<ChannelView, ChannelViewReader>(
                 FIELD_PARSERS,
-                new Supplier<ChannelViewReader>() {
-                    @Override
-                    public ChannelViewReader get() {
-                        return new ChannelViewReader();
-                    }
-                }
+                () -> new ChannelViewReader()
         );
     }
 

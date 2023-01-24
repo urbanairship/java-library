@@ -22,18 +22,8 @@ public final class QuietTimeDeserializer extends JsonDeserializer<QuietTime> {
 
     private static final FieldParserRegistry<QuietTime, QuietTimeReader> FIELD_PARSERS = new MapFieldParserRegistry<QuietTime, QuietTimeReader>(
             ImmutableMap.<String, FieldParser<QuietTimeReader>>builder()
-                    .put(Constants.START, new FieldParser<QuietTimeReader>() {
-                        @Override
-                        public void parse(QuietTimeReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readStart(jsonParser);
-                        }
-                    })
-                    .put(Constants.END, new FieldParser<QuietTimeReader>() {
-                        @Override
-                        public void parse(QuietTimeReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readEnd(jsonParser);
-                        }
-                    })
+                    .put(Constants.START, (reader, jsonParser, deserializationContext) -> reader.readStart(jsonParser))
+                    .put(Constants.END, (reader, jsonParser, deserializationContext) -> reader.readEnd(jsonParser))
                     .build()
     );
 
@@ -42,12 +32,7 @@ public final class QuietTimeDeserializer extends JsonDeserializer<QuietTime> {
     public QuietTimeDeserializer() {
         deserializer = new StandardObjectDeserializer<QuietTime, QuietTimeReader>(
                 FIELD_PARSERS,
-                new Supplier<QuietTimeReader>() {
-                    @Override
-                    public QuietTimeReader get() {
-                        return new QuietTimeReader();
-                    }
-                }
+                () -> new QuietTimeReader()
         );
     }
 

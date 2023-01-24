@@ -22,25 +22,15 @@ public class RecentDateRangeDeserializer extends JsonDeserializer<RecentDateRang
     private static final FieldParserRegistry<RecentDateRange.Builder, RecentDateRangeReader> FIELD_PARSERS = new MapFieldParserRegistry<RecentDateRange.Builder, RecentDateRangeReader>(
         ImmutableMap.<String, FieldParser<RecentDateRangeReader>>builder().build(),
         /* Only need the default field parser */
-        new FieldParser<RecentDateRangeReader>() {
-            @Override
-            public void parse(RecentDateRangeReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                reader.readValue(parser);
-            }
-        });
+            (reader, parser, context) -> reader.readValue(parser));
 
     private final StandardObjectDeserializer<RecentDateRange.Builder, ?> deserializer;
 
     public RecentDateRangeDeserializer() {
         deserializer = new StandardObjectDeserializer<RecentDateRange.Builder, RecentDateRangeReader>(
             FIELD_PARSERS,
-            new Supplier<RecentDateRangeReader>() {
-                @Override
-                public RecentDateRangeReader get() {
-                    return new RecentDateRangeReader();
-                }
-            }
-            );
+                () -> new RecentDateRangeReader()
+        );
     }
 
     @Override

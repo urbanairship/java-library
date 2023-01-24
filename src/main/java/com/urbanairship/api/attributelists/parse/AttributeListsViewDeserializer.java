@@ -21,62 +21,15 @@ public class AttributeListsViewDeserializer extends JsonDeserializer<AttributeLi
     private static final FieldParserRegistry<AttributeListsView, AttributeListsViewReader> FIELD_PARSERS =
             new MapFieldParserRegistry<AttributeListsView, AttributeListsViewReader>(
                     ImmutableMap.<String, FieldParser<AttributeListsViewReader>>builder()
-                            .put("ok", new FieldParser<AttributeListsViewReader>() {
-                                @Override
-                                public void parse(AttributeListsViewReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readOk(jsonParser);
-                                }
-                            })
-                            .put("name", new FieldParser<AttributeListsViewReader>() {
-                                @Override
-                                public void parse(AttributeListsViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readName(jsonParser);
-                                }
-                            })
-                            .put("description", new FieldParser<AttributeListsViewReader>() {
-                                @Override
-                                public void parse(AttributeListsViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readDescription(jsonParser);
-                                }
-                            })
-                            .put("extra", new FieldParser<AttributeListsViewReader>() {
-                                @Override
-                                public void parse(AttributeListsViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readExtras(jsonParser);
-                                }
-                            })
-                            .put("created", new FieldParser<AttributeListsViewReader>() {
-                                @Override
-                                public void parse(AttributeListsViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readCreated(jsonParser);
-                                }
-                            })
-                            .put("last_updated", new FieldParser<AttributeListsViewReader>() {
-                                @Override
-                                public void parse(AttributeListsViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readLastUpdated(jsonParser);
-                                }
-                            })
-                            .put("channel_count", new FieldParser<AttributeListsViewReader>() {
-                                @Override
-                                public void parse(AttributeListsViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readChannelCount(jsonParser);
-                                }
-                            })
-                            .put("error_path", new FieldParser<AttributeListsViewReader>() {
-                                @Override
-                                public void parse(AttributeListsViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readErrorPath(jsonParser);
-                                }
-                            })
-                            .put("status", new FieldParser<AttributeListsViewReader>() {
-                                @Override
-                                public void parse(AttributeListsViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                                    reader.readStatus(jsonParser);
-                                }
-                            })
+                            .put("ok", (reader, jsonParser, deserializationContext) -> reader.readOk(jsonParser))
+                            .put("name", (reader, jsonParser, deserializationContext) -> reader.readName(jsonParser))
+                            .put("description", (reader, jsonParser, deserializationContext) -> reader.readDescription(jsonParser))
+                            .put("extra", (reader, jsonParser, deserializationContext) -> reader.readExtras(jsonParser))
+                            .put("created", (reader, jsonParser, deserializationContext) -> reader.readCreated(jsonParser))
+                            .put("last_updated", (reader, jsonParser, deserializationContext) -> reader.readLastUpdated(jsonParser))
+                            .put("channel_count", (reader, jsonParser, deserializationContext) -> reader.readChannelCount(jsonParser))
+                            .put("error_path", (reader, jsonParser, deserializationContext) -> reader.readErrorPath(jsonParser))
+                            .put("status", (reader, jsonParser, deserializationContext) -> reader.readStatus(jsonParser))
                             .build()
             );
 
@@ -85,12 +38,7 @@ public class AttributeListsViewDeserializer extends JsonDeserializer<AttributeLi
     public AttributeListsViewDeserializer() {
         deserializer = new StandardObjectDeserializer<AttributeListsView, AttributeListsViewReader>(
                 FIELD_PARSERS,
-                new Supplier<AttributeListsViewReader>() {
-                    @Override
-                    public AttributeListsViewReader get() {
-                        return new AttributeListsViewReader();
-                    }
-                }
+                () -> new AttributeListsViewReader()
         );
     }
 

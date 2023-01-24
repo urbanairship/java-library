@@ -16,18 +16,8 @@ import java.io.IOException;
 public final class DeviceStatsDeserializer extends JsonDeserializer<DeviceStats> {
 
    private static final FieldParserRegistry<DeviceStats, DeviceStatsReader> FIELD_PARSERS = new MapFieldParserRegistry<DeviceStats, DeviceStatsReader>(ImmutableMap.<String, FieldParser<DeviceStatsReader>>builder()
-      .put("direct", new FieldParser<DeviceStatsReader>() {
-         @Override
-         public void parse(DeviceStatsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            reader.readDirect(jsonParser);
-         }
-      })
-       .put("influenced", new FieldParser<DeviceStatsReader>() {
-           @Override
-           public void parse(DeviceStatsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-               reader.readInfluenced(jsonParser);
-           }
-       })
+      .put("direct", (reader, jsonParser, deserializationContext) -> reader.readDirect(jsonParser))
+       .put("influenced", (reader, jsonParser, deserializationContext) -> reader.readInfluenced(jsonParser))
        .build()
    );
 
@@ -36,12 +26,7 @@ public final class DeviceStatsDeserializer extends JsonDeserializer<DeviceStats>
     public DeviceStatsDeserializer() {
         deserializer = new StandardObjectDeserializer<DeviceStats, DeviceStatsReader>(
                 FIELD_PARSERS,
-                new Supplier<DeviceStatsReader>() {
-                    @Override
-                    public DeviceStatsReader get() {
-                        return new DeviceStatsReader();
-                    }
-                }
+                () -> new DeviceStatsReader()
         );
     }
 

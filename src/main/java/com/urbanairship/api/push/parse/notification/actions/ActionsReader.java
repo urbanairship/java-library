@@ -45,29 +45,15 @@ public final class ActionsReader implements JsonObjectReader<Actions> {
     }
 
     private final static Map<String, OpenActionReader> OPEN_ACTIONS = ImmutableMap.<String, OpenActionReader>builder()
-            .put("url", new OpenActionReader() {
-                @Override
-                public Action.OpenAction readOpen(JsonParser parser, JsonNode definition) throws IOException {
-                    return getExternalURLData(definition);
-                }
-            })
-            .put("landing_page", new OpenActionReader() {
-                @Override
-                public Action.OpenAction readOpen(JsonParser parser, JsonNode definition) {
-                    return getLandingPageData(definition);
+            .put("url", (parser, definition) -> getExternalURLData(definition))
+            .put("landing_page", (parser, definition) -> getLandingPageData(definition))
+            .put("deep_link", (parser, definition) -> {
+                JsonNode content = definition.path("content");
+                if (content.isMissingNode() || !content.isTextual()) {
+                    throw new APIParsingException("The content attribute must be present and it must be a string.");
                 }
 
-            })
-            .put("deep_link", new OpenActionReader() {
-                @Override
-                public Action.OpenAction readOpen(JsonParser parser, JsonNode definition) throws IOException {
-                    JsonNode content = definition.path("content");
-                    if (content.isMissingNode() || !content.isTextual()) {
-                        throw new APIParsingException("The content attribute must be present and it must be a string.");
-                    }
-
-                    return new DeepLinkAction(content.textValue());
-                }
+                return new DeepLinkAction(content.textValue());
             })
             .build();
     private Actions.Builder builder = new Actions.Builder();

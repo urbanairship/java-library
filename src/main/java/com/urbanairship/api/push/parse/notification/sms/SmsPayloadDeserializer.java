@@ -17,18 +17,8 @@ public class SmsPayloadDeserializer extends JsonDeserializer<SmsPayload> {
     private static final FieldParserRegistry<SmsPayload, SmsPayloadReader> FIELD_PARSERS =
             new MapFieldParserRegistry<SmsPayload, SmsPayloadReader>(
                     ImmutableMap.<String, FieldParser<SmsPayloadReader>>builder()
-                    .put("alert", new FieldParser<SmsPayloadReader>() {
-                        @Override
-                        public void parse(SmsPayloadReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                            reader.readAlert(parser);
-                        }
-                    })
-                    .put("expiry", new FieldParser<SmsPayloadReader>() {
-                        @Override
-                        public void parse(SmsPayloadReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                            reader.readPushExpiry(parser);
-                        }
-                    })
+                    .put("alert", (reader, parser, context) -> reader.readAlert(parser))
+                    .put("expiry", (reader, parser, context) -> reader.readPushExpiry(parser))
                     .build());
 
     private final StandardObjectDeserializer<SmsPayload, ?> deserializer;
@@ -36,12 +26,7 @@ public class SmsPayloadDeserializer extends JsonDeserializer<SmsPayload> {
     public SmsPayloadDeserializer() {
         deserializer = new StandardObjectDeserializer<>(
                 FIELD_PARSERS,
-                new Supplier<SmsPayloadReader>() {
-                    @Override
-                    public SmsPayloadReader get() {
-                        return new SmsPayloadReader();
-                    }
-                }
+                () -> new SmsPayloadReader()
         );
     }
 

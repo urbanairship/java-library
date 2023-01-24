@@ -22,30 +22,9 @@ public class VariantPushPayloadDeserializer extends JsonDeserializer<VariantPush
     private static final FieldParserRegistry<VariantPushPayload, VariantPushPayloadReader> FIELD_PARSERS =
             new MapFieldParserRegistry<VariantPushPayload, VariantPushPayloadReader>(
                     ImmutableMap.<String, FieldParser<VariantPushPayloadReader>>builder()
-                            .put("notification", new FieldParser<VariantPushPayloadReader>() {
-                                @Override
-                                public void parse(VariantPushPayloadReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readNotification(jsonParser);
-                                }
-                            })
-                            .put("options", new FieldParser<VariantPushPayloadReader>() {
-                                @Override
-                                public void parse(VariantPushPayloadReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readPushOptions(jsonParser);
-                                }
-                            })
-                            .put("in_app", new FieldParser<VariantPushPayloadReader>() {
-                                @Override
-                                public void parse(VariantPushPayloadReader reader,
-                                                  JsonParser jsonParser,
-                                                  DeserializationContext deserializationContext) throws IOException {
-                                    reader.readInApp(jsonParser);
-                                }
-                            })
+                            .put("notification", (reader, jsonParser, deserializationContext) -> reader.readNotification(jsonParser))
+                            .put("options", (reader, jsonParser, deserializationContext) -> reader.readPushOptions(jsonParser))
+                            .put("in_app", (reader, jsonParser, deserializationContext) -> reader.readInApp(jsonParser))
                             .build()
             );
 
@@ -54,12 +33,7 @@ public class VariantPushPayloadDeserializer extends JsonDeserializer<VariantPush
     public VariantPushPayloadDeserializer() {
         this.deserializer = new StandardObjectDeserializer<VariantPushPayload, VariantPushPayloadReader>(
                 FIELD_PARSERS,
-                new Supplier<VariantPushPayloadReader>() {
-                    @Override
-                    public VariantPushPayloadReader get() {
-                        return new VariantPushPayloadReader();
-                    }
-                }
+                () -> new VariantPushPayloadReader()
         );
     }
 

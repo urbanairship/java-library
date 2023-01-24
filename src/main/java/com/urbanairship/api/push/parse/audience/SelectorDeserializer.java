@@ -37,7 +37,7 @@ public class SelectorDeserializer extends JsonDeserializer<Selector> {
     public SelectorDeserializer() {
         deserializer = new StandardObjectDeserializer<>(
                 FIELD_PARSERS,
-                () -> new SelectorReader()
+                SelectorReader::new
         );
     }
 

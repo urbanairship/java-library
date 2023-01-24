@@ -17,30 +17,10 @@ import java.io.IOException;
 public class OpenChannelResponseDeserializer extends JsonDeserializer<OpenChannelResponse> {
     private static final FieldParserRegistry<OpenChannelResponse, OpenChannelResponseReader> FIELD_PARSERS = new MapFieldParserRegistry<OpenChannelResponse, OpenChannelResponseReader>(
             ImmutableMap.<String, FieldParser<OpenChannelResponseReader>>builder()
-            .put("ok", new FieldParser<OpenChannelResponseReader>() {
-                @Override
-                public void parse(OpenChannelResponseReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                    reader.readOk(parser);
-                }
-            })
-            .put(Constants.CHANNEL_ID, new FieldParser<OpenChannelResponseReader>() {
-                @Override
-                public void parse(OpenChannelResponseReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                    reader.readChannelId(parser);
-                }
-            })
-            .put("error", new FieldParser<OpenChannelResponseReader>() {
-                @Override
-                public void parse(OpenChannelResponseReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                    reader.readError(parser);
-                }
-            })
-            .put("details", new FieldParser<OpenChannelResponseReader>() {
-                @Override
-                public void parse(OpenChannelResponseReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                    reader.readErrorDetails(parser);
-                }
-            })
+            .put("ok", (reader, parser, context) -> reader.readOk(parser))
+            .put(Constants.CHANNEL_ID, (reader, parser, context) -> reader.readChannelId(parser))
+            .put("error", (reader, parser, context) -> reader.readError(parser))
+            .put("details", (reader, parser, context) -> reader.readErrorDetails(parser))
             .build()
     );
 
@@ -49,12 +29,7 @@ public class OpenChannelResponseDeserializer extends JsonDeserializer<OpenChanne
     public OpenChannelResponseDeserializer() {
         deserializer = new StandardObjectDeserializer<OpenChannelResponse, OpenChannelResponseReader>(
                 FIELD_PARSERS,
-                new Supplier<OpenChannelResponseReader>() {
-                    @Override
-                    public OpenChannelResponseReader get() {
-                        return new OpenChannelResponseReader();
-                    }
-                }
+                () -> new OpenChannelResponseReader()
         );
     }
 

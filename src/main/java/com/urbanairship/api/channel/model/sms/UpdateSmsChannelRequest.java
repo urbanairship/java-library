@@ -63,12 +63,7 @@ public class UpdateSmsChannelRequest implements Request<String> {
 
     @Override
     public ResponseParser<String> getResponseParser() {
-        return new ResponseParser<String>() {
-            @Override
-            public String parse(String response) throws IOException {
-                return response;
-            }
-        };
+        return response -> response;
     }
 
     @Override

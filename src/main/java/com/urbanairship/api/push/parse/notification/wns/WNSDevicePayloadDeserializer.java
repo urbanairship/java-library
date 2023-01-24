@@ -21,31 +21,11 @@ public class WNSDevicePayloadDeserializer extends JsonDeserializer<WNSDevicePayl
 
     private static final FieldParserRegistry<WNSDevicePayload, WNSDevicePayloadReader> FIELD_PARSERS = new MapFieldParserRegistry<WNSDevicePayload, WNSDevicePayloadReader>(
             ImmutableMap.<String, FieldParser<WNSDevicePayloadReader>>builder()
-            .put("alert", new FieldParser<WNSDevicePayloadReader>() {
-                    public void parse(WNSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readAlert(json, context);
-                    }
-                })
-            .put("toast", new FieldParser<WNSDevicePayloadReader>() {
-                    public void parse(WNSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readToast(json, context);
-                    }
-                })
-            .put("tile", new FieldParser<WNSDevicePayloadReader>() {
-                    public void parse(WNSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readTile(json, context);
-                    }
-                })
-            .put("badge", new FieldParser<WNSDevicePayloadReader>() {
-                    public void parse(WNSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readBadge(json, context);
-                    }
-                })
-            .put("cache_policy", new FieldParser<WNSDevicePayloadReader>() {
-                    public void parse(WNSDevicePayloadReader reader, JsonParser json, DeserializationContext context) throws IOException {
-                        reader.readCachePolicy(json, context);
-                    }
-                })
+            .put("alert", (reader, json, context) -> reader.readAlert(json, context))
+            .put("toast", (reader, json, context) -> reader.readToast(json, context))
+            .put("tile", (reader, json, context) -> reader.readTile(json, context))
+            .put("badge", (reader, json, context) -> reader.readBadge(json, context))
+            .put("cache_policy", (reader, json, context) -> reader.readCachePolicy(json, context))
             .build()
             );
 
@@ -54,12 +34,7 @@ public class WNSDevicePayloadDeserializer extends JsonDeserializer<WNSDevicePayl
     public WNSDevicePayloadDeserializer(final WNSToastDeserializer toastDS, final WNSTileDeserializer tileDS, final WNSBadgeDeserializer badgeDS) {
         deserializer = new StandardObjectDeserializer<WNSDevicePayload, WNSDevicePayloadReader>(
             FIELD_PARSERS,
-            new Supplier<WNSDevicePayloadReader>() {
-                @Override
-                public WNSDevicePayloadReader get() {
-                    return new WNSDevicePayloadReader(toastDS, tileDS, badgeDS);
-                }
-            }
+                () -> new WNSDevicePayloadReader(toastDS, tileDS, badgeDS)
         );
     }
 

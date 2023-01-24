@@ -73,12 +73,7 @@ public class NamedUserUpdateRequest implements Request<NamedUserUpdateResponse> 
 
     @Override
     public ResponseParser<NamedUserUpdateResponse> getResponseParser() {
-        return new ResponseParser<NamedUserUpdateResponse>() {
-            @Override
-            public NamedUserUpdateResponse parse(String response) throws IOException {
-                return MAPPER.readValue(response, NamedUserUpdateResponse.class);
-            }
-        };
+        return response -> MAPPER.readValue(response, NamedUserUpdateResponse.class);
     }
 
     @Override

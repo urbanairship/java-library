@@ -22,24 +22,9 @@ public final class IosSettingsDeserializer extends JsonDeserializer<IosSettings>
 
     private static final FieldParserRegistry<IosSettings, IosSettingsReader> FIELD_PARSERS = new MapFieldParserRegistry<IosSettings, IosSettingsReader>(
             ImmutableMap.<String, FieldParser<IosSettingsReader>>builder()
-                    .put(Constants.BADGE, new FieldParser<IosSettingsReader>() {
-                        @Override
-                        public void parse(IosSettingsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readBadge(jsonParser);
-                        }
-                    })
-                    .put(Constants.QUIETTIME, new FieldParser<IosSettingsReader>() {
-                        @Override
-                        public void parse(IosSettingsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readQuietTime(jsonParser);
-                        }
-                    })
-                    .put(Constants.TZ, new FieldParser<IosSettingsReader>() {
-                        @Override
-                        public void parse(IosSettingsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                            reader.readTimeZone(jsonParser);
-                        }
-                    })
+                    .put(Constants.BADGE, (reader, jsonParser, deserializationContext) -> reader.readBadge(jsonParser))
+                    .put(Constants.QUIETTIME, (reader, jsonParser, deserializationContext) -> reader.readQuietTime(jsonParser))
+                    .put(Constants.TZ, (reader, jsonParser, deserializationContext) -> reader.readTimeZone(jsonParser))
                     .build()
     );
 
@@ -48,12 +33,7 @@ public final class IosSettingsDeserializer extends JsonDeserializer<IosSettings>
     public IosSettingsDeserializer() {
         deserializer = new StandardObjectDeserializer<IosSettings, IosSettingsReader>(
                 FIELD_PARSERS,
-                new Supplier<IosSettingsReader>() {
-                    @Override
-                    public IosSettingsReader get() {
-                        return new IosSettingsReader();
-                    }
-                }
+                () -> new IosSettingsReader()
         );
     }
 

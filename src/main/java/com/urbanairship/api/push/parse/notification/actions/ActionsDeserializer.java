@@ -20,44 +20,14 @@ import java.io.IOException;
 public final class ActionsDeserializer extends JsonDeserializer<Actions> {
 
     private static final FieldParserRegistry<Actions, ActionsReader> READ_ACTIONS = new MapFieldParserRegistry<Actions, ActionsReader>(ImmutableMap.<String, FieldParser<ActionsReader>>builder()
-            .put("add_tag", new FieldParser<ActionsReader>() {
-                @Override
-                public void parse(ActionsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readAddTags(jsonParser);
-                }
-            })
-            .put("remove_tag", new FieldParser<ActionsReader>() {
-                @Override
-                public void parse(ActionsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readRemoveTags(jsonParser);
-                }
-            })
-            .put("open", new FieldParser<ActionsReader>() {
-                @Override
-                public void parse(ActionsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readOpen(jsonParser);
-                }
-            })
-            .put("app_defined", new FieldParser<ActionsReader>() {
-                @Override
-                public void parse(ActionsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readAppDefined(jsonParser);
-                }
-            })
-            .put("share", new FieldParser<ActionsReader>() {
-                @Override
-                public void parse(ActionsReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readShare(jsonParser);
-                }
-            })
+            .put("add_tag", (reader, jsonParser, deserializationContext) -> reader.readAddTags(jsonParser))
+            .put("remove_tag", (reader, jsonParser, deserializationContext) -> reader.readRemoveTags(jsonParser))
+            .put("open", (reader, jsonParser, deserializationContext) -> reader.readOpen(jsonParser))
+            .put("app_defined", (reader, jsonParser, deserializationContext) -> reader.readAppDefined(jsonParser))
+            .put("share", (reader, jsonParser, deserializationContext) -> reader.readShare(jsonParser))
             .build());
 
-    private static final StandardObjectDeserializer<Actions, ActionsReader> deserializer = new StandardObjectDeserializer<Actions, ActionsReader>(READ_ACTIONS, new Supplier<ActionsReader>() {
-        @Override
-        public ActionsReader get() {
-            return new ActionsReader();
-        }
-    });
+    private static final StandardObjectDeserializer<Actions, ActionsReader> deserializer = new StandardObjectDeserializer<Actions, ActionsReader>(READ_ACTIONS, () -> new ActionsReader());
 
     public Actions deserialize(JsonParser parser, DeserializationContext deserializationContext) throws IOException {
         return deserializer.deserialize(parser, deserializationContext);

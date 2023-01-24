@@ -21,18 +21,8 @@ public class SegmentDefinitionDeserializer extends JsonDeserializer<SegmentDefin
 
     private static final FieldParserRegistry<SegmentDefinition, SegmentDefinitionReader> FIELD_PARSERS = new MapFieldParserRegistry<SegmentDefinition, SegmentDefinitionReader>(
             ImmutableMap.<String, FieldParser<SegmentDefinitionReader>>builder()
-                    .put("display_name", new FieldParser<SegmentDefinitionReader>() {
-                        @Override
-                        public void parse(SegmentDefinitionReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                            reader.readDisplayName(parser);
-                        }
-                    })
-                    .put("criteria", new FieldParser<SegmentDefinitionReader>() {
-                        @Override
-                        public void parse(SegmentDefinitionReader reader, JsonParser parser, DeserializationContext context) throws IOException {
-                            reader.readCriteria(parser);
-                        }
-                    })
+                    .put("display_name", (reader, parser, context) -> reader.readDisplayName(parser))
+                    .put("criteria", (reader, parser, context) -> reader.readCriteria(parser))
                     .build());
 
     private final StandardObjectDeserializer<SegmentDefinition, ?> deserializer;
@@ -40,12 +30,7 @@ public class SegmentDefinitionDeserializer extends JsonDeserializer<SegmentDefin
     public SegmentDefinitionDeserializer() {
         deserializer = new StandardObjectDeserializer<SegmentDefinition, SegmentDefinitionReader>(
                 FIELD_PARSERS,
-                new Supplier<SegmentDefinitionReader>() {
-                    @Override
-                    public SegmentDefinitionReader get() {
-                        return new SegmentDefinitionReader();
-                    }
-                }
+                () -> new SegmentDefinitionReader()
         );
     }
 

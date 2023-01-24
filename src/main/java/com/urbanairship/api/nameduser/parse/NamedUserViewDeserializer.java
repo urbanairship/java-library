@@ -21,36 +21,11 @@ public class NamedUserViewDeserializer extends JsonDeserializer<NamedUserView> {
 
     private static final FieldParserRegistry<NamedUserView, NamedUserViewReader> FIELD_PARSERS = new MapFieldParserRegistry<NamedUserView, NamedUserViewReader>(
         ImmutableMap.<String, FieldParser<NamedUserViewReader>>builder()
-            .put("named_user_id", new FieldParser<NamedUserViewReader>() {
-                @Override
-                public void parse(NamedUserViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readNamedUserId(jsonParser);
-                }
-            })
-            .put("tags", new FieldParser<NamedUserViewReader>() {
-                @Override
-                public void parse(NamedUserViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readNamedUserTags(jsonParser);
-                }
-            })
-            .put("channels", new FieldParser<NamedUserViewReader>() {
-                @Override
-                public void parse(NamedUserViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readChannelView(jsonParser);
-                }
-            })
-            .put("attributes", new FieldParser<NamedUserViewReader>() {
-                @Override
-                public void parse(NamedUserViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readAttributes(jsonParser);
-                }
-            })
-            .put("user_attributes", new FieldParser<NamedUserViewReader>() {
-                @Override
-                public void parse(NamedUserViewReader reader, JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    reader.readUserAttributes(jsonParser);
-                }
-            })
+            .put("named_user_id", (reader, jsonParser, deserializationContext) -> reader.readNamedUserId(jsonParser))
+            .put("tags", (reader, jsonParser, deserializationContext) -> reader.readNamedUserTags(jsonParser))
+            .put("channels", (reader, jsonParser, deserializationContext) -> reader.readChannelView(jsonParser))
+            .put("attributes", (reader, jsonParser, deserializationContext) -> reader.readAttributes(jsonParser))
+            .put("user_attributes", (reader, jsonParser, deserializationContext) -> reader.readUserAttributes(jsonParser))
             .build());
 
     private final StandardObjectDeserializer<NamedUserView, ?> deserializer;
@@ -58,12 +33,7 @@ public class NamedUserViewDeserializer extends JsonDeserializer<NamedUserView> {
     public NamedUserViewDeserializer() {
         deserializer = new StandardObjectDeserializer<NamedUserView, NamedUserViewReader>(
             FIELD_PARSERS,
-            new Supplier<NamedUserViewReader>() {
-                @Override
-                public NamedUserViewReader get() {
-                    return new NamedUserViewReader();
-                }
-            }
+                () -> new NamedUserViewReader()
         );
     }
 
