@@ -63,6 +63,10 @@ public class EmailPayloadSerializer extends JsonSerializer<EmailPayload> {
             jgen.writeBooleanField("open_tracking", payload.getOpenTracking().get());
         }
 
+        if (payload.getTemplate().isPresent()) {
+            jgen.writePOJOField("template", payload.getTemplate());
+        }
+
         jgen.writeEndObject();
     }
 }
