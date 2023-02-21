@@ -3,6 +3,7 @@ package com.urbanairship.api.push.model.notification.email;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.urbanairship.api.createandsend.model.notification.email.EmailTemplate;
 import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.junit.Test;
 
@@ -51,7 +52,10 @@ public class EmailPayloadTest {
                 "        }\n" +
                 "    ],\n" +
                 "    \"click_tracking\": false,\n" +
-                "    \"open_tracking\": false\n" +
+                "    \"open_tracking\": false,\n" +
+                "    \"template\": {\n" +
+                "            \"template_id\": \"1234\"\n" +
+                "    }\n" +
                 "}";
 
         Attachment attachment = Attachment.newBuilder()
@@ -74,6 +78,7 @@ public class EmailPayloadTest {
                 .addAttachment(secondAttachment)
                 .setClickTracking(false)
                 .setOpenTracking(false)
+                .setTemplate(EmailTemplate.newBuilder().setTemplateId("1234").build())
                 .build();
 
         String actualPayloadString = MAPPER.writeValueAsString(emailPayload);
