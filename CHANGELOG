@@ -1,4 +1,10 @@
 -------------------------
+8.7.0 20FEB23
+-------------------------
+- Added support for Named User Subscription Lists Listing Request
+- Added support for template in Push Request
+
+-------------------------
 8.6.0 24JAN23
 -------------------------
 - Added support for Replace Email Channel Request
