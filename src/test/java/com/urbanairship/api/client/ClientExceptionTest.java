@@ -31,6 +31,8 @@ public class ClientExceptionTest {
     @Mock
     HttpResponseStatus notFoundHttpResponseStatus;
     @Mock
+    HttpResponseStatus serverErrorHttpResponseStatus;
+    @Mock
     HttpResponseBodyPart bodyPart;
     @Mock
     ResponseParser parser;
@@ -44,6 +46,9 @@ public class ClientExceptionTest {
         MockitoAnnotations.openMocks(this);
         Mockito.when(httpResponseStatus.getStatusCode()).thenReturn(401);
         Mockito.when(httpResponseStatus.getStatusText()).thenReturn("401 Unauthorized");
+
+        Mockito.when(serverErrorHttpResponseStatus.getStatusCode()).thenReturn(502);
+        Mockito.when(serverErrorHttpResponseStatus.getStatusText()).thenReturn("502 Internal Server Error");
 
         Mockito.when(notFoundHttpResponseStatus.getStatusCode()).thenReturn(404);
         Mockito.when(notFoundHttpResponseStatus.getStatusText()).thenReturn("404 Invalid Channel Id.");
@@ -115,30 +120,28 @@ public class ClientExceptionTest {
 
     @Test
     public void testAkamaiResponse() throws Exception {
-        Mockito.when(httpResponseStatus.getStatusCode()).thenReturn(500);
-        Mockito.when(httpResponseStatus.getStatusText()).thenReturn("Internal Server Error");
-
-        String apiResponse = "Non json Api Response";
-
-        JsonParseException jsonParseException = new JsonParseException(jsonParser, "Json Parsing exception", JsonLocation.NA);
-        Mockito.when(parser.parse(apiResponse)).thenThrow(jsonParseException);
-
         ResponseAsyncHandler asyncHandler = new ResponseAsyncHandler(Optional.of(responseCallback), parser);
 
-        Mockito.when(bodyPart.getBodyPartBytes()).thenReturn(apiResponse.getBytes());
+        Mockito.when(bodyPart.getBodyPartBytes()).thenReturn("Internal Server Error".getBytes());
 
-        asyncHandler.onStatusReceived(httpResponseStatus);
-        asyncHandler.onBodyPartReceived(bodyPart);
+        asyncHandler.onStatusReceived(serverErrorHttpResponseStatus);
+
+        Mockito.when(httpHeaders.get(anyString())).thenReturn("text/html");
+
         asyncHandler.onHeadersReceived(httpHeaders);
 
-        Response response = asyncHandler.onCompleted();
+        try {
+            asyncHandler.onBodyPartReceived(bodyPart);
+            throw new RuntimeException("This line should never be reached.");
+        } catch (ServerException e) {
+            assertEquals(502, e.getStatusCode().intValue());
+        }
 
-        assertEquals(500, response.getStatus());
-
-        Mockito.verify(httpResponseStatus, Mockito.times(2)).getStatusCode();
-        Mockito.verify(parser, Mockito.times(1)).parse(anyString());
-        Mockito.verify(responseCallback, Mockito.times(1)).error(jsonParseException);
-        Mockito.verify(httpHeaders, Mockito.times(1)).entries();
+        Mockito.verify(serverErrorHttpResponseStatus, Mockito.times(1)).getStatusCode();
+        Mockito.verify(serverErrorHttpResponseStatus, Mockito.times(1)).getStatusText();
+        Mockito.verify(httpHeaders, Mockito.times(1)).get(anyString());
+        Mockito.verifyNoInteractions(responseCallback);
+        Mockito.verifyNoInteractions(parser);
     }
 
     @Test

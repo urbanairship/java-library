@@ -6,6 +6,7 @@ import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import com.sun.corba.se.spi.activation.Server;
 import com.urbanairship.api.channel.ChannelRequest;
 import com.urbanairship.api.channel.ChannelTagRequest;
 import com.urbanairship.api.channel.model.ChannelResponse;
@@ -504,10 +505,10 @@ public class UrbanAirshipClientTest {
         stubFor(post(urlEqualTo("/api/push/")).inScenario("test")
                 .whenScenarioStateIs("Retry")
                 .willReturn(aResponse()
-                        .withStatus(503)));
+                        .withStatus(200)));
 
         Response<PushResponse> response = client.execute(PushRequest.newRequest(payload));
-        assertEquals(response.getStatus(), 503);
+        assertEquals(response.getStatus(), 200);
     }
 
     @Test
@@ -635,131 +636,39 @@ public class UrbanAirshipClientTest {
     }
 
     @Test
-    public void testServerExceptionJSONfor503() throws Exception {
+    public void testServerException() throws Exception {
 
         PushPayload payload = PushPayload.newBuilder()
-            .setAudience(Selectors.all())
-            .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-            .setNotification(Notifications.alert("Foo"))
-            .build();
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setNotification(Notifications.alert("Foo"))
+                .build();
 
 
         // Setup a stubbed response for the server
+        final String errorJSON = "Internal Server Error";
+
         stubFor(post(urlEqualTo("/api/push/"))
-            .willReturn(aResponse()
-                .withHeader(CONTENT_TYPE_KEY, "application/vnd.urbanairship+json")
-                .withStatus(503)));
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "text/html")
+                        .withBody(errorJSON)
+                        .withStatus(503)));
 
         final CountDownLatch latch = new CountDownLatch(1);
         asyncRequestClient.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
             @Override
             public void completed(Response response) {
-                assertEquals(503, response.getStatus());
-                latch.countDown();
             }
 
             @Override
             public void error(Throwable throwable) {
+                assertTrue(throwable instanceof ServerException);
+                ServerException serverException = (ServerException) throwable;
+                RequestError error = serverException.getError().get();
+                assertEquals("Internal Server Error", error.getError());
+                latch.countDown();
             }
         }, new HashMap<>());
-
-        latch.await();
-    }
-
-    @Test
-    public void testServerExceptionJSONfor500() throws Exception {
-
-        PushPayload payload = PushPayload.newBuilder()
-                .setAudience(Selectors.all())
-                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-                .setNotification(Notifications.alert("Foo"))
-                .build();
-
-
-        // Setup a stubbed response for the server
-        stubFor(post(urlEqualTo("/api/push/"))
-                .willReturn(aResponse()
-                        .withHeader(CONTENT_TYPE_KEY, "application/vnd.urbanairship+json")
-                        .withStatus(500)));
-
-        final CountDownLatch latch = new CountDownLatch(1);
-
-        client.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
-            @Override
-            public void completed(Response response) {
-                assertEquals(500, response.getStatus());
-                latch.countDown();
-            }
-
-            @Override
-            public void error(Throwable throwable) {
-            }
-        });
-
-        latch.await();
-    }
-
-    @Test
-    public void testServerExceptionNonJSONfor500() throws Exception {
-
-        PushPayload payload = PushPayload.newBuilder()
-                .setAudience(Selectors.all())
-                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-                .setNotification(Notifications.alert("Foo"))
-                .build();
-
-
-        // Setup a stubbed response for the server
-        stubFor(post(urlEqualTo("/api/push/"))
-                .willReturn(aResponse()
-                        .withHeader(CONTENT_TYPE_KEY, "text/html")
-                        .withStatus(500)));
-
-        final CountDownLatch latch = new CountDownLatch(1);
-
-        client.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
-            @Override
-            public void completed(Response response) {
-                assertEquals(500, response.getStatus());
-                latch.countDown();
-            }
-
-            @Override
-            public void error(Throwable throwable) {
-            }
-        });
-
-        latch.await();
-    }
-
-    @Test
-    public void testServerExceptionNonJSONfor503() throws Exception {
-
-        PushPayload payload = PushPayload.newBuilder()
-                .setAudience(Selectors.all())
-                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-                .setNotification(Notifications.alert("Foo"))
-                .build();
-
-
-        // Setup a stubbed response for the server
-        stubFor(post(urlEqualTo("/api/push/"))
-                .willReturn(aResponse()
-                        .withHeader(CONTENT_TYPE_KEY, "text/html")
-                        .withStatus(503)));
-
-        final CountDownLatch latch = new CountDownLatch(1);
-        client.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
-            @Override
-            public void completed(Response response) {
-                assertEquals(503, response.getStatus());
-                latch.countDown();
-            }
-
-            @Override
-            public void error(Throwable throwable) {
-            }
-        });
 
         latch.await();
     }
