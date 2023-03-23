@@ -1,4 +1,10 @@
 -------------------------
+9.0.0 22MAR23
+-------------------------
+- Changed the way the library handles all 5xx responses: a ServerException is thrown when getting a server error. 
+Please examine any retry logic in your implementation to see if you need to make changes when upgrading to or beyond this version
+
+-------------------------
 8.7.0 20FEB23
 -------------------------
 - Added support for Named User Subscription Lists Listing Request
