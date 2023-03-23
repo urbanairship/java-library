@@ -10,7 +10,7 @@
 
     <groupId>com.urbanairship</groupId>
     <artifactId>java-client</artifactId>
-    <version>8.6.1-SNAPSHOT</version>
+    <version>8.7.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Java Client</name>
