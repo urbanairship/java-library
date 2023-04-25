@@ -1,4 +1,9 @@
 -------------------------
+9.0.1 25APR23
+-------------------------
+- Added Generic Channel and Web Channel types to CustomEventChannelType model
+
+-------------------------
 9.0.0 22MAR23
 -------------------------
 - Changed the way the library handles all 5xx responses: a ServerException is thrown when getting a server error. 
