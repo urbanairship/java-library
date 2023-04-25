@@ -5,7 +5,9 @@ import java.util.Optional;
 public enum CustomEventChannelType {
     IOS_CHANNEL("ios_channel"),
     ANDROID_CHANNEL("android_channel"),
-    AMAZON_CHANNEL("amazon_channel");
+    AMAZON_CHANNEL("amazon_channel"),
+    GENERIC_CHANNEL("channel"),
+    WEB_CHANNEL("web_channel");
 
     private final String identifier;
 
