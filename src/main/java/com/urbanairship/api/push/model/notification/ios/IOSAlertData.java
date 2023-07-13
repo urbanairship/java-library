@@ -56,10 +56,17 @@ public final class IOSAlertData extends PushModelObject {
     }
 
     public boolean isCompound() {
-        return actionLocKey.isPresent()
-            || locKey.isPresent()
-            || locArgs.isPresent()
-            || launchImage.isPresent();
+        return actionLocKey.isPresent() ||
+                locKey.isPresent() ||
+                locArgs.isPresent() ||
+                launchImage.isPresent() ||
+                summaryArg.isPresent() ||
+                summaryArgCount.isPresent() ||
+                title.isPresent() ||
+                titleLocArgs.isPresent() ||
+                titleLocKey.isPresent() ||
+                subtitleLocArgs.isPresent() ||
+                subtitleLocKey.isPresent();
     }
 
     public Optional<String> getBody() {
@@ -126,7 +133,6 @@ public final class IOSAlertData extends PushModelObject {
                 Objects.equals(titleLocKey, that.titleLocKey) &&
                 Objects.equals(subtitleLocArgs, that.subtitleLocArgs) &&
                 Objects.equals(subtitleLocKey, that.subtitleLocKey);
-                
     }
 
     @Override
@@ -229,17 +235,17 @@ public final class IOSAlertData extends PushModelObject {
 
         public IOSAlertData build() {
             return new IOSAlertData(Optional.ofNullable(body),
-                                    Optional.ofNullable(actionLocKey),
-                                    Optional.ofNullable(locKey),
-                                    Optional.ofNullable(locArgs),
-                                    Optional.ofNullable(launchImage),
-                                    Optional.ofNullable(summaryArg),
-                                    Optional.ofNullable(summaryArgCount),
-                                    Optional.ofNullable(title),
-                                    Optional.ofNullable(titleLocArgs),
-                                    Optional.ofNullable(titleLocKey),
-                                    Optional.ofNullable(subtitleLocArgs),
-                                    Optional.ofNullable(subtitleLocKey));
+                    Optional.ofNullable(actionLocKey),
+                    Optional.ofNullable(locKey),
+                    Optional.ofNullable(locArgs),
+                    Optional.ofNullable(launchImage),
+                    Optional.ofNullable(summaryArg),
+                    Optional.ofNullable(summaryArgCount),
+                    Optional.ofNullable(title),
+                    Optional.ofNullable(titleLocArgs),
+                    Optional.ofNullable(titleLocKey),
+                    Optional.ofNullable(subtitleLocArgs),
+                    Optional.ofNullable(subtitleLocKey));
         }
     }
 }
