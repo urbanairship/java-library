@@ -1,4 +1,9 @@
 -------------------------
+9.0.2 13JUL23
+-------------------------
+- Added missing fields for isCompound function in IOSAlertData model
+
+-------------------------
 9.0.1 25APR23
 -------------------------
 - Added Generic Channel and Web Channel types to CustomEventChannelType model
