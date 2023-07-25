@@ -58,6 +58,7 @@ import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.Display;
 import com.urbanairship.api.push.model.InApp;
+import com.urbanairship.api.push.model.Orchestration;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.PushOptions;
 import com.urbanairship.api.push.model.PushPayload;
@@ -299,6 +300,8 @@ public class PushObjectMapper {
                 .addSerializer(PushExpiry.class, new PushExpirySerializer())
                 .addDeserializer(PushExpiry.class, new PushExpiryDeserializer())
                 .addDeserializer(PushResponse.class, new PushResponseDeserializer())
+                .addSerializer(Orchestration.class, new OrchestrationSerializer())
+                .addDeserializer(Orchestration.class, new OrchestrationDeserializer())
 
 
                 /* IOS */

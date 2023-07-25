@@ -4,8 +4,7 @@
 
 package com.urbanairship.api.push.model;
 
-import com.google.common.base.Objects;
-
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -18,11 +17,17 @@ public class PushOptions extends PushModelObject {
     private final Optional<PushExpiry> expiry;
     private final Optional<Boolean> noThrottle;
     private final Optional<Boolean> personalization;
+    private final Optional<Boolean> redactPayload;
+    private final Optional<Boolean> bypassHoldoutGroups;
+    private final Optional<Boolean> bypassFrequencyLimits;
 
     private PushOptions(Builder builder) {
         expiry = Optional.ofNullable(builder.expiry);
         noThrottle = Optional.ofNullable(builder.noThrottle);
         personalization = Optional.ofNullable(builder.personalization);
+        redactPayload = Optional.ofNullable(builder.redactPayload);
+        bypassHoldoutGroups = Optional.ofNullable(builder.bypassHoldoutGroups);
+        bypassFrequencyLimits = Optional.ofNullable(builder.bypassFrequencyLimits);
     }
 
     /**
@@ -58,19 +63,42 @@ public class PushOptions extends PushModelObject {
         return personalization;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(expiry, noThrottle, personalization);
+    /**
+     * Get the redact payload value. If true, the push will allow redact payload.
+     * @return Optional Boolean
+     */
+    public Optional<Boolean> getRedactPayload() {
+        return redactPayload;
     }
+
+    /**
+     * Get the bypassHoldoutGroups value. If true, the push will allow bypassHoldoutGroups.
+     * @return Optional Boolean
+     */
+    public Optional<Boolean> getBypassHoldoutGroups() {
+        return bypassHoldoutGroups;
+    }
+
+    /**
+     * Get the bypassFrequencyLimits value. If true, the push will allow bypassFrequencyLimits.
+     * @return Optional Boolean
+     */
+    public Optional<Boolean> getBypassFrequencyLimits() {
+        return bypassFrequencyLimits;
+    }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PushOptions that = (PushOptions) o;
-        return Objects.equal(expiry, that.expiry) &&
-                Objects.equal(noThrottle, that.noThrottle) &&
-                Objects.equal(personalization, that.personalization);
+        return Objects.equals(expiry, that.expiry) && Objects.equals(noThrottle, that.noThrottle) && Objects.equals(personalization, that.personalization) && Objects.equals(redactPayload, that.redactPayload) && Objects.equals(bypassHoldoutGroups, that.bypassHoldoutGroups) && Objects.equals(bypassFrequencyLimits, that.bypassFrequencyLimits);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(expiry, noThrottle, personalization, redactPayload, bypassHoldoutGroups, bypassFrequencyLimits);
     }
 
     @Override
@@ -79,6 +107,9 @@ public class PushOptions extends PushModelObject {
                 "expiry=" + expiry +
                 ", noThrottle=" + noThrottle +
                 ", personalization=" + personalization +
+                ", redactPayload=" + redactPayload +
+                ", bypassHoldoutGroups=" + bypassHoldoutGroups +
+                ", bypassFrequencyLimits=" + bypassFrequencyLimits +
                 '}';
     }
 
@@ -86,7 +117,9 @@ public class PushOptions extends PushModelObject {
         private PushExpiry expiry = null;
         private Boolean noThrottle = null;
         private Boolean personalization = null;
-
+        private Boolean redactPayload = null;
+        private Boolean bypassHoldoutGroups = null;
+        private Boolean bypassFrequencyLimits = null;
 
         private Builder() { }
 
@@ -120,6 +153,36 @@ public class PushOptions extends PushModelObject {
             this.personalization = personalization;
             return this;
       }
+
+        /**
+         * Set the RedactPayload option. If true, the push will allow RedactPayload.
+         * @param redactPayload Boolean
+         * @return PushOptions Builder
+         */
+        public Builder setRedactPayload(Boolean redactPayload) {
+            this.redactPayload = redactPayload;
+            return this;
+        }
+
+        /**
+         * Set the bypassHoldoutGroups option. If true, the push will allow personalization.
+         * @param bypassHoldoutGroups Boolean
+         * @return PushOptions Builder
+         */
+        public Builder setBypassHoldoutGroups(Boolean bypassHoldoutGroups) {
+            this.bypassHoldoutGroups = bypassHoldoutGroups;
+            return this;
+        }
+
+        /**
+         * Set the bypassFrequencyLimits option. If true, the push will allow personalization.
+         * @param bypassFrequencyLimits Boolean
+         * @return PushOptions Builder
+         */
+        public Builder setBypassFrequencyLimits(Boolean bypassFrequencyLimits) {
+            this.bypassFrequencyLimits = bypassFrequencyLimits;
+            return this;
+        }
 
         public PushOptions build() {
             return new PushOptions(this);

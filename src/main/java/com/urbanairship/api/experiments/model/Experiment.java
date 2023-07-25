@@ -4,15 +4,18 @@
 
 package com.urbanairship.api.experiments.model;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import com.urbanairship.api.push.model.Campaigns;
 import com.urbanairship.api.push.model.DeviceTypeData;
+import com.urbanairship.api.push.model.Orchestration;
 import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.SelectorType;
+import com.urbanairship.api.push.model.notification.email.MessageType;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -26,6 +29,9 @@ public final class Experiment extends ExperimentModelObject {
     private final Selector audience;
     private final DeviceTypeData deviceTypes;
     private final List<Variant> variants;
+    private final Optional<Orchestration> orchestration;
+    private final Optional<MessageType> messageType;
+    private final Optional<Campaigns> campaigns;
 
     private Experiment(Builder builder) {
         this.name = Optional.ofNullable(builder.name);
@@ -34,10 +40,15 @@ public final class Experiment extends ExperimentModelObject {
         this.audience = builder.audience;
         this.deviceTypes = builder.deviceTypes;
         this.variants = builder.variants;
+        this.orchestration = Optional.ofNullable(builder.orchestration);
+        this.messageType = Optional.ofNullable(builder.messageType);
+        this.campaigns = Optional.ofNullable(builder.campaigns);
+
     }
 
     /**
      * Experiment builder
+     *
      * @return Builder
      */
     public static Builder newBuilder() {
@@ -46,6 +57,7 @@ public final class Experiment extends ExperimentModelObject {
 
     /**
      * Get the name of the experiment.
+     *
      * @return an Optional String
      */
     public Optional<String> getName() {
@@ -54,6 +66,7 @@ public final class Experiment extends ExperimentModelObject {
 
     /**
      * Get the description for the experiment.
+     *
      * @return an Optional String
      */
     public Optional<String> getDescription() {
@@ -64,6 +77,7 @@ public final class Experiment extends ExperimentModelObject {
      * Get the control group for the experiment. A control is a float between 0 and 1, e.g., 0.4,
      * representing the proportion of the audience that will not receive a push.
      * The remaining audience is split between the variants.
+     *
      * @return an Optional BigDecimal
      */
     public Optional<BigDecimal> getControl() {
@@ -72,6 +86,7 @@ public final class Experiment extends ExperimentModelObject {
 
     /**
      * Get the audience for the experiment.
+     *
      * @return an Audience object
      */
     public Selector getAudience() {
@@ -80,6 +95,7 @@ public final class Experiment extends ExperimentModelObject {
 
     /**
      * Boolean indicating whether audience is SelectorType.ALL
+     *
      * @return Boolean
      */
     public boolean isBroadcast() {
@@ -88,6 +104,7 @@ public final class Experiment extends ExperimentModelObject {
 
     /**
      * Get the device types for the experiment.
+     *
      * @return a DeviceTypeData object
      */
     public DeviceTypeData getDeviceTypes() {
@@ -97,32 +114,60 @@ public final class Experiment extends ExperimentModelObject {
     /**
      * Get the variants for the experiment. A variant defines a push that will be sent to a subset of the experiment's
      * audience.
+     *
      * @return variants List&lt;Variant&gt;
      */
     public List<Variant> getVariants() {
         return variants;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(name, description, control, audience, deviceTypes, variants);
+    /**
+     * Get the orchestration for the experiment.
+     *
+     * @return an Orchestration object
+     */
+    public Optional<Orchestration> getOrchestration() {
+        return orchestration;
+    }
+
+    /**
+     * Get the message type for the experiment.
+     *
+     * @return an MessageType object
+     */
+    public Optional<MessageType> getMessageType() {
+        return messageType;
+    }
+
+    /**
+     * Get the campaigns object for the experiment.
+     *
+     * @return an Campaigns object
+     */
+    public Optional<Campaigns> getCampaigns() {
+        return campaigns;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        final Experiment other = (Experiment) obj;
-        return Objects.equal(this.name, other.name)
-                && Objects.equal(this.description, other.description)
-                && Objects.equal(this.control, other.control)
-                && Objects.equal(this.audience, other.audience)
-                && Objects.equal(this.deviceTypes, other.deviceTypes)
-                && Objects.equal(this.variants, other.variants);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Experiment that = (Experiment) o;
+        return Objects.equals(name, that.name) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(control, that.control) &&
+                Objects.equals(audience, that.audience) &&
+                Objects.equals(deviceTypes, that.deviceTypes) &&
+                Objects.equals(variants, that.variants) &&
+                Objects.equals(orchestration, that.orchestration) &&
+                Objects.equals(messageType, that.messageType) &&
+                Objects.equals(campaigns, that.campaigns);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, description, control, audience, deviceTypes,
+                variants, orchestration, messageType, campaigns);
     }
 
     @Override
@@ -134,6 +179,9 @@ public final class Experiment extends ExperimentModelObject {
                 ", audience=" + audience +
                 ", deviceTypes=" + deviceTypes +
                 ", variants=" + variants +
+                ", orchestration=" + orchestration +
+                ", messageType=" + messageType +
+                ", campaigns=" + campaigns +
                 '}';
     }
 
@@ -147,12 +195,17 @@ public final class Experiment extends ExperimentModelObject {
         private BigDecimal control = null;
         private Selector audience = null;
         private DeviceTypeData deviceTypes = null;
-        private List<Variant> variants = Lists.newArrayList();
+        private final List<Variant> variants = Lists.newArrayList();
+        private Orchestration orchestration = null;
+        private MessageType messageType = null;
+        private Campaigns campaigns = null;
 
-        private Builder() { }
+        private Builder() {
+        }
 
         /**
          * Set the experiment name.
+         *
          * @param name String
          * @return Builder
          */
@@ -163,6 +216,7 @@ public final class Experiment extends ExperimentModelObject {
 
         /**
          * Set the experiment description.
+         *
          * @param description String
          * @return Builder
          */
@@ -175,6 +229,7 @@ public final class Experiment extends ExperimentModelObject {
          * Set the control group for the experiment. A control is a float between 0 and 1, e.g., 0.4,
          * representing the proportion of the audience that will not receive a push.
          * The remaining audience is split between the variants.
+         *
          * @param control BigDecimal
          * @return Builder
          */
@@ -185,6 +240,7 @@ public final class Experiment extends ExperimentModelObject {
 
         /**
          * Set the audience for the experiment.
+         *
          * @param audience Selector
          * @return Builder
          */
@@ -195,6 +251,7 @@ public final class Experiment extends ExperimentModelObject {
 
         /**
          * Set the device types for the experiment.
+         *
          * @param deviceTypes DeviceTypeData
          * @return Builder
          */
@@ -206,6 +263,7 @@ public final class Experiment extends ExperimentModelObject {
         /**
          * Add a variant to the experiment. A variant defines a push that will be sent to a subset of the experiment's
          * audience.
+         *
          * @param variant List&lt;Variant&gt;
          * @return Builder
          */
@@ -220,6 +278,39 @@ public final class Experiment extends ExperimentModelObject {
         }
 
         /**
+         * Set the Orchestration for the experiment.
+         *
+         * @param orchestration Orchestration
+         * @return Builder
+         */
+        public Builder setOrchestration(Orchestration orchestration) {
+            this.orchestration = orchestration;
+            return this;
+        }
+
+        /**
+         * Set the message type for the experiment.
+         *
+         * @param messageType MessageType
+         * @return Builder
+         */
+        public Builder setMessageType(MessageType messageType) {
+            this.messageType = messageType;
+            return this;
+        }
+
+        /**
+         * Set the campaigns for the experiment.
+         *
+         * @param campaigns Campaigns
+         * @return Builder
+         */
+        public Builder setCampaigns(Campaigns campaigns) {
+            this.campaigns = campaigns;
+            return this;
+        }
+
+        /**
          * Build an Experiment object. Will fail if any of the following
          * preconditions are not met.
          * <pre>
@@ -228,15 +319,18 @@ public final class Experiment extends ExperimentModelObject {
          * 3. At least one variant must be present.
          * </pre>
          *
-         * @throws IllegalArgumentException if illegal arguments are used
-         * @throws NullPointerException if audience, deviceTypes, or variants is not set
          * @return Experiment
+         * @throws IllegalArgumentException if illegal arguments are used
+         * @throws NullPointerException     if audience, deviceTypes, or variants is not set
          */
         public Experiment build() {
             Preconditions.checkNotNull(audience, "'audience' must be set");
-            Preconditions.checkNotNull(deviceTypes, "'device_types' must be set");
-            Preconditions.checkNotNull(variants, "An experiment requires at least one variant.");
-            Preconditions.checkArgument(variants.size() > 0, "At least one variant must be present.");
+            Preconditions.checkNotNull(deviceTypes,
+                    "'device_types' must be set");
+            Preconditions.checkNotNull(variants,
+                    "An experiment requires at least one variant.");
+            Preconditions.checkArgument(variants.size() > 0,
+                    "At least one variant must be present.");
 
             return new Experiment(this);
         }

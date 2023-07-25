@@ -8,10 +8,14 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.JsonObjectReader;
+import com.urbanairship.api.common.parse.StringFieldDeserializer;
 import com.urbanairship.api.experiments.model.Experiment;
 import com.urbanairship.api.experiments.model.Variant;
+import com.urbanairship.api.push.model.Campaigns;
 import com.urbanairship.api.push.model.DeviceTypeData;
+import com.urbanairship.api.push.model.Orchestration;
 import com.urbanairship.api.push.model.audience.Selector;
+import com.urbanairship.api.push.model.notification.email.MessageType;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -46,7 +50,19 @@ public class ExperimentReader implements JsonObjectReader<Experiment> {
     }
 
     public void readVariants(JsonParser jsonParser) throws IOException {
-        builder.addAllVariants((List<Variant>) jsonParser.readValueAs(new TypeReference<List<Variant>>() { }));
+        builder.addAllVariants(jsonParser.readValueAs(new TypeReference<List<Variant>>() { }));
+    }
+
+    public void readOrchestration(JsonParser parser) throws IOException {
+        builder.setOrchestration(parser.readValueAs(Orchestration.class));
+    }
+
+    public void readMessageType(JsonParser parser) throws IOException {
+        builder.setMessageType(MessageType.find(StringFieldDeserializer.INSTANCE.deserialize(parser, "message_type")).get());
+    }
+
+    public void readCampaigns(JsonParser parser) throws IOException {
+        builder.setCampaigns(parser.readValueAs(Campaigns.class));
     }
 
     @Override

@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
+import com.urbanairship.api.push.model.Orchestration;
+import com.urbanairship.api.push.model.OrchestrationType;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.PushOptions;
 import com.urbanairship.api.push.model.PushPayload;
@@ -226,6 +228,23 @@ public class PushOptionsTest {
         assertTrue(options.getExpiry().isPresent());
         PushExpiry expiry = options.getExpiry().get();
         assertEquals(personalization, expiry.getExpiryPersonalization().get());
+    }
+    @Test
+    public void testPushOptionsPayload() throws Exception {
+        PushOptions pushOptions = PushOptions.newBuilder()
+                .setBypassHoldoutGroups(true)
+                .setRedactPayload(true)
+                .setBypassFrequencyLimits(true)
+                .setNoThrottle(true)
+                .setPersonalization(true)
+                .setExpiry(PushExpiry.newBuilder().setExpirySeconds(1).build())
+                .build();
+
+        String pushPayloadStr = mapper.writeValueAsString(pushOptions);
+        JsonNode actualJson = mapper.readTree(pushPayloadStr);
+        String json = "{\"expiry\":1,\"no_throttle\":true,\"personalization\":true,\"redact_payload\":true,\"bypass_holdout_groups\":true,\"bypass_frequency_limits\":true}";
+        JsonNode expectedJson = mapper.readTree(json);
+        assertEquals(expectedJson, actualJson);
     }
 
 }

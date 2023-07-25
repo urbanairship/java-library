@@ -27,6 +27,9 @@ public class ExperimentDeserializer extends JsonDeserializer<Experiment> {
                     .put("audience", (reader, jsonParser, deserializationContext) -> reader.readAudience(jsonParser))
                     .put("device_types", (reader, jsonParser, deserializationContext) -> reader.readDeviceTypes(jsonParser))
                     .put("variants", (reader, jsonParser, deserializationContext) -> reader.readVariants(jsonParser))
+                    .put("orchestration", (reader, jsonParser, deserializationContext) -> reader.readOrchestration(jsonParser))
+                    .put("message_type", (reader, jsonParser, deserializationContext) -> reader.readMessageType(jsonParser))
+                    .put("campaigns", (reader, jsonParser, deserializationContext) -> reader.readCampaigns(jsonParser))
                     .build()
     );
 

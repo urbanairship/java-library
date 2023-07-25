@@ -32,6 +32,18 @@ public class PushOptionsReader implements JsonObjectReader<PushOptions> {
         builder.setPersonalization(BooleanFieldDeserializer.INSTANCE.deserialize(parser, "personalization"));
     }
 
+    public void readRedactPayload(JsonParser parser) throws IOException {
+        builder.setRedactPayload(BooleanFieldDeserializer.INSTANCE.deserialize(parser, "personalization"));
+    }
+
+    public void readBypassHoldoutGroups(JsonParser parser) throws IOException {
+        builder.setBypassHoldoutGroups(BooleanFieldDeserializer.INSTANCE.deserialize(parser, "personalization"));
+    }
+
+    public void readBypassFrequencyLimits(JsonParser parser) throws IOException {
+        builder.setBypassFrequencyLimits(BooleanFieldDeserializer.INSTANCE.deserialize(parser, "bypass_frequency_limits"));
+    }
+
     @Override
     public PushOptions validateAndBuild() throws IOException {
         return builder.build();
