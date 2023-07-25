@@ -52,6 +52,12 @@ public class PushPayloadSerializer extends JsonSerializer<PushPayload> {
         if (!payload.getGlobalAttributes().isEmpty()) {
             jgen.writeObjectField("global_attributes", payload.getGlobalAttributes());
         }
+        if (payload.getOrchestration().isPresent()) {
+            jgen.writeObjectField("orchestration", payload.getOrchestration());
+        }
+        if (payload.getMessageType().isPresent()) {
+            jgen.writeStringField("message_type", payload.getMessageType().get().getMessageType());
+        }
         jgen.writeEndObject();
     }
 }

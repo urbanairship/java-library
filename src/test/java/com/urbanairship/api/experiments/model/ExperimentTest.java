@@ -1,9 +1,14 @@
 package com.urbanairship.api.experiments.model;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.urbanairship.api.push.model.Campaigns;
 import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.audience.Selectors;
 import com.urbanairship.api.push.model.notification.Notification;
+import com.urbanairship.api.push.model.notification.email.MessageType;
+import com.urbanairship.api.push.parse.PushObjectMapper;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -11,12 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 public class ExperimentTest {
+    private static final ObjectMapper mapper = PushObjectMapper.getInstance();
 
     @Test
-    public void testExperiment() {
+    public void testExperiment() throws Exception{
 
         VariantPushPayload payloadOne = VariantPushPayload.newBuilder()
                 .setNotification(Notification.newBuilder()
@@ -48,6 +55,8 @@ public class ExperimentTest {
                 .setAudience(Selectors.namedUser("birdperson"))
                 .addVariant(variantOne)
                 .addVariant(variantTwo)
+                .setMessageType(MessageType.COMMERCIAL)
+                .setCampaigns(Campaigns.newBuilder().addCategory("test").build())
                 .build();
 
         List<Variant> variants = new ArrayList<>();
@@ -61,6 +70,12 @@ public class ExperimentTest {
         assertEquals(experiment.getAudience(), Selectors.namedUser("birdperson"));
         assertEquals(experiment.getDeviceTypes(), DeviceTypeData.of(DeviceType.IOS));
         assertEquals(experiment.getVariants(), variants);
+
+        String pushPayloadStr = mapper.writeValueAsString(experiment);
+        JsonNode actualJson = mapper.readTree(pushPayloadStr);
+        String json = "{\"name\":\"name\",\"description\":\"description\",\"control\":0.1,\"audience\":{\"named_user\":\"birdperson\"},\"deviceTypes\":[\"ios\"],\"variants\":[{\"variantPushPayload\":{\"notification\":{\"alert\":\"Hello\"}}},{\"variantPushPayload\":{\"notification\":{\"alert\":\"Goodbye\"}}}],\"messageType\":\"COMMERCIAL\",\"campaigns\":{\"categories\":[\"test\"]},\"broadcast\":false}";
+        JsonNode expectedJson = mapper.readTree(json);
+        assertEquals(expectedJson, actualJson);
     }
 
     @Test(expected = Exception.class)
