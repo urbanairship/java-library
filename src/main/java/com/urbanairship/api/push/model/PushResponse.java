@@ -5,10 +5,10 @@
 package com.urbanairship.api.push.model;
 
 
-import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.urbanairship.api.common.model.ErrorDetails;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -21,14 +21,20 @@ public final class PushResponse {
     private final boolean ok;
     private final Optional<ImmutableList<String>> messageIds;
     private final Optional<ImmutableList<String>> contentUrls;
+    private final Optional<ImmutableList<String>> localizedIds;
     private final Optional<String> error;
     private final Optional<ErrorDetails> errorDetails;
 
-    public PushResponse(String operationId, ImmutableList<String> pushIds, boolean ok, ImmutableList<String> messageIds, ImmutableList<String> contentUrls, String error, ErrorDetails errorDetails) {
+    public PushResponse(String operationId, ImmutableList<String> pushIds, boolean ok,
+                        ImmutableList<String> messageIds, ImmutableList<String> contentUrls,
+                        ImmutableList<String> localizedIds,
+                        String error,
+                        ErrorDetails errorDetails) {
         this.operationId = Optional.ofNullable(operationId);
         this.pushIds = Optional.ofNullable(pushIds);
         this.ok = ok;
         this.messageIds = Optional.ofNullable(messageIds);
+        this.localizedIds = Optional.ofNullable(localizedIds);
         this.contentUrls = Optional.ofNullable(contentUrls);
         this.error = Optional.ofNullable(error);
         this.errorDetails = Optional.ofNullable(errorDetails);
@@ -77,6 +83,10 @@ public final class PushResponse {
         return contentUrls;
     }
 
+    public Optional<ImmutableList<String>> getLocalizedIds() {
+        return localizedIds;
+    }
+
     /**
      * Get the error if present
      *
@@ -103,26 +113,27 @@ public final class PushResponse {
                 ", ok=" + ok +
                 ", messagesIds=" + messageIds +
                 ", contentUrls=" + contentUrls +
+                ", localizedIds=" + localizedIds +
                 ", error=" + error +
                 ", errorDetails=" + errorDetails +
                 '}';
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hashCode(operationId, pushIds, ok, messageIds, contentUrls, error, errorDetails);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PushResponse that = (PushResponse) o;
+        return ok == that.ok && Objects.equals(operationId, that.operationId) &&
+                Objects.equals(pushIds, that.pushIds) && Objects.equals(messageIds, that.messageIds) &&
+                Objects.equals(contentUrls, that.contentUrls) &&
+                Objects.equals(localizedIds, that.localizedIds) && Objects.equals(error, that.error) &&
+                Objects.equals(errorDetails, that.errorDetails);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        final PushResponse other = (PushResponse) obj;
-        return Objects.equal(this.operationId, other.operationId) && Objects.equal(this.pushIds, other.pushIds) && Objects.equal(this.ok, other.ok) && Objects.equal(this.messageIds, other.messageIds) && Objects.equal(this.contentUrls, other.contentUrls) && Objects.equal(this.error, other.error) && Objects.equal(this.errorDetails, other.errorDetails);
+    public int hashCode() {
+        return Objects.hash(operationId, pushIds, ok, messageIds, contentUrls, localizedIds, error, errorDetails);
     }
 
     /**
@@ -134,6 +145,7 @@ public final class PushResponse {
         private boolean ok = false;
         private ImmutableList.Builder<String> messageIds = ImmutableList.builder();
         private ImmutableList.Builder<String> contentUrls = ImmutableList.builder();
+        private ImmutableList.Builder<String> localizedIds = ImmutableList.builder();
         private String error;
         private ErrorDetails errorDetails;
 
@@ -180,6 +192,16 @@ public final class PushResponse {
             return this;
         }
 
+        public Builder addLocalizedId(String localizedId) {
+            this.localizedIds.add(localizedId);
+            return this;
+        }
+
+        public Builder addAllLocalizedIds(Iterable<? extends String> localizedIds) {
+            this.localizedIds.addAll(localizedIds);
+            return this;
+        }
+
         public Builder setError(String error) {
             this.error = error;
             return this;
@@ -191,7 +213,9 @@ public final class PushResponse {
         }
 
         public PushResponse build() {
-            return new PushResponse(operationId, pushIds.build(), ok, messageIds.build(), contentUrls.build(), error, errorDetails);
+            return new PushResponse(operationId, pushIds.build(), ok, messageIds.build(), contentUrls.build(),
+                    localizedIds.build(), error
+                    , errorDetails);
 
         }
     }
