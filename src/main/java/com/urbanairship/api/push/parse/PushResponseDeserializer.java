@@ -34,6 +34,7 @@ public final class PushResponseDeserializer extends JsonDeserializer<PushRespons
                             .put("ok", (reader, jsonParser, deserializationContext) -> reader.readOk(jsonParser))
                             .put("message_ids", (reader, jsonParser, deserializationContext) -> reader.readMessageIds(jsonParser))
                             .put("content_urls", (reader, jsonParser, deserializationContext) -> reader.readContentUrls(jsonParser))
+                            .put("localized_ids", (reader, jsonParser, deserializationContext) -> reader.readLocalizedIds(jsonParser))
                             .put("error", (reader, jsonParser, deserializationContext) -> reader.readError(jsonParser))
                             .put("details", (reader, jsonParser, deserializationContext) -> reader.readErrorDetails(jsonParser))
                             .build()
@@ -43,7 +44,7 @@ public final class PushResponseDeserializer extends JsonDeserializer<PushRespons
 
     // See Google Guava for Supplier details
     public PushResponseDeserializer() {
-        deserializer = new StandardObjectDeserializer<PushResponse, PushResponseReader>(
+        deserializer = new StandardObjectDeserializer<>(
                 FIELD_PARSERS,
                 () -> new PushResponseReader()
         );
