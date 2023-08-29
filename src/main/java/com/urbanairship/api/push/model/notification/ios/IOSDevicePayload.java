@@ -43,6 +43,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
     private final Optional<IOSInterruptionLevel> iosInterruptionLevel;
     private final Optional<Double> relevanceScore;
 
+    private final Optional<IOSLiveActivity> iosLiveActivity;
+
     private IOSDevicePayload(Optional<IOSAlertData> alert,
                              Optional<IOSBadgeData> badge,
                              Optional<Boolean> contentAvailable,
@@ -62,7 +64,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                              Optional<String> targetContentId,
                              Optional<IOSTemplate> iosTemplate,
                              Optional<IOSInterruptionLevel> iosInterruptionLevel,
-                             Optional<Double> relevanceScore) {
+                             Optional<Double> relevanceScore,
+                             Optional<IOSLiveActivity> iosLiveActivity) {
         this.alert = alert;
         this.badge = badge;
         this.contentAvailable = contentAvailable;
@@ -83,6 +86,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         this.iosTemplate = iosTemplate;
         this.iosInterruptionLevel = iosInterruptionLevel;
         this.relevanceScore = relevanceScore;
+        this.iosLiveActivity = iosLiveActivity;
     }
 
     /**
@@ -214,7 +218,6 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
      */
     public Optional<IOSSoundData> getSoundData() { return sound; }
 
-
     /**
      * @deprecated The sound name can now be retrieved from getSoundData() as of 4.1.0.
      *
@@ -293,6 +296,12 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         return relevanceScore;
     }
 
+    /**
+     * Get the IOSLiveActivity if present.
+     * @return Optional IOSLiveActivity object
+     */
+    public Optional<IOSLiveActivity> getIosLiveActivity() { return iosLiveActivity; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -317,13 +326,15 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                 Objects.equals(targetContentId, that.targetContentId) &&
                 Objects.equals(iosTemplate, that.iosTemplate) &&
                 Objects.equals(iosInterruptionLevel, that.iosInterruptionLevel) &&
-                Objects.equals(relevanceScore, that.relevanceScore);
+                Objects.equals(relevanceScore, that.relevanceScore) &&
+                Objects.equals(iosLiveActivity, that.iosLiveActivity);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(alert, extra, badge, contentAvailable, expiry, priority, category, interactive, title, subtitle,
-                mediaAttachment, sound, mutableContent, collapseId, threadId, actions, targetContentId, iosTemplate, iosInterruptionLevel, relevanceScore);
+                mediaAttachment, sound, mutableContent, collapseId, threadId, actions, targetContentId, iosTemplate,
+                iosInterruptionLevel, relevanceScore, iosLiveActivity);
     }
 
     @Override
@@ -349,6 +360,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                 ", iosTemplate=" + iosTemplate +
                 ", iosInterruptionLevel=" + iosInterruptionLevel +
                 ", relevanceScore=" + relevanceScore +
+                ", iosLiveActivity=" + iosLiveActivity +
                 '}';
     }
 
@@ -373,7 +385,7 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         private IOSTemplate iosTemplate;
         private IOSInterruptionLevel iosInterruptionLevel;
         private Double relevanceScore;
-
+        private IOSLiveActivity iosLiveActivity;
 
         private Builder() { }
 
@@ -635,6 +647,17 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
         }
 
         /**
+         * Set Live Activity.
+         *
+         * @param iosLiveActivity IOSLiveActivity
+         * @return Builder
+         */
+        public Builder setIosLiveActivity(IOSLiveActivity iosLiveActivity) {
+            this.iosLiveActivity = iosLiveActivity;
+            return this;
+        }
+
+        /**
          * Build IOSDevicePayload
          * @return IOSDevicePayload
          */
@@ -659,7 +682,8 @@ public final class IOSDevicePayload extends PushModelObject implements DevicePay
                     Optional.ofNullable(targetContentId),
                     Optional.ofNullable(iosTemplate),
                     Optional.ofNullable(iosInterruptionLevel),
-                    Optional.ofNullable(relevanceScore));
+                    Optional.ofNullable(relevanceScore),
+                    Optional.ofNullable(iosLiveActivity));
         }
     }
 }

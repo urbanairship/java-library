@@ -67,6 +67,17 @@ public class IOSDevicePayloadTest {
                 .setName("really cool name")
                 .build();
 
+        IOSLiveActivity iosLiveActivity = IOSLiveActivity.newBuilder()
+                .setIosLiveActivityEvent(IOSLiveActivityEvent.UPDATE)
+                .setName("Foxes-Tigers")
+                .setPriority(5)
+                .setIosLiveActivityAlert(IOSLiveActivityAlert.newBuilder()
+                        .setBody("test").setTitle("test").setSound("test.mp3").build())
+                .setDismissalDate(1234)
+                .setRelevanceScore(1.0)
+                .setStaleDate(1234)
+                .build();
+
         IOSDevicePayload m = IOSDevicePayload.newBuilder()
                 .setContentAvailable(true)
                 .setAlert(IOSAlertData.newBuilder().build())
@@ -81,6 +92,7 @@ public class IOSDevicePayloadTest {
                 .setMutableContent(true)
                 .setThreadId("unique ID")
                 .setRelevanceScore(0.5)
+                .setIosLiveActivity(iosLiveActivity)
                 .build();
 
         assertTrue(m.getExtra().isPresent());
@@ -112,6 +124,7 @@ public class IOSDevicePayloadTest {
         assertEquals(hidden, m.getMediaAttachment().get().getOptions().get().getHidden().get());
         assertEquals("unique ID", m.getThreadId().get());
         assertEquals(0.5, m.getRelevanceScore().get(), 0.0f);
+        assertEquals("Foxes-Tigers", m.getIosLiveActivity().get().getName());
     }
 
     @Test(expected = IllegalArgumentException.class)
