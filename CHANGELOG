@@ -1,4 +1,13 @@
 -------------------------
+9.1.0 29AUG23
+-------------------------
+- Added support for Live Activities (IOSDevicePayload) and Live Updates (AndroidDevicePayload)
+- Added support for Inbox Batch Delete Request
+- Added support for Holdout Groups (PushOptions)
+- Added support for Orchestration and Message Type (PushPayload/Experiment)
+- Added support for Localized Ids (PushResponse)
+
+-------------------------
 9.0.2 13JUL23
 -------------------------
 - Added missing fields for isCompound function in IOSAlertData model

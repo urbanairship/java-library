@@ -12,6 +12,8 @@ import com.urbanairship.api.push.model.notification.actions.OpenExternalURLActio
 import com.urbanairship.api.push.model.notification.actions.RemoveTagAction;
 import com.urbanairship.api.push.model.notification.actions.TagActionData;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
+import com.urbanairship.api.push.model.notification.android.AndroidLiveUpdate;
+import com.urbanairship.api.push.model.notification.android.AndroidLiveUpdateEvent;
 import com.urbanairship.api.push.model.notification.android.BigTextStyle;
 import com.urbanairship.api.push.model.notification.android.Category;
 import com.urbanairship.api.push.model.notification.android.PublicNotification;
@@ -177,5 +179,28 @@ public class PayloadSerializerTest {
 
         assertEquals(expected, actual);
         assertEquals(payload, roundTripPayload);
+    }
+
+    @Test
+    public void testLiveUpdate() throws Exception {
+        AndroidLiveUpdate androidLiveUpdate = AndroidLiveUpdate.newBuilder()
+                .setAndroidLiveUpdateEvent(AndroidLiveUpdateEvent.UPDATE)
+                .setName("Foxes-Tigers")
+                .setDismissalDate(1234)
+                .setType("test")
+                .setTimestamp(1234)
+                .addContentState("key", "value")
+                .addContentState("key2", "value2")
+                .build();
+
+        AndroidDevicePayload payload = AndroidDevicePayload.newBuilder()
+                .setAndroidLiveUpdate(androidLiveUpdate)
+                .build();
+
+        String json = MAPPER.writeValueAsString(payload);
+
+        String expected = "{\"live_update\":{\"event\":\"update\",\"name\":\"Foxes-Tigers\",\"content_state\":{\"key\":\"value\",\"key2\":\"value2\"},\"dismissal_date\":1234,\"timestamp\":1234,\"type\":\"test\"}}";
+
+        assertEquals(expected, json);
     }
 }

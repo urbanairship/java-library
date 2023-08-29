@@ -28,13 +28,15 @@ public class PushPayloadDeserializer extends JsonDeserializer<PushPayload> {
                     .put("options", (reader, jsonParser, deserializationContext) -> reader.readOptions(jsonParser))
                     .put("device_types", (reader, jsonParser, deserializationContext) -> reader.readDeviceTypes(jsonParser))
                     .put("in_app", (reader, jsonParser, deserializationContext) -> reader.readInApp(jsonParser))
+                    .put("orchestration", (reader, jsonParser, deserializationContext) -> reader.readOrchestration(jsonParser))
+                    .put("message_type", (reader, jsonParser, deserializationContext) -> reader.readMessageType(jsonParser))
                     .build()
     );
 
     private final StandardObjectDeserializer<PushPayload, ?> deserializer;
 
     public PushPayloadDeserializer() {
-        deserializer = new StandardObjectDeserializer<PushPayload, PushPayloadReader>(
+        deserializer = new StandardObjectDeserializer<>(
                 FIELD_PARSERS,
                 () -> new PushPayloadReader()
         );

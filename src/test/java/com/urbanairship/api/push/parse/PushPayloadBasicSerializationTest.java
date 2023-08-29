@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.urbanairship.api.createandsend.model.notification.email.EmailTemplate;
+import com.urbanairship.api.push.model.Orchestration;
+import com.urbanairship.api.push.model.OrchestrationType;
 import org.apache.commons.lang.RandomStringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -665,5 +667,28 @@ public class PushPayloadBasicSerializationTest {
     @Test(expected = APIParsingException.class)
     public void testArrayWithSingleObject() throws Exception {
         mapper.readValue("[{\"what\":\"for\"}]", PushPayload.class);
+    }
+
+    @Test
+    public void testPushPayloadWithOrchestrationAndMessageType() throws Exception {
+        PushPayload pushPayload =
+                PushPayload.newBuilder()
+                        .setOrchestration(Orchestration.newBuilder()
+                                .setOrchestrationType(
+                        OrchestrationType.CHANNEL_PRIORITY)
+                                .addOrchestrationChannelPriority("test")
+                                .build())
+                        .setNotification(Notification.newBuilder().setAlert("test").build())
+                        .setAudience(Selectors.tag("test"))
+                        .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                        .setMessageType(MessageType.COMMERCIAL)
+                        .build();
+
+        String pushPayloadStr = mapper.writeValueAsString(pushPayload);
+        JsonNode actualJson = mapper.readTree(pushPayloadStr);
+        String json = "{\"audience\":{\"tag\":\"test\"},\"device_types\":[\"ios\"]," +
+                "\"notification\":{\"alert\":\"test\"},\"orchestration\":{\"type\":\"channel_priority\",\"channel_priority\":[\"test\"]},\"message_type\":\"commercial\"}";
+        JsonNode expectedJson = mapper.readTree(json);
+        assertEquals(actualJson, expectedJson);
     }
 }

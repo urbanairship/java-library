@@ -11,8 +11,10 @@ import com.urbanairship.api.push.model.audience.Selector;
 import com.urbanairship.api.push.model.audience.SelectorType;
 import com.urbanairship.api.push.model.localization.Localization;
 import com.urbanairship.api.push.model.notification.Notification;
+import com.urbanairship.api.push.model.notification.email.MessageType;
 import com.urbanairship.api.push.model.notification.richpush.RichPushMessage;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -29,6 +31,8 @@ public final class PushPayload extends PushModelObject {
     private final Optional<InApp> inApp;
     private final Optional<Campaigns> campaigns;
     private final ImmutableMap<String, Object> globalAttributes;
+    private final Optional<Orchestration> orchestration;
+    private final Optional<MessageType> messageType;
     /**
      * PushPayload builder
      * @return Builder
@@ -45,7 +49,9 @@ public final class PushPayload extends PushModelObject {
                         Optional<InApp> inApp,
                         Optional<Campaigns> campaigns,
                         ImmutableList<Localization> localizations,
-                        ImmutableMap<String, Object> globalAttributes) {
+                        ImmutableMap<String, Object> globalAttributes,
+                        Optional<Orchestration> orchestration,
+                        Optional<MessageType> messageType) {
         this.audience = audience;
         this.notification = notification;
         this.message = message;
@@ -54,6 +60,8 @@ public final class PushPayload extends PushModelObject {
         this.inApp = inApp;
         this.campaigns = campaigns;
         this.globalAttributes = globalAttributes;
+        this.orchestration = orchestration;
+        this.messageType = messageType;
 
         if (localizations.isEmpty()) {
             this.localizations = Optional.empty();
@@ -140,56 +148,33 @@ public final class PushPayload extends PushModelObject {
         return globalAttributes;
     }
 
+    /**
+     * Get the orchestration.
+     * @return An Optional Orchestration object in the push payload.
+     */
+    public Optional<Orchestration> getOrchestration() {
+        return orchestration;
+    }
+
+    /**
+     * Get the Message Type.
+     * @return An Optional MessageType object in the push payload.
+     */
+    public Optional<MessageType> getMessageType() {
+        return messageType;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         PushPayload that = (PushPayload) o;
-
-        if (audience != null ? !audience.equals(that.audience) : that.audience != null) {
-            return false;
-        }
-        if (notification != null ? !notification.equals(that.notification) : that.notification != null) {
-            return false;
-        }
-        if (message != null ? !message.equals(that.message) : that.message != null) {
-            return false;
-        }
-        if (deviceTypes != null ? !deviceTypes.equals(that.deviceTypes) : that.deviceTypes != null) {
-            return false;
-        }
-        if (pushOptions != null ? !pushOptions.equals(that.pushOptions) : that.pushOptions != null) {
-            return false;
-        }
-        if (inApp != null ? !inApp.equals(that.inApp) : that.inApp != null) {
-            return false;
-        }
-        if (campaigns != null ? !campaigns.equals(that.campaigns) : that.campaigns != null) {
-            return false;
-        }
-        if (globalAttributes != null ? !globalAttributes.equals(that.globalAttributes) : that.globalAttributes != null) {
-            return false;
-        }
-
-        return true;
+        return Objects.equals(audience, that.audience) && Objects.equals(notification, that.notification) && Objects.equals(localizations, that.localizations) && Objects.equals(message, that.message) && Objects.equals(deviceTypes, that.deviceTypes) && Objects.equals(pushOptions, that.pushOptions) && Objects.equals(inApp, that.inApp) && Objects.equals(campaigns, that.campaigns) && Objects.equals(globalAttributes, that.globalAttributes) && Objects.equals(orchestration, that.orchestration) && Objects.equals(messageType, that.messageType);
     }
 
     @Override
     public int hashCode() {
-        int result = (audience != null ? audience.hashCode() : 0);
-        result = 31 * result + (notification != null ? notification.hashCode() : 0);
-        result = 31 * result + (message != null ? message.hashCode() : 0);
-        result = 31 * result + (deviceTypes != null ? deviceTypes.hashCode() : 0);
-        result = 31 * result + (pushOptions != null ? pushOptions.hashCode() : 0);
-        result = 31 * result + (inApp != null ? inApp.hashCode() : 0);
-        result = 31 * result + (campaigns != null ? campaigns.hashCode() : 0);
-        result = 31 * result + (globalAttributes != null ? globalAttributes.hashCode() : 0);
-        return result;
+        return Objects.hash(audience, notification, localizations, message, deviceTypes, pushOptions, inApp, campaigns, globalAttributes, orchestration, messageType);
     }
 
     @Override
@@ -197,12 +182,15 @@ public final class PushPayload extends PushModelObject {
         return "PushPayload{" +
                 "audience=" + audience +
                 ", notification=" + notification +
+                ", localizations=" + localizations +
                 ", message=" + message +
                 ", deviceTypes=" + deviceTypes +
                 ", pushOptions=" + pushOptions +
                 ", inApp=" + inApp +
                 ", campaigns=" + campaigns +
                 ", globalAttributes=" + globalAttributes +
+                ", orchestration=" + orchestration +
+                ", messageType=" + messageType +
                 '}';
     }
 
@@ -216,6 +204,8 @@ public final class PushPayload extends PushModelObject {
         private Campaigns campaigns = null;
         private ImmutableList.Builder<Localization> localizationsBuilder = ImmutableList.builder();
         private ImmutableMap.Builder<String, Object> globalAttributesBuilder = ImmutableMap.builder();
+        private Orchestration orchestration = null;
+        private MessageType messageType = null;
 
         private Builder() { }
 
@@ -310,6 +300,31 @@ public final class PushPayload extends PushModelObject {
             return this;
         }
 
+        public Builder addAllGlobalAttributes(ImmutableMap<String, Object> globalAttributes) {
+            this.globalAttributesBuilder.putAll(globalAttributes);
+            return this;
+        }
+
+        /**
+         * Set the orchestration.
+         * @param orchestration An Orchestration object.
+         * @return Builder
+         */
+        public Builder setOrchestration(Orchestration orchestration) {
+            this.orchestration = orchestration;
+            return this;
+        }
+
+        /**
+         * Set the messageType.
+         * @param messageType An messageType object.
+         * @return Builder
+         */
+        public Builder setMessageType(MessageType messageType) {
+            this.messageType = messageType;
+            return this;
+        }
+
         /**
          * Build a PushPayload object. Will fail if any of the following
          * preconditions are not met.
@@ -340,8 +355,9 @@ public final class PushPayload extends PushModelObject {
                     Optional.ofNullable(inApp),
                     Optional.ofNullable(campaigns),
                     localizations,
-                    globalAttributes
-            );
+                    globalAttributes,
+                    Optional.ofNullable(orchestration),
+                    Optional.ofNullable(messageType));
         }
     }
 }

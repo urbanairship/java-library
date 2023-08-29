@@ -5,6 +5,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
 
+import com.urbanairship.api.push.model.notification.ios.IOSLiveActivity;
+import com.urbanairship.api.push.model.notification.ios.IOSLiveActivityAlert;
+import com.urbanairship.api.push.model.notification.ios.IOSLiveActivityEvent;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -258,5 +261,31 @@ public class PayloadSerializerTest {
 
         IOSDevicePayload payload = mapper.readValue(json, IOSDevicePayload.class);
         assertEquals(payload.getRelevanceScore().get(), 1.0, 0.0f);
+    }
+
+    @Test
+    public void testLiveActivity() throws Exception {
+        IOSLiveActivity iosLiveActivity = IOSLiveActivity.newBuilder()
+                .setIosLiveActivityEvent(IOSLiveActivityEvent.UPDATE)
+                .setName("Foxes-Tigers")
+                .setPriority(5)
+                .setIosLiveActivityAlert(IOSLiveActivityAlert.newBuilder()
+                        .setBody("test").setTitle("test").setSound("test.mp3").build())
+                .setDismissalDate(1234)
+                .setRelevanceScore(1.0)
+                .setStaleDate(1234)
+                .addContentState("key", "value")
+                .addContentState("key2", "value2")
+                .build();
+
+        IOSDevicePayload payload = IOSDevicePayload.newBuilder()
+                .setIosLiveActivity(iosLiveActivity)
+                .build();
+
+        String json = mapper.writeValueAsString(payload);
+
+        String expected = "{\"live_activity\":{\"event\":\"update\",\"name\":\"Foxes-Tigers\",\"alert\":{\"body\":\"test\",\"title\":\"test\",\"sound\":\"test.mp3\"},\"content_state\":{\"key\":\"value\",\"key2\":\"value2\"},\"dismissal_date\":1234,\"priority\":5,\"relevance_score\":1.0,\"stale_date\":1.0}}";
+
+        assertEquals(expected, json);
     }
 }
