@@ -25,6 +25,15 @@ public class PushOptionsSerializer extends JsonSerializer<PushOptions> {
         if (payload.getPersonalization().isPresent()) {
             jgen.writeBooleanField("personalization", payload.getPersonalization().get());
         }
+        if (payload.getRedactPayload().isPresent()) {
+            jgen.writeBooleanField("redact_payload", payload.getRedactPayload().get());
+        }
+        if (payload.getBypassHoldoutGroups().isPresent()) {
+            jgen.writeBooleanField("bypass_holdout_groups", payload.getBypassHoldoutGroups().get());
+        }
+        if (payload.getBypassFrequencyLimits().isPresent()) {
+            jgen.writeBooleanField("bypass_frequency_limits", payload.getBypassFrequencyLimits().get());
+        }
 
         jgen.writeEndObject();
     }

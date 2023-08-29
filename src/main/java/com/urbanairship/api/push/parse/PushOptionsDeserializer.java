@@ -23,7 +23,10 @@ public class PushOptionsDeserializer extends JsonDeserializer<PushOptions> {
         .put("expiry", (reader, parser, context) -> reader.readExpiry(parser))
         .put("no_throttle", (reader, parser, context) -> reader.readNoThrottle(parser))
         .put("personalization", (reader, parser, context) -> reader.readPersonalization(parser))
-        .build()
+        .put("redact_payload", (reader, parser, context) -> reader.readRedactPayload(parser))
+        .put("bypass_holdout_groups", (reader, parser, context) -> reader.readBypassHoldoutGroups(parser))
+        .put("bypass_frequency_limits", (reader, parser, context) -> reader.readBypassFrequencyLimits(parser))
+            .build()
     );
 
     private final StandardObjectDeserializer<PushOptions, ?> deserializer;

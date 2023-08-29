@@ -23,8 +23,9 @@ public class PushResponseTest {
                 "        \"id2\"\n" +
                 "    ],\n" +
                 "    \"message_ids\": [],\n" +
-                "    \"content_urls\" : []\n" +
-            "}";
+                "    \"content_urls\" : [],\n" +
+                "    \"localized_ids\" : []\n" +
+                "}";
 
         ObjectMapper mapper = PushObjectMapper.getInstance();
         try {

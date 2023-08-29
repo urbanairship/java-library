@@ -55,6 +55,13 @@ public final class PushResponseReader implements JsonObjectReader<PushResponse> 
         builder.addAllContentUrls(list);
     }
 
+    public void readLocalizedIds(JsonParser jsonParser) throws IOException {
+        List<String> list =
+                jsonParser.readValueAs(new TypeReference<List<String>>() {
+                });
+        builder.addAllLocalizedIds(list);
+    }
+
     public void readError(JsonParser jsonParser) throws IOException {
         builder.setError(jsonParser.readValueAs(String.class));
     }

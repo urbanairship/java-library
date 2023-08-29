@@ -96,6 +96,10 @@ public class IOSDevicePayloadSerializer extends JsonSerializer<IOSDevicePayload>
             jgen.writeNumberField("relevance_score", payload.getRelevanceScore().get());
         }
 
+        if (payload.getIosLiveActivity().isPresent()) {
+            jgen.writeObjectField("live_activity", payload.getIosLiveActivity().get());
+        }
+
         jgen.writeEndObject();
     }
 }

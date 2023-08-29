@@ -42,6 +42,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
     private final Optional<PublicNotification> publicNotification;
     private final Optional<Actions> actions;
     private final Optional<AndroidTemplate> template;
+    private final Optional<AndroidLiveUpdate> androidLiveUpdate;
 
     private AndroidDevicePayload(Builder builder) {
         this.alert = Optional.ofNullable(builder.alert);
@@ -71,6 +72,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         this.publicNotification = Optional.ofNullable(builder.publicNotification);
         this.actions = Optional.ofNullable(builder.actions);
         this.template = Optional.ofNullable(builder.template);
+        this.androidLiveUpdate = Optional.ofNullable(builder.androidLiveUpdate);
     }
 
     /**
@@ -300,6 +302,15 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         return template;
     }
 
+    /**
+     * Get the live update with android-specific message.
+     *
+     * @return Optional AndroidLiveUpdate
+     */
+    public Optional<AndroidLiveUpdate> getAndroidLiveUpdate() {
+        return androidLiveUpdate;
+    }
+
     @Override
     public String toString() {
         return "AndroidDevicePayload{" +
@@ -326,6 +337,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
                 ", actions=" + actions +
                 ", publicNotification=" + publicNotification +
                 ", template=" + template +
+                ", androidLiveUpdate=" + androidLiveUpdate +
                 '}';
     }
 
@@ -359,6 +371,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         if (!publicNotification.equals(that.publicNotification)) return false;
         if (!actions.equals(that.actions)) return false;
         if (!template.equals(that.template)) return false;
+        if (!androidLiveUpdate.equals(that.androidLiveUpdate)) return false;
 
         return true;
     }
@@ -388,6 +401,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         result = 31 * result + publicNotification.hashCode();
         result = 31 * result + actions.hashCode();
         result = 31 * result + template.hashCode();
+        result = 31 * result + androidLiveUpdate.hashCode();
 
         return result;
     }
@@ -417,6 +431,7 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
         private PublicNotification publicNotification = null;
         private Actions actions;
         private AndroidTemplate template;
+        private AndroidLiveUpdate androidLiveUpdate;
 
         private Builder() { }
 
@@ -688,6 +703,17 @@ public final class AndroidDevicePayload extends PushModelObject implements Devic
          */
         public Builder setTemplate(AndroidTemplate template) {
             this.template = template;
+            return this;
+        }
+
+        /**
+         * Set an Android live update for the message.
+         *
+         * @param androidLiveUpdate AndroidTemplate
+         * @return Builder
+         */
+        public Builder setAndroidLiveUpdate(AndroidLiveUpdate androidLiveUpdate) {
+            this.androidLiveUpdate = androidLiveUpdate;
             return this;
         }
 

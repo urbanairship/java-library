@@ -52,6 +52,7 @@ public class Constants {
     public static final String VALUE = "value";
     public static final String ACTION = "action";
     public static final String TIMESTAMP = "timestamp";
+    public static final String MESSAGE_IDS = "message_ids";
 
     // Actions
     public static final String ADD_KEY = "add";

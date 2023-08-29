@@ -58,6 +58,7 @@ import com.urbanairship.api.push.model.DeviceType;
 import com.urbanairship.api.push.model.DeviceTypeData;
 import com.urbanairship.api.push.model.Display;
 import com.urbanairship.api.push.model.InApp;
+import com.urbanairship.api.push.model.Orchestration;
 import com.urbanairship.api.push.model.PushExpiry;
 import com.urbanairship.api.push.model.PushOptions;
 import com.urbanairship.api.push.model.PushPayload;
@@ -88,6 +89,7 @@ import com.urbanairship.api.push.model.notification.adm.ADMFields;
 import com.urbanairship.api.push.model.notification.adm.ADMTemplate;
 import com.urbanairship.api.push.model.notification.android.AndroidDevicePayload;
 import com.urbanairship.api.push.model.notification.android.AndroidFields;
+import com.urbanairship.api.push.model.notification.android.AndroidLiveUpdate;
 import com.urbanairship.api.push.model.notification.android.AndroidTemplate;
 import com.urbanairship.api.push.model.notification.android.BigPictureStyle;
 import com.urbanairship.api.push.model.notification.android.BigTextStyle;
@@ -102,6 +104,8 @@ import com.urbanairship.api.push.model.notification.ios.IOSBadgeData;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 import com.urbanairship.api.push.model.notification.ios.IOSFields;
 import com.urbanairship.api.push.model.notification.ios.IOSInterruptionLevel;
+import com.urbanairship.api.push.model.notification.ios.IOSLiveActivity;
+import com.urbanairship.api.push.model.notification.ios.IOSLiveActivityAlert;
 import com.urbanairship.api.push.model.notification.ios.IOSMediaContent;
 import com.urbanairship.api.push.model.notification.ios.IOSMediaOptions;
 import com.urbanairship.api.push.model.notification.ios.IOSSoundData;
@@ -159,6 +163,7 @@ import com.urbanairship.api.push.parse.notification.adm.ADMTemplateDeserializer;
 import com.urbanairship.api.push.parse.notification.android.AndroidDevicePayloadDeserializer;
 import com.urbanairship.api.push.parse.notification.android.AndroidDevicePayloadSerializer;
 import com.urbanairship.api.push.parse.notification.android.AndroidFieldsDeserializer;
+import com.urbanairship.api.push.parse.notification.android.AndroidLiveUpdateSerializer;
 import com.urbanairship.api.push.parse.notification.android.AndroidTemplateDeserializer;
 import com.urbanairship.api.push.parse.notification.android.BigPictureStyleDeserializer;
 import com.urbanairship.api.push.parse.notification.android.BigPictureStyleSerializer;
@@ -182,6 +187,8 @@ import com.urbanairship.api.push.parse.notification.ios.IOSDevicePayloadDeserial
 import com.urbanairship.api.push.parse.notification.ios.IOSDevicePayloadSerializer;
 import com.urbanairship.api.push.parse.notification.ios.IOSFieldsDeserializer;
 import com.urbanairship.api.push.parse.notification.ios.IOSInterruptionLevelDeserializer;
+import com.urbanairship.api.push.parse.notification.ios.IOSLiveActivityAlertSerializer;
+import com.urbanairship.api.push.parse.notification.ios.IOSLiveActivitySerializer;
 import com.urbanairship.api.push.parse.notification.ios.IOSMediaContentDeserializer;
 import com.urbanairship.api.push.parse.notification.ios.IOSMediaContentSerializer;
 import com.urbanairship.api.push.parse.notification.ios.IOSMediaOptionsDeserializer;
@@ -299,6 +306,8 @@ public class PushObjectMapper {
                 .addSerializer(PushExpiry.class, new PushExpirySerializer())
                 .addDeserializer(PushExpiry.class, new PushExpiryDeserializer())
                 .addDeserializer(PushResponse.class, new PushResponseDeserializer())
+                .addSerializer(Orchestration.class, new OrchestrationSerializer())
+                .addDeserializer(Orchestration.class, new OrchestrationDeserializer())
 
 
                 /* IOS */
@@ -320,6 +329,8 @@ public class PushObjectMapper {
                 .addDeserializer(IOSFields.class, new IOSFieldsDeserializer())
                 .addDeserializer(IOSTemplate.class, new IOSTemplateDeserializer())
                 .addDeserializer(IOSInterruptionLevel.class, new IOSInterruptionLevelDeserializer())
+                .addSerializer(IOSLiveActivityAlert.class, new IOSLiveActivityAlertSerializer())
+                .addSerializer(IOSLiveActivity.class, new IOSLiveActivitySerializer())
 
 
                 /* WNS enums */
@@ -362,6 +373,7 @@ public class PushObjectMapper {
                 .addDeserializer(PublicNotification.class, new PublicNotificationDeserializer())
                 .addDeserializer(AndroidTemplate.class, new AndroidTemplateDeserializer())
                 .addDeserializer(AndroidFields.class, new AndroidFieldsDeserializer())
+                .addSerializer(AndroidLiveUpdate.class, new AndroidLiveUpdateSerializer())
 
                 /* WebSettings */
                 .addSerializer(WebDevicePayload.class, new WebDevicePayloadSerializer())
