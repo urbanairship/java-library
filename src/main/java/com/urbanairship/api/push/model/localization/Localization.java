@@ -13,15 +13,15 @@ import java.util.Optional;
  * Represents a localized message.
  */
 public class Localization extends PushModelObject {
-    private final String country;
-    private final String language;
+    private final Optional<String> country;
+    private final Optional<String> language;
     private final Optional<InApp> inApp;
     private final Optional<RichPushMessage> richPushMessage;
     private final Optional<Notification> notification;
 
     private Localization(Builder builder) {
-        this.country = builder.country;
-        this.language = builder.language;
+        this.country = Optional.ofNullable(builder.country);
+        this.language = Optional.ofNullable(builder.language);
         this.inApp = Optional.ofNullable(builder.inApp);
         this.richPushMessage = Optional.ofNullable(builder.richPushMessage);
         this.notification = Optional.ofNullable(builder.notification);
@@ -39,7 +39,7 @@ public class Localization extends PushModelObject {
      * Get the ISO 3166-2 two digit country code for this localization.
      * @return country String
      */
-    public String getCountry() {
+    public Optional<String> getCountry() {
         return country;
     }
 
@@ -47,7 +47,7 @@ public class Localization extends PushModelObject {
      * Get the ISO 639-2 two digit language code for this localization.
      * @return language String
      */
-    public String getLanguage() {
+    public Optional<String> getLanguage() {
         return language;
     }
 
@@ -155,8 +155,7 @@ public class Localization extends PushModelObject {
         }
 
         public Localization build() {
-            Preconditions.checkNotNull(country, "Country must be set.");
-            Preconditions.checkNotNull(language, "Langauge must be set.");
+            Preconditions.checkArgument(language != null || country != null, "Language or country must be set.");
             return new Localization(this);
         }
     }
