@@ -1,4 +1,9 @@
 -------------------------
+9.1.1 4OCT23
+-------------------------
+- Language and Country fields are now optional in Localization class
+
+-------------------------
 9.1.0 29AUG23
 -------------------------
 - Added support for Live Activities (IOSDevicePayload) and Live Updates (AndroidDevicePayload)
