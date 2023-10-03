@@ -12,9 +12,12 @@ public class LocalizationSerializer extends JsonSerializer<Localization> {
     public void serialize(Localization localization, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         jgen.writeStartObject();
 
-        jgen.writeStringField("language", localization.getLanguage());
-        jgen.writeStringField("country", localization.getCountry());
-
+        if (localization.getLanguage().isPresent()) {
+            jgen.writeStringField("language", localization.getLanguage().get());
+        }
+        if (localization.getCountry().isPresent()) {
+            jgen.writeStringField("country", localization.getCountry().get());
+        }
         if (localization.getNotification().isPresent()) {
             jgen.writeObjectField("notification", localization.getNotification().get());
         }
