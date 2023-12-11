@@ -3,7 +3,8 @@
 -------------------------
 - Update Jackson-bom dependency
 - Update fluent-hc dependency
-- Update netty-codec-http dependency
+- Update netty dependencies
+- Update Guava dependency
 - Replace opencsv dependency by a custom function
 
 -------------------------
