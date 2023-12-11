@@ -1,4 +1,12 @@
 -------------------------
+9.2.0 11DEC23
+-------------------------
+- Update Jackson-bom dependency
+- Update fluent-hc dependency
+- Update netty-codec-http dependency
+- Replace opencsv dependency by a custom function
+
+-------------------------
 9.1.1 4OCT23
 -------------------------
 - Language and Country fields are now optional in Localization class

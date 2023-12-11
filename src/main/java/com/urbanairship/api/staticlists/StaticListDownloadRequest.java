@@ -6,15 +6,14 @@ package com.urbanairship.api.staticlists;
 
 import com.google.common.base.Preconditions;
 import com.google.common.net.HttpHeaders;
-import com.opencsv.CSVWriter;
 import com.urbanairship.api.client.Request;
 import com.urbanairship.api.client.RequestUtils;
-import com.urbanairship.api.client.ResponseParser;
+import com.urbanairship.api.common.CSVUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.entity.ContentType;
+import com.urbanairship.api.client.ResponseParser;
 
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.util.HashMap;
@@ -99,11 +98,14 @@ public class StaticListDownloadRequest implements Request<String> {
     public ResponseParser<String> getResponseParser() {
         return response -> {
             if (fileOutputStream.isPresent()) {
-                try (OutputStreamWriter stream = new OutputStreamWriter(fileOutputStream.get());
-                     CSVWriter writer = new CSVWriter(stream, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.NO_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END)) {
+                try (OutputStreamWriter stream = new OutputStreamWriter(fileOutputStream.get())) {
                     String[] rows = response.split("\n");
                     for (String row : rows) {
-                        writer.writeNext(row.split(","));
+                        String[] columns = row.split(",");
+
+                        // Manually format each row for CSV
+                        String csvRow = CSVUtils.formatRowForCSV(columns);
+                        stream.write(csvRow + "\n");
                     }
                 } finally {
                     fileOutputStream.get().close();
