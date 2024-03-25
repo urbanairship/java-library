@@ -6,7 +6,6 @@ import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.sun.corba.se.spi.activation.Server;
 import com.urbanairship.api.channel.ChannelRequest;
 import com.urbanairship.api.channel.ChannelTagRequest;
 import com.urbanairship.api.channel.model.ChannelResponse;
@@ -89,7 +88,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.io.File;
@@ -101,6 +99,7 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
@@ -132,6 +131,7 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 public class UrbanAirshipClientTest {
 
@@ -223,7 +223,7 @@ public class UrbanAirshipClientTest {
 
         AsyncRequestClient asyncClient = (AsyncRequestClient) client.getRequestClient();
 
-        assertEquals("https://go.airship.eu", asyncClient.getBaseUri().toString());
+        assertEquals("https://api.asnapieu.com", asyncClient.getBaseUri().toString());
 
         client.close();
     }
@@ -237,7 +237,7 @@ public class UrbanAirshipClientTest {
 
         AsyncRequestClient asyncClient = (AsyncRequestClient) client.getRequestClient();
 
-        assertEquals("https://go.urbanairship.com", asyncClient.getBaseUri().toString());
+        assertEquals("https://api.asnapius.com", asyncClient.getBaseUri().toString());
 
         client.close();
     }
@@ -475,7 +475,7 @@ public class UrbanAirshipClientTest {
 
     @Test
     public void testRetryResponse() throws Exception {
-        Mockito.when(retryPredicate.test(any(FilterContext.class))).thenReturn(true);
+        when(retryPredicate.test(any(FilterContext.class))).thenReturn(true);
 
         AsyncRequestClient asyncClient = AsyncRequestClient.newBuilder()
                 .setBaseUri("http://localhost:" + wireMockRule.port())
@@ -2755,5 +2755,48 @@ public class UrbanAirshipClientTest {
         } catch (Exception ex) {
             fail("Exception thrown " + ex);
         }
+    }
+
+    @Test
+    public void testCreationWithOAuthCredentials() {
+        OAuthCredentials oAuthCredentials = OAuthCredentials.newBuilder("testclientId")
+                .setClientSecret("testclientsecret")
+                .setSub("testsub")
+                .build();
+        assertNotNull("OAuthCredentials should not be null", oAuthCredentials);
+        assertEquals("Client ID should match", "testclientId", oAuthCredentials.getClientId());
+        assertEquals("Client secret should match", "testclientsecret", oAuthCredentials.getClientSecret().get());
+        assertEquals("Sub should match", "testsub", oAuthCredentials.getSub().get());
+
+        UrbanAirshipClient oAuthClient = UrbanAirshipClient.newBuilder()
+                .setKey("test")
+                .setOAuthCredentials(oAuthCredentials)
+                .build();
+        assertNotNull("UrbanAirshipClient should not be null", oAuthClient);
+        assertEquals("OAuthCredentials should match", oAuthCredentials, oAuthClient.getOAuthCredentials().get());
+    }
+
+    @Test
+    public void testEuSiteTrueSetsCorrectBaseUri() {
+        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
+                .setUseEuropeanSite(true)
+                .setKey("testKey")
+                .setSecret("test")
+                .build();
+
+        assertEquals("The base URI should be set to the EU URI", UrbanAirshipClient.EU_URI, client.getBaseUri().get());
+        assertEquals("euSite should be true", Optional.of(true), client.getUseEuropeanSite());
+    }
+
+    @Test
+    public void testEuSiteFalseSetsCorrectBaseUri() {
+        UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
+                .setUseEuropeanSite(false)
+                .setKey("testKey")
+                .setSecret("test")
+                .build();
+
+        assertEquals("The base URI should be set to the US URI", UrbanAirshipClient.US_URI, client.getBaseUri().get());
+        assertEquals("euSite should be false", Optional.of(false), client.getUseEuropeanSite());
     }
 }

@@ -4,16 +4,30 @@
 
 package com.urbanairship.api.client;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.io.BaseEncoding;
+import com.urbanairship.api.client.parse.OAuthTokenResponse;
+import org.apache.http.HttpHeaders;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
@@ -28,19 +42,29 @@ public class UrbanAirshipClient implements Closeable {
     private static final Logger log = LoggerFactory.getLogger(UrbanAirshipClient.class);
 
     private final RequestClient client;
+    private final Optional<String> baseUri;
+    private final Optional<Boolean> useEuropeanSite;
     private final String key;
     private final Optional<String> secret;
     private final Optional<String> bearerToken;
-
-    private String userAgent;
-
-    public static final String EU_URI = "https://go.airship.eu";
+    private final Optional<OAuthCredentials> oAuthCredentials;
+    private final String userAgent;
+    public static final String US_URI = "https://api.asnapius.com";
+    public static final String EU_URI = "https://api.asnapieu.com";
+    public static final String EU_OAUTH_URI = "https://oauth2.asnapieu.com";
+    public static final String US_OAUTH_URI = "https://oauth2.asnapius.com";
+    public final String oAuthBaseUri;
+    private OAuthTokenResponse oAuthTokenResponse;
 
     private UrbanAirshipClient(Builder builder) {
         this.client = builder.client;
         this.key = builder.key;
+        this.useEuropeanSite = builder.useEuropeanSite;
         this.secret = Optional.ofNullable(builder.secret);
         this.bearerToken = Optional.ofNullable(builder.bearerToken);
+        this.oAuthCredentials = Optional.ofNullable(builder.oAuthCredentials);
+        this.baseUri = builder.baseUri;
+        this.oAuthBaseUri = builder.oAuthBaseUri;
         userAgent = getUserAgent(builder.key);
     }
 
@@ -76,28 +100,30 @@ public class UrbanAirshipClient implements Closeable {
         }
     }
 
+
     private Map<String, String> createHeaders(Request request) {
         Map<String, String> headers = new HashMap<>();
 
         headers.put("User-Agent", userAgent);
         Map<String, String> requestHeaders = request.getRequestHeaders();
         if (requestHeaders != null) {
-            for (Map.Entry<String, String> entry : requestHeaders.entrySet()) {
-                headers.put(entry.getKey(), entry.getValue());
-            }
+            headers.putAll(requestHeaders);
         }
 
         String auth;
 
         if (request.bearerTokenAuthRequired()) {
             Preconditions.checkArgument(bearerToken.isPresent(), "Bearer token required for request: " + request);
-            auth = "Bearer " + getBearerToken().get();
+            auth = "Bearer " + bearerToken.get();
         } else if (getAppSecret().isPresent()) {
             auth = "Basic " + BaseEncoding.base64().encode((getAppKey() + ":" + getAppSecret().get()).getBytes());
-        } else if (bearerToken.isPresent() && request.canUseBearerTokenAuth()){
-            auth = "Bearer " + getBearerToken().get();
+        } else if (bearerToken.isPresent() && request.canUseBearerTokenAuth()) {
+            auth = "Bearer " + bearerToken.get();
+        } else if (getOAuthCredentials().isPresent()) {
+            ensureValidToken(oAuthBaseUri);
+            auth = "Bearer " + oAuthTokenResponse.getAccessToken();
         } else {
-            throw new IllegalArgumentException("Bearer token auth not supported for this request, app secret must be set for request: " + request);
+            throw new IllegalArgumentException("No valid authentication method found for this request: " + request);
         }
 
         headers.put("Authorization", auth);
@@ -140,6 +166,24 @@ public class UrbanAirshipClient implements Closeable {
     }
 
     /**
+     * Get the Base URI.
+     *
+     * @return The base URI.
+     */
+    public Optional<String> getBaseUri() {
+        return baseUri;
+    }
+
+    /**
+     * Get useEuropeanSite.
+     *
+     * @return The useEuropeanSite value.
+     */
+    public Optional<Boolean> getUseEuropeanSite() {
+        return useEuropeanSite;
+    }
+
+    /**
      * Get the app key.
      * 
      * @return The app key.
@@ -167,6 +211,16 @@ public class UrbanAirshipClient implements Closeable {
     }
 
     /**
+     * Get the OAuthCredentials.
+     *
+     * @return The OAuthCredentials
+     */
+    public Optional<OAuthCredentials> getOAuthCredentials() {
+        return oAuthCredentials;
+    }
+
+
+    /**
      * Get the request client.
      * 
      * @return The RequestClient.
@@ -183,7 +237,11 @@ public class UrbanAirshipClient implements Closeable {
         private String key;
         private String secret;
         private String bearerToken;
-        private String baseUri = "https://go.urbanairship.com";
+        private OAuthCredentials oAuthCredentials;
+        private Optional<String> baseUri = Optional.empty();
+        private Optional<Boolean> useEuropeanSite = Optional.empty();
+        private String oAuthBaseUri;
+
         private RequestClient client;
 
         /**
@@ -194,6 +252,17 @@ public class UrbanAirshipClient implements Closeable {
          */
         public Builder setKey(String key) {
             this.key = key;
+            return this;
+        }
+
+        /**
+         * Set useEuropeanSite.
+         *
+         * @param useEuropeanSite Boolean
+         * @return Builder
+         */
+        public Builder setUseEuropeanSite(boolean useEuropeanSite) {
+            this.useEuropeanSite = Optional.of(useEuropeanSite);
             return this;
         }
 
@@ -217,7 +286,7 @@ public class UrbanAirshipClient implements Closeable {
          * @return Builder
          */
         public Builder setBaseUri(String baseUri) {
-            this.baseUri = baseUri;
+            this.baseUri = Optional.of(baseUri);
             return this;
         }
 
@@ -229,6 +298,28 @@ public class UrbanAirshipClient implements Closeable {
          */
         public Builder setBearerToken(String bearerToken) {
             this.bearerToken = bearerToken;
+            return this;
+        }
+
+        /**
+         * Set the oAuthCredentials.
+         *
+         * @param oAuthCredentials String
+         * @return Builder
+         */
+        public Builder setOAuthCredentials(OAuthCredentials oAuthCredentials) {
+            this.oAuthCredentials = oAuthCredentials;
+            return this;
+        }
+
+        /**
+         * Set an oAuthBaseUri.
+         *
+         * @param oAuthBaseUri String
+         * @return Builder
+         */
+        public Builder setOAuthBaseUri(String oAuthBaseUri) {
+            this.oAuthBaseUri = oAuthBaseUri;
             return this;
         }
 
@@ -258,16 +349,41 @@ public class UrbanAirshipClient implements Closeable {
          * @return UrbanAirshipClient
          */
         public UrbanAirshipClient build() {
-            Preconditions.checkNotNull(key, "app key needed to build APIClient");
-            if (secret == null && bearerToken == null) {
-                throw new NullPointerException("secret or the bearer token must be set");
+            Preconditions.checkNotNull(key, "App key is required to build UrbanAirshipClient");
+            if (secret == null && bearerToken == null && oAuthCredentials == null) {
+                throw new NullPointerException("Secret, bearer token, or OAuth credentials must be set");
+            }
+
+            if (!baseUri.isPresent()) {
+                baseUri = Optional.of(useEuropeanSite.orElse(false) ? EU_URI : US_URI);
             }
 
             if (client == null) {
-                client = AsyncRequestClient.newBuilder().setBaseUri(baseUri).build();
+                client = AsyncRequestClient.newBuilder().setBaseUri(baseUri.get()).build();
+            }
+
+            if (oAuthCredentials !=  null && oAuthBaseUri == null) {
+                oAuthBaseUri = baseUri.get().equals(EU_URI) ? EU_OAUTH_URI : US_OAUTH_URI;
             }
 
             return new UrbanAirshipClient(this);
+        }
+
+    }
+
+    private void ensureValidToken(String oAuthBaseUri) {
+        if (oAuthCredentials.isPresent()) {
+            synchronized (oAuthCredentials) {
+                OAuthCredentials credentials = oAuthCredentials.get();
+                if (oAuthTokenResponse == null || oAuthTokenResponse.isTokenExpired()) {
+                    try {
+                        OAuthTokenFetcher tokenFetcher = new OAuthTokenFetcher();
+                        oAuthTokenResponse = tokenFetcher.fetchToken(credentials, oAuthBaseUri);
+                    } catch (IOException e) {
+                        throw new RuntimeException("Failed to fetch OAuth access token", e);
+                    }
+                }
+            }
         }
     }
 }

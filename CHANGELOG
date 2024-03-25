@@ -1,4 +1,13 @@
 -------------------------
+9.3.0 25MAR24
+-------------------------
+- Added support for Oauth 2.0, including token request with Basic auth or Encoded JWT.
+- Added support for key verification (Oauth 2.0)
+- Added a setter for useEuropeanSite in UrbanAirshipClient class. setBaseUri with european value is no longer needed in this case.
+- The API base URLs have been changed to https://api.asnapius.com for the US site and https://api.asnapieu.com for the European site.
+They work with all authentication methods (including Oauth 2.0).
+
+-------------------------
 9.2.1 11DEC23
 -------------------------
 - Update Jackson-bom dependency
