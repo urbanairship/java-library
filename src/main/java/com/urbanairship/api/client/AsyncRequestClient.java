@@ -19,6 +19,8 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Predicate;
 
+import static com.urbanairship.api.client.UrbanAirshipClient.US_URI;
+
 /**
  * The AsyncRequestClient is the default request client used by the UrbanAirshipClient.
  */
@@ -163,7 +165,7 @@ public class AsyncRequestClient implements RequestClient {
         private ProxyServer proxyServer;
 
         private Builder() {
-            baseUri = "https://go.urbanairship.com";
+            baseUri = US_URI;
         }
 
         /**
