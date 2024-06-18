@@ -5,13 +5,15 @@ import com.google.common.base.Preconditions;
 import com.urbanairship.api.push.model.PushModelObject;
 import org.joda.time.DateTime;
 
+import java.util.Optional;
+
 public class CustomEventPayload extends PushModelObject {
-    private final DateTime occurred;
+    private final Optional<DateTime> occurred;
     private final CustomEventBody customEventBody;
     private final CustomEventUser customEventUser;
 
     private CustomEventPayload(Builder builder) {
-        this.occurred = builder.occurred;
+        this.occurred = Optional.ofNullable(builder.occurred);
         this.customEventBody = builder.customEventBody;
         this.customEventUser = builder.customEventUser;
     }
@@ -30,7 +32,7 @@ public class CustomEventPayload extends PushModelObject {
      *
      * @return DateTime
      */
-    public DateTime getOccurred() {
+    public Optional<DateTime> getOccurred() {
         return occurred;
     }
 
@@ -120,7 +122,6 @@ public class CustomEventPayload extends PushModelObject {
         }
 
         public CustomEventPayload build() {
-            Preconditions.checkNotNull(occurred, "'occurred' must not be null");
             Preconditions.checkNotNull(customEventBody, "'customEventBody' must not be null");
             Preconditions.checkNotNull(customEventUser, "'customEventUser' must not be null");
 
