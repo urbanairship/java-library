@@ -1,4 +1,9 @@
 -------------------------
+9.3.1 18JUN24
+-------------------------
+- Make "occurred" field in the CustomEventPayload class optional
+
+-------------------------
 9.3.0 25MAR24
 -------------------------
 - Added support for Oauth 2.0, including token request with Basic auth or Encoded JWT.
