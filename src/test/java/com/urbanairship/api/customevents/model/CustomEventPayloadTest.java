@@ -69,7 +69,7 @@ public class CustomEventPayloadTest {
         assertEquals("e393d28e-23b2-4a22-9ace-dc539a5b07a8", customEventPayload.getCustomEventUser().getChannel().get());
         assertEquals(CustomEventChannelType.ANDROID_CHANNEL, customEventPayload.getCustomEventUser().getChannelType().get());
 
-        assertEquals(occurred, customEventPayload.getOccurred());
+        assertEquals(occurred, customEventPayload.getOccurred().get());
    }
 
     @Test
@@ -338,6 +338,6 @@ public class CustomEventPayloadTest {
         assertEquals("e393d28e-23b2-4a22-9ace-dc539a5b07a8", customEventPayload.getCustomEventUser().getChannel().get());
         assertEquals(CustomEventChannelType.ANDROID_CHANNEL, customEventPayload.getCustomEventUser().getChannelType().get());
 
-        assertEquals(occurred, customEventPayload.getOccurred());
+        assertEquals(occurred, customEventPayload.getOccurred().get());
     }
 }

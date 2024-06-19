@@ -12,8 +12,9 @@ public class CustomEventSerializer extends JsonSerializer<CustomEventPayload> {
     @Override
     public void serialize(CustomEventPayload event, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         jgen.writeStartObject();
-
-        jgen.writeObjectField("occurred", event.getOccurred());
+        if (event.getOccurred().isPresent()) {
+            jgen.writeObjectField("occurred", event.getOccurred());
+        }
         jgen.writeObjectField("user", event.getCustomEventUser());
         jgen.writeObjectField("body", event.getCustomEventBody());
 
