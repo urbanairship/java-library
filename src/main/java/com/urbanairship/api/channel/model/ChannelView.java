@@ -44,6 +44,7 @@ public final class ChannelView {
     private final Optional<DateTime> commercialOptedOut;
     private final Optional<DateTime> transactionalOptedIn;
     private final Optional<DateTime> transactionalOptedOut;
+    private final Optional<String> emailAddress;
 
 
     private ChannelView(Builder builder) {
@@ -69,7 +70,7 @@ public final class ChannelView {
         this.commercialOptedOut = Optional.ofNullable(builder.commercialOptedOut);
         this.transactionalOptedIn = Optional.ofNullable(builder.transactionalOptedIn);
         this.transactionalOptedOut = Optional.ofNullable(builder.transactionalOptedOut);
-
+        this.emailAddress = Optional.ofNullable(builder.emailAddress);
     }
 
     /**
@@ -281,6 +282,15 @@ public final class ChannelView {
         return transactionalOptedOut;
     }
 
+    /**
+     * Get the email address associated with a channel id
+     * 
+     * @return Optional String emailAddress
+     */
+    public Optional<String> getEmailAddress() {
+        return emailAddress;
+    }
+
     @Override
     public String toString() {
         return "ChannelView{" +
@@ -306,6 +316,7 @@ public final class ChannelView {
                 ", commercialOptedOut=" + commercialOptedOut +
                 ", transactionalOptedIn=" + transactionalOptedIn +
                 ", transactionalOptedOut=" + transactionalOptedOut +
+                ", emailAddress=" + emailAddress +
                 '}';
     }
 
@@ -335,14 +346,15 @@ public final class ChannelView {
                 Objects.equal(commercialOptedIn, that.commercialOptedIn) &&
                 Objects.equal(commercialOptedOut, that.commercialOptedOut) &&
                 Objects.equal(transactionalOptedIn, that.transactionalOptedIn) &&
-                Objects.equal(transactionalOptedOut, that.transactionalOptedOut);
+                Objects.equal(transactionalOptedOut, that.transactionalOptedOut) &&
+                Objects.equal(emailAddress, that.emailAddress);
                 
     }
 
     @Override
     public int hashCode() {
         return Objects.hashCode(channelId, channelType, installed, optIn, background, pushAddress, created, lastRegistration,
-                alias, tags, tagGroups, iosSettings, web, open, address, namedUser, attributes, deviceAttributes, commercialOptedIn, commercialOptedOut, transactionalOptedIn, transactionalOptedOut);
+                alias, tags, tagGroups, iosSettings, web, open, address, namedUser, attributes, deviceAttributes, commercialOptedIn, commercialOptedOut, transactionalOptedIn, transactionalOptedOut, emailAddress);
     }
 
     public final static class Builder {
@@ -368,6 +380,7 @@ public final class ChannelView {
         private DateTime commercialOptedOut = null;
         private DateTime transactionalOptedIn = null;
         private DateTime transactionalOptedOut = null;
+        private String emailAddress = null;
 
         private Builder() {
         }
@@ -643,6 +656,16 @@ public final class ChannelView {
             return this;
         }
 
+        /**
+         * Set the email address
+         * 
+         * @param emailAddress String
+         * @return Builder
+         */
+        public Builder setEmailAddress(String emailAddress) {
+            this.emailAddress = emailAddress;
+            return this;
+        }
 
         /**
          * Build the ChannelView object
