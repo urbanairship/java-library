@@ -34,6 +34,7 @@ public class ChannelResponseTest {
             "      \"installed\": false,\n" +
             "      \"opt_in\": false,\n" +
             "      \"push_address\": null,\n" +
+            "       \"email_address\": \"test@test.com\",\n" +
             "      \"created\": \"2012-06-05T20:37:37\",\n" +
             "      \"last_registration\": null,\n" +
             "      \"alias\": null,\n" +
@@ -234,6 +235,7 @@ public class ChannelResponseTest {
             assertFalse(one.getIosSettings().isPresent());
             assertFalse(one.getLastRegistration().isPresent());
             assertFalse(one.getPushAddress().isPresent());
+            assertTrue(one.getEmailAddress().isPresent());
             assertEquals("[test01]", one.getTags().toString());
             assertTrue(one.getTagGroups().containsKey("testGroup01"));
             assertEquals("[testGroup01Tag01]", Objects.requireNonNull(one.getTagGroups().get("testGroup01")).toString());
@@ -406,6 +408,7 @@ public class ChannelResponseTest {
             .setCreated(DateTime.parse("2018-10-05T15:18:00.000Z"))
             .setOptIn(true)
             .setLastRegistration(DateTime.parse("2018-10-05T15:18:00.000Z"))
+            .setEmailAddress("test@test.com")
             .build();
 
         ChannelResponse channelResponse = ChannelResponse.newBuilder()
@@ -421,6 +424,7 @@ public class ChannelResponseTest {
                 "        \"device_type\": \"email\",\n" +
                 "        \"installed\": true,\n" +
                 "        \"push_address\": null,\n" +
+                "        \"email_address\": \"test@test.com\",\n" +
                 "        \"named_user_id\": null,\n" +
                 "        \"alias\": null,\n" +
                 "        \"tags\": [\"toto\"],\n" +
