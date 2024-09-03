@@ -1,4 +1,9 @@
 -------------------------
+9.4.0 03SEP24
+-------------------------
+- Adds emailAddress to ChannelResponse
+
+-------------------------
 9.3.1 18JUN24
 -------------------------
 - Make "occurred" field in the CustomEventPayload class optional
