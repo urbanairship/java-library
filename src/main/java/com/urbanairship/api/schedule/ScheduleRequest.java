@@ -137,6 +137,6 @@ public class ScheduleRequest implements Request<ScheduleResponse> {
 
     @Override
     public boolean canUseBearerTokenAuth() {
-        return false;
+        return true;
     }
 }
