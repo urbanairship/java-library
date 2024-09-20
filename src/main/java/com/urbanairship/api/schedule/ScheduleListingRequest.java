@@ -127,6 +127,6 @@ public class ScheduleListingRequest implements Request<ListAllSchedulesResponse>
 
     @Override
     public boolean canUseBearerTokenAuth() {
-        return false;
+        return true;
     }
 }
