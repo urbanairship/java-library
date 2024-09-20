@@ -127,6 +127,10 @@ public final class ChannelViewReader implements JsonObjectReader<ChannelView> {
         builder.setTransactionalOptedOut(jsonParser.readValueAs(DateTime.class));
     }
 
+    public void readEmailAddress(JsonParser jsonParser) throws IOException {
+        builder.setEmailAddress(jsonParser.readValueAs(String.class));
+    }
+
     @Override
     public ChannelView validateAndBuild() throws IOException {
         try {

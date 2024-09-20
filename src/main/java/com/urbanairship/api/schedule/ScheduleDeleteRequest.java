@@ -75,6 +75,6 @@ public class ScheduleDeleteRequest implements Request<GenericResponse> {
 
     @Override
     public boolean canUseBearerTokenAuth() {
-        return false;
+        return true;
     }
 }
