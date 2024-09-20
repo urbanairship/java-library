@@ -1,4 +1,9 @@
 -------------------------
+9.4.1 20SEP24
+-------------------------
+- Allow Bearer Authentication for Schedule Request classes
+
+-------------------------
 9.4.0 03SEP24
 -------------------------
 - Adds emailAddress to ChannelResponse
