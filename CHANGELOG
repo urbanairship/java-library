@@ -1,4 +1,14 @@
 -------------------------
+9.4.2 04OCT24
+-------------------------
+- Bump netty version to 4.1.108.Final
+
+-------------------------
+9.4.1 20SEP24
+-------------------------
+- Allow Bearer Authentication for Schedule Request classes
+
+-------------------------
 9.4.0 03SEP24
 -------------------------
 - Adds emailAddress to ChannelResponse
