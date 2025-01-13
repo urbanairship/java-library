@@ -3,6 +3,7 @@
  */
 package com.urbanairship.api.push.model.notification.ios;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.PushModelObject;
 
@@ -23,6 +24,8 @@ public final class IOSLiveActivity extends PushModelObject{
     private final Optional<Double> relevanceScore;
     private final Optional<Integer> staleDate;
     private final Optional<Integer> timestamp;
+    private final Optional<String> attributesType;
+    private final Optional<Map<String, String>> attributes;
 
     private IOSLiveActivity(Optional<IOSLiveActivityAlert> iosLiveActivityAlert,
                             Optional<Map<String, String>> contentState,
@@ -32,7 +35,9 @@ public final class IOSLiveActivity extends PushModelObject{
                             Optional<Integer> priority,
                             Optional<Double> relevanceScore,
                             Optional<Integer> staleDate,
-                            Optional<Integer> timestamp
+                            Optional<Integer> timestamp,
+                            Optional<String> attributesType,
+                            Optional<Map<String, String>> attributes
                             ) {
         this.iosLiveActivityAlert = iosLiveActivityAlert;
         this.contentState = contentState;
@@ -43,6 +48,8 @@ public final class IOSLiveActivity extends PushModelObject{
         this.relevanceScore = relevanceScore;
         this.staleDate = staleDate;
         this.timestamp = timestamp;
+        this.attributesType = attributesType;
+        this.attributes = attributes;
     }
 
     /**
@@ -85,6 +92,14 @@ public final class IOSLiveActivity extends PushModelObject{
         return timestamp;
     }
 
+    public Optional<String> getAttributesType() {
+        return attributesType;
+    }
+
+    public Optional<Map<String, String>> getAttributes() {
+        return attributes;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -96,13 +111,17 @@ public final class IOSLiveActivity extends PushModelObject{
                 iosLiveActivityEvent == that.iosLiveActivityEvent && Objects.equals(name, that.name) &&
                 Objects.equals(priority, that.priority) &&
                 Objects.equals(relevanceScore, that.relevanceScore) &&
-                Objects.equals(staleDate, that.staleDate) && Objects.equals(timestamp, that.timestamp);
+                Objects.equals(staleDate, that.staleDate) &&
+                Objects.equals(timestamp, that.timestamp) &&
+                Objects.equals(attributesType, that.attributesType)
+                && Objects.equals(attributes, that.attributes);
+
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(iosLiveActivityAlert, contentState, dismissalDate, iosLiveActivityEvent, name, priority,
-                relevanceScore, staleDate, timestamp);
+                relevanceScore, staleDate, timestamp, attributesType, attributes);
     }
 
     @Override
@@ -117,6 +136,8 @@ public final class IOSLiveActivity extends PushModelObject{
                 ", relevanceScore=" + relevanceScore +
                 ", staleDate=" + staleDate +
                 ", timestamp=" + timestamp +
+                ", attributesType=" + attributesType +
+                ", attributes=" + attributes +
                 '}';
     }
 
@@ -130,6 +151,8 @@ public final class IOSLiveActivity extends PushModelObject{
         private Double relevanceScore = null;
         private Integer staleDate = null;
         private Integer timestamp = null;
+        private String attributesType = null;
+        private ImmutableMap.Builder<String, String> attributes = ImmutableMap.builder();
 
         private Builder() { }
 
@@ -235,10 +258,47 @@ public final class IOSLiveActivity extends PushModelObject{
         }
 
         /**
+         * Set the attributesType for the IOSLiveActivity.
+         * @param attributesType String
+         * @return Builder
+         */
+        public Builder setAttributesType(String attributesType) {
+            this.attributesType = attributesType;
+            return this;
+        }
+
+        /**
+         * Add an attribute. You can provide additional key-value pair.
+         * @param key String
+         * @param value String
+         * @return Builder
+         */
+        public Builder addAttribute(String key, String value) {
+            attributes.put(key, value);
+            return this;
+        }
+
+        /**
+         * Add all attributes values.
+         * @param attributes Map of Strings.
+         * @return Builder
+         */
+        public Builder addAllAttributes(Map<String, String> attributes) {
+            this.attributes.putAll(attributes);
+            return this;
+        }
+
+
+
+        /**
          * Build IOSLiveActivity
          * @return IOSLiveActivity
          */
         public IOSLiveActivity build() {
+
+            if (iosLiveActivityEvent == IOSLiveActivityEvent.START) {
+                Preconditions.checkArgument(attributesType != null && !attributes.build().isEmpty(), "attributesType and attributes are required for event START.");
+            }
             return new IOSLiveActivity(
                     Optional.ofNullable(iosLiveActivityAlert),
                     Optional.ofNullable(contentState.build()),
@@ -248,7 +308,9 @@ public final class IOSLiveActivity extends PushModelObject{
                     Optional.ofNullable(priority),
                     Optional.ofNullable(relevanceScore),
                     Optional.ofNullable(staleDate),
-                    Optional.ofNullable(timestamp)
+                    Optional.ofNullable(timestamp),
+                    Optional.ofNullable(attributesType),
+                    Optional.ofNullable(attributes.build())
                     );
         }
     }
