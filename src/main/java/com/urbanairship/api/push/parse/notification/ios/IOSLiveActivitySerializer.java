@@ -40,11 +40,19 @@ public class IOSLiveActivitySerializer extends JsonSerializer<IOSLiveActivity> {
         }
 
         if(content.getStaleDate().isPresent()) {
-            jgen.writeNumberField("stale_date", content.getRelevanceScore().get());
+            jgen.writeNumberField("stale_date", content.getStaleDate().get());
         }
 
         if(content.getTimestamp().isPresent()) {
             jgen.writeNumberField("timestamp", content.getTimestamp().get());
+        }
+
+        if(content.getAttributesType().isPresent()) {
+            jgen.writeStringField("attributes_Type", content.getAttributesType().get());
+        }
+
+        if(!content.getAttributes().get().isEmpty()) {
+            jgen.writeObjectField("attributes", content.getAttributes());
         }
 
         jgen.writeEndObject();

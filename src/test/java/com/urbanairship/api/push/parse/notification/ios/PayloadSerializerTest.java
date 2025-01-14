@@ -284,7 +284,7 @@ public class PayloadSerializerTest {
 
         String json = mapper.writeValueAsString(payload);
 
-        String expected = "{\"live_activity\":{\"event\":\"update\",\"name\":\"Foxes-Tigers\",\"alert\":{\"body\":\"test\",\"title\":\"test\",\"sound\":\"test.mp3\"},\"content_state\":{\"key\":\"value\",\"key2\":\"value2\"},\"dismissal_date\":1234,\"priority\":5,\"relevance_score\":1.0,\"stale_date\":1.0}}";
+        String expected = "{\"live_activity\":{\"event\":\"update\",\"name\":\"Foxes-Tigers\",\"alert\":{\"body\":\"test\",\"title\":\"test\",\"sound\":\"test.mp3\"},\"content_state\":{\"key\":\"value\",\"key2\":\"value2\"},\"dismissal_date\":1234,\"priority\":5,\"relevance_score\":1.0,\"stale_date\":1234}}";
 
         assertEquals(expected, json);
     }
