@@ -7,6 +7,7 @@ import java.util.Optional;
  */
 public enum IOSLiveActivityEvent {
 
+    START("start"),
     UPDATE("update"),
     END("end");
 

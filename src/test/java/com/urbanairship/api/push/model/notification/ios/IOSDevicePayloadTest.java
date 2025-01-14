@@ -140,4 +140,28 @@ public class IOSDevicePayloadTest {
 
     }
 
+    @Test
+    public void testiOSLiveActivityStart() {
+        IOSLiveActivity iosLiveActivity = IOSLiveActivity.newBuilder()
+                .setIosLiveActivityEvent(IOSLiveActivityEvent.START)
+                .setName("Foxes-Tigers")
+                .setPriority(5)
+                .setIosLiveActivityAlert(IOSLiveActivityAlert.newBuilder()
+                        .setBody("test").setTitle("test").setSound("test.mp3").build())
+                .setDismissalDate(1234)
+                .setRelevanceScore(1.0)
+                .setStaleDate(1234)
+                .setAttributesType("test")
+                .addAttribute("test","test")
+                .build();
+
+        IOSDevicePayload m = IOSDevicePayload.newBuilder()
+                .setIosLiveActivity(iosLiveActivity)
+                .build();
+
+        assertEquals("Foxes-Tigers", m.getIosLiveActivity().get().getName());
+        assertEquals("test", m.getIosLiveActivity().get().getAttributesType().get());
+
+    }
+
 }
