@@ -28,7 +28,7 @@ import java.util.function.Predicate;
 public class RequestRetryFilter implements ResponseFilter {
 
     private static final Logger log = LoggerFactory.getLogger(RequestRetryFilter.class);
-    private static final int BASE_RETRY_TIME_MS = 5;
+    private static final int BASE_RETRY_TIME_MS = 200;
     private static final Predicate<FilterContext> DEFAULT_PREDICATE = input -> !input.getRequest().getMethod().equals("POST") && input.getResponseStatus().getStatusCode() >= 500;
 
     private final int maxRetries;
@@ -46,7 +46,7 @@ public class RequestRetryFilter implements ResponseFilter {
             ResponseAsyncHandler asyncHandler = (ResponseAsyncHandler) ctx.getAsyncHandler();
             if (asyncHandler.getRetryCount() < maxRetries && retryPredicate.test(ctx)) {
                 try {
-                    int sleepTime = BASE_RETRY_TIME_MS * Math.max(1, RandomUtils.nextInt(1 << (asyncHandler.getRetryCount() + 1)));
+                    int sleepTime = BASE_RETRY_TIME_MS * (1 << asyncHandler.getRetryCount());
                     log.info(String.format("Request failed with status code %s - waiting for %s ms before retrying request", statusCode, sleepTime));
                     Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
