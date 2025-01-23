@@ -1,4 +1,10 @@
 -------------------------
+9.6.0 23JAN25
+-------------------------
+- Increase BASE_RETRY_TIME_MS to 200ms instead of 5ms.
+- Remove usage of "Random" class from sleepTime calculation
+
+-------------------------
 9.5.0 13JAN25
 -------------------------
 - Bump netty version to 4.1.115.Final
