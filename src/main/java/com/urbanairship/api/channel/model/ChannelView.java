@@ -45,6 +45,7 @@ public final class ChannelView {
     private final Optional<DateTime> transactionalOptedIn;
     private final Optional<DateTime> transactionalOptedOut;
     private final Optional<String> emailAddress;
+    private final Optional<String> suppressionState;
 
 
     private ChannelView(Builder builder) {
@@ -71,6 +72,7 @@ public final class ChannelView {
         this.transactionalOptedIn = Optional.ofNullable(builder.transactionalOptedIn);
         this.transactionalOptedOut = Optional.ofNullable(builder.transactionalOptedOut);
         this.emailAddress = Optional.ofNullable(builder.emailAddress);
+        this.suppressionState = Optional.ofNullable(builder.suppressionState);
     }
 
     /**
@@ -291,6 +293,15 @@ public final class ChannelView {
         return emailAddress;
     }
 
+    /**
+     * Get the suppression state associated with a channel id
+     *
+     * @return Optional String suppressionState
+     */
+    public Optional<String> getSuppressionState() {
+        return suppressionState;
+    }
+
     @Override
     public String toString() {
         return "ChannelView{" +
@@ -317,6 +328,7 @@ public final class ChannelView {
                 ", transactionalOptedIn=" + transactionalOptedIn +
                 ", transactionalOptedOut=" + transactionalOptedOut +
                 ", emailAddress=" + emailAddress +
+                ", suppressionState=" + suppressionState +
                 '}';
     }
 
@@ -347,14 +359,15 @@ public final class ChannelView {
                 Objects.equal(commercialOptedOut, that.commercialOptedOut) &&
                 Objects.equal(transactionalOptedIn, that.transactionalOptedIn) &&
                 Objects.equal(transactionalOptedOut, that.transactionalOptedOut) &&
-                Objects.equal(emailAddress, that.emailAddress);
+                Objects.equal(emailAddress, that.emailAddress) &&
+                Objects.equal(suppressionState, that.suppressionState);
                 
     }
 
     @Override
     public int hashCode() {
         return Objects.hashCode(channelId, channelType, installed, optIn, background, pushAddress, created, lastRegistration,
-                alias, tags, tagGroups, iosSettings, web, open, address, namedUser, attributes, deviceAttributes, commercialOptedIn, commercialOptedOut, transactionalOptedIn, transactionalOptedOut, emailAddress);
+                alias, tags, tagGroups, iosSettings, web, open, address, namedUser, attributes, deviceAttributes, commercialOptedIn, commercialOptedOut, transactionalOptedIn, transactionalOptedOut, emailAddress,suppressionState);
     }
 
     public final static class Builder {
@@ -381,6 +394,7 @@ public final class ChannelView {
         private DateTime transactionalOptedIn = null;
         private DateTime transactionalOptedOut = null;
         private String emailAddress = null;
+        private String suppressionState = null;
 
         private Builder() {
         }
@@ -664,6 +678,17 @@ public final class ChannelView {
          */
         public Builder setEmailAddress(String emailAddress) {
             this.emailAddress = emailAddress;
+            return this;
+        }
+
+        /**
+         * Set the suppression state
+         *
+         * @param suppressionState String
+         * @return Builder
+         */
+        public Builder setSuppressionState(String suppressionState) {
+            this.suppressionState = suppressionState;
             return this;
         }
 

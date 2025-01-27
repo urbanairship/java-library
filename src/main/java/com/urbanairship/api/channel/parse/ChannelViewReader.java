@@ -131,6 +131,10 @@ public final class ChannelViewReader implements JsonObjectReader<ChannelView> {
         builder.setEmailAddress(jsonParser.readValueAs(String.class));
     }
 
+    public void readSuppressionState(JsonParser jsonParser) throws IOException {
+        builder.setSuppressionState(jsonParser.readValueAs(String.class));
+    }
+
     @Override
     public ChannelView validateAndBuild() throws IOException {
         try {
