@@ -78,7 +78,8 @@ public class ChannelViewDeserializeTest {
                 "\"alias\" : \"alias\"," +
                 "\"named_user_id\" : \"namedUser\"," +
                 "\"created\" : \"2013-08-08T20:41:06.000Z\"," +
-                "\"push_address\" : \"address\"" +
+                "\"push_address\" : \"address\"," +
+                    "\"suppression_state\" : \"suppression_state\"" +
                 "}";
 
         ChannelView channel = mapper.readValue(json, ChannelView.class);
@@ -109,6 +110,7 @@ public class ChannelViewDeserializeTest {
                 .addAll(Sets.newHashSet("tag1OfGroup2", "tag2OfGroup2")).build())
             .build();
             Assert.assertEquals(expectedTagGroups, channel.getTagGroups());
+            Assert.assertEquals("suppression_state", channel.getSuppressionState().get());
     }
 
     @Test
