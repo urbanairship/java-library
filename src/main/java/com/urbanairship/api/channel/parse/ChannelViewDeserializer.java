@@ -45,6 +45,7 @@ public final class ChannelViewDeserializer extends JsonDeserializer<ChannelView>
                     .put("transactional_opted_in", (reader, jsonParser, deserializationContext) -> reader.readTransactionalOptedIn(jsonParser))
                     .put("transactional_opted_out", (reader, jsonParser, deserializationContext) -> reader.readTransactionalOptedOut(jsonParser))
                     .put("email_address", (reader, jsonParser, deserializationContext) -> reader.readEmailAddress(jsonParser))
+                    .put("suppression_state", (reader, jsonParser, deserializationContext) -> reader.readSuppressionState(jsonParser))
                     .build());
 
     private final StandardObjectDeserializer<ChannelView, ?> deserializer;
