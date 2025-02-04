@@ -48,7 +48,7 @@ public class IOSLiveActivitySerializer extends JsonSerializer<IOSLiveActivity> {
         }
 
         if(content.getAttributesType().isPresent()) {
-            jgen.writeStringField("attributes_Type", content.getAttributesType().get());
+            jgen.writeStringField("attributes_type", content.getAttributesType().get());
         }
 
         if(!content.getAttributes().get().isEmpty()) {
