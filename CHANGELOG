@@ -1,4 +1,12 @@
 -------------------------
+9.8.0 07MAY25
+-------------------------
+- Allow contentState to accept arbitrary JSON values for iOSLiveActivity and AndroidLiveUpdate
+- Bump netty version to 4.1.121.Final
+- Bump jackson version to 2.18.3
+- Optimize pom.xml
+
+-------------------------
 9.7.0 04FEB25
 -------------------------
 - Fix typo for attributes_type field in IOSLiveActivitySerializer
