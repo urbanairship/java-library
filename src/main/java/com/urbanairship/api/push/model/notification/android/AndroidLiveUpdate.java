@@ -3,6 +3,8 @@
  */
 package com.urbanairship.api.push.model.notification.android;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.PushModelObject;
 import com.urbanairship.api.push.model.notification.ios.IOSLiveActivityAlert;
@@ -16,14 +18,14 @@ import java.util.Optional;
  * Content for IOSLiveActivity.
  */
 public final class AndroidLiveUpdate extends PushModelObject{
-    private final Optional<Map<String, String>> contentState;
+    private final Optional<Map<String, JsonNode>> contentState;
     private final Optional<Integer> dismissalDate;
     private final AndroidLiveUpdateEvent androidLiveUpdateEvent;
     private final String name;
     private final Optional<Integer> timestamp;
     private final Optional<String> type;
 
-    private AndroidLiveUpdate(Optional<Map<String, String>> contentState,
+    private AndroidLiveUpdate(Optional<Map<String, JsonNode>> contentState,
                               Optional<Integer> dismissalDate,
                               AndroidLiveUpdateEvent androidLiveUpdateEvent,
                               String name,
@@ -46,7 +48,7 @@ public final class AndroidLiveUpdate extends PushModelObject{
         return new Builder();
     }
 
-    public Optional<Map<String, String>> getContentState() { return contentState; }
+    public Optional<Map<String, JsonNode>> getContentState() { return contentState; }
 
     public Optional<Integer> getDismissalDate() {
         return dismissalDate;
@@ -93,23 +95,25 @@ public final class AndroidLiveUpdate extends PushModelObject{
     }
 
     public static class Builder{
-        private ImmutableMap.Builder<String, String> contentState = ImmutableMap.builder();
+        private ImmutableMap.Builder<String, JsonNode> contentState = ImmutableMap.builder();
         private Integer dismissalDate = null;
         private AndroidLiveUpdateEvent androidLiveUpdateEvent = null;
         private String name = null;
         private Integer timestamp = null;
         private String type = null;
+        private static final ObjectMapper MAPPER = new ObjectMapper();
 
         private Builder() { }
 
         /**
          * Add a content state. You can provide additional key-value pair.
          * @param key String
-         * @param value String
+         * @param value Object
          * @return Builder
          */
-        public Builder addContentState(String key, String value) {
-            contentState.put(key, value);
+        public Builder addContentState(String key, Object value) {
+            JsonNode node = MAPPER.valueToTree(value);
+            contentState.put(key, node);
             return this;
         }
 
@@ -118,8 +122,10 @@ public final class AndroidLiveUpdate extends PushModelObject{
          * @param contentStates Map of Strings.
          * @return Builder
          */
-        public Builder addAllContentStates(Map<String, String> contentStates) {
-            this.contentState.putAll(contentStates);
+        public Builder addAllContentStates(Map<String, ?> contentStates) {
+            contentStates.forEach((k, v) ->
+                    contentState.put(k, MAPPER.valueToTree(v))
+            );
             return this;
         }
 
@@ -179,7 +185,7 @@ public final class AndroidLiveUpdate extends PushModelObject{
          */
         public AndroidLiveUpdate build() {
             return new AndroidLiveUpdate(
-                    Optional.ofNullable(contentState.build()),
+                    Optional.of(contentState.build()),
                     Optional.ofNullable(dismissalDate),
                     androidLiveUpdateEvent,
                     name,
