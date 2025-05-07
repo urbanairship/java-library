@@ -189,7 +189,10 @@ public class PayloadSerializerTest {
                 .setDismissalDate(1234)
                 .setType("test")
                 .setTimestamp(1234)
-                .addContentState("key", "value")
+                .addContentState("key", ImmutableMap.of(
+                        "id", 123,
+                        "name", "Alice"
+                ))
                 .addContentState("key2", "value2")
                 .build();
 
@@ -199,7 +202,7 @@ public class PayloadSerializerTest {
 
         String json = MAPPER.writeValueAsString(payload);
 
-        String expected = "{\"live_update\":{\"event\":\"update\",\"name\":\"Foxes-Tigers\",\"content_state\":{\"key\":\"value\",\"key2\":\"value2\"},\"dismissal_date\":1234,\"timestamp\":1234,\"type\":\"test\"}}";
+        String expected = "{\"live_update\":{\"event\":\"update\",\"name\":\"Foxes-Tigers\",\"content_state\":{\"key\":{\"id\":123,\"name\":\"Alice\"},\"key2\":\"value2\"},\"dismissal_date\":1234,\"timestamp\":1234,\"type\":\"test\"}}";
 
         assertEquals(expected, json);
     }

@@ -3,6 +3,8 @@
  */
 package com.urbanairship.api.push.model.notification.ios;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.PushModelObject;
@@ -16,7 +18,7 @@ import java.util.Optional;
  */
 public final class IOSLiveActivity extends PushModelObject{
     private final Optional<IOSLiveActivityAlert> iosLiveActivityAlert;
-    private final Optional<Map<String, String>> contentState;
+    private final Optional<Map<String, JsonNode>> contentState;
     private final Optional<Integer> dismissalDate;
     private final IOSLiveActivityEvent iosLiveActivityEvent;
     private final String name;
@@ -28,7 +30,7 @@ public final class IOSLiveActivity extends PushModelObject{
     private final Optional<Map<String, String>> attributes;
 
     private IOSLiveActivity(Optional<IOSLiveActivityAlert> iosLiveActivityAlert,
-                            Optional<Map<String, String>> contentState,
+                            Optional<Map<String, JsonNode>> contentState,
                             Optional<Integer> dismissalDate,
                             IOSLiveActivityEvent iosLiveActivityEvent,
                             String name,
@@ -64,7 +66,7 @@ public final class IOSLiveActivity extends PushModelObject{
         return iosLiveActivityAlert;
     }
 
-    public Optional<Map<String, String>> getContentState() { return contentState; }
+    public Optional<Map<String, JsonNode>> getContentState() { return contentState; }
 
     public Optional<Integer> getDismissalDate() {
         return dismissalDate;
@@ -143,7 +145,7 @@ public final class IOSLiveActivity extends PushModelObject{
 
     public static class Builder{
         private IOSLiveActivityAlert iosLiveActivityAlert = null;
-        private ImmutableMap.Builder<String, String> contentState = ImmutableMap.builder();
+        private ImmutableMap.Builder<String, JsonNode> contentState = ImmutableMap.builder();
         private Integer dismissalDate = null;
         private IOSLiveActivityEvent iosLiveActivityEvent = null;
         private String name = null;
@@ -153,6 +155,7 @@ public final class IOSLiveActivity extends PushModelObject{
         private Integer timestamp = null;
         private String attributesType = null;
         private ImmutableMap.Builder<String, String> attributes = ImmutableMap.builder();
+        private static final ObjectMapper MAPPER = new ObjectMapper();
 
         private Builder() { }
 
@@ -169,11 +172,12 @@ public final class IOSLiveActivity extends PushModelObject{
         /**
          * Add a content state. You can provide additional key-value pair.
          * @param key String
-         * @param value String
+         * @param value Object
          * @return Builder
          */
-        public Builder addContentState(String key, String value) {
-            contentState.put(key, value);
+        public Builder addContentState(String key, Object value) {
+            JsonNode node = MAPPER.valueToTree(value);
+            contentState.put(key, node);
             return this;
         }
 
@@ -182,8 +186,10 @@ public final class IOSLiveActivity extends PushModelObject{
          * @param contentStates Map of Strings.
          * @return Builder
          */
-        public Builder addAllContentStates(Map<String, String> contentStates) {
-            this.contentState.putAll(contentStates);
+        public Builder addAllContentStates(Map<String, ?> contentStates) {
+            contentStates.forEach((k, v) ->
+                    contentState.put(k, MAPPER.valueToTree(v))
+            );
             return this;
         }
 
@@ -301,7 +307,7 @@ public final class IOSLiveActivity extends PushModelObject{
             }
             return new IOSLiveActivity(
                     Optional.ofNullable(iosLiveActivityAlert),
-                    Optional.ofNullable(contentState.build()),
+                    Optional.of(contentState.build()),
                     Optional.ofNullable(dismissalDate),
                     iosLiveActivityEvent,
                     name,
@@ -310,7 +316,7 @@ public final class IOSLiveActivity extends PushModelObject{
                     Optional.ofNullable(staleDate),
                     Optional.ofNullable(timestamp),
                     Optional.ofNullable(attributesType),
-                    Optional.ofNullable(attributes.build())
+                    Optional.of(attributes.build())
                     );
         }
     }

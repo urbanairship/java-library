@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
 
+import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.push.model.notification.ios.IOSLiveActivity;
 import com.urbanairship.api.push.model.notification.ios.IOSLiveActivityAlert;
 import com.urbanairship.api.push.model.notification.ios.IOSLiveActivityEvent;
@@ -274,7 +275,10 @@ public class PayloadSerializerTest {
                 .setDismissalDate(1234)
                 .setRelevanceScore(1.0)
                 .setStaleDate(1234)
-                .addContentState("key", "value")
+                .addContentState("key", ImmutableMap.of(
+                        "id", 123,
+                        "name", "Alice"
+                ))
                 .addContentState("key2", "value2")
                 .build();
 
@@ -284,7 +288,7 @@ public class PayloadSerializerTest {
 
         String json = mapper.writeValueAsString(payload);
 
-        String expected = "{\"live_activity\":{\"event\":\"update\",\"name\":\"Foxes-Tigers\",\"alert\":{\"body\":\"test\",\"title\":\"test\",\"sound\":\"test.mp3\"},\"content_state\":{\"key\":\"value\",\"key2\":\"value2\"},\"dismissal_date\":1234,\"priority\":5,\"relevance_score\":1.0,\"stale_date\":1234}}";
+        String expected = "{\"live_activity\":{\"event\":\"update\",\"name\":\"Foxes-Tigers\",\"alert\":{\"body\":\"test\",\"title\":\"test\",\"sound\":\"test.mp3\"},\"content_state\":{\"key\":{\"id\":123,\"name\":\"Alice\"},\"key2\":\"value2\"},\"dismissal_date\":1234,\"priority\":5,\"relevance_score\":1.0,\"stale_date\":1234}}";
 
         assertEquals(expected, json);
     }
