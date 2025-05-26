@@ -23,7 +23,7 @@ public class AttributeSerializer extends JsonSerializer<Attribute> {
         }
 
         if (attribute.getValue().isPresent()) {
-            jgen.writeStringField(Constants.VALUE, attribute.getValue().get());
+            jgen.writeObjectField(Constants.VALUE, attribute.getValue().get());
         }
 
         jgen.writeEndObject();

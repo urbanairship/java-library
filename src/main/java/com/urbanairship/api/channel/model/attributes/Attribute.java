@@ -1,9 +1,12 @@
 package com.urbanairship.api.channel.model.attributes;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
 import com.urbanairship.api.common.parse.DateFormats;
 import org.joda.time.DateTime;
 
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -12,7 +15,7 @@ import java.util.Optional;
 public class Attribute {
     private final AttributeAction action;
     private final String key;
-    private final Optional<String> value;
+    private final Optional<JsonNode> value;
     private final Optional<DateTime> timeStamp;
 
     private Attribute(Builder builder) {
@@ -23,7 +26,7 @@ public class Attribute {
     }
 
     /**
-     * New atrribute builder.
+     * New attribute builder.
      *
      * @return Builder
      */
@@ -54,7 +57,7 @@ public class Attribute {
      *
      * @return Optional String value
      */
-    public Optional<String> getValue() {
+    public Optional<JsonNode> getValue() {
         return value;
     }
 
@@ -73,8 +76,9 @@ public class Attribute {
     public static class Builder {
         AttributeAction action;
         String key;
-        String value;
+        JsonNode value;
         DateTime timeStamp;
+        private static final ObjectMapper MAPPER = new ObjectMapper();
 
         /**
          * Indicates that you want to set or remove an attribute on the audience.
@@ -117,7 +121,29 @@ public class Attribute {
          * @return Builder
          */
         public Builder setValue(String value) {
-            this.value = value;
+            this.value = MAPPER.convertValue(value, JsonNode.class);
+            return this;
+        }
+
+        /**
+         * The value that you want to set for an attribute. Accepts numbers for integer/number type attributes.
+         *
+         * @param value Number
+         * @return Builder
+         */
+        public Builder setValue(Number value) {
+            this.value = MAPPER.convertValue(value, JsonNode.class);
+            return this;
+        }
+
+        /**
+         * The value that you want to set for an attribute. Accepts booleans.
+         *
+         * @param value Boolean
+         * @return Builder
+         */
+        public Builder setValue(Boolean value) {
+            this.value = MAPPER.convertValue(value, JsonNode.class);
             return this;
         }
 
@@ -128,20 +154,33 @@ public class Attribute {
          * @return Builder
          */
         public Builder setValue(DateTime value) {
-            this.value = DateFormats.DATE_FORMATTER.print(value);
+            String formatted = DateFormats.DATE_FORMATTER.print(value);
+            this.value = MAPPER.convertValue(formatted, JsonNode.class);
             return this;
         }
 
         /**
-         * Sets the value as a string representation of the Integer value.
+         * Sets the value as a JSON object node.
          *
-         * @param value Integer
+         * @param node JsonNode
          * @return Builder
          */
-        public Builder setValue(Integer value) {
-            this.value = value.toString();
+        public Builder setValue(JsonNode node) {
+            this.value = node;
             return this;
         }
+
+        /**
+         * Sets the value from a Map, converting it to a JSON object.
+         *
+         * @param map Map of properties
+         * @return Builder
+         */
+        public Builder setValue(Map<String, ?> map) {
+            this.value = MAPPER.valueToTree(map);
+            return this;
+        }
+
 
         public Attribute build() {
             Preconditions.checkNotNull(action, "Attribute action must be set.");

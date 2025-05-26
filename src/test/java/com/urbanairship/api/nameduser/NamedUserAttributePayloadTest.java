@@ -54,7 +54,7 @@ public class NamedUserAttributePayloadTest {
                 "      \"key\": \"items\",\n" +
                 "      \"action\": \"set\",\n" +
                 "      \"timestamp\": \"" + DateFormats.DATE_FORMATTER.print(now) + "\",\n" +
-                "      \"value\": \"20\"\n" +
+                "      \"value\": 20\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"key\": \"item\",\n" +
