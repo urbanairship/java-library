@@ -1,4 +1,9 @@
 -------------------------
+10.0.0 26MAY25
+-------------------------
+- Support JSON object and primitive attribute values in Attribute builder
+
+-------------------------
 9.8.0 07MAY25
 -------------------------
 - Allow contentState to accept arbitrary JSON values for iOSLiveActivity and AndroidLiveUpdate
