@@ -2,7 +2,6 @@ package com.urbanairship.api.channel.model.email;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.channel.model.ChannelType;
 import com.urbanairship.api.push.model.PushModelObject;
 
@@ -13,7 +12,8 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Represents the payload to be used for registering or updating an email channel.
+ * Represents the payload to be used for registering or updating an email
+ * channel.
  */
 public class RegisterEmailChannel extends PushModelObject {
     private final ChannelType type;
@@ -24,8 +24,11 @@ public class RegisterEmailChannel extends PushModelObject {
     private final Optional<String> localeLanguage;
     private final Optional<OptInMode> emailOptInMode;
     private final Optional<Map<String, String>> properties;
+    private final Optional<Map<TrackingOptInLevel, String>> trackingOptInLevel;
+    private final Optional<Map<String, List<String>>> tags;
+    private final Optional<Map<String, String>> attributes;
 
-    //Protected to facilitate subclassing for create and send child object
+    // Protected to facilitate subclassing for create and send child object
     protected RegisterEmailChannel(Builder builder) {
         this.type = ChannelType.EMAIL;
         this.emailOptInLevel = Optional.ofNullable((builder.emailOptInLevel));
@@ -35,6 +38,10 @@ public class RegisterEmailChannel extends PushModelObject {
         this.localeLanguage = Optional.ofNullable(builder.localeLanguage);
         this.emailOptInMode = Optional.ofNullable((builder.emailOptInMode));
         this.properties = Optional.of(Collections.unmodifiableMap(builder.properties)).filter(map -> !map.isEmpty());
+        this.trackingOptInLevel = Optional.of(Collections.unmodifiableMap(builder.trackingOptInLevel))
+                .filter(map -> !map.isEmpty());
+        this.tags = Optional.of(Collections.unmodifiableMap(builder.tags)).filter(map -> !map.isEmpty());
+        this.attributes = Optional.of(Collections.unmodifiableMap(builder.attributes)).filter(map -> !map.isEmpty());
     }
 
     /**
@@ -110,6 +117,33 @@ public class RegisterEmailChannel extends PushModelObject {
     }
 
     /**
+     * Get the channel tracking opt in/out timestamps for click/open.
+     *
+     * @return Optional Map of TrackingOptInLevel to timestamp string
+     */
+    public Optional<Map<TrackingOptInLevel, String>> getTrackingOptInLevel() {
+        return trackingOptInLevel;
+    }
+
+    /**
+     * Get grouped tags to be applied at registration time.
+     *
+     * @return Optional Map of group name to list of tag strings
+     */
+    public Optional<Map<String, List<String>>> getTags() {
+        return tags;
+    }
+
+    /**
+     * Get attributes to be applied at registration time.
+     *
+     * @return Optional Map of attribute key to string value
+     */
+    public Optional<Map<String, String>> getAttributes() {
+        return attributes;
+    }
+
+    /**
      * New RegisterEmailChannel builder.
      *
      * @return Builder
@@ -120,17 +154,22 @@ public class RegisterEmailChannel extends PushModelObject {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         RegisterEmailChannel that = (RegisterEmailChannel) o;
         return type == that.type &&
                 Objects.equal(address, that.address) &&
                 Objects.equal(timezone, that.timezone) &&
                 Objects.equal(localeCountry, that.localeCountry) &&
                 Objects.equal(localeLanguage, that.localeLanguage) &&
-                Objects.equal(emailOptInLevel, that.emailOptInLevel)&&
-                Objects.equal(emailOptInMode, that.emailOptInMode)&&
-                Objects.equal(properties, that.properties);
+                Objects.equal(emailOptInLevel, that.emailOptInLevel) &&
+                Objects.equal(emailOptInMode, that.emailOptInMode) &&
+                Objects.equal(properties, that.properties) &&
+                Objects.equal(trackingOptInLevel, that.trackingOptInLevel) &&
+                Objects.equal(tags, that.tags) &&
+                Objects.equal(attributes, that.attributes);
     }
 
     @Override
@@ -144,12 +183,16 @@ public class RegisterEmailChannel extends PushModelObject {
                 ", localeLanguage=" + localeLanguage +
                 ", emailOptInMode=" + emailOptInMode +
                 ", properties=" + properties +
+                ", trackingOptInLevel=" + trackingOptInLevel +
+                ", tags=" + tags +
+                ", attributes=" + attributes +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(type, emailOptInLevel, address, timezone, localeCountry, localeLanguage, emailOptInMode, properties);
+        return Objects.hashCode(type, emailOptInLevel, address, timezone, localeCountry, localeLanguage, emailOptInMode,
+                properties, trackingOptInLevel, tags, attributes);
     }
 
     /**
@@ -163,6 +206,9 @@ public class RegisterEmailChannel extends PushModelObject {
         private Map<OptInLevel, String> emailOptInLevel = new HashMap<>();
         private OptInMode emailOptInMode;
         private Map<String, String> properties = new HashMap<>();
+        private Map<TrackingOptInLevel, String> trackingOptInLevel = new HashMap<>();
+        private Map<String, List<String>> tags = new HashMap<>();
+        private Map<String, String> attributes = new HashMap<>();
 
         protected Builder() {
         }
@@ -171,11 +217,71 @@ public class RegisterEmailChannel extends PushModelObject {
          * Set the EmailOptInLevel status and time.
          *
          * @param level time OptInLevel, String
-         * @param time String
+         * @param time  String
          * @return RegisterEmailChannel Builder
          */
         public Builder setEmailOptInLevel(OptInLevel level, String time) {
             this.emailOptInLevel.put(level, time);
+            return this;
+        }
+
+        /**
+         * Set tracking opt in/out timestamp for click/open tracking.
+         *
+         * @param level TrackingOptInLevel
+         * @param time  String timestamp
+         * @return RegisterEmailChannel Builder
+         */
+        public Builder setTrackingOptInLevel(TrackingOptInLevel level, String time) {
+            this.trackingOptInLevel.put(level, time);
+            return this;
+        }
+
+        /**
+         * Add a single tag under a tag group.
+         *
+         * @param group String tag group
+         * @param tag   String tag value
+         * @return Builder
+         */
+        public Builder addTag(String group, String tag) {
+            this.tags.computeIfAbsent(group, g -> new java.util.ArrayList<>()).add(tag);
+            return this;
+        }
+
+        /**
+         * Add all grouped tags.
+         *
+         * @param tags Map of group to list of tags
+         * @return Builder
+         */
+        public Builder addAllTags(Map<String, List<String>> tags) {
+            for (String group : tags.keySet()) {
+                this.tags.computeIfAbsent(group, g -> new java.util.ArrayList<>()).addAll(tags.get(group));
+            }
+            return this;
+        }
+
+        /**
+         * Add a single attribute key/value.
+         *
+         * @param key   String
+         * @param value String
+         * @return Builder
+         */
+        public Builder addAttribute(String key, String value) {
+            this.attributes.put(key, value);
+            return this;
+        }
+
+        /**
+         * Add all attributes key/value pairs.
+         *
+         * @param attributes Map of Strings
+         * @return Builder
+         */
+        public Builder addAllAttributes(Map<String, String> attributes) {
+            this.attributes.putAll(attributes);
             return this;
         }
 
@@ -190,7 +296,6 @@ public class RegisterEmailChannel extends PushModelObject {
             this.address = address;
             return this;
         }
-
 
         /**
          * Set timezone string. An IANA tzdata identifier for the timezone
@@ -247,7 +352,7 @@ public class RegisterEmailChannel extends PushModelObject {
         /**
          * Add a property.
          * 
-         * @param key String
+         * @param key   String
          * @param value String
          * @return EmailChannel Builder
          */
