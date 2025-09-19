@@ -1,4 +1,9 @@
 -------------------------
+10.1.0 19SEP25
+-------------------------
+- Add tracking, tags and attributes fields to RegisterEmailChannel class
+
+-------------------------
 10.0.0 26MAY25
 -------------------------
 - Support JSON object and primitive attribute values in Attribute builder
