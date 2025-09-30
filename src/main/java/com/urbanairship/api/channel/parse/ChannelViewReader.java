@@ -76,7 +76,9 @@ public final class ChannelViewReader implements JsonObjectReader<ChannelView> {
     }
 
     public void readTagGroups(JsonParser jsonParser) throws IOException {
-        Map<String, Set<String>> mutableTagGroups = jsonParser.readValueAs(new TypeReference<Map<String, Set<String>>>() {});
+        Map<String, Set<String>> mutableTagGroups = jsonParser
+                .readValueAs(new TypeReference<Map<String, Set<String>>>() {
+                });
         ImmutableMap<String, ImmutableSet<String>> tagGroups = immutableMapConverter(mutableTagGroups);
         builder.addAllTagGroups(tagGroups);
     }
@@ -125,6 +127,22 @@ public final class ChannelViewReader implements JsonObjectReader<ChannelView> {
 
     public void readTransactionalOptedOut(JsonParser jsonParser) throws IOException {
         builder.setTransactionalOptedOut(jsonParser.readValueAs(DateTime.class));
+    }
+
+    public void readOpenTrackingOptedIn(JsonParser jsonParser) throws IOException {
+        builder.setOpenTrackingOptedIn(jsonParser.readValueAs(DateTime.class));
+    }
+
+    public void readOpenTrackingOptedOut(JsonParser jsonParser) throws IOException {
+        builder.setOpenTrackingOptedOut(jsonParser.readValueAs(DateTime.class));
+    }
+
+    public void readClickTrackingOptedIn(JsonParser jsonParser) throws IOException {
+        builder.setClickTrackingOptedIn(jsonParser.readValueAs(DateTime.class));
+    }
+
+    public void readClickTrackingOptedOut(JsonParser jsonParser) throws IOException {
+        builder.setClickTrackingOptedOut(jsonParser.readValueAs(DateTime.class));
     }
 
     public void readEmailAddress(JsonParser jsonParser) throws IOException {

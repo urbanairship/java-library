@@ -27,16 +27,20 @@ public class RegisterEmailChannelSerializer extends JsonSerializer<RegisterEmail
          */
         for (OptInLevel level : OptInLevel.values()) {
             if (payload.getEmailOptInLevel().get().keySet().contains(level)) {
-                jgen.writeObjectField(level.getIdentifier(),
-                        payload.getEmailOptInLevel().get().get(level));
+                String value = payload.getEmailOptInLevel().get().get(level);
+                if (value != null && !value.isEmpty()) {
+                    jgen.writeObjectField(level.getIdentifier(), value);
+                }
             }
         }
 
         if (payload.getTrackingOptInLevel().isPresent()) {
             for (TrackingOptInLevel level : TrackingOptInLevel.values()) {
                 if (payload.getTrackingOptInLevel().get().keySet().contains(level)) {
-                    jgen.writeObjectField(level.getIdentifier(),
-                            payload.getTrackingOptInLevel().get().get(level));
+                    String value = payload.getTrackingOptInLevel().get().get(level);
+                    if (value != null && !value.isEmpty()) {
+                        jgen.writeObjectField(level.getIdentifier(), value);
+                    }
                 }
             }
         }
