@@ -44,9 +44,12 @@ public final class ChannelView {
     private final Optional<DateTime> commercialOptedOut;
     private final Optional<DateTime> transactionalOptedIn;
     private final Optional<DateTime> transactionalOptedOut;
+    private final Optional<DateTime> openTrackingOptedIn;
+    private final Optional<DateTime> openTrackingOptedOut;
+    private final Optional<DateTime> clickTrackingOptedIn;
+    private final Optional<DateTime> clickTrackingOptedOut;
     private final Optional<String> emailAddress;
     private final Optional<String> suppressionState;
-
 
     private ChannelView(Builder builder) {
         this.channelId = builder.channelId;
@@ -71,6 +74,10 @@ public final class ChannelView {
         this.commercialOptedOut = Optional.ofNullable(builder.commercialOptedOut);
         this.transactionalOptedIn = Optional.ofNullable(builder.transactionalOptedIn);
         this.transactionalOptedOut = Optional.ofNullable(builder.transactionalOptedOut);
+        this.openTrackingOptedIn = Optional.ofNullable(builder.openTrackingOptedIn);
+        this.openTrackingOptedOut = Optional.ofNullable(builder.openTrackingOptedOut);
+        this.clickTrackingOptedIn = Optional.ofNullable(builder.clickTrackingOptedIn);
+        this.clickTrackingOptedOut = Optional.ofNullable(builder.clickTrackingOptedOut);
         this.emailAddress = Optional.ofNullable(builder.emailAddress);
         this.suppressionState = Optional.ofNullable(builder.suppressionState);
     }
@@ -285,6 +292,42 @@ public final class ChannelView {
     }
 
     /**
+     * Get the time the user opted in to open tracking
+     *
+     * @return Optional DateTime of open_tracking_opted_in
+     */
+    public Optional<DateTime> getOpenTrackingOptedIn() {
+        return openTrackingOptedIn;
+    }
+
+    /**
+     * Get the time the user opted out of open tracking
+     *
+     * @return Optional DateTime of open_tracking_opted_out
+     */
+    public Optional<DateTime> getOpenTrackingOptedOut() {
+        return openTrackingOptedOut;
+    }
+
+    /**
+     * Get the time the user opted in to click tracking
+     *
+     * @return Optional DateTime of click_tracking_opted_in
+     */
+    public Optional<DateTime> getClickTrackingOptedIn() {
+        return clickTrackingOptedIn;
+    }
+
+    /**
+     * Get the time the user opted out of click tracking
+     *
+     * @return Optional DateTime of click_tracking_opted_out
+     */
+    public Optional<DateTime> getClickTrackingOptedOut() {
+        return clickTrackingOptedOut;
+    }
+
+    /**
      * Get the email address associated with a channel id
      * 
      * @return Optional String emailAddress
@@ -327,6 +370,10 @@ public final class ChannelView {
                 ", commercialOptedOut=" + commercialOptedOut +
                 ", transactionalOptedIn=" + transactionalOptedIn +
                 ", transactionalOptedOut=" + transactionalOptedOut +
+                ", openTrackingOptedIn=" + openTrackingOptedIn +
+                ", openTrackingOptedOut=" + openTrackingOptedOut +
+                ", clickTrackingOptedIn=" + clickTrackingOptedIn +
+                ", clickTrackingOptedOut=" + clickTrackingOptedOut +
                 ", emailAddress=" + emailAddress +
                 ", suppressionState=" + suppressionState +
                 '}';
@@ -334,8 +381,10 @@ public final class ChannelView {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         ChannelView that = (ChannelView) o;
         return installed == that.installed &&
                 optIn == that.optIn &&
@@ -359,15 +408,23 @@ public final class ChannelView {
                 Objects.equal(commercialOptedOut, that.commercialOptedOut) &&
                 Objects.equal(transactionalOptedIn, that.transactionalOptedIn) &&
                 Objects.equal(transactionalOptedOut, that.transactionalOptedOut) &&
+                Objects.equal(openTrackingOptedIn, that.openTrackingOptedIn) &&
+                Objects.equal(openTrackingOptedOut, that.openTrackingOptedOut) &&
+                Objects.equal(clickTrackingOptedIn, that.clickTrackingOptedIn) &&
+                Objects.equal(clickTrackingOptedOut, that.clickTrackingOptedOut) &&
                 Objects.equal(emailAddress, that.emailAddress) &&
                 Objects.equal(suppressionState, that.suppressionState);
-                
+
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(channelId, channelType, installed, optIn, background, pushAddress, created, lastRegistration,
-                alias, tags, tagGroups, iosSettings, web, open, address, namedUser, attributes, deviceAttributes, commercialOptedIn, commercialOptedOut, transactionalOptedIn, transactionalOptedOut, emailAddress,suppressionState);
+        return Objects.hashCode(channelId, channelType, installed, optIn, background, pushAddress, created,
+                lastRegistration,
+                alias, tags, tagGroups, iosSettings, web, open, address, namedUser, attributes, deviceAttributes,
+                commercialOptedIn, commercialOptedOut, transactionalOptedIn, transactionalOptedOut,
+                openTrackingOptedIn, openTrackingOptedOut, clickTrackingOptedIn, clickTrackingOptedOut,
+                emailAddress, suppressionState);
     }
 
     public final static class Builder {
@@ -393,6 +450,10 @@ public final class ChannelView {
         private DateTime commercialOptedOut = null;
         private DateTime transactionalOptedIn = null;
         private DateTime transactionalOptedOut = null;
+        private DateTime openTrackingOptedIn = null;
+        private DateTime openTrackingOptedOut = null;
+        private DateTime clickTrackingOptedIn = null;
+        private DateTime clickTrackingOptedOut = null;
         private String emailAddress = null;
         private String suppressionState = null;
 
@@ -493,6 +554,7 @@ public final class ChannelView {
 
         /**
          * Set the created time
+         * 
          * @param created DateTime
          * @return Builder
          */
@@ -503,6 +565,7 @@ public final class ChannelView {
 
         /**
          * Set the last registration time
+         * 
          * @param lastRegistration DateTime
          * @return Builder
          */
@@ -601,6 +664,7 @@ public final class ChannelView {
 
         /**
          * Set the OpenChannel Platform Options Object.
+         * 
          * @param openChannel OpenChannel
          * @return Builder
          */
@@ -612,6 +676,7 @@ public final class ChannelView {
         /**
          * Set the address. The primary identifier of a record. For example,
          * in an SMS integration, it could be the end user’s phone number.
+         * 
          * @param address String
          * @return Builder
          */
@@ -622,6 +687,7 @@ public final class ChannelView {
 
         /**
          * Set the named user.
+         * 
          * @param namedUser String
          * @return Builder
          */
@@ -632,6 +698,7 @@ public final class ChannelView {
 
         /**
          * Set the commercialOptedIn time
+         * 
          * @param commercialOptedIn DateTime
          * @return Builder
          */
@@ -642,6 +709,7 @@ public final class ChannelView {
 
         /**
          * Set the commercialOptedOut time
+         * 
          * @param commercialOptedOut DateTime
          * @return Builder
          */
@@ -652,6 +720,7 @@ public final class ChannelView {
 
         /**
          * Set the transactionalOptedIn time
+         * 
          * @param transactionalOptedIn DateTime
          * @return Builder
          */
@@ -662,11 +731,56 @@ public final class ChannelView {
 
         /**
          * Set the transactionalOptedOut time
+         * 
          * @param transactionalOptedOut DateTime
          * @return Builder
          */
         public Builder setTransactionalOptedOut(DateTime transactionalOptedOut) {
             this.transactionalOptedOut = transactionalOptedOut;
+            return this;
+        }
+
+        /**
+         * Set the open tracking opted in time
+         * 
+         * @param openTrackingOptedIn DateTime
+         * @return Builder
+         */
+        public Builder setOpenTrackingOptedIn(DateTime openTrackingOptedIn) {
+            this.openTrackingOptedIn = openTrackingOptedIn;
+            return this;
+        }
+
+        /**
+         * Set the open tracking opted out time
+         * 
+         * @param openTrackingOptedOut DateTime
+         * @return Builder
+         */
+        public Builder setOpenTrackingOptedOut(DateTime openTrackingOptedOut) {
+            this.openTrackingOptedOut = openTrackingOptedOut;
+            return this;
+        }
+
+        /**
+         * Set the click tracking opted in time
+         * 
+         * @param clickTrackingOptedIn DateTime
+         * @return Builder
+         */
+        public Builder setClickTrackingOptedIn(DateTime clickTrackingOptedIn) {
+            this.clickTrackingOptedIn = clickTrackingOptedIn;
+            return this;
+        }
+
+        /**
+         * Set the click tracking opted out time
+         * 
+         * @param clickTrackingOptedOut DateTime
+         * @return Builder
+         */
+        public Builder setClickTrackingOptedOut(DateTime clickTrackingOptedOut) {
+            this.clickTrackingOptedOut = clickTrackingOptedOut;
             return this;
         }
 
@@ -694,6 +808,7 @@ public final class ChannelView {
 
         /**
          * Build the ChannelView object
+         * 
          * @return ChannelView
          */
         public ChannelView build() {
