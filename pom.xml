@@ -4,7 +4,7 @@
     
     <groupId>com.urbanairship</groupId>
     <artifactId>java-client</artifactId>
-    <version>9.1.2-SNAPSHOT</version>
+    <version>10.3.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Java Client</name>
@@ -171,7 +171,7 @@
         <joda-convert.version>2.2.2</joda-convert.version>
         <commons-codec.version>1.15</commons-codec.version>
         <fluent-hc.version>4.5.14</fluent-hc.version>
-        <netty.version>4.1.121.Final</netty.version>
+        <netty.version>4.1.125.Final</netty.version>
         <ahc.version>2.12.4</ahc.version>
 
         <junit.version>4.13.2</junit.version>
