@@ -1,4 +1,11 @@
 -------------------------
+10.3.0 06OCT25
+-------------------------
+- Add TrackingOptInLevel fields to UpdateEmailChannelRequest
+- Add TrackingOptInLevel fiels to ChannelView
+- Update Netty version to 4.1.125.Final
+
+-------------------------
 10.2.0 19SEP25
 -------------------------
 - Update sonatype configuration

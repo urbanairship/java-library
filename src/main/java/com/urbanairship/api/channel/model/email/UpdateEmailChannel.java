@@ -2,11 +2,10 @@ package com.urbanairship.api.channel.model.email;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.channel.model.ChannelType;
-import com.urbanairship.api.channel.model.subscriptionlist.SubscriptionList;
 import com.urbanairship.api.push.model.PushModelObject;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -21,8 +20,9 @@ public class UpdateEmailChannel extends PushModelObject {
     private final Optional<String> timezone;
     private final Optional<String> localeCountry;
     private final Optional<String> localeLanguage;
+    private final Optional<Map<TrackingOptInLevel, String>> trackingOptInLevel;
 
-    //Protected to facilitate subclassing for create and send child object
+    // Protected to facilitate subclassing for create and send child object
     protected UpdateEmailChannel(Builder builder) {
         this.type = ChannelType.EMAIL;
         this.emailOptInLevel = Optional.ofNullable((builder.emailOptInLevel));
@@ -30,6 +30,8 @@ public class UpdateEmailChannel extends PushModelObject {
         this.timezone = Optional.ofNullable(builder.timezone);
         this.localeCountry = Optional.ofNullable(builder.localeCountry);
         this.localeLanguage = Optional.ofNullable(builder.localeLanguage);
+        this.trackingOptInLevel = Optional.of(Collections.unmodifiableMap(builder.trackingOptInLevel))
+                .filter(map -> !map.isEmpty());
     }
 
     /**
@@ -87,6 +89,15 @@ public class UpdateEmailChannel extends PushModelObject {
     }
 
     /**
+     * Get the channel tracking opt in/out timestamps for click/open.
+     *
+     * @return Optional Map of TrackingOptInLevel to timestamp string
+     */
+    public Optional<Map<TrackingOptInLevel, String>> getTrackingOptInLevel() {
+        return trackingOptInLevel;
+    }
+
+    /**
      * New UpdateEmailChannel builder.
      *
      * @return Builder
@@ -97,8 +108,10 @@ public class UpdateEmailChannel extends PushModelObject {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         UpdateEmailChannel that = (UpdateEmailChannel) o;
         return type == that.type &&
                 Objects.equal(address, that.address) &&
@@ -117,12 +130,14 @@ public class UpdateEmailChannel extends PushModelObject {
                 ", timezone=" + timezone +
                 ", localeCountry=" + localeCountry +
                 ", localeLanguage=" + localeLanguage +
+                ", trackingOptInLevel=" + trackingOptInLevel +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(type, emailOptInLevel, address, timezone, localeCountry, localeLanguage);
+        return Objects.hashCode(type, emailOptInLevel, address, timezone, localeCountry, localeLanguage,
+                trackingOptInLevel);
     }
 
     /**
@@ -135,6 +150,7 @@ public class UpdateEmailChannel extends PushModelObject {
         private String localeCountry;
         private String localeLanguage;
         private Map<OptInLevel, String> emailOptInLevel = new HashMap<>();
+        private Map<TrackingOptInLevel, String> trackingOptInLevel = new HashMap<>();
 
         protected Builder() {
         }
@@ -143,7 +159,7 @@ public class UpdateEmailChannel extends PushModelObject {
          * Set the EmailOptInLevel status and time.
          *
          * @param level time OptInLevel, String
-         * @param time String
+         * @param time  String
          * @return UpdateEmailChannel Builder
          */
         public Builder setEmailOptInLevel(OptInLevel level, String time) {
@@ -152,9 +168,22 @@ public class UpdateEmailChannel extends PushModelObject {
         }
 
         /**
+         * Set tracking opt in/out timestamp for click/open tracking.
+         *
+         * @param level TrackingOptInLevel
+         * @param time  String timestamp
+         * @return UpdateEmailChannel Builder
+         */
+        public Builder setTrackingOptInLevel(TrackingOptInLevel level, String time) {
+            this.trackingOptInLevel.put(level, time);
+            return this;
+        }
+
+        /**
          * Set the channel's address, a Unique identifier of the object
          * used as the primary ID in the delivery tier (Email).
-         * The email address can't be updated, it has to be the email address associated with the email channel.
+         * The email address can't be updated, it has to be the email address associated
+         * with the email channel.
          *
          * @param address String
          * @return UpdateEmailChannel Builder
@@ -203,7 +232,6 @@ public class UpdateEmailChannel extends PushModelObject {
             this.localeLanguage = locale_language;
             return this;
         }
-
 
         public UpdateEmailChannel build() {
             Preconditions.checkNotNull(address, "address cannot be null.");
