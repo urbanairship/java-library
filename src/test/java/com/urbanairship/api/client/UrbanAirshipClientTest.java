@@ -96,6 +96,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -140,7 +141,7 @@ public class UrbanAirshipClientTest {
     public final static String TEXT_CSV = "text/csv";
 
     @Mock
-    Predicate<FilterContext> retryPredicate;
+    Predicate<FilterContext<?>> retryPredicate;
 
     private UrbanAirshipClient client;
     private AsyncRequestClient asyncRequestClient;
@@ -179,7 +180,8 @@ public class UrbanAirshipClientTest {
     }
 
     @ClassRule
-    public static WireMockClassRule wireMockRule = new WireMockClassRule(wireMockConfig().dynamicPort().dynamicHttpsPort());
+    public static WireMockClassRule wireMockRule = new WireMockClassRule(
+            wireMockConfig().dynamicPort().dynamicHttpsPort());
 
     @Rule
     public WireMockClassRule instanceRule = wireMockRule;
@@ -187,23 +189,23 @@ public class UrbanAirshipClientTest {
     @Test(expected = NullPointerException.class)
     public void testAPIClientThrowsForNoAppKey() {
         UrbanAirshipClient.newBuilder()
-            .setKey("foo")
-            .build();
+                .setKey("foo")
+                .build();
     }
 
     @Test(expected = NullPointerException.class)
     public void testAPIClientThrowsForNoAppSecret() {
         UrbanAirshipClient.newBuilder()
-            .setSecret("foo")
-            .build();
+                .setSecret("foo")
+                .build();
     }
 
     @Test
     public void testAPIClientBuilder() {
         UrbanAirshipClient client = UrbanAirshipClient.newBuilder()
-            .setKey("key")
-            .setSecret("secret")
-            .build();
+                .setKey("key")
+                .setSecret("secret")
+                .build();
         assertEquals("App key incorrect", "key", client.getAppKey());
         assertEquals("App secret incorrect", "secret", client.getAppSecret().get());
         try {
@@ -279,13 +281,13 @@ public class UrbanAirshipClientTest {
     public void testAPIClientBuilderWithParams() throws IOException {
 
         DefaultAsyncHttpClientConfig.Builder defaultClientBuilder = new DefaultAsyncHttpClientConfig.Builder()
-                .setConnectTimeout(20);
+                .setConnectTimeout(java.time.Duration.ofSeconds(20));
 
         AsyncRequestClient client = AsyncRequestClient.newBuilder()
                 .setClientConfigBuilder(defaultClientBuilder)
                 .build();
 
-        assertEquals(20, client.getClientConfig().getConnectTimeout());
+        assertEquals(java.time.Duration.ofSeconds(20), client.getClientConfig().getConnectTimeout());
 
         client.close();
     }
@@ -334,31 +336,32 @@ public class UrbanAirshipClientTest {
         assertEquals(expected, uriNuResolved.toString());
     }
 
-    /* Test the following attributes of the push method on the APIClient object
-     1. Method produces a post request
-     2. Request has proper headers
-     3. URL path is correct
-     4. The request body produced during the building/sending process can actually
-     be parsed by the server.
-
-  */
+    /*
+     * Test the following attributes of the push method on the APIClient object
+     * 1. Method produces a post request
+     * 2. Request has proper headers
+     * 3. URL path is correct
+     * 4. The request body produced during the building/sending process can actually
+     * be parsed by the server.
+     * 
+     */
     @Test
     @SuppressWarnings("unchecked")
     public void testPush() {
 
         PushPayload payload = PushPayload.newBuilder()
-            .setAudience(Selectors.all())
-            .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-            .setNotification(Notifications.alert("Foo"))
-            .build();
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setNotification(Notifications.alert("Foo"))
+                .build();
 
         // Setup a stubbed response for the server
         String pushJSON = "{\"ok\" : true,\"operation_id\" : \"df6a6b50\", \"push_ids\":[\"PushID\"]}";
         stubFor(post(urlEqualTo("/api/push/"))
-            .willReturn(aResponse()
-                .withHeader(CONTENT_TYPE_KEY, "application/json")
-                .withBody(pushJSON)
-                .withStatus(201)));
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withBody(pushJSON)
+                        .withStatus(201)));
 
         try {
             final CountDownLatch latch = new CountDownLatch(1);
@@ -377,17 +380,16 @@ public class UrbanAirshipClientTest {
 
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/push/"))
-                .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(postRequestedFor(
-                urlEqualTo("/api/push/")));
+                    urlEqualTo("/api/push/")));
             // There should only be one request
             assertEquals(requests.size(), 1);
             // Parse the request using the server side deserializer and check
             // results
             String requestPayload = requests.get(0).getBodyAsString();
             ObjectMapper mapper = PushObjectMapper.getInstance();
-            Map<String, Object> result =
-                mapper.readValue(requestPayload,
+            Map<String, Object> result = mapper.readValue(requestPayload,
                     new TypeReference<Map<String, Object>>() {
                     });
             // Audience
@@ -400,8 +402,7 @@ public class UrbanAirshipClientTest {
             assertEquals(DeviceType.find(deviceTypeData.get(0)).get(), DeviceType.IOS);
 
             // Notification
-            Map<String, String> notification =
-                (Map<String, String>) result.get("notification");
+            Map<String, String> notification = (Map<String, String>) result.get("notification");
             assertEquals("Foo", notification.get("alert"));
 
             // The response is tested elsewhere, just check that it exists
@@ -417,42 +418,40 @@ public class UrbanAirshipClientTest {
     public void testPushRetry() throws Exception {
 
         PushPayload payload = PushPayload.newBuilder()
-            .setAudience(Selectors.all())
-            .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-            .setNotification(Notifications.alert("Foo"))
-            .build();
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setNotification(Notifications.alert("Foo"))
+                .build();
 
         // Setup a stubbed response for the server
         String pushJSON = "{\"ok\" : true,\"operation_id\" : \"df6a6b50\", \"push_ids\":[\"PushID\"]}";
         stubFor(post(urlEqualTo("/api/push/")).inScenario("test")
-            .whenScenarioStateIs("Started")
-            .willReturn(aResponse()
-                .withStatus(503))
-            .willSetStateTo("Retry"));
+                .whenScenarioStateIs("Started")
+                .willReturn(aResponse()
+                        .withStatus(503))
+                .willSetStateTo("Retry"));
 
         stubFor(post(urlEqualTo("/api/push/")).inScenario("test")
-            .whenScenarioStateIs("Retry")
-            .willReturn(aResponse()
-                .withHeader(CONTENT_TYPE_KEY, "application/json")
-                .withBody(pushJSON)
-                .withStatus(201)));
+                .whenScenarioStateIs("Retry")
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withBody(pushJSON)
+                        .withStatus(201)));
 
         Response<PushResponse> response = client.execute(PushRequest.newRequest(payload));
 
-
         // Verify components of the underlying HttpRequest
         verify(postRequestedFor(urlEqualTo("/api/push/"))
-            .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+                .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
         List<LoggedRequest> requests = findAll(postRequestedFor(
-            urlEqualTo("/api/push/")));
+                urlEqualTo("/api/push/")));
         // There should only be one request
         assertEquals(requests.size(), 2);
         // Parse the request using the server side deserializer and check
         // results
         String requestPayload = requests.get(1).getBodyAsString();
         ObjectMapper mapper = PushObjectMapper.getInstance();
-        Map<String, Object> result =
-            mapper.readValue(requestPayload,
+        Map<String, Object> result = mapper.readValue(requestPayload,
                 new TypeReference<Map<String, Object>>() {
                 });
         // Audience
@@ -465,8 +464,7 @@ public class UrbanAirshipClientTest {
         assertEquals(DeviceType.find(deviceTypeData.get(0)).get(), DeviceType.IOS);
 
         // Notification
-        Map<String, String> notification =
-            (Map<String, String>) result.get("notification");
+        Map<String, String> notification = (Map<String, String>) result.get("notification");
         assertEquals("Foo", notification.get("alert"));
 
         // The response is tested elsewhere, just check that it exists
@@ -515,41 +513,41 @@ public class UrbanAirshipClientTest {
     @SuppressWarnings("unchecked")
     public void testRetryIsNonBlocking() throws Exception {
         asyncRequestClient = AsyncRequestClient.newBuilder()
-            .setBaseUri("http://localhost:" + wireMockRule.port())
-            .setMaxRetries(1000)
-            .build();
-
+                .setBaseUri("http://localhost:" + wireMockRule.port())
+                .setMaxRetries(1000)
+                .build();
 
         stubFor(get(urlEqualTo("/api/named_users/"))
-            .willReturn(aResponse()
-                .withStatus(503)));
+                .willReturn(aResponse()
+                        .withStatus(503)));
 
         PushPayload payload = PushPayload.newBuilder()
-            .setAudience(Selectors.all())
-            .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-            .setNotification(Notifications.alert("Foo"))
-            .build();
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setNotification(Notifications.alert("Foo"))
+                .build();
 
         // Setup a stubbed response for the server
         String pushJSON = "{\"ok\" : true,\"operation_id\" : \"df6a6b50\", \"push_ids\":[\"PushID\"]}";
         stubFor(post(urlEqualTo("/api/push/"))
-            .willReturn(aResponse()
-                .withHeader(CONTENT_TYPE_KEY, "application/json")
-                .withBody(pushJSON)
-                .withStatus(201)));
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withBody(pushJSON)
+                        .withStatus(201)));
 
-        final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryBuilder()
-            .setDaemon(false)
-            .build());
+        final ScheduledExecutorService scheduledExecutorService = Executors
+                .newSingleThreadScheduledExecutor(new ThreadFactoryBuilder()
+                        .setDaemon(false)
+                        .build());
 
         final Future future = client.executeAsync(NamedUserListingRequest.newRequest());
         Response<PushResponse> response = client.execute(PushRequest.newRequest(payload));
 
         // Verify components of the underlying HttpRequest
         verify(postRequestedFor(urlEqualTo("/api/push/"))
-            .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+                .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
         List<LoggedRequest> requests = findAll(postRequestedFor(
-            urlEqualTo("/api/push/")));
+                urlEqualTo("/api/push/")));
         // There should only be one request
         assertEquals(requests.size(), 1);
         // The response is tested elsewhere, just check that it exists
@@ -564,18 +562,18 @@ public class UrbanAirshipClientTest {
     @Test
     public void testClose() {
         asyncRequestClient = AsyncRequestClient.newBuilder()
-            .setBaseUri("http://localhost:" + wireMockRule.port())
-            .setMaxRetries(1000)
-            .build();
-
+                .setBaseUri("http://localhost:" + wireMockRule.port())
+                .setMaxRetries(1000)
+                .build();
 
         stubFor(get(urlEqualTo("/api/named_users/"))
-            .willReturn(aResponse()
-                .withStatus(503)));
+                .willReturn(aResponse()
+                        .withStatus(503)));
 
-        final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryBuilder()
-            .setDaemon(false)
-            .build());
+        final ScheduledExecutorService scheduledExecutorService = Executors
+                .newSingleThreadScheduledExecutor(new ThreadFactoryBuilder()
+                        .setDaemon(false)
+                        .build());
 
         final Future future = client.executeAsync(NamedUserListingRequest.newRequest());
 
@@ -596,20 +594,19 @@ public class UrbanAirshipClientTest {
     public void testClientException() throws Exception {
 
         PushPayload payload = PushPayload.newBuilder()
-            .setAudience(Selectors.all())
-            .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-            .setNotification(Notifications.alert("Foo"))
-            .build();
-
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setNotification(Notifications.alert("Foo"))
+                .build();
 
         // Setup a stubbed response for the server
         final String errorJSON = "{\"ok\" : false,\"operation_id\" : \"operation id\",\"error\" : \"Invalid push content\",\"error_code\" : 40001,\"details\" : {\"error\" : \"error message\",\"path\" : \"push.wns.text\",\"location\" : {\"line\" : 47,\"column\" : 12}}}";
 
         stubFor(post(urlEqualTo("/api/push/"))
-            .willReturn(aResponse()
-                .withHeader(CONTENT_TYPE_KEY, "application/vnd.urbanairship+json")
-                .withBody(errorJSON)
-                .withStatus(401)));
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/vnd.urbanairship+json")
+                        .withBody(errorJSON)
+                        .withStatus(401)));
 
         final CountDownLatch latch = new CountDownLatch(1);
         asyncRequestClient.executeAsync(PushRequest.newRequest(payload), new ResponseCallback() {
@@ -643,7 +640,6 @@ public class UrbanAirshipClientTest {
                 .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
                 .setNotification(Notifications.alert("Foo"))
                 .build();
-
 
         // Setup a stubbed response for the server
         final String errorJSON = "Internal Server Error";
@@ -686,87 +682,84 @@ public class UrbanAirshipClientTest {
 
         // Setup a client and a push payload
         AsyncRequestClient.newBuilder()
-            .setBaseUri("http://localhost:" + wireMockRule.port())
-            .setProxyServer(proxyServer)
-            .build();
+                .setBaseUri("http://localhost:" + wireMockRule.port())
+                .setProxyServer(proxyServer)
+                .build();
 
         PushPayload payload = PushPayload.newBuilder()
-            .setAudience(Selectors.all())
-            .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-            .setNotification(Notifications.alert("Foo"))
-            .build();
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setNotification(Notifications.alert("Foo"))
+                .build();
 
         // Setup a stubbed response for the server
         String pushJSON = "{\"ok\" : true,\"operation_id\" : \"df6a6b50\", \"push_ids\":[\"PushID\"]}";
         stubFor(post(urlEqualTo("/api/push/"))
-            .willReturn(aResponse()
-                    .withHeader(CONTENT_TYPE_KEY, "application/json")
-                    .withBody(pushJSON)
-                    .withStatus(201)
-            ));
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withBody(pushJSON)
+                        .withStatus(201)));
 
         Response<PushResponse> response = client.execute(PushRequest.newRequest(payload));
 
         // Verify components of the underlying HttpRequest
         verify(postRequestedFor(urlEqualTo("/api/push/"))
-                .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON))
-        );
+                .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
         List<LoggedRequest> requests = findAll(postRequestedFor(
-            urlEqualTo("/api/push/")));
+                urlEqualTo("/api/push/")));
         // There should only be one request
         assertEquals(requests.size(), 1);
         // Parse the request using the server side deserializer and check
         // results
         String requestPayload = requests.get(0).getBodyAsString();
         ObjectMapper mapper = PushObjectMapper.getInstance();
-        Map<String, Object> result =
-            mapper.readValue(requestPayload,
-                new TypeReference<Map<String,Object>>(){});
+        Map<String, Object> result = mapper.readValue(requestPayload,
+                new TypeReference<Map<String, Object>>() {
+                });
         // Audience
-        String audience = (String)result.get("audience");
+        String audience = (String) result.get("audience");
         assertEquals("ALL", audience);
 
         // DeviceType
-        List<String> deviceTypeData = (List<String>)result.get("device_types");
+        List<String> deviceTypeData = (List<String>) result.get("device_types");
         assertEquals("ios", deviceTypeData.get(0));
         assertEquals(DeviceType.find(deviceTypeData.get(0)).get(), DeviceType.IOS);
 
         // Notification
-        Map<String, String> notification =
-            (Map<String,String>)result.get("notification");
+        Map<String, String> notification = (Map<String, String>) result.get("notification");
         assertEquals("Foo", notification.get("alert"));
 
         // The response is tested elsewhere, just check that it exists
         assertNotNull(response);
     }
 
-      /*
-      Validate is the exact workflow as push, except the URL,
-      so focus test on that.
-      */
+    /*
+     * Validate is the exact workflow as push, except the URL,
+     * so focus test on that.
+     */
 
     @Test
     public void testValidate() {
 
         PushPayload payload = PushPayload.newBuilder()
-            .setAudience(Selectors.all())
-            .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-            .setNotification(Notifications.alert("Foo"))
-            .build();
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setNotification(Notifications.alert("Foo"))
+                .build();
 
         // Setup a stubbed response for the server
         String pushJSON = "{\"ok\" : true,\"operation_id\" : \"df6a6b50\", \"push_ids\":[\"PushID\"]}";
         stubFor(post(urlEqualTo("/api/push/validate/"))
-            .willReturn(aResponse()
-                .withHeader(CONTENT_TYPE_KEY, "application/json")
-                .withBody(pushJSON)
-                .withStatus(201)));
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withBody(pushJSON)
+                        .withStatus(201)));
         try {
             Response<PushResponse> response = client.execute(PushRequest.newRequest(payload).setValidateOnly(true));
 
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/push/validate/"))
-                .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             assertNotNull(response);
         } catch (Exception ex) {
             fail("Exception thrown " + ex);
@@ -779,29 +772,29 @@ public class UrbanAirshipClientTest {
 
         // Setup a stubbed response for the server
         String listScheduleResponse = "{\"ok\":true,\"count\":5,\"total_count\":6,\"schedules\":" +
-            "[{\"url\":\"https://go.urbanairship.com/api/schedules/5a60e0a6-9aa7-449f-a038-6806e572baf3\",\"" +
-            "schedule\":{\"scheduled_time\":\"2015-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device" +
-            "_types\":[\"android\",\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2015!\",\"android\"" +
-            ":{},\"ios\":{}}},\"push_ids\":[\"8430f2e0-ec07-4c1e-adc4-0c7c7978e648\"]},{\"url\":\"https://go" +
-            ".urbanairship.com/api/schedules/f53aa2bd-018a-4482-8d7d-691d13407973\",\"schedule\":{\"schedule" +
-            "d_time\":\"2016-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device_types\":[\"android\"," +
-            "\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2016!\",\"android\":{},\"ios\":{}}},\"pus" +
-            "h_ids\":[\"b217a321-922f-4aee-b239-ca1b58c6b652\"]}]}";
+                "[{\"url\":\"https://go.urbanairship.com/api/schedules/5a60e0a6-9aa7-449f-a038-6806e572baf3\",\"" +
+                "schedule\":{\"scheduled_time\":\"2015-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device" +
+                "_types\":[\"android\",\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2015!\",\"android\"" +
+                ":{},\"ios\":{}}},\"push_ids\":[\"8430f2e0-ec07-4c1e-adc4-0c7c7978e648\"]},{\"url\":\"https://go" +
+                ".urbanairship.com/api/schedules/f53aa2bd-018a-4482-8d7d-691d13407973\",\"schedule\":{\"schedule" +
+                "d_time\":\"2016-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device_types\":[\"android\"," +
+                "\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2016!\",\"android\":{},\"ios\":{}}},\"pus" +
+                "h_ids\":[\"b217a321-922f-4aee-b239-ca1b58c6b652\"]}]}";
 
         stubFor(get(urlEqualTo("/api/schedules/"))
-            .willReturn(aResponse()
-                .withHeader(CONTENT_TYPE_KEY, "application/json")
-                .withBody(listScheduleResponse)
-                .withStatus(201)));
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withBody(listScheduleResponse)
+                        .withStatus(201)));
 
         try {
             Response<ListAllSchedulesResponse> response = client.execute(ScheduleListingRequest.newRequest());
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/schedules/"))
-                .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(getRequestedFor(
-                urlEqualTo("/api/schedules/")));
+                    urlEqualTo("/api/schedules/")));
             // There should only be one request
             assertEquals(requests.size(), 1);
 
@@ -825,19 +818,20 @@ public class UrbanAirshipClientTest {
         String listScheduleResponse = "{\"schedule\":{\"scheduled_time\":\"2015-08-07T22:10:44\"},\"name\":\"Special Scheduled Push 20\",\"push\":{\"audience\":\"ALL\",\"device_types\":\"all\",\"notification\":{\"alert\":\"Scheduled Push 20\"}},\"push_ids\":[\"274f9aa4-2d00-4911-a043-70129f29adf2\"]}";
 
         stubFor(get(urlEqualTo("/api/schedules/ee0dd92c-de3b-46dc-9937-c9dcaef0170f"))
-            .willReturn(aResponse()
-                .withHeader(CONTENT_TYPE_KEY, "application/json")
-                .withBody(listScheduleResponse)
-                .withStatus(201)));
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withBody(listScheduleResponse)
+                        .withStatus(201)));
 
         try {
-            Response<ListAllSchedulesResponse> response = client.execute(ScheduleListingRequest.newRequest("ee0dd92c-de3b-46dc-9937-c9dcaef0170f"));
+            Response<ListAllSchedulesResponse> response = client
+                    .execute(ScheduleListingRequest.newRequest("ee0dd92c-de3b-46dc-9937-c9dcaef0170f"));
 
             // Verify components of the underlying HttpRequest
             verify(getRequestedFor(urlEqualTo("/api/schedules/ee0dd92c-de3b-46dc-9937-c9dcaef0170f"))
-                .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(getRequestedFor(
-                urlEqualTo("/api/schedules/ee0dd92c-de3b-46dc-9937-c9dcaef0170f")));
+                    urlEqualTo("/api/schedules/ee0dd92c-de3b-46dc-9937-c9dcaef0170f")));
             // There should only be one request
             assertEquals(requests.size(), 1);
 
@@ -855,29 +849,31 @@ public class UrbanAirshipClientTest {
     public void testListAllSchedulesWithParameters() {
         // Setup a stubbed response for the server
         String listScheduleResponse = "{\"ok\":true,\"count\":5,\"total_count\":6,\"schedules\":" +
-            "[{\"url\":\"https://go.urbanairship.com/api/schedules/5a60e0a6-9aa7-449f-a038-6806e572baf3\",\"" +
-            "schedule\":{\"scheduled_time\":\"2015-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device" +
-            "_types\":[\"android\",\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2015!\",\"android\"" +
-            ":{},\"ios\":{}}},\"push_ids\":[\"8430f2e0-ec07-4c1e-adc4-0c7c7978e648\"]},{\"url\":\"https://go" +
-            ".urbanairship.com/api/schedules/f53aa2bd-018a-4482-8d7d-691d13407973\",\"schedule\":{\"schedule" +
-            "d_time\":\"2016-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device_types\":[\"android\"," +
-            "\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2016!\",\"android\":{},\"ios\":{}}},\"pus" +
-            "h_ids\":[\"b217a321-922f-4aee-b239-ca1b58c6b652\"]}]}";
+                "[{\"url\":\"https://go.urbanairship.com/api/schedules/5a60e0a6-9aa7-449f-a038-6806e572baf3\",\"" +
+                "schedule\":{\"scheduled_time\":\"2015-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device" +
+                "_types\":[\"android\",\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2015!\",\"android\"" +
+                ":{},\"ios\":{}}},\"push_ids\":[\"8430f2e0-ec07-4c1e-adc4-0c7c7978e648\"]},{\"url\":\"https://go" +
+                ".urbanairship.com/api/schedules/f53aa2bd-018a-4482-8d7d-691d13407973\",\"schedule\":{\"schedule" +
+                "d_time\":\"2016-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device_types\":[\"android\"," +
+                "\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2016!\",\"android\":{},\"ios\":{}}},\"pus" +
+                "h_ids\":[\"b217a321-922f-4aee-b239-ca1b58c6b652\"]}]}";
 
         stubFor(get(urlEqualTo("/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"))
-            .willReturn(aResponse()
-                .withHeader(CONTENT_TYPE_KEY, "application/json")
-                .withBody(listScheduleResponse)
-                .withStatus(201)));
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withBody(listScheduleResponse)
+                        .withStatus(201)));
 
         try {
-            Response<ListAllSchedulesResponse> response = client.execute(ScheduleListingRequest.newRequest(UUID.fromString("643a297a-7313-45f0-853f-e68785e54c77"), 25, ListSchedulesOrderType.ASC));
+            Response<ListAllSchedulesResponse> response = client.execute(ScheduleListingRequest.newRequest(
+                    UUID.fromString("643a297a-7313-45f0-853f-e68785e54c77"), 25, ListSchedulesOrderType.ASC));
 
             // Verify components of the underlying HttpRequest
-            verify(getRequestedFor(urlEqualTo("/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"))
-                .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+            verify(getRequestedFor(
+                    urlEqualTo("/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(getRequestedFor(
-                urlEqualTo("/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc")));
+                    urlEqualTo("/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc")));
             // There should only be one request
             assertEquals(requests.size(), 1);
 
@@ -899,29 +895,31 @@ public class UrbanAirshipClientTest {
     public void testListAllSchedulesNextPage() {
         // Setup a stubbed response for the server
         String listScheduleResponse = "{\"ok\":true,\"count\":5,\"total_count\":6,\"schedules\":" +
-            "[{\"url\":\"https://go.urbanairship.com/api/schedules/5a60e0a6-9aa7-449f-a038-6806e572baf3\",\"" +
-            "schedule\":{\"scheduled_time\":\"2015-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device" +
-            "_types\":[\"android\",\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2015!\",\"android\"" +
-            ":{},\"ios\":{}}},\"push_ids\":[\"8430f2e0-ec07-4c1e-adc4-0c7c7978e648\"]},{\"url\":\"https://go" +
-            ".urbanairship.com/api/schedules/f53aa2bd-018a-4482-8d7d-691d13407973\",\"schedule\":{\"schedule" +
-            "d_time\":\"2016-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device_types\":[\"android\"," +
-            "\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2016!\",\"android\":{},\"ios\":{}}},\"pus" +
-            "h_ids\":[\"b217a321-922f-4aee-b239-ca1b58c6b652\"]}]}";
+                "[{\"url\":\"https://go.urbanairship.com/api/schedules/5a60e0a6-9aa7-449f-a038-6806e572baf3\",\"" +
+                "schedule\":{\"scheduled_time\":\"2015-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device" +
+                "_types\":[\"android\",\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2015!\",\"android\"" +
+                ":{},\"ios\":{}}},\"push_ids\":[\"8430f2e0-ec07-4c1e-adc4-0c7c7978e648\"]},{\"url\":\"https://go" +
+                ".urbanairship.com/api/schedules/f53aa2bd-018a-4482-8d7d-691d13407973\",\"schedule\":{\"schedule" +
+                "d_time\":\"2016-01-01T08:00:00\"},\"push\":{\"audience\":\"ALL\",\"device_types\":[\"android\"," +
+                "\"ios\"],\"notification\":{\"alert\":\"Happy New Year 2016!\",\"android\":{},\"ios\":{}}},\"pus" +
+                "h_ids\":[\"b217a321-922f-4aee-b239-ca1b58c6b652\"]}]}";
 
         stubFor(get(urlEqualTo("/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"))
-            .willReturn(aResponse()
-                .withHeader(CONTENT_TYPE_KEY, "application/json")
-                .withBody(listScheduleResponse)
-                .withStatus(201)));
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withBody(listScheduleResponse)
+                        .withStatus(201)));
 
         try {
-            Response<ListAllSchedulesResponse> response = client.execute(ScheduleListingRequest.newRequest(URI.create("https://go.urbanairship.com/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc")));
+            Response<ListAllSchedulesResponse> response = client.execute(ScheduleListingRequest.newRequest(URI.create(
+                    "https://go.urbanairship.com/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc")));
 
             // Verify components of the underlying HttpRequest
-            verify(getRequestedFor(urlEqualTo("/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"))
-                .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+            verify(getRequestedFor(
+                    urlEqualTo("/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc"))
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(getRequestedFor(
-                urlEqualTo("/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc")));
+                    urlEqualTo("/api/schedules/?start=643a297a-7313-45f0-853f-e68785e54c77&limit=25&order=asc")));
             // There should only be one request
             assertEquals(requests.size(), 1);
 
@@ -943,24 +941,24 @@ public class UrbanAirshipClientTest {
     @SuppressWarnings("unchecked")
     public void testSchedule() {
         PushPayload pushPayload = PushPayload.newBuilder()
-            .setAudience(Selectors.all())
-            .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-            .setNotification(Notifications.alert("Foo"))
-            .build();
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setNotification(Notifications.alert("Foo"))
+                .build();
 
         DateTime dateTime = DateTime.now(DateTimeZone.UTC).plusSeconds(60);
         Schedule schedule = Schedule.newBuilder()
-            .setScheduledTimestamp(dateTime)
-            .build();
+                .setScheduledTimestamp(dateTime)
+                .build();
 
         // Stub out endpoint
         // Setup a stubbed response for the server
         String pushJSON = "{\"ok\" : true,\"operation_id\" : \"OpID\", \"schedule_urls\":[\"ScheduleURL\"]}";
         stubFor(post(urlEqualTo("/api/schedules/"))
-            .willReturn(aResponse()
-                .withHeader(CONTENT_TYPE_KEY, APP_JSON)
-                .withBody(pushJSON)
-                .withStatus(201)));
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, APP_JSON)
+                        .withBody(pushJSON)
+                        .withStatus(201)));
 
         try {
             SchedulePayload schedulePayload = SchedulePayload.newBuilder()
@@ -973,21 +971,19 @@ public class UrbanAirshipClientTest {
 
             // Verify components of the underlying request
             verify(postRequestedFor(urlEqualTo("/api/schedules/"))
-                .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(postRequestedFor(urlEqualTo("/api/schedules/")));
             assertEquals(requests.size(), 1);
             String receivedBody = requests.get(0).getBodyAsString();
             ObjectMapper mapper = PushObjectMapper.getInstance();
-            Map<String, Object> result =
-                mapper.readValue(receivedBody,
+            Map<String, Object> result = mapper.readValue(receivedBody,
                     new TypeReference<Map<String, Object>>() {
                     });
             String name = (String) result.get("name");
             assertEquals("Test", name);
-            Map<String, String> scheduleMap =
-                (Map<String, String>) result.get("schedule");
-            //When testing local schedule test instead use
-            //String dateTimeString = scheduleMap.get("local_scheduled_time");
+            Map<String, String> scheduleMap = (Map<String, String>) result.get("schedule");
+            // When testing local schedule test instead use
+            // String dateTimeString = scheduleMap.get("local_scheduled_time");
             String dateTimeString = scheduleMap.get("scheduled_time");
 
             // Test DateTime
@@ -1005,24 +1001,24 @@ public class UrbanAirshipClientTest {
     @Test
     public void testUpdateSchedule() {
         PushPayload pushPayload = PushPayload.newBuilder()
-            .setAudience(Selectors.all())
-            .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
-            .setNotification(Notifications.alert("Foo"))
-            .build();
+                .setAudience(Selectors.all())
+                .setDeviceTypes(DeviceTypeData.of(DeviceType.IOS))
+                .setNotification(Notifications.alert("Foo"))
+                .build();
 
         DateTime dateTime = DateTime.now(DateTimeZone.UTC).plusSeconds(60);
         Schedule schedule = Schedule.newBuilder()
-            .setScheduledTimestamp(dateTime)
-            .build();
+                .setScheduledTimestamp(dateTime)
+                .build();
 
         // Stub out endpoint
         // Setup a stubbed response for the server
         String responseJson = "{\"ok\" : true,\"operation_id\" : \"OpID\" }";
         stubFor(put(urlEqualTo("/api/schedules/id"))
-            .willReturn(aResponse()
-                .withHeader(CONTENT_TYPE_KEY, APP_JSON)
-                .withBody(responseJson)
-                .withStatus(201)));
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, APP_JSON)
+                        .withBody(responseJson)
+                        .withStatus(201)));
 
         try {
             SchedulePayload schedulePayload = SchedulePayload.newBuilder()
@@ -1031,11 +1027,12 @@ public class UrbanAirshipClientTest {
                     .setName("test")
                     .build();
 
-            Response<ScheduleResponse> response = client.execute(ScheduleRequest.newUpdateRequest(schedulePayload, "id"));
+            Response<ScheduleResponse> response = client
+                    .execute(ScheduleRequest.newUpdateRequest(schedulePayload, "id"));
 
             // Verify components of the underlying request
             verify(putRequestedFor(urlEqualTo("/api/schedules/id"))
-                .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(putRequestedFor(urlEqualTo("/api/schedules/id")));
             assertEquals(requests.size(), 1);
 
@@ -1052,8 +1049,8 @@ public class UrbanAirshipClientTest {
     @Test
     public void testDeleteSpecificSchedule() {
         stubFor(delete(urlEqualTo("/api/schedules/puppies"))
-            .willReturn(aResponse()
-                .withStatus(204)));
+                .willReturn(aResponse()
+                        .withStatus(204)));
 
         try {
             Response<String> response = client.execute(ScheduleDeleteRequest.newRequest("puppies"));
@@ -1061,7 +1058,7 @@ public class UrbanAirshipClientTest {
             // Verify components of the underlying HttpRequest
             verify(deleteRequestedFor(urlEqualTo("/api/schedules/puppies")));
             List<LoggedRequest> requests = findAll(deleteRequestedFor(
-                urlEqualTo("/api/schedules/puppies")));
+                    urlEqualTo("/api/schedules/puppies")));
             // There should only be one request
             assertEquals(requests.size(), 1);
 
@@ -1076,16 +1073,16 @@ public class UrbanAirshipClientTest {
     @Test
     public void testChannelTagMutations() {
         stubFor(post(urlEqualTo("/api/channels/tags/"))
-            .willReturn(aResponse()
-                .withHeader(CONTENT_TYPE_KEY, "application/json")
-                .withStatus(200)));
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withStatus(200)));
 
         ImmutableSet<String> iosChannels = ImmutableSet.of(UUID.randomUUID().toString(), UUID.randomUUID().toString());
         ChannelTagRequest request = ChannelTagRequest.newRequest()
-            .addIOSChannels(iosChannels)
-            .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .removeTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"));
+                .addIOSChannels(iosChannels)
+                .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
+                .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
+                .removeTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"));
 
         try {
             Response<String> response = client.execute(request);
@@ -1101,131 +1098,132 @@ public class UrbanAirshipClientTest {
         }
     }
 
-
     @Test
     public void testListChannels() {
 
         String fiveResponse = "{\n" +
-            "  \"ok\": true,\n" +
-            "  \"channels\": [\n" +
-            "    {\n" +
-            "      \"channel_id\": \"00000000-0000-0000-0000-000000000000\",\n" +
-            "      \"device_type\": \"android\",\n" +
-            "      \"installed\": false,\n" +
-            "      \"opt_in\": false,\n" +
-            "      \"push_address\": null,\n" +
-            "      \"created\": \"2012-06-05T20:37:37\",\n" +
-            "      \"last_registration\": null,\n" +
-            "      \"alias\": null,\n" +
-            "      \"tags\": [\n" +
-            "        \"test01\"\n" +
-            "      ]," +
-            "      \"tag_groups\": {\n" +
-            "        \"testGroup01\" : [\n" +
-            "          \"testGroup01Tag01\"\n" +
-            "        ]\n" +
-            "      }\n" +
-            "    },\n" +
-            "    {\n" +
-            "      \"channel_id\": \"00662346-9e39-4f5f-80e7-3f8fae58863c\",\n" +
-            "      \"device_type\": \"android\",\n" +
-            "      \"installed\": true,\n" +
-            "      \"opt_in\": true,\n" +
-            "      \"background\": true,\n" +
-            "      \"push_address\": \"APA91bFPOUF6KNHXjoG0vaQSP4VLXirGDpy0_CRcb6Jhvnrya2bdRmlUoMiJ12JJevjONZzUwFETYa8uzyiE_9WaL3mzZrdjqOv2YuzYlQ_TrXVgo61JmIyw-M_pshIjVvkvtOuZ4MnRJJ_MiQDYwpB4ZhOTMlyqRw\",\n" +
-            "      \"created\": \"2014-03-06T18:52:59\",\n" +
-            "      \"last_registration\": \"2014-10-07T21:28:35\",\n" +
-            "      \"alias\": \"aaron-device\",\n" +
-            "      \"tags\": [\n" +
-            "        \"aaron-tag\",\n" +
-            "        \"rhtgeg\",\n" +
-            "        \"tnrvrg\"\n" +
-            "      ],\n" +
-            "      \"tag_groups\": {\n" +
-            "        \"testGroup02\" : [\n" +
-            "          \"testGroup02Tag01\",\n" +
-            "          \"testGroup02Tag02\"\n" +
-            "        ]\n" +
-            "      }\n" +
-            "    },\n" +
-            "    {\n" +
-            "      \"channel_id\": \"00d174cd-0a31-427e-95c9-52d5785bcd50\",\n" +
-            "      \"device_type\": \"ios\",\n" +
-            "      \"installed\": true,\n" +
-            "      \"opt_in\": true,\n" +
-            "      \"background\": true,\n" +
-            "      \"push_address\": \"E4EA0D96092A9213BB186BEF66E83EE226401F82B3A77A1AC8217A8FE8ED4614\",\n" +
-            "      \"created\": \"2014-07-09T18:08:37\",\n" +
-            "      \"last_registration\": \"2014-10-02T01:41:42\",\n" +
-            "      \"alias\": null,\n" +
-            "      \"tags\": [\n" +
-            "        \"version_1.5.0\"\n" +
-            "      ],\n" +
-            "      \"tag_groups\": {},\n" +
-            "      \"ios\": {\n" +
-            "        \"badge\": 1,\n" +
-            "        \"quiettime\": {\n" +
-            "          \"start\": \"17:00\",\n" +
-            "          \"end\": \"9:00\"\n" +
-            "        },\n" +
-            "        \"tz\": \"America\\/Los_Angeles\"\n" +
-            "      }\n" +
-            "    },\n" +
-            "    {\n" +
-            "      \"channel_id\": \"00d8cb94-eac9-49fb-bad0-29298a06730e\",\n" +
-            "      \"device_type\": \"ios\",\n" +
-            "      \"installed\": false,\n" +
-            "      \"opt_in\": false,\n" +
-            "      \"push_address\": \"21F34C9ED37EAF8D7DC43561C07AA398CA5C6F503196C9E8230C50C0959B8653\",\n" +
-            "      \"created\": \"2014-02-22T22:48:37\",\n" +
-            "      \"last_registration\": null,\n" +
-            "      \"alias\": \"iPhone 7,1\",\n" +
-            "      \"tags\": [\n" +
-            "        \"kablam\",\n" +
-            "        \"version_1.3\"\n" +
-            "      ],\n" +
-            "      \"tag_groups\": {\n" +
-            "        \"testGroup03\": [\n" +
-            "          \"testGroup03Tag01\",\n" +
-            "          \"testGroup03Tag02\",\n" +
-            "          \"testGroup03Tag03\"\n" +
-            "        ],\n" +
-            "        \"testGroup04\": [\n" +
-            "          \"testGroup04Tag01\"\n" +
-            "        ]\n" +
-            "      },\n" +
-            "      \"ios\": {\n" +
-            "        \"badge\": 1,\n" +
-            "        \"quiettime\": {\n" +
-            "          \"start\": null,\n" +
-            "          \"end\": null\n" +
-            "        },\n" +
-            "        \"tz\": null\n" +
-            "      }\n" +
-            "    },\n" +
-            "    {\n" +
-            "      \"channel_id\": \"01257ecd-8182-41fe-a741-9fed91b993cb\",\n" +
-            "      \"device_type\": \"android\",\n" +
-            "      \"installed\": false,\n" +
-            "      \"opt_in\": false,\n" +
-            "      \"push_address\": null,\n" +
-            "      \"created\": \"2013-01-25T00:55:05\",\n" +
-            "      \"last_registration\": null,\n" +
-            "      \"alias\": null,\n" +
-            "      \"tags\": [\n" +
-            "        \n" +
-            "      ],\n" +
-            "      \"tag_groups\": {}\n" +
-            "    }\n" +
-            "  ],\n" +
-            "  \"next_page\": \"https:\\/\\/go.urbanairship.com\\/api\\/channels?limit=5&start=0143e4d6-724c-4fc8-bbc6-ca647b8993bf\"\n" +
-            "}";
+                "  \"ok\": true,\n" +
+                "  \"channels\": [\n" +
+                "    {\n" +
+                "      \"channel_id\": \"00000000-0000-0000-0000-000000000000\",\n" +
+                "      \"device_type\": \"android\",\n" +
+                "      \"installed\": false,\n" +
+                "      \"opt_in\": false,\n" +
+                "      \"push_address\": null,\n" +
+                "      \"created\": \"2012-06-05T20:37:37\",\n" +
+                "      \"last_registration\": null,\n" +
+                "      \"alias\": null,\n" +
+                "      \"tags\": [\n" +
+                "        \"test01\"\n" +
+                "      ]," +
+                "      \"tag_groups\": {\n" +
+                "        \"testGroup01\" : [\n" +
+                "          \"testGroup01Tag01\"\n" +
+                "        ]\n" +
+                "      }\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"channel_id\": \"00662346-9e39-4f5f-80e7-3f8fae58863c\",\n" +
+                "      \"device_type\": \"android\",\n" +
+                "      \"installed\": true,\n" +
+                "      \"opt_in\": true,\n" +
+                "      \"background\": true,\n" +
+                "      \"push_address\": \"APA91bFPOUF6KNHXjoG0vaQSP4VLXirGDpy0_CRcb6Jhvnrya2bdRmlUoMiJ12JJevjONZzUwFETYa8uzyiE_9WaL3mzZrdjqOv2YuzYlQ_TrXVgo61JmIyw-M_pshIjVvkvtOuZ4MnRJJ_MiQDYwpB4ZhOTMlyqRw\",\n"
+                +
+                "      \"created\": \"2014-03-06T18:52:59\",\n" +
+                "      \"last_registration\": \"2014-10-07T21:28:35\",\n" +
+                "      \"alias\": \"aaron-device\",\n" +
+                "      \"tags\": [\n" +
+                "        \"aaron-tag\",\n" +
+                "        \"rhtgeg\",\n" +
+                "        \"tnrvrg\"\n" +
+                "      ],\n" +
+                "      \"tag_groups\": {\n" +
+                "        \"testGroup02\" : [\n" +
+                "          \"testGroup02Tag01\",\n" +
+                "          \"testGroup02Tag02\"\n" +
+                "        ]\n" +
+                "      }\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"channel_id\": \"00d174cd-0a31-427e-95c9-52d5785bcd50\",\n" +
+                "      \"device_type\": \"ios\",\n" +
+                "      \"installed\": true,\n" +
+                "      \"opt_in\": true,\n" +
+                "      \"background\": true,\n" +
+                "      \"push_address\": \"E4EA0D96092A9213BB186BEF66E83EE226401F82B3A77A1AC8217A8FE8ED4614\",\n" +
+                "      \"created\": \"2014-07-09T18:08:37\",\n" +
+                "      \"last_registration\": \"2014-10-02T01:41:42\",\n" +
+                "      \"alias\": null,\n" +
+                "      \"tags\": [\n" +
+                "        \"version_1.5.0\"\n" +
+                "      ],\n" +
+                "      \"tag_groups\": {},\n" +
+                "      \"ios\": {\n" +
+                "        \"badge\": 1,\n" +
+                "        \"quiettime\": {\n" +
+                "          \"start\": \"17:00\",\n" +
+                "          \"end\": \"9:00\"\n" +
+                "        },\n" +
+                "        \"tz\": \"America\\/Los_Angeles\"\n" +
+                "      }\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"channel_id\": \"00d8cb94-eac9-49fb-bad0-29298a06730e\",\n" +
+                "      \"device_type\": \"ios\",\n" +
+                "      \"installed\": false,\n" +
+                "      \"opt_in\": false,\n" +
+                "      \"push_address\": \"21F34C9ED37EAF8D7DC43561C07AA398CA5C6F503196C9E8230C50C0959B8653\",\n" +
+                "      \"created\": \"2014-02-22T22:48:37\",\n" +
+                "      \"last_registration\": null,\n" +
+                "      \"alias\": \"iPhone 7,1\",\n" +
+                "      \"tags\": [\n" +
+                "        \"kablam\",\n" +
+                "        \"version_1.3\"\n" +
+                "      ],\n" +
+                "      \"tag_groups\": {\n" +
+                "        \"testGroup03\": [\n" +
+                "          \"testGroup03Tag01\",\n" +
+                "          \"testGroup03Tag02\",\n" +
+                "          \"testGroup03Tag03\"\n" +
+                "        ],\n" +
+                "        \"testGroup04\": [\n" +
+                "          \"testGroup04Tag01\"\n" +
+                "        ]\n" +
+                "      },\n" +
+                "      \"ios\": {\n" +
+                "        \"badge\": 1,\n" +
+                "        \"quiettime\": {\n" +
+                "          \"start\": null,\n" +
+                "          \"end\": null\n" +
+                "        },\n" +
+                "        \"tz\": null\n" +
+                "      }\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"channel_id\": \"01257ecd-8182-41fe-a741-9fed91b993cb\",\n" +
+                "      \"device_type\": \"android\",\n" +
+                "      \"installed\": false,\n" +
+                "      \"opt_in\": false,\n" +
+                "      \"push_address\": null,\n" +
+                "      \"created\": \"2013-01-25T00:55:05\",\n" +
+                "      \"last_registration\": null,\n" +
+                "      \"alias\": null,\n" +
+                "      \"tags\": [\n" +
+                "        \n" +
+                "      ],\n" +
+                "      \"tag_groups\": {}\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  \"next_page\": \"https:\\/\\/go.urbanairship.com\\/api\\/channels?limit=5&start=0143e4d6-724c-4fc8-bbc6-ca647b8993bf\"\n"
+                +
+                "}";
 
         stubFor(get(urlEqualTo("/api/channels/"))
-            .willReturn(aResponse()
-                .withHeader(CONTENT_TYPE_KEY, "application/json")
-                .withBody(fiveResponse)
-                .withStatus(200)));
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withBody(fiveResponse)
+                        .withStatus(200)));
 
         ChannelRequest request = ChannelRequest.newRequest();
 
@@ -1247,21 +1245,21 @@ public class UrbanAirshipClientTest {
     public void testNamedUserAssociation() {
 
         stubFor(post(urlEqualTo("/api/named_users/associate/"))
-            .willReturn(aResponse()
-                .withStatus(200)));
+                .willReturn(aResponse()
+                        .withStatus(200)));
 
         NamedUserRequest request = NamedUserRequest.newAssociationRequest()
-            .setNamedUserId("name")
-            .setChannel(UUID.randomUUID().toString(), ChannelType.IOS);
+                .setNamedUserId("name")
+                .setChannel(UUID.randomUUID().toString(), ChannelType.IOS);
 
         try {
             Response<String> response = client.execute(request);
 
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/named_users/associate/"))
-                .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(postRequestedFor(
-                urlEqualTo("/api/named_users/associate/")));
+                    urlEqualTo("/api/named_users/associate/")));
             // There should only be one request
             assertEquals(requests.size(), 1);
 
@@ -1277,20 +1275,20 @@ public class UrbanAirshipClientTest {
     public void testNamedUserDisassociation() {
 
         stubFor(post(urlEqualTo("/api/named_users/disassociate/"))
-            .willReturn(aResponse()
-                .withStatus(200)));
+                .willReturn(aResponse()
+                        .withStatus(200)));
 
         NamedUserRequest request = NamedUserRequest.newDisassociationRequest()
-            .setChannel(UUID.randomUUID().toString(), ChannelType.IOS);
+                .setChannel(UUID.randomUUID().toString(), ChannelType.IOS);
 
         try {
             Response<String> response = client.execute(request);
 
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/named_users/disassociate/"))
-                .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
+                    .withHeader(CONTENT_TYPE_KEY, equalTo(APP_JSON)));
             List<LoggedRequest> requests = findAll(postRequestedFor(
-                urlEqualTo("/api/named_users/disassociate/")));
+                    urlEqualTo("/api/named_users/disassociate/")));
             // There should only be one request
             assertEquals(requests.size(), 1);
 
@@ -1306,17 +1304,17 @@ public class UrbanAirshipClientTest {
     public void testNamedUsersTagMutations() {
 
         stubFor(post(urlEqualTo("/api/named_users/tags/"))
-            .willReturn(aResponse()
-                .withHeader(CONTENT_TYPE_KEY, "application/json")
-                .withStatus(200)));
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withStatus(200)));
 
         ImmutableSet<String> namedUsers = ImmutableSet.of(UUID.randomUUID().toString(), UUID.randomUUID().toString());
 
         NamedUserTagRequest request = NamedUserTagRequest.newRequest()
-            .addNamedUsers(namedUsers)
-            .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .removeTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"));
+                .addNamedUsers(namedUsers)
+                .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
+                .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
+                .removeTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"));
 
         try {
             Response<String> response = client.execute(request);
@@ -1335,37 +1333,37 @@ public class UrbanAirshipClientTest {
     @Test
     public void testListNamedUser() {
         String body = "{  \n" +
-            "  \"ok\": true," +
-            "  \"named_user\": {\n" +
-            "    \"named_user_id\": \"user-id-1234\",\n" +
-            "    \"tags\": {\n" +
-            "      \"my_fav_tag_group\": [\"tag1\", \"tag2\"]\n" +
-            "    },\n" +
-            "    \"channels\": [\n" +
-            "      {\n" +
-            "        \"channel_id\":\"01234567-890a-bcde-f012-34567890abc0\",\n" +
-            "        \"device_type\":\"android\",\n" +
-            "        \"installed\":true,\n" +
-            "        \"opt_in\":false,\n" +
-            "        \"push_address\":null,\n" +
-            "        \"created\":\"2014-07-12T00:45:01\",\n" +
-            "        \"last_registration\":\"2014-08-06T00:33:25\",\n" +
-            "        \"alias\":null,\n" +
-            "        \"tags\":[  \n" +
-            "        ],\n" +
-            "        \"tag_groups\": {\n" +
-            "          \"tagGroup\": []\n" +
-            "        }\n" +
-            "      }\n" +
-            "    ]\n" +
-            "  }\n" +
-            "}";
+                "  \"ok\": true," +
+                "  \"named_user\": {\n" +
+                "    \"named_user_id\": \"user-id-1234\",\n" +
+                "    \"tags\": {\n" +
+                "      \"my_fav_tag_group\": [\"tag1\", \"tag2\"]\n" +
+                "    },\n" +
+                "    \"channels\": [\n" +
+                "      {\n" +
+                "        \"channel_id\":\"01234567-890a-bcde-f012-34567890abc0\",\n" +
+                "        \"device_type\":\"android\",\n" +
+                "        \"installed\":true,\n" +
+                "        \"opt_in\":false,\n" +
+                "        \"push_address\":null,\n" +
+                "        \"created\":\"2014-07-12T00:45:01\",\n" +
+                "        \"last_registration\":\"2014-08-06T00:33:25\",\n" +
+                "        \"alias\":null,\n" +
+                "        \"tags\":[  \n" +
+                "        ],\n" +
+                "        \"tag_groups\": {\n" +
+                "          \"tagGroup\": []\n" +
+                "        }\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  }\n" +
+                "}";
 
         stubFor(get(urlEqualTo("/api/named_users/?id=user-id-1234"))
-            .willReturn(aResponse()
-                .withHeader(CONTENT_TYPE_KEY, "application/json")
-                .withBody(body)
-                .withStatus(200)));
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withBody(body)
+                        .withStatus(200)));
 
         NamedUserListingRequest request = NamedUserListingRequest.newRequest("user-id-1234");
 
@@ -1386,68 +1384,68 @@ public class UrbanAirshipClientTest {
     @Test
     public void testListAllNamedUsers() {
         String body = "{  \n" +
-            "  \"ok\": true," +
-            "  \"next_page\": \"https://go.urbanairship.com/api/named_users?start=user-1234\",\n" +
-            "  \"named_users\": [\n" +
-            "    {\n" +
-            "      \"named_user_id\": \"user-id-1234\",\n" +
-            "      \"tags\": {\n" +
-            "        \"my_fav_tag_group\": [\"tag1\", \"tag2\"]\n" +
-            "      },\n" +
-            "      \"channels\": [\n" +
-            "        {\n" +
-            "          \"channel_id\":\"01234567-890a-bcde-f012-34567890abc0\",\n" +
-            "          \"device_type\":\"android\",\n" +
-            "          \"installed\":true,\n" +
-            "          \"opt_in\":false,\n" +
-            "          \"push_address\":null,\n" +
-            "          \"created\":\"2014-07-12T00:45:01\",\n" +
-            "          \"last_registration\":\"2014-08-06T00:33:25\",\n" +
-            "          \"alias\":null,\n" +
-            "          \"tags\":[  \n" +
-            "          ],\n" +
-            "          \"tag_groups\": {\n" +
-            "            \"tagGroup\": \n" +
-            "              [\n" +
-            "                \"tag1\",\n" +
-            "                \"tag2\"\n" +
-            "              ]\n" +
-            "          }\n" +
-            "        }\n" +
-            "      ]\n" +
-            "    },\n" +
-            "    {\n" +
-            "      \"named_user_id\": \"user-id-5678\",\n" +
-            "      \"tags\": {\n" +
-            "        \"my_fav_tag_group\": [\"tag3\", \"tag4\"]\n" +
-            "      },\n" +
-            "      \"channels\": [\n" +
-            "        {\n" +
-            "          \"channel_id\": \"00000000-0000-0000-0000-000000000000\",\n" +
-            "          \"device_type\": \"android\",\n" +
-            "          \"installed\": false,\n" +
-            "          \"opt_in\": false,\n" +
-            "          \"push_address\": null,\n" +
-            "          \"created\": \"2012-06-05T20:37:37\",\n" +
-            "          \"last_registration\": null,\n" +
-            "          \"alias\": null,\n" +
-            "          \"tags\": [\"test01\"],\n" +
-            "          \"tag_groups\": {\n" +
-            "            \"testGroup01\" : [\n" +
-            "              \"testGroup01Tag01\"\n" +
-            "            ]\n" +
-            "          }\n" +
-            "        }\n" +
-            "      ]\n" +
-            "    }\n" +
-            "  ]\n" +
-            "}";
+                "  \"ok\": true," +
+                "  \"next_page\": \"https://go.urbanairship.com/api/named_users?start=user-1234\",\n" +
+                "  \"named_users\": [\n" +
+                "    {\n" +
+                "      \"named_user_id\": \"user-id-1234\",\n" +
+                "      \"tags\": {\n" +
+                "        \"my_fav_tag_group\": [\"tag1\", \"tag2\"]\n" +
+                "      },\n" +
+                "      \"channels\": [\n" +
+                "        {\n" +
+                "          \"channel_id\":\"01234567-890a-bcde-f012-34567890abc0\",\n" +
+                "          \"device_type\":\"android\",\n" +
+                "          \"installed\":true,\n" +
+                "          \"opt_in\":false,\n" +
+                "          \"push_address\":null,\n" +
+                "          \"created\":\"2014-07-12T00:45:01\",\n" +
+                "          \"last_registration\":\"2014-08-06T00:33:25\",\n" +
+                "          \"alias\":null,\n" +
+                "          \"tags\":[  \n" +
+                "          ],\n" +
+                "          \"tag_groups\": {\n" +
+                "            \"tagGroup\": \n" +
+                "              [\n" +
+                "                \"tag1\",\n" +
+                "                \"tag2\"\n" +
+                "              ]\n" +
+                "          }\n" +
+                "        }\n" +
+                "      ]\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"named_user_id\": \"user-id-5678\",\n" +
+                "      \"tags\": {\n" +
+                "        \"my_fav_tag_group\": [\"tag3\", \"tag4\"]\n" +
+                "      },\n" +
+                "      \"channels\": [\n" +
+                "        {\n" +
+                "          \"channel_id\": \"00000000-0000-0000-0000-000000000000\",\n" +
+                "          \"device_type\": \"android\",\n" +
+                "          \"installed\": false,\n" +
+                "          \"opt_in\": false,\n" +
+                "          \"push_address\": null,\n" +
+                "          \"created\": \"2012-06-05T20:37:37\",\n" +
+                "          \"last_registration\": null,\n" +
+                "          \"alias\": null,\n" +
+                "          \"tags\": [\"test01\"],\n" +
+                "          \"tag_groups\": {\n" +
+                "            \"testGroup01\" : [\n" +
+                "              \"testGroup01Tag01\"\n" +
+                "            ]\n" +
+                "          }\n" +
+                "        }\n" +
+                "      ]\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
 
         stubFor(get(urlEqualTo("/api/named_users/"))
-            .willReturn(aResponse()
-                .withHeader(CONTENT_TYPE_KEY, "application/json")
-                .withBody(body)
-                .withStatus(200)));
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE_KEY, "application/json")
+                        .withBody(body)
+                        .withStatus(200)));
 
         NamedUserListingRequest request = NamedUserListingRequest.newRequest();
 
@@ -1674,7 +1672,6 @@ public class UrbanAirshipClientTest {
         assertEquals(200, response.getStatus());
     }
 
-
     @Test
     public void testTimeInAppReport() throws Exception {
 
@@ -1717,7 +1714,6 @@ public class UrbanAirshipClientTest {
         assertNotNull(response);
         assertEquals(200, response.getStatus());
     }
-
 
     @Test
     public void testOptInsReport() {
@@ -1942,7 +1938,8 @@ public class UrbanAirshipClientTest {
     public void testListSegments() throws Exception {
         String queryPathString = "/api/segments/";
         String responseList = "{\n" +
-                "   \"next_page\": \"https://go.urbanairship.com/api/segments?limit=1&sort=id&order=asc&start=3832cf72-cb44-4132-a11f-eafb41b82f64\",\n" +
+                "   \"next_page\": \"https://go.urbanairship.com/api/segments?limit=1&sort=id&order=asc&start=3832cf72-cb44-4132-a11f-eafb41b82f64\",\n"
+                +
                 "   \"segments\": [\n" +
                 "      {\n" +
                 "        \"creation_date\": 1346248822221,\n" +
@@ -2268,11 +2265,10 @@ public class UrbanAirshipClientTest {
     @Test
     public void testCreateTemplate() throws Exception {
         String queryPathString = "/api/templates/";
-        String responseJson =
-                "{" +
-                    "\"ok\": true," +
-                    "\"operation_id\": \"df6a6b50-9843-0304-d5a5-743f246a4946\"," +
-                    "\"template_id\": \"1cbfbfa2-08d1-92c2-7119-f8f7f670f5f6\"" +
+        String responseJson = "{" +
+                "\"ok\": true," +
+                "\"operation_id\": \"df6a6b50-9843-0304-d5a5-743f246a4946\"," +
+                "\"template_id\": \"1cbfbfa2-08d1-92c2-7119-f8f7f670f5f6\"" +
                 "}";
 
         stubFor(post(urlEqualTo(queryPathString))
@@ -2302,10 +2298,9 @@ public class UrbanAirshipClientTest {
     public void testUpdateTemplate() throws Exception {
         String templateName = "abc123";
         String queryPathString = "/api/templates/" + templateName;
-        String responseJson =
-                "{" +
-                    "\"ok\": true," +
-                    "\"operation_id\": \"df6a6b50-9843-0304-d5a5-743f246a4946\"" +
+        String responseJson = "{" +
+                "\"ok\": true," +
+                "\"operation_id\": \"df6a6b50-9843-0304-d5a5-743f246a4946\"" +
                 "}";
 
         stubFor(post(urlEqualTo(queryPathString))
@@ -2334,14 +2329,13 @@ public class UrbanAirshipClientTest {
     public void testTemplatePush() throws Exception {
         String queryPathString = "/api/templates/push/";
 
-        String responseJson =
-                "{" +
-                        "\"ok\": true," +
-                        "\"operation_id\": \"df6a6b50-9843-0304-d5a5-743f246a4946\"," +
-                        "\"push_ids\": [" +
-                            "\"9d78a53b-b16a-c58f-b78d-181d5e242078\"," +
-                            "\"1cbfbfa2-08d1-92c2-7119-f8f7f670f5f6\"" +
-                        "]" +
+        String responseJson = "{" +
+                "\"ok\": true," +
+                "\"operation_id\": \"df6a6b50-9843-0304-d5a5-743f246a4946\"," +
+                "\"push_ids\": [" +
+                "\"9d78a53b-b16a-c58f-b78d-181d5e242078\"," +
+                "\"1cbfbfa2-08d1-92c2-7119-f8f7f670f5f6\"" +
+                "]" +
                 "}";
 
         TemplatePushPayload payload = TemplatePushPayload.newBuilder()
@@ -2354,7 +2348,6 @@ public class UrbanAirshipClientTest {
                         .addSubstitution("TITLE", "Dr.")
                         .build())
                 .build();
-
 
         stubFor(post(urlEqualTo(queryPathString))
                 .willReturn(aResponse()
@@ -2402,43 +2395,42 @@ public class UrbanAirshipClientTest {
         String templateName = "abc123";
         String queryPathString = "/api/templates/" + templateName;
 
-        String lookupJson =
-                    "{"+
-                        "\"ok\" : true,"+
-                        "\"template\": {"+
-                            "\"id\" : \"ef34a8d9-0ad7-491c-86b0-aea74da15161\","+
-                            "\"created_at\" : \"2015-08-17T11:10:02Z\","+
-                            "\"modified_at\" : \"2015-08-17T11:10:02Z\","+
-                            "\"last_used\" : \"2015-08-17T11:10:01Z\","+
-                            "\"name\" : \"Welcome Message\","+
-                            "\"description\": \"Our welcome message\","+
-                            "\"variables\": ["+
-                                "{"+
-                                    "\"key\": \"TITLE\","+
-                                    "\"name\": \"Title\","+
-                                    "\"description\": \"e.g. Mr, Ms, Dr, etc.\","+
-                                    "\"default_value\": \"\""+
-                                "},"+
-                                "{"+
-                                    "\"key\": \"FIRST_NAME\","+
-                                    "\"name\": \"First Name\","+
-                                    "\"description\": \"Given name\","+
-                                    "\"default_value\": \"\""+
-                                "},"+
-                                "{"+
-                                    "\"key\": \"LAST_NAME\","+
-                                    "\"name\": \"Last Name\","+
-                                    "\"description\": \"Family name\","+
-                                    "\"default_value\": \"\""+
-                                "}"+
-                            "],"+
-                            "\"push\": {"+
-                                "\"notification\": {"+
-                                    "\"alert\": \"Hello {{FIRST_NAME}}, this is your welcome message!\""+
-                                "}"+
-                            "}"+
-                        "}"+
-                    "}";
+        String lookupJson = "{" +
+                "\"ok\" : true," +
+                "\"template\": {" +
+                "\"id\" : \"ef34a8d9-0ad7-491c-86b0-aea74da15161\"," +
+                "\"created_at\" : \"2015-08-17T11:10:02Z\"," +
+                "\"modified_at\" : \"2015-08-17T11:10:02Z\"," +
+                "\"last_used\" : \"2015-08-17T11:10:01Z\"," +
+                "\"name\" : \"Welcome Message\"," +
+                "\"description\": \"Our welcome message\"," +
+                "\"variables\": [" +
+                "{" +
+                "\"key\": \"TITLE\"," +
+                "\"name\": \"Title\"," +
+                "\"description\": \"e.g. Mr, Ms, Dr, etc.\"," +
+                "\"default_value\": \"\"" +
+                "}," +
+                "{" +
+                "\"key\": \"FIRST_NAME\"," +
+                "\"name\": \"First Name\"," +
+                "\"description\": \"Given name\"," +
+                "\"default_value\": \"\"" +
+                "}," +
+                "{" +
+                "\"key\": \"LAST_NAME\"," +
+                "\"name\": \"Last Name\"," +
+                "\"description\": \"Family name\"," +
+                "\"default_value\": \"\"" +
+                "}" +
+                "]," +
+                "\"push\": {" +
+                "\"notification\": {" +
+                "\"alert\": \"Hello {{FIRST_NAME}}, this is your welcome message!\"" +
+                "}" +
+                "}" +
+                "}" +
+                "}";
 
         stubFor(get(urlEqualTo(queryPathString))
                 .willReturn(aResponse()
@@ -2460,50 +2452,48 @@ public class UrbanAirshipClientTest {
     public void testListingTemplate() throws Exception {
         String queryPathString = "/api/templates/";
 
-        String listingJson =
-            "{"+
-                "\"ok\" : true,"+
-                "\"count\": 1,"+
-                "\"total_count\": 2,"+
-                "\"templates\": ["+
-                    "{"+
-                        "\"id\" : \"ef34a8d9-0ad7-491c-86b0-aea74da15161\","+
-                        "\"created_at\" : \"2015-08-17T11:10:01Z\","+
-                        "\"modified_at\" : \"2015-08-17T11:10:01Z\","+
-                        "\"last_used\" : \"2015-08-17T11:10:01Z\","+
-                        "\"name\" : \"Welcome Message\","+
-                        "\"description\": \"Our welcome message\","+
-                        "\"variables\": ["+
-                            "{"+
-                                "\"key\": \"TITLE\","+
-                                "\"name\": \"Title\","+
-                                "\"description\": \"e.g. Mr, Ms, Dr, etc.\","+
-                                "\"default_value\": \"\""+
-                            "},"+
-                            "{"+
-                                "\"key\": \"FIRST_NAME\","+
-                                "\"name\": \"First Name\","+
-                                "\"description\": \"Given name\","+
-                                "\"default_value\": \"test\""+
-                            "},"+
-                            "{"+
-                                "\"key\": \"LAST_NAME\","+
-                                "\"name\": \"Last Name\","+
-                                "\"description\": \"Family name\","+
-                                "\"default_value\": \"blah\""+
-                            "}"+
-                        "],"+
-                        "\"push\": {"+
-                            "\"notification\": {"+
-                                "\"alert\": \"Hello {{FIRST_NAME}}, this is your welcome message!\""+
-                            "}"+
-                        "}"+
-                    "}"+
-                "],"+
-                "\"prev_page\": null,"+
-                "\"next_page\": \"https://go.urbanairship.com/api/templates?page=2&page_size=1\""+
-            "}";
-
+        String listingJson = "{" +
+                "\"ok\" : true," +
+                "\"count\": 1," +
+                "\"total_count\": 2," +
+                "\"templates\": [" +
+                "{" +
+                "\"id\" : \"ef34a8d9-0ad7-491c-86b0-aea74da15161\"," +
+                "\"created_at\" : \"2015-08-17T11:10:01Z\"," +
+                "\"modified_at\" : \"2015-08-17T11:10:01Z\"," +
+                "\"last_used\" : \"2015-08-17T11:10:01Z\"," +
+                "\"name\" : \"Welcome Message\"," +
+                "\"description\": \"Our welcome message\"," +
+                "\"variables\": [" +
+                "{" +
+                "\"key\": \"TITLE\"," +
+                "\"name\": \"Title\"," +
+                "\"description\": \"e.g. Mr, Ms, Dr, etc.\"," +
+                "\"default_value\": \"\"" +
+                "}," +
+                "{" +
+                "\"key\": \"FIRST_NAME\"," +
+                "\"name\": \"First Name\"," +
+                "\"description\": \"Given name\"," +
+                "\"default_value\": \"test\"" +
+                "}," +
+                "{" +
+                "\"key\": \"LAST_NAME\"," +
+                "\"name\": \"Last Name\"," +
+                "\"description\": \"Family name\"," +
+                "\"default_value\": \"blah\"" +
+                "}" +
+                "]," +
+                "\"push\": {" +
+                "\"notification\": {" +
+                "\"alert\": \"Hello {{FIRST_NAME}}, this is your welcome message!\"" +
+                "}" +
+                "}" +
+                "}" +
+                "]," +
+                "\"prev_page\": null," +
+                "\"next_page\": \"https://go.urbanairship.com/api/templates?page=2&page_size=1\"" +
+                "}";
 
         stubFor(get(urlEqualTo(queryPathString))
                 .willReturn(aResponse()
@@ -2528,12 +2518,11 @@ public class UrbanAirshipClientTest {
     @Test
     public void testCreateExperiment() {
         String queryPathString = "/api/experiments/";
-        String responseJson =
-                "{" +
-                        "\"ok\": true," +
-                        "\"operation_id\": \"df6a6b50-9843-0304-d5a5-743f246a4946\"," +
-                        "\"experiment_id\": \"1cbfbfa2-08d1-92c2-7119-f8f7f670f5f6\"" +
-                        "}";
+        String responseJson = "{" +
+                "\"ok\": true," +
+                "\"operation_id\": \"df6a6b50-9843-0304-d5a5-743f246a4946\"," +
+                "\"experiment_id\": \"1cbfbfa2-08d1-92c2-7119-f8f7f670f5f6\"" +
+                "}";
 
         stubFor(post(urlEqualTo(queryPathString))
                 .willReturn(aResponse()
@@ -2543,8 +2532,7 @@ public class UrbanAirshipClientTest {
         VariantPushPayload payloadOne = VariantPushPayload.newBuilder()
                 .setNotification(Notification.newBuilder()
                         .setAlert("Hello")
-                        .build()
-                )
+                        .build())
                 .build();
 
         Variant variantOne = Variant.newBuilder()
@@ -2554,8 +2542,7 @@ public class UrbanAirshipClientTest {
         VariantPushPayload payloadTwo = VariantPushPayload.newBuilder()
                 .setNotification(Notification.newBuilder()
                         .setAlert("Goodbye")
-                        .build()
-                )
+                        .build())
                 .build();
 
         Variant variantTwo = Variant.newBuilder()
@@ -2574,17 +2561,18 @@ public class UrbanAirshipClientTest {
 
         try {
             final CountDownLatch latch = new CountDownLatch(1);
-            Response<ExperimentResponse> response = client.execute(ExperimentRequest.newRequest(experiment), new ResponseCallback() {
-                @Override
-                public void completed(Response response) {
-                    latch.countDown();
-                }
+            Response<ExperimentResponse> response = client.execute(ExperimentRequest.newRequest(experiment),
+                    new ResponseCallback() {
+                        @Override
+                        public void completed(Response response) {
+                            latch.countDown();
+                        }
 
-                @Override
-                public void error(Throwable throwable) {
+                        @Override
+                        public void error(Throwable throwable) {
 
-                }
-            });
+                        }
+                    });
             latch.await();
 
             // Verify components of the underlying HttpRequest
@@ -2607,8 +2595,7 @@ public class UrbanAirshipClientTest {
         VariantPushPayload payloadOne = VariantPushPayload.newBuilder()
                 .setNotification(Notification.newBuilder()
                         .setAlert("Hello")
-                        .build()
-                )
+                        .build())
                 .build();
 
         Variant variantOne = Variant.newBuilder()
@@ -2618,8 +2605,7 @@ public class UrbanAirshipClientTest {
         VariantPushPayload payloadTwo = VariantPushPayload.newBuilder()
                 .setNotification(Notification.newBuilder()
                         .setAlert("Goodbye")
-                        .build()
-                )
+                        .build())
                 .build();
 
         Variant variantTwo = Variant.newBuilder()
@@ -2644,7 +2630,8 @@ public class UrbanAirshipClientTest {
                         .withBody(experimentJSON)
                         .withStatus(201)));
         try {
-            Response<ExperimentResponse> response = client.execute(ExperimentRequest.newRequest(experiment).setValidateOnly(true));
+            Response<ExperimentResponse> response = client
+                    .execute(ExperimentRequest.newRequest(experiment).setValidateOnly(true));
 
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/experiments/validate/"))
@@ -2660,22 +2647,22 @@ public class UrbanAirshipClientTest {
     public void testInvalidBearerAuth() {
         assertThrows(IllegalArgumentException.class, () -> {
             CustomEventPayload customEventPayload = CustomEventPayload.newBuilder()
-            .setCustomEventBody(CustomEventBody.newBuilder()
-                    .setName("name")
-                    .build())
-            .setCustomEventUser(CustomEventUser.newBuilder()
-                    .setCustomEventChannelType(CustomEventChannelType.ANDROID_CHANNEL)
-                    .setChannel("channelId")
-                    .build())
-            .setOccurred(DateTime.now())
-            .build();
+                    .setCustomEventBody(CustomEventBody.newBuilder()
+                            .setName("name")
+                            .build())
+                    .setCustomEventUser(CustomEventUser.newBuilder()
+                            .setCustomEventChannelType(CustomEventChannelType.ANDROID_CHANNEL)
+                            .setChannel("channelId")
+                            .build())
+                    .setOccurred(DateTime.now())
+                    .build();
 
-        CustomEventRequest request = CustomEventRequest.newRequest(customEventPayload);
-        client.execute(request);
+            CustomEventRequest request = CustomEventRequest.newRequest(customEventPayload);
+            client.execute(request);
 
         });
     }
-    
+
     @Test
     public void testRequestNotSupportedWithBearerAuth() {
         assertThrows(IllegalArgumentException.class, () -> {
@@ -2688,8 +2675,8 @@ public class UrbanAirshipClientTest {
     @Test
     public void testPauseStatusSpecificSchedule() {
         stubFor(post(urlEqualTo("/api/schedules/id/pause"))
-            .willReturn(aResponse()
-                .withStatus(204)));
+                .willReturn(aResponse()
+                        .withStatus(204)));
 
         try {
             Response<String> response = client.execute(ScheduleStatusRequest.pauseScheduleRequest("id"));
@@ -2697,7 +2684,7 @@ public class UrbanAirshipClientTest {
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/schedules/id/pause")));
             List<LoggedRequest> requests = findAll(postRequestedFor(
-                urlEqualTo("/api/schedules/id/pause")));
+                    urlEqualTo("/api/schedules/id/pause")));
             // There should only be one request
             assertEquals(requests.size(), 1);
 
@@ -2712,8 +2699,8 @@ public class UrbanAirshipClientTest {
     @Test
     public void testDeleteSpecificInbox() {
         stubFor(delete(urlEqualTo("/api/user/messages/id"))
-            .willReturn(aResponse()
-                .withStatus(202)));
+                .willReturn(aResponse()
+                        .withStatus(202)));
 
         try {
             Response<String> response = client.execute(InboxDeleteRequest.newRequest("id"));
@@ -2721,7 +2708,7 @@ public class UrbanAirshipClientTest {
             // Verify components of the underlying HttpRequest
             verify(deleteRequestedFor(urlEqualTo("/api/user/messages/id")));
             List<LoggedRequest> requests = findAll(deleteRequestedFor(
-                urlEqualTo("/api/user/messages/id")));
+                    urlEqualTo("/api/user/messages/id")));
             // There should only be one request
             assertEquals(requests.size(), 1);
 
@@ -2736,8 +2723,8 @@ public class UrbanAirshipClientTest {
     @Test
     public void testResumeStatusSpecificSchedule() {
         stubFor(post(urlEqualTo("/api/schedules/id/resume"))
-            .willReturn(aResponse()
-                .withStatus(204)));
+                .willReturn(aResponse()
+                        .withStatus(204)));
 
         try {
             Response<String> response = client.execute(ScheduleStatusRequest.resumeScheduleRequest("id"));
@@ -2745,7 +2732,7 @@ public class UrbanAirshipClientTest {
             // Verify components of the underlying HttpRequest
             verify(postRequestedFor(urlEqualTo("/api/schedules/id/resume")));
             List<LoggedRequest> requests = findAll(postRequestedFor(
-                urlEqualTo("/api/schedules/id/resume")));
+                    urlEqualTo("/api/schedules/id/resume")));
             // There should only be one request
             assertEquals(requests.size(), 1);
 
