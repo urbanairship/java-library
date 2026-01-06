@@ -30,35 +30,34 @@ public class NamedUserTagRequestTest {
 
     @Before
     public void setup() {
-        namedUserId1 = RandomStringUtils.random(10);
-        namedUserId2 = RandomStringUtils.random(10);
+        namedUserId1 = RandomStringUtils.randomAlphanumeric(10);
+        namedUserId2 = RandomStringUtils.randomAlphanumeric(10);
         namedUserIds = ImmutableSet.of(namedUserId1, namedUserId2);
         defaultRequest = NamedUserTagRequest.newRequest()
-            .addNamedUsers(namedUserIds)
-            .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .addTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"));
+                .addNamedUsers(namedUserIds)
+                .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
+                .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
+                .addTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"));
     }
 
     @Test
     public void testAddTagsBody() throws Exception {
         String expected = "{" +
-            "\"audience\":{" +
-            "\"named_user_id\":[\"" + namedUserId1+ "\",\"" + namedUserId2 +"\"]" +
-            "}," +
-            "\"add\":{" +
-            "\"tag_group1\":[\"tag1\",\"tag2\",\"tag3\"]," +
-            "\"tag_group3\":[\"tag1\",\"tag2\",\"tag3\"]," +
-            "\"tag_group2\":[\"tag1\",\"tag2\",\"tag3\"]" +
-            "}" +
-            "}";
+                "\"audience\":{" +
+                "\"named_user_id\":[\"" + namedUserId1 + "\",\"" + namedUserId2 + "\"]" +
+                "}," +
+                "\"add\":{" +
+                "\"tag_group1\":[\"tag1\",\"tag2\",\"tag3\"]," +
+                "\"tag_group3\":[\"tag1\",\"tag2\",\"tag3\"]," +
+                "\"tag_group2\":[\"tag1\",\"tag2\",\"tag3\"]" +
+                "}" +
+                "}";
 
         NamedUserTagRequest request = NamedUserTagRequest.newRequest()
-            .addNamedUsers(namedUserIds)
-            .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .addTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"));
-
+                .addNamedUsers(namedUserIds)
+                .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
+                .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
+                .addTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"));
 
         JsonNode jsonFromObject = MAPPER.readTree(request.getRequestBody());
         JsonNode jsonFromString = MAPPER.readTree(expected);
@@ -69,21 +68,21 @@ public class NamedUserTagRequestTest {
     @Test
     public void testRemoveTags() throws Exception {
         String expected = "{" +
-            "\"audience\":{" +
-            "\"named_user_id\":[\"" + namedUserId1+ "\",\"" + namedUserId2 +"\"]" +
-            "}," +
-            "\"remove\":{" +
-            "\"tag_group1\":[\"tag1\",\"tag2\",\"tag3\"]," +
-            "\"tag_group3\":[\"tag1\",\"tag2\",\"tag3\"]," +
-            "\"tag_group2\":[\"tag1\",\"tag2\",\"tag3\"]" +
-            "}" +
-            "}";
+                "\"audience\":{" +
+                "\"named_user_id\":[\"" + namedUserId1 + "\",\"" + namedUserId2 + "\"]" +
+                "}," +
+                "\"remove\":{" +
+                "\"tag_group1\":[\"tag1\",\"tag2\",\"tag3\"]," +
+                "\"tag_group3\":[\"tag1\",\"tag2\",\"tag3\"]," +
+                "\"tag_group2\":[\"tag1\",\"tag2\",\"tag3\"]" +
+                "}" +
+                "}";
 
         NamedUserTagRequest request = NamedUserTagRequest.newRequest()
-            .addNamedUsers(namedUserIds)
-            .removeTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .removeTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .removeTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"));
+                .addNamedUsers(namedUserIds)
+                .removeTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
+                .removeTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
+                .removeTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"));
 
         JsonNode jsonFromObject = MAPPER.readTree(request.getRequestBody());
         JsonNode jsonFromString = MAPPER.readTree(expected);
@@ -94,22 +93,21 @@ public class NamedUserTagRequestTest {
     @Test
     public void testSetTags() throws Exception {
         String expected = "{" +
-            "\"audience\":{" +
-            "\"named_user_id\":[\"" + namedUserId1+ "\",\"" + namedUserId2 +"\"]" +
-            "}," +
-            "\"set\":{" +
-            "\"tag_group1\":[\"tag1\",\"tag2\",\"tag3\"]," +
-            "\"tag_group3\":[\"tag1\",\"tag2\",\"tag3\"]," +
-            "\"tag_group2\":[\"tag1\",\"tag2\",\"tag3\"]" +
-            "}" +
-            "}";
+                "\"audience\":{" +
+                "\"named_user_id\":[\"" + namedUserId1 + "\",\"" + namedUserId2 + "\"]" +
+                "}," +
+                "\"set\":{" +
+                "\"tag_group1\":[\"tag1\",\"tag2\",\"tag3\"]," +
+                "\"tag_group3\":[\"tag1\",\"tag2\",\"tag3\"]," +
+                "\"tag_group2\":[\"tag1\",\"tag2\",\"tag3\"]" +
+                "}" +
+                "}";
 
         NamedUserTagRequest request = NamedUserTagRequest.newRequest()
-            .addNamedUsers(namedUserIds)
-            .setTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .setTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .setTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"));
-
+                .addNamedUsers(namedUserIds)
+                .setTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
+                .setTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
+                .setTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"));
 
         JsonNode jsonFromObject = MAPPER.readTree(request.getRequestBody());
         JsonNode jsonFromString = MAPPER.readTree(expected);
@@ -120,29 +118,29 @@ public class NamedUserTagRequestTest {
     @Test
     public void testAddAndRemoveTags() throws Exception {
         String expected = "{" +
-            "\"audience\":{" +
-            "\"named_user_id\":[\"" + namedUserId1+ "\",\"" + namedUserId2 +"\"]" +
-            "}," +
-            "\"remove\":{" +
-            "\"tag_group1\":[\"tag4\",\"tag5\",\"tag6\"]," +
-            "\"tag_group3\":[\"tag4\",\"tag5\",\"tag6\"]," +
-            "\"tag_group2\":[\"tag4\",\"tag5\",\"tag6\"]" +
-            "}," +
-            "\"add\":{" +
-            "\"tag_group1\":[\"tag1\",\"tag2\",\"tag3\"]," +
-            "\"tag_group3\":[\"tag1\",\"tag2\",\"tag3\"]," +
-            "\"tag_group2\":[\"tag1\",\"tag2\",\"tag3\"]" +
-            "}" +
-            "}";
+                "\"audience\":{" +
+                "\"named_user_id\":[\"" + namedUserId1 + "\",\"" + namedUserId2 + "\"]" +
+                "}," +
+                "\"remove\":{" +
+                "\"tag_group1\":[\"tag4\",\"tag5\",\"tag6\"]," +
+                "\"tag_group3\":[\"tag4\",\"tag5\",\"tag6\"]," +
+                "\"tag_group2\":[\"tag4\",\"tag5\",\"tag6\"]" +
+                "}," +
+                "\"add\":{" +
+                "\"tag_group1\":[\"tag1\",\"tag2\",\"tag3\"]," +
+                "\"tag_group3\":[\"tag1\",\"tag2\",\"tag3\"]," +
+                "\"tag_group2\":[\"tag1\",\"tag2\",\"tag3\"]" +
+                "}" +
+                "}";
 
         NamedUserTagRequest request = NamedUserTagRequest.newRequest()
-            .addNamedUsers(namedUserIds)
-            .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .addTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .removeTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"))
-            .removeTags("tag_group2", ImmutableSet.of("tag4", "tag5", "tag6"))
-            .removeTags("tag_group3", ImmutableSet.of("tag4", "tag5", "tag6"));
+                .addNamedUsers(namedUserIds)
+                .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
+                .addTags("tag_group2", ImmutableSet.of("tag1", "tag2", "tag3"))
+                .addTags("tag_group3", ImmutableSet.of("tag1", "tag2", "tag3"))
+                .removeTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"))
+                .removeTags("tag_group2", ImmutableSet.of("tag4", "tag5", "tag6"))
+                .removeTags("tag_group3", ImmutableSet.of("tag4", "tag5", "tag6"));
 
         JsonNode jsonFromObject = MAPPER.readTree(request.getRequestBody());
         JsonNode jsonFromString = MAPPER.readTree(expected);
@@ -150,28 +148,28 @@ public class NamedUserTagRequestTest {
         assertEquals(jsonFromObject, jsonFromString);
     }
 
-    @Test (expected = IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testAddAndSetTags() {
         NamedUserTagRequest request = NamedUserTagRequest.newRequest()
-            .addNamedUsers(namedUserId1)
-            .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .setTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"));
+                .addNamedUsers(namedUserId1)
+                .addTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
+                .setTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"));
         request.getRequestBody();
     }
 
-    @Test (expected = IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testRemoveAndSetTags() {
         NamedUserTagRequest request = NamedUserTagRequest.newRequest()
-            .addNamedUsers(namedUserId1)
-            .removeTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
-            .setTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"));
+                .addNamedUsers(namedUserId1)
+                .removeTags("tag_group1", ImmutableSet.of("tag1", "tag2", "tag3"))
+                .setTags("tag_group1", ImmutableSet.of("tag4", "tag5", "tag6"));
         request.getRequestBody();
     }
 
-    @Test (expected = IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testNoTagMutations() {
         NamedUserTagRequest request = NamedUserTagRequest.newRequest()
-            .addNamedUsers(namedUserId1);
+                .addNamedUsers(namedUserId1);
         request.getRequestBody();
     }
 

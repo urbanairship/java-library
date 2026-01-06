@@ -1,4 +1,14 @@
 -------------------------
+11.0.0 5JAN26
+-------------------------
+- Set compiler source/target to Java 11
+- Update Async HTTP Client to 3.0.4 and adapt API (Duration timeouts, FilterContext generics)
+- Update Netty version to 4.2.9.Final
+- Update Jackson BOM to 2.20.1
+- Update Guava to 33.5.0-jre
+- Fix NamedUserTagRequestTest
+
+-------------------------
 10.3.0 06OCT25
 -------------------------
 - Add TrackingOptInLevel fields to UpdateEmailChannelRequest

@@ -4,9 +4,7 @@
 
 package com.urbanairship.api.client;
 
-import org.apache.commons.lang.math.RandomUtils;
 import org.asynchttpclient.filter.FilterContext;
-import org.asynchttpclient.filter.FilterException;
 import org.asynchttpclient.filter.ResponseFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,21 +27,21 @@ public class RequestRetryFilter implements ResponseFilter {
 
     private static final Logger log = LoggerFactory.getLogger(RequestRetryFilter.class);
     private static final int BASE_RETRY_TIME_MS = 200;
-    private static final Predicate<FilterContext> DEFAULT_PREDICATE = input -> !input.getRequest().getMethod().equals("POST") && input.getResponseStatus().getStatusCode() >= 500;
+    private static final Predicate<FilterContext<?>> DEFAULT_PREDICATE = input -> !input.getRequest().getMethod().equals("POST") && input.getResponseStatus().getStatusCode() >= 500;
 
     private final int maxRetries;
-    private final Predicate<FilterContext> retryPredicate;
+    private final Predicate<FilterContext<?>> retryPredicate;
 
-    public RequestRetryFilter(int maxRetries, Optional<Predicate<FilterContext>> retryPredicate) {
+    public RequestRetryFilter(int maxRetries, Optional<Predicate<FilterContext<?>>> retryPredicate) {
         this.maxRetries = maxRetries;
         this.retryPredicate = retryPredicate.isPresent() ? retryPredicate.get() : DEFAULT_PREDICATE;
     }
 
     @Override
-    public <T> FilterContext<T> filter(FilterContext<T> ctx) throws FilterException {
+    public <T> FilterContext<T> filter(FilterContext<T> ctx) {
         int statusCode = ctx.getResponseStatus().getStatusCode();
         if (ctx.getAsyncHandler() instanceof ResponseAsyncHandler) {
-            ResponseAsyncHandler asyncHandler = (ResponseAsyncHandler) ctx.getAsyncHandler();
+            ResponseAsyncHandler<?> asyncHandler = (ResponseAsyncHandler<?>) ctx.getAsyncHandler();
             if (asyncHandler.getRetryCount() < maxRetries && retryPredicate.test(ctx)) {
                 try {
                     int sleepTime = BASE_RETRY_TIME_MS * (1 << asyncHandler.getRetryCount());
