@@ -22,7 +22,8 @@ import java.util.function.Predicate;
 import static com.urbanairship.api.client.UrbanAirshipClient.US_URI;
 
 /**
- * The AsyncRequestClient is the default request client used by the UrbanAirshipClient.
+ * The AsyncRequestClient is the default request client used by the
+ * UrbanAirshipClient.
  */
 public class AsyncRequestClient implements RequestClient {
 
@@ -39,7 +40,8 @@ public class AsyncRequestClient implements RequestClient {
 
         DefaultAsyncHttpClientConfig.Builder clientConfigBuilder = builder.clientConfigBuilder;
 
-        clientConfigBuilder.addResponseFilter(new RequestRetryFilter(builder.maxRetries, Optional.ofNullable(builder.retryPredicate)));
+        clientConfigBuilder.addResponseFilter(
+                new RequestRetryFilter(builder.maxRetries, Optional.ofNullable(builder.retryPredicate)));
 
         if (Optional.ofNullable(builder.proxyServer).isPresent()) {
             proxyServer = Optional.ofNullable(builder.proxyServer);
@@ -89,16 +91,17 @@ public class AsyncRequestClient implements RequestClient {
         return clientConfig;
     }
 
-
     @Override
     /**
-     * Command for executing Urban Airship requests asynchronously with a ResponseCallback.
+     * Command for executing Urban Airship requests asynchronously with a
+     * ResponseCallback.
      *
-     * @param request An Urban Airship request object.
+     * @param request  An Urban Airship request object.
      * @param callback A ResponseCallback instance.
      * @return A client response future.
      */
-    public <T> Future<Response> executeAsync(final Request<T> request, final ResponseCallback callback, Map<String, String> headers) {
+    public <T> Future<Response> executeAsync(final Request<T> request, final ResponseCallback callback,
+            Map<String, String> headers) {
         BoundRequestBuilder requestBuilder;
         String uri;
 
@@ -127,7 +130,7 @@ public class AsyncRequestClient implements RequestClient {
                 break;
         }
 
-        //Headers
+        // Headers
         for (Map.Entry<String, String> entry : headers.entrySet()) {
             requestBuilder.addHeader(entry.getKey(), entry.getValue());
         }
@@ -140,7 +143,8 @@ public class AsyncRequestClient implements RequestClient {
         }
 
         log.debug(String.format("Executing Urban Airship request to %s with body %s.", uri, request.getRequestBody()));
-        ResponseAsyncHandler<T> handler = new ResponseAsyncHandler<>(Optional.ofNullable(callback), request.getResponseParser());
+        ResponseAsyncHandler<T> handler = new ResponseAsyncHandler<>(Optional.ofNullable(callback),
+                request.getResponseParser());
         return requestBuilder.execute(handler);
     }
 
@@ -161,7 +165,7 @@ public class AsyncRequestClient implements RequestClient {
         private String baseUri;
         private Integer maxRetries = 10;
         private DefaultAsyncHttpClientConfig.Builder clientConfigBuilder = new DefaultAsyncHttpClientConfig.Builder();
-        private Predicate<FilterContext> retryPredicate = null;
+        private Predicate<FilterContext<?>> retryPredicate = null;
         private ProxyServer proxyServer;
 
         private Builder() {
@@ -170,6 +174,7 @@ public class AsyncRequestClient implements RequestClient {
 
         /**
          * Set the base URI -- defaults to "https://go.urbanairship.com"
+         * 
          * @param URI String base URI
          * @return Builder
          */
@@ -190,7 +195,8 @@ public class AsyncRequestClient implements RequestClient {
         }
 
         /**
-         * Set the client config builder -- defaults to a new builder. Available for custom settings.
+         * Set the client config builder -- defaults to a new builder. Available for
+         * custom settings.
          *
          * @param clientConfigBuilder The client config builder.
          * @return Builder
@@ -217,14 +223,15 @@ public class AsyncRequestClient implements RequestClient {
          * @param retryPredicate The retry predicate.
          * @return Builder
          */
-        public Builder setRetryPredicate(Predicate<FilterContext> retryPredicate) {
+        public Builder setRetryPredicate(Predicate<FilterContext<?>> retryPredicate) {
             this.retryPredicate = retryPredicate;
             return this;
         }
 
         /**
-         * Build an UrbanAirshipClient object.  Will fail if any of the following
+         * Build an UrbanAirshipClient object. Will fail if any of the following
          * preconditions are not met.
+         * 
          * <pre>
          * 1. App key must be set.
          * 2. App secret must be set.
@@ -238,7 +245,8 @@ public class AsyncRequestClient implements RequestClient {
         public AsyncRequestClient build() {
             Preconditions.checkNotNull(baseUri, "base URI needed to build APIClient");
             Preconditions.checkNotNull(maxRetries, "max non-POST retries needed to build APIClient");
-            Preconditions.checkNotNull(clientConfigBuilder, "Async HTTP client config builder needed to build APIClient");
+            Preconditions.checkNotNull(clientConfigBuilder,
+                    "Async HTTP client config builder needed to build APIClient");
 
             return new AsyncRequestClient(this);
         }
