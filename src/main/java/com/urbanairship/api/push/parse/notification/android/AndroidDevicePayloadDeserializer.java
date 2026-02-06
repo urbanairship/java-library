@@ -7,7 +7,6 @@ package com.urbanairship.api.push.parse.notification.android;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.FieldParser;
 import com.urbanairship.api.common.parse.FieldParserRegistry;
@@ -44,6 +43,7 @@ public class AndroidDevicePayloadDeserializer extends JsonDeserializer<AndroidDe
                     .put("public_notification", (reader, json, context) -> reader.readPublicNotification(json))
                     .put("actions", (reader, json, context) -> reader.readActions(json))
                     .put("template", (reader, json, context) -> reader.readTemplate(json))
+                    .put("live_update", (reader, json, context) -> reader.readLiveUpdate(json))
                     .build()
     );
 

@@ -16,6 +16,7 @@ import com.urbanairship.api.push.model.notification.Interactive;
 import com.urbanairship.api.push.model.notification.actions.Actions;
 import com.urbanairship.api.push.model.notification.ios.IOSDevicePayload;
 import com.urbanairship.api.push.model.notification.ios.IOSInterruptionLevel;
+import com.urbanairship.api.push.model.notification.ios.IOSLiveActivity;
 import com.urbanairship.api.push.model.notification.ios.IOSTemplate;
 
 import java.io.IOException;
@@ -108,6 +109,10 @@ public class IOSDevicePayloadReader implements JsonObjectReader<IOSDevicePayload
     
     public void readRelevanceScore(JsonParser parser) throws IOException {
         builder.setRelevanceScore(parser.getDoubleValue());
+    }
+
+    public void readLiveActivity(JsonParser parser, DeserializationContext context) throws IOException {
+        builder.setIosLiveActivity(parser.readValueAs(IOSLiveActivity.class));
     }
 
     @Override
