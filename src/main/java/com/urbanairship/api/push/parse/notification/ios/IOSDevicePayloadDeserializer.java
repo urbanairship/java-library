@@ -7,7 +7,6 @@ package com.urbanairship.api.push.parse.notification.ios;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.FieldParser;
 import com.urbanairship.api.common.parse.FieldParserRegistry;
@@ -42,6 +41,7 @@ public class IOSDevicePayloadDeserializer extends JsonDeserializer<IOSDevicePayl
             .put("template", (reader, json, context) -> reader.readIosTemplate(json))
             .put("interruption_level", (reader, json, context) -> reader.readIosInterruptionLevel(json))
             .put("relevance_score", (reader, json, context) -> reader.readRelevanceScore(json))
+            .put("live_activity", (reader, json, context) -> reader.readLiveActivity(json, context))
             .build()
             );
 

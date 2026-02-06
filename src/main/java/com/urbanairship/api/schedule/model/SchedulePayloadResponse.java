@@ -19,13 +19,15 @@ public final class SchedulePayloadResponse {
     private final Schedule schedule;
     private final Optional<String> url;
     private final Optional<String> name;
+    private final Optional<Boolean> paused;
     private final PushPayload pushPayload;
     private Set<String> pushIds;
 
-    private SchedulePayloadResponse(Schedule schedule, String url, String name, PushPayload pushPayload, Set<String> pushIds) {
+    private SchedulePayloadResponse(Schedule schedule, String url, String name, Boolean paused, PushPayload pushPayload, Set<String> pushIds) {
         this.schedule = schedule;
         this.url = Optional.ofNullable(url);
         this.name = Optional.ofNullable(name);
+        this.paused = Optional.ofNullable(paused);
         this.pushPayload = pushPayload;
         this.pushIds = pushIds;
     }
@@ -40,6 +42,10 @@ public final class SchedulePayloadResponse {
 
     public Optional<String> getName () {
         return name;
+    }
+
+    public Optional<Boolean> getPaused() {
+        return paused;
     }
 
     public PushPayload getPushPayload() {
@@ -69,6 +75,7 @@ public final class SchedulePayloadResponse {
                 "schedule=" + schedule +
                 ", url=" + url +
                 ", name=" + name +
+                ", paused=" + paused +
                 ", pushPayload=" + pushPayload +
                 ", pushIds=" + pushIds +
                 '}';
@@ -76,7 +83,7 @@ public final class SchedulePayloadResponse {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(schedule, url, name, pushPayload, pushIds);
+        return Objects.hashCode(schedule, url, name, paused, pushPayload, pushIds);
     }
 
     @Override
@@ -91,6 +98,7 @@ public final class SchedulePayloadResponse {
         return Objects.equal(this.schedule, other.schedule)
                 && Objects.equal(this.url, other.url)
                 && Objects.equal(this.name, other.name)
+                && Objects.equal(this.paused, other.paused)
                 && Objects.equal(this.pushPayload, other.pushPayload)
                 && Objects.equal(this.pushIds, other.pushIds);
     }
@@ -99,6 +107,7 @@ public final class SchedulePayloadResponse {
         private Schedule schedule = null;
         private String url = null;
         private String name = null;
+        private Boolean paused = null;
         private PushPayload pushPayload = null;
         private Set<String> pushIds = Sets.newHashSet();
 
@@ -116,6 +125,11 @@ public final class SchedulePayloadResponse {
 
         public Builder setName(String name) {
             this.name = name;
+            return this;
+        }
+
+        public Builder setPaused(Boolean paused) {
+            this.paused = paused;
             return this;
         }
 
@@ -141,7 +155,7 @@ public final class SchedulePayloadResponse {
                 Preconditions.checkArgument(StringUtils.isNotBlank(name), "'name' must be a non-blank string");
             }
 
-            return new SchedulePayloadResponse(schedule, url, name, pushPayload, pushIds);
+            return new SchedulePayloadResponse(schedule, url, name, paused, pushPayload, pushIds);
         }
     }
 }

@@ -7,7 +7,6 @@ package com.urbanairship.api.schedule.parse;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
 import com.urbanairship.api.common.parse.APIParsingException;
 import com.urbanairship.api.common.parse.FieldParser;
@@ -25,6 +24,7 @@ public final class SchedulePayloadResponseDeserializer extends JsonDeserializer<
                     .put("schedule", (reader, jsonParser, deserializationContext) -> reader.readSchedule(jsonParser))
                     .put("url", (reader, jsonParser, deserializationContext) -> reader.readUrl(jsonParser))
                     .put("name", (reader, jsonParser, deserializationContext) -> reader.readName(jsonParser))
+                    .put("paused", (reader, jsonParser, deserializationContext) -> reader.readPaused(jsonParser))
                     .put("push", (reader, jsonParser, deserializationContext) -> reader.readPushPayload(jsonParser))
                     .put("push_ids", (reader, jsonParser, deserializationContext) -> reader.readPushIds(jsonParser))
                     .build()
