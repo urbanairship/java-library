@@ -48,7 +48,9 @@ public class GenericResponse {
         return Optional.ofNullable(errorCode);
     }
 
-    public Optional<String> getWarning() {return Optional.ofNullable(warning);}
+    public Optional<String> getWarning() {
+        return Optional.ofNullable(warning);
+    }
 
     @Override
     public String toString() {
@@ -64,10 +66,12 @@ public class GenericResponse {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         GenericResponse that = (GenericResponse) o;
-        return  Objects.equal(this.ok, that.ok) &&
+        return Objects.equal(this.ok, that.ok) &&
                 Objects.equal(this.operationId, that.operationId) &&
                 Objects.equal(this.error, that.error) &&
                 Objects.equal(this.errorDetails, that.errorDetails) &&

@@ -35,12 +35,17 @@ public final class SchedulePayloadResponseReader implements JsonObjectReader<Sch
         builder.setName(jsonParser.readValueAs(String.class));
     }
 
+    public void readPaused(JsonParser jsonParser) throws IOException {
+        builder.setPaused(jsonParser.readValueAs(Boolean.class));
+    }
+
     public void readPushPayload(JsonParser parser) throws IOException {
         builder.setPushPayload(parser.readValueAs(PushPayload.class));
     }
 
     public void readPushIds(JsonParser parser) throws IOException {
-        builder.addAllPushIds( (List<String>) parser.readValueAs(new TypeReference<List<String>>() { }));
+        List<String> ids = parser.readValueAs(new TypeReference<List<String>>() { });
+        builder.addAllPushIds(ids);
     }
 
     @Override
