@@ -1,4 +1,11 @@
 -------------------------
+11.1.0 6FEB26
+-------------------------
+- Add paused field for SchedulePayloadResponse
+- Add live_update for AndroidDevicePayload
+- Add live_activity for IOSDevicePayload
+
+-------------------------
 11.0.0 5JAN26
 -------------------------
 - Set compiler source/target to Java 11
