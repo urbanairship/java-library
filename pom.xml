@@ -4,7 +4,7 @@
 
     <groupId>com.urbanairship</groupId>
     <artifactId>java-client</artifactId>
-    <version>11.0.1-SNAPSHOT</version>
+    <version>11.1.0</version>
     <packaging>jar</packaging>
 
     <name>Java Client</name>
@@ -20,7 +20,7 @@
         <connection>scm:git:git@github.com:urbanairship/java-library.git</connection>
         <developerConnection>scm:git:git@github.com:urbanairship/java-library.git</developerConnection>
         <url>git@github.com:urbanairship/java-library.git</url>
-        <tag>HEAD</tag>
+        <tag>11.1.0</tag>
     </scm>
     <developers>
         <developer>
