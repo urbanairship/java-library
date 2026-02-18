@@ -27,11 +27,11 @@ public class NamedUserRequestTest {
     private final String namedUserId = RandomStringUtils.random(10);
 
     private final NamedUserRequest associationRequest = NamedUserRequest.newAssociationRequest()
-        .setChannel(channelId, ChannelType.IOS)
-        .setNamedUserId(namedUserId);
+            .setChannel(channelId, ChannelType.IOS)
+            .setNamedUserId(namedUserId);
     private final NamedUserRequest disassociationRequest = NamedUserRequest.newDisassociationRequest()
-        .setChannel(channelId, ChannelType.IOS)
-        .setNamedUserId(namedUserId);
+            .setChannel(channelId, ChannelType.IOS)
+            .setNamedUserId(namedUserId);
 
     @Test
     public void testContentType() throws Exception {
@@ -54,14 +54,14 @@ public class NamedUserRequestTest {
         Map<String, String> associationPayload = new HashMap<>();
         associationPayload.put(CHANNEL_KEY, channelId);
         associationPayload.put(DEVICE_TYPE_KEY, ChannelType.IOS.getIdentifier());
-        associationPayload.put(NAMED_USER_ID_KEY,namedUserId);
+        associationPayload.put(NAMED_USER_ID_KEY, namedUserId);
 
         Map<String, String> disassociationPayload = new HashMap<>();
         disassociationPayload.put(CHANNEL_KEY, channelId);
         disassociationPayload.put(DEVICE_TYPE_KEY, ChannelType.IOS.getIdentifier());
-        disassociationPayload.put(NAMED_USER_ID_KEY,namedUserId);
+        disassociationPayload.put(NAMED_USER_ID_KEY, namedUserId);
 
-        String associateRequestBody =mapper.writeValueAsString(associationPayload);
+        String associateRequestBody = mapper.writeValueAsString(associationPayload);
         String disassociateRequestBody = mapper.writeValueAsString(disassociationPayload);
 
         assertEquals(associationRequest.getRequestBody(), associateRequestBody);
@@ -80,7 +80,8 @@ public class NamedUserRequestTest {
         disassociateRequest.setNamedUserId(namedUserId);
         disassociateRequest.setChannel(channelId, ChannelType.EMAIL);
 
-        String jsonStr = "{\"channel_id\":\"" + channelId + "\",\"named_user_id\":\""+ namedUserId +"\"}";
+        String jsonStr = "{\"channel_id\":\"" + channelId + "\",\"named_user_id\":\"" + namedUserId
+                + "\",\"device_type\":\"email\"}";
 
         JsonNode expectedJson = mapper.readTree(jsonStr);
         JsonNode actualJson = mapper.readTree(namedUserRequest.getRequestBody());
@@ -103,7 +104,7 @@ public class NamedUserRequestTest {
         disassociateRequest.setNamedUserId(namedUserId);
         disassociateRequest.setEmail(emailAddress);
 
-        String jsonStr = "{\"email_address\":\"" + emailAddress + "\",\"named_user_id\":\""+ namedUserId +"\"}";
+        String jsonStr = "{\"email_address\":\"" + emailAddress + "\",\"named_user_id\":\"" + namedUserId + "\"}";
 
         JsonNode expectedJson = mapper.readTree(jsonStr);
         JsonNode actualJson = mapper.readTree(namedUserRequest.getRequestBody());
@@ -125,7 +126,8 @@ public class NamedUserRequestTest {
         disassociateRequest.setNamedUserId(namedUserId);
         disassociateRequest.setChannel(channelId, ChannelType.SMS);
 
-        String jsonStr = "{\"channel_id\":\"" + channelId + "\",\"named_user_id\":\""+ namedUserId +"\"}";
+        String jsonStr = "{\"channel_id\":\"" + channelId + "\",\"named_user_id\":\"" + namedUserId
+                + "\",\"device_type\":\"sms\"}";
 
         JsonNode expectedJson = mapper.readTree(jsonStr);
         JsonNode actualJson = mapper.readTree(namedUserRequest.getRequestBody());
@@ -143,9 +145,9 @@ public class NamedUserRequestTest {
             namedUserRequest.setNamedUserId("namedUserId");
             namedUserRequest.setEmail("testEmail@test.com");
             namedUserRequest.getRequestBody();
-    
+
         });
-    
+
         String expectedMessage = "Both Channel ID and email cannot be set. Set either the channel ID or the email address.";
         String actualMessage = exception.getMessage();
 
@@ -178,7 +180,8 @@ public class NamedUserRequestTest {
 
         ErrorDetails errorDetails = new ErrorDetails("The key chanel is not allowed in this context", null);
 
-        GenericResponse genericResponse = new GenericResponse(true, "1769297b-1640-43a4-af84-3e0ece89efe", "error", errorDetails, 50000, null);
+        GenericResponse genericResponse = new GenericResponse(true, "1769297b-1640-43a4-af84-3e0ece89efe", "error",
+                errorDetails, 50000, null);
 
         String responseJson = "{" +
                 "\"ok\": true," +
