@@ -1,4 +1,9 @@
 -------------------------
+11.2.0 18FEB26
+-------------------------
+- NamedUserRequest: always set device_type in setChannel (including EMAIL/SMS/OPEN/WEB)
+
+-------------------------
 11.1.0 6FEB26
 -------------------------
 - Add paused field for SchedulePayloadResponse
