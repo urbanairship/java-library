@@ -159,6 +159,41 @@
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>openapi-gen</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.openapitools</groupId>
+                        <artifactId>openapi-generator-maven-plugin</artifactId>
+                        <version>7.5.0</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <configuration>
+                                    <inputSpec>${project.basedir}/spec/airship-schedules.yaml</inputSpec>
+                                    <generatorName>java</generatorName>
+                                    <library>okhttp-gson</library>
+                                    <apiPackage>com.urbanairship.generated.api</apiPackage>
+                                    <modelPackage>com.urbanairship.generated.model</modelPackage>
+                                    <generateApiTests>false</generateApiTests>
+                                    <generateModelTests>false</generateModelTests>
+                                    <configOptions>
+                                        <dateLibrary>java8</dateLibrary>
+                                        <useJakartaEe>false</useJakartaEe>
+                                    </configOptions>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -172,7 +207,7 @@
         <commons-codec.version>1.20.0</commons-codec.version>
         <fluent-hc.version>4.5.14</fluent-hc.version>
         <netty.version>4.2.9.Final</netty.version>
-        <ahc.version>3.0.4</ahc.version>
+        <ahc.version>3.0.9</ahc.version>
 
         <junit.version>4.13.2</junit.version>
         <mockito.version>4.5.1</mockito.version>
