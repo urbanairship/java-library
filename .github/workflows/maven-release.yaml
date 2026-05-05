@@ -27,3 +27,4 @@ jobs:
           java-build-sa-key: ${{ secrets.JAVA_BUILD_SA_KEY }}
           gh-token: ${{ secrets.JAVA_BUILD_GH_TOKEN }}
           additionalCommentPrefix: "[skip ci]"
+          additionalBuildArgs: "-Dgpg.passphrase=${{ secrets.MAVEN_GPG_PASSPHRASE }} -Dlocal.gpg.passphrase=${{ secrets.MAVEN_GPG_PASSPHRASE }}"
