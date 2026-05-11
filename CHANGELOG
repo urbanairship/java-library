@@ -1,4 +1,9 @@
 -------------------------
+11.2.1 7MAY26
+-------------------------
+- Updates org.asynchttpclient:async-http-client from 3.0.4 to 3.0.9
+
+-------------------------
 11.2.0 18FEB26
 -------------------------
 - NamedUserRequest: always set device_type in setChannel (including EMAIL/SMS/OPEN/WEB)
