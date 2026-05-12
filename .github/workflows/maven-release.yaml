@@ -1,0 +1,30 @@
+name: Perform Maven Release
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'pom.xml'
+      - '**/src/**'
+      - '**/pom.xml'
+  workflow_dispatch:
+
+jobs:
+  maven-release:
+    name: Maven Release
+    runs-on: [ self-hosted, ubuntu ]
+
+    steps:
+      - id: release
+        uses: urbanairship/java-env/actions/airship-maven-release@master
+        with:
+          dry-run: false
+          java-build-sa-key: ${{ secrets.JAVA_BUILD_SA_KEY }}
+          gh-token: ${{ secrets.JAVA_BUILD_GH_TOKEN }}
+          additionalCommentPrefix: "[skip ci]"
+          additionalBuildArgs: "-Dgpg.passphrase=${{ secrets.MAVEN_GPG_PASSPHRASE }} -Dlocal.gpg.passphrase=${{ secrets.MAVEN_GPG_PASSPHRASE }}"

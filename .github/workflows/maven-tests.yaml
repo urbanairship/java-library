@@ -1,0 +1,27 @@
+name: Maven Tests
+
+run-name: Maven Tests on branch ${{ github.ref_name }}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: [self-hosted, ubuntu]
+    steps:
+      - name: Set up Airship Java Environment
+        uses: urbanairship/java-env/actions/setup-airship-java-env@master
+        with:
+          java-build-sa-key: ${{ secrets.JAVA_BUILD_SA_KEY }}
+          gh-token: ${{ secrets.JAVA_BUILD_GH_TOKEN }}
+
+      - name: Build with Maven
+        shell: bash
+        run: mvn clean install -e -T 1C ${{ env.MAVEN_EXTRA_FLAGS }}
