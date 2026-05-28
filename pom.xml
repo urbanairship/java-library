@@ -172,7 +172,7 @@
         <commons-codec.version>1.20.0</commons-codec.version>
         <fluent-hc.version>4.5.14</fluent-hc.version>
         <netty.version>4.2.9.Final</netty.version>
-        <ahc.version>3.0.9</ahc.version>
+        <ahc.version>3.0.10</ahc.version>
 
         <junit.version>4.13.2</junit.version>
         <mockito.version>4.5.1</mockito.version>

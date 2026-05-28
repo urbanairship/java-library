@@ -1,4 +1,9 @@
 -------------------------
+11.2.1 25MAY26
+-------------------------
+- Updates org.asynchttpclient:async-http-client from 3.0.9 to 3.0.10
+
+-------------------------
 11.2.1 7MAY26
 -------------------------
 - Updates org.asynchttpclient:async-http-client from 3.0.4 to 3.0.9
