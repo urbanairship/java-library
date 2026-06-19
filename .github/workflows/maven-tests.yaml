@@ -7,10 +7,7 @@ concurrency:
   cancel-in-progress: true
 
 on:
-  push:
-    branches:
-      - "INFRA-8096"
-  #workflow_dispatch:
+  workflow_dispatch:
 
 env:
   JAVA_VERSION: '11' #( 8, 11, 17, 21)

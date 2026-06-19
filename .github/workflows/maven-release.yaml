@@ -1,9 +1,9 @@
-name: Perform Maven Release (Standalone)
+name: Perform Maven Release (Standalone) - preflight check
 
 on:
   push:
     branches:
-      - "automation-update-workflows-library-edace0f9"
+      - "INFRA-8096"
   #workflow_dispatch:
 
 permissions:
@@ -34,28 +34,50 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: 'temurin'
           cache: 'maven'
-          server-id: ossrh
-          server-username: SONATYPE_USERNAME
-          server-password: SONATYPE_PASSWORD
+          server-id: central
+          server-username: ${{ secrets.SONATYPE_USERNAME }}
+          server-password: ${{ secrets.SONATYPE_PASSWORD }}
           gpg-private-key: ${{ secrets.SONATYPE_GPG_PRIVATE_KEY }}
-          gpg-passphrase: SONATYPE_GPG_PASSPHRASE
+          gpg-passphrase: ${{ secrets.SONATYPE_GPG_PASSPHRASE }}
 
-      - name: Run Maven Release
+      - name: Check 1 Verify Sonatype Credentials (API Ping)
         run: |
-          mvn -B -ntp \
-            -Darguments="-Dmaven.javadoc.skip=true -DskipTests=true -DaltReleaseDeploymentRepository=releases::default::gs://airship-maven-artifacts/releases -DaltDeploymentRepository=releases::default::gs://airship-maven-artifacts/releases" \
-            -Dresume=false \
-            -DscmCommentPrefix="[github] [skip ci] " \
-            -DtagNameFormat=@{project.version} \
-            -DpushChanges=false \
-            -DlocalCheckout=true \
-            release:prepare release:perform
-        env:
-          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+            HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+              -u "${{ secrets.SONATYPE_USERNAME }}:${{ secrets.SONATYPE_PASSWORD }}" \
+              https://central.sonatype.com/api/v1/publisher/deployments)
+              
+            echo "Sonatype API responded with HTTP Status: $HTTP_STATUS"
+              
+            if [ "$HTTP_STATUS" -eq 401 ]; then
+              echo "ERROR: Sonatype Username or Token Password from LastPass is INVALID (401 Unauthorized)."
+              exit 1
+            else
+              echo "SUCCESS: Sonatype authentication is working fine!"
+            fi
 
-      - name: Push Changes & Tags
-        if: success()
+      - name: Check 2 Verify GPG Key & Passphrase (Local Signing)
         run: |
-          git push origin master
-          git push origin --tags
+            mvn clean verify -B -ntp \
+              -DskipTests=true \
+              -Dmaven.javadoc.skip=true \
+              -Dgpg.passphrase=${{ secrets.SONATYPE_GPG_PASSPHRASE }}"
+
+#      - name: Run Maven Release
+#        run: |
+#          mvn -B -ntp \
+#            -Darguments="-Dmaven.javadoc.skip=true -DskipTests=true -DaltReleaseDeploymentRepository=releases::default::gs://airship-maven-artifacts/releases -DaltDeploymentRepository=releases::default::gs://airship-maven-artifacts/releases" \
+#            -Dresume=false \
+#            -DscmCommentPrefix="[github] [skip ci] " \
+#            -DtagNameFormat=@{project.version} \
+#            -DpushChanges=false \
+#            -DlocalCheckout=true \
+#            release:prepare release:perform
+#        env:
+#          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+#          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+
+#      - name: Push Changes & Tags
+#        if: success()
+#        run: |
+#          git push origin master
+#          git push origin --tags
