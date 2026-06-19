@@ -40,32 +40,21 @@ jobs:
           gpg-private-key: ${{ secrets.SONATYPE_GPG_PRIVATE_KEY }}
           gpg-passphrase: ${{ secrets.SONATYPE_GPG_PASSPHRASE }}
 
-      - name: Check 1 Verify Sonatype Credentials (API Ping)
+      - name: Verify GPG Key & Passphrase (Explicit Shell Import)
         run: |
-            HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-              -u "${{ secrets.SONATYPE_USERNAME }}:${{ secrets.SONATYPE_PASSWORD }}" \
-              https://central.sonatype.com/api/v1/publisher/deployments)
-              
-            echo "Sonatype API responded with HTTP Status: $HTTP_STATUS"
-              
-            if [ "$HTTP_STATUS" -eq 401 ]; then
-              echo "ERROR: Sonatype Username or Token Password from LastPass is INVALID (401 Unauthorized)."
-              exit 1
-            else
-              echo "SUCCESS: Sonatype authentication is working fine!"
-            fi
-
-      - name: Check 2 Verify GPG Key & Passphrase (Local Signing)
-        run: |
-            echo "=== DIAGNOSTIC ==="
+            echo "$RAW_GPG_KEY" > private.key
+            
+            gpg --batch --import private.key
+            rm private.key
+            
             gpg --list-secret-keys --keyid-format LONG
-            echo "======================================================="
             
             mvn clean verify -B -ntp \
               -DskipTests=true \
               -Dmaven.javadoc.skip=true \
               -Dgpg.passphrase="$GPG_PASSPHRASE"
         env:
+            RAW_GPG_KEY: ${{ secrets.SONATYPE_GPG_PRIVATE_KEY }}
             GPG_PASSPHRASE: ${{ secrets.SONATYPE_GPG_PASSPHRASE }}
 
 #      - name: Run Maven Release
