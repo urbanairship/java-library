@@ -60,7 +60,7 @@ jobs:
             mvn clean verify -B -ntp \
               -DskipTests=true \
               -Dmaven.javadoc.skip=true \
-              -Dgpg.passphrase=${{ secrets.SONATYPE_GPG_PASSPHRASE }}"
+              -Dgpg.passphrase="${{ secrets.SONATYPE_GPG_PASSPHRASE }}"
 
 #      - name: Run Maven Release
 #        run: |
