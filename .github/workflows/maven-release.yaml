@@ -57,16 +57,16 @@ jobs:
 
       - name: Check 2 Verify GPG Key & Passphrase (Local Signing)
         run: |
-            echo "=== DIAGNOSTIC : List of secrets keys imported ==="
-            gpg --list-secret-keys
+            echo "=== DIAGNOSTIC ==="
+            gpg --list-secret-keys --keyid-format LONG
+            echo "======================================================="
             
-            echo "=== Maven verification ==="
             mvn clean verify -B -ntp \
               -DskipTests=true \
               -Dmaven.javadoc.skip=true \
               -Dgpg.passphrase="$GPG_PASSPHRASE"
         env:
-          GPG_PASSPHRASE: ${{ secrets.SONATYPE_GPG_PASSPHRASE }}
+            GPG_PASSPHRASE: ${{ secrets.SONATYPE_GPG_PASSPHRASE }}
 
 #      - name: Run Maven Release
 #        run: |
