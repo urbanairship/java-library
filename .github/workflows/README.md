@@ -1,0 +1,19 @@
+# Workflows
+
+> 🔒 **Security Notice:** As this is a public repository, all automated triggers (on push/pull request) have been disabled to prevent PR hijacking and supply-chain vulnerabilities. Workflows must be triggered manually by organization members.
+
+### Maven Tests
+- Definition
+    - run `mvn clean install -B -ntp -Dua.test.integration=false`
+- Trigger
+    - workflow_dispatch (manual trigger) via the Actions tab. Select your target branch/PR before running.
+
+### Maven Release
+- Definition
+    - run `mvn release:prepare`
+    - run `mvn release:perform`
+    - push the release on gcs ua-ops-artifacts/airship-maven-artifacts
+- Trigger
+    - workflow_dispatch (manual trigger) via the Actions tab. Select your target branch/PR before running.
+
+📖 For full documentation on how these workflows and configuration files work, please refer to the [urbanairship/java-env repository](https://github.com/urbanairship/java-env#github-actions-and-workflows).

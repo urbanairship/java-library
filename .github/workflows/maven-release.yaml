@@ -1,0 +1,61 @@
+name: Perform Maven Release (Standalone)
+
+on:
+  push:
+    branches:
+      - "automation-update-workflows-library-edace0f9"
+  #workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  JAVA_VERSION: '11' #(8, 11, 17, 21)
+
+jobs:
+  maven-release:
+    name: Maven Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git User
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+
+      - name: Set up JDK & GPG / Sonatype Settings
+        uses: actions/setup-java@v5
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+          server-id: ossrh
+          server-username: SONATYPE_USERNAME
+          server-password: SONATYPE_PASSWORD
+          gpg-private-key: ${{ secrets.SONATYPE_GPG_PRIVATE_KEY }}
+          gpg-passphrase: SONATYPE_GPG_PASSPHRASE
+
+      - name: Run Maven Release
+        run: |
+          mvn -B -ntp \
+            -Darguments="-Dmaven.javadoc.skip=true -DskipTests=true -DaltReleaseDeploymentRepository=releases::default::gs://airship-maven-artifacts/releases -DaltDeploymentRepository=releases::default::gs://airship-maven-artifacts/releases" \
+            -Dresume=false \
+            -DscmCommentPrefix="[github] [skip ci] " \
+            -DtagNameFormat=@{project.version} \
+            -DpushChanges=false \
+            -DlocalCheckout=true \
+            release:prepare release:perform
+        env:
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+
+      - name: Push Changes & Tags
+        if: success()
+        run: |
+          git push origin master
+          git push origin --tags
