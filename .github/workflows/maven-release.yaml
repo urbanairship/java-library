@@ -1,4 +1,4 @@
-name: Perform Maven Release (Standalone) - preflight check
+name: Perform Maven Release (Standalone)
 
 on:
   push:
