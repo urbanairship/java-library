@@ -38,25 +38,25 @@ jobs:
           server-username: ${{ secrets.SONATYPE_USERNAME }}
           server-password: ${{ secrets.SONATYPE_PASSWORD }}
 
-      - name: Verify GPG Key & Passphrase (Clean Global Import)
+      - name: Verify GPG Key & Passphrase (Legacy Compatibility Bridge)
         run: |
             unset GNUPGHOME
             mkdir -p ~/.gnupg
             chmod 700 ~/.gnupg
             
-            echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
-            echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
-            gpgconf --kill gpg-agent
-            
             echo "$RAW_GPG_KEY" > private.key
             gpg --batch --import private.key
             rm private.key
+            
+            gpg --batch --export-secret-keys > /home/runner/.gnupg/secring.gpg
             
             mvn clean verify -B -ntp \
               -DskipTests=true \
               -Dmaven.javadoc.skip=true \
               -Dgpg.passphrase="$GPG_PASSPHRASE" \
-              -Dgpg.keyname="95BCB1665C76C3A6"
+              -Dgpg.keyname="95BCB1665C76C3A6" \
+              -Dgpg.secretKeyring="/home/runner/.gnupg/secring.gpg" \
+              -Dgpg.arguments="--pinentry-mode=loopback"
         env:
             RAW_GPG_KEY: ${{ secrets.SONATYPE_GPG_PRIVATE_KEY }}
             GPG_PASSPHRASE: ${{ secrets.SONATYPE_GPG_PASSPHRASE }}
