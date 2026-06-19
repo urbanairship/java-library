@@ -37,19 +37,20 @@ jobs:
           server-id: central
           server-username: ${{ secrets.SONATYPE_USERNAME }}
           server-password: ${{ secrets.SONATYPE_PASSWORD }}
-          gpg-private-key: ${{ secrets.SONATYPE_GPG_PRIVATE_KEY }}
-          gpg-passphrase: ${{ secrets.SONATYPE_GPG_PASSPHRASE }}
 
-      - name: Verify GPG Key & Passphrase (Explicit Shell Import)
+      - name: Verify GPG Key & Passphrase (Clean Global Import)
         run: |
-            echo "$RAW_GPG_KEY" > private.key
-            gpg --batch --import private.key
-            rm private.key
-            
+            unset GNUPGHOME
             mkdir -p ~/.gnupg
+            chmod 700 ~/.gnupg
+            
             echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
             echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
             gpgconf --kill gpg-agent
+            
+            echo "$RAW_GPG_KEY" > private.key
+            gpg --batch --import private.key
+            rm private.key
             
             mvn clean verify -B -ntp \
               -DskipTests=true \
