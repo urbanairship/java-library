@@ -43,16 +43,19 @@ jobs:
       - name: Verify GPG Key & Passphrase (Explicit Shell Import)
         run: |
             echo "$RAW_GPG_KEY" > private.key
-            
             gpg --batch --import private.key
             rm private.key
             
-            gpg --list-secret-keys --keyid-format LONG
+            mkdir -p ~/.gnupg
+            echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
+            echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+            gpgconf --kill gpg-agent
             
             mvn clean verify -B -ntp \
               -DskipTests=true \
               -Dmaven.javadoc.skip=true \
-              -Dgpg.passphrase="$GPG_PASSPHRASE"
+              -Dgpg.passphrase="$GPG_PASSPHRASE" \
+              -Dgpg.keyname="95BCB1665C76C3A6"
         env:
             RAW_GPG_KEY: ${{ secrets.SONATYPE_GPG_PRIVATE_KEY }}
             GPG_PASSPHRASE: ${{ secrets.SONATYPE_GPG_PASSPHRASE }}
