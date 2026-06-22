@@ -45,7 +45,7 @@ jobs:
             mvn clean verify -B -ntp \
               -DskipTests=true \
               -Dmaven.javadoc.skip=true \
-              -Dgpg.passphrase="$GPG_PASSPHRASE"
+              -Dgpg.keyname="95BCB1665C76C3A6"
         env:
             GPG_PASSPHRASE: ${{ secrets.SONATYPE_GPG_PASSPHRASE }}
 
