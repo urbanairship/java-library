@@ -41,8 +41,11 @@ jobs:
       - name: Run Maven Verification (Direct Import)
         run: |
             echo "$RAW_GPG_KEY" | gpg --batch --import
-            
-            mvn clean verify -B -ntp -DskipTests=true -Dmaven.javadoc.skip=true
+          
+            mvn clean verify -B -ntp \
+              -DskipTests=true \
+              -Dmaven.javadoc.skip=true \
+              -Dgpg.keyname="95BCB1665C76C3A6"
         env:
           RAW_GPG_KEY: ${{ secrets.SONATYPE_GPG_PRIVATE_KEY }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.SONATYPE_GPG_PASSPHRASE }}
