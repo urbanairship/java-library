@@ -45,25 +45,48 @@ jobs:
 
       - name: Import GPG Key
         run: |
-          echo "$RAW_GPG_KEY" | gpg --batch --import
-          GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format LONG \
-            | grep '^sec' | head -1 | awk '{print $2}' | cut -d'/' -f2)
-          echo "GPG_KEY_ID=$GPG_KEY_ID" >> "$GITHUB_ENV"
-          # Set ultimate trust so signing never prompts for confirmation
-          echo -e "5\ny\n" | gpg --batch --command-fd 0 --expert \
-            --edit-key "$GPG_KEY_ID" trust 2>/dev/null || true
+          # Write to file — avoids env-var encoding edge cases with binary content
+          printf '%s' "$RAW_GPG_KEY" > /tmp/gpg_import.asc
+          gpg --batch --import /tmp/gpg_import.asc
+          rm /tmp/gpg_import.asc
+
+          # Configure gpg-agent BEFORE listing keys.
+          # On ubuntu-24.04 runners (GnuPG 2.4), allow-loopback-pinentry is
+          # required for headless batch signing; without it gpg-agent refuses
+          # passphrase-via-stdin and the key appears invisible.
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          printf 'allow-loopback-pinentry\n' >> ~/.gnupg/gpg-agent.conf
+          printf 'pinentry-mode loopback\nno-tty\n' >> ~/.gnupg/gpg.conf
+
+          # Reload agent to pick up new config
+          gpgconf --kill gpg-agent || true
+          gpgconf --launch gpg-agent || true
+
+          # Set ultimate trust via ownertrust (more reliable than interactive edit)
+          FINGERPRINT=$(gpg --list-keys --with-colons 2>/dev/null \
+            | awk -F: '/^fpr:/{print $10; exit}')
+          if [ -z "$FINGERPRINT" ]; then
+            echo "ERROR: key import failed — no public key found in keyring"
+            exit 1
+          fi
+          echo "${FINGERPRINT}:6:" | gpg --batch --import-ownertrust
+          echo "GPG_FINGERPRINT=$FINGERPRINT" >> "$GITHUB_ENV"
+
+          echo "=== Secret keys after import ==="
           gpg --list-secret-keys --keyid-format LONG
         env:
           RAW_GPG_KEY: ${{ secrets.SONATYPE_GPG_PRIVATE_KEY }}
 
       - name: Verify GPG Signing (standalone)
-        # Quick sanity-check before handing the key to Maven
+        # Sanity-check: sign a file + verify before handing the key to Maven.
+        # pinentry-mode loopback is now in gpg.conf so no need to pass it here.
         run: |
-          echo "test payload for GPG sign check" \
-            | gpg --batch --yes --pinentry-mode loopback \
-                  --passphrase "$MAVEN_GPG_PASSPHRASE" \
-                  --clearsign \
-            | gpg --batch --verify
+          echo "test payload" > /tmp/sign_test.txt
+          gpg --batch --yes \
+              --passphrase "$MAVEN_GPG_PASSPHRASE" \
+              -a --sign /tmp/sign_test.txt
+          gpg --batch --verify /tmp/sign_test.txt.asc /tmp/sign_test.txt
+          rm /tmp/sign_test.txt /tmp/sign_test.txt.asc
           echo "GPG sign+verify OK"
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.SONATYPE_GPG_PASSPHRASE }}
