@@ -45,35 +45,51 @@ jobs:
 
       - name: Import GPG Key
         run: |
-          # Write to file — avoids env-var encoding edge cases with binary content
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+
+          # Must configure gpg-agent BEFORE first gpg invocation so it picks
+          # up allow-loopback-pinentry on start (restart below won't help if
+          # agent already launched without it).
+          printf 'allow-loopback-pinentry\n' >  ~/.gnupg/gpg-agent.conf
+          printf 'pinentry-mode loopback\nno-tty\n' > ~/.gnupg/gpg.conf
+
+          # Start agent with correct config before any key operations
+          gpgconf --kill gpg-agent 2>/dev/null || true
+          gpg-agent --daemon --allow-loopback-pinentry 2>/dev/null || true
+
+          # Import the key
           printf '%s' "$RAW_GPG_KEY" > /tmp/gpg_import.asc
           gpg --batch --import /tmp/gpg_import.asc
           rm /tmp/gpg_import.asc
 
-          # Configure gpg-agent BEFORE listing keys.
-          # On ubuntu-24.04 runners (GnuPG 2.4), allow-loopback-pinentry is
-          # required for headless batch signing; without it gpg-agent refuses
-          # passphrase-via-stdin and the key appears invisible.
-          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
-          printf 'allow-loopback-pinentry\n' >> ~/.gnupg/gpg-agent.conf
-          printf 'pinentry-mode loopback\nno-tty\n' >> ~/.gnupg/gpg.conf
+          # On GnuPG 2.4 (ubuntu-24.04), keys from old-format exports land in
+          # secring.gpg (legacy) instead of private-keys-v1.d/. Explicitly
+          # migrate: re-import from secring.gpg to force new-format storage.
+          if [ -f ~/.gnupg/secring.gpg ]; then
+            echo "Found secring.gpg — migrating to private-keys-v1.d format"
+            gpg --batch --import ~/.gnupg/secring.gpg
+          fi
 
-          # Reload agent to pick up new config
-          gpgconf --kill gpg-agent || true
-          gpgconf --launch gpg-agent || true
+          # Diagnostics — shows exactly where keys landed
+          echo "=== GNUPG home ==="
+          ls -la ~/.gnupg/
+          echo "=== private-keys-v1.d ==="
+          ls -la ~/.gnupg/private-keys-v1.d/ 2>/dev/null || echo "(empty — no keys in new format)"
+          echo "=== Public keys ==="
+          gpg --list-keys --keyid-format LONG
+          echo "=== Secret keys ==="
+          gpg --list-secret-keys --keyid-format LONG
 
-          # Set ultimate trust via ownertrust (more reliable than interactive edit)
+          # Extract fingerprint and set ultimate trust
           FINGERPRINT=$(gpg --list-keys --with-colons 2>/dev/null \
             | awk -F: '/^fpr:/{print $10; exit}')
           if [ -z "$FINGERPRINT" ]; then
-            echo "ERROR: key import failed — no public key found in keyring"
+            echo "ERROR: key import failed — no public key in keyring"
             exit 1
           fi
           echo "${FINGERPRINT}:6:" | gpg --batch --import-ownertrust
           echo "GPG_FINGERPRINT=$FINGERPRINT" >> "$GITHUB_ENV"
-
-          echo "=== Secret keys after import ==="
-          gpg --list-secret-keys --keyid-format LONG
+          echo "Import OK — key $FINGERPRINT (trust: ultimate)"
         env:
           RAW_GPG_KEY: ${{ secrets.SONATYPE_GPG_PRIVATE_KEY }}
 
