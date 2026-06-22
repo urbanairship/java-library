@@ -57,8 +57,20 @@ jobs:
           gpgconf --kill gpg-agent 2>/dev/null || true
           gpg-agent --daemon --allow-loopback-pinentry 2>/dev/null || true
 
-          # Import the key
+          # Guard: secret must contain PRIVATE key material, not a public-only
+          # stub. A public export starts with "BEGIN PGP PUBLIC KEY BLOCK" and
+          # leaves private-keys-v1.d empty → maven-gpg-plugin "no secret key".
           printf '%s' "$RAW_GPG_KEY" > /tmp/gpg_import.asc
+          if ! grep -q 'BEGIN PGP PRIVATE KEY BLOCK' /tmp/gpg_import.asc; then
+            echo "ERROR: SONATYPE_GPG_PRIVATE_KEY does not contain a PRIVATE key block."
+            echo "It must be the armored output of:"
+            echo "  gpg --armor --export-secret-keys <KEY_ID>"
+            echo "(starts with '-----BEGIN PGP PRIVATE KEY BLOCK-----')."
+            rm -f /tmp/gpg_import.asc
+            exit 1
+          fi
+
+          # Import the key
           gpg --batch --import /tmp/gpg_import.asc
           rm /tmp/gpg_import.asc
 
@@ -88,8 +100,19 @@ jobs:
             exit 1
           fi
           echo "${FINGERPRINT}:6:" | gpg --batch --import-ownertrust
+
+          # Guard: confirm private material actually landed. If the export was
+          # a smartcard stub, listing shows the key but private-keys-v1.d stays
+          # empty and signing fails later — fail here with a clear message.
+          if ! gpg --list-secret-keys --with-colons 2>/dev/null | grep -q '^sec:'; then
+            echo "ERROR: no usable secret key after import (private-keys-v1.d empty)."
+            echo "The export is likely a smartcard/stub. Re-export real material with:"
+            echo "  gpg --armor --export-secret-keys <KEY_ID>"
+            exit 1
+          fi
+
           echo "GPG_FINGERPRINT=$FINGERPRINT" >> "$GITHUB_ENV"
-          echo "Import OK — key $FINGERPRINT (trust: ultimate)"
+          echo "Import OK — key $FINGERPRINT (trust: ultimate, private material present)"
         env:
           RAW_GPG_KEY: ${{ secrets.SONATYPE_GPG_PRIVATE_KEY }}
 
