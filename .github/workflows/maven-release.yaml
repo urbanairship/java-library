@@ -47,7 +47,7 @@ jobs:
               -Dmaven.javadoc.skip=true \
               -Dgpg.keyname="95BCB1665C76C3A6"
         env:
-            GPG_PASSPHRASE: ${{ secrets.SONATYPE_GPG_PASSPHRASE }}
+            MAVEN_GPG_PASSPHRASE: ${{ secrets.SONATYPE_GPG_PASSPHRASE }}
 
 #      - name: Run Maven Release
 #        run: |
