@@ -1,20 +1,20 @@
-name: Perform Maven Release (Standalone)
+name: Maven Release Dry-Run (INFRA-8096-AI)
 
 on:
   push:
     branches:
-      - "INFRA-8096"
-  #workflow_dispatch:
+      - "INFRA-8096-AI"
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 env:
-  JAVA_VERSION: '11' #(8, 11, 17, 21)
+  JAVA_VERSION: '11'
 
 jobs:
-  maven-release:
-    name: Maven Release
+  maven-release-dryrun:
+    name: Maven Release Dry-Run
     runs-on: ubuntu-latest
 
     steps:
@@ -28,41 +28,96 @@ jobs:
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
 
-      - name: Set up JDK & GPG / Sonatype Settings
+      # server-username / server-password must be ENV VAR NAMES, not the secret
+      # values directly. setup-java writes ${env.SONATYPE_USERNAME} into settings.xml;
+      # the env vars must be present when Maven runs (see each mvn step below).
+      - name: Set up JDK & Maven Settings (Sonatype Central)
         uses: actions/setup-java@v5
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: 'temurin'
           cache: 'maven'
           server-id: central
-          server-username: ${{ secrets.SONATYPE_USERNAME }}
-          server-password: ${{ secrets.SONATYPE_PASSWORD }}
+          server-username: SONATYPE_USERNAME
+          server-password: SONATYPE_PASSWORD
 
-      - name: Run Maven Verification (Direct Import)
+      # ── GPG ─────────────────────────────────────────────────────────────────
+
+      - name: Import GPG Key
         run: |
-            echo "$RAW_GPG_KEY" | gpg --batch --import
-            
-            mvn clean verify -B -ntp -DskipTests=true -Dmaven.javadoc.skip=true
+          echo "$RAW_GPG_KEY" | gpg --batch --import
+          GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format LONG \
+            | grep '^sec' | head -1 | awk '{print $2}' | cut -d'/' -f2)
+          echo "GPG_KEY_ID=$GPG_KEY_ID" >> "$GITHUB_ENV"
+          # Set ultimate trust so signing never prompts for confirmation
+          echo -e "5\ny\n" | gpg --batch --command-fd 0 --expert \
+            --edit-key "$GPG_KEY_ID" trust 2>/dev/null || true
+          gpg --list-secret-keys --keyid-format LONG
         env:
           RAW_GPG_KEY: ${{ secrets.SONATYPE_GPG_PRIVATE_KEY }}
+
+      - name: Verify GPG Signing (standalone)
+        # Quick sanity-check before handing the key to Maven
+        run: |
+          echo "test payload for GPG sign check" \
+            | gpg --batch --yes --pinentry-mode loopback \
+                  --passphrase "$MAVEN_GPG_PASSPHRASE" \
+                  --clearsign \
+            | gpg --batch --verify
+          echo "GPG sign+verify OK"
+        env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.SONATYPE_GPG_PASSPHRASE }}
 
-#      - name: Run Maven Release
-#        run: |
-#          mvn -B -ntp \
-#            -Darguments="-Dmaven.javadoc.skip=true -DskipTests=true -DaltReleaseDeploymentRepository=releases::default::gs://airship-maven-artifacts/releases -DaltDeploymentRepository=releases::default::gs://airship-maven-artifacts/releases" \
-#            -Dresume=false \
-#            -DscmCommentPrefix="[github] [skip ci] " \
-#            -DtagNameFormat=@{project.version} \
-#            -DpushChanges=false \
-#            -DlocalCheckout=true \
-#            release:prepare release:perform
-#        env:
-#          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-#          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      # ── Sonatype connectivity ────────────────────────────────────────────────
 
-#      - name: Push Changes & Tags
-#        if: success()
-#        run: |
-#          git push origin master
-#          git push origin --tags
+      - name: Check Sonatype Central Credentials (read-only API call)
+        # Bearer token = base64(username:password) — same encoding the
+        # central-publishing-maven-plugin uses internally.
+        # The /publisher/deployments endpoint returns 200 (even empty list)
+        # for valid creds and 401 for bad creds. Zero upload, zero side-effect.
+        run: |
+          TOKEN=$(printf '%s:%s' "$SONATYPE_USERNAME" "$SONATYPE_PASSWORD" \
+            | base64 -w 0)
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "Authorization: Bearer $TOKEN" \
+            "https://central.sonatype.com/api/v1/publisher/deployments/published?maxPageSize=1")
+          echo "Sonatype API response: HTTP $HTTP_CODE"
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "Sonatype credentials valid."
+          else
+            echo "ERROR: unexpected HTTP $HTTP_CODE — check SONATYPE_USERNAME / SONATYPE_PASSWORD secrets."
+            exit 1
+          fi
+        env:
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+
+      # ── Release dry-run ──────────────────────────────────────────────────────
+
+      # DRY-RUN ONLY — release:prepare -DdryRun=true:
+      #   • runs preparationGoals (clean verify) → GPG signs real artifacts
+      #   • simulates version bump and SCM tag, writes .backup files
+      #   • does NOT commit, does NOT tag, does NOT deploy anything
+      # release:perform is intentionally absent — it would invoke
+      # central-publishing-maven-plugin which uploads a bundle to Sonatype
+      # staging even with autoPublish=false.
+      - name: Maven Release Prepare (DRY RUN — no commit, no deploy)
+        run: |
+          mvn -B -ntp \
+            -Dresume=false \
+            -DdryRun=true \
+            -DscmCommentPrefix="[github] [skip ci] " \
+            -DtagNameFormat=@{project.version} \
+            -DpushChanges=false \
+            -DlocalCheckout=true \
+            -Dlocal.gpg.passphrase="${MAVEN_GPG_PASSPHRASE}" \
+            -Darguments="-Dmaven.javadoc.skip=true -DskipTests=true -Dgpg.passphrase=${MAVEN_GPG_PASSPHRASE}" \
+            release:prepare
+        env:
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.SONATYPE_GPG_PASSPHRASE }}
+
+      - name: Clean Up Dry-Run Backup Files
+        if: always()
+        run: mvn release:clean -B -ntp
