@@ -37,17 +37,22 @@ jobs:
           server-id: central
           server-username: ${{ secrets.SONATYPE_USERNAME }}
           server-password: ${{ secrets.SONATYPE_PASSWORD }}
-          gpg-private-key: ${{ secrets.SONATYPE_GPG_PRIVATE_KEY }}
-          gpg-passphrase: ${{ secrets.SONATYPE_GPG_PASSPHRASE }}
 
       - name: Run Maven Verification (With Native Signing)
         run: |
+            mkdir -p ~/.gnupg
+            chmod 700 ~/.gnupg
+            echo "$RAW_GPG_KEY" > private.key
+            gpg --batch --import private.key
+            rm private.key
+            
             mvn clean verify -B -ntp \
               -DskipTests=true \
               -Dmaven.javadoc.skip=true \
               -Dgpg.keyname="95BCB1665C76C3A6"
         env:
-            MAVEN_GPG_PASSPHRASE: ${{ secrets.SONATYPE_GPG_PASSPHRASE }}
+          RAW_GPG_KEY: ${{ secrets.SONATYPE_GPG_PRIVATE_KEY }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.SONATYPE_GPG_PASSPHRASE }}
 
 #      - name: Run Maven Release
 #        run: |
