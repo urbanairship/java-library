@@ -4,7 +4,7 @@
 
 ### Maven Tests
 - Definition
-    - run `mvn clean install -B -ntp -Dua.test.integration=false`
+    - run `mvn clean install -B -ntp -Dgpg.skip=true`
 - Trigger
     - workflow_dispatch (manual trigger) via the Actions tab. Select your target branch/PR before running.
 
