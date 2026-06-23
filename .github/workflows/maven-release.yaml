@@ -45,10 +45,11 @@ jobs:
             mvn clean verify -B -ntp \
               -DskipTests=true \
               -Dmaven.javadoc.skip=true \
-              -Dgpg.keyname="95BCB1665C76C3A6"
+              -Dgpg.keyname="$GPG_KEY_ID"
         env:
           RAW_GPG_KEY: ${{ secrets.SONATYPE_GPG_PRIVATE_KEY }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.SONATYPE_GPG_PASSPHRASE }}
+          GPG_KEY_ID: "B85D4DAEA102C95F"
 
 #      - name: Run Maven Release
 #        run: |
