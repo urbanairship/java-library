@@ -20,11 +20,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v6
 
-      - name: Configure Git User
-        run: |
-          git config user.email "actions@github.com"
-          git config user.name "GitHub Actions"
-
       - name: Set up JDK
         uses: actions/setup-java@v5
         with:
