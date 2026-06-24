@@ -53,9 +53,7 @@ jobs:
             -DtagNameFormat=@{project.version} \
             -DpushChanges=false \
             -DlocalCheckout=true \
-            -DdryRun=true \
-            release:prepare
-        #release:perform
+            release:prepare release:perform
         env:
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
