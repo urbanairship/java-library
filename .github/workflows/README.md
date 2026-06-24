@@ -12,7 +12,7 @@
 - Definition
     - run `mvn release:prepare`
     - run `mvn release:perform`
-    - push the release on gcs ua-ops-artifacts/airship-maven-artifacts
+    - push the release on Sonatype Central Portals
 - Trigger
     - workflow_dispatch (manual trigger) via the Actions tab. Select your target branch/PR before running.
 
