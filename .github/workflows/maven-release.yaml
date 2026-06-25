@@ -27,13 +27,13 @@ jobs:
         with:
           fetch-depth: 0
 
-#      - name: Ensure Release Runs On Master Only
-#        run: |
-#          if [ "${{ github.ref_name }}" != "master" ]; then
-#            echo "ERROR: Maven releases must be triggered from the 'master' branch."
-#            echo "Current branch is '${{ github.ref_name }}'."
-#            exit 1
-#          fi
+      - name: Ensure Release Runs On Master Only
+        run: |
+          if [ "${{ github.ref_name }}" != "master" ]; then
+            echo "ERROR: Maven releases must be triggered from the 'master' branch."
+            echo "Current branch is '${{ github.ref_name }}'."
+            exit 1
+          fi
 
       - name: Configure Git User
         run: |
@@ -88,11 +88,11 @@ jobs:
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.SONATYPE_GPG_PASSPHRASE }}
 
-#      - name: Push Changes & Tags
-#        if: success()
-#        run: |
-#          git push origin master
-#          git push origin --tags
+      - name: Push Changes & Tags
+        if: success()
+        run: |
+          git push origin master
+          git push origin --tags
 
       - name: Generate Release Summary
         if: success()
