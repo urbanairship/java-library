@@ -5,10 +5,7 @@ concurrency:
   cancel-in-progress: false
 
 on:
-  push:
-    branches:
-      - "INFRA-8096"
-  #workflow_dispatch:
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -80,8 +77,8 @@ jobs:
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.SONATYPE_GPG_PASSPHRASE }}
 
-#      - name: Push Changes & Tags
-#        if: success()
-#        run: |
-#          git push origin master
-#          git push origin --tags
+      - name: Push Changes & Tags
+        if: success()
+        run: |
+          git push origin master
+          git push origin --tags
