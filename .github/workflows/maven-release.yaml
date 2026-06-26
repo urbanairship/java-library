@@ -5,6 +5,9 @@ concurrency:
   cancel-in-progress: false
 
 on:
+  push:
+    branches:
+      - "INFRA-8096"
   workflow_dispatch:
 
 permissions:
@@ -24,13 +27,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Ensure Release Runs On Master Only
-        run: |
-          if [ "${{ github.ref_name }}" != "master" ]; then
-            echo "ERROR: Maven releases must be triggered from the 'master' branch."
-            echo "Current branch is '${{ github.ref_name }}'."
-            exit 1
-          fi
+#      - name: Ensure Release Runs On Master Only
+#        run: |
+#          if [ "${{ github.ref_name }}" != "master" ]; then
+#            echo "ERROR: Maven releases must be triggered from the 'master' branch."
+#            echo "Current branch is '${{ github.ref_name }}'."
+#            exit 1
+#          fi
 
       - name: Configure Git User
         run: |
@@ -67,8 +70,6 @@ jobs:
       - name: Import GPG Private Key
         run: |
             echo "$RAW_GPG_KEY" | gpg --batch --import
-            mkdir -p ~/.gnupg
-            echo "default-key B85D4DAEA102C95F" >> ~/.gnupg/gpg.conf
         env:
           RAW_GPG_KEY: ${{ secrets.SONATYPE_GPG_PRIVATE_KEY }}
 
@@ -85,11 +86,11 @@ jobs:
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.SONATYPE_GPG_PASSPHRASE }}
 
-      - name: Push Changes & Tags
-        if: success()
-        run: |
-          git push origin master
-          git push origin --tags
+#      - name: Push Changes & Tags
+#        if: success()
+#        run: |
+#          git push origin master
+#          git push origin --tags
 
       - name: Generate Release Summary
         if: success()
