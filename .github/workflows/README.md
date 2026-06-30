@@ -1,6 +1,6 @@
 # Workflows
 
-> 🔒 **Security Notice:** As this is a public repository, all automated triggers (on push/pull request) have been disabled to prevent PR hijacking and supply-chain vulnerabilities. Workflows must be triggered manually by organization members.
+> 🔒 **Security Notice:** As this is a public repository, Workflows must be triggered manually by organization members.
 
 ### Maven Tests
 - Definition
