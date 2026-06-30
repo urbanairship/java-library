@@ -1,0 +1,99 @@
+name: Perform Maven Release (Standalone)
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  JAVA_VERSION: '11' #(8, 11, 17, 21)
+
+jobs:
+  maven-release:
+    name: Maven Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Ensure Release Runs On Master Only
+        run: |
+          if [ "${{ github.ref_name }}" != "master" ]; then
+            echo "ERROR: Maven releases must be triggered from the 'master' branch."
+            echo "Current branch is '${{ github.ref_name }}'."
+            exit 1
+          fi
+
+      - name: Configure Git User
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+
+      - name: Set up JDK & GPG / Sonatype Settings
+        uses: actions/setup-java@v5
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Configure Maven Plain-Text Credentials
+        run: |
+            mkdir -p ~/.m2
+            cat << EOF > ~/.m2/settings.xml
+            <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                      xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+              <servers>
+                <server>
+                  <id>central</id>
+                  <username>$SONATYPE_USERNAME</username>
+                  <password>$SONATYPE_PASSWORD</password>
+                </server>
+              </servers>
+            </settings>
+            EOF
+        env:
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+
+      - name: Import GPG Private Key
+        run: |
+            echo "$RAW_GPG_KEY" | gpg --batch --import
+        env:
+          RAW_GPG_KEY: ${{ secrets.SONATYPE_GPG_PRIVATE_KEY }}
+
+      - name: Run Maven Release
+        run: |
+          mvn -B -ntp \
+            -Dlocal.gpg.passphrase="$MAVEN_GPG_PASSPHRASE" \
+            -Dresume=false \
+            -DscmCommentPrefix="[github] [skip ci] " \
+            -DtagNameFormat=@{project.version} \
+            -DpushChanges=false \
+            -DlocalCheckout=true \
+            release:prepare release:perform
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.SONATYPE_GPG_PASSPHRASE }}
+
+      - name: Push Changes & Tags
+        if: success()
+        run: |
+          git push origin master
+          git push origin --tags
+
+      - name: Generate Release Summary
+        if: success()
+        run: |
+          echo "### Maven Release successfully staged!" >> $GITHUB_STEP_SUMMARY
+          echo "The artifacts for \`${{ github.ref_name }}\` have been signed and uploaded." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Next Step:** You need to manually drop or approve the staging bundle." >> $GITHUB_STEP_SUMMARY
+          echo "Click here to validate your release: [Sonatype Central Portals](https://central.sonatype.com/publishing)" >> $GITHUB_STEP_SUMMARY
