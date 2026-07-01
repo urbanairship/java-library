@@ -1,0 +1,94 @@
+name: Sonatype Release
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: Release to Maven Central
+    runs-on: [self-hosted, ubuntu]
+
+    steps:
+      - name: Ensure release runs on master only
+        run: |
+          if [ "${{ github.ref_name }}" != "master" ]; then
+            echo "ERROR: releases must be triggered from master (current: ${{ github.ref_name }})"
+            exit 1
+          fi
+
+      - name: Set up Airship Java Environment
+        uses: urbanairship/java-env/actions/setup-airship-java-env@master
+        with:
+          java-build-sa-key: ${{ secrets.JAVA_BUILD_SA_KEY }}
+          gh-token: ${{ secrets.JAVA_BUILD_GH_TOKEN }}
+
+      - name: Configure Maven settings for Sonatype Central
+        run: |
+          cat > ~/.m2/settings.xml << 'EOF'
+          <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+            <servers>
+              <server>
+                <id>central</id>
+                <username>${env.SONATYPE_USERNAME}</username>
+                <password>${env.SONATYPE_PASSWORD}</password>
+              </server>
+            </servers>
+          </settings>
+          EOF
+        env:
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+
+      - name: Import GPG private key
+        run: echo "$GPG_KEY" | gpg --batch --import
+        env:
+          GPG_KEY: ${{ secrets.SONATYPE_GPG_PRIVATE_KEY }}
+
+      - name: Run Maven Release
+        run: |
+          mvn -B -ntp \
+            -Dlocal.gpg.passphrase="${MAVEN_GPG_PASSPHRASE}" \
+            -Dresume=false \
+            -DscmCommentPrefix="[github] [skip ci] " \
+            -DtagNameFormat=@{project.version} \
+            -DpushChanges=false \
+            -DlocalCheckout=true \
+            release:prepare release:perform
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.SONATYPE_GPG_PASSPHRASE }}
+
+      - name: Push to java-library-dev
+        run: |
+          git push origin master
+          git push origin --tags
+
+      - name: Sync to java-library (public)
+        run: |
+          git remote add public "https://x-access-token:${JAVA_LIBRARY_PUBLIC_TOKEN}@github.com/urbanairship/java-library.git"
+          git push public master
+          git push public --tags
+        env:
+          JAVA_LIBRARY_PUBLIC_TOKEN: ${{ secrets.JAVA_LIBRARY_PUBLIC_TOKEN }}
+
+      - name: Summary
+        if: always()
+        run: |
+          RELEASE_VERSION=$(git tag --sort=-creatordate | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
+          echo "## Sonatype Release" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| | |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| Version | \`${RELEASE_VERSION}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Artifact | \`com.urbanairship:java-client:${RELEASE_VERSION}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Next step" >> $GITHUB_STEP_SUMMARY
+          echo "Approve and publish the staging bundle on [Sonatype Central Portal](https://central.sonatype.com/publishing)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Public repo synced" >> $GITHUB_STEP_SUMMARY
+          echo "- [urbanairship/java-library](https://github.com/urbanairship/java-library) — master + tag \`${RELEASE_VERSION}\`" >> $GITHUB_STEP_SUMMARY
