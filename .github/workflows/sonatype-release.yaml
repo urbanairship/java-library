@@ -7,6 +7,10 @@ concurrency:
 on:
   workflow_dispatch:
 
+env:
+  JAVA_VERSION: '11'
+  MAVEN_VERSION: '3.9.9'
+
 jobs:
   release:
     name: Release to Maven Central
@@ -20,14 +24,33 @@ jobs:
             exit 1
           fi
 
-      - name: Set up Airship Java Environment
-        uses: urbanairship/java-env/actions/setup-airship-java-env@master
+      - uses: actions/checkout@v6
         with:
-          java-build-sa-key: ${{ secrets.JAVA_BUILD_SA_KEY }}
-          gh-token: ${{ secrets.JAVA_BUILD_GH_TOKEN }}
+          fetch-depth: 0
+          token: ${{ secrets.JAVA_BUILD_GH_TOKEN }}
+
+      - name: Configure git user
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Install Maven
+        run: |
+          mkdir -p $HOME/maven
+          wget -q https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz
+          tar -xzf apache-maven-${MAVEN_VERSION}-bin.tar.gz -C $HOME/maven --strip-components=1
+          echo "$HOME/maven/bin" >> $GITHUB_PATH
 
       - name: Configure Maven settings for Sonatype Central
         run: |
+          mkdir -p ~/.m2
           cat > ~/.m2/settings.xml << 'EOF'
           <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

@@ -28,13 +28,12 @@ All CI/CD runs here; the public repo is updated automatically after each release
 
 | Secret | Used by |
 |--------|---------|
-| `JAVA_BUILD_SA_KEY` | Maven Tests, Sonatype Release (Java/Maven toolchain) |
-| `JAVA_BUILD_GH_TOKEN` | Maven Tests, Sonatype Release (checkout + push to -dev) |
+| `JAVA_BUILD_GH_TOKEN` | Maven Tests, Sonatype Release (checkout + push to java-library-dev) |
 | `SONATYPE_USERNAME` | Sonatype Release |
 | `SONATYPE_PASSWORD` | Sonatype Release |
 | `SONATYPE_GPG_PRIVATE_KEY` | Sonatype Release |
 | `SONATYPE_GPG_PASSPHRASE` | Sonatype Release |
-| `JAVA_LIBRARY_PUBLIC_TOKEN` | Sonatype Release (push to public repo) — fine-grained PAT, `Contents: write` on `urbanairship/java-library` only |
+| `JAVA_LIBRARY_PUBLIC_TOKEN` | Sonatype Release — fine-grained PAT, `Contents: write` on `urbanairship/java-library` only |
 
 ---
 
