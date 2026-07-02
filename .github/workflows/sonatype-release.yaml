@@ -104,9 +104,13 @@ jobs:
 
       - name: Sync to java-library (public)
         run: |
-          git remote add public "https://x-access-token:${{ steps.app-token.outputs.token }}@github.com/urbanairship/java-library.git"
+          git config --local "http.https://github.com/urbanairship/java-library.git/.extraheader" \
+            "AUTHORIZATION: basic $(printf 'x-access-token:%s' "${GH_TOKEN}" | base64 -w0)"
+          git remote add public "https://github.com/urbanairship/java-library.git"
           git push public master
           git push public --tags
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
 
       - name: Summary
         if: always()
