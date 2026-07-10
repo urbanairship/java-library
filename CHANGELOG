@@ -1,5 +1,11 @@
 -------------------------
-11.2.1 25MAY26
+11.3.0 09JUL26
+-------------------------
+- Add Journeys trigger endpoint support
+- Add Journeys exit endpoint support
+
+-------------------------
+11.2.2 25MAY26
 -------------------------
 - Updates org.asynchttpclient:async-http-client from 3.0.9 to 3.0.10
 
