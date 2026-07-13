@@ -12,19 +12,6 @@ General documentation can be found here: http://docs.airship.com/
 Java client library documentation can be found here: https://docs.airship.com/api/libraries/java/
 
 
-Workflows / Deployment
-======================
-
-CI runs automatically on every pull request (`maven-tests` workflow, Java 11).
-
-### Publishing a release
-
-1. Ensure master is in sync with `java-library` (public repo) and the version in `pom.xml` is correct.
-2. Trigger the [Sonatype Release workflow](https://github.com/urbanairship/java-library-dev/actions/workflows/sonatype-release.yaml) manually via **Run workflow → master**.
-3. Once the workflow completes, open the **Summary** tab of the workflow run — it prints the direct link to approve and publish the staged bundle on [Sonatype Central](https://central.sonatype.com/publishing).
-4. Approve the bundle on Sonatype. The public `java-library` repo is synced automatically by the workflow (master + tag).
-
-
 Installation
 ====================
 
